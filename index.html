@@ -1,84 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sehr Academy</title>
+  <meta name="description" content="Sehr Academy — tuition center offering school subject coaching, exam prep, and personalized mentoring." />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: #333;
-      text-align: center;
+    :root{
+      --primary:#8BC53F; /* lime green from logo */
+      --primary-dark:#6aa428;
+      --text:#0f1115;     /* near-black */
+      --muted:#6b7280;    /* gray */
+      --bg:#ffffff;       /* clean white */
+      --card:#f7f7f7;     /* soft panel */
+      --shadow:0 14px 40px rgba(16,24,40,.08);
     }
-    header {
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      padding: 20px;
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 400px at 10% -100px, rgba(139,197,63,.06), transparent 60%),
+        radial-gradient(900px 400px at 90% -120px, rgba(0,0,0,.04), transparent 60%),
+        var(--bg);
+      line-height:1.6;
+      text-rendering:optimizeLegibility;
     }
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.9);
+      backdrop-filter:saturate(180%) blur(8px);
+      border-bottom:1px solid #eee;
     }
-    section {
-      padding: 40px;
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+    .brand span:nth-child(1){
+      font-weight:900; letter-spacing:1px; font-size:28px; color:var(--primary);
     }
-    footer {
-      background: #222;
-      color: #ccc;
-      padding: 15px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
+    .brand span:nth-child(2){
+      font-weight:900; letter-spacing:1px; font-size:28px; color:var(--text);
     }
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #fff;
-      color: #4facfe;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
+    nav a{color:var(--text);text-decoration:none;margin-left:18px;font-weight:600;position:relative}
+    nav a:after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--primary);transition:.2s}
+    nav a:hover{color:var(--primary)}
+    nav a:hover:after{width:100%}
+
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 18px;border-radius:12px;
+      background:var(--primary);color:#0f172a;font-weight:800;text-decoration:none;
+      box-shadow:0 8px 22px rgba(139,197,63,.35);
+      transition:.2s transform,.2s box-shadow,.2s background;
     }
-    .btn:hover {
-      background: #4facfe;
-      color: #fff;
+    .btn:hover{transform:translateY(-1px);background:var(--primary-dark);box-shadow:0 12px 28px rgba(139,197,63,.45)}
+
+    /* Hero */
+    .hero{padding:88px 0 56px;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;inset:-40% -20% auto -20%;height:80%;background:radial-gradient(1200px 400px at 50% -200px, rgba(139,197,63,.18), transparent 60%)}
+    .hero h1{font-size:44px;line-height:1.12;margin:6px 0}
+    .hero p{color:#374151;max-width:750px;margin:8px auto 24px}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:#121316;color:#fff;border-radius:999px;padding:6px 12px;font-size:14px}
+    .pill svg{width:16px;height:16px}
+
+    /* Sections */
+    section{padding:64px 0;border-top:1px solid #f0f0f0}
+    h2{font-size:30px;margin:0 0 14px}
+    h2 .accent{display:inline-block;position:relative}
+    h2 .accent:after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:8px;border-radius:8px;background:linear-gradient(90deg,rgba(139,197,63,.35),transparent)}
+    .grid{display:grid;gap:18px}
+    @media(min-width:768px){.grid-3{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}}
+
+    .card{background:var(--card);border:1px solid #eee;border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+    .card h3{margin:6px 0 6px;font-size:20px}
+    .muted{color:var(--muted)}
+    ul{padding-left:18px;margin:10px 0}
+    .icon{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:36px;height:36px;border-radius:10px;background:#eef7e3;color:#2a3d10;margin-right:8px
     }
+
+    /* Stats band */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+    .stat{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px;text-align:center;box-shadow:var(--shadow)}
+    .stat b{font-size:26px;color:var(--primary)}
+
+    /* Footer */
+    footer{background:#0f1112;color:#d1d5db;padding:28px 0;margin-top:36px}
+    footer a{color:#e5e7eb;text-decoration:none}
+    footer a:hover{color:#c7f09b}
+
+    /* Callout band */
+    .cta-band{background:linear-gradient(90deg,var(--primary),#a4db63);padding:28px;border-radius:16px;color:#0b0f10;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;box-shadow:var(--shadow)}
+    .cta-band strong{font-size:22px}
+
+    /* WhatsApp floating button */
+    .whatsapp-fab{
+      position:fixed;right:18px;bottom:18px;z-index:60;
+      display:inline-flex;align-items:center;gap:10px;
+      background:#25D366;color:#0b0f10;text-decoration:none;font-weight:900;
+      padding:12px 16px;border-radius:999px;box-shadow:0 10px 24px rgba(0,0,0,.25);
+    }
+    .whatsapp-fab svg{width:20px;height:20px}
+    .whatsapp-fab:hover{transform:translateY(-1px)}
+
+    /* Map modal */
+    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.6);z-index:80}
+    .modal[open]{display:grid}
+    .modal-card{width:min(1000px,92vw);height:min(80vh,800px);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);position:relative}
+    .modal-card button{position:absolute;top:10px;right:10px;border:none;background:#0f1112;color:#fff;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer}
+    .map-thumb{cursor:pointer}
   </style>
 </head>
 <body>
   <header>
-    <h1>🌐 Welcome to My Website</h1>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Sehr Academy">
+        <span>SEHR</span><span>ACADEMY</span>
+      </a>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#programs">Programs</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <section id="home">
-    <h2>Hello, World! 🚀</h2>
-    <p>This is my first website hosted for free on GitHub Pages.</p>
-    <a href="#about" class="btn">Learn More</a>
-  </section>
+  <main id="home" class="hero">
+    <div class="container" style="text-align:center">
+      <span class="pill"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.39 4.84 5.34.78-3.86 3.76.91 5.32L12 14.77 7.22 16.7l.91-5.32L4.27 7.62l5.34-.78L12 2z"/></svg> Trusted Tuition Centre</span>
+      <h1>Personalized coaching that helps students <span style="color:var(--primary)">excel</span>.</h1>
+      <p>Sehr Academy provides concept‑focused tutoring, exam preparation, and ongoing mentoring for school and entrance exams. Small batches, clear notes, and regular progress tracking.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a class="btn" href="#contact">Enroll Now</a>
+        <a class="btn" style="background:#25D366;color:#0b0f10;box-shadow:0 8px 22px rgba(37,211,102,.35)" target="_blank" rel="noopener" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27m%20interested%20in%20tuition%20admissions.">Chat on WhatsApp</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>10–15</b><div>Students per batch</div></div>
+        <div class="stat"><b>Weekly</b><div>Tests & feedback</div></div>
+        <div class="stat"><b>Crash</b><div>Courses before exams</div></div>
+      </div>
+    </div>
+  </main>
 
   <section id="about">
-    <h2>About Me</h2>
-    <p>I created this site using GitHub Pages. It’s completely free and easy to use!</p>
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2><span class="accent">About Sehr Academy</span></h2>
+        <p>We are a student‑first tuition center committed to strong fundamentals and exam confidence. Our mentors track each learner’s progress with weekly tests and feedback calls to parents.</p>
+        <ul>
+          <li><span class="icon">✓</span>Small batch sizes (10–15 students)</li>
+          <li><span class="icon">✓</span>Concept revision + doubt clearing daily</li>
+          <li><span class="icon">✓</span>Weekly tests & analytics report</li>
+          <li><span class="icon">✓</span>Crash courses before term exams</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2><span class="accent">Subjects Covered</span></h2>
+        <ul>
+          <li>Classes 11 & 12: Mathematics, Physics, Chemistry, Biology</li>
+          <li>English & Social Science (on demand)</li>
+          <li>Board prep: CBSE / State</li>
+          <li>Foundations for NEET/JEE</li>
+        </ul>
+        <p class="muted">Tell us your exact classes & boards and we’ll tailor this list.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="programs">
+    <div class="container">
+      <h2><span class="accent">Programs</span></h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Regular Batches</h3>
+          <p class="muted">Comprehensive syllabus coverage with notes, assignments, and weekly tests.</p>
+        </div>
+        <div class="card">
+          <h3>Exam Crash Course</h3>
+          <p class="muted">Two–four week intensive revision with previous‑year papers & mock tests.</p>
+        </div>
+        <div class="card">
+          <h3>1‑to‑1 Mentoring</h3>
+          <p class="muted">Personalized sessions focused on fundamentals and speed‑building.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <div class="container">
+      <h2><span class="accent">Schedule & Timings</span></h2>
+      <div class="card">
+        <ul>
+          <li><b>Weekdays:</b> 6:00–7:30 AM • 8:00–9:30 PM</li>
+          <li><b>Weekends:</b> Extra classes, mock tests & doubt clearing</li>
+          <li>Online & Offline options available</li>
+        </ul>
+        <p class="muted">Want custom slots? Message us on WhatsApp and we’ll try to arrange.</p>
+      </div>
+    </div>
   </section>
 
   <section id="contact">
-    <h2>Contact</h2>
-    <p>Email me at: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+    <div class="container">
+      <div class="cta-band">
+        <strong>Admissions Open — Limited seats per batch</strong>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn" href="mailto:sehracademy@gmail.com">Email Admissions</a>
+          <a class="btn" style="background:#25D366;color:#0b0f10;box-shadow:0 6px 18px rgba(37,211,102,.35)" target="_blank" rel="noopener" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27m%20interested%20in%20tuition%20admissions.">Chat on WhatsApp</a>
+        </div>
+      </div>
+      <div class="grid grid-2" style="margin-top:18px">
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Phone: <a href="tel:+919539409586">+91 95394 09586</a><br>
+          Email: <a href="mailto:sehracademy@gmail.com">sehracademy@gmail.com</a></p>
+        </div>
+        <div class="card">
+          <h3>Location</h3>
+          <div class="map-thumb" role="button" title="Open map" aria-label="Open map">
+            <div style="width:100%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3110682522756!2d76.07572381092272!3d10.4761257896118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba78d6f59650727%3A0x7b1dd60e34754193!2sSehr%20Academy!5e0!3m2!1sen!2sin!4v1756140942235!5m2!1sen!2sin" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div style="text-align:center;margin-top:8px" class="muted">Click to view large map</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <a class="whatsapp-fab" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20know%20about%20batches.">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M19.11 17.86c-.26-.13-1.53-.75-1.77-.84-.24-.09-.42-.13-.6.13-.18.26-.69.84-.84 1.02-.15.18-.31.2-.57.07-.26-.13-1.08-.4-2.06-1.27-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.18.04-.33-.02-.46-.07-.13-.6-1.44-.82-1.97-.22-.53-.44-.46-.6-.46h-.51c-.18 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3.94 2.56 1.07 2.73.13.18 1.86 2.84 4.52 3.97.63.27 1.11.43 1.49.55.63.2 1.21.17 1.67.1.51-.08 1.53-.62 1.75-1.22.22-.6.22-1.12.15-1.22-.07-.1-.24-.16-.5-.29z"/><path d="M16 3C9.925 3 5 7.925 5 14c0 2.427.78 4.674 2.11 6.51L6 27l6.635-1.74C14.286 25.748 15.13 26 16 26c6.075 0 11-4.925 11-11S22.075 3 16 3zm0 20c-.77 0-1.52-.11-2.23-.32l-.16-.05-3.98 1.04 1.06-3.88-.11-.17C9.61 18.49 9 16.8 9 15c0-4.07 3.93-8 9-8s9 3.93 9 9-3.93 9-9 9z"/></svg>
+    WhatsApp
+  </a>
+
+  <!-- Map Modal -->
+  <dialog class="modal" id="mapModal">
+    <div class="modal-card">
+      <button onclick="document.getElementById('mapModal').close()">Close ✕</button>
+      <iframe id="mapLarge" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3110682522756!2d76.07572381092272!3d10.4761257896118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba78d6f59650727%3A0x7b1dd60e34754193!2sSehr%20Academy!5e0!3m2!1sen!2sin!4v1756140942235!5m2!1sen!2sin" width="100%" height="100%" style="border:0" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </dialog>
+
   <footer>
-    <p>© 2025 My First Website | Made with ❤️ and GitHub Pages</p>
+    <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <span>© 2025 Sehr Academy</span>
+      <span><a href="#about">About</a> · <a href="#programs">Programs</a> · <a href="#contact">Contact</a></span>
+    </div>
   </footer>
+
+  <script>
+    // open modal when map card is clicked
+    document.addEventListener('click', function(e){
+      const thumb = e.target.closest('.map-thumb');
+      if(thumb){
+        document.getElementById('mapModal').showModal();
+      }
+    });
+  </script>
 </body>
 </html>
