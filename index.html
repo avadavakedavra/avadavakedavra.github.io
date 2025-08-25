@@ -188,6 +188,40 @@
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1;transform:none}
     @media (prefers-reduced-motion: reduce){ .reveal{transition:none} }
+      /* === New section/visual styles to match provided designs === */
+    .section-head{ text-align:center; margin-bottom:26px }
+    .section-head h2{ font-size:36px; margin:6px 0 0 }
+    .kicker{ display:inline-block; padding:6px 12px; border-radius:999px; background:#eef8df; border:1px solid #e0f2c8; font-weight:800; font-size:12px; color:#2a3d10 }
+
+    /* Feature cards */
+    .features-grid{ display:grid; gap:16px }
+    @media(min-width:900px){ .features-grid{ grid-template-columns:repeat(3,1fr) } }
+    .f-card{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:var(--shadow) }
+    .f-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px }
+    .f-icon{ width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:#f3faea; border:1px solid #e4f1cf }
+    .f-card h3{ margin:0 }
+    .f-card p{ margin:.25rem 0 0; color:var(--muted) }
+
+    /* Plans / pricing */
+    .plans{ display:grid; gap:16px }
+    @media(min-width:960px){ .plans{ grid-template-columns:repeat(3,1fr) } }
+    .plan{ position:relative; background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow) }
+    .plan--primary{ border-color:#b9e38b; box-shadow:0 18px 40px rgba(139,197,63,.18) }
+    .flag{ position:absolute; left:50%; top:-12px; transform:translateX(-50%); background:#eaf6d5; border:1px solid #d6ebb6; font-weight:800; font-size:12px; padding:6px 10px; border-radius:999px }
+    .price-rupee{ font-weight:900; font-size:34px; color:#55a01d }
+    .price-rupee small{ color:#0f172a; font-weight:700; font-size:16px }
+    .plan ul{ list-style:none; padding:0; margin:12px 0 0; display:grid; gap:8px }
+    .plan li{ display:flex; gap:8px; align-items:flex-start }
+    .tick{ width:20px; height:20px; color:var(--primary); flex:0 0 20px }
+    .btn--lg{ padding:14px 20px; font-size:16px }
+
+    /* Schedule cards */
+    .sched{ display:grid; gap:16px }
+    @media(min-width:1000px){ .sched{ grid-template-columns:1.2fr .8fr } }
+    .s-card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow) }
+    .s-subtle{ background:linear-gradient(180deg,#f8fbf2,#ffffff) }
+    .slot-chip{ display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; background:#eaf6d5; border:1px solid #dff0c7; font-weight:800; margin-right:8px; margin-bottom:8px }
+
   </style>
 </head>
 
@@ -216,7 +250,7 @@
         <!-- Left -->
         <div>
           <h1>Personalized coaching that helps students <span style="color:var(--primary)">excel</span>.</h1>
-          <p>Sehr Academy provides concept-focused tutoring, exam preparation, and ongoing mentoring for school and entrance exams. Small batches, clear notes, and regular progress tracking.</p>
+          <p>Sehr Academy provides concept-focused tutoring, exam preparation, and ongoing mentoring for school and entrance exams.</p>
           <div class="note">Offline classes in <b>Vatanappally, Thrissur</b> — led by experienced faculty.</div>
 
           <div class="demo-pill" style="margin-bottom:32px">
@@ -352,6 +386,61 @@
   </section>
 
   <!-- SUBJECTS -->
+  <!-- FEATURES (new, styled to match reference) -->
+  <section id="features">
+    <div class="container">
+      <div class="section-head">
+        <h2>Features That Make Us Different</h2>
+        <div class="muted" style="max-width:760px;margin:6px auto 0">We combine proven teaching methods with modern educational approaches to ensure every student succeeds.</div>
+      </div>
+
+      <div class="features-grid">
+        <div class="f-card reveal">
+          <div class="f-head">
+            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M16 11a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm2 7H6a2 2 0 0 1-2-2v-1a6 6 0 0 1 12 0v1a2 2 0 0 1-2 2Z"/></svg></div>
+            <h3>Small Batch Sizes</h3>
+          </div>
+          <p>Maximum 10–15 students per batch for personalized attention</p>
+        </div>
+        <div class="f-card reveal">
+          <div class="f-head">
+            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm0 14a4 4 0 1 1 4-4 4.005 4.005 0 0 1-4 4Z"/></svg></div>
+            <h3>Concept-Focused Learning</h3>
+          </div>
+          <p>Deep understanding of fundamentals rather than rote memorization</p>
+        </div>
+        <div class="f-card reveal">
+          <div class="f-head">
+            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 3h18v2H3V3Zm3 6h12v2H6V9Zm-3 6h18v2H3v-2Zm3 6h12v2H6v-2Z"/></svg></div>
+            <h3>Regular Progress Tracking</h3>
+          </div>
+          <p>Weekly tests and detailed analytics reports for parents</p>
+        </div>
+        <div class="f-card reveal">
+          <div class="f-head">
+            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 2h2v2h8V2h2v2h3v18H3V4h3V2Zm13 6H5v12h14V8Z"/></svg></div>
+            <h3>Flexible Timings</h3>
+          </div>
+          <p>Morning and evening batches to suit student schedules</p>
+        </div>
+        <div class="f-card reveal">
+          <div class="f-head">
+            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 22a10 10 0 1 1 10-10 10.011 10.011 0 0 1-10 10Zm1-10.59 3.3-3.3 1.4 1.42-4.7 4.7L8.3 11.7l1.4-1.42L13 11.41Z"/></svg></div>
+            <h3>Doubt Clearing Sessions</h3>
+          </div>
+          <p>Daily doubt clearing and concept revision sessions</p>
+        </div>
+        <div class="f-card reveal">
+          <div class="f-head">
+            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M11 2h2v6h-2V2Zm6.364 2.636 1.414 1.414L14.828 10 13.414 8.586 17.364 4.636ZM2 11h6v2H2v-2Zm15 0a5 5 0 1 1-5 5 5.006 5.006 0 0 1 5-5Zm0 2a3 3 0 1 0 3 3 3 3 0 0 0-3-3Z"/></svg></div>
+            <h3>Exam Preparation</h3>
+          </div>
+          <p>Specialized crash courses before term and board exams</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="subjects">
     <div class="container subject-band reveal">
       <h2>Explore Our Core Subjects</h2>
@@ -379,22 +468,63 @@
   <!-- PROGRAMS -->
   <section id="programs">
     <div class="container">
-      <h2>Programs</h2>
-      <div class="grid grid-3">
-        <div class="card reveal">
+      <div class="section-head">
+        <div class="kicker">Our Programs</div>
+        <h2>Choose Your Learning Path</h2>
+        <div class="muted" style="max-width:760px;margin:6px auto 0">Flexible programs designed to meet each student's unique needs and learning style.</div>
+      </div>
+
+      <div class="plans">
+        <!-- Regular -->
+        <div class="plan reveal">
           <h3>Regular Batches</h3>
           <p class="muted">Comprehensive syllabus coverage with notes, assignments, and weekly tests.</p>
-          <div class="price price--xl"><span class="tag">Best Value</span> ₹ 2,499 / month</div>
+          <div class="price-rupee">₹ 2,500 <small>/ month</small></div>
+          <ul>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Complete syllabus coverage</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Weekly tests & assessments</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Study materials included</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Doubt clearing sessions</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Progress tracking</li>
+          </ul>
+          <div style="margin-top:14px">
+            <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_regular" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll%20for%20Regular%20Batches." target="_blank" rel="noopener">Enroll Now →</a>
+          </div>
         </div>
-        <div class="card reveal">
+
+        <!-- Crash -->
+        <div class="plan plan--primary reveal">
+          <div class="flag">Most Popular</div>
           <h3>Exam Crash Course</h3>
-          <p class="muted">Two–four week intensive revision with previous-year papers & mock tests. 14-day crash course with all four core subjects included.</p>
-          <div class="price price--xl">₹ 4,999 / course</div>
+          <p class="muted">14-day intensive revision with previous-year papers & mock tests. All four core subjects included.</p>
+          <div class="price-rupee">₹ 5,000 <small>/ course</small></div>
+          <ul>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Intensive 14-day program</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> All core subjects covered</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Previous year papers</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Mock tests & analysis</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Exam strategies</li>
+          </ul>
+          <div style="margin-top:14px">
+            <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_crash" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll%20for%20Exam%20Crash%20Course." target="_blank" rel="noopener">Enroll Now →</a>
+          </div>
         </div>
-        <div class="card reveal">
+
+        <!-- 1-to-1 -->
+        <div class="plan reveal">
           <h3>1-to-1 Mentoring</h3>
           <p class="muted">Personalized sessions focused on fundamentals and speed-building.</p>
-          <div class="price price--xl">₹ 7,999 / month</div>
+          <div class="price-rupee">₹ 8,000 <small>/ month</small></div>
+          <ul>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Individual attention</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Customized curriculum</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Flexible scheduling</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Personalized study plan</li>
+            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Direct teacher access</li>
+          </ul>
+          <div style="margin-top:14px">
+            <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_1to1" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'm%20interested%20in%201-to-1%20Mentoring." target="_blank" rel="noopener">Enroll Now →</a>
+          </div>
         </div>
       </div>
     </div>
@@ -403,26 +533,45 @@
   <!-- SCHEDULE + ENROLL FLOW -->
   <section id="schedule">
     <div class="container">
-      <h2>Schedule & Timings</h2>
-      <div class="card reveal">
-        <p class="muted" style="margin:0 0 10px"><span class="price"><b>Offline Batches (Mon–Sat)</b></span></p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px">
-          <span class="price">6:00–7:30 AM</span>
-          <span class="price">8:00–9:30 PM</span>
-        </div>
-        <ul>
-          <li>Online batches available on request</li>
-          <li>Weekends: Extra classes, mock tests & doubt clearing</li>
-        </ul>
-        <a class="btn btn--primary btn--round track" data-event="availability_click"
-           href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20please%20share%20batch%20availability." target="_blank" rel="noopener">Check Availability</a>
+      <div class="section-head">
+        <div class="kicker">Schedule & Timings</div>
+        <h2>Flexible Class Timings</h2>
       </div>
 
-      <h3 style="margin-top:18px;font-size:22px">How to Enroll</h3>
-      <div class="grid grid-3" style="margin-top:10px">
-        <div class="card reveal"><h3>1. Consultation</h3><p class="muted">Share board, class & subjects. We suggest a matching plan.</p></div>
-        <div class="card reveal"><h3>2. Free Demo Class</h3><p class="muted">Attend one complimentary demo to experience our approach.</p></div>
-        <div class="card reveal"><h3>3. Enrolment</h3><p class="muted">Start with the right batch or 1-to-1 sessions, with clear timelines.</p></div>
+      <div class="sched">
+        <!-- Left: Offline batches -->
+        <div class="s-card reveal">
+          <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M6 2h2v2h8V2h2v2h3v18H3V4h3V2Zm13 6H5v12h14V8Z"/></svg>
+            Offline Batches (Mon–Sat)
+          </h3>
+          <div style="margin:10px 0 6px">
+            <span class="slot-chip">6:00–7:30 AM</span>
+            <span class="slot-chip">8:00–9:30 PM</span>
+          </div>
+          <ul style="margin:10px 0 16px">
+            <li>Online batches available on request</li>
+            <li>Weekends: Extra classes, mock tests & doubt clearing</li>
+            <li>Holiday sessions for exam preparation</li>
+          </ul>
+          <a class="btn btn--primary btn--round btn--lg track" data-event="availability_click" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20please%20share%20batch%20availability." target="_blank" rel="noopener">Check Availability</a>
+        </div>
+
+        <!-- Right: Location & Facilities -->
+        <div class="s-card s-subtle reveal">
+          <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 14.5 9 2.5 2.5 0 0 1 12 11.5Z"/></svg>
+            Location & Facilities
+          </h3>
+          <p style="margin:8px 0 6px"><b>Vatanappally, Thrissur</b></p>
+          <ul style="margin:10px 0 16px">
+            <li>Modern classrooms with air conditioning</li>
+            <li>Digital teaching aids and projectors</li>
+            <li>Library with reference materials</li>
+            <li>Dedicated study areas for students</li>
+          </ul>
+          <button class="btn btn--ghost btn--round btn--lg" onclick="document.getElementById('mapModal').showModal()">View Location  📍</button>
+        </div>
       </div>
     </div>
   </section>
