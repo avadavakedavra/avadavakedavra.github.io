@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My First GitHub Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My First Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 20px;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+    }
+    section {
+      padding: 40px;
+    }
+    footer {
+      background: #222;
+      color: #ccc;
+      padding: 15px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #fff;
+      color: #4facfe;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #4facfe;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello, world! 🚀</h1>
-  <p>This is my first website hosted for free on GitHub Pages.</p>
+  <header>
+    <h1>🌐 Welcome to My Website</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="home">
+    <h2>Hello, World! 🚀</h2>
+    <p>This is my first website hosted for free on GitHub Pages.</p>
+    <a href="#about" class="btn">Learn More</a>
+  </section>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I created this site using GitHub Pages. It’s completely free and easy to use!</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email me at: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+  </section>
+
+  <footer>
+    <p>© 2025 My First Website | Made with ❤️ and GitHub Pages</p>
+  </footer>
 </body>
 </html>
