@@ -30,7 +30,7 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     script-src 'self' 'unsafe-inline';
-    frame-src https://www.google.com https://www.youtube.com https://docs.google.com;
+    frame-src https://www.google.com https://www.youtube.com;
     connect-src 'self'
   ">
 
@@ -155,10 +155,13 @@
     .faq details{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px}
     .faq summary{cursor:pointer;font-weight:700}
 
-    /* Google Form embed */
-    .gform-frame{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
-    .gform-frame iframe{display:block;width:100%;height:680px}
-    @media (max-width:768px){.gform-frame iframe{height:820px}}
+    /* Subject chips (demo form) */
+    .subject-chips{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px;margin-top:6px}
+    .chip{position:relative;cursor:pointer;display:block}
+    .chip input{position:absolute;inset:0;opacity:0;pointer-events:none}
+    .chip span{display:flex;align-items:center;justify-content:center;padding:10px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;font-weight:800;box-shadow:var(--shadow)}
+    .chip:hover span{border-color:#d5d8de}
+    .chip input:checked + span{background:linear-gradient(180deg,#f0fde1,#ffffff);border-color:#dff0c7;box-shadow:0 8px 18px rgba(139,197,63,.15);color:#0b2c09}
 
     @media(max-width:768px){
       .mobile-cta{
@@ -214,7 +217,7 @@
         <div>
           <h1>Personalized coaching that helps students <span style="color:var(--primary)">excel</span>.</h1>
           <p>Sehr Academy provides concept-focused tutoring, exam preparation, and ongoing mentoring for school and entrance exams. Small batches, clear notes, and regular progress tracking.</p>
-          <div class="note">Offline classes in <b>vatanapally, thrissur</b> — led by experienced faculty.</div>
+          <div class="note">Offline classes in <b>Vatanappally, Thrissur</b> — led by experienced faculty.</div>
 
           <div class="demo-pill" style="margin-bottom:32px">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.9 6.1 20.3l1.2-6.6L2.4 9l6.7-.9L12 2z"/></svg>
@@ -225,19 +228,19 @@
           <div class="actions">
             <a class="btn btn--primary btn--round track" data-event="whatsapp_community"
                href="https://chat.whatsapp.com/G1WCAKHJJ7cE4dN9uIduAM" target="_blank" rel="noopener" title="WhatsApp Community">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39.74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5.12-.14.24-.59.79-.72.95-.13.16-.26.18-.49.06-.23-.12-.9-.37-1.72-1.12-.64-.6-1.07-1.34-1.2-1.57-.13-.23-.02-.35.1-.47.11-.11.23-.27.34-.4.11-.13.14-.23.22-.39.08-.16.03-.29-.02-.41-.06-.11-.5-1.27-.69-1.73-.19-.47-.37-.4-.5-.4h-.43c-.16 0-.39.06-.6.29-.2.23-.79.79-.79 1.93 0 1.14.81 2.25.92 2.4.11.16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39.74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12-.64-.6-1.07-1.34-1.2-1.57-.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5-1.27 -.69-1.73-.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
               WhatsApp Community
             </a>
 
             <a class="btn btn--primary btn--round track" data-event="whatsapp_chat"
                href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27m%20interested%20in%20tuition%20admissions." target="_blank" rel="noopener" title="Chat on WhatsApp">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39.74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12 -.64 -.6 -1.07 -1.34 -1.2 -1.57 -.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5 -1.27 -.69 -1.73 -.19 -.47 -.37 -.4 -.5 -.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39 .74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12-.64-.6-1.07-1.34-1.2-1.57-.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5-1.27 -.69-1.73-.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
               Chat on WhatsApp
             </a>
 
             <a class="btn btn--ghost btn--round track" data-event="youtube_click"
                href="https://www.youtube.com/@sehracademyyoutube" target="_blank" rel="noopener" title="YouTube">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12c0-2.3-.3-3.9-.7-4.8-.4-.9-1-1.5-1.9-1.8C18.4 4 12 4 12 4s-6.4 0-8.4.4c-.9.3-1.5.9-1.9 1.8C1.3 8.1 1 9.7 1 12s.3 3.9.7 4.8c.4.9 1 1.5 1.9 1.8C5.6 19.9 12 20 12 20s6.4-.1 8.4-.4c.9-.3 1.5-.9 1.9-1.8.4-.9.7-2.5.7-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12c0-2.3-.3-3.9-.7-4.8-.4-.9-1-1.5-1.9-1.8C18.4 4 12 4 12 4s-6.4 0-8.4 .4c-.9 .3-1.5 .9-1.9 1.8C1.3 8.1 1 9.7 1 12s.3 3.9 .7 4.8c.4 .9 1 1.5 1.9 1.8C5.6 19.9 12 20 12 20s6.4 -.1 8.4 -.4c.9 -.3 1.5 -.9 1.9 -1.8 .4 -.9 .7 -2.5 .7 -4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
               YouTube
             </a>
 
@@ -249,7 +252,7 @@
 
             <a class="btn btn--ghost btn--round track" data-event="telegram_click"
                href="https://t.me/sehracademy" target="_blank" rel="noopener" title="Telegram">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.04 15.51l-.38 5.37c.55 0 .78-.24 1.06-.53l2.55-2.46 5.28 3.86c.97.53 1.66.25 1.92-.9l3.48-16.34h.01c.31-1.44-.52-2-.1-2.32-.42-.32-1.04-.11-1.63.12L2.03 9.76c-1.39.54-1.37 1.31-.24 1.66l5.43 1.69L18.9 6.93c.6-.4 1.16-.18.71.22"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.04 15.51l-.38 5.37c.55 0 .78-.24 1.06-.53l2.55-2.46 5.28 3.86c.97 .53 1.66 .25 1.92 -.9l3.48 -16.34h.01c.31 -1.44 -.52 -2 -.1 -2.32 -.42 -.32 -1.04 -.11 -1.63 .12L2.03 9.76c-1.39 .54 -1.37 1.31 -.24 1.66l5.43 1.69L18.9 6.93c.6 -.4 1.16 -.18 .71 .22"/></svg>
               Telegram
             </a>
           </div>
@@ -306,7 +309,7 @@
     <div class="container grid grid-2">
       <div class="card reveal">
         <h2>About Sehr Academy</h2>
-        <p>We are a student-first tuition center committed to strong fundamentals and exam confidence. Our mentors track each learner’s progress with weekly tests and feedback calls to parents.</p>
+        <p>We are a student-first educational institution committed to strong fundamentals and exam confidence. Our mentors track each learner’s progress with weekly tests and feedback calls to parents.</p>
         <ul style="list-style:none;padding:0;margin:12px 0">
           <li class="li-row"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.55 17.56 4.8 12.8l1.4-1.4 3.35 3.35 7.24-7.24 1.41 1.41-8.65 8.64Z"/></svg><span>Small batch sizes (10–15 students)</span></li>
           <li class="li-row"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.55 17.56 4.8 12.8l1.4-1.4 3.35 3.35 7.24-7.24 1.41 1.41-8.65 8.64Z"/></svg><span>Concept revision + doubt clearing daily</span></li>
@@ -317,13 +320,33 @@
 
       <div class="card reveal">
         <h2>Subjects Covered</h2>
-        <ul>
-          <li>Classes 11 & 12: Mathematics, Physics, Chemistry, Biology</li>
-          <li>English & Social Science (on demand)</li>
-          <li>Board prep: CBSE / State</li>
-          <li>Foundations for NEET/JEE</li>
+        <ul style="padding-left:0;margin:0;list-style:none;display:grid;gap:8px">
+          <li><b>Classes 11–12:</b> Mathematics, Physics, Chemistry, Biology</li>
+          <li><b>Boards:</b> CBSE, State</li>
+          <li><b>Optional:</b> English, Social Science (on request)</li>
+          <li><b>Foundations:</b> NEET/JEE</li>
         </ul>
-        <p class="muted">Tell us your exact classes & boards and we’ll tailor this list.</p>
+        <p class="muted" style="margin-top:10px">Share your exact class & board—we’ll tailor the plan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram banner (moved just before Subjects) -->
+  <section aria-label="Instagram">
+    <div class="container">
+      <div class="ig-band reveal">
+        <div class="ig-left">
+          <div class="ig-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Instagram">
+              <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 4a6 6 0 106 6 6 6 0 00-6-6zm0 2a4 4 0 11-4 4 4 4 0 014-4zm6.5-.25a1.25 1.25 0 11-1.25 1.25 1.25 1.25 0 011.25-1.25z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 style="margin:0;font-size:22px">Follow us for timetables, tips & updates</h3>
+            <div class="muted">Batch openings, test dates, study nuggets—straight to your feed.</div>
+          </div>
+        </div>
+        <a class="btn btn--frosty btn--round track" data-event="instagram_click_banner" href="https://instagram.com/sehracademy" target="_blank" rel="noopener">Instagram Page</a>
       </div>
     </div>
   </section>
@@ -342,7 +365,7 @@
           <div><h3 style="margin:0 0 4px">Physics</h3><p class="muted" style="margin:0">Mechanics • Electricity • Optics</p></div>
         </div>
         <div class="subject-card reveal">
-          <div class="subject-art"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2h6v2l-1.5 2.5V11l4.7 7.05A2 2 0 0116.5 21h-9a2 2 0 01-1.7-3.05L10.5 11V6.5L9 4V2zm-1 17h8l-3.5-5.25h-1L8 19z"/></svg></div>
+          <div class="subject-art"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2h6v2l-1.5 2.5V11l4.7 7.05A2 2 0 0 1 16.5 21h-9a2 2 0 0 1 -1.7 -3.05L10.5 11V6.5L9 4V2zm-1 17h8l-3.5-5.25h-1L8 19z"/></svg></div>
           <div><h3 style="margin:0 0 4px">Chemistry</h3><p class="muted" style="margin:0">Physical • Organic • Inorganic</p></div>
         </div>
         <div class="subject-card reveal">
@@ -404,14 +427,14 @@
     </div>
   </section>
 
-  <!-- DEMO BOOKING (WhatsApp + Google Form) -->
+  <!-- DEMO BOOKING (WhatsApp only) -->
   <section id="demo">
     <div class="container">
       <div class="card reveal">
         <h2>Book Your Free Demo</h2>
         <p class="muted" style="margin-top:6px">We’ll confirm your slot on WhatsApp.</p>
 
-        <!-- UPDATED FORM: dropdown + checkbox group -->
+        <!-- UPDATED FORM: dropdown + styled checkbox chips -->
         <form id="demoForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px">
           <div>
             <label for="name"><b>Name</b></label><br>
@@ -436,45 +459,28 @@
 
           <div>
             <label><b>Subjects (select one or more)</b></label>
-            <div style="display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px;margin-top:6px">
-              <label style="display:flex;gap:8px;align-items:center">
-                <input type="checkbox" name="subjects" value="Mathematics"> Mathematics
-              </label>
-              <label style="display:flex;gap:8px;align-items:center">
-                <input type="checkbox" name="subjects" value="Physics"> Physics
-              </label>
-              <label style="display:flex;gap:8px;align-items:center">
-                <input type="checkbox" name="subjects" value="Chemistry"> Chemistry
-              </label>
-              <label style="display:flex;gap:8px;align-items:center">
-                <input type="checkbox" name="subjects" value="Biology"> Biology
-              </label>
+            <div class="subject-chips">
+              <label class="chip"><input type="checkbox" name="subjects" value="Mathematics"><span>Mathematics</span></label>
+              <label class="chip"><input type="checkbox" name="subjects" value="Physics"><span>Physics</span></label>
+              <label class="chip"><input type="checkbox" name="subjects" value="Chemistry"><span>Chemistry</span></label>
+              <label class="chip"><input type="checkbox" name="subjects" value="Biology"><span>Biology</span></label>
             </div>
           </div>
 
           <div>
             <label for="slot"><b>Preferred Slot</b></label><br>
-            <input id="slot" name="slot" placeholder="6–7:30 AM or 8–9:30 PM" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px">
+            <select id="slot" name="slot" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff">
+              <option value="" selected disabled>Select a slot</option>
+              <option>6:00–7:30 AM</option>
+              <option>8:00–9:30 PM</option>
+            </select>
           </div>
 
           <div style="align-self:end">
             <button class="btn btn--primary btn--round track" data-event="demo_submit" type="submit">Request Demo on WhatsApp</button>
           </div>
         </form>
-
-        <!-- Optional Google Form embed (replace YOUR_FORM_EMBED_URL) -->
-        <div class="form-embed" style="margin-top:18px">
-          <h3 style="margin:0 0 8px">Or fill the Google Form</h3>
-          <div class="gform-frame">
-            <iframe
-              src="https://docs.google.com/forms/d/e/YOUR_FORM_EMBED_URL/viewform?embedded=true"
-              title="Sehr Academy — Demo Booking Form"
-              loading="lazy"
-              allowtransparency="true"
-              frameborder="0"></iframe>
-          </div>
-          <div class="muted" style="margin-top:8px">We’ll confirm your slot on WhatsApp after you submit.</div>
-        </div>
+        <!-- Google Form embed removed as requested -->
       </div>
     </div>
   </section>
@@ -512,26 +518,6 @@
           <summary>What’s included in the 14-day crash course?</summary>
           <p>All four core subjects, PYQs, mock tests, and summary notes.</p>
         </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- Instagram banner -->
-  <section aria-label="Instagram">
-    <div class="container">
-      <div class="ig-band reveal">
-        <div class="ig-left">
-          <div class="ig-logo" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Instagram">
-              <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 4a6 6 0 106 6 6 6 0 00-6-6zm0 2a4 4 0 11-4 4 4 4 0 014-4zm6.5-.25a1.25 1.25 0 11-1.25 1.25 1.25 1.25 0 011.25-1.25z"/>
-            </svg>
-          </div>
-          <div>
-            <h3 style="margin:0;font-size:22px">Follow us for timetables, tips & updates</h3>
-            <div class="muted">Batch openings, test dates, study nuggets—straight to your feed.</div>
-          </div>
-        </div>
-        <a class="btn btn--frosty btn--round track" data-event="instagram_click_banner" href="https://instagram.com/sehracademy" target="_blank" rel="noopener">Instagram Page</a>
       </div>
     </div>
   </section>
@@ -613,7 +599,7 @@
   <a class="whatsapp-fab track" data-event="whatsapp_fab"
      href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20know%20about%20batches."
      target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39.74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5.12-.14.24-.59.79-.72.95-.13.16-.26.18-.49.06-.23-.12-.9-.37-1.72-1.12-.64-.6-1.07-1.34-1.2-1.57-.13-.23-.02-.35.1-.47.11-.11 .23-.27 .34-.4 .11-.13 .14-.23 .22-.39 .08-.16 .03-.29 -.02-.41 -.06-.11 -.5-1.27 -.69-1.73 -.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39 .74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12-.64-.6-1.07-1.34-1.2-1.57-.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5-1.27 -.69-1.73-.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
     WhatsApp
   </a>
 
@@ -702,7 +688,7 @@
       });
     })();
 
-    // ✅ FIXED: WhatsApp demo submission to support dropdown + multi-checkbox subjects
+    // ✅ WhatsApp demo submission — supports dropdown + styled multi-select subjects
     const form = document.getElementById('demoForm');
     if(form){
       form.addEventListener('submit', (e)=>{
@@ -722,6 +708,7 @@
         if(!getVal('name')){ alert('Please enter the student name.'); return; }
         if(!getVal('phone')){ alert('Please enter the WhatsApp number.'); return; }
         if(!getVal('board')){ alert('Please select Class & Board.'); return; }
+        if(!getVal('slot')){ alert('Please select a preferred slot.'); return; }
 
         // compose message
         const enc = (s)=> encodeURIComponent(s);
@@ -730,7 +717,7 @@
           `%0AWhatsApp:%20${enc(getVal('phone'))}` +
           `%0AClass/Board:%20${enc(getVal('board'))}` +
           `%0ASubjects:%20${enc(subs.join(', '))}` +
-          `%0APreferred%20Slot:%20${enc(getVal('slot')) || 'N/A'}`;
+          `%0APreferred%20Slot:%20${enc(getVal('slot'))}`;
 
         const url = `https://wa.me/919539409586?text=${msg}`;
         track('demo_submit', {via:'whatsapp'});
