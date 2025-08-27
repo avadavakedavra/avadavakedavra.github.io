@@ -43,7 +43,8 @@
     :root{
       --primary:#8BC53F; --primary-600:#78b338;
       --text:#0f1115; --muted:#6b7280;
-      --bg:#ffffff; --surface:#f9fafb;
+      --bg:#edf3e7;
+      --glass:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.32));
       --border:#e6e8ec; --shadow:0 10px 30px rgba(16,24,40,.06);
       --radius:16px; --radius-sm:12px; --maxw:1180px;
     }
@@ -53,179 +54,217 @@
       font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text); background:var(--bg); line-height:1.65;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      /* Layered background textures */
+      background-image:
+        radial-gradient(1000px 500px at -10% -10%, rgba(165, 230, 80, .08), rgba(0,0,0,0)),
+        radial-gradient(900px 600px at 110% 0%, rgba(120, 179, 56, .06), rgba(0,0,0,0)),
+        linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0)),
+        url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'>\
+<defs><pattern id=\'grid\' width=\'40\' height=\'40\' patternUnits=\'userSpaceOnUse\'>\
+<path d=\'M 40 0 L 0 0 0 40\' fill=\'none\' stroke=\'%23dfe8cf\' stroke-width=\'1\' opacity=\'0.45\'/></pattern></defs>\
+<rect width=\'100%\' height=\'100%\' fill=\'url(%23grid)\'/></svg>');
+      background-attachment: fixed, fixed, fixed, fixed;
     }
+    body::after{
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+      background-image:url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">\
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter>\
+<rect width="100%" height="100%" filter="url(%23n)" opacity="0.035"/></svg>');
+      mix-blend-mode:multiply;
+    }
+    .edu-icons{
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background-image: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">\
+<g fill="%23112" opacity="0.06" font-family="Montserrat, Arial" font-weight="800">\
+<text x="60" y="120" font-size="64">∑</text>\
+<text x="180" y="90" font-size="44">π</text>\
+<text x="320" y="150" font-size="50">f(x)</text>\
+<text x="520" y="110" font-size="60">E=mc²</text>\
+<text x="680" y="80" font-size="48">Δ</text>\
+<text x="80" y="320" font-size="56">H₂O</text>\
+<text x="270" y="260" font-size="42">NaCl</text>\
+<text x="470" y="300" font-size="58">∫</text>\
+<text x="650" y="260" font-size="46">Ω</text>\
+<text x="120" y="500" font-size="52">sinθ</text>\
+<text x="360" y="520" font-size="48">→</text>\
+<text x="560" y="480" font-size="54">Δt</text>\
+</g></svg>');
+      background-repeat: repeat;
+      background-size: 800px 600px;
+      opacity:.5;
+    }
+
     a{color:inherit}
     :focus-visible{outline:3px solid var(--primary); outline-offset:3px}
     .skip-link{position:absolute;left:-9999px}
     .skip-link:focus{left:12px;top:12px;background:#fff;border:2px solid var(--primary);padding:8px 10px;border-radius:8px;z-index:1000}
 
-    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-    section{padding:72px 0;border-top:1px solid var(--border)}
-    .grid{display:grid;gap:20px}
-    @media(min-width:960px){.grid-2{grid-template-columns:1.1fr .9fr}}
-    @media(min-width:768px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px; position:relative; z-index:1}
+    section{padding:80px 0;border-top:1px solid rgba(230,232,236,.35)}
 
-    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:saturate(175%) blur(8px)}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .decor{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+    .blob{ position:absolute; filter:blur(42px); opacity:.24; }
+    .blob.b1{ width:340px; height:340px; left:-120px; top:40px; background:radial-gradient(closest-side, #8BC53F, rgba(139,197,63,0)); }
+    .blob.b2{ width:280px; height:280px; right:-80px; top:160px; background:radial-gradient(closest-side, #a0d76c, rgba(160,215,108,0)); }
+    .blob.b3{ width:300px; height:300px; left:30%; bottom:-120px; background:radial-gradient(closest-side, #6fb72a, rgba(111,183,42,0)); }
+
+    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
     .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
-    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:28px;color:var(--primary);letter-spacing:.4px}
-    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:28px;color:var(--text);letter-spacing:.4px}
+    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--primary);letter-spacing:.4px}
+    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
     nav[aria-label="Primary"] a{
-      font-family:"Montserrat",sans-serif;color:var(--text);text-decoration:none;margin-left:18px;font-weight:700;font-size:14px;letter-spacing:.2px;position:relative
+      font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;margin-left:16px;font-weight:700;font-size:14px;letter-spacing:.2px;position:relative
     }
     nav[aria-label="Primary"] a:after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--primary);transition:width .2s}
     nav[aria-label="Primary"] a:hover{color:var(--primary)}
     nav[aria-label="Primary"] a:hover:after{width:100%}
 
     h1,h2,h3{font-family:"Montserrat",sans-serif;letter-spacing:.2px;margin:0}
-    h1{font-size:46px;line-height:1.15}
-    h2{font-size:30px;margin-bottom:16px}
+    h1{font-size:44px;line-height:1.12}
+    h2{font-size:32px;margin-bottom:16px}
     h3{font-size:20px}
 
-    .hero{padding:96px 0 56px;background:var(--surface)}
-    .hero-wrap{display:grid;gap:28px}
-    @media(min-width:960px){.hero-wrap{grid-template-columns:1.05fr .95fr;align-items:center}}
-    .hero p{color:#374151;max-width:680px;margin:12px 0 0}
-    .note{margin-top:10px;color:#1f2b10;background:#eef8df;border:1px solid #e0f2c8;padding:8px 12px;border-radius:10px;display:inline-block;font-weight:700}
+    .glass{
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:var(--radius);
+      box-shadow:0 20px 50px rgba(16,24,40,.08), inset 0 1px 0 rgba(255,255,255,.35);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      transition: transform .25s ease, box-shadow .3s ease, border-color .25s;
+    }
+    .glass:hover{ transform: translateY(-3px); box-shadow:0 28px 70px rgba(16,24,40,.16) }
+    .card{ padding:22px }
+    .muted{color:var(--muted)}
 
-    .demo-pill{margin:18px 0 32px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:#ecf7dd;border:1px solid #dff0c7;color:#203b0b;font-weight:800}
-    .demo-pill svg{width:16px;height:16px;color:var(--primary)}
-
-    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero{padding:110px 0 60px;border-top:0; position:relative}
+    .hero .container{display:grid; gap:20px}
+    .hero-card{ padding:28px }
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
     .btn{
       --ring:inset 0 1px 0 rgba(255,255,255,.9);
       display:inline-flex;align-items:center;gap:10px;
-      padding:12px 18px;border-radius:12px;border:1px solid var(--border);
-      background:#fff;color:#0b0f10;text-decoration:none;font-weight:800;
-      box-shadow:var(--ring),0 10px 20px rgba(16,24,40,.04);
-      transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;
-      line-height:1;
+      padding:12px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.45);
+      background:var(--glass);
+      color:#0b0f10;text-decoration:none;font-weight:800;
+      box-shadow:var(--ring),0 10px 22px rgba(16,24,40,.05);
+      transition:transform .2s,box-shadow .25s,border-color .2s,background .2s;
+      line-height:1; backdrop-filter: blur(10px) saturate(140%);
     }
-    .btn svg{width:18px;height:18px}
-    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(16,24,40,.08)}
-    .btn:active{transform:none;box-shadow:0 6px 12px rgba(16,24,40,.08)}
-    .btn--primary{background:var(--primary);border-color:#76b130;color:#0b0f10;box-shadow:0 12px 22px rgba(139,197,63,.28),var(--ring)}
-    .btn--primary:hover{background:var(--primary-600)}
-    .btn--ghost{background:#fff;border-color:#e5e7eb;color:#0f172a}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(16,24,40,.10)}
+    .btn--primary{background:linear-gradient(180deg,rgba(139,197,63,.9),rgba(139,197,63,.7));border-color:rgba(118,177,48,.85)}
+    .btn--ghost{background:var(--glass)}
     .btn--round{border-radius:999px}
+    .btn--lg{ padding:14px 20px; font-size:16px }
 
-    .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
-    .muted{color:var(--muted)}
-
-    .li-row{display:flex;align-items:flex-start;gap:10px;margin:10px 0}
-    .li-row svg{flex:0 0 20px;width:20px;height:20px;color:var(--primary)}
-    .li-row span{display:block;margin-top:2px}
-
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-    .stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
-    .stat b{font-size:22px;color:var(--primary);font-family:"Montserrat",sans-serif}
-
-    .subject-band{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-    .subject-card{display:flex;gap:12px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:14px;background:#fff}
-    .subject-art{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(180deg,#f7fdf0,#ffffff);border:1px solid var(--border)}
-    .subject-art svg{width:30px;height:30px;color:#2a3d10}
-
-    /* Price badges — more prominent */
-    .price{
-      display:inline-flex;align-items:center;gap:8px;
-      background:linear-gradient(180deg,#f0fde1,#ffffff);
-      border:1px solid #dff0c7;
-      color:#0b2c09;
-      padding:10px 14px;border-radius:12px;font-weight:900;
-      box-shadow:0 8px 18px rgba(139,197,63,.15);
-    }
-    .price .tag{font-size:12px;font-weight:800;background:#8BC53F;color:#0b0f10;padding:4px 8px;border-radius:999px;border:1px solid #76b130}
-    .price--xl{font-size:20px}
-
-    .ig-band{margin:28px 0;padding:22px;border-radius:var(--radius);background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:var(--shadow)}
-    .ig-left{display:flex;align-items:center;gap:12px}
-    .ig-logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:#f7fdf0;border:1px solid var(--border)}
-    .ig-logo svg{width:22px;height:22px;color:var(--primary)}
-    .btn--frosty{background:#ffffff;border-color:#e5e7eb;font-weight:700}
-
-    .contact-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-    @media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
-    .contact-item{display:flex;gap:12px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px}
-    .contact-item b{min-width:90px;font-weight:700}
-    .contact-item a{color:#0b0f10;text-decoration:none;font-weight:600}
-
-    .testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .t-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
-    .faq{display:grid;gap:10px}
-    .faq details{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px}
-    .faq summary{cursor:pointer;font-weight:700}
-
-    /* Subject chips (demo form) */
-    .subject-chips{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:8px;margin-top:6px}
-    .chip{position:relative;cursor:pointer;display:block}
-    .chip input{position:absolute;inset:0;opacity:0;pointer-events:none}
-    .chip span{display:flex;align-items:center;justify-content:center;padding:10px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;font-weight:800;box-shadow:var(--shadow)}
-    .chip:hover span{border-color:#d5d8de}
-    .chip input:checked + span{background:linear-gradient(180deg,#f0fde1,#ffffff);border-color:#dff0c7;box-shadow:0 8px 18px rgba(139,197,63,.15);color:#0b2c09}
-
-    @media(max-width:768px){
-      .mobile-cta{
-        position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);
-        display:flex;gap:10px;justify-content:space-between;padding:10px;z-index:30
-      }
-      .mobile-cta .btn{flex:1;justify-content:center}
-    }
-
-    .whatsapp-fab{
-      position:fixed;right:18px;bottom:18px;z-index:60;
-      display:inline-flex;align-items:center;gap:10px;
-      background:var(--primary);color:#0b0f10;text-decoration:none;font-weight:900;
-      padding:12px 16px;border-radius:999px;box-shadow:0 14px 26px rgba(139,197,63,.35);border:1px solid #76b130
-    }
-    .whatsapp-fab svg{width:20px;height:20px}
-
-    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.6);z-index:80}
-    .modal[open]{display:grid}
-    .modal-card{width:min(1000px,92vw);height:min(80vh,800px);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);position:relative}
-    .modal-card button{position:absolute;top:10px;right:10px;border:none;background:#0f1112;color:#fff;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer}
-    .map-thumb{cursor:pointer}
-
-    .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease, transform .5s ease}
-    .reveal.in{opacity:1;transform:none}
-    @media (prefers-reduced-motion: reduce){ .reveal{transition:none} }
-      /* === New section/visual styles to match provided designs === */
     .section-head{ text-align:center; margin-bottom:26px }
     .section-head h2{ font-size:36px; margin:6px 0 0 }
     .kicker{ display:inline-block; padding:6px 12px; border-radius:999px; background:#eef8df; border:1px solid #e0f2c8; font-weight:800; font-size:12px; color:#2a3d10 }
 
-    /* Feature cards */
     .features-grid{ display:grid; gap:16px }
     @media(min-width:900px){ .features-grid{ grid-template-columns:repeat(3,1fr) } }
-    .f-card{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:var(--shadow) }
+    .f-card{ border-radius:14px; padding:18px }
     .f-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px }
-    .f-icon{ width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:#f3faea; border:1px solid #e4f1cf }
-    .f-card h3{ margin:0 }
-    .f-card p{ margin:.25rem 0 0; color:var(--muted) }
+    .f-icon{ width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:#f3faea; border:1px solid rgba(255,255,255,.45) }
 
-    /* Plans / pricing */
     .plans{ display:grid; gap:16px }
     @media(min-width:960px){ .plans{ grid-template-columns:repeat(3,1fr) } }
-    .plan{ position:relative; background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow) }
-    .plan--primary{ border-color:#b9e38b; box-shadow:0 18px 40px rgba(139,197,63,.18) }
+    .plan{ position:relative; border-radius:16px; padding:22px }
+    .plan--primary{ box-shadow:0 18px 40px rgba(139,197,63,.18) }
     .flag{ position:absolute; left:50%; top:-12px; transform:translateX(-50%); background:#eaf6d5; border:1px solid #d6ebb6; font-weight:800; font-size:12px; padding:6px 10px; border-radius:999px }
     .price-rupee{ font-weight:900; font-size:34px; color:#55a01d }
     .price-rupee small{ color:#0f172a; font-weight:700; font-size:16px }
     .plan ul{ list-style:none; padding:0; margin:12px 0 0; display:grid; gap:8px }
     .plan li{ display:flex; gap:8px; align-items:flex-start }
     .tick{ width:20px; height:20px; color:var(--primary); flex:0 0 20px }
-    .btn--lg{ padding:14px 20px; font-size:16px }
 
-    /* Schedule cards */
+    /* CORE SUBJECTS (learning approach only) */
+    .approach-card .row{ display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    .approach-point{ display:flex; gap:8px; align-items:flex-start; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.45); background:var(--glass) }
+    .approach-point b{ font-family:Montserrat, sans-serif }
+
+    /* TUTORING OFFERED */
+    .offer-grid{ display:grid; gap:16px }
+    @media(min-width:960px){ .offer-grid{ grid-template-columns:repeat(3,1fr) } }
+    .offer-card{ padding:22px; border-radius:16px; position:relative }
+    .offer-card .head{ display:flex; align-items:center; gap:10px; margin-bottom:8px }
+    .offer-badge{ position:absolute; top:-12px; left:16px; background:#eaf6d5; border:1px solid #d6ebb6; padding:6px 10px; border-radius:999px; font-weight:800 }
+    .list{ list-style:none; padding:0; margin:10px 0 0; display:grid; gap:6px }
+    .subtle{ color:#334155; font-weight:700 }
+    .sep{ height:1px; background:rgba(230,232,236,.7); margin:10px 0 }
+
+    /* Schedule + alignment */
     .sched{ display:grid; gap:16px }
     @media(min-width:1000px){ .sched{ grid-template-columns:1.2fr .8fr } }
-    .s-card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow) }
+    .s-card{ padding:24px; }
+    .s-card > *{ margin-left:2px; margin-right:2px }
+    .s-card h3{ margin-top:0 }
     .s-subtle{ background:linear-gradient(180deg,#f8fbf2,#ffffff) }
-    .slot-chip{ display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; background:#eaf6d5; border:1px solid #dff0c7; font-weight:800; margin-right:8px; margin-bottom:8px }
+    .slot-chip{ display:inline-flex; align-items:center; padding:7px 12px; border-radius:999px; background:#eaf6d5; border:1px solid #dff0c7; font-weight:800; margin-right:8px; margin-bottom:10px }
+    .s-card ul{ padding-left:18px; margin:10px 0 16px }
 
+    /* Contact grid & styling */
+    .contact-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    @media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+    .contact-card{ padding:20px; border-radius:16px; display:grid; gap:14px }
+    .contact-item{
+      display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:12px;
+      background:linear-gradient(180deg,#f7fdf0,#ffffff); border:1px solid rgba(255,255,255,.45);
+    }
+    .contact-ico{
+      width:38px; height:38px; border-radius:12px; display:grid; place-items:center;
+      background:#eaf6d5; border:1px solid #d6ebb6; font-size:18px; font-weight:800; color:#23410d; flex:0 0 38px;
+    }
+    .contact-title{ font-weight:800; font-family:Montserrat, sans-serif; margin-bottom:6px }
+    .contact-lines a{
+      display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border-radius:12px;
+      background:var(--glass); border:1px solid rgba(255,255,255,.55);
+      text-decoration:none; font-weight:800; letter-spacing:.2px;
+    }
+    .contact-lines a:hover{ transform:translateY(-2px) }
+    .phone-big, .email-big{ font-family:Montserrat, sans-serif; font-weight:800; letter-spacing:.3px; }
+
+    /* Demo subject glass boxes */
+    .select-grid{ display:grid; grid-template-columns:repeat(4, minmax(120px,1fr)); gap:10px }
+    @media(max-width:800px){ .select-grid{ grid-template-columns:repeat(2, minmax(140px,1fr)) } }
+    .select{
+      position:relative; border-radius:14px; border:1px solid rgba(255,255,255,.55);
+      background:var(--glass); padding:14px; text-align:center; font-weight:800; cursor:pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .select input{ position:absolute; inset:0; opacity:0; cursor:pointer }
+    .select .label{ display:block; pointer-events:none }
+    .select:has(input:checked){ background:linear-gradient(180deg,#f0fde1,#ffffff); border-color:#dff0c7; box-shadow:0 8px 18px rgba(139,197,63,.15); color:#0b2c09 }
+    .select:focus-within{ outline:3px solid var(--primary); outline-offset:3px }
+
+    @media(max-width:768px){
+      .mobile-cta{position:sticky;bottom:0;background:rgba(255,255,255,.75);border-top:1px solid rgba(230,232,236,.6);display:flex;gap:10px;justify-content:space-between;padding:10px;z-index:30;backdrop-filter:blur(10px)}
+      .mobile-cta .btn{flex:1;justify-content:center}
+    }
+    .whatsapp-fab{
+      position:fixed;right:18px;bottom:18px;z-index:60;display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(180deg,rgba(139,197,63,.95),rgba(139,197,63,.8));color:#0b0f10;text-decoration:none;font-weight:900;
+      padding:12px 16px;border-radius:999px;box-shadow:0 14px 26px rgba(139,197,63,.35);border:1px solid #76b130
+    }
+
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease, transform .5s ease}
+    .reveal.in{opacity:1;transform:none}
+    @media (prefers-reduced-motion: reduce){ .reveal{transition:none} }
   </style>
 </head>
 
 <body>
+  <div class="decor">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div class="edu-icons" aria-hidden="true"></div>
+
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header role="banner">
@@ -234,9 +273,10 @@
         <span>SEHR</span><span>ACADEMY</span>
       </a>
       <nav aria-label="Primary">
-        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#tutoring">Tutoring</a>
         <a href="#programs">Programs</a>
-        <a href="#subjects">Subjects</a>
+        <a href="#subjects">Core Approach</a>
         <a href="#schedule">Schedule</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -246,147 +286,31 @@
   <!-- HERO -->
   <main id="main">
     <section id="home" class="hero">
-      <div class="container hero-wrap">
-        <!-- Left -->
-        <div>
+      <div class="container">
+        <div class="glass card hero-card reveal">
           <h1>Personalized coaching that helps students <span style="color:var(--primary)">excel</span>.</h1>
           <p>Sehr Academy provides concept-focused tutoring, exam preparation, and ongoing mentoring for school and entrance exams.</p>
-          <div class="note">Offline classes in <b>Vatanappally, Thrissur</b> — led by experienced faculty.</div>
+          <div class="muted" style="margin-top:8px">Offline classes in <b>Vatanappally, Thrissur</b> — led by experienced faculty.</div>
 
-          <div class="demo-pill" style="margin-bottom:32px">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.9 6.1 20.3l1.2-6.6L2.4 9l6.7-.9L12 2z"/></svg>
-            One Free Demo Class — Try before you enroll
-          </div>
-
-          <!-- CTAs -->
           <div class="actions">
-            <a class="btn btn--primary btn--round track" data-event="whatsapp_community"
-               href="https://chat.whatsapp.com/G1WCAKHJJ7cE4dN9uIduAM" target="_blank" rel="noopener" title="WhatsApp Community">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39.74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12-.64-.6-1.07-1.34-1.2-1.57-.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5-1.27 -.69-1.73-.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
-              WhatsApp Community
-            </a>
+            <a class="btn btn--primary btn--round btn--lg track" data-event="whatsapp_community"
+               href="https://chat.whatsapp.com/G1WCAKHJJ7cE4dN9uIduAM" target="_blank" rel="noopener">WhatsApp Community</a>
 
-            <a class="btn btn--primary btn--round track" data-event="whatsapp_chat"
-               href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27m%20interested%20in%20tuition%20admissions." target="_blank" rel="noopener" title="Chat on WhatsApp">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39 .74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12-.64-.6-1.07-1.34-1.2-1.57-.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5-1.27 -.69-1.73-.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
-              Chat on WhatsApp
-            </a>
+            <a class="btn btn--primary btn--round btn--lg track" data-event="whatsapp_chat"
+               href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27m%20interested%20in%20tuition%20admissions." target="_blank" rel="noopener">Chat on WhatsApp</a>
 
-            <a class="btn btn--ghost btn--round track" data-event="youtube_click"
-               href="https://www.youtube.com/@sehracademyyoutube" target="_blank" rel="noopener" title="YouTube">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12c0-2.3-.3-3.9-.7-4.8-.4-.9-1-1.5-1.9-1.8C18.4 4 12 4 12 4s-6.4 0-8.4 .4c-.9 .3-1.5 .9-1.9 1.8C1.3 8.1 1 9.7 1 12s.3 3.9 .7 4.8c.4 .9 1 1.5 1.9 1.8C5.6 19.9 12 20 12 20s6.4 -.1 8.4 -.4c.9 -.3 1.5 -.9 1.9 -1.8 .4 -.9 .7 -2.5 .7 -4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-              YouTube
-            </a>
+            <a class="btn btn--ghost btn--round btn--lg track" data-event="youtube_click"
+               href="https://www.youtube.com/@sehracademyyoutube" target="_blank" rel="noopener">YouTube</a>
 
-            <a class="btn btn--ghost btn--round track" data-event="instagram_click"
-               href="https://instagram.com/sehracademy" target="_blank" rel="noopener" title="Instagram">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 4a6 6 0 106 6 6 6 0 00-6-6zm0 2a4 4 0 11-4 4 4 4 0 014-4zm6.5-.25a1.25 1.25 0 11-1.25 1.25 1.25 1.25 0 011.25-1.25z"/></svg>
-              Instagram
-            </a>
-
-            <a class="btn btn--ghost btn--round track" data-event="telegram_click"
-               href="https://t.me/sehracademy" target="_blank" rel="noopener" title="Telegram">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.04 15.51l-.38 5.37c.55 0 .78-.24 1.06-.53l2.55-2.46 5.28 3.86c.97 .53 1.66 .25 1.92 -.9l3.48 -16.34h.01c.31 -1.44 -.52 -2 -.1 -2.32 -.42 -.32 -1.04 -.11 -1.63 .12L2.03 9.76c-1.39 .54 -1.37 1.31 -.24 1.66l5.43 1.69L18.9 6.93c.6 -.4 1.16 -.18 .71 .22"/></svg>
-              Telegram
-            </a>
+            <a class="btn btn--ghost btn--round btn--lg track" data-event="instagram_click"
+               href="https://instagram.com/sehracademy" target="_blank" rel="noopener">Instagram</a>
           </div>
-
-          <!-- Stats -->
-          <div class="stats" role="list">
-            <div class="stat reveal" role="listitem"><b>Online & Offline</b><div>Individual subjects available</div></div>
-            <div class="stat reveal" role="listitem"><b>Weekly Evaluations</b><div>+ monthly reviews</div></div>
-            <div class="stat reveal" role="listitem"><b>Crash Courses</b><div>Exam preparation</div></div>
-          </div>
-        </div>
-
-        <!-- Right visual — education abstract -->
-        <div class="card reveal" aria-hidden="true" style="padding:0;overflow:hidden">
-          <svg viewBox="0 0 640 420" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Education abstract" style="display:block">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stop-color="#f7fdf0"/>
-                <stop offset="100%" stop-color="#ffffff"/>
-              </linearGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#g1)"/>
-            <!-- Open book -->
-            <path d="M110 130 h180 a18 18 0 0 1 18 18 v110 a6 6 0 0 1 -6 6 h-192 a10 10 0 0 1 -10 -10 v-110 a14 14 0 0 1 10 -14z" fill="#f4fbeb" stroke="#dff0c7" stroke-width="2"/>
-            <path d="M200 140 v120" stroke="#dfead1" stroke-width="2"/>
-            <!-- Ruler -->
-            <rect x="340" y="90" rx="10" ry="10" width="220" height="36" fill="#f4fbeb" stroke="#dff0c7"/>
-            <g stroke="#8BC53F" stroke-width="3">
-              <line x1="360" y1="104" x2="360" y2="122"/>
-              <line x1="380" y1="104" x2="380" y2="118"/>
-              <line x1="400" y1="104" x2="400" y2="122"/>
-              <line x1="420" y1="104" x2="420" y2="118"/>
-              <line x1="440" y1="104" x2="440" y2="122"/>
-              <line x1="460" y1="104" x2="460" y2="118"/>
-              <line x1="480" y1="104" x2="480" y2="122"/>
-              <line x1="500" y1="104" x2="500" y2="118"/>
-              <line x1="520" y1="104" x2="520" y2="122"/>
-            </g>
-            <!-- Atom-ish -->
-            <circle cx="230" cy="280" r="56" fill="none" stroke="#8BC53F" stroke-width="6"/>
-            <ellipse cx="230" cy="280" rx="80" ry="26" fill="none" stroke="#dff0c7" stroke-width="4"/>
-            <circle cx="286" cy="280" r="6" fill="#8BC53F"/>
-            <!-- Flask -->
-            <path d="M450 180 h20 v40 l38 56 a16 16 0 0 1 -14 24 h-68 a16 16 0 0 1 -14 -24 l38 -56 v-40z" fill="#ffffff" stroke="#dfead1" stroke-width="2"/>
-            <rect x="430" y="220" width="80" height="18" rx="6" fill="#8BC53F" opacity=".25"/>
-          </svg>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container grid grid-2">
-      <div class="card reveal">
-        <h2>About Sehr Academy</h2>
-        <p>We are a student-first educational institution committed to strong fundamentals and exam confidence. Our mentors track each learner’s progress with weekly tests and feedback calls to parents.</p>
-        <ul style="list-style:none;padding:0;margin:12px 0">
-          <li class="li-row"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.55 17.56 4.8 12.8l1.4-1.4 3.35 3.35 7.24-7.24 1.41 1.41-8.65 8.64Z"/></svg><span>Small batch sizes (10–15 students)</span></li>
-          <li class="li-row"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.55 17.56 4.8 12.8l1.4-1.4 3.35 3.35 7.24-7.24 1.41 1.41-8.65 8.64Z"/></svg><span>Concept revision + doubt clearing daily</span></li>
-          <li class="li-row"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.55 17.56 4.8 12.8l1.4-1.4 3.35 3.35 7.24-7.24 1.41 1.41-8.65 8.64Z"/></svg><span>Weekly tests & analytics report</span></li>
-          <li class="li-row"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.55 17.56 4.8 12.8l1.4-1.4 3.35 3.35 7.24-7.24 1.41 1.41-8.65 8.64Z"/></svg><span>Crash courses before term exams</span></li>
-        </ul>
-      </div>
-
-      <div class="card reveal">
-        <h2>Subjects Covered</h2>
-        <ul style="padding-left:0;margin:0;list-style:none;display:grid;gap:8px">
-          <li><b>Classes 11–12:</b> Mathematics, Physics, Chemistry, Biology</li>
-          <li><b>Boards:</b> CBSE, State</li>
-          <li><b>Optional:</b> English, Social Science (on request)</li>
-          <li><b>Foundations:</b> NEET/JEE</li>
-        </ul>
-        <p class="muted" style="margin-top:10px">Share your exact class & board—we’ll tailor the plan.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Instagram banner (moved just before Subjects) -->
-  <section aria-label="Instagram">
-    <div class="container">
-      <div class="ig-band reveal">
-        <div class="ig-left">
-          <div class="ig-logo" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Instagram">
-              <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 4a6 6 0 106 6 6 6 0 00-6-6zm0 2a4 4 0 11-4 4 4 4 0 014-4zm6.5-.25a1.25 1.25 0 11-1.25 1.25 1.25 1.25 0 011.25-1.25z"/>
-            </svg>
-          </div>
-          <div>
-            <h3 style="margin:0;font-size:22px">Follow us for timetables, tips & updates</h3>
-            <div class="muted">Batch openings, test dates, study nuggets—straight to your feed.</div>
-          </div>
-        </div>
-        <a class="btn btn--frosty btn--round track" data-event="instagram_click_banner" href="https://instagram.com/sehracademy" target="_blank" rel="noopener">Instagram Page</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SUBJECTS -->
-  <!-- FEATURES (new, styled to match reference) -->
+  <!-- FEATURES (immediately after hero) -->
   <section id="features">
     <div class="container">
       <div class="section-head">
@@ -395,77 +319,63 @@
       </div>
 
       <div class="features-grid">
-        <div class="f-card reveal">
-          <div class="f-head">
-            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M16 11a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm2 7H6a2 2 0 0 1-2-2v-1a6 6 0 0 1 12 0v1a2 2 0 0 1-2 2Z"/></svg></div>
-            <h3>Small Batch Sizes</h3>
-          </div>
-          <p>Maximum 10–15 students per batch for personalized attention</p>
+        <div class="f-card glass reveal"><div class="f-head"><div class="f-icon">👥</div><h3>Small Batch Sizes</h3></div><p>Maximum 10–15 students per batch for personalized attention</p></div>
+        <div class="f-card glass reveal"><div class="f-head"><div class="f-icon">🎯</div><h3>Concept-Focused Learning</h3></div><p>Deep understanding of fundamentals rather than rote memorization</p></div>
+        <div class="f-card glass reveal"><div class="f-head"><div class="f-icon">📊</div><h3>Regular Progress Tracking</h3></div><p>Weekly tests and detailed analytics reports for parents</p></div>
+        <div class="f-card glass reveal"><div class="f-head"><div class="f-icon">⏰</div><h3>Flexible Timings</h3></div><p>Morning and evening batches to suit student schedules</p></div>
+        <div class="f-card glass reveal"><div class="f-head"><div class="f-icon">❓</div><h3>Doubt Clearing Sessions</h3></div><p>Daily doubt clearing and concept revision sessions</p></div>
+        <div class="f-card glass reveal"><div class="f-head"><div class="f-icon">🧪</div><h3>Exam Preparation</h3></div><p>Specialized crash courses before term and board exams</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TUTORING OFFERED (before programs) -->
+  <section id="tutoring">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Tutoring Offered</div>
+        <h2>Choose where you need support</h2>
+        <div class="muted" style="max-width:760px;margin:6px auto 0">Four core subjects covered by default. Additional subjects available on request.</div>
+      </div>
+
+      <div class="offer-grid">
+        <div class="offer-card glass reveal">
+          <div class="offer-badge">Classes 9–10</div>
+          <div class="head"><h3 style="margin:0">State & CBSE</h3></div>
+          <div class="sep"></div>
+          <ul class="list">
+            <li><b class="subtle">Core subjects:</b> Mathematics, Physics, Chemistry, Biology</li>
+            <li>Additional subjects on request (e.g., English, Social Science)</li>
+            <li>Weekly tests, feedback calls, and concept-first teaching</li>
+          </ul>
         </div>
-        <div class="f-card reveal">
-          <div class="f-head">
-            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm0 14a4 4 0 1 1 4-4 4.005 4.005 0 0 1-4 4Z"/></svg></div>
-            <h3>Concept-Focused Learning</h3>
-          </div>
-          <p>Deep understanding of fundamentals rather than rote memorization</p>
+
+        <div class="offer-card glass reveal">
+          <div class="offer-badge">Classes 11–12</div>
+          <div class="head"><h3 style="margin:0">State & CBSE</h3></div>
+          <div class="sep"></div>
+          <ul class="list">
+            <li><b class="subtle">Core subjects:</b> Mathematics, Physics, Chemistry, Biology</li>
+            <li>Optional subjects available on request</li>
+            <li>Board-focused notes, PYQs, mock tests & analysis</li>
+          </ul>
         </div>
-        <div class="f-card reveal">
-          <div class="f-head">
-            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 3h18v2H3V3Zm3 6h12v2H6V9Zm-3 6h18v2H3v-2Zm3 6h12v2H6v-2Z"/></svg></div>
-            <h3>Regular Progress Tracking</h3>
-          </div>
-          <p>Weekly tests and detailed analytics reports for parents</p>
-        </div>
-        <div class="f-card reveal">
-          <div class="f-head">
-            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 2h2v2h8V2h2v2h3v18H3V4h3V2Zm13 6H5v12h14V8Z"/></svg></div>
-            <h3>Flexible Timings</h3>
-          </div>
-          <p>Morning and evening batches to suit student schedules</p>
-        </div>
-        <div class="f-card reveal">
-          <div class="f-head">
-            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 22a10 10 0 1 1 10-10 10.011 10.011 0 0 1-10 10Zm1-10.59 3.3-3.3 1.4 1.42-4.7 4.7L8.3 11.7l1.4-1.42L13 11.41Z"/></svg></div>
-            <h3>Doubt Clearing Sessions</h3>
-          </div>
-          <p>Daily doubt clearing and concept revision sessions</p>
-        </div>
-        <div class="f-card reveal">
-          <div class="f-head">
-            <div class="f-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M11 2h2v6h-2V2Zm6.364 2.636 1.414 1.414L14.828 10 13.414 8.586 17.364 4.636ZM2 11h6v2H2v-2Zm15 0a5 5 0 1 1-5 5 5.006 5.006 0 0 1 5-5Zm0 2a3 3 0 1 0 3 3 3 3 0 0 0-3-3Z"/></svg></div>
-            <h3>Exam Preparation</h3>
-          </div>
-          <p>Specialized crash courses before term and board exams</p>
+
+        <div class="offer-card glass reveal">
+          <div class="offer-badge">Competitive Exams</div>
+          <div class="head"><h3 style="margin:0">NEET & JEE Foundations</h3></div>
+          <div class="sep"></div>
+          <ul class="list">
+            <li>Concept mastery + speed-building drills</li>
+            <li>Objective practice, topic tests, and full-length mocks</li>
+            <li>Exam strategies, error logs, and targeted revision</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="subjects">
-    <div class="container subject-band reveal">
-      <h2>Explore Our Core Subjects</h2>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
-        <div class="subject-card reveal">
-          <div class="subject-art"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 011 1v2.06a6.99 6.99 0 013.73 1.55l1.47-1.47a1 1 0 111.41 1.41l-1.47 1.47A6.99 6.99 0 0118.94 11H21a1 1 0 110 2h-2.06a6.99 6.99 0 01-1.55 3.73l1.47 1.47a1 1 0 11-1.41 1.41l-1.47-1.47A6.99 6.99 0 0113 19.94V22a1 1 0 11-2 0v-2.06a6.99 6.99 0 01-3.73-1.55l-1.47 1.47a1 1 0 11-1.41-1.41l1.47-1.47A6.99 6.99 0 015.06 13H3a1 1 0 110-2h2.06a6.99 6.99 0 011.55-3.73L5.14 5.8a1 1 0 011.41-1.41l1.47 1.47A6.99 6.99 0 0111 5.06V3a1 1 0 011-1zM12 8a4 4 0 100 8 4 4 0 000-8z"/></svg></div>
-          <div><h3 style="margin:0 0 4px">Mathematics</h3><p class="muted" style="margin:0">Calculus • Algebra • Trigonometry</p></div>
-        </div>
-        <div class="subject-card reveal">
-          <div class="subject-art"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a2 2 0 110 4 2 2 0 010-4zm6.6 2.2c1.6.9 1.6 3.8 0 6.6-1.2 2.1-3 4.1-5 5.5-2 .1-3.8-.3-5.5-1.5 2.1-1.4 4-3.4 5.2-5.7 1.6-3 1.7-5.9.3-6.7 1.8.1 3.5.5 5 .8zM4.8 6c1.7-.5 4.3-.9 5.9-.9.8 1.2.6 3.8-.9 6.7-1.2 2.3-3.1 4.3-5.1 5.7-1.5-1.3-2.3-3-2.2-4.8.1-2.3 1.2-4.8 2.3-6.7z"/></svg></div>
-          <div><h3 style="margin:0 0 4px">Physics</h3><p class="muted" style="margin:0">Mechanics • Electricity • Optics</p></div>
-        </div>
-        <div class="subject-card reveal">
-          <div class="subject-art"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2h6v2l-1.5 2.5V11l4.7 7.05A2 2 0 0 1 16.5 21h-9a2 2 0 0 1 -1.7 -3.05L10.5 11V6.5L9 4V2zm-1 17h8l-3.5-5.25h-1L8 19z"/></svg></div>
-          <div><h3 style="margin:0 0 4px">Chemistry</h3><p class="muted" style="margin:0">Physical • Organic • Inorganic</p></div>
-        </div>
-        <div class="subject-card reveal">
-          <div class="subject-art"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3c4 0 7 3 7 7s-3 7-7 7H5a1 1 0 110-2h2a5 5 0 100-10H5a1 1 0 110-2h2zm10 0a1 1 0 110 2h-2a5 5 0 000 10h2a1 1 0 110 2h-2c-4 0-7-3-7-7s3-7 7-7h2z"/></svg></div>
-          <div><h3 style="margin:0 0 4px">Biology</h3><p class="muted" style="margin:0">Genetics • Physiology • Diagrams</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROGRAMS -->
+  <!-- PROGRAMS (before core subjects) -->
   <section id="programs">
     <div class="container">
       <div class="section-head">
@@ -475,52 +385,49 @@
       </div>
 
       <div class="plans">
-        <!-- Regular -->
-        <div class="plan reveal">
+        <div class="plan glass reveal">
           <h3>Regular Batches</h3>
           <p class="muted">Comprehensive syllabus coverage with notes, assignments, and weekly tests.</p>
           <div class="price-rupee">₹ 2,499 <small>/ month</small></div>
           <ul>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Complete syllabus coverage</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Weekly tests & assessments</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Study materials included</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Doubt clearing sessions</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Progress tracking</li>
+            <li><span class="tick">✔</span> Complete syllabus coverage</li>
+            <li><span class="tick">✔</span> Weekly tests & assessments</li>
+            <li><span class="tick">✔</span> Study materials included</li>
+            <li><span class="tick">✔</span> Doubt clearing sessions</li>
+            <li><span class="tick">✔</span> Progress tracking</li>
           </ul>
           <div style="margin-top:14px">
             <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_regular" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll%20for%20Regular%20Batches." target="_blank" rel="noopener">Enroll Now →</a>
           </div>
         </div>
 
-        <!-- Crash -->
-        <div class="plan plan--primary reveal">
+        <div class="plan glass plan--primary reveal">
           <div class="flag">Most Popular</div>
           <h3>Exam Crash Course</h3>
           <p class="muted">14-day intensive revision with previous-year papers & mock tests. All four core subjects included.</p>
           <div class="price-rupee">₹ 4,999 <small>/ course</small></div>
           <ul>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Intensive 14-day program</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> All core subjects covered</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Previous year papers</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Mock tests & analysis</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Exam strategies</li>
+            <li><span class="tick">✔</span> Intensive 14-day program</li>
+            <li><span class="tick">✔</span> All core subjects covered</li>
+            <li><span class="tick">✔</span> Previous year papers</li>
+            <li><span class="tick">✔</span> Mock tests & analysis</li>
+            <li><span class="tick">✔</span> Exam strategies</li>
           </ul>
           <div style="margin-top:14px">
             <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_crash" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll%20for%20Exam%20Crash%20Course." target="_blank" rel="noopener">Enroll Now →</a>
           </div>
         </div>
 
-        <!-- 1-to-1 -->
-        <div class="plan reveal">
+        <div class="plan glass reveal">
           <h3>1-to-1 Mentoring</h3>
           <p class="muted">Personalized sessions focused on fundamentals and speed-building.</p>
           <div class="price-rupee">₹ 7,999 <small>/ month</small></div>
           <ul>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Individual attention</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Customized curriculum</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Flexible scheduling</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Personalized study plan</li>
-            <li><svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l1.4-1.4L9 13.4l8.8-8.8L19.2 6 9 16.2Z"/></svg> Direct teacher access</li>
+            <li><span class="tick">✔</span> Individual attention</li>
+            <li><span class="tick">✔</span> Customized curriculum</li>
+            <li><span class="tick">✔</span> Flexible scheduling</li>
+            <li><span class="tick">✔</span> Personalized study plan</li>
+            <li><span class="tick">✔</span> Direct teacher access</li>
           </ul>
           <div style="margin-top:14px">
             <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_1to1" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'm%20interested%20in%201-to-1%20Mentoring." target="_blank" rel="noopener">Enroll Now →</a>
@@ -530,7 +437,10 @@
     </div>
   </section>
 
-  <!-- SCHEDULE + ENROLL FLOW -->
+  <!-- CORE SUBJECTS (learning approach text only) -->
+  
+
+  <!-- SCHEDULE -->
   <section id="schedule">
     <div class="container">
       <div class="section-head">
@@ -539,17 +449,13 @@
       </div>
 
       <div class="sched">
-        <!-- Left: Offline batches -->
-        <div class="s-card reveal">
-          <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M6 2h2v2h8V2h2v2h3v18H3V4h3V2Zm13 6H5v12h14V8Z"/></svg>
-            Offline Batches (Mon–Sat)
-          </h3>
+        <div class="s-card glass reveal">
+          <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">Offline Batches (Mon–Sat)</h3>
           <div style="margin:10px 0 6px">
-            <span class="slot-chip">6:00–7:30 AM</span>
-            <span class="slot-chip">8:00–9:30 PM</span>
+            <span class="slot-chip"><b>Origin</b> — 6:00–7:30 AM</span>
+            <span class="slot-chip"><b>Resonance</b> — 8:00–9:30 PM</span>
           </div>
-          <ul style="margin:10px 0 16px">
+          <ul>
             <li>Online batches available on request</li>
             <li>Weekends: Extra classes, mock tests & doubt clearing</li>
             <li>Holiday sessions for exam preparation</li>
@@ -557,14 +463,10 @@
           <a class="btn btn--primary btn--round btn--lg track" data-event="availability_click" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20please%20share%20batch%20availability." target="_blank" rel="noopener">Check Availability</a>
         </div>
 
-        <!-- Right: Location & Facilities -->
-        <div class="s-card s-subtle reveal">
-          <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 14.5 9 2.5 2.5 0 0 1 12 11.5Z"/></svg>
-            Location & Facilities
-          </h3>
+        <div class="s-card glass s-subtle reveal">
+          <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">Location & Facilities</h3>
           <p style="margin:8px 0 6px"><b>Vatanappally, Thrissur</b></p>
-          <ul style="margin:10px 0 16px">
+          <ul>
             <li>Modern classrooms with air conditioning</li>
             <li>Digital teaching aids and projectors</li>
             <li>Library with reference materials</li>
@@ -576,29 +478,32 @@
     </div>
   </section>
 
-  <!-- DEMO BOOKING (WhatsApp only) -->
+  <!-- DEMO BOOKING (glass tick boxes) -->
   <section id="demo">
     <div class="container">
-      <div class="card reveal">
+      <div class="card glass reveal">
         <h2>Book Your Free Demo</h2>
         <p class="muted" style="margin-top:6px">We’ll confirm your slot on WhatsApp.</p>
 
-        <!-- UPDATED FORM: dropdown + styled checkbox chips -->
         <form id="demoForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px">
           <div>
             <label for="name"><b>Name</b></label><br>
-            <input id="name" name="name" required placeholder="Student name" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px">
+            <input id="name" name="name" required placeholder="Student name" style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:var(--glass);backdrop-filter:blur(8px)">
           </div>
 
           <div>
             <label for="phone"><b>WhatsApp Number</b></label><br>
-            <input id="phone" name="phone" required placeholder="+91…" pattern="^[0-9+ -]{8,}$" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px">
+            <input id="phone" name="phone" required placeholder="+91…" pattern="^[0-9+ -]{8,}$" style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:var(--glass);backdrop-filter:blur(8px)">
           </div>
 
           <div>
             <label for="board"><b>Class & Board</b></label><br>
-            <select id="board" name="board" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff">
+            <select id="board" name="board" required style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:#fff">
               <option value="" selected disabled>Select an option</option>
+              <option>Class 9 — State</option>
+              <option>Class 9 — CBSE</option>
+              <option>Class 10 — State</option>
+              <option>Class 10 — CBSE</option>
               <option>Class 11 — State</option>
               <option>Class 11 — CBSE</option>
               <option>Class 12 — State</option>
@@ -606,19 +511,19 @@
             </select>
           </div>
 
-          <div>
+          <div style="grid-column:1 / -1">
             <label><b>Subjects (select one or more)</b></label>
-            <div class="subject-chips">
-              <label class="chip"><input type="checkbox" name="subjects" value="Mathematics"><span>Mathematics</span></label>
-              <label class="chip"><input type="checkbox" name="subjects" value="Physics"><span>Physics</span></label>
-              <label class="chip"><input type="checkbox" name="subjects" value="Chemistry"><span>Chemistry</span></label>
-              <label class="chip"><input type="checkbox" name="subjects" value="Biology"><span>Biology</span></label>
+            <div class="select-grid" style="margin-top:8px">
+              <label class="select"><input type="checkbox" name="subjects" value="Mathematics"><span class="label">Mathematics</span></label>
+              <label class="select"><input type="checkbox" name="subjects" value="Physics"><span class="label">Physics</span></label>
+              <label class="select"><input type="checkbox" name="subjects" value="Chemistry"><span class="label">Chemistry</span></label>
+              <label class="select"><input type="checkbox" name="subjects" value="Biology"><span class="label">Biology</span></label>
             </div>
           </div>
 
           <div>
             <label for="slot"><b>Preferred Slot</b></label><br>
-            <select id="slot" name="slot" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff">
+            <select id="slot" name="slot" required style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:#fff">
               <option value="" selected disabled>Select a slot</option>
               <option>6:00–7:30 AM</option>
               <option>8:00–9:30 PM</option>
@@ -629,44 +534,6 @@
             <button class="btn btn--primary btn--round track" data-event="demo_submit" type="submit">Request Demo on WhatsApp</button>
           </div>
         </form>
-        <!-- Google Form embed removed as requested -->
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="results">
-    <div class="container">
-      <h2>Results & Feedback</h2>
-      <div class="testimonials">
-        <div class="t-card reveal"><h3>State Board • Plus One</h3><p class="muted">“Improved from 62 → 80 in 7 weeks with weekly drills and analytics.”</p></div>
-        <div class="t-card reveal"><h3>State Board • Physics</h3><p class="muted">“Numerical speed doubled; mock tests matched final exam pattern.”</p></div>
-        <div class="t-card reveal"><h3>Anonymous</h3><p class="muted">“Regular sessions helped me make my switch from Malayalam to English medium subjects easier.”</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="container">
-      <h2>FAQs</h2>
-      <div class="faq">
-        <details class="reveal">
-          <summary>Is the first demo really free?</summary>
-          <p>Yes, one full session is free for new students. You can book it above.</p>
-        </details>
-        <details class="reveal">
-          <summary>Where are offline classes held?</summary>
-          <p>At Vatanappally, Thrissur. See the map in the Contact section for directions.</p>
-        </details>
-        <details class="reveal">
-          <summary>Do you teach individual subjects?</summary>
-          <p>Yes. Students can enroll for one or multiple subjects as needed.</p>
-        </details>
-        <details class="reveal">
-          <summary>What’s included in the 14-day crash course?</summary>
-          <p>All four core subjects, PYQs, mock tests, and summary notes.</p>
-        </details>
       </div>
     </div>
   </section>
@@ -674,96 +541,80 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="container">
-      <div class="card reveal" style="background:linear-gradient(90deg,#f7fdf0,#ffffff);border:1px solid #e0f2c8">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
-          <div style="display:flex;flex-direction:column;gap:4px">
-            <strong style="font-family:Montserrat,sans-serif;font-size:22px">Admissions Open — Limited seats per batch</strong>
-            <span class="muted">Secure your slot for this term’s offline batches</span>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn btn--primary btn--round track" data-event="enroll_now"
-               href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20enroll." target="_blank" rel="noopener">Enroll Now</a>
-            <a class="btn btn--ghost btn--round track" data-event="youtube_click_footer"
-               href="https://www.youtube.com/@sehracademyyoutube" target="_blank" rel="noopener">YouTube</a>
-          </div>
-        </div>
-      </div>
+      <div class="contact-grid">
+        <div class="contact-card glass reveal" style="border:1px solid #e0f2c8">
+          <h3 class="contact-title">Admissions Open — Limited seats per batch</h3>
+          <span class="muted">Secure your slot for this term’s offline batches</span>
 
-      <div class="contact-grid" style="margin-top:18px">
-        <div class="card reveal">
-          <h3>Contact</h3>
           <div class="contact-item">
-            <b>Phone</b>
-            <div style="display:grid;gap:6px">
-              <a class="track" data-event="call_click" href="tel:+919539409586">+91 95394 09586</a>
-              <a class="track" data-event="call_click" href="tel:+919037789586">+91 90377 89586</a>
-              <a class="track" data-event="call_click" href="tel:+919539409584">+91 95394 09584</a>
+            <div class="contact-ico">☎</div>
+            <div class="contact-lines">
+              <div class="phone-big"><a class="track" data-event="call_click" href="tel:+919539409586">+91 95394 09586</a></div>
+              <div class="phone-big" style="margin-top:6px"><a class="track" data-event="call_click" href="tel:+919037789586">+91 90377 89586</a></div>
+              <div class="phone-big" style="margin-top:6px"><a class="track" data-event="call_click" href="tel:+919539409584">+91 95394 09584</a></div>
             </div>
           </div>
+
           <div class="contact-item">
-            <b>Email</b>
-            <div><a class="track" data-event="email_click" href="mailto:sehracademy@gmail.com">sehracademy@gmail.com</a></div>
+            <div class="contact-ico">@</div>
+            <div class="contact-lines">
+              <div class="email-big"><a class="track" data-event="email_click" href="mailto:sehracademy@gmail.com">sehracademy@gmail.com</a></div>
+            </div>
           </div>
+
           <div class="contact-item">
-            <b>WhatsApp</b>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <a class="btn btn--primary btn--round track" data-event="whatsapp_msg_footer"
-                 href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20know%20about%20batches." target="_blank" rel="noopener">Message us</a>
-              <a class="btn btn--ghost btn--round track" data-event="whatsapp_community_footer"
+            <div class="contact-ico">💬</div>
+            <div class="contact-lines" style="display:flex; gap:8px; flex-wrap:wrap">
+              <a class="track" data-event="whatsapp_msg_footer"
+                 href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20know%20about%20batches." target="_blank" rel="noopener">WhatsApp</a>
+              <a class="track" data-event="whatsapp_community_footer"
                  href="https://chat.whatsapp.com/G1WCAKHJJ7cE4dN9uIduAM" target="_blank" rel="noopener">Community</a>
             </div>
           </div>
         </div>
 
-        <div class="card reveal">
-          <h3>Links</h3>
+        <div class="contact-card glass reveal">
+          <h3 class="contact-title">Links</h3>
           <div style="display:grid;gap:10px">
             <a class="btn btn--ghost btn--round track" data-event="youtube_click_links" href="https://www.youtube.com/@sehracademyyoutube" target="_blank" rel="noopener">YouTube Channel</a>
             <a class="btn btn--ghost btn--round track" data-event="instagram_click_links" href="https://instagram.com/sehracademy" target="_blank" rel="noopener">Instagram Page</a>
             <a class="btn btn--ghost btn--round track" data-event="telegram_click_links" href="https://t.me/sehracademy" target="_blank" rel="noopener">Telegram Channel</a>
             <a class="btn btn--ghost btn--round track" data-event="email_click_links" href="mailto:sehracademy@gmail.com" rel="noopener">Email Us</a>
           </div>
-        </div>
-      </div>
 
-      <div class="card reveal" style="margin-top:18px">
-        <h3>Location</h3>
-        <div class="map-thumb" role="button" title="Open map" aria-label="Open map">
-          <div style="width:100%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3110682522756!2d76.07572381092272!3d10.4761257896118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba78d6f59650727%3A0x7b1dd60e34754193!2sSehr%20Academy!5e0!3m2!1sen!2sin!4v1756140942235!5m2!1sen!2sin" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="card glass reveal" style="margin-top:18px">
+            <h3>Location</h3>
+            <div class="map-thumb" role="button" title="Open map" aria-label="Open map">
+              <div style="width:100%;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3110682522756!2d76.07572381092272!3d10.4761257896118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba78d6f59650727%3A0x7b1dd60e34754193!2sSehr%20Academy!5e0!3m2!1sen!2sin!4v1756140942235!5m2!1sen!2sin" width="100%" height="240" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+              <div style="text-align:center;margin-top:8px" class="muted">Click to view large map</div>
+            </div>
           </div>
-          <div style="text-align:center;margin-top:8px" class="muted">Click to view large map</div>
         </div>
       </div>
-    </div>
-
-    <div class="mobile-cta" aria-label="Quick actions">
-      <a class="btn btn--primary btn--round track" data-event="demo_cta_mobile" href="#demo">Free Demo</a>
-      <a class="btn btn--ghost btn--round track" data-event="whatsapp_cta_mobile" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%20have%20a%20question." target="_blank" rel="noopener">WhatsApp</a>
-      <a class="btn btn--ghost btn--round track" data-event="call_cta_mobile" href="tel:+919539409586">Call</a>
-    </div>
+</div>
   </section>
 
   <!-- Floating WhatsApp -->
   <a class="whatsapp-fab track" data-event="whatsapp_fab"
      href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20know%20about%20batches."
      target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.06 2 11.32c0 1.82.5 3.53 1.37 5L2 22l5.83-1.27A10.7 10.7 0 0 0 12 20.64c5.52 0 10-4.06 10-9.32S17.52 2 12 2Zm0 17.6c-1.3 0-2.55-.32-3.66-.92l-.26-.14-3.39 .74.73-3.26-.17-.27A7.43 7.43 0 0 1 4.6 11.3c0-4.03 3.3-7.3 7.4-7.3s7.4 3.27 7.4 7.3-3.3 7.3-7.4 7.3Zm4.22-5.73c-.23-.13-1.37-.72-1.58-.8-.21-.08-.36-.12-.5 .12-.14 .24-.59 .79-.72 .95-.13 .16-.26 .18-.49 .06-.23 -.12 -.9 -.37 -1.72 -1.12-.64-.6-1.07-1.34-1.2-1.57-.13 -.23 -.02 -.35 .1 -.47 .11 -.11 .23 -.27 .34 -.4 .11 -.13 .14 -.23 .22 -.39 .08 -.16 .03 -.29 -.02 -.41 -.06 -.11 -.5-1.27 -.69-1.73-.19-.47 -.37-.4 -.5-.4h-.43c-.16 0 -.39 .06 -.6 .29 -.2 .23 -.79 .79 -.79 1.93 0 1.14 .81 2.25 .92 2.4 .11 .16 1.6 2.5 3.9 3.5 .55 .24 .96 .38 1.28 .49 .55 .18 1.05 .15 1.45 .09 .44 -.07 1.33 -.55 1.52 -1.07 .19 -.53 .19 -.98 .13 -1.07 -.06 -.09 -.21 -.15 -.44 -.27Z"/></svg>
     WhatsApp
   </a>
 
   <!-- Modal -->
-  <dialog class="modal" id="mapModal" aria-label="Map dialog">
-    <div class="modal-card">
-      <button onclick="document.getElementById('mapModal').close()">Close ✕</button>
+  <dialog class="modal" id="mapModal" aria-label="Map dialog" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.6);z-index:80">
+    <div class="modal-card" style="width:min(1000px,92vw);height:min(80vh,800px);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);position:relative">
+      <button onclick="document.getElementById('mapModal').close()" style="position:absolute;top:10px;right:10px;border:none;background:#0f1112;color:#fff;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer">Close ✕</button>
       <iframe id="mapLarge" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3110682522756!2d76.07572381092272!3d10.4761257896118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba78d6f59650727%3A0x7b1dd60e34754193!2sSehr%20Academy!5e0!3m2!1sen!2sin!4v1756140942235!5m2!1sen!2sin" width="100%" height="100%" style="border:0" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </dialog>
 
-  <footer role="contentinfo">
-    <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <footer role="contentinfo" style="border-top:1px solid rgba(230,232,236,.35);backdrop-filter:blur(8px)">
+    <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 20px">
       <span>© 2025 Sehr Academy</span>
-      <span><a href="#about">About</a> · <a href="#programs">Programs</a> · <a href="#contact">Contact</a> · <a href="/sitemap.xml">Sitemap</a></span>
+      <span><a href="#features">Features</a> · <a href="#tutoring">Tutoring</a> · <a href="#programs">Programs</a> · <a href="#subjects">Core Approach</a> · <a href="#contact">Contact</a> · <a href="/sitemap.xml">Sitemap</a></span>
     </div>
   </footer>
 
@@ -798,29 +649,12 @@
   }
   </script>
 
-  <!-- Interactions, analytics, WhatsApp flow -->
   <script>
-    // Map modal
-    document.addEventListener('click', (e)=>{
-      const thumb = e.target.closest('.map-thumb');
-      if(thumb){ document.getElementById('mapModal').showModal(); }
-    });
-
     // Reveal animations
     const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting && e.target.classList.add('in')), {threshold:.14});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    // Analytics helper
-    window.dataLayer = window.dataLayer || [];
-    function track(event, params={}) {
-      if (typeof gtag === 'function') { gtag('event', event, params); }
-      else { console.log('[analytics]', event, params); }
-    }
-    document.querySelectorAll('.track').forEach(a=>{
-      a.addEventListener('click', ()=>track(a.dataset.event || 'click', {href:a.href || a.getAttribute('href')}));
-    });
-
-    // Append UTM info to WhatsApp links (if present)
+    // UTM -> WhatsApp
     (function attachUTMToWhatsApp(){
       const qs = new URLSearchParams(location.search);
       const utm = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term']
@@ -837,43 +671,29 @@
       });
     })();
 
-    // ✅ WhatsApp demo submission — supports dropdown + styled multi-select subjects
+    // Demo -> WhatsApp
     const form = document.getElementById('demoForm');
     if(form){
       form.addEventListener('submit', (e)=>{
         e.preventDefault();
-
-        const getVal = (id)=> (document.getElementById(id)?.value || '').trim();
-
-        // gather checked subjects
-        const subs = Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
-                        .map(el=>el.value);
-        if(subs.length === 0){
-          alert('Please select at least one subject.');
-          return;
-        }
-
-        // basic required validation
-        if(!getVal('name')){ alert('Please enter the student name.'); return; }
-        if(!getVal('phone')){ alert('Please enter the WhatsApp number.'); return; }
-        if(!getVal('board')){ alert('Please select Class & Board.'); return; }
-        if(!getVal('slot')){ alert('Please select a preferred slot.'); return; }
-
-        // compose message
         const enc = (s)=> encodeURIComponent(s);
+        const name = (document.getElementById('name').value || '').trim();
+        const phone = (document.getElementById('phone').value || '').trim();
+        const board = (document.getElementById('board').value || '').trim();
+        const slot  = (document.getElementById('slot').value || '').trim();
+        const subs = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el=>el.value);
+        if(!name || !phone || !board || !slot){ alert('Please complete the form.'); return; }
+        if(subs.length===0){ alert('Select at least one subject.'); return; }
         const msg = `Free Demo Request:` +
-          `%0AName:%20${enc(getVal('name'))}` +
-          `%0AWhatsApp:%20${enc(getVal('phone'))}` +
-          `%0AClass/Board:%20${enc(getVal('board'))}` +
+          `%0AName:%20${enc(name)}` +
+          `%0AWhatsApp:%20${enc(phone)}` +
+          `%0AClass/Board:%20${enc(board)}` +
           `%0ASubjects:%20${enc(subs.join(', '))}` +
-          `%0APreferred%20Slot:%20${enc(getVal('slot'))}`;
-
+          `%0APreferred%20Slot:%20${enc(slot)}`;
         const url = `https://wa.me/919539409586?text=${msg}`;
-        track('demo_submit', {via:'whatsapp'});
         window.open(url, '_blank','noopener');
       });
     }
   </script>
 </body>
 </html>
-
