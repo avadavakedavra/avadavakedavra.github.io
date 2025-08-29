@@ -1,3 +1,6 @@
+Got it—fixed the first pricing box (alignment + contrast), removed the “Choose where you need support” section, renamed class timings (Origin → Morning, Resonance → Evening), and cleaned up the **Book Your Free Demo** form (better validation + reliability). Full updated file below.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +57,6 @@
       font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text); background:var(--bg); line-height:1.65;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      /* Layered background textures */
       background-image:
         radial-gradient(1000px 500px at -10% -10%, rgba(165, 230, 80, .08), rgba(0,0,0,0)),
         radial-gradient(900px 600px at 110% 0%, rgba(120, 179, 56, .06), rgba(0,0,0,0)),
@@ -182,21 +184,6 @@
     .plan li{ display:flex; gap:8px; align-items:flex-start }
     .tick{ width:20px; height:20px; color:var(--primary); flex:0 0 20px }
 
-    /* CORE SUBJECTS (learning approach only) */
-    .approach-card .row{ display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
-    .approach-point{ display:flex; gap:8px; align-items:flex-start; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.45); background:var(--glass) }
-    .approach-point b{ font-family:Montserrat, sans-serif }
-
-    /* TUTORING OFFERED */
-    .offer-grid{ display:grid; gap:16px }
-    @media(min-width:960px){ .offer-grid{ grid-template-columns:repeat(3,1fr) } }
-    .offer-card{ padding:22px; border-radius:16px; position:relative }
-    .offer-card .head{ display:flex; align-items:center; gap:10px; margin-bottom:8px }
-    .offer-badge{ position:absolute; top:-12px; left:16px; background:#eaf6d5; border:1px solid #d6ebb6; padding:6px 10px; border-radius:999px; font-weight:800 }
-    .list{ list-style:none; padding:0; margin:10px 0 0; display:grid; gap:6px }
-    .subtle{ color:#334155; font-weight:700 }
-    .sep{ height:1px; background:rgba(230,232,236,.7); margin:10px 0 }
-
     /* Schedule + alignment */
     .sched{ display:grid; gap:16px }
     @media(min-width:1000px){ .sched{ grid-template-columns:1.2fr .8fr } }
@@ -254,6 +241,29 @@
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1;transform:none}
     @media (prefers-reduced-motion: reduce){ .reveal{transition:none} }
+
+    /* ---------- Batches / Pricing section ---------- */
+    .batches .grid{display:grid;gap:16px}
+    @media(min-width:960px){.batches .grid{grid-template-columns:repeat(3,1fr)}}
+    .batch{
+      border-radius:16px;padding:20px;color:#fff;position:relative;overflow:hidden;
+      display:flex;flex-direction:column;gap:6px;min-height:200px; /* equal height boxes */
+    }
+    .batch *, .batch h3{color:#fff}
+    .batch small{opacity:.95;font-weight:700}
+    .batch h3{font-size:22px;margin:2px 0 0}
+    .fee{font-family:Montserrat, sans-serif;font-weight:900;font-size:42px;line-height:1;margin:8px 0 6px}
+    .tag{position:absolute;right:14px;top:14px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 10px;border-radius:999px;font-weight:800}
+    .note{display:inline-block;margin-top:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);padding:6px 10px;border-radius:10px;font-weight:800}
+    .grad-ignite{background:radial-gradient(120% 120% at 0% 0%, #e45a24 0%, #8b2a10 65%)} /* improved contrast */
+    .grad-ascent{background:radial-gradient(120% 120% at 0% 0%, #3aa0ff 0%, #094b9c 60%)}
+    .grad-origin{background:radial-gradient(120% 120% at 0% 0%, #ff9a3a 0%, #a4490d 60%)}
+    .grad-legacy{background:radial-gradient(120% 120% at 0% 0%, #31b54b 0%, #0d5a1a 60%)}
+    .grad-crash{background:radial-gradient(120% 120% at 0% 0%, #8a3cff 0%, #3a0a86 60%)}
+    .grad-mentoring{background:radial-gradient(120% 120% at 0% 0%, #ff8c2a 0%, #842c00 60%)}
+    .b-bar{margin-top:16px;background:linear-gradient(90deg,#a7db64,#6bbf2f);border:1px solid #dff0c7;padding:12px;border-radius:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+    .b-pill{background:#fff;border:1px solid #e6f4d4;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;color:#0b0f10}
+    .b-pill--ghost{background:rgba(255,255,255,.6)}
   </style>
 </head>
 
@@ -274,9 +284,8 @@
       </a>
       <nav aria-label="Primary">
         <a href="#features">Features</a>
-        <a href="#tutoring">Tutoring</a>
+        <!-- Removed Tutoring link as requested -->
         <a href="#programs">Programs</a>
-        <a href="#subjects">Core Approach</a>
         <a href="#schedule">Schedule</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -310,7 +319,73 @@
     </section>
   </main>
 
-  <!-- FEATURES (immediately after hero) -->
+  <!-- BATCHES / PRICING -->
+  <section class="batches" aria-label="Batches 2025–26">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Batches 2025–26</div>
+        <h2>Courses Offered</h2>
+      </div>
+
+      <div class="grid">
+        <div class="batch grad-ignite reveal">
+          <div class="tag">Class 9</div>
+          <small>OFFLINE BATCH 2025–26</small>
+          <h3>IGNITE</h3>
+          <div class="fee">₹ 999</div>
+          <span class="note">Monthly fees for core subjects</span>
+        </div>
+
+        <div class="batch grad-ascent reveal">
+          <div class="tag">Class 10</div>
+          <small>OFFLINE BATCH 2025–26</small>
+          <h3>ASCENT</h3>
+          <div class="fee">₹ 1499</div>
+          <span class="note">Monthly fees for core subjects</span>
+        </div>
+
+        <div class="batch grad-origin reveal">
+          <div class="tag">Class 11</div>
+          <small>OFFLINE BATCH 2025–26</small>
+          <h3>ORIGIN</h3>
+          <div class="fee">₹ 2499</div>
+          <span class="note">Monthly fees for core subjects</span>
+        </div>
+
+        <div class="batch grad-legacy reveal">
+          <div class="tag">Class 12</div>
+          <small>OFFLINE BATCH 2025–26</small>
+          <h3>LEGACY</h3>
+          <div class="fee">₹ 2999</div>
+          <span class="note">Monthly fees for core subjects</span>
+        </div>
+
+        <div class="batch grad-crash reveal">
+          <div class="tag">Classes 11&12</div>
+          <small>Exam Preparation</small>
+          <h3>CRASH COURSES</h3>
+          <div class="fee">₹ 4999</div>
+          <span class="note">One-time course fee.</span>
+        </div>
+
+        <div class="batch grad-mentoring reveal">
+          <div class="tag">Classes 9-12</div>
+          <small>1-to-1 Mentoring</small>
+          <h3>PRIVATE COACHING</h3>
+          <div class="fee">₹ 7999</div>
+          <span class="note">Monthly fees for all subjects.</span>
+        </div>
+      </div>
+
+      <div class="b-bar reveal">
+        <span class="b-pill b-pill--ghost">TO JOIN</span>
+        <a class="b-pill" href="https://sehracademy.com" target="_blank" rel="noopener">VISIT SEHRACADEMY.COM</a>
+        <a class="b-pill" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20enroll." target="_blank" rel="noopener">ENROLL NOW</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
   <section id="features">
     <div class="container">
       <div class="section-head">
@@ -329,53 +404,9 @@
     </div>
   </section>
 
-  <!-- TUTORING OFFERED (before programs) -->
-  <section id="tutoring">
-    <div class="container">
-      <div class="section-head">
-        <div class="kicker">Tutoring Offered</div>
-        <h2>Choose where you need support</h2>
-        <div class="muted" style="max-width:760px;margin:6px auto 0">Four core subjects covered by default. Additional subjects available on request.</div>
-      </div>
+  <!-- (Removed the whole Tutoring Offered section as requested) -->
 
-      <div class="offer-grid">
-        <div class="offer-card glass reveal">
-          <div class="offer-badge">Classes 9–10</div>
-          <div class="head"><h3 style="margin:0">State & CBSE</h3></div>
-          <div class="sep"></div>
-          <ul class="list">
-            <li><b class="subtle">Core subjects:</b> Mathematics, Physics, Chemistry, Biology</li>
-            <li>Additional subjects on request (e.g., English, Social Science)</li>
-            <li>Weekly tests, feedback calls, and concept-first teaching</li>
-          </ul>
-        </div>
-
-        <div class="offer-card glass reveal">
-          <div class="offer-badge">Classes 11–12</div>
-          <div class="head"><h3 style="margin:0">State & CBSE</h3></div>
-          <div class="sep"></div>
-          <ul class="list">
-            <li><b class="subtle">Core subjects:</b> Mathematics, Physics, Chemistry, Biology</li>
-            <li>Optional subjects available on request</li>
-            <li>Board-focused notes, PYQs, mock tests & analysis</li>
-          </ul>
-        </div>
-
-        <div class="offer-card glass reveal">
-          <div class="offer-badge">Competitive Exams</div>
-          <div class="head"><h3 style="margin:0">NEET & JEE Foundations</h3></div>
-          <div class="sep"></div>
-          <ul class="list">
-            <li>Concept mastery + speed-building drills</li>
-            <li>Objective practice, topic tests, and full-length mocks</li>
-            <li>Exam strategies, error logs, and targeted revision</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROGRAMS (before core subjects) -->
+  <!-- PROGRAMS -->
   <section id="programs">
     <div class="container">
       <div class="section-head">
@@ -414,7 +445,7 @@
             <li><span class="tick">✔</span> Exam strategies</li>
           </ul>
           <div style="margin-top:14px">
-            <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_crash" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll%20for%20Exam%20Crash%20Course." target="_blank" rel="noopener">Enroll Now →</a>
+            <a class="btn btn--primary btn--round btn--lg track" data-event="enroll_crash" href="https://wa.me/919539409586?text=Hi%20Sehr%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll%20for%20Exam%20Crash%20Course." target="_blank" rel="noopener">Enroll Now →</a>
           </div>
         </div>
 
@@ -437,9 +468,6 @@
     </div>
   </section>
 
-  <!-- CORE SUBJECTS (learning approach text only) -->
-  
-
   <!-- SCHEDULE -->
   <section id="schedule">
     <div class="container">
@@ -452,8 +480,8 @@
         <div class="s-card glass reveal">
           <h3 style="display:flex;align-items:center;gap:8px;margin-top:0">Offline Batches (Mon–Sat)</h3>
           <div style="margin:10px 0 6px">
-            <span class="slot-chip"><b>Origin</b> — 6:00–7:30 AM</span>
-            <span class="slot-chip"><b>Resonance</b> — 8:00–9:30 PM</span>
+            <span class="slot-chip"><b>Morning</b> — 6:00–7:30 AM</span>
+            <span class="slot-chip"><b>Evening</b> — 8:00–9:30 PM</span>
           </div>
           <ul>
             <li>Online batches available on request</li>
@@ -478,27 +506,34 @@
     </div>
   </section>
 
-  <!-- DEMO BOOKING (glass tick boxes) -->
+  <!-- DEMO BOOKING -->
   <section id="demo">
     <div class="container">
       <div class="card glass reveal">
         <h2>Book Your Free Demo</h2>
         <p class="muted" style="margin-top:6px">We’ll confirm your slot on WhatsApp.</p>
 
-        <form id="demoForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px">
+        <!-- Form reliability improvements: strong validation, correct types, safer URL building -->
+        <form id="demoForm" novalidate style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px">
           <div>
             <label for="name"><b>Name</b></label><br>
-            <input id="name" name="name" required placeholder="Student name" style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:var(--glass);backdrop-filter:blur(8px)">
+            <input id="name" name="name" required placeholder="Student name"
+              autocomplete="name"
+              style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:var(--glass);backdrop-filter:blur(8px)">
           </div>
 
           <div>
             <label for="phone"><b>WhatsApp Number</b></label><br>
-            <input id="phone" name="phone" required placeholder="+91…" pattern="^[0-9+ -]{8,}$" style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:var(--glass);backdrop-filter:blur(8px)">
+            <input id="phone" name="phone" required placeholder="+91 9XXXXXXXXX"
+              type="tel" inputmode="tel" pattern="^[+]?[0-9 ()-]{8,}$" maxlength="18"
+              autocomplete="tel"
+              style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:var(--glass);backdrop-filter:blur(8px)">
           </div>
 
           <div>
             <label for="board"><b>Class & Board</b></label><br>
-            <select id="board" name="board" required style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:#fff">
+            <select id="board" name="board" required
+              style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:#fff">
               <option value="" selected disabled>Select an option</option>
               <option>Class 9 — State</option>
               <option>Class 9 — CBSE</option>
@@ -514,16 +549,17 @@
           <div style="grid-column:1 / -1">
             <label><b>Subjects (select one or more)</b></label>
             <div class="select-grid" style="margin-top:8px">
-              <label class="select"><input type="checkbox" name="subjects" value="Mathematics"><span class="label">Mathematics</span></label>
-              <label class="select"><input type="checkbox" name="subjects" value="Physics"><span class="label">Physics</span></label>
-              <label class="select"><input type="checkbox" name="subjects" value="Chemistry"><span class="label">Chemistry</span></label>
-              <label class="select"><input type="checkbox" name="subjects" value="Biology"><span class="label">Biology</span></label>
+              <label class="select"><input type="checkbox" name="subjects[]" value="Mathematics"><span class="label">Mathematics</span></label>
+              <label class="select"><input type="checkbox" name="subjects[]" value="Physics"><span class="label">Physics</span></label>
+              <label class="select"><input type="checkbox" name="subjects[]" value="Chemistry"><span class="label">Chemistry</span></label>
+              <label class="select"><input type="checkbox" name="subjects[]" value="Biology"><span class="label">Biology</span></label>
             </div>
           </div>
 
           <div>
             <label for="slot"><b>Preferred Slot</b></label><br>
-            <select id="slot" name="slot" required style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:#fff">
+            <select id="slot" name="slot" required
+              style="width:100%;padding:12px;border:1px solid rgba(255,255,255,.45);border-radius:10px;background:#fff">
               <option value="" selected disabled>Select a slot</option>
               <option>6:00–7:30 AM</option>
               <option>8:00–9:30 PM</option>
@@ -534,6 +570,8 @@
             <button class="btn btn--primary btn--round track" data-event="demo_submit" type="submit">Request Demo on WhatsApp</button>
           </div>
         </form>
+
+        <p class="muted" style="margin:10px 2px 0">By submitting, you’ll be redirected to WhatsApp with your details pre-filled.</p>
       </div>
     </div>
   </section>
@@ -614,7 +652,7 @@
   <footer role="contentinfo" style="border-top:1px solid rgba(230,232,236,.35);backdrop-filter:blur(8px)">
     <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 20px">
       <span>© 2025 Sehr Academy</span>
-      <span><a href="#features">Features</a> · <a href="#tutoring">Tutoring</a> · <a href="#programs">Programs</a> · <a href="#subjects">Core Approach</a> · <a href="#contact">Contact</a> · <a href="/sitemap.xml">Sitemap</a></span>
+      <span><a href="#features">Features</a> · <a href="#programs">Programs</a> · <a href="#schedule">Schedule</a> · <a href="#contact">Contact</a> · <a href="/sitemap.xml">Sitemap</a></span>
     </div>
   </footer>
 
@@ -671,25 +709,31 @@
       });
     })();
 
-    // Demo -> WhatsApp
+    // Demo -> WhatsApp (robust)
     const form = document.getElementById('demoForm');
     if(form){
       form.addEventListener('submit', (e)=>{
         e.preventDefault();
-        const enc = (s)=> encodeURIComponent(s);
+        const enc = (s)=> encodeURIComponent(s || '');
         const name = (document.getElementById('name').value || '').trim();
         const phone = (document.getElementById('phone').value || '').trim();
         const board = (document.getElementById('board').value || '').trim();
         const slot  = (document.getElementById('slot').value || '').trim();
-        const subs = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el=>el.value);
-        if(!name || !phone || !board || !slot){ alert('Please complete the form.'); return; }
+        const subs = Array.from(document.querySelectorAll('input[name="subjects[]"]:checked')).map(el=>el.value);
+
+        if(!name){ alert('Please enter your name.'); return; }
+        if(!phone.match(/^[+]?[0-9 ()-]{8,}$/)){ alert('Please enter a valid WhatsApp number.'); return; }
+        if(!board){ alert('Please select your class & board.'); return; }
         if(subs.length===0){ alert('Select at least one subject.'); return; }
+        if(!slot){ alert('Please select a preferred slot.'); return; }
+
         const msg = `Free Demo Request:` +
           `%0AName:%20${enc(name)}` +
           `%0AWhatsApp:%20${enc(phone)}` +
           `%0AClass/Board:%20${enc(board)}` +
           `%0ASubjects:%20${enc(subs.join(', '))}` +
           `%0APreferred%20Slot:%20${enc(slot)}`;
+
         const url = `https://wa.me/919539409586?text=${msg}`;
         window.open(url, '_blank','noopener');
       });
@@ -697,3 +741,4 @@
   </script>
 </body>
 </html>
+```
