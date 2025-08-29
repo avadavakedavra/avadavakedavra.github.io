@@ -1,3 +1,6 @@
+Here’s your full site code with a brand-matching “Academic Updates” section (leaderboard) inserted **right after the first hero section**. The portraits are **placeholders**—swap the `src` values with your hosted image URLs later. The bars animate on reveal, and the whole block follows your glass/rounded aesthetic.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +50,7 @@
       --glass:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.32));
       --border:#e6e8ec; --shadow:0 10px 30px rgba(16,24,40,.06);
       --radius:16px; --radius-sm:12px; --maxw:1180px;
+      --gold:#e7c35c; --gold-soft:#f4e7b2;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
@@ -263,64 +267,73 @@
     .b-pill--ghost{background:rgba(255,255,255,.6)}
 
     /* ---------- Gallery (Multiple Carousels) ---------- */
-    .carousel-grid{
-      display:grid;
-      gap:16px;
-    }
-    @media(min-width:1000px){
-      .carousel-grid{
-        grid-template-columns:1fr 1fr; /* two carousels side-by-side on large screens */
-      }
-    }
-    .carousel{
-      position:relative;
-      overflow:hidden;
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,.45);
-    }
-    .carousel-head{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 16px 0 16px;
-    }
-    .carousel-title{
-      font-family:Montserrat, sans-serif; font-weight:800; font-size:16px;
-    }
-    .carousel-track{
-      display:flex;
-      gap:12px;
-      overflow-x:auto;
-      scroll-snap-type:x mandatory;
-      padding:16px;
-      -webkit-overflow-scrolling:touch;
-      mask-image: linear-gradient(to right, transparent 0, black 30px, black calc(100% - 30px), transparent 100%);
-    }
+    .carousel-grid{display:grid;gap:16px}
+    @media(min-width:1000px){.carousel-grid{grid-template-columns:1fr 1fr}}
+    .carousel{position:relative;overflow:hidden;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.45)}
+    .carousel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0 16px}
+    .carousel-title{font-family:Montserrat, sans-serif; font-weight:800; font-size:16px;}
+    .carousel-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:16px;-webkit-overflow-scrolling:touch;mask-image: linear-gradient(to right, transparent 0, black 30px, black calc(100% - 30px), transparent 100%)}
     .carousel-track::-webkit-scrollbar{ height:8px }
     .carousel-track::-webkit-scrollbar-thumb{ background:#e1efd2; border-radius:999px }
-    .carousel-track img{
-      scroll-snap-align:start;
-      flex-shrink:0;
-      height:320px;               /* fixed rail height */
-      width:auto;                 /* preserve aspect ratio */
-      object-fit:contain;         /* no crop; portrait stays portrait */
-      border-radius:var(--radius-sm);
-      border:1px solid rgba(255,255,255,.55);
-      background:linear-gradient(180deg,#f8fbf2,#ffffff);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-    }
-    @media(max-width:640px){
-      .carousel-track img{ height:260px }
-    }
-    .carousel-ctrl{
-      position:absolute; top:50%; transform:translateY(-50%);
-      display:grid; place-items:center; width:38px; height:38px; border-radius:12px;
-      background:var(--glass); border:1px solid rgba(255,255,255,.6);
-      backdrop-filter:blur(10px) saturate(140%);
-      cursor:pointer; user-select:none;
-    }
+    .carousel-track img{scroll-snap-align:start;flex-shrink:0;height:320px;width:auto;object-fit:contain;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,#f8fbf2,#ffffff);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+    @media(max-width:640px){ .carousel-track img{ height:260px } }
+    .carousel-ctrl{position:absolute; top:50%; transform:translateY(-50%); display:grid; place-items:center; width:38px; height:38px; border-radius:12px;background:var(--glass); border:1px solid rgba(255,255,255,.6); backdrop-filter:blur(10px) saturate(140%); cursor:pointer; user-select:none;}
     .carousel-ctrl:hover{ transform:translateY(-50%) scale(1.04) }
     .carousel-prev{ left:10px }
     .carousel-next{ right:10px }
+
+    /* ---------- NEW: Academic Updates / Leaderboard ---------- */
+    .updates .head-row{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px
+    }
+    .updates .title{ display:flex; align-items:center; gap:12px; flex-wrap:wrap }
+    .badge{
+      padding:8px 12px; border-radius:999px; font-weight:900;
+      background:linear-gradient(180deg,#fff7d6,#ffe9a3);
+      border:1px solid #f1da83; color:#2d2400; box-shadow:0 8px 22px rgba(231,195,92,.18), inset 0 1px 0 #fff;
+    }
+    .crumbs{
+      display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 0
+    }
+    .crumb{
+      display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#eef8df; border:1px solid #e0f2c8; font-weight:800; font-size:12px; color:#2a3d10
+    }
+    .toast{
+      padding:10px 14px; border-radius:12px; background:linear-gradient(180deg,#fff7e2,#fff); border:1px solid #f2e3b6; font-weight:800; color:#3b2a00
+    }
+
+    .lb-list{ display:grid; gap:14px; margin-top:12px }
+    .lb-row{
+      display:grid; grid-template-columns:auto 56px 1fr auto; align-items:center; gap:14px;
+      padding:16px; border-radius:16px; background:linear-gradient(180deg,#f8fbf2,#ffffff); border:1px solid rgba(255,255,255,.55);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    .lb-rank{
+      width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-weight:900; background:#fff7db; border:1px solid #f2e3b6; color:#593f00
+    }
+    .lb-ava{
+      width:56px; height:56px; border-radius:16px; overflow:hidden; border:2px solid #ffe9b1; box-shadow:0 6px 14px rgba(231,195,92,.22)
+    }
+    .lb-ava img{ width:100%; height:100%; object-fit:cover }
+    .lb-name{ font-family:Montserrat, sans-serif; font-weight:800; }
+    .lb-score{ font-family:Montserrat, sans-serif; font-weight:900; }
+    .lb-bar{
+      grid-column: 3 / -1;
+      height:12px; border-radius:999px; background:#e9ece7; position:relative; overflow:hidden; margin-top:6px; border:1px solid #eef2ea
+    }
+    .lb-bar > span{
+      position:absolute; inset:0 0 0 0; width:0%;
+      background:linear-gradient(90deg,#f3df95,#e7c35c);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+      transition:width .9s ease;
+    }
+    .lb-foot{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; color:var(--muted); font-size:12px
+    }
+    @media(max-width:640px){
+      .lb-row{ grid-template-columns:auto 48px 1fr auto }
+      .lb-ava{ width:48px; height:48px; border-radius:14px }
+    }
   </style>
 </head>
 
@@ -373,6 +386,80 @@
         </div>
       </div>
     </section>
+
+    <!-- ===== NEW: Academic Updates (Leaderboard) ===== -->
+    <section id="updates" class="updates">
+      <div class="container">
+        <div class="glass card reveal">
+          <div class="head-row">
+            <div class="title">
+              <h2 style="margin:0">Academic Updates —</h2>
+              <span class="badge">RESULTS</span>
+            </div>
+            <div class="crumb" aria-label="Leaderboard toggle">● Leaderboard</div>
+          </div>
+
+          <div class="toast">Plus One First Term Internal Exams ✨</div>
+
+          <div class="crumbs" style="margin-top:12px">
+            <span class="crumb">Plus One</span>
+            <span class="crumb">First Term</span>
+            <span class="crumb">Results</span>
+            <span class="crumb">2025–26</span>
+          </div>
+
+          <div class="lb-list" style="margin-top:18px">
+            <!-- Row 1 -->
+            <div class="lb-row">
+              <div class="lb-rank">1</div>
+              <div class="lb-ava">
+                <!-- Replace the src below with your hosted image URL -->
+                <img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Topper photo placeholder">
+              </div>
+              <div>
+                <div class="lb-name">Fidha</div>
+                <div class="lb-bar" data-pct="87"><span></span></div>
+              </div>
+              <div class="lb-score">87%</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="lb-row">
+              <div class="lb-rank" style="background:#eaf2ff;border-color:#d3e3ff;color:#0c2a6b">2</div>
+              <div class="lb-ava">
+                <!-- Replace with hosted image -->
+                <img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Second place photo placeholder">
+              </div>
+              <div>
+                <div class="lb-name">Gayathri</div>
+                <div class="lb-bar" data-pct="77"><span></span></div>
+              </div>
+              <div class="lb-score">77%</div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="lb-row">
+              <div class="lb-rank" style="background:#eaf8ec;border-color:#cfead6;color:#0a3a18">3</div>
+              <div class="lb-ava">
+                <!-- Replace with hosted image -->
+                <img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Third place photo placeholder">
+              </div>
+              <div>
+                <div class="lb-name">Devanandha</div>
+                <div class="lb-bar" data-pct="54"><span></span></div>
+              </div>
+              <div class="lb-score">54%</div>
+            </div>
+          </div>
+
+          <div class="lb-foot">
+            <span>*Results will be updated once all subjects have been published.</span>
+            <span>sehracademy.com</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ===== /Academic Updates ===== -->
   </main>
 
   <!-- BATCHES / PRICING -->
@@ -648,7 +735,7 @@
           <div class="carousel-track">
             <img loading="lazy" src="https://i.postimg.cc/DfC8753f/IMG-2023-jpg.jpg" alt="Gallery image 3">
             <img loading="lazy" src="https://i.postimg.cc/wT73MJ9X/IMG-9018.jpg" alt="Gallery image 4">
-            <img loading="lazy" src="https://i.postimg.cc/cCnwyFMX/IMG-9069.jpg">
+            <img loading="lazy" src="https://i.postimg.cc/cCnwyFMX/IMG-9069.jpg" alt="Gallery image 2">
             <img loading="lazy" src="https://i.postimg.cc/5ytywQLM/IMG-1873.jpg" alt="Gallery image 1">
           </div>
         </div>
@@ -661,11 +748,10 @@
           <button class="carousel-ctrl carousel-prev" aria-label="Previous">‹</button>
           <button class="carousel-ctrl carousel-next" aria-label="Next">›</button>
           <div class="carousel-track">
-            <!-- Same images reused (you can replace or add more later) -->
             <img loading="lazy" src="https://i.postimg.cc/5ytywQLM/IMG-1873.jpg" alt="Gallery image 1">
-          <img loading="lazy" src="https://i.postimg.cc/cCnwyFMX/IMG-9069.jpg">
+            <img loading="lazy" src="https://i.postimg.cc/cCnwyFMX/IMG-9069.jpg" alt="Gallery image 2">
             <img loading="lazy" src="https://i.postimg.cc/wT73MJ9X/IMG-9018.jpg" alt="Gallery image 4">
-<img loading="lazy" src="https://i.postimg.cc/DfC8753f/IMG-2023-jpg.jpg" alt="Gallery image 3">
+            <img loading="lazy" src="https://i.postimg.cc/DfC8753f/IMG-2023-jpg.jpg" alt="Gallery image 3">
           </div>
         </div>
       </div>
@@ -786,7 +872,20 @@
 
   <script>
     // Reveal animations
-    const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting && e.target.classList.add('in')), {threshold:.14});
+    const io = new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+
+        // Animate leaderboard bars when the card reveals
+        if(e.target.matches('.updates .card')){
+          e.target.querySelectorAll('.lb-bar').forEach(bar=>{
+            const pct = Math.max(0, Math.min(100, Number(bar.dataset.pct||0)));
+            const fill = bar.querySelector('span');
+            requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
+          });
+        }
+      }
+    }), {threshold:.14});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
     // UTM -> WhatsApp
@@ -852,4 +951,4 @@
   </script>
 </body>
 </html>
-
+```
