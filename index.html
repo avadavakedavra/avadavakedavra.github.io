@@ -259,9 +259,6 @@
     .grad-legacy{background:radial-gradient(120% 120% at 0% 0%, #31b54b 0%, #0d5a1a 60%)}
     .grad-crash{background:radial-gradient(120% 120% at 0% 0%, #8a3cff 0%, #3a0a86 60%)}
     .grad-mentoring{background:radial-gradient(120% 120% at 0% 0%, #ff8c2a 0%, #842c00 60%)}
-    .b-bar{margin-top:16px;background:linear-gradient(90deg,#a7db64,#6bbf2f);border:1px solid #dff0c7;padding:12px;border-radius:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
-    .b-pill{background:#fff;border:1px solid #e6f4d4;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;color:#0b0f10}
-    .b-pill--ghost{background:rgba(255,255,255,.6)}
 
     /* ---------- Gallery (Multiple Carousels) ---------- */
     .carousel-grid{display:grid;gap:16px}
@@ -289,16 +286,6 @@
       background:linear-gradient(180deg,#fff7d6,#ffe9a3);
       border:1px solid #f1da83; color:#2d2400; box-shadow:0 8px 22px rgba(231,195,92,.18), inset 0 1px 0 #fff;
     }
-    .crumbs{
-      display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 0
-    }
-    .crumb{
-      display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#eef8df; border:1px solid #e0f2c8; font-weight:800; font-size:12px; color:#2a3d10
-    }
-    .toast{
-      padding:10px 14px; border-radius:12px; background:linear-gradient(180deg,#fff7e2,#fff); border:1px solid #f2e3b6; font-weight:800; color:#3b2a00
-    }
-
     .lb-list{ display:grid; gap:14px; margin-top:12px }
     .lb-row{
       display:grid; grid-template-columns:auto 56px 1fr auto; align-items:center; gap:14px;
@@ -384,77 +371,351 @@
       </div>
     </section>
 
-    <!-- ===== NEW: Academic Updates (Leaderboard) ===== -->
+    <!-- ===== Academic Updates (Tabs + Subject-wise Leaderboard, REPLACED) ===== -->
     <section id="updates" class="updates">
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap");
+        #updates *:where(h1,h2,h3,.lb-name,.lb-score,.title, .tab){ font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+        #updates .card{
+          background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.32));
+          border:1px solid rgba(255,255,255,.45);
+          border-radius:16px;
+          box-shadow:0 20px 50px rgba(16,24,40,.08), inset 0 1px 0 rgba(255,255,255,.35);
+          backdrop-filter: blur(12px) saturate(150%);
+          padding:22px
+        }
+        #updates .head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+        #updates .title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+        #updates .badge{padding:8px 12px;border-radius:999px;font-weight:900;background:linear-gradient(180deg,#fff7d6,#ffe9a3);border:1px solid #f1da83;color:#2d2400;box-shadow:0 8px 22px rgba(231,195,92,.18), inset 0 1px 0 #fff}
+
+        /* Frosted white toast */
+        #updates .toast{
+          margin-top:6px;
+          padding:14px 18px;border-radius:14px;
+          background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.65));
+          border:1px solid rgba(255,255,255,.75);
+          color:#0f1115;font-weight:800;font-size:1.05rem; letter-spacing:.2px;
+          box-shadow:0 18px 38px rgba(16,24,40,.12), inset 0 1px 0 rgba(255,255,255,.9);
+          backdrop-filter: blur(10px) saturate(160%);
+          position:relative; overflow:hidden;
+        }
+        #updates .toast::after{
+          content:""; position:absolute; inset:0; pointer-events:none;
+          background:radial-gradient(80% 80% at 0% 0%, rgba(255,255,255,.5), transparent 60%);
+        }
+
+        /* Tabs — milky frosted white with selection animation */
+        #updates .tabbar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+        #updates .tab{
+          position:relative; appearance:none; cursor:pointer;
+          border:1px solid rgba(255,255,255,.55);
+          background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.55));
+          color:#0f1115; border-radius:999px; padding:10px 14px; font-weight:800;
+          backdrop-filter: blur(8px) saturate(160%);
+          transition: transform .18s ease, box-shadow .25s ease, border-color .2s ease, background .25s ease;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 10px 18px rgba(16,24,40,.06);
+        }
+        #updates .tab:hover{ transform:translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 14px 26px rgba(16,24,40,.10) }
+        #updates .tab[aria-selected="true"]{
+          border-color:#e9f3dc;
+          background:linear-gradient(180deg,#ffffff,#f6faef);
+          box-shadow:0 16px 32px rgba(16,24,40,.12), inset 0 1px 0 rgba(255,255,255,.95);
+        }
+        #updates .tab[aria-selected="true"]::after{
+          content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+          background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.65) 50%, transparent 100%);
+          transform: translateX(-120%) skewX(-20deg);
+          animation: tabSheen 1.8s ease-in-out .1s forwards;
+        }
+        @keyframes tabSheen { 60%{ transform: translateX(140%) skewX(-20deg); opacity:1 } 100%{ transform: translateX(140%) skewX(-20deg); opacity:0 } }
+
+        /* Panels */
+        #updates .panel{display:none}
+        #updates .panel[aria-hidden="false"]{display:block}
+
+        /* Leaderboard */
+        #updates .lb-list{display:grid;gap:14px;margin-top:12px}
+        #updates .lb-row{
+          display:grid;grid-template-columns:auto 56px 1fr auto;align-items:center;gap:14px;
+          padding:16px;border-radius:16px;
+          background:linear-gradient(180deg,#f8fbf2,#ffffff);
+          border:1px solid rgba(255,255,255,.55);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.6)
+        }
+        /* Lux rank badges with crowns */
+        #updates .lb-rank{
+          width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
+          font-weight:900;color:#2b1a00; position:relative; overflow:hidden;
+          border:1px solid rgba(255,255,255,.5);
+          box-shadow:0 10px 22px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.45);
+          font-family:"Montserrat", system-ui, sans-serif;
+        }
+        #updates .lb-rank::before{
+          content:""; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+          width:26px; height:16px; opacity:.95;
+          background: currentColor;
+          -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 40"><path d="M6 32h52v6H6zM8 30l8-16 16 10 16-10 8 16H8z"/></svg>') no-repeat center / contain;
+                  mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 40"><path d="M6 32h52v6H6zM8 30l8-16 16 10 16-10 8 16H8z"/></svg>') no-repeat center / contain;
+        }
+        #updates .lb-rank span{
+          margin-top:14px; font-size:18px; font-weight:900; z-index:1;
+          text-shadow:0 1px 0 rgba(255,255,255,.5);
+        }
+        #updates .rank-1{ background:linear-gradient(160deg,#f9f1c5 0%, #f1d882 40%, #d9b651 100%); color:#6a4d00; border-color:#f1da83; }
+        #updates .rank-2{ background:linear-gradient(160deg,#f3f6fb 0%, #d7e0ef 45%, #b9c6db 100%); color:#233245; border-color:#d7e0ef; }
+        #updates .rank-3{ background:linear-gradient(160deg,#f6e7d9 0%, #e7c3a1 45%, #cc996d 100%); color:#4a2e17; border-color:#e7c3a1; }
+
+        #updates .lb-ava{width:56px;height:56px;border-radius:16px;overflow:hidden;border:2px solid #ffe9b1;box-shadow:0 6px 14px rgba(231,195,92,.22)}
+        #updates .rank-2 ~ .lb-ava{ border-color:#d7e0ef; box-shadow:0 6px 14px rgba(120,140,170,.18) }
+        #updates .rank-3 ~ .lb-ava{ border-color:#e7c3a1; box-shadow:0 6px 14px rgba(204,153,109,.18) }
+
+        #updates .lb-ava img{width:100%;height:100%;object-fit:cover}
+        #updates .lb-name{font-weight:800}
+        #updates .lb-score{font-weight:900}
+        #updates .lb-bar{grid-column:3 / -1;height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;margin-top:6px;border:1px solid #eef2ea}
+        #updates .lb-bar > span{position:absolute;inset:0 0 0 0;width:0%;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);transition:width .9s ease}
+        @media(max-width:640px){
+          #updates .lb-row{grid-template-columns:auto 48px 1fr auto}
+          #updates .lb-rank{width:48px;height:48px;border-radius:14px}
+          #updates .lb-rank::before{top:5px;width:22px;height:14px}
+          #updates .lb-rank span{margin-top:12px;font-size:16px}
+          #updates .lb-ava{width:48px;height:48px;border-radius:14px}
+        }
+      </style>
+
       <div class="container">
-        <div class="glass card reveal">
+        <div class="card">
           <div class="head-row">
             <div class="title">
               <h2 style="margin:0">Academic Updates —</h2>
               <span class="badge">RESULTS</span>
             </div>
-            <div class="crumb" aria-label="Leaderboard toggle">● Leaderboard</div>
+            <div aria-label="Leaderboard toggle" style="font-weight:800">● Leaderboard</div>
           </div>
 
-          <div class="toast">Plus One First Term Internal Exams ✨</div>
+          <div class="toast">Plus One First Term Internal Exams</div>
 
-          <div class="crumbs" style="margin-top:12px">
-            <span class="crumb">Plus One</span>
-            <span class="crumb">First Term</span>
-            <span class="crumb">Results</span>
-            <span class="crumb">2025–26</span>
+          <!-- Subject Tabs -->
+          <div class="tabbar" role="tablist" aria-label="Subjects">
+            <button class="tab" role="tab" aria-selected="true" aria-controls="panel-total" id="tab-total">Total</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-phy" id="tab-phy">Physics</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-chem" id="tab-chem">Chemistry</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-math" id="tab-math">Maths</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-bio" id="tab-bio">Biology</button>
           </div>
 
-          <div class="lb-list" style="margin-top:18px">
-            <!-- Row 1 -->
-            <div class="lb-row">
-              <div class="lb-rank">1</div>
-              <div class="lb-ava">
-                <!-- Replace the src below with your hosted image URL -->
-                <img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Topper photo placeholder">
+          <!-- PANELS (placeholder duplicated across subjects for now) -->
+          <div class="panels">
+            <!-- TOTAL -->
+            <div class="panel" id="panel-total" role="tabpanel" aria-labelledby="tab-total" aria-hidden="false">
+              <div class="lb-list">
+                <div class="lb-row">
+                  <div class="lb-rank rank-1"><span>1</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></div>
+                  <div>
+                    <div class="lb-name">Fidha</div>
+                    <div class="lb-bar" data-pct="87"><span></span></div>
+                  </div>
+                  <div class="lb-score">87%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-2"><span>2</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></div>
+                  <div>
+                    <div class="lb-name">Gayathri</div>
+                    <div class="lb-bar" data-pct="77"><span></span></div>
+                  </div>
+                  <div class="lb-score">77%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-3"><span>3</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></div>
+                  <div>
+                    <div class="lb-name">Devanandha</div>
+                    <div class="lb-bar" data-pct="54"><span></span></div>
+                  </div>
+                  <div class="lb-score">54%</div>
+                </div>
               </div>
-              <div>
-                <div class="lb-name">Fidha</div>
-                <div class="lb-bar" data-pct="87"><span></span></div>
-              </div>
-              <div class="lb-score">87%</div>
             </div>
 
-            <!-- Row 2 -->
-            <div class="lb-row">
-              <div class="lb-rank" style="background:#eaf2ff;border-color:#d3e3ff;color:#0c2a6b">2</div>
-              <div class="lb-ava">
-                <!-- Replace with hosted image -->
-                <img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Second place photo placeholder">
+            <!-- PHYSICS -->
+            <div class="panel" id="panel-phy" role="tabpanel" aria-labelledby="tab-phy" aria-hidden="true">
+              <div class="lb-list">
+                <div class="lb-row">
+                  <div class="lb-rank rank-1"><span>1</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></div>
+                  <div>
+                    <div class="lb-name">Fidha</div>
+                    <div class="lb-bar" data-pct="87"><span></span></div>
+                  </div>
+                  <div class="lb-score">87%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-2"><span>2</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></div>
+                  <div>
+                    <div class="lb-name">Gayathri</div>
+                    <div class="lb-bar" data-pct="77"><span></span></div>
+                  </div>
+                  <div class="lb-score">77%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-3"><span>3</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></div>
+                  <div>
+                    <div class="lb-name">Devanandha</div>
+                    <div class="lb-bar" data-pct="54"><span></span></div>
+                  </div>
+                  <div class="lb-score">54%</div>
+                </div>
               </div>
-              <div>
-                <div class="lb-name">Gayathri</div>
-                <div class="lb-bar" data-pct="77"><span></span></div>
-              </div>
-              <div class="lb-score">77%</div>
             </div>
 
-            <!-- Row 3 -->
-            <div class="lb-row">
-              <div class="lb-rank" style="background:#eaf8ec;border-color:#cfead6;color:#0a3a18">3</div>
-              <div class="lb-ava">
-                <!-- Replace with hosted image -->
-                <img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Third place photo placeholder">
+            <!-- CHEMISTRY -->
+            <div class="panel" id="panel-chem" role="tabpanel" aria-labelledby="tab-chem" aria-hidden="true">
+              <div class="lb-list">
+                <div class="lb-row">
+                  <div class="lb-rank rank-1"><span>1</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></div>
+                  <div>
+                    <div class="lb-name">Fidha</div>
+                    <div class="lb-bar" data-pct="87"><span></span></div>
+                  </div>
+                  <div class="lb-score">87%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-2"><span>2</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></div>
+                  <div>
+                    <div class="lb-name">Gayathri</div>
+                    <div class="lb-bar" data-pct="77"><span></span></div>
+                  </div>
+                  <div class="lb-score">77%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-3"><span>3</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></div>
+                  <div>
+                    <div class="lb-name">Devanandha</div>
+                    <div class="lb-bar" data-pct="54"><span></span></div>
+                  </div>
+                  <div class="lb-score">54%</div>
+                </div>
               </div>
-              <div>
-                <div class="lb-name">Devanandha</div>
-                <div class="lb-bar" data-pct="54"><span></span></div>
+            </div>
+
+            <!-- MATHS -->
+            <div class="panel" id="panel-math" role="tabpanel" aria-labelledby="tab-math" aria-hidden="true">
+              <div class="lb-list">
+                <div class="lb-row">
+                  <div class="lb-rank rank-1"><span>1</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></div>
+                  <div>
+                    <div class="lb-name">Fidha</div>
+                    <div class="lb-bar" data-pct="87"><span></span></div>
+                  </div>
+                  <div class="lb-score">87%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-2"><span>2</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></div>
+                  <div>
+                    <div class="lb-name">Gayathri</div>
+                    <div class="lb-bar" data-pct="77"><span></span></div>
+                  </div>
+                  <div class="lb-score">77%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-3"><span>3</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></div>
+                  <div>
+                    <div class="lb-name">Devanandha</div>
+                    <div class="lb-bar" data-pct="54"><span></span></div>
+                  </div>
+                  <div class="lb-score">54%</div>
+                </div>
               </div>
-              <div class="lb-score">54%</div>
+            </div>
+
+            <!-- BIOLOGY -->
+            <div class="panel" id="panel-bio" role="tabpanel" aria-labelledby="tab-bio" aria-hidden="true">
+              <div class="lb-list">
+                <div class="lb-row">
+                  <div class="lb-rank rank-1"><span>1</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></div>
+                  <div>
+                    <div class="lb-name">Fidha</div>
+                    <div class="lb-bar" data-pct="87"><span></span></div>
+                  </div>
+                  <div class="lb-score">87%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-2"><span>2</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></div>
+                  <div>
+                    <div class="lb-name">Gayathri</div>
+                    <div class="lb-bar" data-pct="77"><span></span></div>
+                  </div>
+                  <div class="lb-score">77%</div>
+                </div>
+                <div class="lb-row">
+                  <div class="lb-rank rank-3"><span>3</span></div>
+                  <div class="lb-ava"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></div>
+                  <div>
+                    <div class="lb-name">Devanandha</div>
+                    <div class="lb-bar" data-pct="54"><span></span></div>
+                  </div>
+                  <div class="lb-score">54%</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="lb-foot">
+          <div class="lb-foot" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;color:#6b7280;font-size:12px">
             <span>*Results will be updated once all subjects have been published.</span>
             <span>sehracademy.com</span>
           </div>
         </div>
       </div>
+
+      <script>
+        (function(){
+          const section = document.getElementById('updates');
+          const tabs = Array.from(section.querySelectorAll('.tab'));
+          const panels = Array.from(section.querySelectorAll('.panel'));
+
+          function selectTab(nextId){
+            tabs.forEach(t=>{
+              const selected = (t.getAttribute('aria-controls') === nextId);
+              t.setAttribute('aria-selected', selected ? 'true' : 'false');
+            });
+            panels.forEach(p=>{
+              const visible = (p.id === nextId);
+              p.setAttribute('aria-hidden', visible ? 'false' : 'true');
+              if(visible){
+                p.querySelectorAll('.lb-bar').forEach(bar=>{
+                  const pct = Math.max(0, Math.min(100, Number(bar.dataset.pct||0)));
+                  const fill = bar.querySelector('span');
+                  fill.style.width = '0%';
+                  requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
+                });
+              }
+            });
+          }
+
+          tabs.forEach(t=>{
+            t.addEventListener('click', ()=> selectTab(t.getAttribute('aria-controls')));
+            t.addEventListener('keydown', (e)=>{
+              const i = tabs.indexOf(t);
+              if(e.key === 'ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+              if(e.key === 'ArrowLeft'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+            });
+          });
+
+          selectTab('panel-total');
+        })();
+      </script>
     </section>
     <!-- ===== /Academic Updates ===== -->
   </main>
@@ -517,11 +778,7 @@
         </div>
       </div>
 
-      <div class="b-bar reveal">
-        <span class="b-pill b-pill--ghost">TO JOIN</span>
-        <a class="b-pill" href="https://sehracademy.com" target="_blank" rel="noopener">VISIT SEHRACADEMY.COM</a>
-        <a class="b-pill" href="https://wa.me/919539409586?text=Hi%20Sehr%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll." target="_blank" rel="noopener">ENROLL NOW</a>
-      </div>
+      <!-- Removed the TO JOIN / VISIT / ENROLL banner per your request -->
     </div>
   </section>
 
@@ -873,7 +1130,7 @@
       if(e.isIntersecting){
         e.target.classList.add('in');
 
-        // Animate leaderboard bars when the card reveals
+        // Animate leaderboard bars when the old updates card reveals (kept for compatibility)
         if(e.target.matches('.updates .card')){
           e.target.querySelectorAll('.lb-bar').forEach(bar=>{
             const pct = Math.max(0, Math.min(100, Number(bar.dataset.pct||0)));
