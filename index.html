@@ -244,7 +244,7 @@
     @media(min-width:960px){.batches .grid{grid-template-columns:repeat(3,1fr)}}
     .batch{
       border-radius:16px;padding:20px;color:#fff;position:relative;overflow:hidden;
-      display:flex;flex-direction:column;gap:6px;min-height:200px; /* equal height boxes */
+      display:flex;flex-direction:column;gap:6px;min-height:200px;
     }
     .batch *, .batch h3{color:#fff}
     .batch small{opacity:.95;font-weight:700}
@@ -252,7 +252,7 @@
     .fee{font-family:Montserrat, sans-serif;font-weight:900;font-size:42px;line-height:1;margin:8px 0 6px}
     .tag{position:absolute;right:14px;top:14px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 10px;border-radius:999px;font-weight:800}
     .note{display:inline-block;margin-top:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);padding:6px 10px;border-radius:10px;font-weight:800}
-    .grad-ignite{background:radial-gradient(120% 120% at 0% 0%, #e45a24 0%, #8b2a10 65%)} /* improved contrast */
+    .grad-ignite{background:radial-gradient(120% 120% at 0% 0%, #e45a24 0%, #8b2a10 65%)}
     .grad-ascent{background:radial-gradient(120% 120% at 0% 0%, #3aa0ff 0%, #094b9c 60%)}
     .grad-origin{background:radial-gradient(120% 120% at 0% 0%, #ff9a3a 0%, #a4490d 60%)}
     .grad-legacy{background:radial-gradient(120% 120% at 0% 0%, #31b54b 0%, #0d5a1a 60%)}
@@ -261,6 +261,66 @@
     .b-bar{margin-top:16px;background:linear-gradient(90deg,#a7db64,#6bbf2f);border:1px solid #dff0c7;padding:12px;border-radius:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
     .b-pill{background:#fff;border:1px solid #e6f4d4;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;color:#0b0f10}
     .b-pill--ghost{background:rgba(255,255,255,.6)}
+
+    /* ---------- Gallery (Multiple Carousels) ---------- */
+    .carousel-grid{
+      display:grid;
+      gap:16px;
+    }
+    @media(min-width:1000px){
+      .carousel-grid{
+        grid-template-columns:1fr 1fr; /* two carousels side-by-side on large screens */
+      }
+    }
+    .carousel{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.45);
+    }
+    .carousel-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 16px 0 16px;
+    }
+    .carousel-title{
+      font-family:Montserrat, sans-serif; font-weight:800; font-size:16px;
+    }
+    .carousel-track{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      padding:16px;
+      -webkit-overflow-scrolling:touch;
+      mask-image: linear-gradient(to right, transparent 0, black 30px, black calc(100% - 30px), transparent 100%);
+    }
+    .carousel-track::-webkit-scrollbar{ height:8px }
+    .carousel-track::-webkit-scrollbar-thumb{ background:#e1efd2; border-radius:999px }
+    .carousel-track img{
+      scroll-snap-align:start;
+      flex-shrink:0;
+      height:320px;               /* fixed rail height */
+      width:auto;                 /* preserve aspect ratio */
+      object-fit:contain;         /* no crop; portrait stays portrait */
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(255,255,255,.55);
+      background:linear-gradient(180deg,#f8fbf2,#ffffff);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    @media(max-width:640px){
+      .carousel-track img{ height:260px }
+    }
+    .carousel-ctrl{
+      position:absolute; top:50%; transform:translateY(-50%);
+      display:grid; place-items:center; width:38px; height:38px; border-radius:12px;
+      background:var(--glass); border:1px solid rgba(255,255,255,.6);
+      backdrop-filter:blur(10px) saturate(140%);
+      cursor:pointer; user-select:none;
+    }
+    .carousel-ctrl:hover{ transform:translateY(-50%) scale(1.04) }
+    .carousel-prev{ left:10px }
+    .carousel-next{ right:10px }
   </style>
 </head>
 
@@ -281,7 +341,6 @@
       </a>
       <nav aria-label="Primary">
         <a href="#features">Features</a>
-        <!-- Removed Tutoring link as requested -->
         <a href="#programs">Programs</a>
         <a href="#schedule">Schedule</a>
         <a href="#contact">Contact</a>
@@ -377,7 +436,7 @@
       <div class="b-bar reveal">
         <span class="b-pill b-pill--ghost">TO JOIN</span>
         <a class="b-pill" href="https://sehracademy.com" target="_blank" rel="noopener">VISIT SEHRACADEMY.COM</a>
-        <a class="b-pill" href="https://wa.me/919539409586?text=Hi%20Sehr%20Academy%2C%20I%27d%20like%20to%20enroll." target="_blank" rel="noopener">ENROLL NOW</a>
+        <a class="b-pill" href="https://wa.me/919539409586?text=Hi%20Sehr%20Sehr%20Academy%2C%20I'd%20like%20to%20enroll." target="_blank" rel="noopener">ENROLL NOW</a>
       </div>
     </div>
   </section>
@@ -400,8 +459,6 @@
       </div>
     </div>
   </section>
-
-  <!-- (Removed the whole Tutoring Offered section as requested) -->
 
   <!-- PROGRAMS -->
   <section id="programs">
@@ -503,14 +560,13 @@
     </div>
   </section>
 
-  <!-- DEMO BOOKING -->
+  <!-- DEMO -->
   <section id="demo">
     <div class="container">
       <div class="card glass reveal">
         <h2>Book Your Free Demo</h2>
         <p class="muted" style="margin-top:6px">We’ll confirm your slot on WhatsApp.</p>
 
-        <!-- Form reliability improvements: strong validation, correct types, safer URL building -->
         <form id="demoForm" novalidate style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px">
           <div>
             <label for="name"><b>Name</b></label><br>
@@ -572,6 +628,50 @@
       </div>
     </div>
   </section>
+
+  <!-- ====== GALLERY: Multiple Carousels (NEW) ====== -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Gallery</div>
+        <h2>Moments at Sehr Academy</h2>
+      </div>
+
+      <div class="carousel-grid">
+        <!-- Carousel 1 -->
+        <div class="carousel glass reveal" data-carousel>
+          <div class="carousel-head">
+            <span class="carousel-title">Campus & Classes</span>
+          </div>
+          <button class="carousel-ctrl carousel-prev" aria-label="Previous">‹</button>
+          <button class="carousel-ctrl carousel-next" aria-label="Next">›</button>
+          <div class="carousel-track">
+            <img loading="lazy" src="https://i.postimg.cc/DfC8753f/IMG-2023-jpg.jpg" alt="Gallery image 3">
+            <img loading="lazy" src="https://i.postimg.cc/wT73MJ9X/IMG-9018.jpg" alt="Gallery image 4">
+            <img loading="lazy" src="https://i.postimg.cc/cCnwyFMX/IMG-9069.jpg">
+            <img loading="lazy" src="https://i.postimg.cc/5ytywQLM/IMG-1873.jpg" alt="Gallery image 1">
+          </div>
+        </div>
+
+        <!-- Carousel 2 -->
+        <div class="carousel glass reveal" data-carousel>
+          <div class="carousel-head">
+            <span class="carousel-title">Events & Activities</span>
+          </div>
+          <button class="carousel-ctrl carousel-prev" aria-label="Previous">‹</button>
+          <button class="carousel-ctrl carousel-next" aria-label="Next">›</button>
+          <div class="carousel-track">
+            <!-- Same images reused (you can replace or add more later) -->
+            <img loading="lazy" src="https://i.postimg.cc/5ytywQLM/IMG-1873.jpg" alt="Gallery image 1">
+          <img loading="lazy" src="https://i.postimg.cc/g2hJqWXr/IMG-1916.avif" alt="Gallery image 2">
+            <img loading="lazy" src="https://i.postimg.cc/wT73MJ9X/IMG-9018.jpg" alt="Gallery image 4">
+<img loading="lazy" src="https://i.postimg.cc/DfC8753f/IMG-2023-jpg.jpg" alt="Gallery image 3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ====== /GALLERY ====== -->
 
   <!-- CONTACT -->
   <section id="contact">
@@ -735,8 +835,20 @@
         window.open(url, '_blank','noopener');
       });
     }
+
+    // Simple prev/next controls for each carousel (scroll by card width)
+    document.querySelectorAll('[data-carousel]').forEach(carousel=>{
+      const track = carousel.querySelector('.carousel-track');
+      const prev = carousel.querySelector('.carousel-prev');
+      const next = carousel.querySelector('.carousel-next');
+      const scrollBy = ()=> {
+        const firstImg = track.querySelector('img');
+        const step = firstImg ? (firstImg.getBoundingClientRect().width + 12) : 320;
+        return Math.max(step, 280);
+      };
+      prev?.addEventListener('click', ()=> track.scrollBy({left: -scrollBy(), behavior:'smooth'}));
+      next?.addEventListener('click', ()=> track.scrollBy({left:  scrollBy(), behavior:'smooth'}));
+    });
   </script>
 </body>
 </html>
-```
-
