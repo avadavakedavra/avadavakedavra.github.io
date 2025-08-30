@@ -55,6 +55,45 @@
       background-size: 800px 600px; background-repeat: repeat; pointer-events:none; z-index:0;
     }
 
+    /* ===== LOCK SCREEN styles ===== */
+    body.locked .wrap{ filter: blur(12px); pointer-events:none; user-select:none; }
+    .lock-overlay{
+      position: fixed; inset: 0; display: grid; place-items: center;
+      background: radial-gradient(1200px 800px at 50% -10%, rgba(139,197,63,.15), transparent 60%), rgba(237,243,231,.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      transition: opacity .35s ease;
+    }
+    .lock-card{
+      width: min(520px, calc(100% - 32px));
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(15,23,42,.18);
+      padding: 24px;
+    }
+    .lock-head{
+      display:flex; align-items:center; gap:12px; margin-bottom:12px;
+      font-family: Montserrat; font-weight:900; font-size:22px;
+    }
+    .lock-sub{ color: var(--muted); margin-bottom:18px; font-weight:700; }
+    .lock-form{ display:grid; gap:10px; grid-template-columns: 1fr auto; }
+    .lock-input{
+      appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
+      border-radius:12px; padding:12px 14px; font-family: Montserrat; font-weight:700; font-size:14px;
+      outline:none;
+    }
+    .lock-btn{
+      appearance:none; border:1px solid var(--glass-border); background: rgba(139,197,63,.95);
+      color:#0f172a; border-radius:12px; padding:12px 16px; font-family: Montserrat; font-weight:900; font-size:14px;
+      cursor:pointer; box-shadow: 0 6px 16px rgba(15,23,42,.12), inset 0 -1px 0 rgba(0,0,0,.05);
+    }
+    .lock-btn:hover{ transform: translateY(-1px); }
+    .lock-err{ color:#b91c1c; font-weight:800; margin-top:6px; min-height:18px; }
+    .lock-foot{ margin-top:10px; font-size:12px; color:#6b7280; }
+
+    /* ===== PAGE styles ===== */
     .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
     header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
     .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; text-decoration:none; color:var(--ink); }
@@ -62,14 +101,14 @@
     .title-block{ display:flex; align-items:center; gap:10px; }
     .title-block h1{ font-family: Montserrat, sans-serif; font-weight:800; margin:0; font-size:26px; letter-spacing:.2px; cursor:pointer; }
     .actions{ display:flex; gap:8px; }
-    .btn, .back-btn{
+    .btn{
       appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
       border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; font-size:12px;
       box-shadow: 0 6px 16px rgba(15,23,42,.08), inset 0 -1px 0 rgba(0,0,0,.05);
       cursor:pointer;
     }
-    .btn:hover, .back-btn:hover{ transform: translateY(-1px); }
-    .btn:active, .back-btn:active{ transform: translateY(0); }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0); }
 
     .card{
       background: var(--panel);
@@ -140,19 +179,6 @@
     .tile-meta{ display:flex; align-items:center; justify-content:space-between; }
     .tile-meta .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
 
-    /* Achievements */
-    .achievements{ margin-top:22px; }
-    .ach-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
-    .ach-card{
-      background: linear-gradient(120deg, #f7f7f7, #eaeaea, #fafafa);
-      border:1px solid #d1d5db;
-      border-radius:14px;
-      padding:14px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 0 2px rgba(209,213,219,.28), 0 8px 18px rgba(0,0,0,.08);
-    }
-    .ach-title{ font-family: Montserrat; font-weight:800; font-size:14px; }
-
     /* Tooltip */
     .tooltip{
       position: fixed; z-index: 50; pointer-events:none;
@@ -181,15 +207,86 @@
     }
     @media print{ .actions{ display:none !important; } }
   </style>
+
+  <script>
+    // ===== LOCK SCREEN LOGIC =====
+    // SHA-256("fidhu123") = 60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07
+    const EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('lock-overlay');
+      if (sessionStorage.getItem('sehr-profile-unlocked') === '1') {
+        document.body.classList.remove('locked');
+        if (overlay) overlay.style.display = 'none';
+      } else {
+        document.body.classList.add('locked');
+      }
+    });
+
+    async function sha256Hex(message) {
+      const enc = new TextEncoder().encode(message);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const arr = Array.from(new Uint8Array(buf));
+      return arr.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function tryUnlock(evt){
+      evt?.preventDefault();
+      const input = document.getElementById('lock-input');
+      const err = document.getElementById('lock-err');
+      const btn = document.getElementById('lock-btn');
+      const overlay = document.getElementById('lock-overlay');
+      const val = (input.value || '').trim();
+
+      btn.disabled = true;
+      err.textContent = '';
+
+      try{
+        const hex = await sha256Hex(val);
+        if(hex === EXPECTED_HEX){
+          sessionStorage.setItem('sehr-profile-unlocked','1');
+          document.body.classList.remove('locked');
+          overlay.style.opacity = '0';
+          setTimeout(()=> overlay.style.display='none', 350);
+          input.value = '';
+        }else{
+          err.textContent = 'Wrong password. Please try again.';
+          input.select();
+        }
+      }catch(e){
+        err.textContent = 'Unexpected error. Please try again.';
+      }finally{
+        btn.disabled = false;
+      }
+    }
+  </script>
 </head>
-<body>
+
+<body class="locked">
+  <!-- ===== LOCK OVERLAY ===== -->
+  <div class="lock-overlay" id="lock-overlay" role="dialog" aria-modal="true" aria-labelledby="lock-title">
+    <div class="lock-card">
+      <div class="lock-head" id="lock-title">
+        <div class="brand"><b style="color:var(--sehr-green)">SEHR</b> ACADEMY</div>
+        <span>— Protected Profile</span>
+      </div>
+      <div class="lock-sub">Enter password to view student data.</div>
+      <form class="lock-form" onsubmit="tryUnlock(event)">
+        <input id="lock-input" class="lock-input" type="password" inputmode="text" autocomplete="current-password" placeholder="Password" aria-label="Password" />
+        <button id="lock-btn" type="submit" class="lock-btn">Unlock</button>
+      </form>
+      <div id="lock-err" class="lock-err" aria-live="polite"></div>
+      <div class="lock-foot">Tip: Access is remembered for this tab until you close it.</div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE CONTENT ===== -->
   <div class="wrap">
     <header>
       <a class="logo" href="https://sehracademy.com" aria-label="Sehr Academy homepage">
         <div class="brand"><b>SEHR</b> ACADEMY</div>
       </a>
       <div class="title-block">
-        <button class="back-btn" onclick="history.back()" aria-label="Go back">← Back</button>
         <h1 onclick="window.location.href='https://sehracademy.com'" title="Go to homepage">Student Profile</h1>
       </div>
       <div class="actions">
@@ -361,14 +458,12 @@
         <div class="ach-card">
           <div class="ach-title">Event Coordinator</div>
         </div>
-        <!-- Duplicate / add more cards here; all use subtle neutral gradient by default -->
       </div>
     </section>
 
     <!-- Performance Remarks -->
     <section class="section card remarks">
       <h2>Performance Remarks</h2>
-      <!-- Intentionally left blank to be filled later -->
       <div style="height:12px;"></div>
     </section>
 
