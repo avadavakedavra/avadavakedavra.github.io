@@ -41,15 +41,15 @@
     body:before{
       content:""; position:fixed; inset:0;
       background-image: url('data:image/svg+xml;utf8,\
-      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\" viewBox=\"0 0 800 600\" opacity=\"0.06\">\
-        <g fill=\"%230F172A\">\
-          <text x=\"40\" y=\"80\" font-size=\"56\" font-family=\"Montserrat\">E=mc^2</text>\
-          <text x=\"520\" y=\"140\" font-size=\"42\" font-family=\"Montserrat\">f(x)</text>\
-          <text x=\"220\" y=\"210\" font-size=\"48\" font-family=\"Montserrat\">Σ</text>\
-          <text x=\"660\" y=\"260\" font-size=\"46\" font-family=\"Montserrat\">π</text>\
-          <text x=\"120\" y=\"340\" font-size=\"40\" font-family=\"Montserrat\">∫</text>\
-          <text x=\"360\" y=\"440\" font-size=\"52\" font-family=\"Montserrat\">Δ</text>\
-          <text x=\"80\" y=\"520\" font-size=\"44\" font-family=\"Montserrat\">√x</text>\
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06">\
+        <g fill="%230F172A">\
+          <text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text>\
+          <text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text>\
+          <text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text>\
+          <text x="660" y="260" font-size="46" font-family="Montserrat">π</text>\
+          <text x="120" y="340" font-size="40" font-family="Montserrat">∫</text>\
+          <text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text>\
+          <text x="80" y="520" font-size="44" font-family="Montserrat">√x</text>\
         </g>\
       </svg>');
       background-size: 800px 600px; background-repeat: repeat; pointer-events:none; z-index:0;
@@ -58,7 +58,7 @@
     .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
     header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
     .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; }
-    .logo .brand{color:var(--ink);} .logo .brand b{color:var(--sehr-green);}
+    .logo .brand{color:var(--ink);} .logo .brand b{color:var(--sehr-green);}  
     .title-block h1{ font-family: Montserrat, sans-serif; font-weight:800; margin:0; font-size:26px; letter-spacing:.2px; }
     .actions{ display:flex; gap:8px; }
     .btn{
@@ -126,18 +126,19 @@
     .metric small{ display:block; font-family: Montserrat; font-weight:800; letter-spacing:.2px; color:var(--muted); }
     .metric b{ display:block; font-family: Montserrat; font-weight:900; font-size:18px; margin-top:4px; }
 
-    /* Subject tiles for external exams (no bars) */
+    /* Subject tiles for external exams — now as percentage bars */
     .tiles-wrap{ margin-top:12px; }
     .tiles-title{ font-family: Montserrat; font-weight:800; font-size:16px; margin:10px 2px 8px; color:#111827; }
     .exam-cards{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; }
-    /* hide progress & chips inside the exam-style avg-cards */
-    .exam-card .mini-bar, .exam-card .passchip{ display:none !important; }
-    .exam-card .wm{ display:none !important; }
 
-    /* Subject-tinted frosty gradients for exam cards */
-    .exam-card{ position:relative; overflow:hidden; }
+    .exam-card{ position:relative; overflow:hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .exam-card::before{ content:none !important; }
-    .exam-card{ backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+    /* NEW: bar inside exam-card */
+    .tile-bar{ position:relative; height:14px; border-radius:999px; background:#ffffff; border:1px solid var(--glass-border); box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); overflow:hidden; }
+    .tile-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
+    .tile-meta{ display:flex; align-items:center; justify-content:space-between; }
+    .tile-meta .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
 
     /* Achievements */
     .achievements{ margin-top:22px; }
@@ -163,9 +164,10 @@
     .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
 
     @media (max-width:1024px){
-      .avg-grid{grid-template-columns: repeat(2, 1fr);}
+      .avg-grid{grid-template-columns: repeat(2, 1fr);}  
       .more-metrics{grid-template-columns: 1fr;}
-      .tiles{grid-template-columns: repeat(2, 1fr);}
+      .tiles{grid-template-columns: repeat(2, 1fr);} 
+      .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));}
     }
     @media (max-width:760px){
       .info{grid-template-columns: 1fr 1fr}
@@ -300,45 +302,45 @@
               <div class="metric"><small>Failed</small><b id="met-failed">—</b></div>
             </div>
 
-            <!-- External exam subject tiles (no bars) -->
+            <!-- External exam subject tiles (PERCENTAGE BARS) -->
             <div class="tiles-wrap">
               <div class="tiles-title">Sehr First Term Exam</div>
               <div class="exam-cards" id="sehr-tiles">
                 <div class="avg-card exam-card sub-Physics">
-                  <div class="avg-top"><span class="s">Physics</span><span class="v" id="sehr-Physics">—</span></div>
-                  <span class="wm">Φ</span>
+                  <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="sehr-Physics-text">—</span></div>
+                  <div class="tile-bar"><i id="sehr-Physics-bar" data-pct=""></i></div>
                 </div>
                 <div class="avg-card exam-card sub-Maths">
-                  <div class="avg-top"><span class="s">Maths</span><span class="v" id="sehr-Maths">—</span></div>
-                  <span class="wm">∑</span>
+                  <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="sehr-Maths-text">—</span></div>
+                  <div class="tile-bar"><i id="sehr-Maths-bar" data-pct=""></i></div>
                 </div>
                 <div class="avg-card exam-card sub-Chemistry">
-                  <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="sehr-Chemistry">—</span></div>
-                  <span class="wm">⚗</span>
+                  <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="sehr-Chemistry-text">—</span></div>
+                  <div class="tile-bar"><i id="sehr-Chemistry-bar" data-pct=""></i></div>
                 </div>
                 <div class="avg-card exam-card sub-Biology">
-                  <div class="avg-top"><span class="s">Biology</span><span class="v" id="sehr-Biology">—</span></div>
-                  <span class="wm">🌿</span>
+                  <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="sehr-Biology-text">—</span></div>
+                  <div class="tile-bar"><i id="sehr-Biology-bar" data-pct=""></i></div>
                 </div>
               </div>
 
               <div class="tiles-title">School First Term Exam</div>
               <div class="exam-cards" id="school-tiles">
                 <div class="avg-card exam-card sub-Physics">
-                  <div class="avg-top"><span class="s">Physics</span><span class="v" id="school-Physics">—</span></div>
-                  <span class="wm">Φ</span>
+                  <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="school-Physics-text">—</span></div>
+                  <div class="tile-bar"><i id="school-Physics-bar" data-pct=""></i></div>
                 </div>
                 <div class="avg-card exam-card sub-Maths">
-                  <div class="avg-top"><span class="s">Maths</span><span class="v" id="school-Maths">—</span></div>
-                  <span class="wm">∑</span>
+                  <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="school-Maths-text">—</span></div>
+                  <div class="tile-bar"><i id="school-Maths-bar" data-pct=""></i></div>
                 </div>
                 <div class="avg-card exam-card sub-Chemistry">
-                  <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="school-Chemistry">—</span></div>
-                  <span class="wm">⚗</span>
+                  <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="school-Chemistry-text">—</span></div>
+                  <div class="tile-bar"><i id="school-Chemistry-bar" data-pct=""></i></div>
                 </div>
                 <div class="avg-card exam-card sub-Biology">
-                  <div class="avg-top"><span class="s">Biology</span><span class="v" id="school-Biology">—</span></div>
-                  <span class="wm">🌿</span>
+                  <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="school-Biology-text">—</span></div>
+                  <div class="tile-bar"><i id="school-Biology-bar" data-pct=""></i></div>
                 </div>
               </div>
             </div>
@@ -370,7 +372,7 @@
   <div class="tooltip" id="tooltip"></div>
 
   <script>
-    /* Gradient helper for Internals bars */
+    /* Gradient helper for Internals + tiles */
     function perfGradient(pct){
       if(pct >= 75) return {bg:`linear-gradient(90deg, var(--shine1), var(--gld2))`, glow:'0 0 0 3px rgba(212,175,55,.25)'};
       if(pct >= 50) return {bg:`linear-gradient(90deg, var(--or1), var(--or2))`, glow:'none'};
@@ -380,8 +382,8 @@
 
     // EDIT these if you want to set subject scores for the external exams
     const termExams = {
-      sehr: { Physics: 1, Maths: 1, Chemistry: 87, Biology: 1 },
-      school: { Physics: 1, Maths: 1, Chemistry: 1, Biology: 1 }
+      sehr:   { Physics: 1, Maths: 1, Chemistry: 87, Biology: 1 },
+      school: { Physics: 1, Maths: 1, Chemistry: 1,  Biology: 1 }
     };
 
     const tip = document.getElementById('tooltip');
@@ -462,27 +464,34 @@
       document.getElementById('met-passed').textContent = passed;
       document.getElementById('met-failed').textContent = failed;
 
-      // Fill external exam tiles
+      // Fill external exam tiles (as bars in white glass boxes)
       fillTiles('sehr', termExams.sehr);
       fillTiles('school', termExams.school);
     }
 
-    function colorTextByPerf(el, pct){
-      if(pct==null || isNaN(pct)){ el.textContent = '—'; el.style.color = '#111827'; el.style.background = 'none'; return; }
-      el.textContent = pct + '%';
-      const st = perfGradient(pct);
+    function setBar(el, pct){
+      if(!el) return;
+      const p = (pct==null || isNaN(pct)) ? 0 : Math.max(0, Math.min(100, Math.round(pct)));
+      const st = perfGradient(p);
       el.style.background = st.bg;
-      el.style.webkitBackgroundClip = 'text';
-      el.style.backgroundClip = 'text';
-      el.style.color = 'transparent';
-      el.style.textShadow = 'none';
+      if(st.glow !== 'none') el.style.boxShadow = st.glow; else el.style.boxShadow = 'none';
+      requestAnimationFrame(()=>{ el.style.width = p + '%'; });
+      const wrap = el.parentElement;
+      if(wrap){
+        wrap.setAttribute('data-tip', `${p}%`);
+        wrap.addEventListener('mouseenter', showTip);
+        wrap.addEventListener('mousemove', moveTip);
+        wrap.addEventListener('mouseleave', hideTip);
+      }
     }
 
     function fillTiles(prefix, data){
       ['Physics','Maths','Chemistry','Biology'].forEach(subj => {
-        const el = document.getElementById(prefix + '-' + subj.replace(/\s+/g,''));
         const val = data && typeof data[subj] === 'number' ? Math.round(data[subj]) : null;
-        colorTextByPerf(el, val);
+        const barEl  = document.getElementById(`${prefix}-${subj.replace(/\s+/g,'')}-bar`);
+        const txtEl  = document.getElementById(`${prefix}-${subj.replace(/\s+/g,'')}-text`);
+        setBar(barEl, val);
+        if(txtEl){ txtEl.textContent = (val==null || isNaN(val)) ? '—' : (val + '%'); }
       });
     }
 
@@ -503,23 +512,23 @@
       });
       const subjMap = {};
       exams.forEach(e=>{ (subjMap[e.subject] ||= []).push(Number(e.score)); });
-      let csv = 'Exam,Subject,Score (%)\\n';
-      exams.forEach(e=>{ csv += `${e.id},${e.subject},${e.score}\\n`; });
-      csv += '\\nSubject,Average (%),Passed,Failed\\n';
+      let csv = 'Exam,Subject,Score (%)\n';
+      exams.forEach(e=>{ csv += `${e.id},${e.subject},${e.score}\n`; });
+      csv += '\nSubject,Average (%),Passed,Failed\n';
       Object.entries(subjMap).forEach(([s,arr])=>{
         const avg = arr.reduce((a,b)=>a+b,0)/arr.length;
         const passed = arr.filter(v=>v>=50).length;
         const failed = arr.filter(v=>v<50).length;
-        csv += `${s},${Math.round(avg*10)/10},${passed},${failed}\\n`;
+        csv += `${s},${Math.round(avg*10)/10},${passed},${failed}\n`;
       });
       // also include external exams if filled
-      csv += '\\nSehr First Term Exam\\nSubject,Score (%)\\n';
+      csv += '\nSehr First Term Exam\nSubject,Score (%)\n';
       ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
-        const v = termExams.sehr[subj]; csv += `${subj},${(v==null?'':v)}\\n`;
+        const v = termExams.sehr[subj]; csv += `${subj},${(v==null?'':v)}\n`;
       });
-      csv += '\\nSchool First Term Exam\\nSubject,Score (%)\\n';
+      csv += '\nSchool First Term Exam\nSubject,Score (%)\n';
       ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
-        const v = termExams.school[subj]; csv += `${subj},${(v==null?'':v)}\\n`;
+        const v = termExams.school[subj]; csv += `${subj},${(v==null?'':v)}\n`;
       });
 
       const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
@@ -532,4 +541,3 @@
   </script>
 </body>
 </html>
-
