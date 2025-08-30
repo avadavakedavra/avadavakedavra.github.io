@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehr Academy — Student Profile (Devanandha)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#8BC53F">
+  <style>
+    :root{
+      --sehr-green:#8BC53F;
+      --ink:#0F172A;
+      --muted:#5b6475;
+      --panel: rgba(255,255,255,0.75);
+      --panel-strong: rgba(255,255,255,0.92);
+      --glass-border: rgba(255,255,255,0.55);
+      --shadow: 0 10px 30px rgba(15,23,42,.10);
+      --radius: 18px;
+      /* gradient palette */
+      --darkred1:#b91c1c; --darkred2:#ef4444;   /* 0–30 */
+      --red1:#ef4444;     --red2:#f87171;       /* 30–50 */
+      --or1:#f59e0b;      --or2:#fbbf24;        /* 50–75 */
+      --gld1:#f1ce58;     --gld2:#d4af37;       /* 75–100 */
+      --shine1:#fff3b0;   --shine2:#d4af37;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(139,197,63,.18), transparent 60%),
+        radial-gradient(900px 400px at 110% 10%, rgba(139,197,63,.12), transparent 60%),
+        #edf3e7;
+      position:relative;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:""; position:fixed; inset:0;
+      background-image: url('data:image/svg+xml;utf8,\
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06">\
+        <g fill="%230F172A">\
+          <text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text>\
+          <text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text>\
+          <text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text>\
+          <text x="660" y="260" font-size="46" font-family="Montserrat">π</text>\
+          <text x="120" y="340" font-size="40" font-family="Montserrat">∫</text>\
+          <text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text>\
+          <text x="80" y="520" font-size="44" font-family="Montserrat">√x</text>\
+        </g>\
+      </svg>');
+      background-size: 800px 600px; background-repeat: repeat; pointer-events:none; z-index:0;
+    }
+
+    .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
+    header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
+    .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; }
+    .logo .brand{color:var(--ink);} .logo .brand b{color:var(--sehr-green);}
+    .title-block h1{ font-family: Montserrat, sans-serif; font-weight:800; margin:0; font-size:26px; letter-spacing:.2px; }
+    .actions{ display:flex; gap:8px; }
+    .btn{
+      appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
+      border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; font-size:12px;
+      box-shadow: 0 6px 16px rgba(15,23,42,.08), inset 0 -1px 0 rgba(0,0,0,.05);
+      cursor:pointer;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0); }
+
+    .card{
+      background: var(--panel);
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .profile{ display:grid; grid-template-columns: 110px 1fr; gap:18px; padding:18px; align-items:center; }
+    .avatar{ width:100px; height:100px; border-radius:18px; overflow:hidden; border:2px solid rgba(0,0,0,0.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); background:#fff; }
+    .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+    .info{display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; align-items:center;}
+    .k{ background: var(--panel-strong); border:1px solid var(--glass-border); border-radius: 14px; padding:12px 14px; }
+    .k small{display:block; color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.2px; text-transform:uppercase}
+    .k b{display:block; font-family: Montserrat; font-size:16px; margin-top:4px}
+
+    .section{ margin-top:22px; padding:16px 18px; }
+    .section h2{ margin:0 0 10px; font-family: Montserrat; font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
+
+    /* Subject averages — frosted boxes with watermark icons */
+    .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap:14px; margin:12px 0 8px; }
+    .avg-card{ position:relative; display:grid; grid-template-rows: auto auto; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
+    .avg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .avg-card .s{font-family: Montserrat; font-weight:800; font-size:14px; letter-spacing:.2px}
+    .avg-card .v{font-family: Montserrat; font-weight:900; font-size:20px}
+    .mini-bar{ position:relative; height:10px; border-radius:999px; background: rgba(15,23,42,.08); overflow:hidden; }
+    .mini-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
+    .passchip{ position:absolute; bottom:10px; right:10px; font-size:11px; font-family: Montserrat; font-weight:800; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid var(--glass-border); }
+    .wm{ position:absolute; right:8px; top:0; font-family: Montserrat; font-weight:900; font-size:60px; opacity:.08; pointer-events:none; }
+
+    /* Results (Accordions) */
+    details.term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
+    details.term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    details.term summary::-webkit-details-marker{display:none}
+    .chip{ background:#fff; border:1px solid var(--glass-border); padding:8px 14px; border-radius:999px; font-weight:900; font-size:14px; box-shadow: inset 0 -1px 0 rgba(0,0,0,.05); }
+
+    .term-body{ padding:10px 16px 18px 16px; background: rgba(255,255,255,0.6); border-top:1px dashed rgba(15,23,42,.08); }
+
+    .exam-row{
+      display:grid; grid-template-columns: 80px 1fr 70px; align-items:center; gap:12px; padding:10px 8px;
+    }
+    .label{ font-weight:800; font-family: Montserrat; letter-spacing:.3px; color:#2d3748; background: #fff; border:1px solid var(--glass-border); border-radius:12px; padding:8px 10px; text-align:center; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
+    .bar{ position:relative; height:12px; border-radius:999px; background: rgba(15,23,42,.07); overflow:hidden; }
+    .bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
+    .pct{font-weight:800; font-family: Montserrat; text-align:right}
+
+    /* Totals */
+    .total-row{ margin-top:8px; padding:14px 8px 6px; border-top:1px dashed rgba(15,23,42,.12); }
+    .total-row h3{ margin:0 0 8px; font-family: Montserrat; font-weight:900; font-size:18px; letter-spacing:.3px; display:flex; align-items:center; gap:8px; }
+
+    /* Metric mini-cards */
+    .more-metrics{ display:grid; grid-template-columns: repeat(3, minmax(140px,1fr)); gap:12px; margin-top:10px; }
+    .metric{ background: rgba(255,255,255,.9); border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; backdrop-filter: blur(8px); box-shadow: 0 8px 20px rgba(15,23,42,.06); }
+    .metric small{ display:block; font-family: Montserrat; font-weight:800; letter-spacing:.2px; color:var(--muted); }
+    .metric b{ display:block; font-family: Montserrat; font-weight:900; font-size:18px; margin-top:4px; }
+
+    /* Subject tiles for external exams (no bars) */
+    .tiles-wrap{ margin-top:12px; }
+    .tiles-title{ font-family: Montserrat; font-weight:800; font-size:16px; margin:10px 2px 8px; color:#111827; }
+    .exam-cards{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; }
+    /* hide progress & chips inside the exam-style avg-cards */
+    .exam-card .mini-bar, .exam-card .passchip{ display:none !important; }
+    .exam-card .wm{ display:none !important; }
+
+    /* Subject-tinted frosty gradients for exam cards */
+    .exam-card{ position:relative; overflow:hidden; }
+    .exam-card::before{ content:none !important; }
+    .exam-card{ backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+    /* Achievements */
+    .achievements{ margin-top:22px; }
+    .ach-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
+    .ach-card{ background: rgba(255,255,255,.9); border:1px solid var(--glass-border); border-radius:14px; padding:14px; backdrop-filter: blur(10px); box-shadow: 0 8px 22px rgba(15,23,42,.08); }
+    .ach-title{ font-family: Montserrat; font-weight:800; font-size:14px; }
+    .ach-green{ position:relative; background: linear-gradient(120deg, #9bd65a, var(--sehr-green), #b9ea86); background-size: 200% 200%; animation: shimmer 4s ease-in-out infinite; border:1px solid rgba(139,197,63,.55); box-shadow: 0 0 0 2px rgba(139,197,63,.22), 0 10px 26px rgba(139,197,63,.35); }
+    @keyframes shimmer{ 0%{ background-position: 0% 50%; } 50%{ background-position: 100% 50%; } 100%{ background-position: 0% 50%; } }
+
+    /* Performance Remarks */
+    .remarks{ margin-top:22px; }
+    .remarks .card{ padding:14px; }
+
+    /* Tooltip */
+    .tooltip{
+      position: fixed; z-index: 50; pointer-events:none;
+      background: rgba(17,24,39,.85); color: #fff; padding:6px 8px; border-radius:8px;
+      font-family: Montserrat; font-weight:700; font-size:12px; letter-spacing:.2px;
+      transform: translate(-50%, -140%); white-space:nowrap; opacity:0; transition: opacity .15s ease;
+    }
+
+    /* footer mini */
+    .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
+
+    @media (max-width:1024px){
+      .avg-grid{grid-template-columns: repeat(2, 1fr);} 
+      .more-metrics{grid-template-columns: 1fr;}
+      .tiles{grid-template-columns: repeat(2, 1fr);} 
+    }
+    @media (max-width:760px){
+      .info{grid-template-columns: 1fr 1fr}
+      .profile{grid-template-columns: 80px 1fr}
+      .avatar{width:72px;height:72px;border-radius:12px}
+      .exam-row{ grid-template-columns: 1fr; grid-template-areas: "label" "pct" "bar"; gap:8px; }
+      .label{ grid-area: label; }
+      .pct{ grid-area: pct; text-align:left; }
+      .bar{ grid-area: bar; height:12px; }
+      .actions{ display:none; }
+    }
+    @media print{ .actions{ display:none !important; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><div class="brand"><b>SEHR</b> ACADEMY</div></div>
+      <div class="title-block"><h1>Student Profile</h1></div>
+      <div class="actions">
+        <button class="btn" id="btn-print">Print / PDF</button>
+        <button class="btn" id="btn-csv">CSV</button>
+      </div>
+    </header>
+
+    <!-- Profile Card -->
+    <section class="card profile">
+      <div class="avatar">
+        <img src="https://i.postimg.cc/Qxn4fjrg/2b6d1f59-71fa-4a5d-ace8-4b80de38074a.png" alt="Devanandha profile photo">
+      </div>
+      <div class="info">
+        <div class="k"><small>Student</small><b>Devanandha</b></div>
+        <div class="k"><small>Class</small><b>Plus One Science / Class 11</b></div>
+        <div class="k"><small>Joining Date</small><b>2025-05-26</b></div>
+        <div class="k"><small>Birthday</small><b>—</b></div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="section card">
+      <h2>Results</h2>
+
+      <!-- Subject Average Boxes (auto-calculated) -->
+      <div class="avg-grid" id="subject-averages">
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div>
+          <div class="mini-bar"><i id="mini-Physics"></i></div>
+          <span class="passchip" id="pf-Physics">—</span>
+          <span class="wm">Φ</span>
+        </div>
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div>
+          <div class="mini-bar"><i id="mini-Maths"></i></div>
+          <span class="passchip" id="pf-Maths">—</span>
+          <span class="wm">∑</span>
+        </div>
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div>
+          <div class="mini-bar"><i id="mini-Chemistry"></i></div>
+          <span class="passchip" id="pf-Chemistry">—</span>
+          <span class="wm">⚗</span>
+        </div>
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div>
+          <div class="mini-bar"><i id="mini-Biology"></i></div>
+          <span class="passchip" id="pf-Biology">—</span>
+          <span class="wm">🌿</span>
+        </div>
+      </div>
+
+      <!-- First Term -->
+      <details class="term" open>
+        <summary>
+          <span>First Term</span>
+          <span class="chip">May – Sep 2025</span>
+        </summary>
+        <div class="term-body" id="first-term">
+          <!-- QP rows -->
+          <div class="exam-row" data-subject="Physics">
+            <div class="label">QP01</div>
+            <div class="bar"><i data-pct="28"></i></div>
+            <div class="pct">28%</div>
+          </div>
+          <div class="exam-row" data-subject="Maths">
+            <div class="label">QP02</div>
+            <div class="bar"><i data-pct="37"></i></div>
+            <div class="pct">37%</div>
+          </div>
+          <div class="exam-row" data-subject="Chemistry">
+            <div class="label">QP03</div>
+            <div class="bar"><i data-pct="59"></i></div>
+            <div class="pct">59%</div>
+          </div>
+          <div class="exam-row" data-subject="Biology">
+            <div class="label">QP04</div>
+            <div class="bar"><i data-pct="33"></i></div>
+            <div class="pct">33%</div>
+          </div>
+          <div class="exam-row" data-subject="Physics">
+            <div class="label">QP05</div>
+            <div class="bar"><i data-pct="50"></i></div>
+            <div class="pct">50%</div>
+          </div>
+          <div class="exam-row" data-subject="Maths">
+            <div class="label">QP06</div>
+            <div class="bar"><i data-pct="31"></i></div>
+            <div class="pct">31%</div>
+          </div>
+          <div class="exam-row" data-subject="Chemistry">
+            <div class="label">QP07</div>
+            <div class="bar"><i data-pct="20"></i></div>
+            <div class="pct">20%</div>
+          </div>
+          <div class="exam-row" data-subject="Biology">
+            <div class="label">QP08</div>
+            <div class="bar"><i data-pct="14"></i></div>
+            <div class="pct">14%</div>
+          </div>
+
+          <div class="total-row">
+            <h3>First Term Overview</h3>
+            <div class="exam-row" style="padding-top:0;">
+              <div class="label">Internals Average</div>
+              <div class="bar"><i id="avg-bar" data-pct="0"></i></div>
+              <div class="pct" id="avg-text">0%</div>
+            </div>
+
+            <!-- Summary metric boxes -->
+            <div class="more-metrics">
+              <div class="metric"><small>Attempted</small><b id="met-attempted">—</b></div>
+              <div class="metric"><small>Passed</small><b id="met-passed">—</b></div>
+              <div class="metric"><small>Failed</small><b id="met-failed">—</b></div>
+            </div>
+
+            <!-- External exam subject tiles (no bars) -->
+            <div class="tiles-wrap">
+              <div class="tiles-title">Sehr First Term Exam</div>
+              <div class="exam-cards" id="sehr-tiles">
+                <div class="avg-card exam-card sub-Physics">
+                  <div class="avg-top"><span class="s">Physics</span><span class="v" id="sehr-Physics">—</span></div>
+                  <span class="wm">Φ</span>
+                </div>
+                <div class="avg-card exam-card sub-Maths">
+                  <div class="avg-top"><span class="s">Maths</span><span class="v" id="sehr-Maths">—</span></div>
+                  <span class="wm">∑</span>
+                </div>
+                <div class="avg-card exam-card sub-Chemistry">
+                  <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="sehr-Chemistry">—</span></div>
+                  <span class="wm">⚗</span>
+                </div>
+                <div class="avg-card exam-card sub-Biology">
+                  <div class="avg-top"><span class="s">Biology</span><span class="v" id="sehr-Biology">—</span></div>
+                  <span class="wm">🌿</span>
+                </div>
+              </div>
+
+              <div class="tiles-title">School First Term Exam</div>
+              <div class="exam-cards" id="school-tiles">
+                <div class="avg-card exam-card sub-Physics">
+                  <div class="avg-top"><span class="s">Physics</span><span class="v" id="school-Physics">—</span></div>
+                  <span class="wm">Φ</span>
+                </div>
+                <div class="avg-card exam-card sub-Maths">
+                  <div class="avg-top"><span class="s">Maths</span><span class="v" id="school-Maths">—</span></div>
+                  <span class="wm">∑</span>
+                </div>
+                <div class="avg-card exam-card sub-Chemistry">
+                  <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="school-Chemistry">—</span></div>
+                  <span class="wm">⚗</span>
+                </div>
+                <div class="avg-card exam-card sub-Biology">
+                  <div class="avg-top"><span class="s">Biology</span><span class="v" id="school-Biology">—</span></div>
+                  <span class="wm">🌿</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- Achievements -->
+    <section class="section card achievements">
+      <h2>Other Achievements</h2>
+      <div class="ach-grid">
+        <div class="ach-card ach-gold">
+          <div class="ach-title">100% Attendance - June</div>
+        </div>
+        <div class="ach-card ach-gold">
+          <div class="ach-title">100% Attendance - July</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Performance Remarks -->
+    <section class="section card remarks">
+      <h2>Performance Remarks</h2>
+      <!-- Intentionally left blank to be filled later -->
+      <div style="height:12px;"></div>
+    </section>
+
+    <div class="foot">sehracademy.com</div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    /* Gradient helper for Internals bars */
+    function perfGradient(pct){
+      if(pct >= 75) return {bg:`linear-gradient(90deg, var(--shine1), var(--gld2))`, glow:'0 0 0 3px rgba(212,175,55,.25)'};
+      if(pct >= 50) return {bg:`linear-gradient(90deg, var(--or1), var(--or2))`, glow:'none'};
+      if(pct >= 30) return {bg:`linear-gradient(90deg, var(--red1), var(--red2))`, glow:'none'};
+      return {bg:`linear-gradient(90deg, var(--darkred1), var(--darkred2))`, glow:'none'};
+    }
+
+    // EDIT these if you want to set subject scores for the external exams
+    const termExams = {
+      sehr: { Physics: 1, Maths: 1, Chemistry: 54, Biology: 1 },
+      school: { Physics: 1, Maths: 1, Chemistry: 1, Biology: 1 }
+    };
+
+    const tip = document.getElementById('tooltip');
+    function showTip(e){ tip.textContent = e.currentTarget.getAttribute('data-tip') || ''; tip.style.opacity = '1'; }
+    function moveTip(e){ tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; }
+    function hideTip(){ tip.style.opacity = '0'; }
+
+    function initFirstTerm(){
+      const rows = Array.from(document.querySelectorAll('#first-term .exam-row'));
+      const bars = rows.map(r => r.querySelector('.bar > i'));
+      const avgBar = document.getElementById('avg-bar');
+      const avgText = document.getElementById('avg-text');
+
+      // Paint bars + tooltips for Internals (QP01–QP08)
+      rows.forEach(row => {
+        const pct = Number(row.querySelector('.bar > i').dataset.pct || 0);
+        const bar = row.querySelector('.bar > i');
+        const style = perfGradient(pct);
+        bar.style.background = style.bg;
+        if(style.glow !== 'none') bar.style.boxShadow = style.glow;
+        requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
+
+        const subj = row.dataset.subject || '—';
+        const qp = row.querySelector('.label')?.textContent || '';
+        const barWrap = row.querySelector('.bar');
+        barWrap.setAttribute('data-tip', `${qp} · ${subj} · ${pct}%`);
+        barWrap.addEventListener('mouseenter', showTip);
+        barWrap.addEventListener('mousemove', moveTip);
+        barWrap.addEventListener('mouseleave', hideTip);
+      });
+
+      // Internals average
+      const values = bars.map(el => Number(el.dataset.pct || 0));
+      const attempted = values.filter(v => v > 0).length;
+      const overall = values.reduce((a,b)=>a+b,0) / (values.length || 1);
+      const shown = Math.round(overall * 10)/10;
+      const styleAvg = perfGradient(shown);
+      avgBar.style.background = styleAvg.bg;
+      if(styleAvg.glow !== 'none') avgBar.style.boxShadow = styleAvg.glow;
+      requestAnimationFrame(()=>{ avgBar.style.width = shown + '%'; });
+      avgText.textContent = shown + '%';
+
+      // Subject averages + per-subject pass labels
+      const groups = {};
+      rows.forEach(row => {
+        const subj = row.dataset.subject || 'Other';
+        const val = Number(row.querySelector('.bar > i').dataset.pct || 0);
+        (groups[subj] ||= []).push(val);
+      });
+      Object.entries(groups).forEach(([subj, arr])=>{
+        const avg = arr.reduce((a,b)=>a+b,0) / arr.length;
+        const rounded = Math.round(avg*10)/10;
+        const pass = arr.filter(v=>v>=50).length;
+        const textEl = document.getElementById('avg-' + subj.replace(/\s+/g,''));
+        const miniEl = document.getElementById('mini-' + subj.replace(/\s+/g,''));
+        const pfEl = document.getElementById('pf-' + subj.replace(/\s+/g,''));
+        if(textEl){
+          textEl.textContent = rounded + '%';
+          textEl.style.background = perfGradient(rounded).bg;
+          textEl.style.webkitBackgroundClip = 'text';
+          textEl.style.backgroundClip = 'text';
+          textEl.style.color = 'transparent';
+        }
+        if(miniEl){
+          const st = perfGradient(rounded);
+          miniEl.style.background = st.bg;
+          requestAnimationFrame(()=>{ miniEl.style.width = rounded + '%'; });
+        }
+        if(pfEl){
+          pfEl.textContent = `${pass}/${arr.length} passed`;
+        }
+      });
+
+      // Repurposed metric boxes
+      const passed = values.filter(v => v >= 50).length;
+      const failed = values.filter(v => v > 0 && v < 50).length;
+      document.getElementById('met-attempted').textContent = attempted;
+      document.getElementById('met-passed').textContent = passed;
+      document.getElementById('met-failed').textContent = failed;
+
+      // Fill external exam tiles
+      fillTiles('sehr', termExams.sehr);
+      fillTiles('school', termExams.school);
+    }
+
+    function colorTextByPerf(el, pct){
+      if(pct==null || isNaN(pct)){ el.textContent = '—'; el.style.color = '#111827'; el.style.background = 'none'; return; }
+      el.textContent = pct + '%';
+      const st = perfGradient(pct);
+      el.style.background = st.bg;
+      el.style.webkitBackgroundClip = 'text';
+      el.style.backgroundClip = 'text';
+      el.style.color = 'transparent';
+      el.style.textShadow = 'none';
+    }
+
+    function fillTiles(prefix, data){
+      ['Physics','Maths','Chemistry','Biology'].forEach(subj => {
+        const el = document.getElementById(prefix + '-' + subj.replace(/\s+/g,''));
+        const val = data && typeof data[subj] === 'number' ? Math.round(data[subj]) : null;
+        colorTextByPerf(el, val);
+      });
+    }
+
+    // Download buttons
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('btn-print').addEventListener('click', ()=> window.print());
+      document.getElementById('btn-csv').addEventListener('click', downloadCSV);
+      initFirstTerm();
+    });
+
+    function downloadCSV(){
+      const rows = Array.from(document.querySelectorAll('#first-term .exam-row'));
+      const exams = rows.map(r => {
+        const id = r.querySelector('.label').textContent.trim();
+        const subject = r.dataset.subject || '';
+        const score = r.querySelector('.bar > i').dataset.pct || '0';
+        return {id, subject, score};
+      });
+      const subjMap = {};
+      exams.forEach(e=>{ (subjMap[e.subject] ||= []).push(Number(e.score)); });
+      let csv = 'Exam,Subject,Score (%)\n';
+      exams.forEach(e=>{ csv += `${e.id},${e.subject},${e.score}\n`; });
+      csv += '\nSubject,Average (%),Passed,Failed\n';
+      Object.entries(subjMap).forEach(([s,arr])=>{
+        const avg = arr.reduce((a,b)=>a+b,0)/arr.length;
+        const passed = arr.filter(v=>v>=50).length;
+        const failed = arr.filter(v=>v<50).length;
+        csv += `${s},${Math.round(avg*10)/10},${passed},${failed}\n`;
+      });
+      // also include external exams if filled
+      csv += '\nSehr First Term Exam\nSubject,Score (%)\n';
+      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
+        const v = termExams.sehr[subj]; csv += `${subj},${(v==null?'':v)}\n`;
+      });
+      csv += '\nSchool First Term Exam\nSubject,Score (%)\n';
+      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
+        const v = termExams.school[subj]; csv += `${subj},${(v==null?'':v)}\n`;
+      });
+
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'fidha-first-term.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    }
+  </script>
+</body>
+</html>
