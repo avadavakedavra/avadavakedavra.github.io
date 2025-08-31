@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehr Academy — Downloads</title>
+  <meta name="description" content="Free study materials and an exclusive Students-Only Vault. Enroll in an offline batch to get direct access to premium tests, solutions, and ranker notes." />
+  <meta name="theme-color" content="#8BC53F" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --sehr:#8BC53F;
+      --sehr-dk:#6cab2f;
+      --ink:#0F172A;
+      --muted:#5b6475;
+      --panel:rgba(255,255,255,0.78);
+      --panel-strong:rgba(255,255,255,0.94);
+      --glass-brd:rgba(255,255,255,0.55);
+      --shadow:0 18px 40px rgba(15,23,42,0.14);
+      --ring:0 0 0 1px rgba(139,197,63,0.25), 0 8px 20px rgba(139,197,63,0.25);
+      --black:#0f172a;
+      --bg:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";}
+    a{text-decoration:none;color:inherit}
+
+    /* ===== Header (your snippet) ===== */
+    header[role="banner"]{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(1.1) blur(12px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.75));
+      border-bottom:1px solid rgba(15,23,42,0.06);
+    }
+    .container.nav{
+      max-width:1200px; margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:baseline; gap:6px; font-family:Montserrat, sans-serif;
+      font-weight:900; letter-spacing:.8px;
+    }
+    .brand span:first-child{ color:var(--sehr); font-size:1.15rem; }
+    .brand span:last-child{ color:var(--ink); font-size:1.05rem; }
+    header nav[aria-label="Primary"]{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    }
+    header nav[aria-label="Primary"] a{
+      padding:8px 12px; border-radius:12px; font-weight:700; color:var(--ink);
+      border:1px solid transparent; transition:transform .15s ease;
+    }
+    header nav[aria-label="Primary"] a:hover{ transform:translateY(-1px); }
+    /* highlight Student Login lightly */
+    header nav[aria-label="Primary"] a[href*="studentlogin"]{
+      border:1px solid rgba(15,23,42,0.08); background:rgba(255,255,255,0.8);
+    }
+
+    /* ===== Hero ===== */
+    .hero{
+      max-width:1200px; margin:30px auto 8px; padding:0 18px;
+      display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:center;
+    }
+    @media (max-width:900px){ .hero{grid-template-columns:1fr} }
+    .h-left h1{
+      font-family:Montserrat, sans-serif; font-weight:900; letter-spacing:.2px; line-height:1.05; margin:0 0 10px; font-size:clamp(24px, 5vw, 42px);
+    }
+    .h-left p{ color:var(--muted); margin:0 0 14px; }
+    .h-card{
+      backdrop-filter: blur(14px) saturate(1.1);
+      background: linear-gradient(180deg, var(--panel), rgba(255,255,255,0.82));
+      border:1px solid var(--glass-brd);
+      border-radius:18px; padding:14px; box-shadow: var(--shadow);
+    }
+    .h-badges{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .chip{
+      padding:6px 10px; border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+      border:1px solid rgba(15,23,42,0.08);
+      font-weight:700; font-size:.84rem;
+    }
+
+    /* ===== Filters ===== */
+    .filters{
+      max-width:1200px; margin:16px auto; padding:0 18px;
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    }
+    .input, .select{
+      background:var(--panel-strong); border:1px solid var(--glass-brd); border-radius:14px; padding:10px 12px; font-weight:700;
+      outline:none; box-shadow: var(--shadow);
+    }
+    .input{ flex:1 1 260px; }
+    .select{ min-width:150px; }
+
+    /* ===== Buttons ===== */
+    .btn, .btn-dark, .ghost{
+      border:none; border-radius:14px; padding:10px 14px; font-weight:900; font-family:Montserrat, sans-serif; cursor:pointer;
+      text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .btn{ background: linear-gradient(180deg,#a8e067,#7bbd30); color:#0b1a06; box-shadow: var(--ring); }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn-dark{ background: var(--black); color:#fff; box-shadow: 0 0 0 1px rgba(15,23,42,.25), 0 8px 20px rgba(15,23,42,.25); }
+    .btn-dark:hover{ transform: translateY(-1px); }
+    .ghost{
+      background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+      border:1px solid rgba(15,23,42,0.08); color:var(--ink);
+    }
+    .ghost:hover{ transform:translateY(-1px); }
+
+    /* ===== Sections / Grid ===== */
+    .section{ max-width:1200px; margin:24px auto; padding:0 18px; }
+    .section h2{
+      font-family:Montserrat, sans-serif; font-weight:900; letter-spacing:.2px; margin:0 0 12px; font-size:clamp(20px, 4vw, 32px);
+    }
+    .sub{ color:var(--muted); margin:0 0 18px; }
+    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; }
+    .grid > *{ grid-column: span 4; }
+    @media (max-width:1000px){ .grid > *{ grid-column: span 6; } }
+    @media (max-width:640px){ .grid > *{ grid-column: span 12; } }
+
+    /* ===== Cards ===== */
+    .card{
+      position:relative; overflow:hidden; border-radius:18px; background:var(--panel); border:1px solid var(--glass-brd); box-shadow: var(--shadow);
+      padding:14px; display:flex; flex-direction:column; gap:10px; min-height:160px;
+    }
+    .title{ font-weight:900; font-family:Montserrat, sans-serif; }
+    .meta{ display:flex; gap:10px; flex-wrap:wrap; color:var(--muted); font-size:.88rem;}
+    .actions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ===== Locked: show title, blur body ===== */
+    .locked-body{
+      filter: blur(4px) saturate(0.9);
+      user-select:none; pointer-events:none;
+      position:relative;
+    }
+    .locked-body:after{
+      content:""; position:absolute; inset:0;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.45), rgba(255,255,255,0.0));
+    }
+    .pill-lock{
+      display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:8px 12px;
+      background:linear-gradient(180deg,#111,#333); color:#fff; border:1px solid rgba(255,255,255,0.2);
+      box-shadow:0 10px 30px rgba(0,0,0,0.25);
+      font-weight:900; font-family:Montserrat, sans-serif; font-size:.9rem;
+      width:max-content;
+    }
+    .pill-lock svg{ width:16px; height:16px; }
+
+    /* ===== CTA Strip ===== */
+    .cta-strip{ margin:24px auto; max-width:1200px; padding:16px 18px; }
+    .cta{
+      border-radius:20px; padding:16px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
+      background:
+        radial-gradient(1200px 200px at 20% -80%, rgba(139,197,63,0.25), transparent),
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.8));
+      border:1px solid var(--glass-brd);
+      box-shadow: var(--shadow);
+    }
+    @media (max-width:720px){ .cta{ grid-template-columns:1fr; } }
+    .cta h3{ margin:0; font-family:Montserrat, sans-serif; font-weight:900; }
+    .cta p{ margin:4px 0 0; color:var(--muted); }
+    .cta .cta-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ===== Quotes & Footer ===== */
+    .quotes{ display:grid; grid-template-columns: repeat(12,1fr); gap:14px; }
+    .quotes > *{ grid-column:span 6; }
+    @media (max-width:900px){ .quotes > *{ grid-column:span 12; } }
+    .quote{ border-radius:18px; padding:14px; background:var(--panel-strong); border:1px solid var(--glass-brd); box-shadow: var(--shadow); }
+    .quote b{ font-family:Montserrat, sans-serif; }
+
+    footer{
+      margin:34px auto 40px; max-width:1200px; padding:0 18px; color:var(--muted);
+      display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
+      border-top:1px dashed rgba(15,23,42,0.12); padding-top:12px;
+    }
+    footer a{ color:var(--ink); font-weight:800; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Your header (as provided) ===== -->
+  <header role="banner">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Sehr Academy">
+        <span>SEHR</span><span>ACADEMY</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="/#programs">Programs</a>
+        <a href="https://sehracademy.com/studentlogin">Student Login</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="h-left">
+      <h1>Downloads — Free Library & Students-Only Vault</h1>
+      <p>Grab high-quality free study aids. Enrolled students receive full access to premium series and solutions (delivered privately).</p>
+      <div class="h-badges">
+        <span class="chip">Physics</span>
+        <span class="chip">Chemistry</span>
+        <span class="chip">Maths</span>
+        <span class="chip">Biology</span>
+        <span class="chip">Class 11</span>
+        <span class="chip">Class 12</span>
+      </div>
+    </div>
+    <div class="h-card">
+      <b style="font-family:Montserrat, sans-serif;">How access works</b>
+      <ol style="margin:8px 0 0; padding-left:18px;">
+        <li><b>Free Library:</b> download instantly — no hidden fees or charges.</li>
+        <li><b>Students-Only Vault:</b> Enrolled students get full access.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== Filters (for Free Library) ===== -->
+  <div class="filters">
+    <input id="q" class="input" type="search" placeholder="Search free resources (e.g., 'kinematics formula')" />
+    <select id="f-subject" class="select">
+      <option value="">All Subjects</option>
+      <option>Physics</option>
+      <option>Chemistry</option>
+      <option>Maths</option>
+      <option>Biology</option>
+    </select>
+    <select id="f-class" class="select">
+      <option value="">All Classes</option>
+      <option>Class 11</option>
+      <option>Class 12</option>
+    </select>
+    <button id="btn-clear" class="ghost" type="button">Reset</button>
+  </div>
+
+  <!-- ===== Free Library ===== -->
+  <section class="section" id="free">
+    <h2>Free Library</h2>
+    <p class="sub">Curated quick-wins: formula sheets, chapter PYQs, one-page mindmaps, and speed tests.</p>
+    <div class="grid" id="free-grid">
+      <article class="card" data-subject="Physics" data-class="Class 11" data-title="Kinematics — Formula Sheet">
+        <div class="title">Kinematics — Formula Sheet</div>
+        <div>Concise one-pager for quick revision and test-day recall.</div>
+        <div class="meta"><span>Physics</span> • <span>Class 11</span> • <span>PDF (210 KB)</span> • <span>Updated: 28 Aug</span></div>
+        <div class="actions">
+          <a class="btn" href="#" download>Download</a>
+          <button class="ghost share" type="button" data-text="Kinematics Formula Sheet — Sehr Academy">Share</button>
+        </div>
+      </article>
+
+      <article class="card" data-subject="Chemistry" data-class="Class 11" data-title="Structure of Atom — Mindmap">
+        <div class="title">Structure of Atom — Mindmap</div>
+        <div>Visual map of key postulates, quantum numbers, and spectra.</div>
+        <div class="meta"><span>Chemistry</span> • <span>Class 11</span> • <span>PDF (340 KB)</span> • <span>Updated: 27 Aug</span></div>
+        <div class="actions">
+          <a class="btn" href="#" download>Download</a>
+          <button class="ghost share" type="button" data-text="Structure of Atom Mindmap — Sehr Academy">Share</button>
+        </div>
+      </article>
+
+      <article class="card" data-subject="Maths" data-class="Class 11" data-title="Trigonometry Booster — 30 MCQs">
+        <div class="title">Trigonometry Booster — 30 MCQs</div>
+        <div>Speed-test set with answer key; 20-minute drill.</div>
+        <div class="meta"><span>Maths</span> • <span>Class 11</span> • <span>PDF (480 KB)</span> • <span>Updated: 25 Aug</span></div>
+        <div class="actions">
+          <a class="btn" href="#" download>Download</a>
+          <button class="ghost share" type="button" data-text="Trigonometry Booster MCQs — Sehr Academy">Share</button>
+        </div>
+      </article>
+
+      <article class="card" data-subject="Biology" data-class="Class 11" data-title="Animal Kingdom — Summary Sheet">
+        <div class="title">Animal Kingdom — Summary Sheet</div>
+        <div>NCERT-strict quick summary: charts + checkpoints.</div>
+        <div class="meta"><span>Biology</span> • <span>Class 11</span> • <span>PDF (260 KB)</span> • <span>Updated: 24 Aug</span></div>
+        <div class="actions">
+          <a class="btn" href="#" download>Download</a>
+          <button class="ghost share" type="button" data-text="Animal Kingdom Summary — Sehr Academy">Share</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Vault (Locked: show file names; blur content) ===== -->
+  <section class="section" id="vault">
+    <h2>Students-Only Vault (Locked)</h2>
+    <p class="sub">Premium packs are delivered directly to enrolled students. Files are <b>not</b> publicly listed.</p>
+
+    <div class="grid">
+      <!-- Example Teaser 1 -->
+      <article class="card">
+        <!-- Title stays readable -->
+        <div class="title">Most Important Derivation-Based Questions — Physics (Class 11)</div>
+        <!-- Body is blurred -->
+        <div class="locked-body">
+          <div>Set A: Units & Measurements, Kinematics, Laws of Motion, Work-Energy-Power.</div>
+          <div>Set B: Rotational Dynamics, Gravitation, Oscillations — stepwise solutions included.</div>
+          <div class="meta"><span>Physics</span> • <span>Class 11</span> • <span>Weekly drops</span></div>
+        </div>
+        <div class="actions">
+          <span class="pill-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 10V8a5 5 0 0 1 10 0v2"/>
+              <rect x="5" y="10" width="14" height="10" rx="2" ry="2"></rect>
+            </svg>
+            Locked — Enrolled students only
+          </span>
+          <a class="btn" href="/#programs">Enroll in an offline batch</a>
+        </div>
+      </article>
+
+      <!-- Example Teaser 2 -->
+      <article class="card">
+        <div class="title">Mathematics Quick Revision Sheet — Trigonometry & Functions</div>
+        <div class="locked-body">
+          <div>One-pagers: identities, graphs, inverse functions, typical traps, 5-minute drills.</div>
+          <div class="meta"><span>Maths</span> • <span>Class 11</span> • <span>Exam week focus</span></div>
+        </div>
+        <div class="actions">
+          <span class="pill-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 10V8a5 5 0 0 1 10 0v2"/>
+              <rect x="5" y="10" width="14" height="10" rx="2" ry="2"></rect>
+            </svg>
+            Locked — Enrolled students only
+          </span>
+          <a class="btn" href="/#programs">Enroll in an offline batch</a>
+        </div>
+      </article>
+
+      <!-- Example Teaser 3 -->
+      <article class="card">
+        <div class="title">Solved PYQ Packs (Latest Pattern) — Chemistry</div>
+        <div class="locked-body">
+          <div>Chapter-tagged with step-marking & common-error flags. Includes mini mock tests.</div>
+          <div class="meta"><span>Chemistry</span> • <span>Class 11</span> • <span>Updated monthly</span></div>
+        </div>
+        <div class="actions">
+          <span class="pill-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 10V8a5 5 0 0 1 10 0v2"/>
+              <rect x="5" y="10" width="14" height="10" rx="2" ry="2"></rect>
+            </svg>
+            Locked — Enrolled students only
+          </span>
+          <a class="btn" href="/#programs">Enroll in an offline batch</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <div class="cta-strip">
+    <div class="cta">
+      <div>
+        <h3>Enroll in an offline batch and get direct access to all premium materials</h3>
+        <p>Access is delivered privately (email/WhatsApp). Nothing from the Vault is publicly listed.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn" href="/#programs">See Courses</a>
+        <a class="btn-dark" href="/batchorigin">Origin — Fees & Details</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Social proof ===== -->
+  <section class="section">
+    <h2>What our students say</h2>
+    <div class="quotes">
+      <div class="quote">“Booster tests every week + instant solutions helped me fix silly mistakes fast.” — <b>F.A.</b></div>
+      <div class="quote">“Ranker notes were gold in the last 10 days. Crisp and targeted.” — <b>G.S.</b></div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ (courses route) ===== -->
+  <section class="section">
+    <h2>FAQ</h2>
+    <div class="grid">
+      <div class="card" style="grid-column:span 12;">
+        <div class="title" style="margin-bottom:8px;">Which course should I join to access the Vault?</div>
+        <div style="margin-bottom:12px;">Explore our courses and fee plans. <b>Go to Courses</b> or see <b>Origin batch</b>.</div>
+        <div class="actions">
+          <a class="btn" href="/#programs" aria-label="Go to Courses">Go to Courses</a>
+          <a class="btn-dark" href="/batchorigin" aria-label="Origin batch (fees)">Origin — Fees & Details</a>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:span 6;">
+        <div class="title">Why is Vault content locked?</div>
+        <div>It’s part of our enrolled-student plan (tests, reviews, solutions). We deliver it directly so it’s structured and timely.</div>
+      </div>
+
+      <div class="card" style="grid-column:span 6;">
+        <div class="title">How is access delivered?</div>
+        <div>Once enrolled/verified, we deliver materials privately via email/WhatsApp. Nothing is publicly listed.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div>© Sehr Academy. Study materials are for enrolled students; redistribution not permitted.</div>
+    <div><a href="/#programs">Courses</a> · <a href="https://wa.me/918547242186" target="_blank" rel="noopener">WhatsApp</a></div>
+  </footer>
+
+  <script>
+    // Basic filter for Free Library
+    const q = document.getElementById('q');
+    const fSubject = document.getElementById('f-subject');
+    const fClass = document.getElementById('f-class');
+    const freeGrid = document.getElementById('free-grid');
+    const btnClear = document.getElementById('btn-clear');
+
+    function applyFilters(){
+      const text = q.value.trim().toLowerCase();
+      const sub = fSubject.value;
+      const cls = fClass.value;
+      [...freeGrid.children].forEach(card => {
+        const title = (card.dataset.title||"").toLowerCase();
+        const matchText = !text || title.includes(text);
+        const matchSub = !sub || card.dataset.subject === sub;
+        const matchCls = !cls || card.dataset.class === cls;
+        card.style.display = (matchText && matchSub && matchCls) ? "" : "none";
+      });
+    }
+    q.addEventListener('input', applyFilters);
+    fSubject.addEventListener('change', applyFilters);
+    fClass.addEventListener('change', applyFilters);
+    btnClear.addEventListener('click', ()=>{
+      q.value=""; fSubject.value=""; fClass.value=""; applyFilters();
+    });
+
+    // WhatsApp share for Free Library
+    document.querySelectorAll('.share').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const text = btn.getAttribute('data-text') + " — Free resource by Sehr Academy";
+        const url = encodeURIComponent(window.location.href.split('#')[0]);
+        window.open('https://wa.me/?text=' + encodeURIComponent(text) + '%0A' + url, '_blank');
+      });
+    });
+  </script>
+</body>
+</html>
