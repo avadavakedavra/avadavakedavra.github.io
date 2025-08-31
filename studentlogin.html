@@ -32,56 +32,39 @@
 
     /* Header */
     header{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid #eaeaea}
-    .container.nav{max-width:1100px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between}
-    .brand{font-family:Montserrat; font-weight:900; font-size:22px; display:flex; gap:4px}
+    .container.nav{max-width:1100px; margin:0 auto; padding:20px 24px; display:flex; align-items:center; justify-content:space-between}
+    .brand{font-family:Montserrat; font-weight:900; font-size:26px; display:flex; gap:4px}
     .brand span:first-child{color:var(--sehr-green)}
     .brand span:last-child{color:#111}
-    nav a{margin-left:24px; font-family:Montserrat; font-weight:700; font-size:15px; color:#111; transition:color .2s ease}
-    nav a:hover{color:var(--sehr-green)}
+    nav a{margin-left:28px; font-family:Montserrat; font-weight:700; font-size:16px; color:#111; transition:color .2s ease}
+    nav a:hover, nav a:focus{color:var(--sehr-green)}
 
     /* Shiny panel */
-    .panel{max-width:1100px; margin:22px auto 0; padding:18px; border-radius:var(--radius); border:1px solid var(--glass-border); background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70)); box-shadow: var(--shadow); animation:glassFloat 6s ease-in-out infinite}
-    @keyframes glassFloat{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+    .panel{max-width:1100px; margin:22px auto 0; padding:18px; border-radius:var(--radius); border:1px solid var(--glass-border); background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70)); box-shadow: var(--shadow);}
 
-    .controls{display:flex; gap:16px; align-items:end; justify-content:center; flex-wrap:nowrap}
+    .controls{display:flex; gap:16px; align-items:end; justify-content:center; flex-wrap:wrap}
     .field{display:grid; gap:6px}
-    .field label{font-family:Montserrat; font-weight:800; font-size:13px; color:#111}
+    .field label{font-family:Montserrat; font-weight:800; font-size:14px; color:#111}
     .field select,.field input{padding:12px 16px; border-radius:14px; border:1px solid var(--glass-border); background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.7)); font-weight:700; min-width:220px; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 20px rgba(15,23,42,.06)}
     .go-btn{align-self:center; height:44px; padding:0 18px; border-radius:14px; border:1px solid var(--glass-border); font-family:Montserrat; font-weight:900; background:linear-gradient(180deg,#fff,rgba(255,255,255,.75)); cursor:pointer; box-shadow:0 8px 20px rgba(15,23,42,.06)}
-    .go-btn:hover{box-shadow:0 12px 28px rgba(15,23,42,.10)}
-
-    /* Watermark layer behind grid */
-    .watermark{position:fixed; inset:0; pointer-events:none; z-index:-1; background:
-      radial-gradient(420px 340px at 15% 12%, rgba(139,197,63,.10), transparent 60%),
-      radial-gradient(520px 380px at 88% 18%, rgba(139,197,63,.08), transparent 60%)}
 
     /* Grid & cards */
     .grid{display:grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap:18px; margin:22px auto; max-width:1100px}
-    .mode-chip{max-width:1100px; margin:0 auto 6px; padding:0 4px; font-family:Montserrat; font-size:12px; color:#334; text-align:center}
     .card{display:block; background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.65)); border:1px solid var(--glass-border); border-radius:18px; padding:18px; text-align:center; box-shadow:var(--shadow); transition:transform .3s ease, box-shadow .3s ease, filter .3s ease}
-    .card:hover{transform:translateY(-6px); box-shadow:0 16px 40px rgba(21,36,66,.18); filter:drop-shadow(0 0 8px rgba(139,197,63,0.45))}
+    .card:hover, .card:focus{transform:translateY(-6px); box-shadow:0 16px 40px rgba(21,36,66,.18); filter:drop-shadow(0 0 8px rgba(139,197,63,0.45)); outline:none}
     .ava{width:96px; height:96px; margin:6px auto 12px; border-radius:22px; overflow:hidden; border:2px solid rgba(255,255,255,.9); box-shadow:0 10px 24px rgba(15,23,42,.12); background:#f1f5f9; display:grid; place-items:center; font-family:Montserrat; font-weight:900}
     .ava img{width:100%; height:100%; object-fit:cover; display:block; margin-top:12px}
     .name{font-family:Montserrat; font-weight:900; font-size:18px; color:#111}
     .muted{color:#111; opacity:.6; font-size:13px; margin-top:4px}
 
-    /* Skeleton shimmer */
-    .skeleton .ava{background:#e7efe3; position:relative; overflow:hidden}
-    .skeleton .name,.skeleton .muted{height:16px; border-radius:8px; background:#eef4ea; margin:10px auto}
-    .skeleton .muted{width:40%}
-    .skeleton .name{width:60%}
-    .skeleton .shimmer{position:absolute; inset:0; background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.8) 40%, transparent 80%); transform:translateX(-100%); animation: shimmer 1.4s infinite}
-    @keyframes shimmer{to{transform:translateX(100%)}}
+    .empty-msg{text-align:center; font-family:Montserrat; font-size:16px; color:#444; margin-top:40px}
 
-    /* Footer */
     footer{max-width:1100px; margin:28px auto 40px; padding:0 16px; display:flex; gap:14px; justify-content:center; color:#334; font-size:14px}
     footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
   </style>
 </head>
 
 <body>
-  <div class="watermark" aria-hidden="true"></div>
-
   <header role="banner">
     <div class="container nav">
       <a class="brand" href="https://sehracademy.com" aria-label="Sehr Academy">
@@ -117,15 +100,15 @@
       <div class="field">
         <label for="searchBox">Search</label>
         <div style="display:flex; gap:8px; align-items:center">
-          <input id="searchBox" placeholder="Type a name… (e.g., Fidha)" />
+          <input id="searchBox" placeholder="Type a name… (e.g., Fidha or ID)" />
           <button class="go-btn" id="searchGo">Go</button>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="mode-chip" id="modeChip" aria-live="polite"></div>
   <section class="grid" id="studentGrid"></section>
+  <div id="emptyState" class="empty-msg"></div>
 
   <footer>
     <a href="#" id="helpLink">Help</a>
@@ -135,134 +118,72 @@
 
   <script>
     const students = [
-      { name:"Fidha", slug:"fidha", img:"https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png", year:"2025–26", className:"Plus One Science"},
-      { name:"Gayathri", slug:"gayathri", img:"https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png", year:"2025–26", className:"Plus One Science"},
-      { name:"Devanandha", slug:"devanandha", img:"https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png", year:"2025–26", className:"Plus One Science"}
+      { name:"Fidha", slug:"fidha", id:"S001", img:"https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png", year:"2025–26", className:"Plus One Science"},
+      { name:"Gayathri", slug:"gayathri", id:"S002", img:"https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png", year:"2025–26", className:"Plus One Science"},
+      { name:"Devanandha", slug:"devanandha", id:"S003", img:"https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png", year:"2025–26", className:"Plus One Science"}
     ];
 
-    const yearSel = document.querySelector('#yearSel');
-    const classSel = document.querySelector('#classSel');
-    const searchBox = document.querySelector('#searchBox');
-    const searchGo = document.querySelector('#searchGo');
-    const modeChip = document.querySelector('#modeChip');
-    const grid = document.querySelector('#studentGrid');
+    const yearSel=document.querySelector('#yearSel');
+    const classSel=document.querySelector('#classSel');
+    const searchBox=document.querySelector('#searchBox');
+    const searchGo=document.querySelector('#searchGo');
+    const grid=document.querySelector('#studentGrid');
+    const empty=document.querySelector('#emptyState');
 
-    let searchMode = false; // true => search across ALL students ignoring dropdowns
-    let currentQ = '';
+    let focusIndex=-1; // for keyboard navigation
 
-    function setParams(y, c, q){
-      const u = new URL(location.href);
-      if(y) u.searchParams.set('year', y); else u.searchParams.delete('year');
-      if(c) u.searchParams.set('class', c); else u.searchParams.delete('class');
-      if(q) u.searchParams.set('q', q); else u.searchParams.delete('q');
-      history.replaceState({}, '', u);
+    function render(list){
+      grid.innerHTML='';
+      empty.textContent='';
+      if(list.length===0){
+        empty.textContent='No students found';
+        return;
+      }
+      list.forEach((s,i)=>{
+        const a=document.createElement('a');
+        a.href=`https://sehracademy.com/${s.slug}`;
+        a.className='card';
+        a.tabIndex=0;
+        a.innerHTML=`
+          <div class="ava"><img loading="lazy" src="${s.img}" alt="${s.name}"></div>
+          <div class="name">${s.name}</div>
+          <div class="muted">Tap to open profile</div>
+        `;
+        a.addEventListener('keydown',e=>{
+          if(e.key==='Enter'){ window.location=a.href; }
+        });
+        grid.appendChild(a);
+      });
     }
 
-    function getParams(){
-      const u = new URL(location.href);
-      return { year: u.searchParams.get('year')||'', klass: u.searchParams.get('class')||'', q: u.searchParams.get('q')||'' };
-    }
-
-    function skeleton(){
-      const s = document.createElement('div');
-      s.className = 'card skeleton'; s.style.minHeight = '190px';
-      s.innerHTML = `<div class="ava"><span class="shimmer"></span></div>
-                     <div class="name"></div>
-                     <div class="muted"></div>`;
-      return s;
-    }
-
-    function toast(msg){
-      const t = document.createElement('div');
-      t.textContent = msg;
-      Object.assign(t.style, {position:'fixed', left:'50%', bottom:'22px', transform:'translateX(-50%)',
-        padding:'10px 14px', background:'rgba(255,255,255,.94)', border:'1px solid #e6efe3', borderRadius:'12px',
-        boxShadow:'0 8px 24px rgba(15,23,42,.12)', fontWeight:'800', fontFamily:'Montserrat', zIndex:100});
-      document.body.appendChild(t);
-      setTimeout(()=>t.remove(), 1200);
-    }
-
-    function updateModeChip(){
-      if(searchMode && currentQ){
-        modeChip.textContent = `Search results for "${currentQ}"`;
+    function filter(){
+      const q=searchBox.value.trim().toLowerCase();
+      if(q){
+        const list=students.filter(s=>s.name.toLowerCase().includes(q)||s.id.toLowerCase().includes(q));
+        render(list);
       } else if(yearSel.value && classSel.value){
-        modeChip.textContent = `${yearSel.value} · ${classSel.value}`;
+        const list=students.filter(s=>s.year===yearSel.value && s.className===classSel.value);
+        render(list);
       } else {
-        modeChip.textContent = '';
+        grid.innerHTML='';
+        empty.textContent='Please select Year & Class or use Search';
       }
     }
 
-    function render(){
-      grid.innerHTML = '';
-      grid.append(skeleton(), skeleton());
+    searchGo.addEventListener('click',filter);
+    searchBox.addEventListener('input',filter);
+    yearSel.addEventListener('change',filter);
+    classSel.addEventListener('change',filter);
 
-      setTimeout(() => {
-        grid.innerHTML = '';
-        let list = [];
-        if(searchMode && currentQ){
-          const q = currentQ.toLowerCase();
-          list = students.filter(s => s.name.toLowerCase().includes(q));
-          setParams('', '', currentQ);
-        } else {
-          if(!yearSel.value || !classSel.value){ updateModeChip(); return; }
-          list = students.filter(s => s.year === yearSel.value && s.className === classSel.value);
-          setParams(yearSel.value, classSel.value, '');
-        }
-
-        if(list.length === 0){
-          const empty = document.createElement('div');
-          empty.className = 'card';
-          empty.innerHTML = `<div class="name" style="font-size:16px">No matches found</div>
-                             <div class="muted">Try a different name</div>`;
-          grid.appendChild(empty);
-          updateModeChip();
-          return;
-        }
-
-        list.forEach(s => {
-          const a = document.createElement('a');
-          a.href = `https://sehracademy.com/${encodeURIComponent(s.slug)}`;
-          a.className = 'card';
-          a.innerHTML = `
-            <div class="ava">
-              ${s.img ? `<img loading="lazy" src="${s.img}" alt="${s.name}">` : `<div>${s.name[0]}</div>`}
-            </div>
-            <div class="name">${s.name}</div>
-            <div class="muted">Tap to open profile</div>
-          `;
-          a.addEventListener('click', () => toast(`Opening ${s.name}…`));
-          grid.appendChild(a);
-        });
-        updateModeChip();
-      }, 140);
-    }
-
-    // Triggers
-    function triggerSearch(){
-      currentQ = (searchBox.value||'').trim();
-      searchMode = !!currentQ; // search only if there is a query
-      render();
-    }
-
-    searchGo.addEventListener('click', triggerSearch);
-    searchBox.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); triggerSearch(); }});
-
-    yearSel.addEventListener('change', ()=>{ searchMode = false; currentQ=''; render(); });
-    classSel.addEventListener('change', ()=>{ searchMode = false; currentQ=''; render(); });
-
-    // Init from URL
-    const {year, klass, q} = getParams();
-    if(year) yearSel.value = year;
-    if(klass) classSel.value = klass;
-    if(q){ searchBox.value = q; currentQ = q; searchMode = true; }
-
-    if(searchMode || (yearSel.value && classSel.value)) render();
-
-    // Help link -> quick tips toast
-    document.querySelector('#helpLink').addEventListener('click', (e)=>{
-      e.preventDefault();
-      toast('Tip: Use Go to search across all students, or pick Year + Class to browse batches.');
+    // Keyboard navigation: arrow keys cycle focus
+    document.addEventListener('keydown',e=>{
+      const cards=[...grid.querySelectorAll('.card')];
+      if(!cards.length) return;
+      if(e.key==='ArrowDown'){focusIndex=(focusIndex+1)%cards.length;cards[focusIndex].focus();e.preventDefault();}
+      if(e.key==='ArrowUp'){focusIndex=(focusIndex-1+cards.length)%cards.length;cards[focusIndex].focus();e.preventDefault();}
     });
+
+    filter(); // initial state
   </script>
 </body>
 </html>
