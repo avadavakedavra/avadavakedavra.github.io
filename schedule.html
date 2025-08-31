@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sehr Academy — Test & Events Schedule</title>
-<meta name="description" content="Sehr Academy schedule auto-updated from Google Sheets.">
+<meta name="description" content="Sehr Academy schedule from a self-hosted JSON file." />
 <meta name="theme-color" content="#8BC53F" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,14 +35,11 @@
   h1,h2{font-family:Montserrat;margin:0} h1{font-size:40px}
   .muted{color:var(--muted);font-weight:700}
   .card{padding:20px}
-
   .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
   .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer;border:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.7))}
   .chip[aria-pressed="true"]{ outline:3px solid #e0f2c8 }
   .search{flex:1;min-width:220px}
   .search input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--border);font-weight:800;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.7))}
-
-  /* Timeline */
   .timeline{position:relative;margin-top:18px}
   .tl-month{position:sticky;top:64px;z-index:5;margin:24px 0 10px;display:inline-block;padding:8px 12px;border-radius:10px;font-weight:900;background:#eef8df;border:1px solid #e0f2c8}
   .tl-list{position:relative}.tl-line{position:absolute;left:18px;top:0;bottom:0;width:2px;background:#dfe8cf}
@@ -54,8 +51,6 @@
   .title{font-family:Montserrat;font-weight:800}.meta{color:var(--muted);font-weight:800}.note{margin-top:8px}
   .today .event{border-color:#cfe9b1;box-shadow:0 8px 20px rgba(139,197,63,.18), inset 0 1px 0 #fff}
   .past .event{opacity:.75}
-
-  /* Skeleton + states */
   .skeleton{animation:pulse 1.2s ease-in-out infinite;background:linear-gradient(90deg,#f0f3ee,#f7faf5,#f0f3ee);background-size:200% 100%}
   @keyframes pulse{0%{background-position:0 0}100%{background-position:200% 0}}
   .sk-item{height:84px;border-radius:14px;margin:12px 0}
@@ -81,7 +76,7 @@
     <div class="container">
       <div class="glass card">
         <h1>📅 Test & Events Schedule</h1>
-        <div class="muted" style="margin-top:6px">Auto-updates from Google Sheets. Use filters or search.</div>
+        <div class="muted" style="margin-top:6px">Data served from <code>/data/schedule.json</code>. Edit that file to update instantly.</div>
         <div class="controls">
           <button id="toggle-upcoming" class="chip" type="button" aria-pressed="true">Upcoming</button>
           <button id="toggle-past" class="chip" type="button" aria-pressed="false">Past</button>
@@ -90,7 +85,6 @@
         </div>
       </div>
 
-      <!-- Skeleton -->
       <div id="skeleton" style="margin-top:16px">
         <div class="sk-item skeleton"></div><div class="sk-item skeleton"></div><div class="sk-item skeleton"></div>
       </div>
@@ -99,7 +93,7 @@
       <div id="empty" class="empty" hidden>No items match your filters.</div>
       <div id="error" class="empty error" hidden>
         Couldn’t load the schedule.<br>
-        <small>Last URL tried: <a id="err-url" href="#" target="_blank" rel="noopener">open link</a></small>
+        <small>URL: <a id="err-url" href="#" target="_blank" rel="noopener">open link</a></small>
       </div>
     </div>
   </section>
@@ -111,15 +105,8 @@
 
 <script>
 (function(){
-  // ==== Your published doc + fixed gid=0 ====
-  const PUB_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAnsnHnS4iGoFWAjwL8U6l2PAus6QSm8lV9-9FfLjVm7U5j1PiC7qShzDbtB-IyltQSgEeO5Q5aa3v";
-  const GID = 0;
+  const DATA_URL = "/data/schedule.json?cb=" + Date.now(); // cache-buster
 
-  // Endpoints
-  const CSV_URL  = `${PUB_BASE}/pub?gid=${GID}&single=true&output=csv`;
-  const JSON_URL = `${PUB_BASE}/gviz/tq?tqx=out:json&gid=${GID}`;
-
-  // DOM
   const $timeline = document.getElementById('timeline');
   const $skeleton = document.getElementById('skeleton');
   const $error = document.getElementById('error');
@@ -135,104 +122,34 @@
   let show = 'upcoming';
   let searchText = '';
 
-  // Load: CSV first, then GViz
+  $tglUpcoming.addEventListener('click', ()=>{ show='upcoming'; $tglUpcoming.setAttribute('aria-pressed','true'); $tglPast.setAttribute('aria-pressed','false'); draw(); });
+  $tglPast.addEventListener('click', ()=>{ show='past'; $tglPast.setAttribute('aria-pressed','true'); $tglUpcoming.setAttribute('aria-pressed','false'); draw(); });
+  $search.addEventListener('input', ()=>{ searchText = $search.value.trim(); draw(); });
+
   (async function init(){
     try{
-      let items;
-      try{
-        items = await fetchCSV(CSV_URL);
-        if(!items.length) throw new Error('CSV empty');
-      }catch(_){
-        items = await fetchGViz(JSON_URL);
-      }
-      if(!items.length) throw new Error('No rows');
-      // Normalize to YYYY-MM-DD
-      rawItems = items.map(x=>{
-        const dt = parseLocalISO(x.date); if(!dt) return x;
-        const iso = [dt.getFullYear(), String(dt.getMonth()+1).padStart(2,'0'), String(dt.getDate()).padStart(2,'0')].join('-');
-        return {...x, date: iso};
-      });
+      const res = await fetch(DATA_URL, {cache:"no-store"});
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const items = await res.json();
+      rawItems = normalizeDates((Array.isArray(items) ? items : [])).filter(x => x.date && x.title);
       renderFilters(rawItems);
-      $skeleton.hidden = true;
-      $timeline.hidden = false;
-      draw();
+      $skeleton.hidden = true; $timeline.hidden = false; draw();
     }catch(e){
       console.error(e);
-      $skeleton.hidden = true;
-      $error.hidden = false;
-      $errUrl.href = (e && e.url) ? e.url : CSV_URL;
-      $errUrl.textContent = (e && e.url) ? e.url : CSV_URL;
+      $skeleton.hidden = true; $error.hidden = false; $errUrl.href = DATA_URL; $errUrl.textContent = DATA_URL;
     }
   })();
 
-  // CSV (robust parser)
-  async function fetchCSV(url){
-    const res = await fetch(url, { cache: "no-store" });
-    if(!res.ok) throw {message:'CSV HTTP '+res.status, url};
-    const text = await res.text();
-    if(!text.trim()) return [];
-    const lines = text.split(/\r?\n/).filter(l=>l.trim().length);
-    const headers = parseCsvLine(lines[0]);
-    const iDate  = findCol(headers, ['Date','date']);
-    const iTitle = findCol(headers, ['Event Title','Title','title','Event']);
-    const iCls   = findCol(headers, ['Class','Batch','class','batch']);
-    const iNotes = findCol(headers, ['Notes','Note','Remarks','notes','remark']);
-    return lines.slice(1).map(row=>{
-      const arr = parseCsvLine(row);
-      const pick = (i)=> (i>=0 && arr[i]!=null ? arr[i] : '').trim();
-      return { date: pick(iDate), title: pick(iTitle), cls: pick(iCls), notes: pick(iNotes) };
-    }).filter(x => x.date && x.title);
-  }
-  function parseCsvLine(line){
-    const out=[]; let cur=''; let q=false;
-    for(let i=0;i<line.length;i++){
-      const ch=line[i];
-      if(ch==='"'){ if(q && line[i+1]==='"'){ cur+='"'; i++; } else { q=!q; } }
-      else if(ch===',' && !q){ out.push(cur); cur=''; }
-      else { cur+=ch; }
-    }
-    out.push(cur);
-    return out.map(s=>s.replace(/^\s*"(.*)"\s*$/,'$1'));
+  function normalizeDates(items){
+    return items.map(x=>{
+      const dt = parseLocalISO(x.date); if(!dt) return x;
+      const iso = [dt.getFullYear(), String(dt.getMonth()+1).padStart(2,'0'), String(dt.getDate()).padStart(2,'0')].join('-');
+      return {...x, date: iso};
+    });
   }
 
-  // GViz JSON
-  async function fetchGViz(url){
-    const res = await fetch(url, { cache: "no-store" });
-    if(!res.ok) throw {message:'GViz HTTP '+res.status, url};
-    const text = await res.text();
-    const first = text.indexOf('{'), last = text.lastIndexOf('}');
-    if(first === -1 || last === -1) return [];
-    const json = JSON.parse(text.slice(first, last+1));
-    if(!json.table || !json.table.rows) return [];
-    const cols = (json.table.cols||[]).map(c => (c.label || '').trim());
-    const rows = (json.table.rows||[]).map(r => r.c.map(c => c ? c.v : ''));
-    const idx = {
-      date:  findCol(cols, ['Date','date','DATE']),
-      title: findCol(cols, ['Event Title','Title','title','EVENT']),
-      cls:   findCol(cols, ['Class','Batch','class','batch']),
-      notes: findCol(cols, ['Notes','Note','Remarks','notes','remark']),
-    };
-    return rows.map(a=>({
-      date: (a[idx.date]||'').toString().trim(),
-      title:(a[idx.title]||'').toString().trim(),
-      cls:  (a[idx.cls]||'').toString().trim(),
-      notes:(a[idx.notes]||'').toString().trim(),
-    })).filter(x=>x.date && x.title);
-  }
-
-  function findCol(cols, names){
-    if(!cols || !cols.length) return -1;
-    for(const n of names){
-      const i = cols.findIndex(c => c.toLowerCase() === n.toLowerCase());
-      if(i !== -1) return i;
-    }
-    return -1;
-  }
-
-  // Date helpers
   function parseLocalISO(d){
-    d = (d||'').trim();
-    let dt;
+    d = (d||'').trim(); let dt;
     if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(d)){ const [y,m,dd]=d.split('-').map(Number); dt=new Date(y,m-1,dd); }
     else if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(d)){ const [dd,m,y]=d.split('/').map(Number); dt=new Date(y,m-1,dd); }
     else { const t=new Date(d); dt=isNaN(t)?null:new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
@@ -301,11 +218,6 @@
       listWrap.appendChild(li);
     });
   }
-
-  // UI
-  document.getElementById('toggle-upcoming').addEventListener('click', ()=>{ show='upcoming'; document.getElementById('toggle-upcoming').setAttribute('aria-pressed','true'); document.getElementById('toggle-past').setAttribute('aria-pressed','false'); draw(); });
-  document.getElementById('toggle-past').addEventListener('click', ()=>{ show='past'; document.getElementById('toggle-past').setAttribute('aria-pressed','true'); document.getElementById('toggle-upcoming').setAttribute('aria-pressed','false'); draw(); });
-  document.getElementById('search').addEventListener('input', ()=>{ searchText = document.getElementById('search').value.trim(); draw(); });
 })();
 </script>
 </body>
