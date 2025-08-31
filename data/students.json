@@ -31,5 +31,16 @@
     "section": "A",
     "batch": "Origin",
     "url": "/student?slug=gayathri"
+  },
+  {
+    "slug": "sample",
+    "name": "Sample",
+    "id": "S004",
+    "img": "https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png",
+    "year": "2025–26",
+    "className": "Plus One Science",
+    "section": "A",
+    "batch": "Origin",
+    "url": "/student?slug=sample"
   }
 ]
