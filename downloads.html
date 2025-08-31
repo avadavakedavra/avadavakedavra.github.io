@@ -11,58 +11,51 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
-      --sehr:#8BC53F;
-      --sehr-dk:#6cab2f;
-      --ink:#0F172A;
+      --primary:#8BC53F;
+      --text:#0f172a;
       --muted:#5b6475;
+      --bg:#ffffff;
+      --border:rgba(15,23,42,.08);
+      --maxw:1180px;
+      --radius:16px;
+
       --panel:rgba(255,255,255,0.78);
       --panel-strong:rgba(255,255,255,0.94);
       --glass-brd:rgba(255,255,255,0.55);
       --shadow:0 18px 40px rgba(15,23,42,0.14);
-      --ring:0 0 0 1px rgba(139,197,63,0.25), 0 8px 20px rgba(139,197,63,0.25);
-      --black:#0f172a;
-      --bg:#ffffff;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";}
+    html,body{margin:0}
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:Nunito,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.65;
+    }
     a{text-decoration:none;color:inherit}
 
-    /* ===== Header (your snippet) ===== */
-    header[role="banner"]{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter:saturate(1.1) blur(12px);
-      background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.75));
-      border-bottom:1px solid rgba(15,23,42,0.06);
+    /* ===== Header (exact design & size from index) ===== */
+    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--primary);letter-spacing:.4px}
+    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+    nav[aria-label="Primary"] a{
+      font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;margin-left:16px;font-weight:700;font-size:14px;letter-spacing:.2px;position:relative
     }
-    .container.nav{
-      max-width:1200px; margin:0 auto; padding:14px 18px;
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
-    }
-    .brand{
-      display:flex; align-items:baseline; gap:6px; font-family:Montserrat, sans-serif;
-      font-weight:900; letter-spacing:.8px;
-    }
-    .brand span:first-child{ color:var(--sehr); font-size:1.15rem; }
-    .brand span:last-child{ color:var(--ink); font-size:1.05rem; }
-    header nav[aria-label="Primary"]{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-    }
-    header nav[aria-label="Primary"] a{
-      padding:8px 12px; border-radius:12px; font-weight:700; color:var(--ink);
-      border:1px solid transparent; transition:transform .15s ease;
-    }
-    header nav[aria-label="Primary"] a:hover{ transform:translateY(-1px); }
-    header nav[aria-label="Primary"] a[href*="studentlogin"]{
-      border:1px solid rgba(15,23,42,0.08); background:rgba(255,255,255,0.8);
-    }
+    nav[aria-label="Primary"] a:after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--primary);transition:width .18s}
+    nav[aria-label="Primary"] a:hover{color:var(--primary)}
+    nav[aria-label="Primary"] a:hover:after{width:100%}
 
-    /* ===== Hero ===== */
+    /* ===== Page sections ===== */
     .hero{
-      max-width:1200px; margin:30px auto 8px; padding:0 18px;
+      max-width:var(--maxw); margin:30px auto 8px; padding:0 20px;
       display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:center;
     }
     @media (max-width:900px){ .hero{grid-template-columns:1fr} }
@@ -84,9 +77,8 @@
       font-weight:700; font-size:.84rem;
     }
 
-    /* ===== Filters ===== */
     .filters{
-      max-width:1200px; margin:16px auto; padding:0 18px;
+      max-width:var(--maxw); margin:16px auto; padding:0 20px;
       display:flex; flex-wrap:wrap; gap:10px; align-items:center;
     }
     .input, .select{
@@ -96,23 +88,18 @@
     .input{ flex:1 1 260px; }
     .select{ min-width:150px; }
 
-    /* ===== Buttons ===== */
     .btn, .btn-dark, .ghost{
       border:none; border-radius:14px; padding:10px 14px; font-weight:900; font-family:Montserrat, sans-serif; cursor:pointer;
       text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;
     }
-    .btn{ background: linear-gradient(180deg,#a8e067,#7bbd30); color:#0b1a06; box-shadow: var(--ring); }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn-dark{ background: var(--black); color:#fff; box-shadow: 0 0 0 1px rgba(15,23,42,.25), 0 8px 20px rgba(15,23,42,.25); }
-    .btn-dark:hover{ transform: translateY(-1px); }
+    .btn{ background: linear-gradient(180deg,#a8e067,#7bbd30); color:#0b1a06; box-shadow: 0 0 0 1px rgba(139,197,63,0.25), 0 8px 20px rgba(139,197,63,0.25); }
+    .btn-dark{ background: #0f172a; color:#fff; }
     .ghost{
       background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
-      border:1px solid rgba(15,23,42,0.08); color:var(--ink);
+      border:1px solid rgba(15,23,42,0.08); color:var(--text);
     }
-    .ghost:hover{ transform:translateY(-1px); }
 
-    /* ===== Sections / Grid ===== */
-    .section{ max-width:1200px; margin:24px auto; padding:0 18px; }
+    .section{ max-width:var(--maxw); margin:24px auto; padding:0 20px; }
     .section h2{
       font-family:Montserrat, sans-serif; font-weight:900; letter-spacing:.2px; margin:0 0 12px; font-size:clamp(20px, 4vw, 32px);
     }
@@ -122,7 +109,6 @@
     @media (max-width:1000px){ .grid > *{ grid-column: span 6; } }
     @media (max-width:640px){ .grid > *{ grid-column: span 12; } }
 
-    /* ===== Cards ===== */
     .card{
       position:relative; overflow:hidden; border-radius:18px; background:var(--panel); border:1px solid var(--glass-brd); box-shadow: var(--shadow);
       padding:14px; display:flex; flex-direction:column; gap:10px; min-height:160px;
@@ -131,67 +117,34 @@
     .meta{ display:flex; gap:10px; flex-wrap:wrap; color:var(--muted); font-size:.88rem;}
     .actions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* ===== Locked: show title, blur body ===== */
-    .locked-body{
-      filter: blur(4px) saturate(0.9);
-      user-select:none; pointer-events:none;
-      position:relative;
-    }
-    .locked-body:after{
-      content:""; position:absolute; inset:0;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.45), rgba(255,255,255,0.0));
-    }
+    .locked-body{filter: blur(4px) saturate(0.9); user-select:none; pointer-events:none; position:relative;}
+    .locked-body:after{content:""; position:absolute; inset:0; background: radial-gradient(ellipse at center, rgba(255,255,255,0.45), rgba(255,255,255,0));}
     .pill-lock{
       display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:8px 12px;
-      background:linear-gradient(180deg,#111,#333); color:#fff; border:1px solid rgba(255,255,255,0.2);
-      box-shadow:0 10px 30px rgba(0,0,0,0.25);
-      font-weight:900; font-family:Montserrat, sans-serif; font-size:.9rem;
+      background:#111; color:#fff; font-weight:900; font-family:Montserrat, sans-serif; font-size:.9rem;
       width:max-content;
     }
-    .pill-lock svg{ width:16px; height:16px; }
-
-    /* ===== CTA Strip ===== */
-    .cta-strip{ margin:24px auto; max-width:1200px; padding:16px 18px; }
-    .cta{
-      border-radius:20px; padding:16px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
-      background:
-        radial-gradient(1200px 200px at 20% -80%, rgba(139,197,63,0.25), transparent),
-        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.8));
-      border:1px solid var(--glass-brd);
-      box-shadow: var(--shadow);
-    }
-    @media (max-width:720px){ .cta{ grid-template-columns:1fr; } }
-    .cta h3{ margin:0; font-family:Montserrat, sans-serif; font-weight:900; }
-    .cta p{ margin:4px 0 0; color:var(--muted); }
-    .cta .cta-actions{ display:flex; gap:10px; flex-wrap:wrap; }
-
-    /* ===== Quotes & Footer ===== */
-    .quotes{ display:grid; grid-template-columns: repeat(12,1fr); gap:14px; }
-    .quotes > *{ grid-column:span 6; }
-    @media (max-width:900px){ .quotes > *{ grid-column:span 12; } }
-    .quote{ border-radius:18px; padding:14px; background:var(--panel-strong); border:1px solid var(--glass-brd); box-shadow: var(--shadow); }
-    .quote b{ font-family:Montserrat, sans-serif; }
 
     footer{
-      margin:34px auto 40px; max-width:1200px; padding:0 18px; color:var(--muted);
+      margin:34px auto 40px; max-width:var(--maxw); padding:0 20px; color:var(--muted);
       display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
       border-top:1px dashed rgba(15,23,42,0.12); padding-top:12px;
     }
-    footer a{ color:var(--ink); font-weight:800; }
+    footer a{ color:var(--text); font-weight:800; }
   </style>
 </head>
 <body>
 
-  <!-- ===== Header (your exact structure) ===== -->
+  <!-- ===== Header (same markup; links you can tweak) ===== -->
   <header role="banner">
     <div class="container nav">
       <a class="brand" href="https://sehracademy.com/#home" aria-label="Sehr Academy">
         <span>SEHR</span><span>ACADEMY</span>
       </a>
       <nav aria-label="Primary">
-        <a href="https://sehracademy.com/downloads">Downloads</a>
-        <a href="https://sehracademy.com/studentlogin">Student Login</a>
+        <a href="https://sehracademy.com/#features">Features</a>
         <a href="https://sehracademy.com/#programs">Programs</a>
+        <a href="https://sehracademy.com/studentlogin">Student Login</a>
         <a href="https://sehracademy.com/#contact">Contact</a>
       </nav>
     </div>
@@ -236,12 +189,10 @@
   <section class="section" id="free">
     <h2>Free Library</h2>
     <p class="sub">Curated quick-wins: formula sheets, chapter PYQs, one-page mindmaps, and speed tests.</p>
-    <div class="grid" id="free-grid">
-      <!-- Populated via manifest.json -->
-    </div>
+    <div class="grid" id="free-grid"></div>
   </section>
 
-  <!-- ===== Vault (Locked: show file names; blur content) ===== -->
+  <!-- ===== Vault (Locked preview) ===== -->
   <section class="section" id="vault">
     <h2>Students-Only Vault (Locked)</h2>
     <p class="sub">Premium packs are delivered directly to enrolled students. Files are <b>not</b> publicly listed.</p>
@@ -255,13 +206,7 @@
           <div class="meta"><span>Physics</span> • <span>Class 11</span> • <span>Weekly drops</span></div>
         </div>
         <div class="actions">
-          <span class="pill-lock" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M7 10V8a5 5 0 0 1 10 0v2"/>
-              <rect x="5" y="10" width="14" height="10" rx="2" ry="2"></rect>
-            </svg>
-            Locked — Enrolled students only
-          </span>
+          <span class="pill-lock">🔒 Locked — Enrolled students only</span>
           <a class="btn" href="/#programs">Enroll in an offline batch</a>
         </div>
       </article>
@@ -273,13 +218,7 @@
           <div class="meta"><span>Maths</span> • <span>Class 11</span> • <span>Exam week focus</span></div>
         </div>
         <div class="actions">
-          <span class="pill-lock" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M7 10V8a5 5 0 0 1 10 0v2"/>
-              <rect x="5" y="10" width="14" height="10" rx="2" ry="2"></rect>
-            </svg>
-            Locked — Enrolled students only
-          </span>
+          <span class="pill-lock">🔒 Locked — Enrolled students only</span>
           <a class="btn" href="/#programs">Enroll in an offline batch</a>
         </div>
       </article>
@@ -291,64 +230,10 @@
           <div class="meta"><span>Chemistry</span> • <span>Class 11</span> • <span>Updated monthly</span></div>
         </div>
         <div class="actions">
-          <span class="pill-lock" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M7 10V8a5 5 0 0 1 10 0v2"/>
-              <rect x="5" y="10" width="14" height="10" rx="2" ry="2"></rect>
-            </svg>
-            Locked — Enrolled students only
-          </span>
+          <span class="pill-lock">🔒 Locked — Enrolled students only</span>
           <a class="btn" href="/#programs">Enroll in an offline batch</a>
         </div>
       </article>
-    </div>
-  </section>
-
-  <!-- ===== CTA ===== -->
-  <div class="cta-strip">
-    <div class="cta">
-      <div>
-        <h3>Enroll in an offline batch and get direct access to all premium materials</h3>
-        <p>Access is delivered privately (email/WhatsApp). Nothing from the Vault is publicly listed.</p>
-      </div>
-      <div class="cta-actions">
-        <a class="btn" href="/#programs">See Courses</a>
-        <a class="btn-dark" href="/batchorigin">Origin — Fees & Details</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== Social proof ===== -->
-  <section class="section">
-    <h2>What our students say</h2>
-    <div class="quotes">
-      <div class="quote">“Booster tests every week + instant solutions helped me fix silly mistakes fast.” — <b>F.A.</b></div>
-      <div class="quote">“Ranker notes were gold in the last 10 days. Crisp and targeted.” — <b>G.S.</b></div>
-    </div>
-  </section>
-
-  <!-- ===== FAQ ===== -->
-  <section class="section">
-    <h2>FAQ</h2>
-    <div class="grid">
-      <div class="card" style="grid-column:span 12;">
-        <div class="title" style="margin-bottom:8px;">Which course should I join to access the Vault?</div>
-        <div style="margin-bottom:12px;">Explore our courses and fee plans. <b>Go to Courses</b> or see <b>Origin batch</b>.</div>
-        <div class="actions">
-          <a class="btn" href="/#programs" aria-label="Go to Courses">Go to Courses</a>
-          <a class="btn-dark" href="/batchorigin" aria-label="Origin batch (fees)">Origin — Fees & Details</a>
-        </div>
-      </div>
-
-      <div class="card" style="grid-column:span 6;">
-        <div class="title">Why is Vault content locked?</div>
-        <div>It’s part of our enrolled-student plan (tests, reviews, solutions). We deliver it directly so it’s structured and timely.</div>
-      </div>
-
-      <div class="card" style="grid-column:span 6;">
-        <div class="title">How is access delivered?</div>
-        <div>Once enrolled/verified, we deliver materials privately via email/WhatsApp. Nothing is publicly listed.</div>
-      </div>
     </div>
   </section>
 
@@ -359,18 +244,14 @@
   </footer>
 
   <script>
-    // ------- Settings -------
     const MANIFEST_URL = '/downloads/free/manifest.json';
-
-    // DOM refs
     const freeGrid = document.getElementById('free-grid');
     const q = document.getElementById('q');
     const fSubject = document.getElementById('f-subject');
     const fClass = document.getElementById('f-class');
     const btnClear = document.getElementById('btn-clear');
-
-    // Load & render
     let FREE_FILES = [];
+
     async function loadManifest(){
       try{
         const res = await fetch(MANIFEST_URL, {cache:'no-cache'});
@@ -379,8 +260,7 @@
         renderFree(FREE_FILES);
         hydrateFilters(FREE_FILES);
       }catch(err){
-        console.warn('Falling back: inline sample manifest', err);
-        // Fallback sample to avoid blank page if JSON missing
+        // Fallback sample
         FREE_FILES = [
           {"title":"Kinematics — Formula Sheet","subject":"Physics","class":"Class 11","url":"/downloads/free/kinematics-formula.pdf","size":"210 KB","updated":"28 Aug"},
           {"title":"Structure of Atom — Mindmap","subject":"Chemistry","class":"Class 11","url":"/downloads/free/structure-of-atom-mindmap.pdf","size":"340 KB","updated":"27 Aug"},
@@ -412,10 +292,8 @@
 
     function renderFree(files){
       freeGrid.innerHTML = files.map(cardHTML).join('');
-      attachShare(); // optional if you add data-text later
     }
 
-    // Build dropdowns from data
     function hydrateFilters(files){
       const subjects = Array.from(new Set(files.map(f => f.subject).filter(Boolean))).sort();
       const classes  = Array.from(new Set(files.map(f => f.class || f.clazz).filter(Boolean))).sort();
@@ -429,7 +307,6 @@
       });
     }
 
-    // Filters
     function applyFilters(){
       const text = q.value.trim().toLowerCase();
       const sub = fSubject.value;
@@ -445,20 +322,7 @@
     q.addEventListener('input', applyFilters);
     fSubject.addEventListener('change', applyFilters);
     fClass.addEventListener('change', applyFilters);
-    btnClear.addEventListener('click', ()=>{
-      q.value=""; fSubject.value=""; fClass.value=""; applyFilters();
-    });
-
-    // WhatsApp share (optional: add data-text on manifest items if needed)
-    function attachShare(){
-      document.querySelectorAll('.share').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const text = btn.getAttribute('data-text') || "Free resource by Sehr Academy";
-          const url = encodeURIComponent(window.location.href.split('#')[0]);
-          window.open('https://wa.me/?text=' + encodeURIComponent(text) + '%0A' + url, '_blank');
-        });
-      });
-    }
+    btnClear.addEventListener('click', ()=>{ q.value=""; fSubject.value=""; fClass.value=""; applyFilters(); });
 
     loadManifest();
   </script>
