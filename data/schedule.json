@@ -1,5 +1,23 @@
 [
-  { "date": "2025-10-8", "title": "Plus One Origin Batch resumes.", "cls": "11",  "notes": "Back after onam vacation." },
-  { "date": "2025-10-13", "title": "QP09 Class Test", "cls": "11",  "notes": "Biology focus" },
-  { "date": "2025-10-15", "title": "Crash Course Day 1", "cls": "11", "notes": "Orientation" }
+  { 
+    "date": "2025-10-08", 
+    "time": "09:00 AM – 12:00 PM", 
+    "title": "Plus One Origin Batch resumes.", 
+    "cls": "11",  
+    "notes": "Back after Onam vacation." 
+  },
+  { 
+    "date": "2025-10-13", 
+    "time": "10:00 AM – 11:30 AM", 
+    "title": "QP09 Class Test", 
+    "cls": "11",  
+    "notes": "Biology focus" 
+  },
+  { 
+    "date": "2025-10-15", 
+    "time": "02:00 PM – 05:00 PM", 
+    "title": "Crash Course Day 1", 
+    "cls": "11", 
+    "notes": "Orientation" 
+  }
 ]
