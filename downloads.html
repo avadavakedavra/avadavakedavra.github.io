@@ -56,7 +56,6 @@
       border:1px solid transparent; transition:transform .15s ease;
     }
     header nav[aria-label="Primary"] a:hover{ transform:translateY(-1px); }
-    /* highlight Student Login lightly */
     header nav[aria-label="Primary"] a[href*="studentlogin"]{
       border:1px solid rgba(15,23,42,0.08); background:rgba(255,255,255,0.8);
     }
@@ -183,7 +182,7 @@
 </head>
 <body>
 
-  <!-- ===== Your header (as provided) ===== -->
+  <!-- ===== Header (your exact structure) ===== -->
   <header role="banner">
     <div class="container nav">
       <a class="brand" href="#home" aria-label="Sehr Academy">
@@ -221,20 +220,14 @@
     </div>
   </section>
 
-  <!-- ===== Filters (for Free Library) ===== -->
+  <!-- ===== Filters ===== -->
   <div class="filters">
     <input id="q" class="input" type="search" placeholder="Search free resources (e.g., 'kinematics formula')" />
     <select id="f-subject" class="select">
       <option value="">All Subjects</option>
-      <option>Physics</option>
-      <option>Chemistry</option>
-      <option>Maths</option>
-      <option>Biology</option>
     </select>
     <select id="f-class" class="select">
       <option value="">All Classes</option>
-      <option>Class 11</option>
-      <option>Class 12</option>
     </select>
     <button id="btn-clear" class="ghost" type="button">Reset</button>
   </div>
@@ -244,45 +237,7 @@
     <h2>Free Library</h2>
     <p class="sub">Curated quick-wins: formula sheets, chapter PYQs, one-page mindmaps, and speed tests.</p>
     <div class="grid" id="free-grid">
-      <article class="card" data-subject="Physics" data-class="Class 11" data-title="Kinematics — Formula Sheet">
-        <div class="title">Kinematics — Formula Sheet</div>
-        <div>Concise one-pager for quick revision and test-day recall.</div>
-        <div class="meta"><span>Physics</span> • <span>Class 11</span> • <span>PDF (210 KB)</span> • <span>Updated: 28 Aug</span></div>
-        <div class="actions">
-          <a class="btn" href="#" download>Download</a>
-          <button class="ghost share" type="button" data-text="Kinematics Formula Sheet — Sehr Academy">Share</button>
-        </div>
-      </article>
-
-      <article class="card" data-subject="Chemistry" data-class="Class 11" data-title="Structure of Atom — Mindmap">
-        <div class="title">Structure of Atom — Mindmap</div>
-        <div>Visual map of key postulates, quantum numbers, and spectra.</div>
-        <div class="meta"><span>Chemistry</span> • <span>Class 11</span> • <span>PDF (340 KB)</span> • <span>Updated: 27 Aug</span></div>
-        <div class="actions">
-          <a class="btn" href="#" download>Download</a>
-          <button class="ghost share" type="button" data-text="Structure of Atom Mindmap — Sehr Academy">Share</button>
-        </div>
-      </article>
-
-      <article class="card" data-subject="Maths" data-class="Class 11" data-title="Trigonometry Booster — 30 MCQs">
-        <div class="title">Trigonometry Booster — 30 MCQs</div>
-        <div>Speed-test set with answer key; 20-minute drill.</div>
-        <div class="meta"><span>Maths</span> • <span>Class 11</span> • <span>PDF (480 KB)</span> • <span>Updated: 25 Aug</span></div>
-        <div class="actions">
-          <a class="btn" href="#" download>Download</a>
-          <button class="ghost share" type="button" data-text="Trigonometry Booster MCQs — Sehr Academy">Share</button>
-        </div>
-      </article>
-
-      <article class="card" data-subject="Biology" data-class="Class 11" data-title="Animal Kingdom — Summary Sheet">
-        <div class="title">Animal Kingdom — Summary Sheet</div>
-        <div>NCERT-strict quick summary: charts + checkpoints.</div>
-        <div class="meta"><span>Biology</span> • <span>Class 11</span> • <span>PDF (260 KB)</span> • <span>Updated: 24 Aug</span></div>
-        <div class="actions">
-          <a class="btn" href="#" download>Download</a>
-          <button class="ghost share" type="button" data-text="Animal Kingdom Summary — Sehr Academy">Share</button>
-        </div>
-      </article>
+      <!-- Populated via manifest.json -->
     </div>
   </section>
 
@@ -292,11 +247,8 @@
     <p class="sub">Premium packs are delivered directly to enrolled students. Files are <b>not</b> publicly listed.</p>
 
     <div class="grid">
-      <!-- Example Teaser 1 -->
       <article class="card">
-        <!-- Title stays readable -->
         <div class="title">Most Important Derivation-Based Questions — Physics (Class 11)</div>
-        <!-- Body is blurred -->
         <div class="locked-body">
           <div>Set A: Units & Measurements, Kinematics, Laws of Motion, Work-Energy-Power.</div>
           <div>Set B: Rotational Dynamics, Gravitation, Oscillations — stepwise solutions included.</div>
@@ -314,7 +266,6 @@
         </div>
       </article>
 
-      <!-- Example Teaser 2 -->
       <article class="card">
         <div class="title">Mathematics Quick Revision Sheet — Trigonometry & Functions</div>
         <div class="locked-body">
@@ -333,7 +284,6 @@
         </div>
       </article>
 
-      <!-- Example Teaser 3 -->
       <article class="card">
         <div class="title">Solved PYQ Packs (Latest Pattern) — Chemistry</div>
         <div class="locked-body">
@@ -377,7 +327,7 @@
     </div>
   </section>
 
-  <!-- ===== FAQ (courses route) ===== -->
+  <!-- ===== FAQ ===== -->
   <section class="section">
     <h2>FAQ</h2>
     <div class="grid">
@@ -409,13 +359,77 @@
   </footer>
 
   <script>
-    // Basic filter for Free Library
+    // ------- Settings -------
+    const MANIFEST_URL = '/downloads/free/manifest.json';
+
+    // DOM refs
+    const freeGrid = document.getElementById('free-grid');
     const q = document.getElementById('q');
     const fSubject = document.getElementById('f-subject');
     const fClass = document.getElementById('f-class');
-    const freeGrid = document.getElementById('free-grid');
     const btnClear = document.getElementById('btn-clear');
 
+    // Load & render
+    let FREE_FILES = [];
+    async function loadManifest(){
+      try{
+        const res = await fetch(MANIFEST_URL, {cache:'no-cache'});
+        if(!res.ok) throw new Error('Manifest fetch failed');
+        FREE_FILES = await res.json();
+        renderFree(FREE_FILES);
+        hydrateFilters(FREE_FILES);
+      }catch(err){
+        console.warn('Falling back: inline sample manifest', err);
+        // Fallback sample to avoid blank page if JSON missing
+        FREE_FILES = [
+          {"title":"Kinematics — Formula Sheet","subject":"Physics","class":"Class 11","url":"/downloads/free/kinematics-formula.pdf","size":"210 KB","updated":"28 Aug"},
+          {"title":"Structure of Atom — Mindmap","subject":"Chemistry","class":"Class 11","url":"/downloads/free/structure-of-atom-mindmap.pdf","size":"340 KB","updated":"27 Aug"},
+          {"title":"Trigonometry Booster — 30 MCQs","subject":"Maths","class":"Class 11","url":"/downloads/free/trigonometry-booster-30-mcqs.pdf","size":"480 KB","updated":"25 Aug"},
+          {"title":"Animal Kingdom — Summary Sheet","subject":"Biology","class":"Class 11","url":"/downloads/free/animal-kingdom-summary.pdf","size":"260 KB","updated":"24 Aug"}
+        ];
+        renderFree(FREE_FILES);
+        hydrateFilters(FREE_FILES);
+      }
+    }
+
+    function cardHTML(file){
+      const desc = file.desc || 'Concise, exam-focused aid.';
+      const size = file.size ? String(file.size) : 'PDF';
+      const updated = file.updated ? ` • <span>Updated: ${file.updated}</span>` : '';
+      const clazz = file.class || file.clazz || '';
+      return `
+        <article class="card" data-subject="${file.subject||''}" data-class="${clazz}" data-title="${file.title||''}">
+          <div class="title">${file.title||''}</div>
+          <div>${desc}</div>
+          <div class="meta"><span>${file.subject||''}</span> • <span>${clazz}</span> • <span>PDF (${size})</span>${updated}</div>
+          <div class="actions">
+            <a class="btn" href="${file.url||'#'}" download>Download</a>
+            <a class="ghost" href="${file.url||'#'}" target="_blank" rel="noopener">Preview</a>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderFree(files){
+      freeGrid.innerHTML = files.map(cardHTML).join('');
+      attachShare(); // optional if you add data-text later
+    }
+
+    // Build dropdowns from data
+    function hydrateFilters(files){
+      const subjects = Array.from(new Set(files.map(f => f.subject).filter(Boolean))).sort();
+      const classes  = Array.from(new Set(files.map(f => f.class || f.clazz).filter(Boolean))).sort();
+      subjects.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s; o.textContent = s; fSubject.appendChild(o);
+      });
+      classes.forEach(c => {
+        const o = document.createElement('option');
+        o.value = c; o.textContent = c; fClass.appendChild(o);
+      });
+    }
+
+    // Filters
     function applyFilters(){
       const text = q.value.trim().toLowerCase();
       const sub = fSubject.value;
@@ -435,14 +449,18 @@
       q.value=""; fSubject.value=""; fClass.value=""; applyFilters();
     });
 
-    // WhatsApp share for Free Library
-    document.querySelectorAll('.share').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const text = btn.getAttribute('data-text') + " — Free resource by Sehr Academy";
-        const url = encodeURIComponent(window.location.href.split('#')[0]);
-        window.open('https://wa.me/?text=' + encodeURIComponent(text) + '%0A' + url, '_blank');
+    // WhatsApp share (optional: add data-text on manifest items if needed)
+    function attachShare(){
+      document.querySelectorAll('.share').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const text = btn.getAttribute('data-text') || "Free resource by Sehr Academy";
+          const url = encodeURIComponent(window.location.href.split('#')[0]);
+          window.open('https://wa.me/?text=' + encodeURIComponent(text) + '%0A' + url, '_blank');
+        });
       });
-    });
+    }
+
+    loadManifest();
   </script>
 </body>
 </html>
