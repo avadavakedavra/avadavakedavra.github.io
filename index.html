@@ -545,7 +545,7 @@
               </div>
             </div>
 
-            <!-- PHYSICS -->
+            <!-- PHYSICS (UPDATED MARKS) -->
             <div class="panel" id="panel-phy" role="tabpanel" aria-labelledby="tab-phy" aria-hidden="true">
               <div class="lb-list">
                 <div class="lb-row">
@@ -553,18 +553,18 @@
                   <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></a>
                   <div>
                     <div class="lb-name">Fidha</div>
-                    <div class="lb-bar" data-pct="87"><span></span></div>
+                    <div class="lb-bar" data-pct="65"><span></span></div>
                   </div>
-                  <div class="lb-score">87%</div>
+                  <div class="lb-score">65%</div>
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-2"><span>2</span></div>
                   <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></a>
                   <div>
                     <div class="lb-name">Gayathri</div>
-                    <div class="lb-bar" data-pct="77"><span></span></div>
+                    <div class="lb-bar" data-pct="61"><span></span></div>
                   </div>
-                  <div class="lb-score">77%</div>
+                  <div class="lb-score">61%</div>
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-3"><span>3</span></div>
@@ -759,6 +759,65 @@
                 window.open(href, '_blank', 'noopener');
               }
             });
+          });
+        })();
+      </script>
+      <script>
+        // === NEW: Compute TOTAL as the average of Physics, Chemistry, Maths, Biology ===
+        (function computeTotals(){
+          const panels = {
+            phy: document.querySelector('#panel-phy'),
+            chem: document.querySelector('#panel-chem'),
+            math: document.querySelector('#panel-math'),
+            bio: document.querySelector('#panel-bio'),
+          };
+          const totalPanel = document.querySelector('#panel-total');
+          if(!panels.phy || !panels.chem || !panels.math || !panels.bio || !totalPanel) return;
+
+          // Helper to build a map: name -> percentage for a given panel
+          const getScores = (panel)=>{
+            const map = new Map();
+            panel.querySelectorAll('.lb-row').forEach(row=>{
+              const name = row.querySelector('.lb-name')?.textContent?.trim();
+              const bar = row.querySelector('.lb-bar');
+              if(!name || !bar) return;
+              const pct = Number(bar.dataset.pct || row.querySelector('.lb-score')?.textContent?.replace('%','') || 0);
+              map.set(name, pct);
+            });
+            return map;
+          };
+
+          const S = {
+            phy: getScores(panels.phy),
+            chem: getScores(panels.chem),
+            math: getScores(panels.math),
+            bio: getScores(panels.bio),
+          };
+
+          // For each row in TOTAL, compute average and update both text and bar width/data-pct
+          totalPanel.querySelectorAll('.lb-row').forEach(row=>{
+            const name = row.querySelector('.lb-name')?.textContent?.trim();
+            const bar  = row.querySelector('.lb-bar');
+            const span = bar?.querySelector('span');
+            const scoreEl = row.querySelector('.lb-score');
+            if(!name || !bar || !span || !scoreEl) return;
+
+            const values = [
+              S.phy.get(name) ?? 0,
+              S.chem.get(name) ?? 0,
+              S.math.get(name) ?? 0,
+              S.bio.get(name) ?? 0,
+            ];
+            const avg = values.reduce((a,b)=>a+b,0) / values.length;
+            const avgRounded = Math.round(avg); // show as integer %
+
+            // Update DOM
+            bar.dataset.pct = String(avgRounded);
+            scoreEl.textContent = avgRounded + '%';
+
+            // Re-animate bar to new width
+            span.style.width = '0%';
+            requestAnimationFrame(()=>{ span.style.width = avgRounded + '%'; });
           });
         })();
       </script>
