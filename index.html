@@ -246,8 +246,13 @@
     .batch{
       border-radius:16px;padding:20px;color:#fff;position:relative;overflow:hidden;
       display:flex;flex-direction:column;gap:6px;min-height:200px;
+      text-decoration:none; /* anchor reset */
+      outline-offset: 3px;
+      transition: transform .2s ease, box-shadow .25s ease, outline-color .2s ease;
     }
-    .batch *, .batch h3{color:#fff}
+    .batch:focus-visible{ outline:3px solid #ffffff; }
+    .batch:hover{ transform: translateY(-4px) scale(1.02); box-shadow:0 26px 60px rgba(16,24,40,.22) }
+    .batch .tag, .batch h3, .batch small, .batch .fee, .batch .note{color:#fff}
     .batch small{opacity:.95;font-weight:700}
     .batch h3{font-size:22px;margin:2px 0 0}
     .fee{font-family:Montserrat, sans-serif;font-weight:900;font-size:42px;line-height:1;margin:8px 0 6px}
@@ -834,53 +839,53 @@
       </div>
 
       <div class="grid">
-        <div class="batch grad-ignite reveal">
+        <a class="batch grad-ignite reveal" href="https://sehracademy.com/batchignite" target="_blank" rel="noopener" aria-label="Open IGNITE (Class 9) page">
           <div class="tag">Class 9</div>
           <small>OFFLINE BATCH 2025–26</small>
           <h3>IGNITE</h3>
           <div class="fee">₹ 999</div>
           <span class="note">Monthly fees for core subjects</span>
-        </div>
+        </a>
 
-        <div class="batch grad-ascent reveal">
+        <a class="batch grad-ascent reveal" href="https://sehracademy.com/batchascent" target="_blank" rel="noopener" aria-label="Open ASCENT (Class 10) page">
           <div class="tag">Class 10</div>
           <small>OFFLINE BATCH 2025–26</small>
           <h3>ASCENT</h3>
           <div class="fee">₹ 1499</div>
           <span class="note">Monthly fees for core subjects</span>
-        </div>
+        </a>
 
-        <div class="batch grad-origin reveal">
+        <a class="batch grad-origin reveal" href="https://sehracademy.com/batchorigin" target="_blank" rel="noopener" aria-label="Open ORIGIN (Class 11) page">
           <div class="tag">Class 11</div>
           <small>OFFLINE BATCH 2025–26</small>
           <h3>ORIGIN</h3>
           <div class="fee">₹ 2499</div>
           <span class="note">Monthly fees for core subjects</span>
-        </div>
+        </a>
 
-        <div class="batch grad-legacy reveal">
+        <a class="batch grad-legacy reveal" href="https://sehracademy.com/batchlegacy" target="_blank" rel="noopener" aria-label="Open LEGACY (Class 12) page">
           <div class="tag">Class 12</div>
           <small>OFFLINE BATCH 2025–26</small>
           <h3>LEGACY</h3>
           <div class="fee">₹ 2999</div>
           <span class="note">Monthly fees for core subjects</span>
-        </div>
+        </a>
 
-        <div class="batch grad-crash reveal">
+        <a class="batch grad-crash reveal" href="https://sehracademy.com/batchcrash" target="_blank" rel="noopener" aria-label="Open CRASH COURSES page">
           <div class="tag">Classes 11&12</div>
           <small>Exam Preparation</small>
           <h3>CRASH COURSES</h3>
           <div class="fee">₹ 4999</div>
           <span class="note">One-time course fee.</span>
-        </div>
+        </a>
 
-        <div class="batch grad-mentoring reveal">
+        <a class="batch grad-mentoring reveal" href="https://sehracademy.com/batchmentoring" target="_blank" rel="noopener" aria-label="Open PRIVATE COACHING page">
           <div class="tag">Classes 9-12</div>
           <small>1-to-1 Mentoring</small>
           <h3>PRIVATE COACHING</h3>
           <div class="fee">₹ 7999</div>
           <span class="note">Monthly fees for all subjects.</span>
-        </div>
+        </a>
       </div>
 
       <!-- Removed the TO JOIN / VISIT / ENROLL banner per your request -->
