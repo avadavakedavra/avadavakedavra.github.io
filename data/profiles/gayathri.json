@@ -18,6 +18,7 @@
   ],
   "externals": {
     "Sehr First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    "School First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
   },
   "achievements": [],
   "remarks": []
