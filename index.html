@@ -1,6 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style id="whiteglass-overrides">
+/* === White Glass Overrides (Sep 2025) === */
+
+/* Softer, whiter page background (reduces green) */
+body{
+  background:#ffffff !important;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.98)),
+    url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">\
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">\
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23ececec" stroke-width="1" opacity="0.35"/></pattern></defs>\
+<rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+  background-attachment: fixed, fixed !important;
+}
+
+/* Tone down math/science watermark layer */
+.edu-icons{ opacity:.06 !important; }
+
+/* Reduce green “blob” glow instead of removing it */
+.decor .blob{ opacity:.06 !important; filter:blur(60px) !important; }
+.decor .blob.b1{ background:radial-gradient(closest-side, #eef6e8, transparent 70%) !important; }
+.decor .blob.b2{ background:radial-gradient(closest-side, #f3f8f0, transparent 70%) !important; }
+.decor .blob.b3{ background:radial-gradient(closest-side, #fafcf8, transparent 75%) !important; }
+
+/* Make all cards/boxes whiter with glass separation */
+.glass, .card, .f-card, .plan, .s-card, .contact-card, .carousel, .select, .lb-row{
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.84)) !important;
+  border:1px solid rgba(0,0,0,.06) !important;
+  box-shadow:0 16px 44px rgba(15,23,42,.08) !important;
+  backdrop-filter:blur(14px) saturate(140%) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(140%) !important;
+}
+
+/* Keep brand green for accents/buttons; no change needed.
+   If any card still looks greenish, this extra line helps: */
+.btn--ghost{ background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.7)) !important; }
+</style>
+
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
