@@ -26,12 +26,25 @@
 
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink); background:linear-gradient(180deg,#f7faf5,#f2f7ee);}    
+    body{margin:0;font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink); background:linear-gradient(180deg,#f7faf5,#f2f7ee);}
 
-    header{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #e5e7eb}
-    .logo-badge{width:40px;height:40px;border-radius:12px;background:var(--sehr-green);display:grid;place-items:center;color:#0b1a08;font-weight:800;font-family:Montserrat, Nunito, sans-serif;letter-spacing:.5px;box-shadow:0 6px 16px rgba(139,197,63,.28)}
-    .brand{font-family:Montserrat, Nunito, sans-serif;font-weight:900;letter-spacing:.4px;color:#0f172a}
-    .brand-logo{height:36px;opacity:.9}
+    /* ====== NEW TOP NAV (matches screenshot) ====== */
+    .site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e5e7eb}
+    .nav{max-width:1200px;margin:0 auto;padding:16px 22px;display:flex;align-items:center;justify-content:space-between}
+    .brand-link{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}
+    .brand-word{font-family:Montserrat, Nunito, sans-serif;font-weight:900;letter-spacing:.4px;font-size:1.25rem;line-height:1}
+    .brand-word.sehr{color:var(--sehr-green)}
+    .brand-word.academy{color:#0f172a}
+    .nav-links{display:flex;align-items:center;gap:28px}
+    .nav-links a{font-family:Montserrat, Nunito, sans-serif;font-weight:800;color:#0f172a;text-decoration:none;opacity:.9;padding:8px 10px;border-radius:8px}
+    .nav-links a:hover{background:rgba(15,23,42,.05)}
+    @media (max-width:720px){
+      .nav{padding:14px 16px}
+      .nav-links{gap:12px}
+      .nav-links a{padding:6px 8px}
+    }
+    /* Optional soft strip under the header to mimic the screenshot vibe */
+    .top-hero-bg{height:60px;background:linear-gradient(180deg,#f2f7ee,#eef5ea);border-bottom:1px solid #e9efe4}
 
     main{display:grid;place-items:center;padding:38px 18px}
 
@@ -86,13 +99,24 @@
   </style>
 </head>
 <body>
-  <header aria-label="Sehr Academy header">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="logo-badge" aria-hidden="true">S</div>
-      <div class="brand" aria-label="Sehr Academy">Sehr Academy</div>
-    </div>
-    <img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Sehr Academy Logo" class="brand-logo" />
+  <!-- New top bar -->
+  <header class="site-header" aria-label="Sehr Academy header">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand-link" href="/" aria-label="Sehr Academy Home">
+        <span class="brand-word sehr">SEHR</span>
+        <span class="brand-word academy">ACADEMY</span>
+      </a>
+      <div class="nav-links" role="menubar" aria-label="Main navigation">
+        <a role="menuitem" href="/#features">Features</a>
+        <a role="menuitem" href="/#programs">Programs</a>
+        <a role="menuitem" href="/#schedule">Schedule</a>
+        <a role="menuitem" href="/#contact">Contact</a>
+      </div>
+    </nav>
   </header>
+
+  <!-- Soft strip under header (visual match to screenshot) -->
+  <div class="top-hero-bg" aria-hidden="true"></div>
 
   <main>
     <section class="card" aria-labelledby="title">
