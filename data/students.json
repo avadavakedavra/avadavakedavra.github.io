@@ -1,26 +1,35 @@
 [
   {
-    "name": "Fidha",
     "slug": "fidha",
+    "name": "Fidha",
     "id": "S001",
     "img": "https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png",
     "year": "2025–26",
-    "className": "Plus One Science"
+    "className": "Plus One Science",
+    "section": "A",
+    "batch": "Origin",
+    "url": "/student?slug=fidha"
   },
   {
-    "name": "Gayathri",
-    "slug": "gayathri",
-    "id": "S002",
-    "img": "https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png",
-    "year": "2025–26",
-    "className": "Plus One Science"
-  },
-  {
-    "name": "Devanandha",
     "slug": "devanandha",
-    "id": "S003",
+    "name": "Devanandha",
+    "id": "S002",
     "img": "https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png",
     "year": "2025–26",
-    "className": "Plus One Science"
+    "className": "Plus One Science",
+    "section": "A",
+    "batch": "Origin",
+    "url": "/student?slug=devanandha"
+  },
+  {
+    "slug": "gayathri",
+    "name": "Gayathri",
+    "id": "S003",
+    "img": "https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png",
+    "year": "2025–26",
+    "className": "Plus One Science",
+    "section": "A",
+    "batch": "Origin",
+    "url": "/student?slug=gayathri"
   }
 ]
