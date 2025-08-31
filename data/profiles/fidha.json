@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "slug": "fidha",
+    "name": "Fidha",
+    "id": "S001",
+    "img": "/img/students/fidha.png",
+    "year": "2025–26",
+    "className": "Plus One Science",
+    "section": "A",
+    "batch": "Origin",
+    "joinDate": "2025-05-26",
+    "birthday": "2009-09-05"
+  },
+  "lock": {
+    "enabled": true,
+    "sha256": "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"
+  },
+  "internals": [
+    {"label":"QP01","subject":"Physics","pct":51},
+    {"label":"QP02","subject":"Maths","pct":63},
+    {"label":"QP03","subject":"Chemistry","pct":66},
+    {"label":"QP04","subject":"Biology","pct":50},
+    {"label":"QP05","subject":"Physics","pct":37},
+    {"label":"QP06","subject":"Maths","pct":50},
+    {"label":"QP07","subject":"Chemistry","pct":57},
+    {"label":"QP08","subject":"Biology","pct":8}
+  ],
+  "externals": {
+    "Sehr First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null },
+    "School First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+  },
+  "achievements": ["100% Attendance – August"],
+  "remarks": [{"by":"Chemistry Faculty","text":"Good conceptual clarity; practice numericals."}]
+}
