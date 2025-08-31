@@ -1,25 +1,30 @@
 {
   "meta": {
-    "slug": "gayathri",
-    "name": "Gayathri",
-    "id": "S003",
-    "img": "/img/students/gayathri.png",
+    "slug": "sample",
+    "name": "Sample Student",
+    "id": "S999",
+    "img": "/img/students/placeholder.png",
     "year": "2025–26",
     "className": "Plus One Science",
     "section": "A",
     "batch": "Origin",
-    "joinDate": "2025-05-26",
-    "birthday": "2009-06-15"
+    "joinDate": "2025-06-01",
+    "birthday": "2009-08-31"
   },
-  "lock": { "enabled": true, "sha256": "" },
+  "lock": { "enabled": false, "sha256": "" },
+
   "internals": [
-    {"label":"QP01","subject":"Physics","pct": 0},
-    {"label":"QP02","subject":"Maths","pct": 0}
+    {"label":"QP01","subject":"Physics","pct":55},
+    {"label":"QP02","subject":"Maths","pct":62},
+    {"label":"QP03","subject":"Chemistry","pct":71},
+    {"label":"QP04","subject":"Biology","pct":48}
   ],
+
   "externals": {
-    "Sehr First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    "Sehr First Term Exam":   { "Physics": 64, "Maths": 58, "Chemistry": 73, "Biology": null },
     "School First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
   },
-  "achievements": [],
-  "remarks": []
+
+  "achievements": ["Perfect attendance — July"],
+  "remarks": [{"by":"Physics Faculty","text":"Good progress on numericals."}]
 }
