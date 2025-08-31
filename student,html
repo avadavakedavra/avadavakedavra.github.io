@@ -1,126 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sehr Academy — Student Profile</title>
-<meta name="theme-color" content="#8BC53F" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --sehr-green:#8BC53F; --ink:#0F172A; --muted:#5b6475;
-    --panel: rgba(255,255,255,0.75); --panel-strong: rgba(255,255,255,0.92);
-    --glass-border: rgba(255,255,255,0.55); --shadow: 0 10px 30px rgba(15,23,42,.10);
-    --radius: 18px;
-  }
-  *{box-sizing:border-box} html,body{height:100%} body{
-    margin:0; font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink);
-    background: radial-gradient(1200px 600px at 10% -10%, rgba(139,197,63,.18), transparent 60%),
-                radial-gradient(900px 400px at 110% 10%, rgba(139,197,63,.12), transparent 60%), #edf3e7;
-    overflow-x:hidden;
-  }
-  body:before{content:""; position:fixed; inset:0;
-    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06"><g fill="%230F172A"><text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text><text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text><text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text><text x="660" y="260" font-size="46" font-family="Montserrat">π</text><text x="120" y="340" font-size="40" font-family="Montserrat">∫</text><text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text><text x="80" y="520" font-size="44" font-family="Montserrat">√x</text></g></svg>');
-    background-size:800px 600px; background-repeat:repeat; pointer-events:none; z-index:0;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sehr Academy — Student Profile</title>
+  <meta name="theme-color" content="#8BC53F" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-  /* Lock overlay (optional, enabled via JSON) */
-  body.locked .wrap{ filter: blur(12px); pointer-events:none; user-select:none; }
-  .lock-overlay{ position:fixed; inset:0; display:none; place-items:center;
-    background: radial-gradient(1200px 800px at 50% -10%, rgba(139,197,63,.15), transparent 60%), rgba(237,243,231,.7);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    z-index: 9999; transition: opacity .35s ease;
-  }
-  .lock-card{ width:min(520px, calc(100% - 32px)); background:rgba(255,255,255,.92);
-    border:1px solid var(--glass-border); border-radius:20px; box-shadow:0 20px 60px rgba(15,23,42,.18); padding:24px;
-  }
-  .lock-head{ display:flex; align-items:center; gap:12px; margin-bottom:12px; font-family:Montserrat; font-weight:900; font-size:22px; }
-  .lock-sub{ color:var(--muted); margin-bottom:18px; font-weight:700;}
-  .lock-form{ display:grid; gap:10px; grid-template-columns: 1fr auto;}
-  .lock-input{ padding:12px 14px; border-radius:12px; border:1px solid var(--glass-border); background: rgba(255,255,255,.85); font-family:Montserrat; font-weight:700;}
-  .lock-btn{ padding:12px 16px; border-radius:12px; border:1px solid var(--glass-border); background: rgba(139,197,63,.95); color:#0f172a; font-family:Montserrat; font-weight:900; cursor:pointer;}
-  .lock-err{ color:#b91c1c; font-weight:800; margin-top:6px; min-height:18px; }
+  <style>
+    :root{
+      --sehr:#8BC53F; --ink:#0F172A; --muted:#5b6475;
+      --panel: rgba(255,255,255,0.75); --panel-strong: rgba(255,255,255,0.92);
+      --glass-border: rgba(255,255,255,0.55); --shadow: 0 10px 30px rgba(15,23,42,.10);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(139,197,63,.18), transparent 60%),
+                  radial-gradient(900px 400px at 110% 10%, rgba(139,197,63,.12), transparent 60%), #edf3e7;
+      overflow-x:hidden;
+    }
+    body:before{content:""; position:fixed; inset:0;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06"><g fill="%230F172A"><text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text><text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text><text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text><text x="660" y="260" font-size="46" font-family="Montserrat">π</text><text x="120" y="340" font-size="40" font-family="Montserrat">∫</text><text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text><text x="80" y="520" font-size="44" font-family="Montserrat">√x</text></g></svg>');
+      background-size:800px 600px; background-repeat:repeat; pointer-events:none; z-index:0;
+    }
 
-  /* Content */
-  .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
-  header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
-  .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; text-decoration:none; color:var(--ink); }
-  .logo b{color:var(--sehr-green);}
-  .title-block h1{ font-family: Montserrat; font-weight:800; margin:0; font-size:26px; }
-  .actions{ display:flex; gap:8px; }
-  .btn{ border:1px solid var(--glass-border); background: rgba(255,255,255,.85); border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; cursor:pointer; }
+    /* ===== Lock overlay (optional, driven by JSON) ===== */
+    body.locked .wrap{ filter: blur(12px); pointer-events:none; user-select:none; }
+    .lock-overlay{ position:fixed; inset:0; display:none; place-items:center;
+      background: radial-gradient(1200px 800px at 50% -10%, rgba(139,197,63,.15), transparent 60%), rgba(237,243,231,.7);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index:9999; transition: opacity .35s ease;
+    }
+    .lock-card{ width:min(520px,calc(100% - 32px)); background:rgba(255,255,255,.92);
+      border:1px solid var(--glass-border); border-radius:20px; box-shadow:0 20px 60px rgba(15,23,42,.18); padding:24px; }
+    .lock-head{ display:flex; align-items:center; gap:12px; margin-bottom:12px; font-family:Montserrat; font-weight:900; font-size:22px; }
+    .lock-sub{ color:var(--muted); margin-bottom:18px; font-weight:700; }
+    .lock-form{ display:grid; gap:10px; grid-template-columns:1fr auto; }
+    .lock-input{ padding:12px 14px; border-radius:12px; border:1px solid var(--glass-border); background:rgba(255,255,255,.85); font-family:Montserrat; font-weight:700; }
+    .lock-btn{ padding:12px 16px; border-radius:12px; border:1px solid var(--glass-border); background:rgba(139,197,63,.95); color:#0f172a; font-family:Montserrat; font-weight:900; cursor:pointer; }
+    .lock-err{ color:#b91c1c; font-weight:800; margin-top:6px; min-height:18px; }
 
-  .card{ background:var(--panel); border:1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius:var(--radius); box-shadow:var(--shadow); }
-  .profile{ display:grid; grid-template-columns: 110px 1fr; gap:18px; padding:18px; align-items:center; }
-  .avatar{ width:100px; height:100px; border-radius:18px; overflow:hidden; border:2px solid rgba(0,0,0,0.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); background:#fff; }
-  .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
-  .info{display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; align-items:center;}
-  .k{ background: var(--panel-strong); border:1px solid var(--glass-border); border-radius:14px; padding:12px 14px;}
-  .k small{display:block; color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.2px; text-transform:uppercase}
-  .k b{display:block; font-family: Montserrat; font-size:16px; margin-top:4px}
+    /* ===== Page ===== */
+    .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
+    header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
+    .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; text-decoration:none; color:var(--ink); }
+    .logo b{color:var(--sehr)}
+    .title-block h1{ font-family: Montserrat; font-weight:800; margin:0; font-size:26px; }
+    .actions{ display:flex; gap:8px; }
+    .btn{ border:1px solid var(--glass-border); background: rgba(255,255,255,.85); border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; cursor:pointer; }
 
-  .section{ margin-top:22px; padding:16px 18px; }
-  .section h2{ margin:0 0 10px; font-family: Montserrat; font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
+    .card{ background:var(--panel); border:1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius:var(--radius); box-shadow:var(--shadow); }
+    .profile{ display:grid; grid-template-columns:110px 1fr; gap:18px; padding:18px; align-items:center; }
+    .avatar{ width:100px; height:100px; border-radius:18px; overflow:hidden; border:2px solid rgba(0,0,0,0.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); background:#fff; }
+    .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+    .info{display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; align-items:center;}
+    .k{ background: var(--panel-strong); border:1px solid var(--glass-border); border-radius:14px; padding:12px 14px;}
+    .k small{display:block; color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.2px; text-transform:uppercase}
+    .k b{display:block; font-family: Montserrat; font-size:16px; margin-top:4px}
 
-  /* Subject averages */
-  .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap:14px; margin:12px 0 8px; }
-  .avg-card{ position:relative; display:grid; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
-  .avg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-  .avg-card .s{font-family: Montserrat; font-weight:800; font-size:14px;}
-  .avg-card .v{font-family: Montserrat; font-weight:900; font-size:20px;}
-  .mini-bar{ position:relative; height:10px; border-radius:999px; background: rgba(15,23,42,.08); overflow:hidden; }
-  .mini-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
-  .passchip{ position:absolute; bottom:10px; right:10px; font-size:11px; font-family: Montserrat; font-weight:800; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid var(--glass-border); }
-  .wm{ position:absolute; right:8px; top:0; font-family: Montserrat; font-weight:900; font-size:60px; opacity:.08; pointer-events:none; }
+    .section{ margin-top:22px; padding:16px 18px; }
+    .section h2{ margin:0 0 10px; font-family: Montserrat; font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
 
-  /* Internals (accordion simplified) */
-  .term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
-  .term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-  .term summary::-webkit-details-marker{display:none}
-  .chip{ background:#fff; border:1px solid var(--glass-border); padding:8px 14px; border-radius:999px; font-weight:900; font-size:14px; }
-  .term-body{ padding:10px 16px 18px 16px; background: rgba(255,255,255,0.6); border-top:1px dashed rgba(15,23,42,.08); }
-  .exam-row{ display:grid; grid-template-columns: 80px 1fr 70px; align-items:center; gap:12px; padding:10px 8px; }
-  .label{ font-weight:800; font-family: Montserrat; color:#2d3748; background: #fff; border:1px solid var(--glass-border); border-radius:12px; padding:8px 10px; text-align:center; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
-  .bar{ position:relative; height:12px; border-radius:999px; background: rgba(15,23,42,.07); overflow:hidden; }
-  .bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
-  .pct{font-weight:800; font-family: Montserrat; text-align:right}
+    .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; margin:12px 0 8px; }
+    .avg-card{ position:relative; display:grid; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
+    .avg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .avg-card .s{font-family: Montserrat; font-weight:800; font-size:14px;}
+    .avg-card .v{font-family: Montserrat; font-weight:900; font-size:20px;}
+    .mini-bar{ position:relative; height:10px; border-radius:999px; background: rgba(15,23,42,.08); overflow:hidden; }
+    .mini-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
+    .passchip{ position:absolute; bottom:10px; right:10px; font-size:11px; font-family: Montserrat; font-weight:800; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid var(--glass-border); }
+    .wm{ position:absolute; right:8px; top:0; font-family: Montserrat; font-weight:900; font-size:60px; opacity:.08; pointer-events:none; }
 
-  /* External exam tiles */
-  .tiles-title{ font-family: Montserrat; font-weight:800; font-size:16px; margin:10px 2px 8px; color:#111827; }
-  .exam-cards{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; }
-  .exam-card{ position:relative; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08); }
-  .tile-meta{ display:flex; align-items:center; justify-content:space-between; }
-  .tile-bar{ position:relative; height:14px; border-radius:999px; background:#ffffff; border:1px solid var(--glass-border); box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); overflow:hidden; }
-  .tile-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
-  .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
+    .term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
+    .term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .term summary::-webkit-details-marker{display:none}
+    .chip{ background:#fff; border:1px solid var(--glass-border); padding:8px 14px; border-radius:999px; font-weight:900; font-size:14px; }
+    .term-body{ padding:10px 16px 18px 16px; background: rgba(255,255,255,0.6); border-top:1px dashed rgba(15,23,42,.08); }
+    .exam-row{ display:grid; grid-template-columns: 80px 1fr 70px; align-items:center; gap:12px; padding:10px 8px; }
+    .label{ font-weight:800; font-family: Montserrat; color:#2d3748; background: #fff; border:1px solid var(--glass-border); border-radius:12px; padding:8px 10px; text-align:center; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
+    .bar{ position:relative; height:12px; border-radius:999px; background: rgba(15,23,42,.07); overflow:hidden; }
+    .bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
+    .pct{font-weight:800; font-family: Montserrat; text-align:right}
 
-  /* Achievements / Remarks */
-  .ach-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
-  .ach-card{ background: linear-gradient(120deg, #f7f7f7, #eaeaea, #fafafa);
-    border:1px solid #d1d5db; border-radius:14px; padding:14px; box-shadow: 0 0 0 2px rgba(209,213,219,.28), 0 8px 18px rgba(0,0,0,.08);
-    font-family: Montserrat; font-weight:800;
-  }
-  .remarks{ display:grid; gap:8px; }
-  .remark{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; }
-  .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
+    .tiles-wrap{ margin-top:12px; }
+    .tiles-title{ font-family: Montserrat; font-weight:800; font-size:16px; margin:10px 2px 8px; color:#111827; }
+    .exam-cards{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; }
+    .exam-card{ position:relative; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08); }
+    .tile-bar{ position:relative; height:14px; border-radius:999px; background:#ffffff; border:1px solid var(--glass-border); box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); overflow:hidden; }
+    .tile-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
+    .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
 
-  @media (max-width:1024px){ .avg-grid{grid-template-columns: repeat(2, 1fr);} .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));}}
-  @media (max-width:760px){
-    .info{grid-template-columns: 1fr 1fr} .profile{grid-template-columns: 80px 1fr}
-    .avatar{width:72px;height:72px;border-radius:12px}
-    .exam-row{ grid-template-columns: 1fr; grid-template-areas: "label" "pct" "bar"; gap:8px; }
-    .label{ grid-area: label; } .pct{ grid-area: pct; text-align:left; } .bar{ grid-area: bar; height:12px; }
-    .actions{ display:none; }
-  }
-</style>
+    .ach-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
+    .ach-card{ background: linear-gradient(120deg, #f7f7f7, #eaeaea, #fafafa);
+      border:1px solid #d1d5db; border-radius:14px; padding:14px; box-shadow: 0 0 0 2px rgba(209,213,219,.28), 0 8px 18px rgba(0,0,0,.08);
+      font-family: Montserrat; font-weight:800;
+    }
+    .remarks{ display:grid; gap:8px; }
+    .remark{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; }
+    .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
+
+    @media (max-width:1024px){ .avg-grid{grid-template-columns: repeat(2, 1fr);} .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));}}
+    @media (max-width:760px){
+      .info{grid-template-columns: 1fr 1fr} .profile{grid-template-columns: 80px 1fr}
+      .avatar{width:72px;height:72px;border-radius:12px}
+      .exam-row{ grid-template-columns: 1fr; grid-template-areas: "label" "pct" "bar"; gap:8px; }
+      .label{ grid-area: label; } .pct{ grid-area: pct; text-align:left; } .bar{ grid-area: bar; height:12px; }
+      .actions{ display:none; }
+    }
+    @media print{ .actions{ display:none !important; } }
+  </style>
 </head>
-<body class="">
-  <!-- Optional lock overlay -->
+<body>
+  <!-- Lock overlay (only shows if profile.lock.enabled === true) -->
   <div class="lock-overlay" id="lock-overlay" role="dialog" aria-modal="true" aria-labelledby="lock-title">
     <div class="lock-card">
-      <div class="lock-head" id="lock-title"><div class="brand"><b style="color:var(--sehr-green)">SEHR</b> ACADEMY</div><span>— Protected Profile</span></div>
+      <div class="lock-head" id="lock-title"><div class="brand"><b style="color:var(--sehr)">SEHR</b> ACADEMY</div><span>— Protected Profile</span></div>
       <div class="lock-sub">Enter password to view student data.</div>
       <form class="lock-form" onsubmit="tryUnlock(event)">
         <input id="lock-input" class="lock-input" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" />
@@ -153,35 +152,11 @@
       <h2>Results</h2>
 
       <!-- Subject averages -->
-      <div class="avg-grid" id="avgGrid">
-        <!-- Physics -->
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div>
-          <div class="mini-bar"><i id="mini-Physics"></i></div>
-          <span class="passchip" id="pf-Physics">—</span>
-          <span class="wm">Φ</span>
-        </div>
-        <!-- Maths -->
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div>
-          <div class="mini-bar"><i id="mini-Maths"></i></div>
-          <span class="passchip" id="pf-Maths">—</span>
-          <span class="wm">∑</span>
-        </div>
-        <!-- Chemistry -->
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div>
-          <div class="mini-bar"><i id="mini-Chemistry"></i></div>
-          <span class="passchip" id="pf-Chemistry">—</span>
-          <span class="wm">⚗</span>
-        </div>
-        <!-- Biology -->
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div>
-          <div class="mini-bar"><i id="mini-Biology"></i></div>
-          <span class="passchip" id="pf-Biology">—</span>
-          <span class="wm">🌿</span>
-        </div>
+      <div class="avg-grid">
+        <div class="avg-card"><div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div><div class="mini-bar"><i id="mini-Physics"></i></div><span class="passchip" id="pf-Physics">—</span><span class="wm">Φ</span></div>
+        <div class="avg-card"><div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div><div class="mini-bar"><i id="mini-Maths"></i></div><span class="passchip" id="pf-Maths">—</span><span class="wm">∑</span></div>
+        <div class="avg-card"><div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div><div class="mini-bar"><i id="mini-Chemistry"></i></div><span class="passchip" id="pf-Chemistry">—</span><span class="wm">⚗</span></div>
+        <div class="avg-card"><div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div><div class="mini-bar"><i id="mini-Biology"></i></div><span class="passchip" id="pf-Biology">—</span><span class="wm">🌿</span></div>
       </div>
 
       <!-- Internals -->
@@ -199,11 +174,11 @@
             <div class="metric"><small>Passed</small><b id="met-passed">—</b></div>
             <div class="metric"><small>Failed</small><b id="met-failed">—</b></div>
           </div>
+
+          <!-- Externals -->
+          <div class="tiles-wrap" id="externalsWrap"></div>
         </div>
       </details>
-
-      <!-- Externals -->
-      <div class="tiles-wrap" id="externalsWrap"></div>
     </section>
 
     <!-- Achievements / Remarks -->
@@ -217,167 +192,157 @@
     <div class="foot">© Sehr Academy</div>
   </div>
 
-<script>
-  const Q = new URLSearchParams(location.search);
-  const slug = (Q.get('slug') || '').trim().toLowerCase();
+  <script>
+    // ===== helpers =====
+    const Q = new URLSearchParams(location.search);
+    const slug = (Q.get('slug') || '').trim().toLowerCase();
 
-  const $ = (sel)=>document.querySelector(sel);
-  const $$ = (sel)=>document.querySelectorAll(sel);
+    const $ = (sel)=>document.querySelector(sel);
+    function pct(x){ return Math.max(0, Math.min(100, Number(x)||0)); }
+    function setFill(el, p){ if(el) el.style.width = p + '%'; }
+    function grad(p){ if(p>=75) return 'linear-gradient(90deg,#fff3b0,#d4af37)'; if(p>=50) return 'linear-gradient(90deg,#f59e0b,#fbbf24)'; if(p>=30) return 'linear-gradient(90deg,#ef4444,#f87171)'; return 'linear-gradient(90deg,#b91c1c,#ef4444)'; }
 
-  let PROFILE=null;
-
-  // ===== Lock helpers =====
-  async function sha256Hex(message){
-    const enc = new TextEncoder().encode(message);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  }
-  async function tryUnlock(e){
-    e?.preventDefault();
-    const input = $('#lock-input'), err = $('#lock-err'), overlay = $('#lock-overlay');
-    const val = (input.value||'').trim();
-    err.textContent='';
-    const hex = await sha256Hex(val);
-    if(hex === PROFILE.lock.sha256){
-      sessionStorage.setItem('sehr-profile-unlocked','1:'+slug);
-      document.body.classList.remove('locked');
-      overlay.style.opacity = '0'; setTimeout(()=> overlay.style.display='none', 250);
-      input.value='';
-    }else{
-      err.textContent='Wrong password. Please try again.';
-      input.select();
+    // ===== lock helpers =====
+    async function sha256Hex(message){
+      const enc = new TextEncoder().encode(message);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
     }
-  }
-  window.tryUnlock = tryUnlock;
-
-  // ===== Render helpers =====
-  function setText(id, val){ const el = document.getElementById(id); if(el) el.textContent = val ?? '—'; }
-  function pctToFill(elPct){ return Math.max(0, Math.min(100, Number(elPct)||0)); }
-  function setFill(el, pct){ el.style.width = pct + '%'; }
-
-  function renderMeta(meta){
-    $('#ava').src = meta.img || '/img/students/placeholder.png';
-    $('#ava').alt = (meta.name || 'Student') + ' photo';
-    setText('k-name', meta.name);
-    setText('k-class', meta.className + (meta.section ? ' • Sec '+meta.section : ''));
-    setText('k-join', meta.joinDate || '—');
-    setText('k-bday', meta.birthday || '—');
-  }
-
-  function renderInternals(list){
-    const wrap = $('#internals'); wrap.innerHTML = '';
-    let attempted = 0, passed = 0, sum = 0;
-    list.forEach(it=>{
-      const pct = pctToFill(it.pct);
-      attempted++; sum += pct; if(pct >= 40) passed++;
-      const row = document.createElement('div');
-      row.className='exam-row';
-      row.innerHTML = `
-        <div class="label">${it.label}</div>
-        <div class="bar"><i style="width:${pct}%"></i></div>
-        <div class="pct">${pct}%</div>`;
-      wrap.appendChild(row);
-    });
-    const avg = attempted ? Math.round(sum/attempted) : 0;
-    $('#avg-text').textContent = avg + '%';
-    setFill($('#avg-bar'), avg);
-    setText('met-attempted', attempted);
-    setText('met-passed', passed);
-    setText('met-failed', attempted - passed);
-
-    // Subject averages to top cards
-    const subjects = ['Physics','Maths','Chemistry','Biology'];
-    const buckets = {Physics:[], Maths:[], Chemistry:[], Biology:[]};
-    list.forEach(it=>{ if(buckets[it.subject]) buckets[it.subject].push(pctToFill(it.pct)); });
-    subjects.forEach(s=>{
-      const arr=buckets[s], avg = arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : 0;
-      setText('avg-'+s, arr.length ? avg+'%' : '—');
-      setFill($('#mini-'+s), avg);
-      const pf = $('#pf-'+s); if(pf) pf.textContent = avg >= 40 ? 'Pass' : (arr.length ? 'Fail' : '—');
-    });
-  }
-
-  function renderExternals(map){
-    const wrap = $('#externalsWrap'); wrap.innerHTML='';
-    Object.entries(map || {}).forEach(([title, subjMap])=>{
-      const h = document.createElement('div');
-      h.innerHTML = `<div class="tiles-title">${title}</div>`;
-      wrap.appendChild(h);
-      const grid = document.createElement('div'); grid.className='exam-cards';
-      wrap.appendChild(grid);
-      ['Physics','Maths','Chemistry','Biology'].forEach(s=>{
-        const pct = pctToFill(subjMap[s]);
-        const card = document.createElement('div'); card.className='exam-card';
-        card.innerHTML = `
-          <div class="tile-meta"><span class="s">${s}</span><span class="ptext">${pct? pct+'%' : 'Pending'}</span></div>
-          <div class="tile-bar"><i style="width:${pct}%"></i></div>`;
-        grid.appendChild(card);
-      });
-    });
-  }
-
-  function renderAchievements(list){
-    const g = $('#achGrid'); g.innerHTML='';
-    (list && list.length ? list : ['No achievements yet']).forEach(t=>{
-      const c = document.createElement('div'); c.className='ach-card'; c.textContent = t;
-      g.appendChild(c);
-    });
-  }
-
-  function renderRemarks(list){
-    const g = $('#remarks'); g.innerHTML='';
-    (list && list.length ? list : [{by:'—', text:'No remarks yet — faculty feedback will appear here.'}]).forEach(r=>{
-      const d = document.createElement('div'); d.className='remark'; 
-      d.innerHTML = `<b>${r.by}</b><div>${r.text}</div>`;
-      g.appendChild(d);
-    });
-  }
-
-  // ===== CSV export (internals only) =====
-  function toCSV(internals){
-    const lines = [['Label','Subject','Percent']].concat(internals.map(i=>[i.label,i.subject,i.pct]));
-    return lines.map(row=>row.map(x=>`"${String(x).replaceAll('"','""')}"`).join(',')).join('\n');
-  }
-
-  // ===== Boot =====
-  async function boot(){
-    if(!slug){ document.body.innerHTML = '<div style="padding:30px;font-family:Montserrat"><b>Missing ?slug=…</b></div>'; return; }
-
-    // roster is optional here (we rely on per-student JSON for most fields),
-    // but you can load it if needed:
-    // const roster = await (await fetch('/data/students.json?cb='+Date.now())).json();
-
-    const res = await fetch(`/data/profiles/${slug}.json?cb=`+Date.now(), {cache:'no-store'});
-    if(!res.ok){ document.body.innerHTML = '<div style="padding:30px;font-family:Montserrat"><b>Profile not found.</b></div>'; return; }
-    PROFILE = await res.json();
-
-    // Lock?
-    if(PROFILE.lock && PROFILE.lock.enabled && PROFILE.lock.sha256){
-      const unlocked = sessionStorage.getItem('sehr-profile-unlocked') === '1:'+slug;
-      if(!unlocked){
-        document.body.classList.add('locked');
-        const overlay = document.getElementById('lock-overlay');
-        overlay.style.display='grid';
+    async function tryUnlock(e){
+      e?.preventDefault();
+      const input = $('#lock-input'), err = $('#lock-err'), overlay = $('#lock-overlay');
+      const val = (input.value||'').trim();
+      err.textContent='';
+      const hex = await sha256Hex(val);
+      if(hex === window.PROFILE?.lock?.sha256){
+        sessionStorage.setItem('sehr-profile-unlocked','1:'+slug);
+        document.body.classList.remove('locked');
+        overlay.style.opacity = '0'; setTimeout(()=> overlay.style.display='none', 250);
+        input.value='';
+      }else{
+        err.textContent='Wrong password. Please try again.';
+        input.select();
       }
     }
+    window.tryUnlock = tryUnlock;
 
-    renderMeta(PROFILE.meta || {});
-    renderInternals(PROFILE.internals || []);
-    renderExternals(PROFILE.externals || {});
-    renderAchievements(PROFILE.achievements || []);
-    renderRemarks(PROFILE.remarks || []);
+    // ===== renderers =====
+    function renderMeta(meta){
+      $('#ava').src = meta.img || '/img/students/placeholder.png';
+      $('#ava').alt = (meta.name || 'Student') + ' photo';
+      $('#k-name').textContent = meta.name || '—';
+      $('#k-class').textContent = (meta.className || '') + (meta.section ? ' • Sec '+meta.section : '');
+      $('#k-join').textContent = meta.joinDate || '—';
+      $('#k-bday').textContent = meta.birthday || '—';
+    }
 
-    // actions
-    document.getElementById('btn-print').onclick = ()=>window.print();
-    document.getElementById('btn-csv').onclick = ()=>{
-      const csv = toCSV(PROFILE.internals || []);
-      const blob = new Blob([csv], {type:'text/csv'});
-      const url = URL.createObjectURL(blob);
-      const a = Object.assign(document.createElement('a'), {href:url, download: `${slug}-internals.csv`});
-      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    };
-  }
-  boot();
-</script>
+    function renderInternals(list){
+      const wrap = $('#internals'); wrap.innerHTML = '';
+      let attempted = 0, passed = 0, sum = 0;
+      const per = {Physics:[], Maths:[], Chemistry:[], Biology:[]};
+
+      (list||[]).forEach(it=>{
+        const p = pct(it.pct); const subj = it.subject || '—';
+        attempted++; sum += p; if(p >= 50) passed++;
+        if(per[subj]) per[subj].push(p);
+
+        const row = document.createElement('div');
+        row.className='exam-row';
+        row.innerHTML = `
+          <div class="label">${it.label||''}</div>
+          <div class="bar"><i style="width:${p}%;background:${grad(p)}"></i></div>
+          <div class="pct">${p}%</div>`;
+        wrap.appendChild(row);
+      });
+
+      const avg = attempted ? Math.round((sum/attempted)*10)/10 : 0;
+      $('#avg-text').textContent = avg + '%';
+      const avgBar = $('#avg-bar'); if(avgBar){ avgBar.style.width = avg + '%'; avgBar.style.background = grad(avg); }
+      $('#met-attempted').textContent = attempted;
+      $('#met-passed').textContent = passed;
+      $('#met-failed').textContent = attempted - passed;
+
+      // Top subject averages
+      ['Physics','Maths','Chemistry','Biology'].forEach(s=>{
+        const arr = per[s]; const a = arr.length ? Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*10)/10 : 0;
+        $('#avg-'+s).textContent = arr.length ? a+'%' : '—';
+        const mini = $('#mini-'+s); if(mini){ mini.style.width = a + '%'; mini.style.background = grad(a); }
+        const pf = $('#pf-'+s); if(pf){ pf.textContent = arr.length ? (a>=50?'Pass':'Fail') : '—'; }
+      });
+    }
+
+    function renderExternals(map){
+      const host = $('#externalsWrap'); host.innerHTML = '';
+      Object.entries(map || {}).forEach(([title, subj])=>{
+        const h = document.createElement('div'); h.className='tiles-title'; h.textContent = title; host.appendChild(h);
+        const grid = document.createElement('div'); grid.className='exam-cards'; host.appendChild(grid);
+        ['Physics','Maths','Chemistry','Biology'].forEach(s=>{
+          const v = subj?.[s]; const p = (v==null || isNaN(v)) ? 0 : Math.max(0,Math.min(100,Math.round(v)));
+          const card = document.createElement('div'); card.className='exam-card';
+          card.innerHTML = `
+            <div class="tile-meta"><span class="s">${s}</span><span class="ptext">${v==null?'Pending':p+'%'}</span></div>
+            <div class="tile-bar"><i style="width:${p}%;background:${grad(p)}"></i></div>`;
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    function renderAchievements(list){
+      const g = $('#achGrid'); g.innerHTML='';
+      (list && list.length ? list : ['No achievements yet']).forEach(t=>{
+        const c = document.createElement('div'); c.className='ach-card'; c.textContent = t;
+        g.appendChild(c);
+      });
+    }
+    function renderRemarks(list){
+      const g = $('#remarks'); g.innerHTML='';
+      (list && list.length ? list : [{by:'—', text:'No remarks yet — faculty feedback will appear here.'}]).forEach(r=>{
+        const d = document.createElement('div'); d.className='remark';
+        d.innerHTML = `<b>${r.by}</b><div>${r.text}</div>`;
+        g.appendChild(d);
+      });
+    }
+
+    function toCSV(internals){
+      const rows = [['Label','Subject','Percent']].concat((internals||[]).map(i=>[i.label,i.subject,i.pct]));
+      return rows.map(r=>r.map(x=>`"${String(x??'').replaceAll('"','""')}"`).join(',')).join('\n');
+    }
+
+    // ===== boot =====
+    async function boot(){
+      if(!slug){ document.body.innerHTML = '<div style="padding:30px;font-family:Montserrat"><b>Missing ?slug=…</b></div>'; return; }
+
+      const res = await fetch(`/data/profiles/${slug}.json?cb=${Date.now()}`, {cache:'no-store'});
+      if(!res.ok){ document.body.innerHTML = '<div style="padding:30px;font-family:Montserrat"><b>Profile not found.</b></div>'; return; }
+      window.PROFILE = await res.json();
+
+      // lock?
+      if(PROFILE.lock && PROFILE.lock.enabled && PROFILE.lock.sha256){
+        const unlocked = sessionStorage.getItem('sehr-profile-unlocked') === '1:'+slug;
+        if(!unlocked){
+          document.body.classList.add('locked');
+          const overlay = $('#lock-overlay');
+          overlay.style.display='grid';
+        }
+      }
+
+      renderMeta(PROFILE.meta || {});
+      renderInternals(PROFILE.internals || []);
+      renderExternals(PROFILE.externals || {});
+      renderAchievements(PROFILE.achievements || []);
+      renderRemarks(PROFILE.remarks || []);
+
+      // actions
+      $('#btn-print').onclick = ()=>window.print();
+      $('#btn-csv').onclick = ()=>{
+        const csv = toCSV(PROFILE.internals || []);
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement('a'), {href:url, download: `${slug}-internals.csv`});
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      };
+    }
+    boot();
+  </script>
 </body>
 </html>
