@@ -26,15 +26,15 @@
     *{box-sizing:border-box}
     a{color:inherit; text-decoration:none}
     html,body{margin:0}
-    body {
- 	 margin: 0;
- 	 font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
-  	background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
-	  color: #111;
-	}
+    body{
+      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 50%, #f7f8fa 100%);
+      color:#111;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.65;
+    }
 
-
-    /* ===== Header (copied from index: design + size) ===== */
+    /* ===== Header (same design & size as index) ===== */
     header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
     .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
@@ -48,24 +48,48 @@
     nav[aria-label="Primary"] a:hover{color:var(--sehr-green)}
     nav[aria-label="Primary"] a:hover:after{width:100%}
 
-    /* ===== Panel & form ===== */
+    /* ===== Panel & filters ===== */
     .panel{max-width:var(--maxw); margin:22px auto 0; padding:18px 20px; border-radius:var(--radius); border:1px solid var(--glass-border); background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70)); box-shadow: var(--shadow);}
-    .controls{display:flex; gap:16px; align-items:end; justify-content:center; flex-wrap:wrap}
+    .controls{display:grid; grid-template-columns: repeat(6, minmax(160px,1fr)); gap:12px; align-items:end}
+    @media (max-width:1000px){ .controls{grid-template-columns: repeat(3, minmax(160px,1fr));} }
+    @media (max-width:640px){ .controls{grid-template-columns: repeat(2, minmax(140px,1fr));} }
+
     .field{display:grid; gap:6px}
-    .field label{font-family:Montserrat; font-weight:800; font-size:14px; color:#111}
-    .field select,.field input{padding:12px 16px; border-radius:14px; border:1px solid var(--glass-border); background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.7)); font-weight:700; min-width:220px; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 20px rgba(15,23,42,.06)}
-    .go-btn{align-self:center; height:44px; padding:0 18px; border-radius:14px; border:1px solid var(--glass-border); font-family:Montserrat; font-weight:900; background:linear-gradient(180deg,#fff,rgba(255,255,255,.75)); cursor:pointer; box-shadow:0 8px 20px rgba(15,23,42,.06)}
+    .field label{font-family:Montserrat; font-weight:800; font-size:13px; color:#111}
+    .field select,.field input{
+      padding:12px 14px; border-radius:14px; border:1px solid var(--glass-border);
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.7));
+      font-weight:700; min-width:100%; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 20px rgba(15,23,42,.06)
+    }
+    .go-btn{
+      height:44px; padding:0 18px; border-radius:14px; border:1px solid var(--glass-border);
+      font-family:Montserrat; font-weight:900; background:linear-gradient(180deg,#fff,rgba(255,255,255,.75));
+      cursor:pointer; box-shadow:0 8px 20px rgba(15,23,42,.06)
+    }
+
+    /* ===== Counter bar ===== */
+    .counterbar{
+      max-width:var(--maxw); margin:10px auto 0; padding:0 20px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:28px;
+    }
+    .count{
+      font-family:Montserrat; font-weight:900; font-size:14px; color:#0b0f10;
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.8));
+      border:1px solid var(--glass-border); border-radius:999px; padding:6px 10px; box-shadow: 0 8px 18px rgba(15,23,42,.06);
+      display:none;  /* hidden until results */
+    }
+    .hint{ color:#6b7280; font-weight:700; font-size:13px }
 
     /* ===== Grid & cards ===== */
-    .grid{display:grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap:18px; margin:22px auto; max-width:var(--maxw); padding:0 20px}
-    .card{display:block; background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.65)); border:1px solid var(--glass-border); border-radius:18px; padding:18px; text-align:center; box-shadow:var(--shadow); transition:transform .3s ease, box-shadow .3s ease, filter .3s ease}
-    .card:hover, .card:focus{transform:translateY(-6px); box-shadow:0 16px 40px rgba(21,36,66,.18); filter:drop-shadow(0 0 8px rgba(139,197,63,0.45)); outline:none}
+    .grid{display:grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap:18px; margin:18px auto 0; max-width:var(--maxw); padding:0 20px}
+    .card{display:block; background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.76)); border:1px solid var(--glass-border); border-radius:18px; padding:18px; text-align:center; box-shadow:var(--shadow); transition:transform .3s ease, box-shadow .3s ease, filter .3s ease}
+    .card:hover, .card:focus{transform:translateY(-6px); box-shadow:0 16px 40px rgba(21,36,66,.18); filter:drop-shadow(0 0 8px rgba(139,197,63,.28)); outline:none}
     .ava{width:96px; height:96px; margin:6px auto 12px; border-radius:22px; overflow:hidden; border:2px solid rgba(255,255,255,.9); box-shadow:0 10px 24px rgba(15,23,42,.12); background:#f1f5f9; display:grid; place-items:center; font-family:Montserrat; font-weight:900}
     .ava img{width:100%; height:100%; object-fit:cover; display:block; margin-top:12px}
     .name{font-family:Montserrat; font-weight:900; font-size:18px; color:#111}
     .muted{color:#111; opacity:.6; font-size:13px; margin-top:4px}
 
-    .empty-msg{text-align:center; font-family:Montserrat; font-size:16px; color:#444; margin-top:40px}
+    .empty-msg{text-align:center; font-family:Montserrat; font-size:15px; color:#6b7280; margin:26px auto 0; max-width:var(--maxw); padding:0 20px}
 
     footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; gap:14px; justify-content:center; color:#334; font-size:14px}
     footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
@@ -73,7 +97,7 @@
 </head>
 
 <body>
-  <!-- Header: same markup/links as index -->
+  <!-- Header: identical to index.html -->
   <header role="banner">
     <div class="container nav">
       <a class="brand" href="https://sehracademy.com/#home" aria-label="Sehr Academy">
@@ -88,36 +112,62 @@
     </div>
   </header>
 
-  <section class="panel">
+  <!-- Filters panel -->
+  <section class="panel" aria-labelledby="filters-title">
+    <h2 id="filters-title" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Filters</h2>
     <div class="controls">
       <div class="field">
         <label for="yearSel">Year</label>
         <select id="yearSel">
           <option value="">Choose year…</option>
-          <option>2025–26</option>
-          <option>2024–25</option>
+          <!-- Hydrated from JSON -->
         </select>
       </div>
+
       <div class="field">
         <label for="classSel">Class</label>
         <select id="classSel">
           <option value="">Choose class…</option>
-          <option>Plus One Science</option>
-          <option>Plus Two Science</option>
+          <!-- Hydrated from JSON -->
         </select>
       </div>
+
+      <div class="field">
+        <label for="sectionSel">Section</label>
+        <select id="sectionSel">
+          <option value="">All sections</option>
+          <!-- Hydrated from JSON -->
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="batchSel">Batch</label>
+        <select id="batchSel">
+          <option value="">All batches</option>
+          <!-- Hydrated from JSON -->
+        </select>
+      </div>
+
       <div class="field">
         <label for="searchBox">Search</label>
-        <div style="display:flex; gap:8px; align-items:center">
-          <input id="searchBox" placeholder="Type a name… (e.g., Fidha or ID)" />
-          <button class="go-btn" id="searchGo">Go</button>
-        </div>
+        <input id="searchBox" placeholder="Type a name or ID (e.g., Fidha / S001)" />
+      </div>
+
+      <div class="field">
+        <button class="go-btn" id="searchGo">Go</button>
       </div>
     </div>
   </section>
 
-  <section class="grid" id="studentGrid"></section>
-  <div id="emptyState" class="empty-msg"></div>
+  <!-- Counter + hint -->
+  <div class="counterbar">
+    <div id="countPill" class="count" aria-live="polite" aria-atomic="true"></div>
+    <div id="hintText" class="hint">Tip: Choose Year & Class (and Section/Batch if needed), or type a name/ID, then press <b>Go</b>.</div>
+  </div>
+
+  <!-- Results grid -->
+  <section class="grid" id="studentGrid" aria-live="polite" aria-atomic="true"></section>
+  <div id="emptyState" class="empty-msg">Please select Year & Class or use Search.</div>
 
   <footer>
     <a href="#" id="helpLink">Help</a>
@@ -126,73 +176,147 @@
   </footer>
 
   <script>
-    const students = [
-      { name:"Fidha", slug:"fidha", id:"S001", img:"https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png", year:"2025–26", className:"Plus One Science"},
-      { name:"Gayathri", slug:"gayathri", id:"S002", img:"https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png", year:"2025–26", className:"Plus One Science"},
-      { name:"Devanandha", slug:"devanandha", id:"S003", img:"https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png", year:"2025–26", className:"Plus One Science"}
-    ];
+    /*
+      Create /data/students.json and add students (include section & batch):
 
-    const yearSel=document.querySelector('#yearSel');
-    const classSel=document.querySelector('#classSel');
-    const searchBox=document.querySelector('#searchBox');
-    const searchGo=document.querySelector('#searchGo');
-    const grid=document.querySelector('#studentGrid');
-    const empty=document.querySelector('#emptyState');
+      [
+        {
+          "name": "Fidha",
+          "slug": "fidha",
+          "id": "S001",
+          "img": "/img/students/fidha.png",
+          "year": "2025–26",
+          "className": "Plus One Science",
+          "section": "A",
+          "batch": "Origin",
+          "url": "https://sehracademy.com/fidha"
+        },
+        {
+          "name": "Gayathri",
+          "slug": "gayathri",
+          "id": "S002",
+          "img": "/img/students/gayathri.png",
+          "year": "2025–26",
+          "className": "Plus One Science",
+          "section": "A",
+          "batch": "Origin"
+        }
+      ]
+    */
 
-    let focusIndex=-1; // for keyboard navigation
+    const DATA_URL = '/data/students.json?cb=' + Date.now();
+    let STUDENTS = [];
+
+    // DOM
+    const yearSel = document.getElementById('yearSel');
+    const classSel = document.getElementById('classSel');
+    const sectionSel = document.getElementById('sectionSel');
+    const batchSel = document.getElementById('batchSel');
+    const searchBox = document.getElementById('searchBox');
+    const searchGo = document.getElementById('searchGo');
+    const grid = document.getElementById('studentGrid');
+    const empty = document.getElementById('emptyState');
+    const countPill = document.getElementById('countPill');
+    const hintText = document.getElementById('hintText');
+
+    let focusIndex = -1; // keyboard nav
+
+    async function loadStudents(){
+      try{
+        const res = await fetch(DATA_URL, { cache: 'no-store' });
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        STUDENTS = await res.json();
+
+        hydrateFilters(STUDENTS);
+        // Default view: show nothing until filters/search (do NOT render here)
+      }catch(err){
+        console.error('Failed to load students.json', err);
+        empty.textContent = 'Couldn’t load students list.';
+      }
+    }
+
+    function hydrateFilters(list){
+      // reset (keep first option)
+      yearSel.length = 1; classSel.length = 1; sectionSel.length = 1; batchSel.length = 1;
+
+      const uniq = (arr) => [...new Set(arr.filter(Boolean))];
+      const years = uniq(list.map(s => s.year)).sort().reverse();
+      const classes = uniq(list.map(s => s.className)).sort();
+      const sections = uniq(list.map(s => s.section)).sort();
+      const batches = uniq(list.map(s => s.batch)).sort();
+
+      years.forEach(v => yearSel.add(new Option(v, v)));
+      classes.forEach(v => classSel.add(new Option(v, v)));
+      sections.forEach(v => sectionSel.add(new Option(v, v)));
+      batches.forEach(v => batchSel.add(new Option(v, v)));
+    }
 
     function render(list){
-      grid.innerHTML='';
-      empty.textContent='';
-      if(list.length===0){
-        empty.textContent='No students found';
+      grid.innerHTML = '';
+      if(!list.length){
+        empty.style.display = '';
+        countPill.style.display = 'none';
         return;
       }
-      list.forEach((s,i)=>{
-        const a=document.createElement('a');
-        a.href=`https://sehracademy.com/${s.slug}`;
-        a.className='card';
-        a.tabIndex=0;
-        a.innerHTML=`
-          <div class="ava"><img loading="lazy" src="${s.img}" alt="${s.name}"></div>
-          <div class="name">${s.name}</div>
-          <div class="muted">Tap to open profile</div>
+      empty.style.display = 'none';
+      countPill.textContent = `Total students: ${list.length}`;
+      countPill.style.display = 'inline-flex';
+
+      list.forEach((s) => {
+        const a = document.createElement('a');
+        a.href = s.url || `https://sehracademy.com/${s.slug}`;
+        a.className = 'card';
+        a.tabIndex = 0;
+        a.innerHTML = `
+          <div class="ava"><img loading="lazy" src="${s.img || '/img/students/placeholder.png'}" alt="${s.name || 'Student'}"></div>
+          <div class="name">${s.name || 'Unnamed'}</div>
+          <div class="muted">${(s.className || '')}${s.section ? ' • Sec ' + s.section : ''}${s.batch ? ' • ' + s.batch : ''}</div>
         `;
         a.addEventListener('keydown',e=>{
-          if(e.key==='Enter'){ window.location=a.href; }
+          if(e.key==='Enter'){ window.location = a.href; }
         });
         grid.appendChild(a);
       });
     }
 
-    function filter(){
-      const q=searchBox.value.trim().toLowerCase();
-      if(q){
-        const list=students.filter(s=>s.name.toLowerCase().includes(q)||s.id.toLowerCase().includes(q));
-        render(list);
-      } else if(yearSel.value && classSel.value){
-        const list=students.filter(s=>s.year===yearSel.value && s.className===classSel.value);
-        render(list);
-      } else {
-        grid.innerHTML='';
-        empty.textContent='Please select Year & Class or use Search';
-      }
+    function applyFilters(){
+      const q = (searchBox.value || '').trim().toLowerCase();
+      const y = yearSel.value;
+      const c = classSel.value;
+      const sec = sectionSel.value;
+      const bat = batchSel.value;
+
+      const list = STUDENTS.filter(s => {
+        const textOk = !q || (s.name && s.name.toLowerCase().includes(q)) || ((s.id || '').toLowerCase().includes(q));
+        const yearOk = !y || s.year === y;
+        const classOk = !c || s.className === c;
+        const secOk = !sec || (s.section === sec);
+        const batOk = !bat || (s.batch === bat);
+        return textOk && yearOk && classOk && secOk && batOk;
+      });
+
+      hintText.style.display = 'none'; // hide hint once user interacts
+      render(list);
     }
 
-    searchGo.addEventListener('click',filter);
-    searchBox.addEventListener('input',filter);
-    yearSel.addEventListener('change',filter);
-    classSel.addEventListener('change',filter);
+    // Events
+    searchGo.addEventListener('click', applyFilters);
+    searchBox.addEventListener('input', applyFilters);
+    yearSel.addEventListener('change', applyFilters);
+    classSel.addEventListener('change', applyFilters);
+    sectionSel.addEventListener('change', applyFilters);
+    batchSel.addEventListener('change', applyFilters);
 
-    // Keyboard navigation: arrow keys cycle focus
-    document.addEventListener('keydown',e=>{
-      const cards=[...grid.querySelectorAll('.card')];
+    // Keyboard navigation for cards
+    document.addEventListener('keydown', e=>{
+      const cards = [...grid.querySelectorAll('.card')];
       if(!cards.length) return;
       if(e.key==='ArrowDown'){focusIndex=(focusIndex+1)%cards.length;cards[focusIndex].focus();e.preventDefault();}
       if(e.key==='ArrowUp'){focusIndex=(focusIndex-1+cards.length)%cards.length;cards[focusIndex].focus();e.preventDefault();}
     });
 
-    filter(); // initial state
+    // Initialize
+    loadStudents();
   </script>
 </body>
 </html>
