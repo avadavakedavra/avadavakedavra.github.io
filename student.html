@@ -2,141 +2,242 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sehr Academy — Student Profile</title>
-  <meta name="theme-color" content="#8BC53F" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehr Academy — Student Profile (Fidha)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <meta name="theme-color" content="#8BC53F">
   <style>
     :root{
-      --sehr:#8BC53F; --ink:#0F172A; --muted:#5b6475;
+      --sehr-green:#8BC53F; --ink:#0F172A; --muted:#5b6475;
       --panel: rgba(255,255,255,0.75); --panel-strong: rgba(255,255,255,0.92);
-      --glass-border: rgba(255,255,255,0.55); --shadow: 0 10px 30px rgba(15,23,42,.10);
-      --radius: 18px;
-      /* gradient palette */
-      --darkred1:#b91c1c; --darkred2:#ef4444;   /* 0–30 */
-      --red1:#ef4444;     --red2:#f87171;       /* 30–50 */
-      --or1:#f59e0b;      --or2:#fbbf24;        /* 50–75 */
-      --shine1:#fff3b0;   --gld2:#d4af37;       /* 75–100 */
+      --glass-border: rgba(255,255,255,0.55); --shadow: 0 10px 30px rgba(15,23,42,.10); --radius: 18px;
+      --darkred1:#b91c1c; --darkred2:#ef4444; /* 0–30 */
+      --red1:#ef4444; --red2:#f87171;       /* 30–50 */
+      --or1:#f59e0b; --or2:#fbbf24;         /* 50–75 */
+      --gld1:#f1ce58; --gld2:#d4af37;       /* 75–100 */
+      --shine1:#fff3b0; --shine2:#d4af37;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box} html,body{height:100%}
     body{
-      margin:0; font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink);
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(139,197,63,.18), transparent 60%),
-                  radial-gradient(900px 400px at 110% 10%, rgba(139,197,63,.12), transparent 60%), #edf3e7;
-      overflow-x:hidden; position:relative;
+      margin:0; font-family: Nunito, system-ui,-apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(139,197,63,.18), transparent 60%),
+        radial-gradient(900px 400px at 110% 10%, rgba(139,197,63,.12), transparent 60%), #edf3e7;
+      position:relative; overflow-x:hidden;
     }
-    body:before{content:""; position:fixed; inset:0;
-      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06"><g fill="%230F172A"><text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text><text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text><text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text><text x="660" y="260" font-size="46" font-family="Montserrat">π</text><text x="120" y="340" font-size="40" font-family="Montserrat">∫</text><text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text><text x="80" y="520" font-size="44" font-family="Montserrat">√x</text></g></svg>');
-      background-size:800px 600px; background-repeat:repeat; pointer-events:none; z-index:0;
+    body:before{
+      content:""; position:fixed; inset:0;
+      background-image: url('data:image/svg+xml;utf8,\
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06">\
+        <g fill="%230F172A">\
+          <text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text>\
+          <text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text>\
+          <text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text>\
+          <text x="660" y="260" font-size="46" font-family="Montserrat">π</text>\
+          <text x="120" y="340" font-size="40" font-family="Montserrat">∫</text>\
+          <text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text>\
+          <text x="80" y="520" font-size="44" font-family="Montserrat">√x</text>\
+        </g>\
+      </svg>');
+      background-size: 800px 600px; background-repeat: repeat; pointer-events:none; z-index:0;
     }
 
-    /* ===== Lock overlay (optional, driven by JSON) ===== */
+    /* LOCK */
     body.locked .wrap{ filter: blur(12px); pointer-events:none; user-select:none; }
-    .lock-overlay{ position:fixed; inset:0; display:none; place-items:center;
+    .lock-overlay{ position: fixed; inset: 0; display: grid; place-items: center;
       background: radial-gradient(1200px 800px at 50% -10%, rgba(139,197,63,.15), transparent 60%), rgba(237,243,231,.7);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      z-index:9999; transition: opacity .35s ease;
-    }
-    .lock-card{ width:min(520px,calc(100% - 32px)); background:rgba(255,255,255,.92);
-      border:1px solid var(--glass-border); border-radius:20px; box-shadow:0 20px 60px rgba(15,23,42,.18); padding:24px; }
-    .lock-head{ display:flex; align-items:center; gap:12px; margin-bottom:12px; font-family:Montserrat; font-weight:900; font-size:22px; }
-    .lock-sub{ color:var(--muted); margin-bottom:18px; font-weight:700; }
-    .lock-form{ display:grid; gap:10px; grid-template-columns:1fr auto; }
-    .lock-input{ padding:12px 14px; border-radius:12px; border:1px solid var(--glass-border); background:rgba(255,255,255,.85); font-family:Montserrat; font-weight:700; }
-    .lock-btn{ padding:12px 16px; border-radius:12px; border:1px solid var(--glass-border); background:rgba(139,197,63,.95); color:#0f172a; font-family:Montserrat; font-weight:900; cursor:pointer; }
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; transition: opacity .35s ease; }
+    .lock-card{ width: min(520px, calc(100% - 32px)); background: rgba(255,255,255,.92);
+      border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: 0 20px 60px rgba(15,23,42,.18); padding: 24px; }
+    .lock-head{ display:flex; align-items:center; gap:12px; margin-bottom:12px; font-family: Montserrat; font-weight:900; font-size:22px; }
+    .lock-sub{ color: var(--muted); margin-bottom:18px; font-weight:700; }
+    .lock-form{ display:grid; gap:10px; grid-template-columns: 1fr auto; }
+    .lock-input{ appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
+      border-radius:12px; padding:12px 14px; font-family: Montserrat; font-weight:700; font-size:14px; outline:none; }
+    .lock-btn{ appearance:none; border:1px solid var(--glass-border); background: rgba(139,197,63,.95); color:#0f172a;
+      border-radius:12px; padding:12px 16px; font-family: Montserrat; font-weight:900; font-size:14px; cursor:pointer;
+      box-shadow: 0 6px 16px rgba(15,23,42,.12), inset 0 -1px 0 rgba(0,0,0,.05); }
+    .lock-btn:hover{ transform: translateY(-1px); }
     .lock-err{ color:#b91c1c; font-weight:800; margin-top:6px; min-height:18px; }
+    .lock-foot{ margin-top:10px; font-size:12px; color:#6b7280; }
 
-    /* ===== Page ===== */
+    /* PAGE */
     .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
     header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
     .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; text-decoration:none; color:var(--ink); }
-    .logo b{color:var(--sehr)}
-    .title-block h1{ font-family: Montserrat; font-weight:800; margin:0; font-size:26px; }
+    .logo .brand{color:var(--ink);} .logo .brand b{color:var(--sehr-green);}
+    .title-block{ display:flex; align-items:center; gap:10px; }
+    .title-block h1{ font-family: Montserrat, sans-serif; font-weight:800; margin:0; font-size:26px; letter-spacing:.2px; cursor:pointer; }
     .actions{ display:flex; gap:8px; }
-    .btn{ border:1px solid var(--glass-border); background: rgba(255,255,255,.85); border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; cursor:pointer; box-shadow: 0 6px 16px rgba(15,23,42,.08), inset 0 -1px 0 rgba(0,0,0,.05); }
-    .btn:hover{ transform: translateY(-1px); }
+    .btn{ appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
+      border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; font-size:12px;
+      box-shadow: 0 6px 16px rgba(15,23,42,.08), inset 0 -1px 0 rgba(0,0,0,.05); cursor:pointer; }
+    .btn:hover{ transform: translateY(-1px); } .btn:active{ transform: translateY(0); }
 
-    .card{ background:var(--panel); border:1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius:var(--radius); box-shadow:var(--shadow); }
-    .profile{ display:grid; grid-template-columns:110px 1fr; gap:18px; padding:18px; align-items:center; }
+    .card{ background: var(--panel); border:1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--radius); box-shadow: var(--shadow); }
+    .profile{ display:grid; grid-template-columns: 110px 1fr; gap:18px; padding:18px; align-items:center; }
     .avatar{ width:100px; height:100px; border-radius:18px; overflow:hidden; border:2px solid rgba(0,0,0,0.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); background:#fff; }
     .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
     .info{display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; align-items:center;}
-    .k{ background: var(--panel-strong); border:1px solid var(--glass-border); border-radius:14px; padding:12px 14px;}
+    .k{ background: var(--panel-strong); border:1px solid var(--glass-border); border-radius: 14px; padding:12px 14px; }
     .k small{display:block; color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.2px; text-transform:uppercase}
     .k b{display:block; font-family: Montserrat; font-size:16px; margin-top:4px}
 
     .section{ margin-top:22px; padding:16px 18px; }
     .section h2{ margin:0 0 10px; font-family: Montserrat; font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
 
-    .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; margin:12px 0 8px; }
-    .avg-card{ position:relative; display:grid; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
+    .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap:14px; margin:12px 0 8px; }
+    .avg-card{ position:relative; display:grid; grid-template-rows: auto auto; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
     .avg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .avg-card .s{font-family: Montserrat; font-weight:800; font-size:14px;}
-    .avg-card .v{font-family: Montserrat; font-weight:900; font-size:20px;}
+    .avg-card .s{font-family: Montserrat; font-weight:800; font-size:14px; letter-spacing:.2px}
+    .avg-card .v{font-family: Montserrat; font-weight:900; font-size:20px}
     .mini-bar{ position:relative; height:10px; border-radius:999px; background: rgba(15,23,42,.08); overflow:hidden; }
-    .mini-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
+    .mini-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
     .passchip{ position:absolute; bottom:10px; right:10px; font-size:11px; font-family: Montserrat; font-weight:800; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid var(--glass-border); }
     .wm{ position:absolute; right:8px; top:0; font-family: Montserrat; font-weight:900; font-size:60px; opacity:.08; pointer-events:none; }
 
-    .term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
-    .term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .term summary::-webkit-details-marker{display:none}
+    details.term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
+    details.term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    details.term summary::-webkit-details-marker{display:none}
     .chip{ background:#fff; border:1px solid var(--glass-border); padding:8px 14px; border-radius:999px; font-weight:900; font-size:14px; box-shadow: inset 0 -1px 0 rgba(0,0,0,.05); }
+
     .term-body{ padding:10px 16px 18px 16px; background: rgba(255,255,255,0.6); border-top:1px dashed rgba(15,23,42,.08); }
     .exam-row{ display:grid; grid-template-columns: 80px 1fr 70px; align-items:center; gap:12px; padding:10px 8px; }
-    .label{ font-weight:800; font-family: Montserrat; color:#2d3748; background: #fff; border:1px solid var(--glass-border); border-radius:12px; padding:8px 10px; text-align:center; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
+    .label{ font-weight:800; font-family: Montserrat; letter-spacing:.3px; color:#2d3748; background: #fff; border:1px solid var(--glass-border); border-radius:12px; padding:8px 10px; text-align:center; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
     .bar{ position:relative; height:12px; border-radius:999px; background: rgba(15,23,42,.07); overflow:hidden; }
-    .bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.1s cubic-bezier(.22,1,.36,1); }
+    .bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
     .pct{font-weight:800; font-family: Montserrat; text-align:right}
 
-    .ach-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
-    .ach-card{ background: linear-gradient(120deg, #f7f7f7, #eaeaea, #fafafa);
-      border:1px solid #d1d5db; border-radius:14px; padding:14px; box-shadow: 0 0 0 2px rgba(209,213,219,.28), 0 8px 18px rgba(0,0,0,.08);
-      font-family: Montserrat; font-weight:800;
-    }
-    .remarks{ display:grid; gap:8px; }
-    .remark{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; }
+    .total-row{ margin-top:8px; padding:14px 8px 6px; border-top:1px dashed rgba(15,23,42,.12); }
+    .total-row h3{ margin:0 0 8px; font-family: Montserrat; font-weight:900; font-size:18px; letter-spacing:.3px; display:flex; align-items:center; gap:8px; }
+
+    .more-metrics{ display:grid; grid-template-columns: repeat(3, minmax(140px,1fr)); gap:12px; margin-top:10px; }
+    .metric{ background: rgba(255,255,255,.9); border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; backdrop-filter: blur(8px); box-shadow: 0 8px 20px rgba(15,23,42,.06); }
+    .metric small{ display:block; font-family: Montserrat; font-weight:800; letter-spacing:.2px; color:var(--muted); }
+    .metric b{ display:block; font-family: Montserrat; font-weight:900; font-size:18px; margin-top:4px; }
+
+    .tiles-wrap{ margin-top:12px; }
+    .tiles-title{ font-family: Montserrat; font-weight:800; font-size:16px; margin:10px 2px 8px; color:#111827; }
+    .exam-cards{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; }
+
+    .exam-card{ position:relative; overflow:hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .exam-card::before{ content:none !important; }
+    .tile-bar{ position:relative; height:14px; border-radius:999px; background:#ffffff; border:1px solid var(--glass-border); box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); overflow:hidden; }
+    .tile-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
+    .tile-meta{ display:flex; align-items:center; justify-content:space-between; }
+    .tile-meta .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
+
+    .tooltip{ position: fixed; z-index: 50; pointer-events:none; background: rgba(17,24,39,.85); color: #fff; padding:6px 8px; border-radius:8px;
+      font-family: Montserrat; font-weight:700; font-size:12px; letter-spacing:.2px; transform: translate(-50%, -140%); white-space:nowrap; opacity:0; transition: opacity .15s ease; }
+
     .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
 
-    @media (max-width:1024px){ .avg-grid{grid-template-columns: repeat(2, 1fr);} .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));} .info{grid-template-columns:1fr 1fr} }
+    @media (max-width:1024px){
+      .avg-grid{grid-template-columns: repeat(2, 1fr);}
+      .more-metrics{grid-template-columns: 1fr;}
+      .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));}
+    }
     @media (max-width:760px){
+      .info{grid-template-columns: 1fr 1fr}
       .profile{grid-template-columns: 80px 1fr}
       .avatar{width:72px;height:72px;border-radius:12px}
       .exam-row{ grid-template-columns: 1fr; grid-template-areas: "label" "pct" "bar"; gap:8px; }
-      .label{ grid-area: label; } .pct{ grid-area: pct; text-align:left; } .bar{ grid-area: bar; height:12px; }
+      .label{ grid-area: label; }
+      .pct{ grid-area: pct; text-align:left; }
+      .bar{ grid-area: bar; height:12px; }
       .actions{ display:none; }
     }
     @media print{ .actions{ display:none !important; } }
   </style>
+
+  <script>
+    /* ===== LOCK SCREEN LOGIC ===== */
+    const EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"; // SHA-256("fidhu123")
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('lock-overlay');
+      if (sessionStorage.getItem('sehr-profile-unlocked') === '1') {
+        document.body.classList.remove('locked');
+        if (overlay) overlay.style.display = 'none';
+      } else {
+        document.body.classList.add('locked');
+      }
+    });
+
+    async function sha256Hex(message) {
+      const enc = new TextEncoder().encode(message);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const arr = Array.from(new Uint8Array(buf));
+      return arr.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function tryUnlock(evt){
+      evt?.preventDefault();
+      const input = document.getElementById('lock-input');
+      const err = document.getElementById('lock-err');
+      const btn = document.getElementById('lock-btn');
+      const overlay = document.getElementById('lock-overlay');
+      const val = (input.value || '').trim();
+
+      btn.disabled = true; err.textContent = '';
+      try{
+        const hex = await sha256Hex(val);
+        if(hex === EXPECTED_HEX){
+          sessionStorage.setItem('sehr-profile-unlocked','1');
+          document.body.classList.remove('locked');
+          overlay.style.opacity = '0';
+          setTimeout(()=> overlay.style.display='none', 350);
+          input.value = '';
+        }else{
+          err.textContent = 'Wrong password. Please try again.'; input.select();
+        }
+      }catch(e){ err.textContent = 'Unexpected error. Please try again.'; }
+      finally{ btn.disabled = false; }
+    }
+  </script>
 </head>
-<body>
-  <!-- Lock overlay (only shows if profile.lock.enabled === true) -->
+
+<body class="locked">
+  <!-- LOCK OVERLAY -->
   <div class="lock-overlay" id="lock-overlay" role="dialog" aria-modal="true" aria-labelledby="lock-title">
     <div class="lock-card">
-      <div class="lock-head" id="lock-title"><div class="brand"><b style="color:var(--sehr)">SEHR</b> ACADEMY</div><span>— Protected Profile</span></div>
+      <div class="lock-head" id="lock-title">
+        <div class="brand"><b style="color:var(--sehr-green)">SEHR</b> ACADEMY</div>
+        <span>— Protected Profile</span>
+      </div>
       <div class="lock-sub">Enter password to view student data.</div>
       <form class="lock-form" onsubmit="tryUnlock(event)">
         <input id="lock-input" class="lock-input" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" />
         <button id="lock-btn" type="submit" class="lock-btn">Unlock</button>
       </form>
       <div id="lock-err" class="lock-err" aria-live="polite"></div>
+      <div class="lock-foot">Tip: Access is remembered for this tab until you close it.</div>
     </div>
   </div>
 
+  <!-- PAGE CONTENT -->
   <div class="wrap">
     <header>
-      <a class="logo" href="https://sehracademy.com" aria-label="Sehr Academy homepage"><div class="brand"><b>SEHR</b> ACADEMY</div></a>
-      <div class="title-block"><h1>Student Profile</h1></div>
-      <div class="actions"><button class="btn" id="btn-print">Print / PDF</button><button class="btn" id="btn-csv">CSV</button></div>
+      <a class="logo" href="https://sehracademy.com" aria-label="Sehr Academy homepage">
+        <div class="brand"><b>SEHR</b> ACADEMY</div>
+      </a>
+      <div class="title-block">
+        <h1 onclick="window.location.href='https://sehracademy.com'" title="Go to homepage">Student Profile</h1>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btn-print">Print / PDF</button>
+        <button class="btn" id="btn-csv">CSV</button>
+      </div>
     </header>
 
-    <!-- PROFILE -->
-    <section class="card profile" id="profileCard">
-      <div class="avatar"><img id="ava" alt="Student photo"></div>
+    <!-- Profile Card -->
+    <section class="card profile">
+      <div class="avatar">
+        <img id="profile-avatar" src="" alt="Student profile photo">
+      </div>
       <div class="info">
         <div class="k"><small>Student</small><b id="k-name">—</b></div>
         <div class="k"><small>Class</small><b id="k-class">—</b></div>
@@ -145,264 +246,360 @@
       </div>
     </section>
 
-    <!-- RESULTS -->
+    <!-- Results -->
     <section class="section card">
       <h2>Results</h2>
 
-      <!-- Subject averages -->
-      <div class="avg-grid">
-        <div class="avg-card"><div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div><div class="mini-bar"><i id="mini-Physics"></i></div><span class="passchip" id="pf-Physics">—</span><span class="wm">Φ</span></div>
-        <div class="avg-card"><div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div><div class="mini-bar"><i id="mini-Maths"></i></div><span class="passchip" id="pf-Maths">—</span><span class="wm">∑</span></div>
-        <div class="avg-card"><div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div><div class="mini-bar"><i id="mini-Chemistry"></i></div><span class="passchip" id="pf-Chemistry">—</span><span class="wm">⚗</span></div>
-        <div class="avg-card"><div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div><div class="mini-bar"><i id="mini-Biology"></i></div><span class="passchip" id="pf-Biology">—</span><span class="wm">🌿</span></div>
+      <!-- Subject Average Boxes (auto-calculated) -->
+      <div class="avg-grid" id="subject-averages">
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div>
+          <div class="mini-bar"><i id="mini-Physics"></i></div>
+          <span class="passchip" id="pf-Physics">—</span>
+          <span class="wm">Φ</span>
+        </div>
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div>
+          <div class="mini-bar"><i id="mini-Maths"></i></div>
+          <span class="passchip" id="pf-Maths">—</span>
+          <span class="wm">∑</span>
+        </div>
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div>
+          <div class="mini-bar"><i id="mini-Chemistry"></i></div>
+          <span class="passchip" id="pf-Chemistry">—</span>
+          <span class="wm">⚗</span>
+        </div>
+        <div class="avg-card">
+          <div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div>
+          <div class="mini-bar"><i id="mini-Biology"></i></div>
+          <span class="passchip" id="pf-Biology">—</span>
+          <span class="wm">🌿</span>
+        </div>
       </div>
 
       <!-- First Term -->
       <details class="term" open>
-        <summary><span>First Term</span><span class="chip" id="term-range-1">—</span></summary>
-        <div class="term-body" id="internals"></div>
-        <div class="term-body">
+        <summary>
+          <span>First Term</span>
+          <span class="chip" id="term-range">—</span>
+        </summary>
+
+        <div class="term-body" id="first-term"><!-- QP rows injected here --></div>
+
+        <div class="total-row">
+          <h3>First Term Overview</h3>
           <div class="exam-row" style="padding-top:0;">
             <div class="label">Internals Average</div>
             <div class="bar"><i id="avg-bar" data-pct="0"></i></div>
             <div class="pct" id="avg-text">0%</div>
           </div>
-          <div class="more-metrics" style="display:grid;grid-template-columns:repeat(3,minmax(140px,1fr));gap:12px;margin-top:10px;">
+
+          <!-- Summary metric boxes -->
+          <div class="more-metrics">
             <div class="metric"><small>Attempted</small><b id="met-attempted">—</b></div>
             <div class="metric"><small>Passed</small><b id="met-passed">—</b></div>
             <div class="metric"><small>Failed</small><b id="met-failed">—</b></div>
           </div>
 
-          <!-- First-term externals (auto) -->
-          <div class="tiles-wrap" id="externalsWrap"></div>
-        </div>
-      </details>
+          <!-- External exam subject tiles (PERCENTAGE BARS) -->
+          <div class="tiles-wrap">
+            <div class="tiles-title">Sehr First Term Exam</div>
+            <div class="exam-cards" id="sehr-tiles">
+              <div class="avg-card exam-card sub-Physics">
+                <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="sehr-Physics-text">—</span></div>
+                <div class="tile-bar"><i id="sehr-Physics-bar" data-pct=""></i></div>
+              </div>
+              <div class="avg-card exam-card sub-Maths">
+                <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="sehr-Maths-text">—</span></div>
+                <div class="tile-bar"><i id="sehr-Maths-bar" data-pct=""></i></div>
+              </div>
+              <div class="avg-card exam-card sub-Chemistry">
+                <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="sehr-Chemistry-text">—</span></div>
+                <div class="tile-bar"><i id="sehr-Chemistry-bar" data-pct=""></i></div>
+              </div>
+              <div class="avg-card exam-card sub-Biology">
+                <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="sehr-Biology-text">—</span></div>
+                <div class="tile-bar"><i id="sehr-Biology-bar" data-pct=""></i></div>
+              </div>
+            </div>
 
-      <!-- Second Term (collapsed) -->
-      <details class="term">
-        <summary><span>Second Term</span><span class="chip" id="term-range-2">—</span></summary>
-        <div class="term-body" id="internals-2"></div>
-        <div class="term-body">
-          <div class="exam-row" style="padding-top:0;">
-            <div class="label">Internals Average</div>
-            <div class="bar"><i id="avg-bar-2" data-pct="0"></i></div>
-            <div class="pct" id="avg-text-2">—%</div>
+            <div class="tiles-title">School First Term Exam</div>
+            <div class="exam-cards" id="school-tiles">
+              <div class="avg-card exam-card sub-Physics">
+                <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="school-Physics-text">—</span></div>
+                <div class="tile-bar"><i id="school-Physics-bar" data-pct=""></i></div>
+              </div>
+              <div class="avg-card exam-card sub-Maths">
+                <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="school-Maths-text">—</span></div>
+                <div class="tile-bar"><i id="school-Maths-bar" data-pct=""></i></div>
+              </div>
+              <div class="avg-card exam-card sub-Chemistry">
+                <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="school-Chemistry-text">—</span></div>
+                <div class="tile-bar"><i id="school-Chemistry-bar" data-pct=""></i></div>
+              </div>
+              <div class="avg-card exam-card sub-Biology">
+                <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="school-Biology-text">—</span></div>
+                <div class="tile-bar"><i id="school-Biology-bar" data-pct=""></i></div>
+              </div>
+            </div>
           </div>
-          <div class="more-metrics" style="display:grid;grid-template-columns:repeat(3,minmax(140px,1fr));gap:12px;margin-top:10px;">
-            <div class="metric"><small>Attempted</small><b id="met-attempted-2">—</b></div>
-            <div class="metric"><small>Passed</small><b id="met-passed-2">—</b></div>
-            <div class="metric"><small>Failed</small><b id="met-failed-2">—</b></div>
-          </div>
-
-          <!-- Second-term externals (auto) -->
-          <div class="tiles-wrap" id="externalsWrap-2"></div>
         </div>
       </details>
     </section>
 
-    <!-- Achievements / Remarks -->
-    <section class="section card">
-      <h2>Achievements</h2>
-      <div class="ach-grid" id="achGrid"></div>
-      <h2 style="margin-top:16px;">Faculty Remarks</h2>
-      <div class="remarks" id="remarks"></div>
+    <!-- Achievements -->
+    <section class="section card achievements">
+      <h2>Other Achievements</h2>
+      <div class="ach-grid" id="ach-grid"></div>
     </section>
 
-    <div class="foot">© Sehr Academy</div>
+    <!-- Performance Remarks -->
+    <section class="section card remarks">
+      <h2>Performance Remarks</h2>
+      <div id="remarks-list" style="height:12px;"></div>
+    </section>
+
+    <div class="foot">sehracademy.com</div>
   </div>
 
+  <div class="tooltip" id="tooltip"></div>
+
   <script>
-    // ===== helpers =====
-    const Q = new URLSearchParams(location.search);
-    const slug = (Q.get('slug') || '').trim().toLowerCase();
-
-    const $ = (sel)=>document.querySelector(sel);
-    const $$ = (sel)=>Array.from(document.querySelectorAll(sel));
-    function pct(x){ return Math.max(0, Math.min(100, Number(x)||0)); }
-    function grad(p){ if(p>=75) return 'linear-gradient(90deg,var(--shine1),var(--gld2))'; if(p>=50) return 'linear-gradient(90deg,var(--or1),var(--or2))'; if(p>=30) return 'linear-gradient(90deg,var(--red1),var(--red2))'; return 'linear-gradient(90deg,var(--darkred1),var(--darkred2))'; }
-
-    // ===== lock helpers =====
-    async function sha256Hex(message){
-      const enc = new TextEncoder().encode(message);
-      const buf = await crypto.subtle.digest('SHA-256', enc);
-      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    /* ===== Helpers preserved from your original ===== */
+    function perfGradient(pct){
+      if(pct >= 75) return {bg:`linear-gradient(90deg, var(--shine1), var(--gld2))`, glow:'0 0 0 3px rgba(212,175,55,.25)'};
+      if(pct >= 50) return {bg:`linear-gradient(90deg, var(--or1), var(--or2))`, glow:'none'};
+      if(pct >= 30) return {bg:`linear-gradient(90deg, var(--red1), var(--red2))`, glow:'none'};
+      return {bg:`linear-gradient(90deg, var(--darkred1), var(--darkred2))`, glow:'none'};
     }
-    async function tryUnlock(e){
-      e?.preventDefault();
-      const input = $('#lock-input'), err = $('#lock-err'), overlay = $('#lock-overlay');
-      const val = (input.value||'').trim();
-      err.textContent='';
-      const hex = await sha256Hex(val);
-      if(hex === window.PROFILE?.lock?.sha256){
-        sessionStorage.setItem('sehr-profile-unlocked','1:'+slug);
-        document.body.classList.remove('locked');
-        overlay.style.opacity = '0'; setTimeout(()=> overlay.style.display='none', 250);
-        input.value='';
-      }else{
-        err.textContent='Wrong password. Please try again.';
-        input.select();
+    const tip = document.getElementById('tooltip');
+    function showTip(e){ tip.textContent = e.currentTarget.getAttribute('data-tip') || ''; tip.style.opacity = '1'; }
+    function moveTip(e){ tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; }
+    function hideTip(){ tip.style.opacity = '0'; }
+    function setBar(el, pct){
+      if(!el) return;
+      const p = (pct==null || isNaN(pct)) ? 0 : Math.max(0, Math.min(100, Math.round(pct)));
+      const st = perfGradient(p);
+      el.style.background = st.bg;
+      el.style.boxShadow = (st.glow !== 'none') ? st.glow : 'none';
+      requestAnimationFrame(()=>{ el.style.width = p + '%'; });
+      const wrap = el.parentElement;
+      if(wrap){
+        wrap.setAttribute('data-tip', `${p}%`);
+        wrap.addEventListener('mouseenter', showTip);
+        wrap.addEventListener('mousemove', moveTip);
+        wrap.addEventListener('mouseleave', hideTip);
       }
     }
-    window.tryUnlock = tryUnlock;
-
-    // ===== renderers =====
-    function renderMeta(meta){
-      $('#ava').src = meta.img || '/img/students/placeholder.png';
-      $('#ava').alt = (meta.name || 'Student') + ' photo';
-      $('#k-name').textContent = meta.name || '—';
-      $('#k-class').textContent = (meta.className || '') + (meta.section ? ' • Sec '+meta.section : '');
-      $('#k-join').textContent = meta.joinDate || '—';
-      $('#k-bday').textContent = meta.birthday || '—';
-    }
-
-    function renderTerm(list, dom){
-      const wrap = $(dom.wrap); wrap.innerHTML = '';
-      let attempted = 0, passed = 0, sum = 0;
-      const per = {Physics:[], Maths:[], Chemistry:[], Biology:[]};
-
-      // build 12 rows max as provided
-      (list||[]).forEach(it=>{
-        const valRaw = (it.pct==null || isNaN(it.pct)) ? null : Number(it.pct);
-        const p = valRaw==null ? 0 : pct(valRaw);
-        const subj = it.subject || '—';
-        if(valRaw!=null){ attempted++; sum += p; if(p >= 50) passed++; }
-        if(per[subj]) per[subj].push(valRaw==null?null:p);
-
-        const row = document.createElement('div');
-        row.className='exam-row';
-        row.dataset.subject = subj;
-        row.innerHTML = `
-          <div class="label">${it.label||''}</div>
-          <div class="bar"><i style="width:${valRaw==null?0:p}%;background:${valRaw==null?'rgba(15,23,42,.08)':grad(p)}"></i></div>
-          <div class="pct">${valRaw==null?'—%':(p + '%')}</div>`;
-        wrap.appendChild(row);
-      });
-
-      const avg = attempted ? Math.round((sum/attempted)*10)/10 : 0;
-      $(dom.avgText).textContent = attempted? (avg + '%') : '—%';
-      const avgBar = $(dom.avgBar); if(avgBar){ avgBar.style.width = attempted? (avg + '%') : '0%'; avgBar.style.background = attempted? grad(avg) : 'rgba(15,23,42,.12)'; }
-      $(dom.mAttempted).textContent = attempted || '—';
-      $(dom.mPassed).textContent    = attempted ? passed : '—';
-      $(dom.mFailed).textContent    = attempted ? (attempted - passed) : '—';
-
-      return per;
-    }
-
-    function renderExternals(map, hostSel){
-      const host = $(hostSel); host.innerHTML = '';
-      Object.entries(map || {}).forEach(([title, subj])=>{
-        const h = document.createElement('div'); h.className='tiles-title'; h.textContent = title; host.appendChild(h);
-        const grid = document.createElement('div'); grid.className='exam-cards'; host.appendChild(grid);
-        ['Physics','Maths','Chemistry','Biology'].forEach(s=>{
-          const v = subj?.[s];
-          const p = (v==null || isNaN(v)) ? 0 : Math.max(0,Math.min(100,Math.round(v)));
-          const card = document.createElement('div'); card.className='avg-card exam-card';
-          card.innerHTML = `
-            <div class="tile-meta"><span class="s">${s}</span><span class="ptext">${v==null?'—':p+'%'}</span></div>
-            <div class="tile-bar"><i style="width:${v==null?0:p}%;background:${v==null?'rgba(15,23,42,.08)':grad(p)}"></i></div>`;
-          grid.appendChild(card);
-        });
+    function fillTiles(prefix, data){
+      ['Physics','Maths','Chemistry','Biology'].forEach(subj => {
+        const val = data && typeof data[subj] === 'number' ? Math.round(data[subj]) : null;
+        const id = subj.replace(/\s+/g,'');
+        setBar(document.getElementById(`${prefix}-${id}-bar`), val);
+        const txtEl = document.getElementById(`${prefix}-${id}-text`);
+        if(txtEl){ txtEl.textContent = (val==null || isNaN(val)) ? '—' : (val + '%'); }
       });
     }
 
-    function renderSubjectAverages(per1, per2){
-      const pool = {Physics:[], Maths:[], Chemistry:[], Biology:[]};
-      [per1, per2].forEach(per=>{
-        Object.entries(per).forEach(([s,arr])=>{
-          arr.forEach(v=>{ if(v!=null) pool[s].push(v); });
-        });
-      });
-      ['Physics','Maths','Chemistry','Biology'].forEach(s=>{
-        const arr = pool[s];
-        const a = arr.length ? Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*10)/10 : null;
-        $('#avg-'+s).textContent = (a==null ? '—' : (a+'%'));
-        const mini = $('#mini-'+s); if(mini){ mini.style.width = (a==null? 0 : a) + '%'; mini.style.background = (a==null? 'rgba(15,23,42,.12)' : grad(a)); }
-        const pf = $('#pf-'+s); if(pf){ pf.textContent = (a==null ? '—' : (a>=50?'Pass':'Fail')); }
-      });
+    /* ===== Data state ===== */
+    let DATA = null; // holds JSON payload
+    const FALLBACK = {
+      meta: { name:'Fidha', className:'Plus One Science / Class 11', joinDate:'2025-05-26', birthday:'5th September',
+              avatar:'https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png' },
+      termRanges: { first:'May – Sep 2025' },
+      internals: { first:[
+        {label:'QP01',subject:'Physics',pct:51},
+        {label:'QP02',subject:'Maths',pct:63},
+        {label:'QP03',subject:'Chemistry',pct:66},
+        {label:'QP04',subject:'Biology',pct:50},
+        {label:'QP05',subject:'Physics',pct:37},
+        {label:'QP06',subject:'Maths',pct:50},
+        {label:'QP07',subject:'Chemistry',pct:57},
+        {label:'QP08',subject:'Biology',pct:8}
+      ]},
+      externals: {
+        sehr:   { Physics:65, Maths:1, Chemistry:87, Biology:47 },
+        school: { Physics:1,  Maths:1, Chemistry:1,  Biology:1 }
+      },
+      achievements: ["Event Coordinator"],
+      remarks: []
+    };
+
+    /* ===== Renderers ===== */
+    function renderProfile(meta){
+      document.getElementById('profile-avatar').src = meta.avatar || '';
+      document.getElementById('profile-avatar').alt = (meta.name || 'Student') + ' profile photo';
+      document.getElementById('k-name').textContent  = meta.name || '—';
+      document.getElementById('k-class').textContent = meta.className || '—';
+      document.getElementById('k-join').textContent  = meta.joinDate || '—';
+      document.getElementById('k-bday').textContent  = meta.birthday || '—';
     }
 
-    function splitExternalsByTerm(ext){
-      const first={}, second={}, other={};
-      Object.entries(ext||{}).forEach(([k,v])=>{
-        if(/first/i.test(k)) first[k]=v;
-        else if(/second/i.test(k)) second[k]=v;
-        else other[k]=v;
+    function rowHTML(r){
+      const pct = Number(r.pct||0);
+      return `
+        <div class="exam-row" data-subject="${r.subject}">
+          <div class="label">${r.label}</div>
+          <div class="bar"><i data-pct="${pct}"></i></div>
+          <div class="pct">${pct}%</div>
+        </div>`;
+    }
+
+    function renderInternalsFirst(arr){
+      const host = document.getElementById('first-term');
+      host.innerHTML = arr.map(rowHTML).join('');
+      // Paint bars + tooltips
+      const rows = Array.from(host.querySelectorAll('.exam-row'));
+      const bars = rows.map(r => r.querySelector('.bar > i'));
+      rows.forEach(row => {
+        const pct = Number(row.querySelector('.bar > i').dataset.pct || 0);
+        const bar = row.querySelector('.bar > i');
+        const style = perfGradient(pct);
+        bar.style.background = style.bg;
+        if(style.glow !== 'none') bar.style.boxShadow = style.glow;
+        requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
+
+        const subj = row.dataset.subject || '—';
+        const qp = row.querySelector('.label')?.textContent || '';
+        const barWrap = row.querySelector('.bar');
+        barWrap.setAttribute('data-tip', `${qp} · ${subj} · ${pct}%`);
+        barWrap.addEventListener('mouseenter', showTip);
+        barWrap.addEventListener('mousemove', moveTip);
+        barWrap.addEventListener('mouseleave', hideTip);
       });
-      return {first, second, other};
-    }
 
-    function toCSV(arr){
-      const rows = [['Label','Subject','Percent']].concat((arr||[]).map(i=>[i.label,i.subject,(i.pct==null?'':i.pct)]));
-      return rows.map(r=>r.map(x=>`"${String(x??'').replaceAll('"','""')}"`).join(',')).join('\n');
-    }
+      // Totals/metrics + subject avgs
+      const values = bars.map(el => Number(el.dataset.pct || 0));
+      const attempted = values.filter(v => v > 0).length;
+      const overall = values.reduce((a,b)=>a+b,0) / (values.length || 1);
+      const shown = Math.round(overall * 10)/10;
+      const avgBar = document.getElementById('avg-bar');
+      const avgText = document.getElementById('avg-text');
+      const styleAvg = perfGradient(shown);
+      avgBar.style.background = styleAvg.bg; if(styleAvg.glow !== 'none') avgBar.style.boxShadow = styleAvg.glow;
+      requestAnimationFrame(()=>{ avgBar.style.width = shown + '%'; });
+      avgText.textContent = shown + '%';
 
-    // ===== boot =====
-    async function boot(){
-      if(!slug){ document.body.innerHTML = '<div style="padding:30px;font-family:Montserrat"><b>Missing ?slug=…</b></div>'; return; }
-
-      const res = await fetch(`/data/profiles/${slug}.json?cb=${Date.now()}`, {cache:'no-store'});
-      if(!res.ok){ document.body.innerHTML = '<div style="padding:30px;font-family:Montserrat"><b>Profile not found.</b></div>'; return; }
-      window.PROFILE = await res.json();
-
-      // lock?
-      if(PROFILE.lock && PROFILE.lock.enabled && PROFILE.lock.sha256){
-        const unlocked = sessionStorage.getItem('sehr-profile-unlocked') === '1:'+slug;
-        if(!unlocked){
-          document.body.classList.add('locked');
-          $('#lock-overlay').style.display='grid';
+      const groups = {};
+      rows.forEach(row => {
+        const subj = row.dataset.subject || 'Other';
+        const val = Number(row.querySelector('.bar > i').dataset.pct || 0);
+        (groups[subj] ||= []).push(val);
+      });
+      Object.entries(groups).forEach(([subj, arr])=>{
+        const avg = arr.reduce((a,b)=>a+b,0) / arr.length;
+        const rounded = Math.round(avg*10)/10;
+        const pass = arr.filter(v=>v>=50).length;
+        const key = subj.replace(/\s+/g,'');
+        const textEl = document.getElementById('avg-' + key);
+        const miniEl = document.getElementById('mini-' + key);
+        const pfEl = document.getElementById('pf-' + key);
+        if(textEl){
+          textEl.textContent = rounded + '%';
+          textEl.style.background = perfGradient(rounded).bg;
+          textEl.style.webkitBackgroundClip = 'text';
+          textEl.style.backgroundClip = 'text';
+          textEl.style.color = 'transparent';
         }
-      }
+        if(miniEl){
+          const st = perfGradient(rounded);
+          miniEl.style.background = st.bg;
+          requestAnimationFrame(()=>{ miniEl.style.width = rounded + '%'; });
+        }
+        if(pfEl){ pfEl.textContent = `${pass}/${arr.length} passed`; }
+      });
 
-      // meta
-      renderMeta(PROFILE.meta || {});
-      $('#term-range-1').textContent = PROFILE.termRanges?.first  || '—';
-      $('#term-range-2').textContent = PROFILE.termRanges?.second || '—';
-
-      // internals (first & second)
-      const firstList  = PROFILE.internals?.first  || [];
-      const secondList = PROFILE.internals?.second || [
-        {"label":"QP09","subject":"Physics","pct":null},
-        {"label":"QP10","subject":"Maths","pct":null},
-        {"label":"QP11","subject":"Chemistry","pct":null},
-        {"label":"QP12","subject":"Biology","pct":null},
-        {"label":"QP13","subject":"Physics","pct":null},
-        {"label":"QP14","subject":"Maths","pct":null},
-        {"label":"QP15","subject":"Chemistry","pct":null},
-        {"label":"QP16","subject":"Biology","pct":null},
-        {"label":"QP17","subject":"Physics","pct":null},
-        {"label":"QP18","subject":"Maths","pct":null},
-        {"label":"QP19","subject":"Chemistry","pct":null},
-        {"label":"QP20","subject":"Biology","pct":null}
-      ];
-
-      const per1 = renderTerm(firstList,  {wrap:'#internals',   avgBar:'#avg-bar',   avgText:'#avg-text',   mAttempted:'#met-attempted',   mPassed:'#met-passed',   mFailed:'#met-failed'});
-      const per2 = renderTerm(secondList, {wrap:'#internals-2', avgBar:'#avg-bar-2', avgText:'#avg-text-2', mAttempted:'#met-attempted-2', mPassed:'#met-passed-2', mFailed:'#met-failed-2'});
-
-      // top subject averages from both terms
-      renderSubjectAverages(per1, per2);
-
-      // externals split & render
-      const {first, second, other} = splitExternalsByTerm(PROFILE.externals);
-      renderExternals(first,  '#externalsWrap');
-      renderExternals(second, '#externalsWrap-2');
-      // If you want to also render "other", you can add a third container.
-
-      // achievements + remarks
-      $('#achGrid').innerHTML = (PROFILE.achievements?.length ? PROFILE.achievements : ['No achievements yet']).map(t=>`<div class="ach-card">${t}</div>`).join('');
-      $('#remarks').innerHTML = (PROFILE.remarks?.length ? PROFILE.remarks : [{by:'—', text:'No remarks yet — faculty feedback will appear here.'}]).map(r=>`<div class="remark"><b>${r.by}</b><div>${r.text}</div></div>`).join('');
-
-      // actions
-      $('#btn-print').onclick = ()=>window.print();
-      $('#btn-csv').onclick = ()=>{
-        const both = [...firstList, ...secondList];
-        const csv = toCSV(both);
-        const blob = new Blob([csv], {type:'text/csv'});
-        const url = URL.createObjectURL(blob);
-        const a = Object.assign(document.createElement('a'), {href:url, download: `${slug}-internals.csv`});
-        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-      };
+      document.getElementById('met-attempted').textContent = attempted;
+      document.getElementById('met-passed').textContent   = values.filter(v => v >= 50).length;
+      document.getElementById('met-failed').textContent   = values.filter(v => v > 0 && v < 50).length;
     }
-    boot();
+
+    function renderExternals(ext){
+      fillTiles('sehr',   ext.sehr || {});
+      fillTiles('school', ext.school || {});
+    }
+
+    function renderAchievements(list){
+      const host = document.getElementById('ach-grid');
+      host.innerHTML = (list && list.length)
+        ? list.map(t => `<div class="ach-card"><div class="ach-title">${t}</div></div>`).join('')
+        : `<div class="ach-card"><div class="ach-title">—</div></div>`;
+    }
+
+    function renderRemarks(list){
+      const host = document.getElementById('remarks-list');
+      host.innerHTML = (list && list.length)
+        ? `<ul>${list.map(x=>`<li>${x}</li>`).join('')}</ul>`
+        : `<div style="opacity:.7">No remarks yet — faculty feedback will appear here.</div>`;
+    }
+
+    /* ===== Boot ===== */
+    async function loadJSON(){
+      try{
+        const res = await fetch('/students/fidha.json?ts=' + Date.now(), {cache:'no-store'});
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+      }catch(e){
+        console.warn('Using fallback due to JSON load error:', e);
+        return FALLBACK;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      document.getElementById('btn-print').addEventListener('click', ()=> window.print());
+      document.getElementById('btn-csv').addEventListener('click', downloadCSV);
+
+      DATA = await loadJSON();
+
+      // Profile & term label
+      renderProfile(DATA.meta || FALLBACK.meta);
+      document.getElementById('term-range').textContent = (DATA.termRanges?.first) || FALLBACK.termRanges.first;
+
+      // Internals first term
+      renderInternalsFirst((DATA.internals && DATA.internals.first) ? DATA.internals.first : FALLBACK.internals.first);
+
+      // External tiles
+      renderExternals(DATA.externals || FALLBACK.externals);
+    });
+
+    function downloadCSV(){
+      const rows = Array.from(document.querySelectorAll('#first-term .exam-row'));
+      const exams = rows.map(r => {
+        const id = r.querySelector('.label').textContent.trim();
+        const subject = r.dataset.subject || '';
+        const score = r.querySelector('.bar > i').dataset.pct || '0';
+        return {id, subject, score};
+      });
+      const subjMap = {}; exams.forEach(e=>{ (subjMap[e.subject] ||= []).push(Number(e.score)); });
+
+      let csv = 'Exam,Subject,Score (%)\n';
+      exams.forEach(e=>{ csv += `${e.id},${e.subject},${e.score}\n`; });
+
+      csv += '\nSubject,Average (%),Passed,Failed\n';
+      Object.entries(subjMap).forEach(([s,arr])=>{
+        const avg = arr.reduce((a,b)=>a+b,0)/arr.length;
+        const passed = arr.filter(v=>v>=50).length;
+        const failed = arr.filter(v=>v<50).length;
+        csv += `${s},${Math.round(avg*10)/10},${passed},${failed}\n`;
+      });
+
+      csv += '\nSehr First Term Exam\nSubject,Score (%)\n';
+      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
+        const v = (DATA?.externals?.sehr?.[subj] ?? '');
+        csv += `${subj},${v}\n`;
+      });
+      csv += '\nSchool First Term Exam\nSubject,Score (%)\n';
+      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
+        const v = (DATA?.externals?.school?.[subj] ?? '');
+        csv += `${subj},${v}\n`;
+      });
+
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'fidha-first-term.csv';
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    }
   </script>
 </body>
 </html>
