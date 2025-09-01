@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Class 11 Syllabus (Live Coverage)</title>
+  <title>Sehr Academy — Class 11 Syllabus (Completion Tracker)</title>
   <meta name="theme-color" content="#8BC53F" />
-  <meta name="description" content="Class 11 syllabus tracker for Physics, Chemistry, Mathematics, Biology — live portion coverage with expected dates." />
+  <meta name="description" content="Class 11 syllabus tracker for Physics, Chemistry, Mathematics, Biology — completion tracker with dates." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -22,8 +22,9 @@
       --shadow: 0 20px 45px rgba(15,23,42,.12);
       --radius: 22px;
       --maxw:1180px;
-      --frost-white: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.72));
+      --frost-white: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
       --frost-green: linear-gradient(180deg, rgba(214, 244, 190, .95), rgba(180, 232, 140, .78));
+      --crystal: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.30));
     }
     *{box-sizing:border-box}
     html,body{margin:0}
@@ -65,34 +66,63 @@
     }
     details.group > summary::-webkit-details-marker{display:none}
     .sum-left{display:flex;align-items:center;gap:10px}
-    .badge{font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;border:1px solid var(--glass-border);background:linear-gradient(180deg,#fff,rgba(255,255,255,.72));color:#334}
-    .countpill{font-family:Montserrat;font-weight:900;font-size:12px;opacity:.8}
+    .badge{
+      font-size:15px; /* bigger */
+      font-weight:900;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#ffffff,rgba(255,255,255,.82));
+      color:#1b2a1a;
+      text-transform:uppercase; /* 1/14 COMPLETED */
+      letter-spacing:.4px;
+    }
+    /* Small hint replacing total chapters */
+    .hint{font-family:Montserrat; font-weight:800; font-size:11px; opacity:.7; text-transform:uppercase; letter-spacing:.5px}
+    .hint-open{display:none}
+    details[open] .hint-open{display:inline}
+    details[open] .hint-closed{display:none}
+
     .chev{transition:transform .2s ease}
     details[open] .chev{transform:rotate(180deg)}
 
     /* Botany/Zoology subheaders within Biology */
     .subhdr{font-family:Montserrat;font-weight:800;font-size:14px;color:#0b0f10;opacity:.8;margin:8px 6px 6px 6px}
 
-    /* Chapter list */
+    /* Chapter list — square & crystal glass */
     .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
     .row{
       display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center;
-      padding:14px 14px; border-radius:16px; border:1px solid var(--glass-border);
-      background:var(--frost-white); box-shadow:0 8px 20px rgba(15,23,42,.06);
-      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      padding:14px 14px;
+      border-radius:12px; /* square & crisp (smaller radius) */
+      border:1px solid rgba(255,255,255,.55);
+      background:var(--crystal);
+      backdrop-filter: blur(9px) saturate(160%);
+      -webkit-backdrop-filter: blur(9px) saturate(160%);
+      box-shadow:0 10px 28px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.45);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, border-color .18s ease;
     }
-    .row:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(15,23,42,.10); filter:drop-shadow(0 0 6px rgba(139,197,63,.18))}
-    .row.completed{ background: var(--frost-green); border-color: rgba(139,197,63,.55); }
+    .row:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 36px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.55);
+      border-color:rgba(255,255,255,.75);
+      filter:drop-shadow(0 0 6px rgba(139,197,63,.18));
+    }
+    .row.completed{
+      background: var(--frost-green);
+      border-color: rgba(139,197,63,.55);
+      box-shadow:0 12px 30px rgba(139,197,63,.18), inset 0 1px 0 rgba(255,255,255,.6);
+    }
     .row .name{font-weight:800}
     .status{
       font-family:Montserrat; font-weight:900; font-size:12px; padding:8px 10px; border-radius:999px; border:1px solid var(--glass-border);
-      background:linear-gradient(180deg,#fff,rgba(255,255,255,.75)); color:#334; min-width:110px; text-align:center
+      background:linear-gradient(180deg,#fff,rgba(255,255,255,.75)); color:#334; min-width:110px; text-align:center; text-transform:uppercase; letter-spacing:.3px
     }
-    .status.pending{opacity:.85}
+    .status.pending{opacity:.9}
     .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
     .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
     .date{
-      font-weight:800; font-family:Montserrat; font-size:12px; color:#5b6475; white-space:nowrap
+      font-weight:900; font-family:Montserrat; font-size:12px; color:#2b3345; white-space:nowrap
     }
 
     /* Footer */
@@ -109,8 +139,8 @@
 
   <div class="pagehead">
     <div>
-      <div class="title">Class 11 Syllabus — Live Coverage</div>
-      <div class="subtitle">Edit one JSON to update statuses & dates. Completed chapters glow in Sehr green.</div>
+      <div class="title">Class 11 Syllabus — Completion Tracker</div>
+      <div class="subtitle">All subjects update from one JSON. Completed chapters glow in Sehr green.</div>
     </div>
   </div>
 
@@ -122,50 +152,62 @@
     </div>
   </section>
 
-  <!-- Subjects (all open by default) -->
-  <details class="group" open data-subject="physics">
+  <!-- Subjects (all CLOSED by default; small click-hint) -->
+  <details class="group" data-subject="physics">
     <summary>
       <span class="sum-left">
         <span>⚛️ Physics</span>
-        <span class="badge" id="badge-physics">Loading…</span>
+        <span class="badge" id="badge-physics">0/0 COMPLETED</span>
       </span>
-      <span class="countpill" id="count-physics"></span>
+      <span>
+        <span class="hint hint-closed">Click to open</span>
+        <span class="hint hint-open">Click to close</span>
+      </span>
       <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-physics"></div>
   </details>
 
-  <details class="group" open data-subject="chemistry">
+  <details class="group" data-subject="chemistry">
     <summary>
       <span class="sum-left">
         <span>🧪 Chemistry</span>
-        <span class="badge" id="badge-chemistry">Loading…</span>
+        <span class="badge" id="badge-chemistry">0/0 COMPLETED</span>
       </span>
-      <span class="countpill" id="count-chemistry"></span>
+      <span>
+        <span class="hint hint-closed">Click to open</span>
+        <span class="hint hint-open">Click to close</span>
+      </span>
       <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-chemistry"></div>
   </details>
 
-  <details class="group" open data-subject="mathematics">
+  <details class="group" data-subject="mathematics">
     <summary>
       <span class="sum-left">
         <span>∑ Mathematics</span>
-        <span class="badge" id="badge-mathematics">Loading…</span>
+        <span class="badge" id="badge-mathematics">0/0 COMPLETED</span>
       </span>
-      <span class="countpill" id="count-mathematics"></span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>
+        <span class="hint hint-closed">Click to open</span>
+        <span class="hint hint-open">Click to close</span>
+      </span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24  fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-mathematics"></div>
   </details>
 
-  <details class="group" open data-subject="biology">
+  <details class="group" data-subject="biology">
     <summary>
       <span class="sum-left">
         <span>🌿 Biology</span>
-        <span class="badge" id="badge-biology">Loading…</span>
+        <span class="badge" id="badge-biology">0/0 COMPLETED</span>
       </span>
-      <span class="countpill" id="count-biology"></span>
+      <span>
+        <span class="hint hint-closed">Click to open</span>
+        <span class="hint hint-open">Click to close</span>
+      </span>
       <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-biology">
@@ -184,9 +226,9 @@
   <script>
     /* ====== How it works ======
       - Create /data/syllabus.json
-      - This page fetches it and renders 4 drop-downs (open by default).
-      - Completed rows get "frosty green"; others stay frosty white.
-      - You only edit the JSON to change status / expectedDate.
+      - Completed rows get "frosty green"; others stay crystal white.
+      - You only edit JSON (status / expectedDate).
+      - Date shows Day + Month only (no label, no year).
     */
 
     // --- Robust path resolver (tries relative, then root) ---
@@ -217,32 +259,34 @@
       mathematics: document.getElementById('badge-mathematics'),
       biology: document.getElementById('badge-biology')
     };
-    const counts = {
-      physics: document.getElementById('count-physics'),
-      chemistry: document.getElementById('count-chemistry'),
-      mathematics: document.getElementById('count-mathematics'),
-      biology: document.getElementById('count-biology')
-    };
     const diag = document.getElementById('diag');
+
+    // Format date as DAY MON (no year). Accepts '', 'YYYY-MM-DD', or natural strings.
+    function fmtDayMonth(s){
+      if(!s) return '—';
+      const d = new Date(s);
+      if(isNaN(d)) return '—';
+      const day = d.getDate().toString().padStart(2,'0');
+      const mon = d.toLocaleString('en-GB',{month:'short'});
+      return `${day} ${mon}`;
+    }
 
     function makeRow(item){
       const div = document.createElement('div');
       const st = (item.status || 'pending').toLowerCase();
-      const expected = item.expectedDate ? item.expectedDate : '—';
+      const when = fmtDayMonth(item.expectedDate || '');
       div.className = 'row ' + (st==='completed' ? 'completed' : '');
       div.innerHTML = `
         <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
         <div class="status ${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</div>
-        <div class="date">Expected: ${expected}</div>
+        <div class="date">${when}</div>
       `;
       return div;
     }
 
-    function setBadges(total, done, subjectKey){
+    function setBadge(total, done, subjectKey){
       const b = badges[subjectKey];
-      const c = counts[subjectKey];
-      b.textContent = `${done}/${total} completed`;
-      c.textContent = total ? `${total} chapters` : '';
+      b.textContent = `${done}/${total} COMPLETED`;
     }
 
     function renderSimple(arr, mount, subjectKey){
@@ -253,7 +297,7 @@
         if((ch.status||'').toLowerCase()==='completed') done++;
         mount.appendChild(makeRow(ch));
       });
-      setBadges(sorted.length, done, subjectKey);
+      setBadge(sorted.length, done, subjectKey);
     }
 
     function renderBiology(bio, mount, subjectKey){
@@ -279,7 +323,7 @@
           mount.appendChild(makeRow(ch));
         });
       }
-      setBadges(total, done, subjectKey);
+      setBadge(total, done, subjectKey);
     }
 
     async function init(){
@@ -292,14 +336,17 @@
         renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
         renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
         renderBiology(data.biology || [], lists.biology, 'biology');
+
+        // Ensure all details are closed by default (in case browser auto-opens last state)
+        document.querySelectorAll('details.group').forEach(d => d.open = false);
       }catch(err){
         console.error('Failed to load syllabus.json', err);
         if (diag) diag.textContent = 'Load error — check that /data/syllabus.json exists (case-sensitive) and is valid JSON.';
-        Object.values(badges).forEach(b=>b.textContent='Load error');
+        Object.values(badges).forEach(b=>b.textContent='LOAD ERROR');
         Object.values(lists).forEach(m=>{
           const d = document.createElement('div');
           d.className='row';
-          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>. Check path & JSON validity.</div><div class="status pending">—</div><div class="date">Expected: —</div>';
+          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>. Check path & JSON validity.</div><div class="status pending">—</div><div class="date">—</div>';
           m.appendChild(d);
         });
       }
