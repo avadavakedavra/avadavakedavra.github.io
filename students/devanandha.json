@@ -1,0 +1,59 @@
+{
+  "lock": {
+    "sha256": "092536ac869df97ba247c69b1b179025868728f1fa390c299dccc46a0da858b8"
+  },
+  "meta": {
+    "name": "Devanandha",
+    "className": "Plus One Science / Class 11",
+    "joinDate": "2025-05-26",
+    "birthday": "29 April",
+    "avatar": "https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png"
+  },
+  "termRanges": { "first": "May – Sep 2025", "second": "Sep – Dec 2025" },
+
+  "internals": {
+    "first": [
+      {"label":"QP01","subject":"Physics","pct":28},
+      {"label":"QP02","subject":"Maths","pct":37},
+      {"label":"QP03","subject":"Chemistry","pct":59},
+      {"label":"QP04","subject":"Biology","pct":33},
+      {"label":"QP05","subject":"Physics","pct":50},
+      {"label":"QP06","subject":"Maths","pct":31},
+      {"label":"QP07","subject":"Chemistry","pct":20},
+      {"label":"QP08","subject":"Biology","pct":14}
+    ],
+    "second": [
+      {"label":"QP09","subject":"Physics","pct":null},
+      {"label":"QP10","subject":"Maths","pct":null},
+      {"label":"QP11","subject":"Chemistry","pct":null},
+      {"label":"QP12","subject":"Biology","pct":null},
+      {"label":"QP13","subject":"Physics","pct":null},
+      {"label":"QP14","subject":"Maths","pct":null},
+      {"label":"QP15","subject":"Chemistry","pct":null},
+      {"label":"QP16","subject":"Biology","pct":null},
+      {"label":"QP17","subject":"Physics","pct":null},
+      {"label":"QP18","subject":"Maths","pct":null},
+      {"label":"QP19","subject":"Chemistry","pct":null},
+      {"label":"QP20","subject":"Biology","pct":null}
+    ]
+  },
+
+  "externals": {
+    "first": {
+      "sehr":   { "Physics": 54, "Maths": null, "Chemistry": 54, "Biology": 68 },
+      "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    },
+    "second": {
+      "sehr":   { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null },
+      "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    }
+  },
+
+  "achievements": [
+    "100% Attendance : June, July"
+  ],
+
+  "remarks": [],
+
+  "assignments": []
+}
