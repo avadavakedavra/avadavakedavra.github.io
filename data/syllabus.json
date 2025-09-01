@@ -1,6 +1,6 @@
 {
   "physics": [
-    { "index": 1, "title": "Units and Measurements", "status": "completed", "expectedDate": "" },
+    { "index": 1, "title": "Units and Measurements", "status": "completed", "expectedDate": "2025-08-31" },
     { "index": 2, "title": "Motion in a Straight Line", "status": "completed", "expectedDate": "" },
     { "index": 3, "title": "Motion in a Plane", "status": "completed", "expectedDate": "" },
     { "index": 4, "title": "Laws of Motion", "status": "completed", "expectedDate": "" },
@@ -16,8 +16,8 @@
     { "index": 14, "title": "Waves", "status": "pending", "expectedDate": "" }
   ],
   "chemistry": [
-    { "index": 1, "title": "Some Basic Concepts of Chemistry", "status": "completed", "expectedDate": "" },
-    { "index": 2, "title": "Structure of Atom", "status": "completed", "expectedDate": "" },
+    { "index": 1, "title": "Some Basic Concepts of Chemistry", "status": "completed", "expectedDate": "2025-08-31" },
+    { "index": 2, "title": "Structure of Atom", "status": "completed", "expectedDate": "2025-08-31" },
     { "index": 3, "title": "Classification of Elements and Periodicity in Properties", "status": "completed", "expectedDate": "" },
     { "index": 4, "title": "Chemical Bonding and Molecular Structure", "status": "pending", "expectedDate": "" },
     { "index": 5, "title": "Thermodynamics", "status": "pending", "expectedDate": "" },
@@ -27,7 +27,7 @@
     { "index": 9, "title": "Hydrocarbons", "status": "pending", "expectedDate": "" }
   ],
   "mathematics": [
-    { "index": 1, "title": "Sets", "status": "completed", "expectedDate": "" },
+    { "index": 1, "title": "Sets", "status": "completed", "expectedDate": "2025-08-31" },
     { "index": 2, "title": "Relations and Functions", "status": "completed", "expectedDate": "" },
     { "index": 3, "title": "Trigonometric Functions", "status": "completed", "expectedDate": "" },
     { "index": 4, "title": "Principle of Mathematical Induction", "status": "pending", "expectedDate": "" },
