@@ -85,7 +85,7 @@
     {
       "id": "seminar-on-plantkingdom",
       "title": "Seminar on Kingdom Plantae",
-      "note": "Student needs to prepare for a presentation on the topic Kingdom Plantae ",
+      "note": "Student needs to prepare and present the topic Kingdom Plantae in Class.",
       "subject": "Botany",
       "issuedDate": "2025-08-31",
       "dueDate": "2025-09-25",
@@ -96,7 +96,7 @@
         { "label": "Due date 25th September", "url": "" }
       ],
       "checklist": [
-        { "text": "Completion", "done": false }
+        { "text": "Kingdom Plantae", "done": false }
       ]
     }
   ]
