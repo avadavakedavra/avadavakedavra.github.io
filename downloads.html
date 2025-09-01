@@ -39,7 +39,7 @@
     }
     a{text-decoration:none;color:inherit}
 
-    /* ===== Header (exact design & size from index) ===== */
+    /* =====  (exact design & size from index) ===== */
     header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
     .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
@@ -136,19 +136,8 @@
 <body>
 
   <!-- ===== Header (same markup; links you can tweak) ===== -->
-  <header role="banner">
-    <div class="container nav">
-      <a class="brand" href="https://sehracademy.com/#home" aria-label="Sehr Academy">
-        <span>SEHR</span><span>ACADEMY</span>
-      </a>
-      <nav aria-label="Primary">
-        <a href="https://sehracademy.com/#features">Features</a>
-        <a href="https://sehracademy.com/#programs">Programs</a>
-        <a href="https://sehracademy.com/studentlogin">Student Login</a>
-        <a href="https://sehracademy.com/#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+<header id="site-header"></header>
+<script src="/js/nav.js"></script>
 
   <!-- ===== Hero ===== -->
   <section class="hero">
