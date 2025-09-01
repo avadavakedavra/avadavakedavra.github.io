@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehr Academy — Class 11 Syllabus (Live Coverage)</title>
+  <meta name="theme-color" content="#8BC53F" />
+  <meta name="description" content="Class 11 syllabus tracker for Physics, Chemistry, Mathematics, Biology — live portion coverage with expected dates." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --sehr-green:#8BC53F;
+      --ink:#0F172A;
+      --muted:#5b6475;
+      --glass-border: rgba(255,255,255,0.55);
+      --shadow: 0 20px 45px rgba(15,23,42,.12);
+      --radius: 22px;
+      --maxw:1180px;
+      --frost-white: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.72));
+      --frost-green: linear-gradient(180deg, rgba(214, 244, 190, .95), rgba(180, 232, 140, .78));
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 50%, #f7f8fa 100%);
+      color:#111; line-height:1.65; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Header (shared) */
+    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--sehr-green);letter-spacing:.4px}
+    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+
+    /* Page title bar */
+    .pagehead{max-width:var(--maxw);margin:18px auto 12px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+    .title{font-family:Montserrat;font-weight:900;font-size:26px;letter-spacing:.2px}
+    .subtitle{color:#6b7280;font-weight:700}
+
+    /* Panel */
+    .panel{max-width:var(--maxw); margin:10px auto 0; padding:18px 20px; border-radius:var(--radius);
+      border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:var(--shadow);}
+    .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:700;color:#334}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
+    .dot{width:10px;height:10px;border-radius:999px;background:#cfd6df}
+    .dot.pending{background:#cfd6df}
+    .dot.ongoing{background:#f6c761}
+    .dot.completed{background:#69c04c}
+
+    /* Subject accordions */
+    details.group{max-width:var(--maxw); margin:14px auto; border-radius:18px; border:1px solid var(--glass-border);
+      background:var(--frost-white); box-shadow:var(--shadow); overflow:hidden}
+    details.group > summary{
+      list-style:none; cursor:pointer; padding:18px 22px; user-select:none; display:flex; align-items:center; justify-content:space-between; gap:12px;
+      font-family:Montserrat; font-weight:900; font-size:18px;
+    }
+    details.group > summary::-webkit-details-marker{display:none}
+    .sum-left{display:flex;align-items:center;gap:10px}
+    .badge{font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;border:1px solid var(--glass-border);background:linear-gradient(180deg,#fff,rgba(255,255,255,.72));color:#334}
+    .countpill{font-family:Montserrat;font-weight:900;font-size:12px;opacity:.8}
+    .chev{transition:transform .2s ease}
+    details[open] .chev{transform:rotate(180deg)}
+
+    /* Botany/Zoology subheaders within Biology */
+    .subhdr{font-family:Montserrat;font-weight:800;font-size:14px;color:#0b0f10;opacity:.8;margin:8px 6px 6px 6px}
+
+    /* Chapter list */
+    .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
+    .row{
+      display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center;
+      padding:14px 14px; border-radius:16px; border:1px solid var(--glass-border);
+      background:var(--frost-white); box-shadow:0 8px 20px rgba(15,23,42,.06);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .row:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(15,23,42,.10); filter:drop-shadow(0 0 6px rgba(139,197,63,.18))}
+    .row.completed{ background: var(--frost-green); border-color: rgba(139,197,63,.55); }
+    .row .name{font-weight:800}
+    .status{
+      font-family:Montserrat; font-weight:900; font-size:12px; padding:8px 10px; border-radius:999px; border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#fff,rgba(255,255,255,.75)); color:#334; min-width:110px; text-align:center
+    }
+    .status.pending{opacity:.85}
+    .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
+    .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
+    .date{
+      font-weight:800; font-family:Montserrat; font-size:12px; color:#5b6475; white-space:nowrap
+    }
+
+    /* Footer */
+    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; gap:14px; justify-content:center; color:#334; font-size:14px}
+    footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
+  </style>
+</head>
+<body>
+  <!-- Shared header -->
+  <header id="site-header"></header>
+  <script src="/assets/nav.js" defer></script>
+
+  <div class="pagehead">
+    <div>
+      <div class="title">Class 11 Syllabus — Live Coverage</div>
+      <div class="subtitle">Edit one JSON to update statuses & dates. Completed chapters glow in Sehr green.</div>
+    </div>
+  </div>
+
+  <section class="panel" aria-label="Legend">
+    <div class="legend">
+      <span class="chip"><span class="dot pending"></span> Pending</span>
+      <span class="chip"><span class="dot ongoing"></span> Ongoing</span>
+      <span class="chip"><span class="dot completed"></span> Completed</span>
+    </div>
+  </section>
+
+  <!-- Subjects (all open by default) -->
+  <details class="group" open data-subject="physics">
+    <summary>
+      <span class="sum-left">
+        <span>⚛️ Physics</span>
+        <span class="badge" id="badge-physics">Loading…</span>
+      </span>
+      <span class="countpill" id="count-physics"></span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="chapters" id="list-physics"></div>
+  </details>
+
+  <details class="group" open data-subject="chemistry">
+    <summary>
+      <span class="sum-left">
+        <span>🧪 Chemistry</span>
+        <span class="badge" id="badge-chemistry">Loading…</span>
+      </span>
+      <span class="countpill" id="count-chemistry"></span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="chapters" id="list-chemistry"></div>
+  </details>
+
+  <details class="group" open data-subject="mathematics">
+    <summary>
+      <span class="sum-left">
+        <span>∑ Mathematics</span>
+        <span class="badge" id="badge-mathematics">Loading…</span>
+      </span>
+      <span class="countpill" id="count-mathematics"></span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="chapters" id="list-mathematics"></div>
+  </details>
+
+  <details class="group" open data-subject="biology">
+    <summary>
+      <span class="sum-left">
+        <span>🌿 Biology</span>
+        <span class="badge" id="badge-biology">Loading…</span>
+      </span>
+      <span class="countpill" id="count-biology"></span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="chapters" id="list-biology">
+      <!-- Botany/Zoology groups render inside here -->
+    </div>
+  </details>
+
+  <footer>
+    <a href="https://sehracademy.com/studentlogin">Student Login</a>
+    <a href="mailto:hello@sehracademy.com?subject=Syllabus%20Update%20Request">Report update</a>
+  </footer>
+
+  <script>
+    /* ====== How it works ======
+      - Create /data/syllabus.json (see section 2 below)
+      - This page fetches it and renders 4 drop-downs (open by default).
+      - Completed rows get "frosty green"; others stay frosty white.
+      - You only edit the JSON to change status / expectedDate.
+    */
+
+    const DATA_URL = '/data/syllabus.json?cb=' + Date.now();
+    const lists = {
+      physics: document.getElementById('list-physics'),
+      chemistry: document.getElementById('list-chemistry'),
+      mathematics: document.getElementById('list-mathematics'),
+      biology: document.getElementById('list-biology')
+    };
+    const badges = {
+      physics: document.getElementById('badge-physics'),
+      chemistry: document.getElementById('badge-chemistry'),
+      mathematics: document.getElementById('badge-mathematics'),
+      biology: document.getElementById('badge-biology')
+    };
+    const counts = {
+      physics: document.getElementById('count-physics'),
+      chemistry: document.getElementById('count-chemistry'),
+      mathematics: document.getElementById('count-mathematics'),
+      biology: document.getElementById('count-biology')
+    };
+
+    function makeRow(item){
+      const div = document.createElement('div');
+      const st = (item.status || 'pending').toLowerCase();
+      const expected = item.expectedDate ? item.expectedDate : '—';
+      div.className = 'row ' + (st==='completed' ? 'completed' : '');
+      div.innerHTML = `
+        <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
+        <div class="status ${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</div>
+        <div class="date">Expected: ${expected}</div>
+      `;
+      return div;
+    }
+
+    function setBadges(total, done, subjectKey){
+      const b = badges[subjectKey];
+      const c = counts[subjectKey];
+      b.textContent = `${done}/${total} completed`;
+      c.textContent = total ? `${total} chapters` : '';
+    }
+
+    function renderSimple(arr, mount, subjectKey){
+      mount.innerHTML = '';
+      const sorted = [...arr].sort((a,b)=>(a.index||999)-(b.index||999));
+      let done = 0;
+      sorted.forEach(ch => {
+        if((ch.status||'').toLowerCase()==='completed') done++;
+        mount.appendChild(makeRow(ch));
+      });
+      setBadges(sorted.length, done, subjectKey);
+    }
+
+    function renderBiology(bio, mount, subjectKey){
+      mount.innerHTML = '';
+      const botany = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
+      const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
+
+      let done=0, total=0;
+
+      if(botany.length){
+        const h = document.createElement('div'); h.className='subhdr'; h.textContent='Botany';
+        mount.appendChild(h);
+        botany.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
+          total++; if((ch.status||'').toLowerCase()==='completed') done++;
+          mount.appendChild(makeRow(ch));
+        });
+      }
+      if(zoology.length){
+        const h = document.createElement('div'); h.className='subhdr'; h.textContent='Zoology';
+        mount.appendChild(h);
+        zoology.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
+          total++; if((ch.status||'').toLowerCase()==='completed') done++;
+          mount.appendChild(makeRow(ch));
+        });
+      }
+      setBadges(total, done, subjectKey);
+    }
+
+    async function init(){
+      try{
+        const res = await fetch(DATA_URL, { cache:'no-store' });
+        if(!res.ok) throw new Error('HTTP '+res.status);
