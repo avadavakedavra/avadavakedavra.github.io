@@ -1,4 +1,3 @@
-
 {
   "lock": {
     "sha256": "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"
@@ -11,6 +10,7 @@
     "avatar": "https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png"
   },
   "termRanges": { "first": "May – Sep 2025", "second": "Sep – Dec 2025" },
+
   "internals": {
     "first": [
       {"label":"QP01","subject":"Physics","pct":51},
@@ -37,6 +37,7 @@
       {"label":"QP20","subject":"Biology","pct":null}
     ]
   },
+
   "externals": {
     "first": {
       "sehr":   { "Physics": 65, "Maths": 1,  "Chemistry": 87, "Biology": 47 },
@@ -47,12 +48,39 @@
       "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
     }
   },
+
   "achievements": [
     "Event Coordinator",
     "Excellent Attendance (Aug 2025)"
   ],
+
   "remarks": [
     "Shows steady improvement in Chemistry numericals.",
     "Needs to practice derivations in Physics."
-  ]
+  ],
+
+  "assignments": [
+    {
+      "id": "chem-acids-bases-01",
+      "title": "Acids & Bases — Numericals Set",
+      "note": "Solve Q1–Q10 from the worksheet. Show full steps.\nFocus on **pH** calculations.",
+      "subject": "Chemistry",
+      "issuedDate": "2025-09-02",
+      "dueDate": "2025-09-09",
+      "priority": "high",
+      "status": "assigned",
+      "faculty": "Ms. Anjali",
+      "attachments": [
+        { "label": "Worksheet (PDF)", "url": "/files/chem-worksheet-01.pdf" }
+      ],
+      "checklist": [
+        { "text": "Q1–Q5",  "done": false },
+        { "text": "Q6–Q10", "done": false }
+      ],
+      "tags": ["numericals","term-2"],
+      "requiresAck": true
+    }
+  ],
+
+  "featuredAssignmentId": "chem-acids-bases-01"
 }
