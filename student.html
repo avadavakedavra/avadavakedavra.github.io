@@ -78,6 +78,8 @@
 
     .card{ background: var(--panel); border:1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       border-radius: var(--radius); box-shadow: var(--shadow); }
+
+    /* PROFILE */
     .profile{ display:grid; grid-template-columns: 110px 1fr; gap:18px; padding:18px; align-items:center; }
     .avatar{ width:100px; height:100px; border-radius:18px; overflow:hidden; border:2px solid rgba(0,0,0,0.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); background:#fff; }
     .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
@@ -89,6 +91,7 @@
     .section{ margin-top:22px; padding:16px 18px; }
     .section h2{ margin:0 0 10px; font-family: Montserrat; font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
 
+    /* SUBJECT AVGS */
     .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap:14px; margin:12px 0 8px; }
     .avg-card{ position:relative; display:grid; grid-template-rows: auto auto; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
     .avg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
@@ -99,6 +102,7 @@
     .passchip{ position:absolute; bottom:10px; right:10px; font-size:11px; font-family: Montserrat; font-weight:800; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid var(--glass-border); }
     .wm{ position:absolute; right:8px; top:0; font-family: Montserrat; font-weight:900; font-size:60px; opacity:.08; pointer-events:none; }
 
+    /* TERMS */
     details.term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
     details.term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
     details.term summary::-webkit-details-marker{display:none}
@@ -130,8 +134,43 @@
     .tile-meta{ display:flex; align-items:center; justify-content:space-between; }
     .tile-meta .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
 
+    /* TOOLTIP */
     .tooltip{ position: fixed; z-index: 50; pointer-events:none; background: rgba(17,24,39,.85); color: #fff; padding:6px 8px; border-radius:8px;
       font-family: Montserrat; font-weight:700; font-size:12px; letter-spacing:.2px; transform: translate(-50%, -140%); white-space:nowrap; opacity:0; transition: opacity .15s ease; }
+
+    /* WORK CARD (assignments) */
+    .work-card{ padding:16px 18px; margin-bottom:16px; }
+    .work-head{ display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+    .work-badge{ font-family: Montserrat; font-weight:800; font-size:12px;
+      background:#fff; border:1px solid var(--glass-border); border-radius:999px; padding:6px 10px; }
+    .work-prio{ font-size:11px; font-family:Montserrat; font-weight:900; padding:4px 8px; border-radius:999px; }
+    .work-title{ margin:4px 0 6px; font-family: Montserrat; font-weight:900; font-size:18px; }
+    .work-meta{ display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-weight:700; font-size:12px; margin-bottom:8px; }
+    .work-duechip{ font-weight:900; padding:2px 8px; border:1px solid var(--glass-border); border-radius:999px; background:#fff; }
+    .work-note{ background: rgba(255,255,255,.9); border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; margin-top:6px; white-space:pre-wrap; }
+    .work-attach{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .work-attach a{ text-decoration:none; font-weight:800; font-family: Montserrat; font-size:12px; padding:6px 10px;
+      border-radius:999px; background:#fff; border:1px solid var(--glass-border); display:inline-flex; align-items:center; gap:6px; }
+    .work-check{ display:grid; gap:6px; margin-top:10px; }
+    .work-check .chk{ display:flex; align-items:center; gap:8px; font-weight:800; }
+    .work-check .dot{ width:10px; height:10px; border-radius:999px; background: rgba(15,23,42,.25); }
+    .work-check .done .dot{ background: var(--sehr-green); }
+    .work-actions{ margin-top:10px; display:flex; justify-content:flex-end; }
+    .work-prio[data-p="low"]{ background:#f3f4f6; border:1px solid var(--glass-border); }
+    .work-prio[data-p="normal"]{ background:#eef2ff; border:1px solid var(--glass-border); }
+    .work-prio[data-p="high"]{ background:#fff7ed; border:1px solid var(--glass-border); }
+    .work-prio[data-p="critical"]{ background:#fef2f2; border:1px solid var(--glass-border); }
+
+    /* ACHIEVEMENTS & REMARKS — ensure inside white boxes & auto expand */
+    .achievements, .remarks{ background: rgba(255,255,255,0.92); }
+    .ach-grid{ display:grid; grid-template-columns: repeat(3, minmax(160px,1fr)); gap:12px; }
+    .ach-card{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:12px 14px;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
+    .ach-title{ font-family: Montserrat; font-weight:800; }
+
+    .remarks-list{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:12px 14px; }
+    .remarks-list ul{ margin:0; padding-left:18px; }
+    .remarks-list li{ margin:6px 0; font-weight:700; }
 
     .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
 
@@ -139,6 +178,7 @@
       .avg-grid{grid-template-columns: repeat(2, 1fr);}
       .more-metrics{grid-template-columns: 1fr;}
       .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));}
+      .ach-grid{grid-template-columns: repeat(2, minmax(160px,1fr));}
     }
     @media (max-width:760px){
       .info{grid-template-columns: 1fr 1fr}
@@ -149,19 +189,16 @@
       .pct{ grid-area: pct; text-align:left; }
       .bar{ grid-area: bar; height:12px; }
       .actions{ display:none; }
+      .ach-grid{grid-template-columns: 1fr;}
     }
     @media print{ .actions{ display:none !important; } }
   </style>
 
   <script>
     /* ========= BASE / GLOBALS ========= */
-    // Global fallback hash (SHA-256 of "fidhu123") — used only if JSON doesn't provide lock.sha256
-    const DEFAULT_EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07";
-
-    // Active expected hash (becomes student-specific after JSON loads)
+    const DEFAULT_EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"; // sha256("fidhu123")
     let EXPECTED_HEX = DEFAULT_EXPECTED_HEX;
 
-    // Read student id from ?id=<slug> OR from filename (e.g., gayathri.html)
     function getStudentId() {
       const url = new URL(window.location.href);
       const q = url.searchParams.get('id');
@@ -248,6 +285,29 @@
         <button class="btn" id="btn-csv">CSV</button>
       </div>
     </header>
+
+    <!-- Featured Work / Assignment (JSON-driven) -->
+    <section class="card work-card" id="work-card" style="display:none;">
+      <div class="work-head">
+        <span class="work-badge" id="work-subject">—</span>
+        <span class="work-prio" id="work-priority" aria-label="Priority"></span>
+      </div>
+      <h2 class="work-title" id="work-title">—</h2>
+      <div class="work-meta">
+        <span id="work-faculty">—</span>
+        <span>•</span>
+        <span id="work-issued">—</span>
+        <span>•</span>
+        <span id="work-due">—</span>
+        <span class="work-duechip" id="work-duechip">—</span>
+      </div>
+      <div class="work-note" id="work-note">—</div>
+      <div class="work-attach" id="work-attach"></div>
+      <div class="work-check" id="work-check" aria-label="Checklist" role="list"></div>
+      <div class="work-actions">
+        <button class="btn" id="btn-view-all">View all assignments</button>
+      </div>
+    </section>
 
     <!-- Profile Card -->
     <section class="card profile">
@@ -434,7 +494,7 @@
     <!-- Performance Remarks -->
     <section class="section card remarks">
       <h2>Performance Remarks</h2>
-      <div id="remarks-list" style="height:12px;"></div>
+      <div id="remarks-list" class="remarks-list"></div>
     </section>
 
     <div class="foot">sehracademy.com</div>
@@ -488,10 +548,101 @@
       });
     }
 
+    /* ===== Assignments helpers ===== */
+    function fmtDate(d){
+      if(!d) return '—';
+      const dt = new Date(d);
+      if(isNaN(+dt)) return d;
+      return dt.toLocaleDateString(undefined, {day:'2-digit', month:'short', year:'numeric'});
+    }
+    function daysDiff(from, to){
+      const a = new Date(from); a.setHours(0,0,0,0);
+      const b = new Date(to);   b.setHours(0,0,0,0);
+      return Math.round((b - a)/86400000);
+    }
+    function dueChipText(dueISO){
+      if(!dueISO) return 'No due date';
+      const today = new Date();
+      const diff = daysDiff(today, dueISO);
+      if(diff === 0) return 'Due today';
+      if(diff > 0) return `Due in ${diff} day${diff>1?'s':''}`;
+      return `Overdue by ${Math.abs(diff)} day${Math.abs(diff)>1?'s':''}`;
+    }
+    function pickFeaturedAssignment(data){
+      const arr = Array.isArray(data?.assignments) ? data.assignments.slice() : [];
+      if(!arr.length) return null;
+      if(data?.featuredAssignmentId){
+        const hit = arr.find(a => a.id === data.featuredAssignmentId);
+        if(hit) return hit;
+      }
+      const now = new Date();
+      const assigned = arr.filter(a => (a.status||'assigned') === 'assigned');
+      const upcoming = assigned.filter(a => a.dueDate && new Date(a.dueDate) >= now)
+                               .sort((a,b)=> new Date(a.dueDate)-new Date(b.dueDate));
+      if(upcoming.length) return upcoming[0];
+      assigned.sort((a,b)=>{
+        const order = {critical:3, high:2, normal:1, low:0};
+        const pa = order[(a.priority||'normal')] ?? 1;
+        const pb = order[(b.priority||'normal')] ?? 1;
+        return (pb-pa) || (new Date(b.issuedDate)-new Date(a.issuedDate));
+      });
+      return assigned[0] || arr[0];
+    }
+    function renderFeaturedWork(data){
+      const a = pickFeaturedAssignment(data);
+      const card = document.getElementById('work-card');
+      if(!a){ card.style.display='none'; return; }
+      card.style.display='block';
+
+      document.getElementById('work-subject').textContent = a.subject || 'Work';
+      const pr = (a.priority || 'normal').toLowerCase();
+      const prEl = document.getElementById('work-priority');
+      prEl.textContent = pr.charAt(0).toUpperCase() + pr.slice(1);
+      prEl.setAttribute('data-p', pr);
+
+      document.getElementById('work-title').textContent   = a.title || 'Assignment';
+      document.getElementById('work-faculty').textContent = a.faculty ? `By ${a.faculty}` : '—';
+      document.getElementById('work-issued').textContent  = a.issuedDate ? `Issued: ${fmtDate(a.issuedDate)}` : 'Issued: —';
+      document.getElementById('work-due').textContent     = a.dueDate ? `Due: ${fmtDate(a.dueDate)}` : 'Due: —';
+      document.getElementById('work-duechip').textContent = dueChipText(a.dueDate);
+
+      const noteEl = document.getElementById('work-note');
+      if(a.note){
+        const html = (a.note || '').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br/>');
+        noteEl.innerHTML = html;
+      }else{
+        noteEl.textContent = '—';
+      }
+
+      const at = document.getElementById('work-attach');
+      at.innerHTML = '';
+      (a.attachments||[]).forEach(x=>{
+        const link = document.createElement('a');
+        link.href = x.url; link.target = '_blank'; link.rel='noopener';
+        link.textContent = x.label || 'Attachment';
+        at.appendChild(link);
+      });
+
+      const ck = document.getElementById('work-check');
+      ck.innerHTML = '';
+      (a.checklist||[]).forEach(item=>{
+        const row = document.createElement('div');
+        row.className = 'chk' + (item.done ? ' done':'');
+        row.setAttribute('role','listitem');
+        row.innerHTML = `<span class="dot"></span><span>${item.text}</span>`;
+        ck.appendChild(row);
+      });
+
+      document.getElementById('btn-view-all').onclick = () => {
+        const sec = document.getElementById('term-2') || document.body;
+        sec.scrollIntoView({behavior:'smooth', block:'start'});
+      };
+    }
+
     /* ===== Data state + FALLBACK ===== */
     let DATA = null;
     const FALLBACK = {
-      lock: { sha256: DEFAULT_EXPECTED_HEX },  /* fallback uses default */
+      lock: { sha256: DEFAULT_EXPECTED_HEX },
       meta: { name:'Student', className:'—', joinDate:'—', birthday:'—',
               avatar:'https://i.postimg.cc/0Q0qLQ5v/placeholder-avatar.png' },
       termRanges: { first:'May – Sep 2025', second:'Sep – Dec 2025' },
@@ -504,7 +655,8 @@
         second:{ sehr:{}, school:{} }
       },
       achievements: [],
-      remarks: []
+      remarks: [],
+      assignments: []
     };
 
     /* ===== Renderers ===== */
@@ -515,7 +667,6 @@
       document.getElementById('k-class').textContent = meta.className || '—';
       document.getElementById('k-join').textContent  = meta.joinDate || '—';
       document.getElementById('k-bday').textContent  = meta.birthday || '—';
-      // Also put name in <title>
       document.title = `Sehr Academy — Student Profile (${meta.name || 'Student'})`;
     }
 
@@ -537,13 +688,11 @@
       host.innerHTML = arr.map(rowHTML).join('');
       paintRowsAndTotals(host, 'avg-bar', 'avg-text', 'met-attempted', 'met-passed', 'met-failed', true);
     }
-
     function renderInternalsSecond(arr){
       const host = document.getElementById('second-term');
       host.innerHTML = arr.map(rowHTML).join('');
       paintRowsAndTotals(host, 'avg2-bar', 'avg2-text', 'met2-attempted', 'met2-passed', 'met2-failed', false);
     }
-
     function paintRowsAndTotals(host, avgBarId, avgTextId, metAttId, metPassId, metFailId, alsoSubjectAverages){
       const rows = Array.from(host.querySelectorAll('.exam-row'));
       const bars = rows.map(r => r.querySelector('.bar > i'));
@@ -655,7 +804,7 @@
     function renderRemarks(list){
       const host = document.getElementById('remarks-list');
       host.innerHTML = (list && list.length)
-        ? `<ul>${list.map(x=>`<li>${x}</li>`).join('')}</ul>`
+        ? `<ul>${list.map(x=>`<li>${typeof x==="string"?x:(x.text||"")}</li>`).join('')}</ul>`
         : `<div style="opacity:.7">No remarks yet — faculty feedback will appear here.</div>`;
     }
 
@@ -691,6 +840,9 @@
       document.getElementById('term-range').textContent  = (DATA.termRanges?.first)  || FALLBACK.termRanges.first;
       document.getElementById('term2-range').textContent = (DATA.termRanges?.second) || FALLBACK.termRanges.second;
 
+      // Featured assignment/work
+      renderFeaturedWork(DATA);
+
       // Internals
       renderInternalsFirst((DATA.internals && DATA.internals.first) ? DATA.internals.first : FALLBACK.internals.first);
       renderInternalsSecond((DATA.internals && DATA.internals.second) ? DATA.internals.second : FALLBACK.internals.second);
@@ -706,7 +858,6 @@
 
     /* ===== CSV ===== */
     function downloadCSV(){
-      // First term rows
       const rows1 = Array.from(document.querySelectorAll('#first-term .exam-row'));
       const exams1 = rows1.map(r => {
         const id = r.querySelector('.label').textContent.trim();
@@ -716,7 +867,6 @@
         return {term:'First', id, subject, score};
       });
 
-      // Second term rows
       const rows2 = Array.from(document.querySelectorAll('#second-term .exam-row'));
       const exams2 = rows2.map(r => {
         const id = r.querySelector('.label').textContent.trim();
@@ -751,6 +901,11 @@
       ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
         const v = (DATA?.externals?.second?.school?.[subj] ?? '');
         csv += `${subj},${(v===''||v==null||isNaN(v))?'Pending':v}\n`;
+      });
+
+      csv += '\nAssignments\nTitle,Subject,Issued,Due,Priority,Status,Faculty\n';
+      (DATA.assignments||[]).forEach(a=>{
+        csv += `"${a.title||''}",${a.subject||''},${a.issuedDate||''},${a.dueDate||''},${a.priority||''},${a.status||''},${a.faculty||''}\n`;
       });
 
       const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
