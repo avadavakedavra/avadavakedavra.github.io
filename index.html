@@ -805,6 +805,50 @@ align-items: center;
   }
 </style>
 <style>
+  /* === Announcements: align CTA to far right, aligned with text === */
+  .section-annc .card.annc{
+    display: grid !important;
+    grid-template-columns: 1fr auto;   /* left text | right CTA */
+    grid-auto-rows: auto;
+    column-gap: 12px;
+    align-items: start;                 /* align to top/baseline feel */
+  }
+
+  /* Left column: title + date stack */
+  .section-annc .annc-title,
+  .section-annc .annc-date{
+    grid-column: 1 / 2 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Right column: CTA */
+  .section-annc .annc-cta{
+    grid-column: 2 / 3 !important;
+    align-self: start;                  /* top-align with title line */
+    margin: 0 !important;               /* kill earlier margins */
+    display: flex;                      /* keep chip tidy */
+  }
+  .section-annc .annc-cta a{
+    white-space: nowrap;                /* keep chip on one line */
+  }
+
+  /* Optional: if you’d rather center CTA vertically beside the text block,
+     switch align-self above to center */
+  /* .section-annc .annc-cta{ align-self: center; } */
+
+  /* Mobile: stack CTA under text to avoid squish */
+  @media (max-width: 520px){
+    .section-annc .card.annc{
+      grid-template-columns: 1fr;
+      row-gap: 8px;
+    }
+    .section-annc .annc-cta{
+      grid-column: 1 / -1 !important;   /* full width under text */
+      align-self: start;
+    }
+  }
+</style>
+<style>
   /* Selected tab highlight in Academic Updates */
   #updates .tabbar {
     display:flex; gap:8px; flex-wrap:wrap;
@@ -1707,6 +1751,7 @@ align-items: center;
   </script>
 </body>
 </html>
+
 
 
 
