@@ -1,0 +1,137 @@
+<!-- Shared Navbar (Sehr Academy) -->
+<!-- Place this file at /partials/nav.html -->
+<style>
+  /* Scoped to header#site-header to avoid leaking */
+  header#site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+  header#site-header .container{max-width:1180px;margin:0 auto;padding:0 20px}
+  header#site-header .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+  header#site-header .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+  header#site-header .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#8BC53F;letter-spacing:.4px}
+  header#site-header .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+
+  header#site-header nav[aria-label="Primary"]{display:flex;gap:4px;align-items:center}
+  header#site-header .menu, header#site-header .submenu{list-style:none;margin:0;padding:0}
+  header#site-header .menu{display:flex;gap:4px;align-items:center}
+  header#site-header .menu > li{position:relative}
+  header#site-header .link, header#site-header .trigger{
+    font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;margin-left:12px;
+    font-weight:700;font-size:14px;letter-spacing:.2px;position:relative;display:inline-flex;align-items:center;gap:6px;
+    padding:8px 10px;border-radius:10px
+  }
+  header#site-header .link:after, header#site-header .trigger:after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#8BC53F;transform:scaleX(0);transform-origin:left;transition:transform .18s}
+  header#site-header .link:hover:after, header#site-header .trigger:hover:after{transform:scaleX(1)}
+
+  /* Dropdown */
+  header#site-header .submenu{
+    position:absolute;left:6px;top:100%;min-width:220px;
+    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
+    border:1px solid rgba(0,0,0,.06);border-radius:12px;box-shadow:0 18px 40px rgba(15,23,42,.14);
+    padding:8px;display:none
+  }
+  header#site-header .submenu a{
+    display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;
+    color:#0b0f10;font-weight:800;font-family:"Montserrat",sans-serif;font-size:14px;
+  }
+  header#site-header .submenu a:hover{background:#f5f8f1}
+  header#site-header .menu > li.open > .submenu{display:block}
+
+  /* Mobile */
+  @media (max-width:900px){
+    header#site-header .nav{padding:10px 0}
+    header#site-header .menu-toggle{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:40px;height:40px;border-radius:10px;border:1px solid rgba(0,0,0,.08);
+      background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.86));
+      font-weight:900;
+    }
+    header#site-header nav[aria-label="Primary"]{display:none;position:absolute;left:0;right:0;top:100%;padding:10px 14px}
+    header#site-header .nav.open nav[aria-label="Primary"]{
+      display:block;
+      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.96));
+      border-bottom:1px solid rgba(0,0,0,.06)
+    }
+    header#site-header .menu{flex-direction:column;align-items:stretch}
+    header#site-header .menu > li{padding:4px 0}
+    header#site-header .submenu{position:relative;left:auto;top:auto;box-shadow:none;border:1px solid rgba(0,0,0,.05);margin-top:6px}
+  }
+</style>
+
+<div class="container nav">
+  <a class="brand" href="https://sehracademy.com/#home" aria-label="Sehr Academy">
+    <span>SEHR</span><span>ACADEMY</span>
+  </a>
+
+  <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+    ☰
+  </button>
+
+  <nav id="primary-nav" aria-label="Primary">
+    <ul class="menu" role="menubar">
+      <!-- About Us -->
+      <li role="none">
+        <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">About Us ▾</button>
+        <ul class="submenu" role="menu" aria-label="About Us">
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/faculty">Faculty</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/management">Management</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/gallery">Gallery</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/events">Events</a></li>
+        </ul>
+      </li>
+
+      <!-- Courses -->
+      <li role="none">
+        <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Courses ▾</button>
+        <ul class="submenu" role="menu" aria-label="Courses">
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/ignite">Class 9 — Ignite</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/ascent">Class 10 — Ascent</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/origin">Class 11 — Origin</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/legacy">Class 12 — Legacy</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/crash">Crash Courses</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/private">Private Coaching</a></li>
+        </ul>
+      </li>
+
+      <!-- Existing pages -->
+      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
+      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/downloads">Downloads</a></li>
+      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/contact">Contact</a></li>
+    </ul>
+  </nav>
+</div>
+
+<script>
+(function(){
+  const header = document.currentScript.closest('header#site-header');
+  const navWrap = header.querySelector('.nav');
+  const toggle = header.querySelector('.menu-toggle');
+  const triggers = header.querySelectorAll('.trigger');
+
+  function closeAll(){ header.querySelectorAll('.menu > li.open').forEach(li=>li.classList.remove('open')); }
+  function toggleMenu(open){
+    navWrap.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', !!open);
+  }
+
+  toggle?.addEventListener('click', ()=>{
+    const isOpen = navWrap.classList.contains('open');
+    toggleMenu(!isOpen);
+  });
+
+  triggers.forEach(btn=>{
+    const li = btn.closest('li');
+    btn.addEventListener('click', (e)=>{
+      const willOpen = !li.classList.contains('open');
+      closeAll();
+      li.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', willOpen);
+    });
+    btn.addEventListener('keydown',(e)=>{
+      if(e.key === 'Escape'){ li.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.focus(); }
+    });
+  });
+
+  document.addEventListener('click', (e)=>{
+    if(!header.contains(e.target)) closeAll();
+  });
+})();
+</script>
