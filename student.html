@@ -2,887 +2,453 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Student Profile</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#8BC53F">
+  <title>Sehr Academy — Class 11 Syllabus (Completion Tracker)</title>
+  <meta name="theme-color" content="#8BC53F" />
+  <meta name="description" content="Class 11 syllabus completion tracker for Physics, Chemistry, Mathematics, Biology — filter by status, search by chapter, live dates." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <style>
     :root{
-      --sehr-green:#8BC53F; --ink:#0F172A; --muted:#5b6475;
-      --panel: rgba(255,255,255,0.75); --panel-strong: rgba(255,255,255,0.92);
-      --glass-border: rgba(255,255,255,0.55); --shadow: 0 10px 30px rgba(15,23,42,.10); --radius: 18px;
-      --darkred1:#b91c1c; --darkred2:#ef4444;
-      --red1:#ef4444; --red2:#f87171;
-      --or1:#f59e0b; --or2:#fbbf24;
-      --gld1:#f1ce58; --gld2:#d4af37;
-      --shine1:#fff3b0; --shine2:#d4af37;
+      --sehr-green:#8BC53F;
+      --sehr-green-2:#6cab2f;
+      --ink:#0F172A;
+      --muted:#5b6475;
+      --glass-border: rgba(255,255,255,0.55);
+      --shadow: 0 20px 45px rgba(15,23,42,.12);
+      --radius: 18px;
+      --maxw:1180px;
+      --frost-white: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
+      --frost-green: linear-gradient(180deg, rgba(214, 244, 190, .95), rgba(180, 232, 140, .78));
+      --crystal: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.30));
+      --bar-grad: linear-gradient(90deg, #e3f7cf, #8BC53F 45%, #6cab2f 100%);
+      --hint-bg: linear-gradient(180deg,#ffffff,#f5f7fb);
     }
-    *{box-sizing:border-box} html,body{height:100%}
+    *{box-sizing:border-box}
+    html,body{margin:0}
     body{
-      margin:0; font-family: Nunito, system-ui,-apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(139,197,63,.18), transparent 60%),
-        radial-gradient(900px 400px at 110% 10%, rgba(139,197,63,.12), transparent 60%), #edf3e7;
-      position:relative; overflow-x:hidden;
-    }
-    body:before{
-      content:""; position:fixed; inset:0;
-      background-image: url('data:image/svg+xml;utf8,\
-      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" opacity="0.06">\
-        <g fill="%230F172A">\
-          <text x="40" y="80" font-size="56" font-family="Montserrat">E=mc^2</text>\
-          <text x="520" y="140" font-size="42" font-family="Montserrat">f(x)</text>\
-          <text x="220" y="210" font-size="48" font-family="Montserrat">Σ</text>\
-          <text x="660" y="260" font-size="46" font-family="Montserrat">π</text>\
-          <text x="120" y="340" font-size="40" font-family="Montserrat">∫</text>\
-          <text x="360" y="440" font-size="52" font-family="Montserrat">Δ</text>\
-          <text x="80" y="520" font-size="44" font-family="Montserrat">√x</text>\
-        </g>\
-      </svg>');
-      background-size: 800px 600px; background-repeat: repeat; pointer-events:none; z-index:0;
+      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 50%, #f7f8fa 100%);
+      color:#111; line-height:1.65; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* LOCK */
-    body.locked .wrap{ filter: blur(12px); pointer-events:none; user-select:none; }
-    .lock-overlay{ position: fixed; inset: 0; display: grid; place-items: center;
-      background: radial-gradient(1200px 800px at 50% -10%, rgba(139,197,63,.15), transparent 60%), rgba(237,243,231,.7);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; transition: opacity .35s ease; }
-    .lock-card{ width: min(520px, calc(100% - 32px)); background: rgba(255,255,255,.92);
-      border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: 0 20px 60px rgba(15,23,42,.18); padding: 24px; }
-    .lock-head{ display:flex; align-items:center; gap:12px; margin-bottom:12px; font-family: Montserrat; font-weight:900; font-size:22px; }
-    .lock-sub{ color: var(--muted); margin-bottom:18px; font-weight:700; }
-    .lock-form{ display:grid; gap:10px; grid-template-columns: 1fr auto; }
-    .lock-input{ appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
-      border-radius:12px; padding:12px 14px; font-family: Montserrat; font-weight:700; font-size:14px; outline:none; }
-    .lock-btn{ appearance:none; border:1px solid var(--glass-border); background: rgba(139,197,63,.95); color:#0f172a;
-      border-radius:12px; padding:12px 16px; font-family: Montserrat; font-weight:900; font-size:14px; cursor:pointer;
-      box-shadow: 0 6px 16px rgba(15,23,42,.12), inset 0 -1px 0 rgba(0,0,0,.05); }
-    .lock-btn:hover{ transform: translateY(-1px); }
-    .lock-err{ color:#b91c1c; font-weight:800; margin-top:6px; min-height:18px; }
-    .lock-foot{ margin-top:10px; font-size:12px; color:#6b7280; }
+    /* Header (shared) */
+    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--sehr-green);letter-spacing:.4px}
+    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
 
-    /* PAGE */
-    .wrap{position:relative; z-index:1; padding:32px 20px 80px; max-width:1100px; margin:auto;}
-    header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; }
-    .logo{ font-family: Montserrat, sans-serif; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:12px; font-size:28px; text-decoration:none; color:var(--ink); }
-    .logo .brand{color:var(--ink);} .logo .brand b{color:var(--sehr-green);}
-    .title-block{ display:flex; align-items:center; gap:10px; }
-    .title-block h1{ font-family: Montserrat, sans-serif; font-weight:800; margin:0; font-size:26px; letter-spacing:.2px; cursor:pointer; }
-    .actions{ display:flex; gap:8px; }
-    .btn{ appearance:none; border:1px solid var(--glass-border); background: rgba(255,255,255,.85);
-      border-radius:12px; padding:8px 10px; font-family: Montserrat; font-weight:800; font-size:12px;
-      box-shadow: 0 6px 16px rgba(15,23,42,.08), inset 0 -1px 0 rgba(0,0,0,.05); cursor:pointer; }
-    .btn:hover{ transform: translateY(-1px); } .btn:active{ transform: translateY(0); }
+    /* Page head */
+    .pagehead{max-width:var(--maxw);margin:18px auto 12px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .title{font-family:Montserrat;font-weight:900;font-size:26px;letter-spacing:.2px}
+    .subtitle{color:#6b7280;font-weight:700}
+    .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
 
-    .card{ background: var(--panel); border:1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-radius: var(--radius); box-shadow: var(--shadow); }
+    /* Controls: filter tabs + search */
+    .controls{max-width:var(--maxw);margin:10px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));font-weight:800}
+    .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45); box-shadow:0 6px 16px rgba(139,197,63,.18)}
+    .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
+    .search input{border:0;background:transparent;outline:none;flex:1;font-weight:700}
 
-    /* PROFILE */
-    .profile{ display:grid; grid-template-columns: 110px 1fr; gap:18px; padding:18px; align-items:center; }
-    .avatar{ width:100px; height:100px; border-radius:18px; overflow:hidden; border:2px solid rgba(0,0,0,0.05); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); background:#fff; }
-    .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
-    .info{display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; align-items:center;}
-    .k{ background: var(--panel-strong); border:1px solid var(--glass-border); border-radius: 14px; padding:12px 14px; }
-    .k small{display:block; color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.2px; text-transform:uppercase}
-    .k b{display:block; font-family: Montserrat; font-size:16px; margin-top:4px}
+    /* Legend */
+    .panel{max-width:var(--maxw); margin:10px auto 0; padding:16px 20px; border-radius:var(--radius);
+      border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:var(--shadow);}
+    .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:700;color:#334}
+    .dot{width:10px;height:10px;border-radius:999px;background:#cfd6df}
+    .dot.pending{background:#cfd6df}
+    .dot.ongoing{background:#f6c761}
+    .dot.completed{background:#69c04c}
 
-    .section{ margin-top:22px; padding:16px 18px; }
-    .section h2{ margin:0 0 10px; font-family: Montserrat; font-weight:800; font-size:22px; display:flex; align-items:center; gap:8px; }
-
-    /* SUBJECT AVGS */
-    .avg-grid{ display:grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap:14px; margin:12px 0 8px; }
-    .avg-card{ position:relative; display:grid; grid-template-rows: auto auto; gap:8px; padding:14px; border-radius:16px; background: rgba(255,255,255,0.86); border:1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.6); backdrop-filter: blur(12px); }
-    .avg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .avg-card .s{font-family: Montserrat; font-weight:800; font-size:14px; letter-spacing:.2px}
-    .avg-card .v{font-family: Montserrat; font-weight:900; font-size:20px}
-    .mini-bar{ position:relative; height:10px; border-radius:999px; background: rgba(15,23,42,.08); overflow:hidden; }
-    .mini-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
-    .passchip{ position:absolute; bottom:10px; right:10px; font-size:11px; font-family: Montserrat; font-weight:800; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid var(--glass-border); }
-    .wm{ position:absolute; right:8px; top:0; font-family: Montserrat; font-weight:900; font-size:60px; opacity:.08; pointer-events:none; }
-
-    /* TERMS */
-    details.term{ background: var(--panel); border:1px solid var(--glass-border); border-radius:16px; margin-top:12px; overflow:hidden; }
-    details.term summary{ list-style:none; cursor:pointer; padding:16px 18px; font-weight:800; font-family: Montserrat; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    details.term summary::-webkit-details-marker{display:none}
-    .chip{ background:#fff; border:1px solid var(--glass-border); padding:8px 14px; border-radius:999px; font-weight:900; font-size:14px; box-shadow: inset 0 -1px 0 rgba(0,0,0,.05); }
-
-    .term-body{ padding:10px 16px 18px 16px; background: rgba(255,255,255,0.6); border-top:1px dashed rgba(15,23,42,.08); }
-    .exam-row{ display:grid; grid-template-columns: 80px 1fr 70px; align-items:center; gap:12px; padding:10px 8px; }
-    .label{ font-weight:800; font-family: Montserrat; letter-spacing:.3px; color:#2d3748; background: #fff; border:1px solid var(--glass-border); border-radius:12px; padding:8px 10px; text-align:center; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
-    .bar{ position:relative; height:12px; border-radius:999px; background: rgba(15,23,42,.07); overflow:hidden; }
-    .bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
-    .pct{font-weight:800; font-family: Montserrat; text-align:right}
-
-    .total-row{ margin-top:8px; padding:14px 8px 6px; border-top:1px dashed rgba(15,23,42,.12); }
-    .total-row h3{ margin:0 0 8px; font-family: Montserrat; font-weight:900; font-size:18px; letter-spacing:.3px; display:flex; align-items:center; gap:8px; }
-
-    .more-metrics{ display:grid; grid-template-columns: repeat(3, minmax(140px,1fr)); gap:12px; margin-top:10px; }
-    .metric{ background: rgba(255,255,255,.9); border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; backdrop-filter: blur(8px); box-shadow: 0 8px 20px rgba(15,23,42,.06); }
-    .metric small{ display:block; font-family: Montserrat; font-weight:800; letter-spacing:.2px; color:var(--muted); }
-    .metric b{ display:block; font-family: Montserrat; font-weight:900; font-size:18px; margin-top:4px; }
-
-    .tiles-wrap{ margin-top:12px; }
-    .tiles-title{ font-family: Montserrat; font-weight:800; font-size:16px; margin:10px 2px 8px; color:#111827; }
-    .exam-cards{ display:grid; grid-template-columns: repeat(4, minmax(160px,1fr)); gap:14px; }
-
-    .exam-card{ position:relative; overflow:hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    .exam-card::before{ content:none !important; }
-    .tile-bar{ position:relative; height:14px; border-radius:999px; background:#ffffff; border:1px solid var(--glass-border); box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); overflow:hidden; }
-    .tile-bar > i{ position:absolute; inset:0; width:0%; border-radius:inherit; transition: width 1.2s cubic-bezier(.22,1,.36,1); }
-    .tile-meta{ display:flex; align-items:center; justify-content:space-between; }
-    .tile-meta .ptext{ font-family: Montserrat; font-weight:900; font-size:16px; }
-
-    /* TOOLTIP */
-    .tooltip{ position: fixed; z-index: 50; pointer-events:none; background: rgba(17,24,39,.85); color: #fff; padding:6px 8px; border-radius:8px;
-      font-family: Montserrat; font-weight:700; font-size:12px; letter-spacing:.2px; transform: translate(-50%, -140%); white-space:nowrap; opacity:0; transition: opacity .15s ease; }
-
-    /* ASSIGNMENTS */
-    .assignments{ background: rgba(255,255,255,0.92); }
-    .assign-list{ display:grid; gap:12px; }
-    .ass-card{ background: rgba(255,255,255,.95); border:1px solid var(--glass-border); border-radius:14px; padding:14px; box-shadow: 0 8px 20px rgba(15,23,42,.06); }
-    .ass-top{ display:flex; align-items:center; gap:10px; justify-content:space-between; }
-    .ass-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .ass-subject{ font-family: Montserrat; font-weight:800; font-size:12px; background:#fff; border:1px solid var(--glass-border); border-radius:999px; padding:6px 10px; }
-    .ass-prio{ font-size:11px; font-family:Montserrat; font-weight:900; padding:4px 8px; border-radius:999px; }
-    .ass-prio[data-p="low"]{ background:#f3f4f6; border:1px solid var(--glass-border); }
-    .ass-prio[data-p="normal"]{ background:#eef2ff; border:1px solid var(--glass-border); }
-    .ass-prio[data-p="high"]{ background:#fff7ed; border:1px solid var(--glass-border); }
-    .ass-prio[data-p="critical"]{ background:#fef2f2; border:1px solid var(--glass-border); }
-    .ass-status{ font-size:11px; font-family:Montserrat; font-weight:900; padding:4px 8px; border-radius:999px; border:1px solid var(--glass-border); background:#fff; }
-    .ass-status.done{ background:#ecfdf5; border-color:#bbf7d0; }
-    .ass-title{ margin:8px 0 6px; font-family: Montserrat; font-weight:900; font-size:18px; }
-    .ass-meta{ display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-weight:700; font-size:12px; margin-bottom:6px; }
-    .ass-duechip{ font-weight:900; padding:2px 8px; border:1px solid var(--glass-border); border-radius:999px; background:#fff; }
-    .ass-note{ background: rgba(255,255,255,.9); border:1px solid var(--glass-border); border-radius:12px; padding:10px 12px; white-space:pre-wrap; }
-    .ass-attach{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-    .ass-attach a{ text-decoration:none; font-weight:800; font-family: Montserrat; font-size:12px; padding:6px 10px;
-      border-radius:999px; background:#fff; border:1px solid var(--glass-border); display:inline-flex; align-items:center; gap:6px; }
-    .ass-check{ display:grid; gap:6px; margin-top:8px; }
-    .ass-check .chk{ display:flex; align-items:center; gap:8px; font-weight:800; }
-    .ass-check .dot{ width:10px; height:10px; border-radius:999px; background: rgba(15,23,42,.25); }
-    .ass-check .done .dot{ background: var(--sehr-green); }
-
-    /* ACHIEVEMENTS & REMARKS */
-    .achievements, .remarks{ background: rgba(255,255,255,0.92); }
-    .ach-grid{ display:grid; grid-template-columns: repeat(3, minmax(160px,1fr)); gap:12px; }
-    .ach-card{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:12px 14px; box-shadow: inset 0 -1px 0 rgba(0,0,0,.04); }
-    .ach-title{ font-family: Montserrat; font-weight:800; }
-    .remarks-list{ background:#fff; border:1px solid var(--glass-border); border-radius:12px; padding:12px 14px; }
-    .remarks-list ul{ margin:0; padding-left:18px; }
-    .remarks-list li{ margin:6px 0; font-weight:700; }
-
-    .foot{ margin-top:28px; text-align:right; color:#6b7280; font-size:12px; }
-
-    @media (max-width:1024px){
-      .avg-grid{grid-template-columns: repeat(2, 1fr);}
-      .more-metrics{grid-template-columns: 1fr;}
-      .exam-cards{grid-template-columns: repeat(2, minmax(160px,1fr));}
-      .ach-grid{grid-template-columns: repeat(2, minmax(160px,1fr));}
+    /* Subject accordions (highlighted summaries) */
+    details.group{max-width:var(--maxw); margin:14px auto; border-radius:16px; border:1px solid var(--glass-border);
+      background:var(--frost-white); box-shadow:var(--shadow); overflow:hidden}
+    details.group > summary{
+      list-style:none; cursor:pointer; padding:16px 18px; user-select:none; display:grid;
+      grid-template-columns: 1fr auto; align-items:center; gap:10px;
+      font-family:Montserrat; font-weight:900; font-size:18px;
+      background:linear-gradient(180deg,#ffffff, #f2f6f1);
+      border-bottom:1px solid rgba(230,232,236,.6);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      position:relative;
     }
-    @media (max-width:760px){
-      .info{grid-template-columns: 1fr 1fr}
-      .profile{grid-template-columns: 80px 1fr}
-      .avatar{width:72px;height:72px;border-radius:12px}
-      .exam-row{ grid-template-columns: 1fr; grid-template-areas: "label" "pct" "bar"; gap:8px; }
-      .label{ grid-area: label; }
-      .pct{ grid-area: pct; text-align:left; }
-      .bar{ grid-area: bar; height:12px; }
-      .actions{ display:none; }
-      .ach-grid{grid-template-columns: 1fr;}
+    details.group > summary::-webkit-details-marker{display:none}
+    details.group > summary:hover{
+      transform: translateY(-1px);
+      box-shadow:0 10px 24px rgba(139,197,63,.18);
+      filter: drop-shadow(0 0 6px rgba(139,197,63,.12));
     }
-    @media print{ .actions{ display:none !important; } }
+    .sum-left{display:flex;align-items:center;gap:12px}
+    .subject-name{font-size:18px; color:#0b0f10; text-transform:uppercase; letter-spacing:.4px}
+    /* Click hint to far right */
+    .sum-right{display:flex; align-items:center; gap:14px}
+    .hint{
+      font-family:Montserrat; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.5px;
+      color:#2b3345; opacity:.75; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:999px; padding:6px 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    .hint-open{display:none}
+    details[open] .hint-open{display:inline}
+    details[open] .hint-closed{display:none}
+
+    /* Progress mini bar inside summary */
+    .prog-wrap{width:220px; display:flex; flex-direction:column; gap:4px}
+    .prog-rail{width:100%; height:8px; border-radius:999px; background:rgba(0,0,0,.06); position:relative; overflow:hidden; border:1px solid rgba(0,0,0,.06)}
+    .prog-fill{height:100%; width:0%; background:var(--bar-grad); border-radius:999px; transition:width .35s ease}
+    .prog-note{font-size:10px; font-weight:900; color:#2b3345; text-transform:uppercase; letter-spacing:.4px; opacity:.8; text-align:right}
+
+    /* Chapter list — square & crystal glass */
+    .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
+    .row{
+      display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center;
+      padding:14px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.55);
+      background:var(--crystal);
+      backdrop-filter: blur(9px) saturate(160%);
+      -webkit-backdrop-filter: blur(9px) saturate(160%);
+      box-shadow:0 10px 28px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.45);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, border-color .18s ease;
+    }
+    .row:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 36px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.55);
+      border-color:rgba(255,255,255,.75);
+      filter:drop-shadow(0 0 6px rgba(139,197,63,.18));
+    }
+    .row.completed{
+      background: var(--frost-green);
+      border-color: rgba(139,197,63,.55);
+      box-shadow:0 12px 30px rgba(139,197,63,.18), inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    .row .name{font-weight:800}
+
+    /* Square pill (compact, not touching edges) */
+    .status{
+      font-family:Montserrat; font-weight:900; font-size:12px; padding:6px 8px;
+      border-radius:8px; border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#fff,rgba(255,255,255,.78));
+      color:#334; min-width:96px; text-align:center; text-transform:uppercase; letter-spacing:.3px
+    }
+    .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
+    .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
+    .date{font-weight:900; font-family:Montserrat; font-size:12px; color:#2b3345; white-space:nowrap}
+
+    /* Footer */
+    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; flex-direction:column; gap:8px; justify-content:center; color:#334; font-size:14px}
+    footer .links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+    footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
+    .diag{opacity:.7; text-align:center; font-size:12px}
+
+    /* Compact mobile density */
+    @media (max-width: 380px){
+      .row{padding:10px}
+      .prog-wrap{width:160px}
+      details.group > summary{grid-template-columns: 1fr; gap:8px}
+      .sum-right{justify-content:space-between}
+    }
   </style>
-
-  <script>
-    /* ========= BASE / GLOBALS ========= */
-    const DEFAULT_EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"; // sha256("fidhu123")
-    let EXPECTED_HEX = DEFAULT_EXPECTED_HEX;
-
-    function getStudentId() {
-      const url = new URL(window.location.href);
-      const q = url.searchParams.get('id');
-      if (q) return q.trim().toLowerCase();
-      const base = url.pathname.split('/').pop() || '';
-      const m = base.match(/^([a-z0-9_-]+)\.html$/i);
-      if (m) return m[1].toLowerCase();
-      return 'fidha';
-    }
-
-    /* ========= LOCK LOGIC ========= */
-    document.addEventListener('DOMContentLoaded', () => {
-      const overlay = document.getElementById('lock-overlay');
-      if (sessionStorage.getItem('sehr-profile-unlocked') === '1') {
-        document.body.classList.remove('locked');
-        if (overlay) overlay.style.display = 'none';
-      } else {
-        document.body.classList.add('locked');
-      }
-    });
-
-    async function sha256Hex(message) {
-      const enc = new TextEncoder().encode(message);
-      const buf = await crypto.subtle.digest('SHA-256', enc);
-      const arr = Array.from(new Uint8Array(buf));
-      return arr.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function tryUnlock(evt){
-      evt?.preventDefault();
-      const input = document.getElementById('lock-input');
-      const err = document.getElementById('lock-err');
-      const btn = document.getElementById('lock-btn');
-      const overlay = document.getElementById('lock-overlay');
-      const val = (input.value || '').trim();
-
-      btn.disabled = true; err.textContent = '';
-      try{
-        const hex = await sha256Hex(val);
-        if(hex === EXPECTED_HEX){
-          sessionStorage.setItem('sehr-profile-unlocked','1');
-          document.body.classList.remove('locked');
-          overlay.style.opacity = '0';
-          setTimeout(()=> overlay.style.display='none', 350);
-          input.value = '';
-        }else{
-          err.textContent = 'Wrong password. Please try again.'; input.select();
-        }
-      }catch(e){ err.textContent = 'Unexpected error. Please try again.'; }
-      finally{ btn.disabled = false; }
-    }
-  </script>
 </head>
+<body>
+  <!-- Shared header -->
+  <header id="site-header"></header>
+  <script src="/assets/nav.js" defer></script>
 
-<body class="locked">
-  <!-- LOCK OVERLAY -->
-  <div class="lock-overlay" id="lock-overlay" role="dialog" aria-modal="true" aria-labelledby="lock-title">
-    <div class="lock-card">
-      <div class="lock-head" id="lock-title">
-        <div class="brand"><b style="color:var(--sehr-green)">SEHR</b> ACADEMY</div>
-        <span>— Protected Profile</span>
-      </div>
-      <div class="lock-sub">Enter password to view student data.</div>
-      <form class="lock-form" onsubmit="tryUnlock(event)">
-        <input id="lock-input" class="lock-input" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" />
-        <button id="lock-btn" type="submit" class="lock-btn">Unlock</button>
-      </form>
-      <div id="lock-err" class="lock-err" aria-live="polite"></div>
-      <div class="lock-foot">Tip: Access is remembered for this tab until you close it.</div>
+  <div class="pagehead">
+    <div>
+      <div class="title">Class 11 Syllabus — Completion Tracker</div>
+      <div class="subtitle">Filter by status, search chapters, and update via one JSON.</div>
+      <div class="stamp" id="last-updated"></div>
     </div>
   </div>
 
-  <!-- PAGE CONTENT -->
-  <div class="wrap">
-    <header>
-      <a class="logo" href="https://sehracademy.com" aria-label="Sehr Academy homepage">
-        <div class="brand"><b>SEHR</b> ACADEMY</div>
-      </a>
-      <div class="title-block">
-        <h1 onclick="window.location.href='https://sehracademy.com'" title="Go to homepage">Student Profile</h1>
-      </div>
-      <div class="actions">
-        <button class="btn" id="btn-print">Print / PDF</button>
-        <button class="btn" id="btn-csv">CSV</button>
-      </div>
-    </header>
-
-    <!-- Profile Card -->
-    <section class="card profile">
-      <div class="avatar">
-        <img id="profile-avatar" src="" alt="Student profile photo">
-      </div>
-      <div class="info">
-        <div class="k"><small>Student</small><b id="k-name">—</b></div>
-        <div class="k"><small>Class</small><b id="k-class">—</b></div>
-        <div class="k"><small>Joining Date</small><b id="k-join">—</b></div>
-        <div class="k"><small>Birthday</small><b id="k-bday">—</b></div>
-      </div>
-    </section>
-
-    <!-- Assignments Section (after profile, before First Term) -->
-    <section class="section card assignments" id="assignments-section">
-      <h2>Assignments</h2>
-      <div class="assign-list" id="assign-list"></div>
-    </section>
-
-    <!-- Results -->
-    <section class="section card">
-      <h2>Results</h2>
-
-      <!-- Subject Average Boxes -->
-      <div class="avg-grid" id="subject-averages">
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div>
-          <div class="mini-bar"><i id="mini-Physics"></i></div>
-          <span class="passchip" id="pf-Physics">—</span><span class="wm">Φ</span>
-        </div>
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div>
-          <div class="mini-bar"><i id="mini-Maths"></i></div>
-          <span class="passchip" id="pf-Maths">—</span><span class="wm">∑</span>
-        </div>
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div>
-          <div class="mini-bar"><i id="mini-Chemistry"></i></div>
-          <span class="passchip" id="pf-Chemistry">—</span><span class="wm">⚗</span>
-        </div>
-        <div class="avg-card">
-          <div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div>
-          <div class="mini-bar"><i id="mini-Biology"></i></div>
-          <span class="passchip" id="pf-Biology">—</span><span class="wm">🌿</span>
-        </div>
-      </div>
-
-      <!-- First Term -->
-      <details class="term" open>
-        <summary>
-          <span>First Term</span>
-          <span class="chip" id="term-range">—</span>
-        </summary>
-
-        <div class="term-body" id="first-term"><!-- QP rows injected here --></div>
-
-        <div class="total-row">
-          <h3>First Term Overview</h3>
-          <div class="exam-row" style="padding-top:0;">
-            <div class="label">Internals Average</div>
-            <div class="bar"><i id="avg-bar" data-pct="0"></i></div>
-            <div class="pct" id="avg-text">0%</div>
-          </div>
-
-          <div class="more-metrics">
-            <div class="metric"><small>Attempted</small><b id="met-attempted">—</b></div>
-            <div class="metric"><small>Passed</small><b id="met-passed">—</b></div>
-            <div class="metric"><small>Failed</small><b id="met-failed">—</b></div>
-          </div>
-
-          <div class="tiles-wrap">
-            <div class="tiles-title">Sehr First Term Exam</div>
-            <div class="exam-cards" id="sehr-tiles">
-              <div class="avg-card exam-card sub-Physics">
-                <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="sehr-Physics-text">—</span></div>
-                <div class="tile-bar"><i id="sehr-Physics-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Maths">
-                <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="sehr-Maths-text">—</span></div>
-                <div class="tile-bar"><i id="sehr-Maths-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Chemistry">
-                <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="sehr-Chemistry-text">—</span></div>
-                <div class="tile-bar"><i id="sehr-Chemistry-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Biology">
-                <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="sehr-Biology-text">—</span></div>
-                <div class="tile-bar"><i id="sehr-Biology-bar" data-pct=""></i></div>
-              </div>
-            </div>
-
-            <div class="tiles-title">School First Term Exam</div>
-            <div class="exam-cards" id="school-tiles">
-              <div class="avg-card exam-card sub-Physics">
-                <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="school-Physics-text">—</span></div>
-                <div class="tile-bar"><i id="school-Physics-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Maths">
-                <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="school-Maths-text">—</span></div>
-                <div class="tile-bar"><i id="school-Maths-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Chemistry">
-                <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="school-Chemistry-text">—</span></div>
-                <div class="tile-bar"><i id="school-Chemistry-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Biology">
-                <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="school-Biology-text">—</span></div>
-                <div class="tile-bar"><i id="school-Biology-bar" data-pct=""></i></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </details>
-
-      <!-- Second Term (collapsed) -->
-      <details class="term" id="term-2">
-        <summary>
-          <span>Second Term</span>
-          <span class="chip" id="term2-range">Sep – Dec 2025</span>
-        </summary>
-
-        <div class="term-body" id="second-term"><!-- QP09–QP20 injected here --></div>
-
-        <div class="total-row">
-          <h3>Second Term Overview</h3>
-          <div class="exam-row" style="padding-top:0;">
-            <div class="label">Internals Average</div>
-            <div class="bar"><i id="avg2-bar" data-pct=""></i></div>
-            <div class="pct" id="avg2-text">Pending</div>
-          </div>
-
-          <div class="more-metrics">
-            <div class="metric"><small>Attempted</small><b id="met2-attempted">0</b></div>
-            <div class="metric"><small>Passed</small><b id="met2-passed">0</b></div>
-            <div class="metric"><small>Failed</small><b id="met2-failed">0</b></div>
-          </div>
-
-          <div class="tiles-wrap">
-            <div class="tiles-title">Sehr Second Term Exam</div>
-            <div class="exam-cards" id="sehr2-tiles">
-              <div class="avg-card exam-card sub-Physics">
-                <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="sehr2-Physics-text">Pending</span></div>
-                <div class="tile-bar"><i id="sehr2-Physics-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Maths">
-                <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="sehr2-Maths-text">Pending</span></div>
-                <div class="tile-bar"><i id="sehr2-Maths-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Chemistry">
-                <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="sehr2-Chemistry-text">Pending</span></div>
-                <div class="tile-bar"><i id="sehr2-Chemistry-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Biology">
-                <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="sehr2-Biology-text">Pending</span></div>
-                <div class="tile-bar"><i id="sehr2-Biology-bar" data-pct=""></i></div>
-              </div>
-            </div>
-
-            <div class="tiles-title">School Second Term Exam</div>
-            <div class="exam-cards" id="school2-tiles">
-              <div class="avg-card exam-card sub-Physics">
-                <div class="tile-meta"><span class="s">Physics</span><span class="ptext" id="school2-Physics-text">Pending</span></div>
-                <div class="tile-bar"><i id="school2-Physics-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Maths">
-                <div class="tile-meta"><span class="s">Maths</span><span class="ptext" id="school2-Maths-text">Pending</span></div>
-                <div class="tile-bar"><i id="school2-Maths-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Chemistry">
-                <div class="tile-meta"><span class="s">Chemistry</span><span class="ptext" id="school2-Chemistry-text">Pending</span></div>
-                <div class="tile-bar"><i id="school2-Chemistry-bar" data-pct=""></i></div>
-              </div>
-              <div class="avg-card exam-card sub-Biology">
-                <div class="tile-meta"><span class="s">Biology</span><span class="ptext" id="school2-Biology-text">Pending</span></div>
-                <div class="tile-bar"><i id="school2-Biology-bar" data-pct=""></i></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </details>
-    </section>
-
-    <!-- Achievements -->
-    <section class="section card achievements">
-      <h2>Other Achievements</h2>
-      <div class="ach-grid" id="ach-grid"></div>
-    </section>
-
-    <!-- Performance Remarks -->
-    <section class="section card remarks">
-      <h2>Performance Remarks</h2>
-      <div id="remarks-list" class="remarks-list"></div>
-    </section>
-
-    <div class="foot">sehracademy.com</div>
+  <!-- Controls -->
+  <div class="controls">
+    <div id="filters" role="tablist" aria-label="Filter chapters by status">
+      <button data-filter="all" class="chip" aria-pressed="true">All</button>
+      <button data-filter="pending" class="chip" aria-pressed="false">Pending</button>
+      <button data-filter="ongoing" class="chip" aria-pressed="false">Ongoing</button>
+      <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
+    </div>
+    <div class="search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.2-4.2M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="#2b3345" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Search chapters…" aria-label="Search chapters by name" />
+    </div>
   </div>
 
-  <div class="tooltip" id="tooltip"></div>
+  <!-- Legend -->
+  <section class="panel" aria-label="Legend">
+    <div class="legend">
+      <span class="chip"><span class="dot pending"></span> Pending</span>
+      <span class="chip"><span class="dot ongoing"></span> Ongoing</span>
+      <span class="chip"><span class="dot completed"></span> Completed</span>
+    </div>
+  </section>
+
+  <!-- Subjects (closed by default) -->
+  <details class="group" data-subject="physics">
+    <summary>
+      <span class="sum-left">
+        <span class="subject-name">Physics</span>
+      </span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-physics"></span></span>
+          <span class="prog-note" id="note-physics">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
+      </span>
+    </summary>
+    <div class="chapters" id="list-physics"></div>
+  </details>
+
+  <details class="group" data-subject="chemistry">
+    <summary>
+      <span class="sum-left">
+        <span class="subject-name">Chemistry</span>
+      </span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-chemistry"></span></span>
+          <span class="prog-note" id="note-chemistry">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
+      </span>
+    </summary>
+    <div class="chapters" id="list-chemistry"></div>
+  </details>
+
+  <details class="group" data-subject="mathematics">
+    <summary>
+      <span class="sum-left">
+        <span class="subject-name">Mathematics</span>
+      </span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-mathematics"></span></span>
+          <span class="prog-note" id="note-mathematics">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
+      </span>
+    </summary>
+    <div class="chapters" id="list-mathematics"></div>
+  </details>
+
+  <details class="group" data-subject="biology">
+    <summary>
+      <span class="sum-left">
+        <span class="subject-name">Biology</span>
+      </span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-biology"></span></span>
+          <span class="prog-note" id="note-biology">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
+      </span>
+    </summary>
+    <div class="chapters" id="list-biology"></div>
+  </details>
+
+  <footer>
+    <div class="links">
+      <a href="https://sehracademy.com/studentlogin">Student Login</a>
+      <a href="mailto:hello@sehracademy.com?subject=Syllabus%20Update%20Request">Report update</a>
+    </div>
+    <div class="diag" id="diag"></div>
+  </footer>
 
   <script>
-    /* ===== UI helpers ===== */
-    function perfGradient(pct){
-      if(pct >= 75) return {bg:`linear-gradient(90deg, var(--shine1), var(--gld2))`, glow:'0 0 0 3px rgba(212,175,55,.25)'};
-      if(pct >= 50) return {bg:`linear-gradient(90deg, var(--or1), var(--or2))`, glow:'none'};
-      if(pct >= 30) return {bg:`linear-gradient(90deg, var(--red1), var(--red2))`, glow:'none'};
-      return {bg:`linear-gradient(90deg, var(--darkred1), var(--darkred2))`, glow:'none'};
-    }
-    const tip = document.getElementById('tooltip');
-    function showTip(e){ tip.textContent = e.currentTarget.getAttribute('data-tip') || ''; tip.style.opacity = '1'; }
-    function moveTip(e){ tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; }
-    function hideTip(){ tip.style.opacity = '0'; }
-    function setBar(el, pct){
-      if(!el) return;
-      if(pct==null || pct==='' || isNaN(pct)){
-        el.style.width = '0%';
-        el.style.background = 'rgba(15,23,42,.08)';
-        el.parentElement?.setAttribute('data-tip','Pending');
-        el.parentElement?.addEventListener('mouseenter', showTip);
-        el.parentElement?.addEventListener('mousemove', moveTip);
-        el.parentElement?.addEventListener('mouseleave', hideTip);
-        return;
+    /* ====== Data fetching (robust path resolver) ====== */
+    const CANDIDATES = [
+      new URL('./data/syllabus.json?cb=' + Date.now(), location.href).toString(),
+      new URL('data/syllabus.json?cb=' + Date.now(), location.href).toString(),
+      location.origin + '/data/syllabus.json?cb=' + Date.now()
+    ];
+    async function fetchFirst(paths){
+      for(const p of paths){
+        try{
+          const r = await fetch(p, {cache:'no-store'});
+          if(r.ok) return { res: r, url: p };
+        }catch(e){}
       }
-      const p = Math.max(0, Math.min(100, Math.round(Number(pct))));
-      const st = perfGradient(p);
-      el.style.background = st.bg;
-      el.style.boxShadow = (st.glow !== 'none') ? st.glow : 'none';
-      requestAnimationFrame(()=>{ el.style.width = p + '%'; });
-      const wrap = el.parentElement;
-      if(wrap){
-        wrap.setAttribute('data-tip', `${p}%`);
-        wrap.addEventListener('mouseenter', showTip);
-        wrap.addEventListener('mousemove', moveTip);
-        wrap.addEventListener('mouseleave', hideTip);
-      }
-    }
-    function fillTiles(prefix, data, pendingLabel='—'){
-      ['Physics','Maths','Chemistry','Biology'].forEach(subj => {
-        const key = subj.replace(/\s+/g,'');
-        const val = (data && typeof data[subj] === 'number') ? Math.round(data[subj]) : null;
-        setBar(document.getElementById(`${prefix}-${key}-bar`), val);
-        const txtEl = document.getElementById(`${prefix}-${key}-text`);
-        if(txtEl){ txtEl.textContent = (val==null || isNaN(val)) ? pendingLabel : (val + '%'); }
-      });
+      throw new Error('None of the candidate paths worked:\n' + paths.join('\n'));
     }
 
-    /* ===== Assignments helpers ===== */
-    function fmtDate(d){
-      if(!d) return '—';
-      const dt = new Date(d);
-      if(isNaN(+dt)) return d;
-      return dt.toLocaleDateString(undefined, {day:'2-digit', month:'short', year:'numeric'});
-    }
-    function daysDiff(from, to){
-      const a = new Date(from); a.setHours(0,0,0,0);
-      const b = new Date(to);   b.setHours(0,0,0,0);
-      return Math.round((b - a)/86400000);
-    }
-    function dueChipText(dueISO){
-      if(!dueISO) return 'No due date';
-      const today = new Date();
-      const diff = daysDiff(today, dueISO);
-      if(diff === 0) return 'Due today';
-      if(diff > 0) return `Due in ${diff} day${diff>1?'s':''}`;
-      return `Overdue by ${Math.abs(diff)} day${Math.abs(diff)>1?'s':''}`;
-    }
-    function isCompletedStatus(st){
-      const s = (st||'').toLowerCase();
-      return s === 'completed' || s === 'submitted' || s === 'graded';
-    }
-    function renderAllAssignments(data){
-      const listEl = document.getElementById('assign-list');
-      const arr = Array.isArray(data?.assignments) ? data.assignments.slice() : [];
-      if(!arr.length){
-        listEl.innerHTML = `<div class="ass-card"><div class="ass-title">No assignments yet</div></div>`;
-        return;
-      }
-      const now = new Date();
-      const order = {critical:3, high:2, normal:1, low:0};
-      arr.sort((a,b)=>{
-        const ac = isCompletedStatus(a.status), bc = isCompletedStatus(b.status);
-        if(ac !== bc) return ac ? 1 : -1; // incomplete first
-        const ad = a.dueDate ? new Date(a.dueDate) : null;
-        const bd = b.dueDate ? new Date(b.dueDate) : null;
-        if(!ac && !bc && ad && bd){
-          if(ad >= now && bd >= now) return ad - bd;
-          if(ad >= now && bd <  now) return -1;
-          if(ad <  now && bd >= now) return 1;
-          return bd - ad;
-        }
-        const pa = order[(a.priority||'normal')] ?? 1;
-        const pb = order[(b.priority||'normal')] ?? 1;
-        return (pb-pa) || ((new Date(b.issuedDate||0)) - (new Date(a.issuedDate||0)));
-      });
-
-      listEl.innerHTML = arr.map(a=>{
-        const pr = (a.priority||'normal').toLowerCase();
-        const completed = isCompletedStatus(a.status);
-        const dueText = dueChipText(a.dueDate);
-        const statusLbl = a.status ? a.status.toString().charAt(0).toUpperCase()+a.status.toString().slice(1) : 'Assigned';
-        const noteHTML = (a.note||'').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br/>');
-        const attachHTML = (a.attachments||[]).map(x=>`<a href="${x.url}" target="_blank" rel="noopener">${x.label||'Attachment'}</a>`).join('');
-        const checklistHTML = (a.checklist||[]).map(item=>`<div class="chk ${item.done?'done':''}"><span class="dot"></span><span>${item.text}</span></div>`).join('');
-        return `
-          <div class="ass-card">
-            <div class="ass-top">
-              <div class="ass-left">
-                <span class="ass-subject">${a.subject||'Work'}</span>
-                <span class="ass-prio" data-p="${pr}">${pr.charAt(0).toUpperCase()+pr.slice(1)}</span>
-                <span class="ass-status ${completed?'done':''}">${statusLbl}</span>
-              </div>
-            </div>
-            <div class="ass-title">${a.title||'Assignment'}</div>
-            <div class="ass-meta">
-              <span>${a.faculty ? ('By ' + a.faculty) : '—'}</span>
-              <span>•</span>
-              <span>${a.issuedDate ? ('Issued: ' + fmtDate(a.issuedDate)) : 'Issued: —'}</span>
-              <span>•</span>
-              <span>${a.dueDate ? ('Due: ' + fmtDate(a.dueDate)) : 'Due: —'}</span>
-              <span class="ass-duechip">${dueText}</span>
-            </div>
-            <div class="ass-note">${noteHTML || '—'}</div>
-            ${attachHTML ? `<div class="ass-attach">${attachHTML}</div>` : ``}
-            ${checklistHTML ? `<div class="ass-check" role="list">${checklistHTML}</div>` : ``}
-          </div>
-        `;
-      }).join('');
-    }
-
-    /* ===== Data state + FALLBACK ===== */
-    let DATA = null;
-    const FALLBACK = {
-      lock: { sha256: DEFAULT_EXPECTED_HEX },
-      meta: { name:'Student', className:'—', joinDate:'—', birthday:'—',
-              avatar:'https://i.postimg.cc/0Q0qLQ5v/placeholder-avatar.png' },
-      termRanges: { first:'May – Sep 2025', second:'Sep – Dec 2025' },
-      internals: {
-        first: [],
-        second: Array.from({length:12}, (_,i)=> ({ label:'QP' + String(i+9).padStart(2,'0'), subject:'—', pct:null }))
-      },
-      externals: {
-        first: { sehr:{}, school:{} },
-        second:{ sehr:{}, school:{} }
-      },
-      achievements: [],
-      remarks: [],
-      assignments: []
+    /* ====== Refs ====== */
+    const lists = {
+      physics: document.getElementById('list-physics'),
+      chemistry: document.getElementById('list-chemistry'),
+      mathematics: document.getElementById('list-mathematics'),
+      biology: document.getElementById('list-biology')
     };
+    const bars = {
+      physics: document.getElementById('bar-physics'),
+      chemistry: document.getElementById('bar-chemistry'),
+      mathematics: document.getElementById('bar-mathematics'),
+      biology: document.getElementById('bar-biology')
+    };
+    const notes = {
+      physics: document.getElementById('note-physics'),
+      chemistry: document.getElementById('note-chemistry'),
+      mathematics: document.getElementById('note-mathematics'),
+      biology: document.getElementById('note-biology')
+    };
+    const diag = document.getElementById('diag');
+    const lastUpdatedEl = document.getElementById('last-updated');
 
-    /* ===== Renderers for profile/results (unchanged) ===== */
-    function renderProfile(meta){
-      document.getElementById('profile-avatar').src = meta.avatar || '';
-      document.getElementById('profile-avatar').alt = (meta.name || 'Student') + ' profile photo';
-      document.getElementById('k-name').textContent  = meta.name || '—';
-      document.getElementById('k-class').textContent = meta.className || '—';
-      document.getElementById('k-join').textContent  = meta.joinDate || '—';
-      document.getElementById('k-bday').textContent  = meta.birthday || '—';
-      document.title = `Sehr Academy — Student Profile (${meta.name || 'Student'})`;
+    /* ====== Utilities ====== */
+    function fmtDayMonth(s){
+      if(!s) return '—';
+      const d = new Date(s);
+      if(isNaN(d)) return '—';
+      const day = d.getDate().toString().padStart(2,'0');
+      const mon = d.toLocaleString('en-GB',{month:'short'});
+      return `${day} ${mon}`;
     }
-    function rowHTML(r){
-      const raw = r.pct;
-      const hasVal = !(raw==null || raw==='' || isNaN(raw));
-      const pct = hasVal ? Number(raw) : 0;
-      const pctLabel = hasVal ? `${pct}%` : 'Pending';
-      return `
-        <div class="exam-row" data-subject="${r.subject || '—'}">
-          <div class="label">${r.label}</div>
-          <div class="bar"><i data-pct="${hasVal ? pct : ''}"></i></div>
-          <div class="pct">${pctLabel}</div>
-        </div>`;
-    }
-    function renderInternalsFirst(arr){
-      const host = document.getElementById('first-term');
-      host.innerHTML = arr.map(rowHTML).join('');
-      paintRowsAndTotals(host, 'avg-bar', 'avg-text', 'met-attempted', 'met-passed', 'met-failed', true);
-    }
-    function renderInternalsSecond(arr){
-      const host = document.getElementById('second-term');
-      host.innerHTML = arr.map(rowHTML).join('');
-      paintRowsAndTotals(host, 'avg2-bar', 'avg2-text', 'met2-attempted', 'met2-passed', 'met2-failed', false);
-    }
-    function paintRowsAndTotals(host, avgBarId, avgTextId, metAttId, metPassId, metFailId, alsoSubjectAverages){
-      const rows = Array.from(host.querySelectorAll('.exam-row'));
-      const bars = rows.map(r => r.querySelector('.bar > i'));
 
-      rows.forEach(row => {
-        const dpct = row.querySelector('.bar > i').dataset.pct;
-        const hasVal = !(dpct==='' || dpct==null || isNaN(dpct));
-        const pct = hasVal ? Number(dpct) : null;
-        const bar = row.querySelector('.bar > i');
-        setBar(bar, pct);
+    function makeRow(item){
+      const div = document.createElement('div');
+      const st = (item.status || 'pending').toLowerCase();
+      const when = fmtDayMonth(item.expectedDate || '');
+      div.className = 'row ' + (st==='completed' ? 'completed' : '');
+      div.dataset.status = st;
+      div.dataset.name = (item.title || '').toLowerCase();
+      div.innerHTML = `
+        <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
+        <div class="status ${st}">${st.toUpperCase()}</div>
+        <div class="date">${when === '—' ? '' : when}</div>
+      `;
+      return div;
+    }
 
-        const subj = row.dataset.subject || '—';
-        const qp = row.querySelector('.label')?.textContent || '';
-        const barWrap = row.querySelector('.bar');
-        barWrap.setAttribute('data-tip', hasVal ? `${qp} · ${subj} · ${pct}%` : `${qp} · ${subj} · Pending`);
-        barWrap.addEventListener('mouseenter', showTip);
-        barWrap.addEventListener('mousemove', moveTip);
-        barWrap.addEventListener('mouseleave', hideTip);
+    function setProgress(total, done, key){
+      const pct = total ? Math.round(done*100/total) : 0;
+      bars[key].style.width = pct + '%';
+      notes[key].textContent = `${done}/${total}`;
+    }
+
+    function renderSimple(arr, mount, key){
+      mount.innerHTML = '';
+      const sorted = [...arr].sort((a,b)=>(a.index||999)-(b.index||999));
+      let done = 0;
+      sorted.forEach(ch => {
+        if((ch.status||'').toLowerCase()==='completed') done++;
+        mount.appendChild(makeRow(ch));
       });
+      setProgress(sorted.length, done, key);
+    }
 
-      const values = bars.map(el => {
-        const dpct = el.dataset.pct;
-        return (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
-      }).filter(v => v!==null);
+    function renderBiology(bio, mount, key){
+      mount.innerHTML = '';
+      const botany = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
+      const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
 
-      const avgBar = document.getElementById(avgBarId);
-      const avgText = document.getElementById(avgTextId);
-      if(values.length===0){
-        setBar(avgBar, null);
-        avgText.textContent = 'Pending';
-      }else{
-        const shown = Math.round((values.reduce((a,b)=>a+b,0) / values.length) * 10)/10;
-        const styleAvg = perfGradient(shown);
-        avgBar.style.background = styleAvg.bg; if(styleAvg.glow !== 'none') avgBar.style.boxShadow = styleAvg.glow;
-        requestAnimationFrame(()=>{ avgBar.style.width = shown + '%'; });
-        avgText.textContent = shown + '%';
-      }
+      let done=0, total=0;
 
-      document.getElementById(metAttId).textContent  = values.length;
-      document.getElementById(metPassId).textContent = values.filter(v => v >= 50).length;
-      document.getElementById(metFailId).textContent = values.filter(v => v < 50).length;
-
-      if(alsoSubjectAverages){
-        const groups = {};
-        rows.forEach(row => {
-          const subj = row.dataset.subject || 'Other';
-          const dpct = row.querySelector('.bar > i').dataset.pct;
-          const val = (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
-          (groups[subj] ||= []).push(val);
-        });
-        Object.entries(groups).forEach(([subj, arr])=>{
-          const nums = arr.filter(v=>v!==null);
-          const avg = nums.length ? (nums.reduce((a,b)=>a+b,0) / nums.length) : null;
-          const pass = nums.filter(v=>v>=50).length;
-          const key = subj.replace(/\s+/g,'');
-          const textEl = document.getElementById('avg-' + key);
-          const miniEl = document.getElementById('mini-' + key);
-          const pfEl = document.getElementById('pf-' + key);
-
-          if(textEl){
-            if(avg===null){
-              textEl.textContent = 'Pending';
-              textEl.style.color = '#0f172a';
-              textEl.style.background = 'transparent';
-            }else{
-              const rounded = Math.round(avg*10)/10;
-              textEl.textContent = rounded + '%';
-              textEl.style.background = perfGradient(rounded).bg;
-              textEl.style.webkitBackgroundClip = 'text';
-              textEl.style.backgroundClip = 'text';
-              textEl.style.color = 'transparent';
-            }
-          }
-          if(miniEl){
-            if(avg===null){
-              miniEl.style.width = '0%';
-              miniEl.style.background = 'rgba(15,23,42,.08)';
-            }else{
-              const rounded = Math.round(avg*10)/10;
-              const st = perfGradient(rounded);
-              miniEl.style.background = st.bg;
-              requestAnimationFrame(()=>{ miniEl.style.width = rounded + '%'; });
-            }
-          }
-          if(pfEl){
-            if(nums.length===0) pfEl.textContent = `0/0 passed`;
-            else pfEl.textContent = `${pass}/${arr.length} passed`;
-          }
+      if(botany.length){
+        const h = document.createElement('div'); h.className='subhdr'; h.textContent='Botany';
+        mount.appendChild(h);
+        botany.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
+          total++; if((ch.status||'').toLowerCase()==='completed') done++;
+          mount.appendChild(makeRow(ch));
         });
       }
-    }
-    function renderExternalsFirst(extFirst){
-      fillTiles('sehr',   (extFirst?.sehr)||{}, '—');
-      fillTiles('school', (extFirst?.school)||{}, '—');
-    }
-    function renderExternalsSecond(extSecond){
-      fillTiles('sehr2',   (extSecond?.sehr)||{}, 'Pending');
-      fillTiles('school2', (extSecond?.school)||{}, 'Pending');
-    }
-    function renderAchievements(list){
-      const host = document.getElementById('ach-grid');
-      host.innerHTML = (list && list.length)
-        ? list.map(t => `<div class="ach-card"><div class="ach-title">${t}</div></div>`).join('')
-        : `<div class="ach-card"><div class="ach-title">—</div></div>`;
-    }
-    function renderRemarks(list){
-      const host = document.getElementById('remarks-list');
-      host.innerHTML = (list && list.length)
-        ? `<ul>${list.map(x=>`<li>${typeof x==="string"?x:(x.text||"")}</li>`).join('')}</ul>`
-        : `<div style="opacity:.7">No remarks yet — faculty feedback will appear here.</div>`;
-    }
-
-    /* ===== Data loading ===== */
-    async function loadJSON(){
-      const id = getStudentId();
-      const path = `/students/${id}.json?ts=${Date.now()}`;
-      try{
-        const res = await fetch(path, {cache:'no-store'});
-        if(!res.ok) throw new Error('HTTP ' + res.status);
-        return await res.json();
-      }catch(e){
-        console.warn('Using fallback due to JSON load error:', e);
-        return FALLBACK;
+      if(zoology.length){
+        const h = document.createElement('div'); h.className='subhdr'; h.textContent='Zoology';
+        mount.appendChild(h);
+        zoology.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
+          total++; if((ch.status||'').toLowerCase()==='completed') done++;
+          mount.appendChild(makeRow(ch));
+        });
       }
+      setProgress(total, done, key);
     }
 
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      document.getElementById('btn-print').addEventListener('click', ()=> window.print());
-      document.getElementById('btn-csv').addEventListener('click', downloadCSV);
+    /* ====== Filters & Search ====== */
+    const filterState = { value:'all', query:'' };
 
-      DATA = await loadJSON();
+    function applyFilters(){
+      const rows = document.querySelectorAll('.chapters .row');
+      rows.forEach(r=>{
+        const st = r.dataset.status;
+        const name = r.dataset.name || '';
+        const statusMatch = (filterState.value==='all' || st===filterState.value);
+        const textMatch = (!filterState.query || name.includes(filterState.query));
+        r.style.display = (statusMatch && textMatch) ? '' : 'none';
+      });
+    }
 
-      if (DATA?.lock?.sha256 && typeof DATA.lock.sha256 === 'string' && DATA.lock.sha256.length === 64) {
-        EXPECTED_HEX = DATA.lock.sha256.toLowerCase();
-      } else {
-        EXPECTED_HEX = DEFAULT_EXPECTED_HEX;
+    document.getElementById('filters').addEventListener('click', e=>{
+      if(e.target.matches('button[data-filter]')){
+        filterState.value = e.target.dataset.filter;
+        [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', String(b===e.target)));
+        applyFilters();
       }
-
-      // Profile & ranges
-      renderProfile(DATA.meta || FALLBACK.meta);
-      document.getElementById('term-range').textContent  = (DATA.termRanges?.first)  || FALLBACK.termRanges.first;
-      document.getElementById('term2-range').textContent = (DATA.termRanges?.second) || FALLBACK.termRanges.second;
-
-      // Assignments
-      renderAllAssignments(DATA);
-
-      // Internals
-      renderInternalsFirst((DATA.internals && DATA.internals.first) ? DATA.internals.first : FALLBACK.internals.first);
-      renderInternalsSecond((DATA.internals && DATA.internals.second) ? DATA.internals.second : FALLBACK.internals.second);
-
-      // Externals
-      renderExternalsFirst((DATA.externals && DATA.externals.first) ? DATA.externals.first : FALLBACK.externals.first);
-      renderExternalsSecond((DATA.externals && DATA.externals.second) ? DATA.externals.second : FALLBACK.externals.second);
-
-      // Achievements & Remarks
-      renderAchievements(Array.isArray(DATA.achievements) ? DATA.achievements : FALLBACK.achievements);
-      renderRemarks(Array.isArray(DATA.remarks) ? DATA.remarks : FALLBACK.remarks);
     });
 
-    /* ===== CSV ===== */
-    function downloadCSV(){
-      const rows1 = Array.from(document.querySelectorAll('#first-term .exam-row'));
-      const exams1 = rows1.map(r => {
-        const id = r.querySelector('.label').textContent.trim();
-        const subject = r.dataset.subject || '';
-        const dpct = r.querySelector('.bar > i').dataset.pct;
-        const score = (dpct==='' || dpct==null || isNaN(dpct)) ? 'Pending' : String(dpct);
-        return {term:'First', id, subject, score};
-      });
+    document.getElementById('search').addEventListener('input', e=>{
+      filterState.query = (e.target.value || '').toLowerCase().trim();
+      applyFilters();
+    });
 
-      const rows2 = Array.from(document.querySelectorAll('#second-term .exam-row'));
-      const exams2 = rows2.map(r => {
-        const id = r.querySelector('.label').textContent.trim();
-        const subject = r.dataset.subject || '';
-        const dpct = r.querySelector('.bar > i').dataset.pct;
-        const score = (dpct==='' || dpct==null || isNaN(dpct)) ? 'Pending' : String(dpct);
-        return {term:'Second', id, subject, score};
-      });
+    /* ====== Init ====== */
+    async function init(){
+      try{
+        const { res, url } = await fetchFirst(CANDIDATES);
+        if (diag) diag.textContent = 'Loaded: ' + url.replace(location.origin, '');
+        const data = await res.json();
 
-      let csv = 'Term,Exam,Subject,Score\n';
-      [...exams1, ...exams2].forEach(e=>{ csv += `${e.term},${e.id},${e.subject},${e.score}\n`; });
+        // Last updated stamp
+        if (data.meta && data.meta.lastUpdated){
+          const d = new Date(data.meta.lastUpdated);
+          if (!isNaN(d)){
+            lastUpdatedEl.textContent = 'Last updated: ' + d.toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+          }
+        }
 
-      csv += '\nSehr First Term Exam\nSubject,Score\n';
-      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
-        const v = (DATA?.externals?.first?.sehr?.[subj] ?? '');
-        csv += `${subj},${(v===''||v==null||isNaN(v))?'Pending':v}\n`;
-      });
+        renderSimple(data.physics || [], lists.physics, 'physics');
+        renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
+        renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
+        renderBiology(data.biology || [], lists.biology, 'biology');
 
-      csv += '\nSchool First Term Exam\nSubject,Score\n';
-      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
-        const v = (DATA?.externals?.first?.school?.[subj] ?? '');
-        csv += `${subj},${(v===''||v==null||isNaN(v))?'Pending':v}\n`;
-      });
+        // Ensure closed by default
+        document.querySelectorAll('details.group').forEach(d => d.open = false);
 
-      csv += '\nSehr Second Term Exam\nSubject,Score\n';
-      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
-        const v = (DATA?.externals?.second?.sehr?.[subj] ?? '');
-        csv += `${subj},${(v===''||v==null||isNaN(v))?'Pending':v}\n`;
-      });
-
-      csv += '\nSchool Second Term Exam\nSubject,Score\n';
-      ['Physics','Maths','Chemistry','Biology'].forEach(subj=>{
-        const v = (DATA?.externals?.second?.school?.[subj] ?? '');
-        csv += `${subj},${(v===''||v==null||isNaN(v))?'Pending':v}\n`;
-      });
-
-      csv += '\nAssignments\nTitle,Subject,Issued,Due,Priority,Status,Faculty\n';
-      (DATA.assignments||[]).forEach(a=>{
-        csv += `"${a.title||''}",${a.subject||''},${a.issuedDate||''},${a.dueDate||''},${a.priority||''},${a.status||''},${a.faculty||''}\n`;
-      });
-
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'student-first-second-term.csv';
-      document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
+        // After render, apply filters in case user already typed
+        applyFilters();
+      }catch(err){
+        console.error('Failed to load syllabus.json', err);
+        if (diag) diag.textContent = 'Load error — check that /data/syllabus.json exists (case-sensitive) and is valid JSON.';
+        // graceful placeholder
+        Object.values(lists).forEach(m=>{
+          const d = document.createElement('div');
+          d.className='row';
+          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>.</div><div class="status">ERROR</div><div class="date"></div>';
+          m.appendChild(d);
+        });
+      }
     }
+    init();
   </script>
 </body>
 </html>
