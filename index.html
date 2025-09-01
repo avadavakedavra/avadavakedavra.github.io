@@ -423,22 +423,27 @@ body{
     <section class="section-annc" aria-labelledby="annc-title">
       <style>
         .section-annc{max-width:1180px;margin:18px auto;padding:0 20px}
-        .annc-wrap{background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.9));
-          border:1px solid rgba(255,255,255,.55);border-radius:18px;box-shadow:0 18px 40px rgba(15,23,42,.14);padding:14px}
+        .annc-wrap{
+          background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.9));
+          border:1px solid rgba(255,255,255,.55);
+          border-radius:18px; box-shadow:0 18px 40px rgba(15,23,42,.14); padding:14px
+        }
         .annc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
         .annc-head h2{font-family:Montserrat,sans-serif;font-weight:900;margin:0}
         .blink-dot{width:10px;height:10px;border-radius:999px;background:#ef4444;box-shadow:0 0 0 6px rgba(239,68,68,.18);animation:pulse 1.8s infinite}
         @keyframes pulse{0%{transform:scale(1)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
         .annc-pinned,.annc-list{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
-        .card.annc{grid-column:span 6;position:relative;overflow:hidden;border-radius:14px;background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.55);padding:12px}
-        .annc-pinned .card.annc{grid-column:span 12;background:linear-gradient(180deg,#fff7ed,#ffffff);border:1px solid #fed7aa}
-        @media (max-width:980px){.card.annc{grid-column:span 12}}
-        .annc .title{font-weight:900;font-family:Montserrat,sans-serif}
-        .annc .meta{display:flex;gap:10px;flex-wrap:wrap;color:#374151;font-size:.9rem}
-        .annc .chip{padding:4px 8px;border-radius:999px;background:#fff;border:1px solid rgba(15,23,42,.08);font-weight:800;font-size:.8rem}
-        .annc .cta{margin-left:auto}
-        .annc .cta a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:Montserrat;font-weight:900;border:1px solid rgba(15,23,42,.1);border-radius:999px;padding:6px 10px;background:#fff}
-        .card.annc[data-priority="high"]{box-shadow:0 0 0 3px rgba(239,68,68,.18),0 18px 40px rgba(15,23,42,.14)}
+
+        /* Each announcement is a full-width row so the second item sits on the second row */
+        .card.annc{grid-column:span 12;position:relative;overflow:hidden;border-radius:14px;
+          background:rgba(255,255,255,.95);border:1px solid rgba(0,0,0,.06);padding:14px}
+        .annc-title{font-family:Montserrat,sans-serif;font-weight:900;margin:0 0 6px}
+        .annc-date{color:#374151;font-weight:700;font-size:.95rem;margin:0 0 10px}
+        .annc-cta a{
+          display:inline-flex;align-items:center;gap:8px;
+          text-decoration:none;font-family:Montserrat;font-weight:900;
+          border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:8px 12px;background:#fff
+        }
       </style>
       <div class="annc-wrap">
         <div class="annc-head">
@@ -458,30 +463,39 @@ body{
             const pinned = Array.isArray(data.pinned) ? data.pinned : [];
             const items  = Array.isArray(data.items)  ? data.items  : [];
             const now = new Date();
+
             const active = arr => (arr||[]).filter(x => {
-              const s = x.start ? new Date(x.start) : null;
-              const e = x.end ? new Date(x.end) : null;
-              return (!s || s <= now) && (!e || e >= now);
+              // Use x.date if present, else consider always active
+              if (!x.date) return true;
+              const d = new Date(x.date);
+              return !isNaN(+d) && d >= new Date('2000-01-01');
             });
-            const icon = t => ({exam:'📘', notice:'📣', results:'🏁', holiday:'🎉'})[t] || '📌';
+
+            const fmt = d => {
+              if(!d) return '';
+              const dt = new Date(d);
+              if(isNaN(+dt)) return d;
+              return dt.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+            };
+
             const card = a => `
-              <article class="card annc" data-priority="${a.priority||'normal'}" aria-label="Announcement: ${a.title}">
-                <div class="annc meta">
-                  <span class="chip">${icon(a.type)} ${a.type||'notice'}</span>
-                  <span class="chip">Priority: ${a.priority||'normal'}</span>
-                  <span class="chip">${a.start||''}${a.end?(' → '+a.end):''}</span>
-                  <span class="cta">${a.cta?`<a href="${a.cta.url}" target="_blank" rel="noopener">${a.cta.label}</a>`:''}</span>
+              <article class="card annc" aria-label="Announcement">
+                <h3 class="annc-title">${a.title||''}</h3>
+                <div class="annc-date">${fmt(a.date||a.start||'')}</div>
+                <div class="annc-cta">
+                  ${a.cta ? `<a href="${a.cta.url}" target="_blank" rel="noopener">${a.cta.label||'Learn more'}</a>` : ''}
                 </div>
-                <div class="annc title">${a.title}</div>
               </article>`;
-            const pinActive = active(pinned);
+
+            const pinActive = active(pinned).slice(0,1); // keep just 1 pinned
             const listActive = active(items);
+
             hostPinned.innerHTML = pinActive.length ? pinActive.map(card).join('') : '';
             hostList.innerHTML   = listActive.length ? listActive.map(card).join('') :
-              `<article class="card annc" aria-label="Announcement: none">No announcements right now.</article>`;
+              `<article class="card annc">No announcements right now.</article>`;
           }catch(e){
             hostPinned.innerHTML = '';
-            hostList.innerHTML = `<article class="card annc" aria-label="Announcement: error">Announcements temporarily unavailable.</article>`;
+            hostList.innerHTML = `<article class="card annc">Announcements temporarily unavailable.</article>`;
           }
         })();
       </script>
