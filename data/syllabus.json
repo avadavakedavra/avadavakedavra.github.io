@@ -30,7 +30,7 @@
     { "index": 1, "title": "Sets", "status": "completed", "expectedDate": "2025-08-31" },
     { "index": 2, "title": "Relations and Functions", "status": "completed", "expectedDate": "2025-08-31" },
     { "index": 3, "title": "Trigonometric Functions", "status": "completed", "expectedDate": "2025-08-31" },
-    { "index": 4, "title": "Complex Numbers and Quadratic Equations", "status": "pending", "expectedDate": "" },
+    { "index": 4, "title": "Complex Numbers and Quadratic Equations", "status": "completed", "expectedDate": "2025-08-31" },
     { "index": 5, "title": "Linear Inequalities", "status": "pending", "expectedDate": "" },
     { "index": 6, "title": "Permutations and Combinations", "status": "pending", "expectedDate": "" },
     { "index": 7, "title": "Binomial Theorem", "status": "pending", "expectedDate": "" },
