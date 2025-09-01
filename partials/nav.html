@@ -1,39 +1,81 @@
 <!-- Shared Navbar (Sehr Academy) -->
 <!-- Place this file at /partials/nav.html -->
 <style>
-  /* Scoped to header#site-header to avoid leaking */
-  header#site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+  :root{ --green:#8BC53F; --ink:#0b0f10; }
+
+  /* Scope all styles to this header to avoid leaks */
+  header#site-header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(255,255,255,.78);
+    border-bottom:1px solid rgba(230,232,236,.6);
+    backdrop-filter:saturate(175%) blur(10px);
+  }
   header#site-header .container{max-width:1180px;margin:0 auto;padding:0 20px}
   header#site-header .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-  header#site-header .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
-  header#site-header .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#8BC53F;letter-spacing:.4px}
-  header#site-header .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+  header#site-header .brand{
+    display:flex;align-items:baseline;gap:8px;text-decoration:none;
+    transform:translateZ(0); /* enable GPU for smoother hover */
+  }
+  header#site-header .brand span:nth-child(1){
+    font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--green);letter-spacing:.4px
+  }
+  header#site-header .brand span:nth-child(2){
+    font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--ink);letter-spacing:.4px
+  }
+  header#site-header .brand:hover{filter:saturate(110%)}
 
+  /* Primary nav */
   header#site-header nav[aria-label="Primary"]{display:flex;gap:4px;align-items:center}
   header#site-header .menu, header#site-header .submenu{list-style:none;margin:0;padding:0}
   header#site-header .menu{display:flex;gap:4px;align-items:center}
   header#site-header .menu > li{position:relative}
-  header#site-header .link, header#site-header .trigger{
-    font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;margin-left:12px;
-    font-weight:700;font-size:14px;letter-spacing:.2px;position:relative;display:inline-flex;align-items:center;gap:6px;
-    padding:8px 10px;border-radius:10px
-  }
-  header#site-header .link:after, header#site-header .trigger:after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:#8BC53F;transform:scaleX(0);transform-origin:left;transition:transform .18s}
-  header#site-header .link:hover:after, header#site-header .trigger:hover:after{transform:scaleX(1)}
 
-  /* Dropdown */
+  /* Links & triggers */
+  header#site-header .link, header#site-header .trigger{
+    font-family:"Montserrat",sans-serif;color:var(--ink);text-decoration:none;margin-left:12px;
+    font-weight:700;font-size:14px;letter-spacing:.2px;position:relative;display:inline-flex;align-items:center;gap:6px;
+    padding:8px 10px;border-radius:10px; transition: color .18s ease, background .18s ease, transform .18s ease;
+  }
+  /* Clean underline that animates in */
+  header#site-header .link:after, header#site-header .trigger:after{
+    content:""; position:absolute; left:10px; right:10px; bottom:4px; height:2px;
+    background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform .22s ease;
+  }
+  /* Hover/focus: green text + subtle glass lift */
+  header#site-header .link:hover,
+  header#site-header .trigger:hover,
+  header#site-header .link:focus-visible,
+  header#site-header .trigger:focus-visible{
+    color:var(--green);
+    background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
+  }
+  header#site-header .link:hover:after,
+  header#site-header .trigger:hover:after,
+  header#site-header .link:focus-visible:after,
+  header#site-header .trigger:focus-visible:after{ transform:scaleX(1); }
+
+  /* Dropdown panel — fade & slide animation, green highlight on items */
   header#site-header .submenu{
-    position:absolute;left:6px;top:100%;min-width:220px;
+    position:absolute; left:6px; top:100%; min-width:220px; padding:8px;
     background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
-    border:1px solid rgba(0,0,0,.06);border-radius:12px;box-shadow:0 18px 40px rgba(15,23,42,.14);
-    padding:8px;display:none
+    border:1px solid rgba(0,0,0,.06); border-radius:12px; box-shadow:0 18px 40px rgba(15,23,42,.14);
+    visibility:hidden; opacity:0; transform: translateY(6px);
+    transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+    pointer-events:none;
+  }
+  header#site-header .menu > li.open > .submenu{
+    visibility:visible; opacity:1; transform: translateY(0);
+    transition-delay:0s; pointer-events:auto;
   }
   header#site-header .submenu a{
-    display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;
-    color:#0b0f10;font-weight:800;font-family:"Montserrat",sans-serif;font-size:14px;
+    display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; text-decoration:none;
+    color:var(--ink); font-weight:800; font-family:"Montserrat",sans-serif; font-size:14px;
+    transition: background .16s ease, color .16s ease, transform .16s ease;
   }
-  header#site-header .submenu a:hover{background:#f5f8f1}
-  header#site-header .menu > li.open > .submenu{display:block}
+  header#site-header .submenu a:hover,
+  header#site-header .submenu a:focus-visible{
+    background:#f5f8f1; color:var(--green); transform: translateX(2px);
+  }
 
   /* Mobile */
   @media (max-width:900px){
@@ -53,6 +95,11 @@
     header#site-header .menu{flex-direction:column;align-items:stretch}
     header#site-header .menu > li{padding:4px 0}
     header#site-header .submenu{position:relative;left:auto;top:auto;box-shadow:none;border:1px solid rgba(0,0,0,.05);margin-top:6px}
+  }
+
+  /* Motion safety */
+  @media (prefers-reduced-motion: reduce){
+    header#site-header *{transition:none !important}
   }
 </style>
 
@@ -119,7 +166,7 @@
 
   triggers.forEach(btn=>{
     const li = btn.closest('li');
-    btn.addEventListener('click', (e)=>{
+    btn.addEventListener('click', ()=>{
       const willOpen = !li.classList.contains('open');
       closeAll();
       li.classList.toggle('open', willOpen);
