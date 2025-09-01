@@ -53,7 +53,7 @@
 
     /* Controls: filter tabs + search */
     .controls{max-width:var(--maxw);margin:10px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));font-weight:800; cursor:pointer}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));font-weight:800; cursor:pointer; user-select:none}
     .chip:hover{filter:brightness(1.03)}
     .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45); box-shadow:0 6px 16px rgba(139,197,63,.18)}
     .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
@@ -177,6 +177,10 @@
       <button data-filter="ongoing" class="chip" aria-pressed="false">Ongoing</button>
       <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
     </div>
+
+    <!-- NEW: Collapse All -->
+    <button id="btn-collapse-all" class="chip" type="button" title="Collapse all subjects">Collapse All</button>
+
     <div class="search" role="search">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.2-4.2M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="#2b3345" stroke-width="2" stroke-linecap="round"/></svg>
       <input id="search" type="search" placeholder="Search chapters…" aria-label="Search chapters by name" />
@@ -366,9 +370,7 @@
       const note = notes[key];
       if(!bar || !note) return;
       const pct = total ? Math.round((done/total)*100) : 0;
-      // reset to 0 to ensure transition plays even when re-rendering
       bar.style.width = '0%';
-      // apply after a frame so transition triggers
       requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
       note.textContent = `${done}/${total}`;
     }
@@ -432,6 +434,11 @@
     document.getElementById('search').addEventListener('input', e=>{
       filterState.query = (e.target.value || '').toLowerCase().trim();
       applyFilters();
+    });
+
+    /* ====== NEW: Collapse All handler ====== */
+    document.getElementById('btn-collapse-all').addEventListener('click', ()=>{
+      document.querySelectorAll('details.group[open]').forEach(d=> d.open = false);
     });
 
     /* ====== Init ====== */
