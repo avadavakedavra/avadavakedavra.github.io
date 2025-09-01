@@ -7,7 +7,7 @@
     "joinDate": "2025-05-26",
     "birthday": "5 September"
   },
-  "lock": { "enabled": true, "sha256": "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07" },
+  "lock": { "enabled": true, "sha256": "2d4faee845475c5a2c375855ee3e0a0f8a6de82798c84a17b2d9c770331c9e97" },
   "termRanges": { "first": "May – Sep 2025", "second": "Oct 2025 – Mar 2026" },
   "internals": {
     "first": [
