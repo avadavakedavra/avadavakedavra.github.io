@@ -94,7 +94,7 @@
       "status": "assigned",
       "faculty": "Mr. Shan",
       "attachments": [
-        { "label": "Pending", "url": "" }
+        { "label": "Due date 25th September", "url": "" }
       ],
       "checklist": [
         { "text": "Completion", "done": false }
