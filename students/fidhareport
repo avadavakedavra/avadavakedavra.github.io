@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehr Academy — Fidha Results</title>
+  <meta name="description" content="Sehr Academy — graphical visuals of exam results for Fidha." />
+  <meta name="theme-color" content="#8BC53F" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root{
+      --sehr:#8BC53F;
+      --sehr-ink:#0b0f10;
+      --ink:#0f172a;
+      --muted:#5b6475;
+      --glass:rgba(255,255,255,.78);
+      --glass-strong:rgba(255,255,255,.92);
+      --border:rgba(230,232,236,.6);
+      --ring:rgba(139,197,63,.25);
+      --bg:#f6f8f9;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1400px 800px at -10% -10%, #e9f6db 0%, transparent 60%),
+        radial-gradient(1200px 700px at 110% -10%, #e7f4ff 0%, transparent 60%),
+        radial-gradient(1000px 600px at 50% 120%, #fff0d6 0%, transparent 60%),
+        var(--bg);
+    }
+
+    /* Header (matches site style) */
+    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid var(--border);backdrop-filter:saturate(175%) blur(10px)}
+    .nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+    .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--sehr);letter-spacing:.4px}
+    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+    nav[aria-label="Primary"] a{
+      font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;margin-left:18px;font-weight:700;font-size:14px;opacity:.9
+    }
+    nav[aria-label="Primary"] a:hover{opacity:1}
+
+    .container{max-width:1100px;margin:0 auto;padding:24px 20px}
+
+    /* Glass cards */
+    .card{
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:0 10px 30px -15px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.5);
+      backdrop-filter:saturate(175%) blur(10px);
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:center;margin-top:18px;padding:16px 18px
+    }
+    .ava{
+      width:88px;height:88px;border-radius:50%;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.15), 0 0 0 6px var(--ring);background:#fff;display:grid;place-items:center;font-family:Montserrat;font-weight:800;color:#cbd5e1
+    }
+    .ava img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero h1{font-family:"Montserrat",sans-serif;margin:0;font-size:28px;letter-spacing:.2px}
+    .hero .meta{color:var(--muted);font-size:14px;margin-top:4px}
+    .term-pill{
+      justify-self:end;align-self:center;display:flex;background:var(--glass-strong);border:1px solid var(--border);border-radius:999px;overflow:hidden
+    }
+    .term-pill button{
+      font-family:Montserrat;font-weight:700;letter-spacing:.2px;font-size:13px;padding:8px 14px;border:0;background:transparent;cursor:pointer;color:#334155
+    }
+    .term-pill button.active{background:var(--sehr);color:#0b0f10}
+
+    /* KPI grid */
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+    .kpi{padding:16px 16px}
+    .kpi h3{font-family:Montserrat;font-size:13px;color:#475569;margin:0 0 6px 0;text-transform:uppercase;letter-spacing:.6px}
+    .kpi .val{font-family:Montserrat;font-size:26px;font-weight:800;margin:0}
+    .kpi small{color:#64748b}
+
+    /* Charts layout */
+    .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-top:14px}
+    .panel{padding:16px}
+    .panel h2{font-family:Montserrat;font-size:16px;margin:0 0 10px 0}
+    canvas{width:100%;height:320px}
+
+    /* Table of tests */
+    .tests{margin-top:14px;padding:0}
+    .tests .row{display:grid;grid-template-columns:90px 1fr 80px;gap:10px;padding:12px 14px;border-top:1px dashed rgba(0,0,0,.06)}
+    .tests .hdr{font-family:Montserrat;color:#64748b;background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));position:sticky;top:64px;z-index:1}
+    .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(139,197,63,.15);color:#3b5b14;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(139,197,63,.3)}
+    .pct-bar{height:8px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden}
+    .pct-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg, #ff6a6a, #ffb86b, #ffd86b, #8BC53F);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+
+    /* Skeleton while loading */
+    .skeleton{position:relative;overflow:hidden}
+    .skeleton::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+      transform:translateX(-100%);animation:shimmer 1.25s infinite
+    }
+    @keyframes shimmer{to{transform:translateX(100%)}}
+
+    /* Toast */
+    .toast{
+      position:fixed;right:16px;bottom:16px;background:#0b0f10;color:#fff;padding:12px 14px;border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);transition:.4s
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .toast .ok{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:6px;background:var(--sehr);color:#0b0f10;font-family:Montserrat;font-weight:800;font-size:12px}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .kpis{grid-template-columns:1fr 1fr}
+      .hero{grid-template-columns:72px 1fr}
+    }
+    @media (max-width:560px){
+      .kpis{grid-template-columns:1fr}
+      nav[aria-label="Primary"]{display:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header (reuses your site’s style) -->
+  <header role="banner">
+    <div class="nav">
+      <a class="brand" href="https://sehracademy.com" aria-label="Sehr Academy">
+        <span>SEHR</span><span>ACADEMY</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="https://sehracademy.com/#features">Features</a>
+        <a href="https://sehracademy.com/#programs">Programs</a>
+        <a href="https://sehracademy.com/studentlogin">Student Login</a>
+        <a href="https://sehracademy.com/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="card hero skeleton" id="hero">
+      <div class="ava" id="avatar" aria-hidden="true">SA</div>
+      <div>
+        <h1 id="studentName">Loading…</h1>
+        <div class="meta" id="studentMeta"></div>
+      </div>
+      <div class="term-pill" role="tablist" aria-label="Terms">
+        <button id="btnFirst" class="active" role="tab" aria-selected="true">First Term</button>
+        <button id="btnSecond" role="tab" aria-selected="false">Second Term</button>
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="kpis">
+      <div class="card kpi skeleton" id="kpiAvg">
+        <h3>Overall Average</h3>
+        <p class="val" id="overallAvg">—</p>
+        <small id="avgSub">Across all tests</small>
+      </div>
+      <div class="card kpi skeleton" id="kpiBest">
+        <h3>Best Subject</h3>
+        <p class="val" id="bestSubject">—</p>
+        <small id="bestSubjectNote">Highest average</small>
+      </div>
+      <div class="card kpi skeleton" id="kpiImprove">
+        <h3>Most Improved</h3>
+        <p class="val" id="mostImproved">—</p>
+        <small id="miNote">vs previous term</small>
+      </div>
+      <div class="card kpi skeleton" id="kpiCount">
+        <h3>Total Tests</h3>
+        <p class="val" id="testCount">—</p>
+        <small id="termLabel">Current term</small>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="grid">
+      <div class="card panel skeleton">
+        <h2>All Tests — <span id="chartTerm">First Term</span></h2>
+        <canvas id="barTests"></canvas>
+      </div>
+      <div class="card panel skeleton">
+        <h2>Subject Averages</h2>
+        <canvas id="radarSubjects"></canvas>
+      </div>
+    </section>
+
+    <!-- List of tests -->
+    <section class="card tests skeleton" id="testsList" aria-live="polite" aria-busy="true">
+      <div class="row hdr" role="row">
+        <div><strong>Test</strong></div>
+        <div><strong>Subject</strong></div>
+        <div style="text-align:right"><strong>Score</strong></div>
+      </div>
+      <!-- rows go here -->
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastMsg">Loaded.</span><span class="ok">OK</span>
+  </div>
+
+<script>
+(() => {
+  const DATA_PATHS = [
+    'fidha.json',         // same folder
+    '/fidha.json',        // site root
+    '/students/fidha.json'// optional fallback if you store under /students
+  ];
+
+  // Simple subject icon (watermark vibe)
+  const SUBJ_ICON = {
+    Physics: 'Φ', Maths: '∑', Mathematics: '∑', Chemistry: '⚗', Biology: '🌿',
+    English:'A', Malayalam:'മ', Hindi:'ह', CS:'{ }', Computer:'{ }'
+  };
+
+  // State
+  let RAW = null;
+  let CURRENT_TERM = 'first'; // 'first' | 'second'
+  let CHARTS = {bar:null, radar:null};
+
+  // Elements
+  const el = id => document.getElementById(id);
+
+  // Utilities
+  const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+  const groupBy = (arr, key) => arr.reduce((m,o)=>((m[o[key]]??=[]).push(o),m),{});
+  const nicePct = n => `${Math.round(n)}%`;
+  const subjectKey = s => s || 'Unknown';
+
+  async function fetchJson() {
+    for (const p of DATA_PATHS) {
+      try{
+        const res = await fetch(p, {cache:'no-store'});
+        if (res.ok) return await res.json();
+      }catch(e){/* try next */}
+    }
+    throw new Error('Could not load fidha.json from expected paths.');
+  }
+
+  function applyHero(meta, termRanges) {
+    const hero = el('hero');
+    hero.classList.remove('skeleton');
+
+    const name = meta?.name || 'Student';
+    el('studentName').textContent = name;
+
+    // Avatar
+    const ava = el('avatar');
+    if (meta?.avatar || meta?.img) {
+      ava.innerHTML = `<img src="${meta.avatar || meta.img}" alt="${name}">`;
+    } else {
+      // initials
+      const init = name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+      ava.textContent = init || 'SA';
+    }
+
+    const cls = meta?.className ? meta.className : '';
+    const sec = meta?.section ? ` • Section ${meta.section}` : '';
+    const join = meta?.joinDate ? ` • Joined ${meta.joinDate}` : '';
+    el('studentMeta').textContent = [cls, sec, join].filter(Boolean).join(' ');
+
+    // Term pill labels
+    el('btnFirst').textContent = termRanges?.first ? `First Term (${termRanges.first})` : 'First Term';
+    el('btnSecond').textContent = termRanges?.second ? `Second Term (${termRanges.second})` : 'Second Term';
+  }
+
+  function computeTermData(termKey){
+    const tests = RAW?.internals?.[termKey] || [];
+    const bySub = groupBy(tests.map(t=>({label:t.label||'', subject:subjectKey(t.subject), pct:+t.pct||0})), 'subject');
+    const subjects = Object.keys(bySub);
+    const subAvg = subjects.map(s => ({subject:s, avg: avg(bySub[s].map(x=>x.pct))}));
+
+    return { tests, subjects, subAvg };
+  }
+
+  function mostImproved() {
+    const first = computeTermData('first').subAvg;
+    const second = computeTermData('second').subAvg;
+    if (!first.length || !second.length) return null;
+    const mapFirst = Object.fromEntries(first.map(o=>[o.subject,o.avg]));
+    let best = {subject:null, delta:-Infinity};
+    for (const {subject, avg:avg2} of second) {
+      const d = avg2 - (mapFirst[subject] ?? 0);
+      if (d > best.delta) best = {subject, delta:d};
+    }
+    return best.delta>0 ? best : null;
+  }
+
+  function setKPIs(termKey){
+    const {tests, subAvg} = computeTermData(termKey);
+
+    // Overall average
+    const overall = avg(tests.map(t=>+t.pct||0));
+    el('overallAvg').textContent = isFinite(overall) ? nicePct(overall) : '—';
+    el('kpiAvg').classList.remove('skeleton');
+
+    // Best subject
+    if (subAvg.length){
+      const best = subAvg.reduce((a,b)=> a.avg>b.avg?a:b);
+      el('bestSubject').textContent = `${best.subject} • ${nicePct(best.avg)}`;
+    } else {
+      el('bestSubject').textContent = '—';
+    }
+    el('kpiBest').classList.remove('skeleton');
+
+    // Most improved (needs both terms)
+    const mi = mostImproved();
+    if (mi){
+      el('mostImproved').textContent = `${mi.subject} • +${nicePct(mi.delta)}`;
+      el('miNote').textContent = 'vs previous term';
+    } else {
+      el('mostImproved').textContent = '—';
+      el('miNote').textContent = 'Need both terms';
+    }
+    el('kpiImprove').classList.remove('skeleton');
+
+    // Count
+    el('testCount').textContent = tests.length || '—';
+    el('termLabel').textContent = termKey==='first'?'First term':'Second term';
+    el('kpiCount').classList.remove('skeleton');
+  }
+
+  function gradient(ctx){
+    const g = ctx.createLinearGradient(0,0,0,400);
+    g.addColorStop(0,'rgba(139,197,63,0.9)');
+    g.addColorStop(1,'rgba(139,197,63,0.25)');
+    return g;
+  }
+
+  function buildBarChart(termKey){
+    const {tests} = computeTermData(termKey);
+    const labels = tests.map(t=>t.label || '');
+    const data = tests.map(t=>+t.pct||0);
+
+    const ctx = document.getElementById('barTests').getContext('2d');
+    CHARTS.bar?.destroy();
+    CHARTS.bar = new Chart(ctx, {
+      type:'bar',
+      data:{
+        labels,
+        datasets:[{
+          label:'Score (%)',
+          data,
+          borderRadius:10,
+          backgroundColor:(c)=>gradient(c.chart.ctx),
+          borderColor:'rgba(139,197,63,0.9)',
+          borderWidth:1
+        }]
+      },
+      options:{
+        animation:{duration:900},
+        scales:{
+          y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}}
+        },
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            callbacks:{
+              label:(ctx)=>{
+                const t = tests[ctx.dataIndex];
+                return `${t.subject || 'Subject'} • ${ctx.parsed.y}%`;
+              }
+            }
+          }
+        }
+      }
+    });
+    el('chartTerm').textContent = termKey==='first'?'First Term':'Second Term';
+    document.querySelector('#barTests').parentElement.classList.remove('skeleton');
+  }
+
+  function buildRadar(){
+    const {subAvg} = computeTermData(CURRENT_TERM);
+    const labels = subAvg.map(s=>`${SUBJ_ICON[s.subject]||'•'} ${s.subject}`);
+    const data = subAvg.map(s=>Math.max(0, Math.min(100, s.avg)));
+
+    const ctx = document.getElementById('radarSubjects').getContext('2d');
+    CHARTS.radar?.destroy();
+    CHARTS.radar = new Chart(ctx, {
+      type:'radar',
+      data:{
+        labels,
+        datasets:[{
+          label:'Avg (%)',
+          data,
+          fill:true,
+          backgroundColor:'rgba(139,197,63,0.22)',
+          borderColor:'rgba(139,197,63,0.9)',
+          pointBackgroundColor:'#8BC53F',
+          pointBorderColor:'#0b0f10'
+        }]
+      },
+      options:{
+        animation:{duration:900},
+        scales:{
+          r:{
+            suggestedMin:0,suggestedMax:100,
+            ticks:{stepSize:20, showLabelBackdrop:false},
+            grid:{color:'rgba(0,0,0,.07)'},
+            angleLines:{color:'rgba(0,0,0,.07)'},
+            pointLabels:{font:{family:'Montserrat',weight:700}}
+          }
+        },
+        plugins:{legend:{display:false}}
+      }
+    });
+    document.querySelector('#radarSubjects').parentElement.classList.remove('skeleton');
+  }
+
+  function buildList(termKey){
+    const box = el('testsList');
+    box.innerHTML = `
+      <div class="row hdr" role="row">
+        <div><strong>Test</strong></div>
+        <div><strong>Subject</strong></div>
+        <div style="text-align:right"><strong>Score</strong></div>
+      </div>
+    `;
+    const {tests} = computeTermData(termKey);
+    tests.forEach(t=>{
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <div><span class="badge">${t.label || '—'}</span></div>
+        <div>${t.subject || '—'}<div class="pct-bar" aria-hidden="true"><span style="width:${Math.max(0,Math.min(+t.pct||0,100))}%"></span></div></div>
+        <div style="text-align:right;font-family:Montserrat;font-weight:800">${nicePct(+t.pct || 0)}</div>
+      `;
+      box.appendChild(row);
+    });
+    box.classList.remove('skeleton');
+    box.setAttribute('aria-busy','false');
+  }
+
+  function toast(msg){
+    const t = el('toast');
+    el('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2400);
+  }
+
+  function wireTerms(){
+    const b1 = el('btnFirst'), b2 = el('btnSecond');
+    const set = (key) => {
+      CURRENT_TERM = key;
+      b1.classList.toggle('active', key==='first');
+      b2.classList.toggle('active', key==='second');
+      b1.setAttribute('aria-selected', key==='first');
+      b2.setAttribute('aria-selected', key==='second');
+      setKPIs(key);
+      buildBarChart(key);
+      buildRadar();
+      buildList(key);
+    };
+    b1.addEventListener('click',()=>set('first'));
+    b2.addEventListener('click',()=>set('second'));
+    return set;
+  }
+
+  // Boot
+  (async function init(){
+    try {
+      RAW = await fetchJson();
+      applyHero(RAW.meta, RAW.termRanges);
+      const setTerm = wireTerms();
+
+      // If second term absent, disable its button
+      if (!Array.isArray(RAW?.internals?.second) || RAW.internals.second.length===0){
+        el('btnSecond').disabled = true;
+        el('btnSecond').style.opacity = .5;
+      }
+
+      setTerm('first');
+      toast(`Welcome — ${RAW?.meta?.name || 'Student'}’s results loaded`);
+      el('hero').classList.remove('skeleton');
+    } catch (e) {
+      console.error(e);
+      toast('Could not load fidha.json');
+      el('studentName').textContent = 'Fidha (data not found)';
+      document.querySelectorAll('.skeleton').forEach(n=>n.classList.remove('skeleton'));
+    }
+  })();
+})();
+</script>
+</body>
+</html>
