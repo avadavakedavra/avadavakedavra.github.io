@@ -1,0 +1,57 @@
+{
+  "lock": {
+    "sha256": "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"
+  },
+  "meta": {
+    "name": "Fidha",
+    "className": "Plus One Science / Class 11",
+    "joinDate": "2025-05-26",
+    "birthday": "5 September",
+    "avatar": "https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png"
+  },
+  "termRanges": { "first": "May – Sep 2025", "second": "Sep – Dec 2025" },
+  "internals": {
+    "first": [
+      {"label":"QP01","subject":"Physics","pct":51},
+      {"label":"QP02","subject":"Maths","pct":63},
+      {"label":"QP03","subject":"Chemistry","pct":66},
+      {"label":"QP04","subject":"Biology","pct":50},
+      {"label":"QP05","subject":"Physics","pct":37},
+      {"label":"QP06","subject":"Maths","pct":50},
+      {"label":"QP07","subject":"Chemistry","pct":57},
+      {"label":"QP08","subject":"Biology","pct":8}
+    ],
+    "second": [
+      {"label":"QP09","subject":"Physics","pct":null},
+      {"label":"QP10","subject":"Maths","pct":null},
+      {"label":"QP11","subject":"Chemistry","pct":null},
+      {"label":"QP12","subject":"Biology","pct":null},
+      {"label":"QP13","subject":"Physics","pct":null},
+      {"label":"QP14","subject":"Maths","pct":null},
+      {"label":"QP15","subject":"Chemistry","pct":null},
+      {"label":"QP16","subject":"Biology","pct":null},
+      {"label":"QP17","subject":"Physics","pct":null},
+      {"label":"QP18","subject":"Maths","pct":null},
+      {"label":"QP19","subject":"Chemistry","pct":null},
+      {"label":"QP20","subject":"Biology","pct":null}
+    ]
+  },
+  "externals": {
+    "first": {
+      "sehr":   { "Physics": 65, "Maths": 1,  "Chemistry": 87, "Biology": 47 },
+      "school": { "Physics": 1,  "Maths": 1,  "Chemistry": 1,  "Biology": 1  }
+    },
+    "second": {
+      "sehr":   { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null },
+      "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    }
+  },
+  "achievements": [
+    "Event Coordinator",
+    "Excellent Attendance (Aug 2025)"
+  ],
+  "remarks": [
+    "Shows steady improvement in Chemistry numericals.",
+    "Needs to practice derivations in Physics."
+  ]
+}
