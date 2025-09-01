@@ -75,7 +75,7 @@
       ],
       "checklist": [
         { "text": "Q1–Q5",  "done": false },
-        { "text": "Q6–Q10", "done": false }
+        { "text": "Q6–Q10", "done": true }
       ],
       "tags": ["numericals","term-2"],
       "requiresAck": true
