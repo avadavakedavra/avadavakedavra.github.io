@@ -8,7 +8,7 @@
     "className": "Plus One Science",
     "section": "A",
     "batch": "Origin",
-    "url": "/student?slug=fidha"
+    "url": "/student.html?id=fidha"
   },
   {
     "slug": "devanandha",
@@ -19,7 +19,7 @@
     "className": "Plus One Science",
     "section": "A",
     "batch": "Origin",
-    "url": "/student?slug=devanandha"
+    "url": "/student.html?id=devanandha"
   },
   {
     "slug": "gayathri",
@@ -30,6 +30,6 @@
     "className": "Plus One Science",
     "section": "A",
     "batch": "Origin",
-    "url": "/student?slug=gayathri"
+    "url": "/student.html?id=gayathri"
   }
 ]
