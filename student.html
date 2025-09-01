@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Student Profile (Fidha)</title>
+  <title>Sehr Academy — Student Profile</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -154,9 +154,25 @@
   </style>
 
   <script>
-    /* ===== LOCK SCREEN LOGIC ===== */
-    const EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07"; // SHA-256("fidhu123")
+    /* ========= BASE / GLOBALS ========= */
+    // Global fallback hash (SHA-256 of "fidhu123") — used only if JSON doesn't provide lock.sha256
+    const DEFAULT_EXPECTED_HEX = "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07";
 
+    // Active expected hash (becomes student-specific after JSON loads)
+    let EXPECTED_HEX = DEFAULT_EXPECTED_HEX;
+
+    // Read student id from ?id=<slug> OR from filename (e.g., gayathri.html)
+    function getStudentId() {
+      const url = new URL(window.location.href);
+      const q = url.searchParams.get('id');
+      if (q) return q.trim().toLowerCase();
+      const base = url.pathname.split('/').pop() || '';
+      const m = base.match(/^([a-z0-9_-]+)\.html$/i);
+      if (m) return m[1].toLowerCase();
+      return 'fidha';
+    }
+
+    /* ========= LOCK LOGIC ========= */
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('lock-overlay');
       if (sessionStorage.getItem('sehr-profile-unlocked') === '1') {
@@ -250,31 +266,27 @@
     <section class="section card">
       <h2>Results</h2>
 
-      <!-- Subject Average Boxes (auto-calculated) -->
+      <!-- Subject Average Boxes -->
       <div class="avg-grid" id="subject-averages">
         <div class="avg-card">
           <div class="avg-top"><span class="s">Physics</span><span class="v" id="avg-Physics">—</span></div>
           <div class="mini-bar"><i id="mini-Physics"></i></div>
-          <span class="passchip" id="pf-Physics">—</span>
-          <span class="wm">Φ</span>
+          <span class="passchip" id="pf-Physics">—</span><span class="wm">Φ</span>
         </div>
         <div class="avg-card">
           <div class="avg-top"><span class="s">Maths</span><span class="v" id="avg-Maths">—</span></div>
           <div class="mini-bar"><i id="mini-Maths"></i></div>
-          <span class="passchip" id="pf-Maths">—</span>
-          <span class="wm">∑</span>
+          <span class="passchip" id="pf-Maths">—</span><span class="wm">∑</span>
         </div>
         <div class="avg-card">
           <div class="avg-top"><span class="s">Chemistry</span><span class="v" id="avg-Chemistry">—</span></div>
           <div class="mini-bar"><i id="mini-Chemistry"></i></div>
-          <span class="passchip" id="pf-Chemistry">—</span>
-          <span class="wm">⚗</span>
+          <span class="passchip" id="pf-Chemistry">—</span><span class="wm">⚗</span>
         </div>
         <div class="avg-card">
           <div class="avg-top"><span class="s">Biology</span><span class="v" id="avg-Biology">—</span></div>
           <div class="mini-bar"><i id="mini-Biology"></i></div>
-          <span class="passchip" id="pf-Biology">—</span>
-          <span class="wm">🌿</span>
+          <span class="passchip" id="pf-Biology">—</span><span class="wm">🌿</span>
         </div>
       </div>
 
@@ -295,14 +307,12 @@
             <div class="pct" id="avg-text">0%</div>
           </div>
 
-          <!-- Summary metric boxes -->
           <div class="more-metrics">
             <div class="metric"><small>Attempted</small><b id="met-attempted">—</b></div>
             <div class="metric"><small>Passed</small><b id="met-passed">—</b></div>
             <div class="metric"><small>Failed</small><b id="met-failed">—</b></div>
           </div>
 
-          <!-- External exam subject tiles (PERCENTAGE BARS) -->
           <div class="tiles-wrap">
             <div class="tiles-title">Sehr First Term Exam</div>
             <div class="exam-cards" id="sehr-tiles">
@@ -433,7 +443,7 @@
   <div class="tooltip" id="tooltip"></div>
 
   <script>
-    /* ===== Helpers ===== */
+    /* ===== UI helpers ===== */
     function perfGradient(pct){
       if(pct >= 75) return {bg:`linear-gradient(90deg, var(--shine1), var(--gld2))`, glow:'0 0 0 3px rgba(212,175,55,.25)'};
       if(pct >= 50) return {bg:`linear-gradient(90deg, var(--or1), var(--or2))`, glow:'none'};
@@ -478,44 +488,26 @@
       });
     }
 
-    /* ===== Data state ===== */
+    /* ===== Data state + FALLBACK ===== */
     let DATA = null;
     const FALLBACK = {
-      meta: { name:'Fidha', className:'Plus One Science / Class 11', joinDate:'2025-05-26', birthday:'5th September',
-              avatar:'https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png' },
+      lock: { sha256: DEFAULT_EXPECTED_HEX },  /* fallback uses default */
+      meta: { name:'Student', className:'—', joinDate:'—', birthday:'—',
+              avatar:'https://i.postimg.cc/0Q0qLQ5v/placeholder-avatar.png' },
       termRanges: { first:'May – Sep 2025', second:'Sep – Dec 2025' },
       internals: { 
-        first:[
-          {label:'QP01',subject:'Physics',pct:51},
-          {label:'QP02',subject:'Maths',pct:63},
-          {label:'QP03',subject:'Chemistry',pct:66},
-          {label:'QP04',subject:'Biology',pct:50},
-          {label:'QP05',subject:'Physics',pct:37},
-          {label:'QP06',subject:'Maths',pct:50},
-          {label:'QP07',subject:'Chemistry',pct:57},
-          {label:'QP08',subject:'Biology',pct:8}
-        ],
-        /* Second term scaffold with Pending values */
-        second: Array.from({length:12}, (_,i)=> {
-          const n = i+9; // 9..20
-          return { label: 'QP' + String(n).padStart(2,'0'), subject: '—', pct: null };
-        })
+        first: [],
+        second: Array.from({length:12}, (_,i)=> ({ label:'QP' + String(i+9).padStart(2,'0'), subject:'—', pct:null }))
       },
       externals: {
-        first: {
-          sehr:   { Physics:65, Maths:1, Chemistry:87, Biology:47 },
-          school: { Physics:1,  Maths:1, Chemistry:1,  Biology:1 }
-        },
-        second: {
-          sehr:   { Physics:null, Maths:null, Chemistry:null, Biology:null },
-          school: { Physics:null, Maths:null, Chemistry:null, Biology:null }
-        }
+        first: { sehr:{}, school:{} },
+        second:{ sehr:{}, school:{} }
       },
-      achievements: ["Event Coordinator"],
+      achievements: [],
       remarks: []
     };
 
-    /* ===== Renderers (First Term) ===== */
+    /* ===== Renderers ===== */
     function renderProfile(meta){
       document.getElementById('profile-avatar').src = meta.avatar || '';
       document.getElementById('profile-avatar').alt = (meta.name || 'Student') + ' profile photo';
@@ -523,6 +515,8 @@
       document.getElementById('k-class').textContent = meta.className || '—';
       document.getElementById('k-join').textContent  = meta.joinDate || '—';
       document.getElementById('k-bday').textContent  = meta.birthday || '—';
+      // Also put name in <title>
+      document.title = `Sehr Academy — Student Profile (${meta.name || 'Student'})`;
     }
 
     function rowHTML(r){
@@ -541,117 +535,16 @@
     function renderInternalsFirst(arr){
       const host = document.getElementById('first-term');
       host.innerHTML = arr.map(rowHTML).join('');
-      const rows = Array.from(host.querySelectorAll('.exam-row'));
-      const bars = rows.map(r => r.querySelector('.bar > i'));
-      rows.forEach(row => {
-        const dpct = row.querySelector('.bar > i').dataset.pct;
-        const hasVal = !(dpct==='' || dpct==null || isNaN(dpct));
-        const pct = hasVal ? Number(dpct) : null;
-        const bar = row.querySelector('.bar > i');
-        if(hasVal){
-          const style = perfGradient(pct);
-          bar.style.background = style.bg;
-          if(style.glow !== 'none') bar.style.boxShadow = style.glow;
-          requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
-        }else{
-          setBar(bar, null);
-        }
-
-        const subj = row.dataset.subject || '—';
-        const qp = row.querySelector('.label')?.textContent || '';
-        const barWrap = row.querySelector('.bar');
-        barWrap.setAttribute('data-tip', hasVal ? `${qp} · ${subj} · ${pct}%` : `${qp} · ${subj} · Pending`);
-        barWrap.addEventListener('mouseenter', showTip);
-        barWrap.addEventListener('mousemove', moveTip);
-        barWrap.addEventListener('mouseleave', hideTip);
-      });
-
-      // Totals/metrics + subject avgs
-      const values = bars
-        .map(el => {
-          const dpct = el.dataset.pct;
-          return (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
-        })
-        .filter(v => v!==null);
-
-      const attempted = values.length;
-      const overall = values.length ? (values.reduce((a,b)=>a+b,0) / values.length) : null;
-      const avgBar = document.getElementById('avg-bar');
-      const avgText = document.getElementById('avg-text');
-
-      if(overall===null){
-        setBar(avgBar, null);
-        avgText.textContent = 'Pending';
-      }else{
-        const shown = Math.round(overall * 10)/10;
-        const styleAvg = perfGradient(shown);
-        avgBar.style.background = styleAvg.bg; if(styleAvg.glow !== 'none') avgBar.style.boxShadow = styleAvg.glow;
-        requestAnimationFrame(()=>{ avgBar.style.width = shown + '%'; });
-        avgText.textContent = shown + '%';
-      }
-
-      const groups = {};
-      rows.forEach(row => {
-        const subj = row.dataset.subject || 'Other';
-        const dpct = row.querySelector('.bar > i').dataset.pct;
-        const val = (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
-        (groups[subj] ||= []).push(val);
-      });
-      Object.entries(groups).forEach(([subj, arr])=>{
-        const nums = arr.filter(v=>v!==null);
-        const avg = nums.length ? (nums.reduce((a,b)=>a+b,0) / nums.length) : null;
-        const pass = nums.filter(v=>v>=50).length;
-        const key = subj.replace(/\s+/g,'');
-        const textEl = document.getElementById('avg-' + key);
-        const miniEl = document.getElementById('mini-' + key);
-        const pfEl = document.getElementById('pf-' + key);
-
-        if(textEl){
-          if(avg===null){
-            textEl.textContent = 'Pending';
-            textEl.style.color = '#0f172a';
-            textEl.style.background = 'transparent';
-          }else{
-            const rounded = Math.round(avg*10)/10;
-            textEl.textContent = rounded + '%';
-            textEl.style.background = perfGradient(rounded).bg;
-            textEl.style.webkitBackgroundClip = 'text';
-            textEl.style.backgroundClip = 'text';
-            textEl.style.color = 'transparent';
-          }
-        }
-        if(miniEl){
-          if(avg===null){
-            miniEl.style.width = '0%';
-            miniEl.style.background = 'rgba(15,23,42,.08)';
-          }else{
-            const rounded = Math.round(avg*10)/10;
-            const st = perfGradient(rounded);
-            miniEl.style.background = st.bg;
-            requestAnimationFrame(()=>{ miniEl.style.width = rounded + '%'; });
-          }
-        }
-        if(pfEl){
-          if(nums.length===0) pfEl.textContent = `0/0 passed`;
-          else pfEl.textContent = `${pass}/${arr.length} passed`;
-        }
-      });
-
-      document.getElementById('met-attempted').textContent = attempted;
-      document.getElementById('met-passed').textContent   = values.filter(v => v >= 50).length;
-      document.getElementById('met-failed').textContent   = values.filter(v => v < 50).length;
+      paintRowsAndTotals(host, 'avg-bar', 'avg-text', 'met-attempted', 'met-passed', 'met-failed', true);
     }
 
-    function renderExternalsFirst(extFirst){
-      const src = extFirst || FALLBACK.externals.first;
-      fillTiles('sehr',   src.sehr || {}, '—');
-      fillTiles('school', src.school || {}, '—');
-    }
-
-    /* ===== Renderers (Second Term) ===== */
     function renderInternalsSecond(arr){
       const host = document.getElementById('second-term');
       host.innerHTML = arr.map(rowHTML).join('');
+      paintRowsAndTotals(host, 'avg2-bar', 'avg2-text', 'met2-attempted', 'met2-passed', 'met2-failed', false);
+    }
+
+    function paintRowsAndTotals(host, avgBarId, avgTextId, metAttId, metPassId, metFailId, alsoSubjectAverages){
       const rows = Array.from(host.querySelectorAll('.exam-row'));
       const bars = rows.map(r => r.querySelector('.bar > i'));
 
@@ -671,40 +564,85 @@
         barWrap.addEventListener('mouseleave', hideTip);
       });
 
-      // Totals/metrics + overview
-      const nums = bars
-        .map(el => {
-          const dpct = el.dataset.pct;
-          return (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
-        })
-        .filter(v => v!==null);
+      const values = bars.map(el => {
+        const dpct = el.dataset.pct;
+        return (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
+      }).filter(v => v!==null);
 
-      const attempted = nums.length;
-      const avg = nums.length ? (nums.reduce((a,b)=>a+b,0) / nums.length) : null;
-
-      const avgBar = document.getElementById('avg2-bar');
-      const avgText = document.getElementById('avg2-text');
-
-      if(avg===null){
+      const avgBar = document.getElementById(avgBarId);
+      const avgText = document.getElementById(avgTextId);
+      if(values.length===0){
         setBar(avgBar, null);
         avgText.textContent = 'Pending';
       }else{
-        const shown = Math.round(avg * 10)/10;
+        const shown = Math.round((values.reduce((a,b)=>a+b,0) / values.length) * 10)/10;
         const styleAvg = perfGradient(shown);
         avgBar.style.background = styleAvg.bg; if(styleAvg.glow !== 'none') avgBar.style.boxShadow = styleAvg.glow;
         requestAnimationFrame(()=>{ avgBar.style.width = shown + '%'; });
         avgText.textContent = shown + '%';
       }
 
-      document.getElementById('met2-attempted').textContent = attempted;
-      document.getElementById('met2-passed').textContent   = nums.filter(v => v >= 50).length;
-      document.getElementById('met2-failed').textContent   = nums.filter(v => v < 50).length;
+      document.getElementById(metAttId).textContent  = values.length;
+      document.getElementById(metPassId).textContent = values.filter(v => v >= 50).length;
+      document.getElementById(metFailId).textContent = values.filter(v => v < 50).length;
+
+      if(alsoSubjectAverages){
+        const groups = {};
+        rows.forEach(row => {
+          const subj = row.dataset.subject || 'Other';
+          const dpct = row.querySelector('.bar > i').dataset.pct;
+          const val = (dpct==='' || dpct==null || isNaN(dpct)) ? null : Number(dpct);
+          (groups[subj] ||= []).push(val);
+        });
+        Object.entries(groups).forEach(([subj, arr])=>{
+          const nums = arr.filter(v=>v!==null);
+          const avg = nums.length ? (nums.reduce((a,b)=>a+b,0) / nums.length) : null;
+          const pass = nums.filter(v=>v>=50).length;
+          const key = subj.replace(/\s+/g,'');
+          const textEl = document.getElementById('avg-' + key);
+          const miniEl = document.getElementById('mini-' + key);
+          const pfEl = document.getElementById('pf-' + key);
+
+          if(textEl){
+            if(avg===null){
+              textEl.textContent = 'Pending';
+              textEl.style.color = '#0f172a';
+              textEl.style.background = 'transparent';
+            }else{
+              const rounded = Math.round(avg*10)/10;
+              textEl.textContent = rounded + '%';
+              textEl.style.background = perfGradient(rounded).bg;
+              textEl.style.webkitBackgroundClip = 'text';
+              textEl.style.backgroundClip = 'text';
+              textEl.style.color = 'transparent';
+            }
+          }
+          if(miniEl){
+            if(avg===null){
+              miniEl.style.width = '0%';
+              miniEl.style.background = 'rgba(15,23,42,.08)';
+            }else{
+              const rounded = Math.round(avg*10)/10;
+              const st = perfGradient(rounded);
+              miniEl.style.background = st.bg;
+              requestAnimationFrame(()=>{ miniEl.style.width = rounded + '%'; });
+            }
+          }
+          if(pfEl){
+            if(nums.length===0) pfEl.textContent = `0/0 passed`;
+            else pfEl.textContent = `${pass}/${arr.length} passed`;
+          }
+        });
+      }
     }
 
+    function renderExternalsFirst(extFirst){
+      fillTiles('sehr',   (extFirst?.sehr)||{}, '—');
+      fillTiles('school', (extFirst?.school)||{}, '—');
+    }
     function renderExternalsSecond(extSecond){
-      const src = extSecond || FALLBACK.externals.second;
-      fillTiles('sehr2',   src.sehr || {}, 'Pending');
-      fillTiles('school2', src.school || {}, 'Pending');
+      fillTiles('sehr2',   (extSecond?.sehr)||{}, 'Pending');
+      fillTiles('school2', (extSecond?.school)||{}, 'Pending');
     }
 
     function renderAchievements(list){
@@ -721,10 +659,12 @@
         : `<div style="opacity:.7">No remarks yet — faculty feedback will appear here.</div>`;
     }
 
-    /* ===== Boot ===== */
+    /* ===== Data loading ===== */
     async function loadJSON(){
+      const id = getStudentId();
+      const path = `/students/${id}.json?ts=${Date.now()}`;
       try{
-        const res = await fetch('/students/fidha.json?ts=' + Date.now(), {cache:'no-store'});
+        const res = await fetch(path, {cache:'no-store'});
         if(!res.ok) throw new Error('HTTP ' + res.status);
         return await res.json();
       }catch(e){
@@ -739,7 +679,14 @@
 
       DATA = await loadJSON();
 
-      // Profile & term labels
+      /* Set per-student lock hash (fallback to default if missing) */
+      if (DATA?.lock?.sha256 && typeof DATA.lock.sha256 === 'string' && DATA.lock.sha256.length === 64) {
+        EXPECTED_HEX = DATA.lock.sha256.toLowerCase();
+      } else {
+        EXPECTED_HEX = DEFAULT_EXPECTED_HEX;
+      }
+
+      // Profile & ranges
       renderProfile(DATA.meta || FALLBACK.meta);
       document.getElementById('term-range').textContent  = (DATA.termRanges?.first)  || FALLBACK.termRanges.first;
       document.getElementById('term2-range').textContent = (DATA.termRanges?.second) || FALLBACK.termRanges.second;
@@ -748,11 +695,16 @@
       renderInternalsFirst((DATA.internals && DATA.internals.first) ? DATA.internals.first : FALLBACK.internals.first);
       renderInternalsSecond((DATA.internals && DATA.internals.second) ? DATA.internals.second : FALLBACK.internals.second);
 
-      // External tiles
+      // Externals
       renderExternalsFirst((DATA.externals && DATA.externals.first) ? DATA.externals.first : FALLBACK.externals.first);
       renderExternalsSecond((DATA.externals && DATA.externals.second) ? DATA.externals.second : FALLBACK.externals.second);
+
+      // Achievements & Remarks
+      renderAchievements(Array.isArray(DATA.achievements) ? DATA.achievements : FALLBACK.achievements);
+      renderRemarks(Array.isArray(DATA.remarks) ? DATA.remarks : FALLBACK.remarks);
     });
 
+    /* ===== CSV ===== */
     function downloadCSV(){
       // First term rows
       const rows1 = Array.from(document.querySelectorAll('#first-term .exam-row'));
@@ -803,7 +755,7 @@
 
       const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'fidha-first-second-term.csv';
+      const a = document.createElement('a'); a.href = url; a.download = 'student-first-second-term.csv';
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
     }
   </script>
