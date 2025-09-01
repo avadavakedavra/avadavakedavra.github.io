@@ -77,8 +77,7 @@
       "checklist": [
         { "text": "Biology",  "done": false },
         { "text": "Physics",  "done": false },
-        { "text": "Chemistry",  "done": false },  
-        { "text": "Maths", "done": true }
+        { "text": "Chemistry",  "done": false }
       ],
       "tags": ["numericals","term-2"],
       "requiresAck": true
