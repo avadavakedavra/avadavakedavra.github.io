@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sehr Academy — Class 11 Syllabus (Completion Tracker)</title>
   <meta name="theme-color" content="#8BC53F" />
-  <meta name="description" content="Class 11 syllabus tracker for Physics, Chemistry, Mathematics, Biology — completion tracker with dates." />
+  <meta name="description" content="Class 11 syllabus completion tracker for Physics, Chemistry, Mathematics, Biology — filter by status, search by chapter, live dates." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -16,15 +16,18 @@
   <style>
     :root{
       --sehr-green:#8BC53F;
+      --sehr-green-2:#6cab2f;
       --ink:#0F172A;
       --muted:#5b6475;
       --glass-border: rgba(255,255,255,0.55);
       --shadow: 0 20px 45px rgba(15,23,42,.12);
-      --radius: 22px;
+      --radius: 18px;
       --maxw:1180px;
       --frost-white: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
       --frost-green: linear-gradient(180deg, rgba(214, 244, 190, .95), rgba(180, 232, 140, .78));
       --crystal: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.30));
+      --bar-grad: linear-gradient(90deg, #e3f7cf, #8BC53F 45%, #6cab2f 100%);
+      --hint-bg: linear-gradient(180deg,#ffffff,#f5f7fb);
     }
     *{box-sizing:border-box}
     html,body{margin:0}
@@ -42,59 +45,71 @@
     .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--sehr-green);letter-spacing:.4px}
     .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
 
-    /* Page title bar */
-    .pagehead{max-width:var(--maxw);margin:18px auto 12px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+    /* Page head */
+    .pagehead{max-width:var(--maxw);margin:18px auto 12px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .title{font-family:Montserrat;font-weight:900;font-size:26px;letter-spacing:.2px}
     .subtitle{color:#6b7280;font-weight:700}
+    .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
 
-    /* Panel */
-    .panel{max-width:var(--maxw); margin:10px auto 0; padding:18px 20px; border-radius:var(--radius);
+    /* Controls: filter tabs + search */
+    .controls{max-width:var(--maxw);margin:10px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));font-weight:800}
+    .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45); box-shadow:0 6px 16px rgba(139,197,63,.18)}
+    .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
+    .search input{border:0;background:transparent;outline:none;flex:1;font-weight:700}
+
+    /* Legend */
+    .panel{max-width:var(--maxw); margin:10px auto 0; padding:16px 20px; border-radius:var(--radius);
       border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:var(--shadow);}
     .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:700;color:#334}
-    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
     .dot{width:10px;height:10px;border-radius:999px;background:#cfd6df}
     .dot.pending{background:#cfd6df}
     .dot.ongoing{background:#f6c761}
     .dot.completed{background:#69c04c}
 
-    /* Subject accordions */
-    details.group{max-width:var(--maxw); margin:14px auto; border-radius:18px; border:1px solid var(--glass-border);
+    /* Subject accordions (highlighted summaries) */
+    details.group{max-width:var(--maxw); margin:14px auto; border-radius:16px; border:1px solid var(--glass-border);
       background:var(--frost-white); box-shadow:var(--shadow); overflow:hidden}
     details.group > summary{
-      list-style:none; cursor:pointer; padding:18px 22px; user-select:none; display:flex; align-items:center; justify-content:space-between; gap:12px;
+      list-style:none; cursor:pointer; padding:16px 18px; user-select:none; display:grid;
+      grid-template-columns: 1fr auto; align-items:center; gap:10px;
       font-family:Montserrat; font-weight:900; font-size:18px;
+      background:linear-gradient(180deg,#ffffff, #f2f6f1);
+      border-bottom:1px solid rgba(230,232,236,.6);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      position:relative;
     }
     details.group > summary::-webkit-details-marker{display:none}
-    .sum-left{display:flex;align-items:center;gap:10px}
-    .badge{
-      font-size:15px; /* bigger */
-      font-weight:900;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--glass-border);
-      background:linear-gradient(180deg,#ffffff,rgba(255,255,255,.82));
-      color:#1b2a1a;
-      text-transform:uppercase; /* 1/14 COMPLETED */
-      letter-spacing:.4px;
+    details.group > summary:hover{
+      transform: translateY(-1px);
+      box-shadow:0 10px 24px rgba(139,197,63,.18);
+      filter: drop-shadow(0 0 6px rgba(139,197,63,.12));
     }
-    /* Small hint replacing total chapters */
-    .hint{font-family:Montserrat; font-weight:800; font-size:11px; opacity:.7; text-transform:uppercase; letter-spacing:.5px}
+    .sum-left{display:flex;align-items:center;gap:12px}
+    .subject-name{font-size:18px; color:#0b0f10; text-transform:uppercase; letter-spacing:.4px}
+    /* Click hint to far right */
+    .sum-right{display:flex; align-items:center; gap:14px}
+    .hint{
+      font-family:Montserrat; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.5px;
+      color:#2b3345; opacity:.75; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:999px; padding:6px 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+    }
     .hint-open{display:none}
     details[open] .hint-open{display:inline}
     details[open] .hint-closed{display:none}
 
-    .chev{transition:transform .2s ease}
-    details[open] .chev{transform:rotate(180deg)}
-
-    /* Botany/Zoology subheaders within Biology */
-    .subhdr{font-family:Montserrat;font-weight:800;font-size:14px;color:#0b0f10;opacity:.8;margin:8px 6px 6px 6px}
+    /* Progress mini bar inside summary */
+    .prog-wrap{width:220px; display:flex; flex-direction:column; gap:4px}
+    .prog-rail{width:100%; height:8px; border-radius:999px; background:rgba(0,0,0,.06); position:relative; overflow:hidden; border:1px solid rgba(0,0,0,.06)}
+    .prog-fill{height:100%; width:0%; background:var(--bar-grad); border-radius:999px; transition:width .35s ease}
+    .prog-note{font-size:10px; font-weight:900; color:#2b3345; text-transform:uppercase; letter-spacing:.4px; opacity:.8; text-align:right}
 
     /* Chapter list — square & crystal glass */
     .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
     .row{
       display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center;
       padding:14px 14px;
-      border-radius:12px; /* square & crisp (smaller radius) */
+      border-radius:12px;
       border:1px solid rgba(255,255,255,.55);
       background:var(--crystal);
       backdrop-filter: blur(9px) saturate(160%);
@@ -114,36 +129,61 @@
       box-shadow:0 12px 30px rgba(139,197,63,.18), inset 0 1px 0 rgba(255,255,255,.6);
     }
     .row .name{font-weight:800}
+
+    /* Square pill (compact, not touching edges) */
     .status{
-      font-family:Montserrat; font-weight:900; font-size:12px; padding:8px 10px; border-radius:999px; border:1px solid var(--glass-border);
-      background:linear-gradient(180deg,#fff,rgba(255,255,255,.75)); color:#334; min-width:110px; text-align:center; text-transform:uppercase; letter-spacing:.3px
+      font-family:Montserrat; font-weight:900; font-size:12px; padding:6px 8px;
+      border-radius:8px; border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#fff,rgba(255,255,255,.78));
+      color:#334; min-width:96px; text-align:center; text-transform:uppercase; letter-spacing:.3px
     }
-    .status.pending{opacity:.9}
     .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
     .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
-    .date{
-      font-weight:900; font-family:Montserrat; font-size:12px; color:#2b3345; white-space:nowrap
-    }
+    .date{font-weight:900; font-family:Montserrat; font-size:12px; color:#2b3345; white-space:nowrap}
 
     /* Footer */
     footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; flex-direction:column; gap:8px; justify-content:center; color:#334; font-size:14px}
     footer .links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
     footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
     .diag{opacity:.7; text-align:center; font-size:12px}
+
+    /* Compact mobile density */
+    @media (max-width: 380px){
+      .row{padding:10px}
+      .prog-wrap{width:160px}
+      details.group > summary{grid-template-columns: 1fr; gap:8px}
+      .sum-right{justify-content:space-between}
+    }
   </style>
 </head>
 <body>
-  <!-- Shared header (uses your existing nav.js) -->
+  <!-- Shared header -->
   <header id="site-header"></header>
   <script src="/assets/nav.js" defer></script>
 
   <div class="pagehead">
     <div>
       <div class="title">Class 11 Syllabus — Completion Tracker</div>
-      <div class="subtitle">All subjects update from one JSON. Completed chapters glow in Sehr green.</div>
+      <div class="subtitle">Filter by status, search chapters, and update via one JSON.</div>
+      <div class="stamp" id="last-updated"></div>
     </div>
   </div>
 
+  <!-- Controls -->
+  <div class="controls">
+    <div id="filters" role="tablist" aria-label="Filter chapters by status">
+      <button data-filter="all" class="chip" aria-pressed="true">All</button>
+      <button data-filter="pending" class="chip" aria-pressed="false">Pending</button>
+      <button data-filter="ongoing" class="chip" aria-pressed="false">Ongoing</button>
+      <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
+    </div>
+    <div class="search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.2-4.2M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="#2b3345" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Search chapters…" aria-label="Search chapters by name" />
+    </div>
+  </div>
+
+  <!-- Legend -->
   <section class="panel" aria-label="Legend">
     <div class="legend">
       <span class="chip"><span class="dot pending"></span> Pending</span>
@@ -152,18 +192,22 @@
     </div>
   </section>
 
-  <!-- Subjects (all CLOSED by default; small click-hint) -->
+  <!-- Subjects (closed by default) -->
   <details class="group" data-subject="physics">
     <summary>
       <span class="sum-left">
-        <span>⚛️ Physics</span>
-        <span class="badge" id="badge-physics">0/0 COMPLETED</span>
+        <span class="subject-name">Physics</span>
       </span>
-      <span>
-        <span class="hint hint-closed">Click to open</span>
-        <span class="hint hint-open">Click to close</span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-physics"></span></span>
+          <span class="prog-note" id="note-physics">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
       </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-physics"></div>
   </details>
@@ -171,14 +215,18 @@
   <details class="group" data-subject="chemistry">
     <summary>
       <span class="sum-left">
-        <span>🧪 Chemistry</span>
-        <span class="badge" id="badge-chemistry">0/0 COMPLETED</span>
+        <span class="subject-name">Chemistry</span>
       </span>
-      <span>
-        <span class="hint hint-closed">Click to open</span>
-        <span class="hint hint-open">Click to close</span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-chemistry"></span></span>
+          <span class="prog-note" id="note-chemistry">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
       </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-chemistry"></div>
   </details>
@@ -186,14 +234,18 @@
   <details class="group" data-subject="mathematics">
     <summary>
       <span class="sum-left">
-        <span>∑ Mathematics</span>
-        <span class="badge" id="badge-mathematics">0/0 COMPLETED</span>
+        <span class="subject-name">Mathematics</span>
       </span>
-      <span>
-        <span class="hint hint-closed">Click to open</span>
-        <span class="hint hint-open">Click to close</span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-mathematics"></span></span>
+          <span class="prog-note" id="note-mathematics">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
       </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24  fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
     <div class="chapters" id="list-mathematics"></div>
   </details>
@@ -201,18 +253,20 @@
   <details class="group" data-subject="biology">
     <summary>
       <span class="sum-left">
-        <span>🌿 Biology</span>
-        <span class="badge" id="badge-biology">0/0 COMPLETED</span>
+        <span class="subject-name">Biology</span>
       </span>
-      <span>
-        <span class="hint hint-closed">Click to open</span>
-        <span class="hint hint-open">Click to close</span>
+      <span class="sum-right">
+        <span class="prog-wrap">
+          <span class="prog-rail"><span class="prog-fill" id="bar-biology"></span></span>
+          <span class="prog-note" id="note-biology">0/0</span>
+        </span>
+        <span>
+          <span class="hint hint-closed">Click to open</span>
+          <span class="hint hint-open">Click to close</span>
+        </span>
       </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
     </summary>
-    <div class="chapters" id="list-biology">
-      <!-- Botany/Zoology groups render inside here -->
-    </div>
+    <div class="chapters" id="list-biology"></div>
   </details>
 
   <footer>
@@ -224,14 +278,7 @@
   </footer>
 
   <script>
-    /* ====== How it works ======
-      - Create /data/syllabus.json
-      - Completed rows get "frosty green"; others stay crystal white.
-      - You only edit JSON (status / expectedDate).
-      - Date shows Day + Month only (no label, no year).
-    */
-
-    // --- Robust path resolver (tries relative, then root) ---
+    /* ====== Data fetching (robust path resolver) ====== */
     const CANDIDATES = [
       new URL('./data/syllabus.json?cb=' + Date.now(), location.href).toString(),
       new URL('data/syllabus.json?cb=' + Date.now(), location.href).toString(),
@@ -242,26 +289,34 @@
         try{
           const r = await fetch(p, {cache:'no-store'});
           if(r.ok) return { res: r, url: p };
-        }catch(e){/* ignore and try next */}
+        }catch(e){}
       }
       throw new Error('None of the candidate paths worked:\n' + paths.join('\n'));
     }
 
+    /* ====== Refs ====== */
     const lists = {
       physics: document.getElementById('list-physics'),
       chemistry: document.getElementById('list-chemistry'),
       mathematics: document.getElementById('list-mathematics'),
       biology: document.getElementById('list-biology')
     };
-    const badges = {
-      physics: document.getElementById('badge-physics'),
-      chemistry: document.getElementById('badge-chemistry'),
-      mathematics: document.getElementById('badge-mathematics'),
-      biology: document.getElementById('badge-biology')
+    const bars = {
+      physics: document.getElementById('bar-physics'),
+      chemistry: document.getElementById('bar-chemistry'),
+      mathematics: document.getElementById('bar-mathematics'),
+      biology: document.getElementById('bar-biology')
+    };
+    const notes = {
+      physics: document.getElementById('note-physics'),
+      chemistry: document.getElementById('note-chemistry'),
+      mathematics: document.getElementById('note-mathematics'),
+      biology: document.getElementById('note-biology')
     };
     const diag = document.getElementById('diag');
+    const lastUpdatedEl = document.getElementById('last-updated');
 
-    // Format date as DAY MON (no year). Accepts '', 'YYYY-MM-DD', or natural strings.
+    /* ====== Utilities ====== */
     function fmtDayMonth(s){
       if(!s) return '—';
       const d = new Date(s);
@@ -276,20 +331,23 @@
       const st = (item.status || 'pending').toLowerCase();
       const when = fmtDayMonth(item.expectedDate || '');
       div.className = 'row ' + (st==='completed' ? 'completed' : '');
+      div.dataset.status = st;
+      div.dataset.name = (item.title || '').toLowerCase();
       div.innerHTML = `
         <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
-        <div class="status ${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</div>
-        <div class="date">${when}</div>
+        <div class="status ${st}">${st.toUpperCase()}</div>
+        <div class="date">${when === '—' ? '' : when}</div>
       `;
       return div;
     }
 
-    function setBadge(total, done, subjectKey){
-      const b = badges[subjectKey];
-      b.textContent = `${done}/${total} COMPLETED`;
+    function setProgress(total, done, key){
+      const pct = total ? Math.round(done*100/total) : 0;
+      bars[key].style.width = pct + '%';
+      notes[key].textContent = `${done}/${total}`;
     }
 
-    function renderSimple(arr, mount, subjectKey){
+    function renderSimple(arr, mount, key){
       mount.innerHTML = '';
       const sorted = [...arr].sort((a,b)=>(a.index||999)-(b.index||999));
       let done = 0;
@@ -297,10 +355,10 @@
         if((ch.status||'').toLowerCase()==='completed') done++;
         mount.appendChild(makeRow(ch));
       });
-      setBadge(sorted.length, done, subjectKey);
+      setProgress(sorted.length, done, key);
     }
 
-    function renderBiology(bio, mount, subjectKey){
+    function renderBiology(bio, mount, key){
       mount.innerHTML = '';
       const botany = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
       const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
@@ -323,30 +381,69 @@
           mount.appendChild(makeRow(ch));
         });
       }
-      setBadge(total, done, subjectKey);
+      setProgress(total, done, key);
     }
 
+    /* ====== Filters & Search ====== */
+    const filterState = { value:'all', query:'' };
+
+    function applyFilters(){
+      const rows = document.querySelectorAll('.chapters .row');
+      rows.forEach(r=>{
+        const st = r.dataset.status;
+        const name = r.dataset.name || '';
+        const statusMatch = (filterState.value==='all' || st===filterState.value);
+        const textMatch = (!filterState.query || name.includes(filterState.query));
+        r.style.display = (statusMatch && textMatch) ? '' : 'none';
+      });
+    }
+
+    document.getElementById('filters').addEventListener('click', e=>{
+      if(e.target.matches('button[data-filter]')){
+        filterState.value = e.target.dataset.filter;
+        [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', String(b===e.target)));
+        applyFilters();
+      }
+    });
+
+    document.getElementById('search').addEventListener('input', e=>{
+      filterState.query = (e.target.value || '').toLowerCase().trim();
+      applyFilters();
+    });
+
+    /* ====== Init ====== */
     async function init(){
       try{
         const { res, url } = await fetchFirst(CANDIDATES);
         if (diag) diag.textContent = 'Loaded: ' + url.replace(location.origin, '');
         const data = await res.json();
 
+        // Last updated stamp
+        if (data.meta && data.meta.lastUpdated){
+          const d = new Date(data.meta.lastUpdated);
+          if (!isNaN(d)){
+            lastUpdatedEl.textContent = 'Last updated: ' + d.toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+          }
+        }
+
         renderSimple(data.physics || [], lists.physics, 'physics');
         renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
         renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
         renderBiology(data.biology || [], lists.biology, 'biology');
 
-        // Ensure all details are closed by default (in case browser auto-opens last state)
+        // Ensure closed by default
         document.querySelectorAll('details.group').forEach(d => d.open = false);
+
+        // After render, apply filters in case user already typed
+        applyFilters();
       }catch(err){
         console.error('Failed to load syllabus.json', err);
         if (diag) diag.textContent = 'Load error — check that /data/syllabus.json exists (case-sensitive) and is valid JSON.';
-        Object.values(badges).forEach(b=>b.textContent='LOAD ERROR');
+        // graceful placeholder
         Object.values(lists).forEach(m=>{
           const d = document.createElement('div');
           d.className='row';
-          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>. Check path & JSON validity.</div><div class="status pending">—</div><div class="date">—</div>';
+          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>.</div><div class="status">ERROR</div><div class="date"></div>';
           m.appendChild(d);
         });
       }
