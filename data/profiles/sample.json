@@ -1,30 +1,46 @@
 {
   "meta": {
-    "slug": "sample",
-    "name": "Sample Student",
-    "id": "S999",
-    "img": "/img/students/placeholder.png",
-    "year": "2025–26",
-    "className": "Plus One Science",
+    "name": "Fidha",
+    "className": "Plus One Science / Class 11",
     "section": "A",
-    "batch": "Origin",
-    "joinDate": "2025-06-01",
-    "birthday": "2009-08-31"
+    "img": "/img/students/fidha.png",
+    "joinDate": "2025-05-26",
+    "birthday": "5 September"
   },
-  "lock": { "enabled": false, "sha256": "" },
-
-  "internals": [
-    {"label":"QP01","subject":"Physics","pct":55},
-    {"label":"QP02","subject":"Maths","pct":62},
-    {"label":"QP03","subject":"Chemistry","pct":71},
-    {"label":"QP04","subject":"Biology","pct":48}
-  ],
-
+  "lock": { "enabled": true, "sha256": "60b180fd2a43a937923582bd342b09e7a8b3285c06bf932bb3e04931599dfe07" },
+  "termRanges": { "first": "May – Sep 2025", "second": "Oct 2025 – Mar 2026" },
+  "internals": {
+    "first": [
+      {"label":"QP01","subject":"Physics","pct":51},
+      {"label":"QP02","subject":"Maths","pct":63},
+      {"label":"QP03","subject":"Chemistry","pct":66},
+      {"label":"QP04","subject":"Biology","pct":50},
+      {"label":"QP05","subject":"Physics","pct":37},
+      {"label":"QP06","subject":"Maths","pct":50},
+      {"label":"QP07","subject":"Chemistry","pct":57},
+      {"label":"QP08","subject":"Biology","pct":8}
+    ],
+    "second": [
+      {"label":"QP09","subject":"Physics","pct":null},
+      {"label":"QP10","subject":"Maths","pct":null},
+      {"label":"QP11","subject":"Chemistry","pct":null},
+      {"label":"QP12","subject":"Biology","pct":null},
+      {"label":"QP13","subject":"Physics","pct":null},
+      {"label":"QP14","subject":"Maths","pct":null},
+      {"label":"QP15","subject":"Chemistry","pct":null},
+      {"label":"QP16","subject":"Biology","pct":null},
+      {"label":"QP17","subject":"Physics","pct":null},
+      {"label":"QP18","subject":"Maths","pct":null},
+      {"label":"QP19","subject":"Chemistry","pct":null},
+      {"label":"QP20","subject":"Biology","pct":null}
+    ]
+  },
   "externals": {
-    "Sehr First Term Exam":   { "Physics": 64, "Maths": 58, "Chemistry": 73, "Biology": null },
-    "School First Term Exam": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    "Sehr First Term Exam":   {"Physics":65,"Maths":1,"Chemistry":87,"Biology":47},
+    "School First Term Exam": {"Physics":1,"Maths":1,"Chemistry":1,"Biology":1},
+    "Sehr Second Term Exam":  {"Physics":null,"Maths":null,"Chemistry":null,"Biology":null},
+    "School Second Term Exam":{"Physics":null,"Maths":null,"Chemistry":null,"Biology":null}
   },
-
-  "achievements": ["Perfect attendance — July"],
-  "remarks": [{"by":"Physics Faculty","text":"Good progress on numericals."}]
+  "achievements": ["Event Coordinator"],
+  "remarks": [{"by":"—","text":"No remarks yet — faculty feedback will appear here."}]
 }
