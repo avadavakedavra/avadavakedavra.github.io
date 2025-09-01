@@ -1,9 +1,9 @@
 <!-- Shared Navbar (Sehr Academy) -->
-<!-- Place this file at /partials/nav.html -->
+<!-- Save as /partials/nav.html -->
 <style>
   :root{ --green:#8BC53F; --ink:#0b0f10; }
 
-  /* Scope all styles to this header to avoid leaks */
+  /* Scope to header to avoid style leaks */
   header#site-header{
     position:sticky; top:0; z-index:40;
     background:rgba(255,255,255,.78);
@@ -12,9 +12,10 @@
   }
   header#site-header .container{max-width:1180px;margin:0 auto;padding:0 20px}
   header#site-header .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+
+  /* Brand */
   header#site-header .brand{
     display:flex;align-items:baseline;gap:8px;text-decoration:none;
-    transform:translateZ(0); /* enable GPU for smoother hover */
   }
   header#site-header .brand span:nth-child(1){
     font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--green);letter-spacing:.4px
@@ -22,39 +23,41 @@
   header#site-header .brand span:nth-child(2){
     font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--ink);letter-spacing:.4px
   }
-  header#site-header .brand:hover{filter:saturate(110%)}
 
-  /* Primary nav */
+  /* Menu */
   header#site-header nav[aria-label="Primary"]{display:flex;gap:4px;align-items:center}
   header#site-header .menu, header#site-header .submenu{list-style:none;margin:0;padding:0}
   header#site-header .menu{display:flex;gap:4px;align-items:center}
   header#site-header .menu > li{position:relative}
 
-  /* Links & triggers */
-  header#site-header .link, header#site-header .trigger{
-    font-family:"Montserrat",sans-serif;color:var(--ink);text-decoration:none;margin-left:12px;
-    font-weight:700;font-size:14px;letter-spacing:.2px;position:relative;display:inline-flex;align-items:center;gap:6px;
-    padding:8px 10px;border-radius:10px; transition: color .18s ease, background .18s ease, transform .18s ease;
+  /* Base link/trigger style — clean text (no highlight boxes) */
+  header#site-header .link,
+  header#site-header .trigger{
+    font-family:"Montserrat",sans-serif; color:var(--ink); text-decoration:none;
+    font-weight:700; font-size:14px; letter-spacing:.2px;
+    display:inline-flex; align-items:center; gap:6px; padding:8px 10px; border-radius:0;
+    position:relative; transition:color .18s ease;
   }
-  /* Clean underline that animates in */
-  header#site-header .link:after, header#site-header .trigger:after{
-    content:""; position:absolute; left:10px; right:10px; bottom:4px; height:2px;
-    background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform .22s ease;
+
+  /* Subtle green underline on hover/focus (no background box) */
+  header#site-header .link::after,
+  header#site-header .trigger::after{
+    content:""; position:absolute; left:10px; right:10px; bottom:2px; height:2px;
+    background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform .18s ease;
   }
-  /* Hover/focus: green text + subtle glass lift */
   header#site-header .link:hover,
   header#site-header .trigger:hover,
   header#site-header .link:focus-visible,
-  header#site-header .trigger:focus-visible{
-    color:var(--green);
-    background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
-  }
-  header#site-header .link:hover:after,
-  header#site-header .trigger:hover:after,
-  header#site-header .link:focus-visible:after,
-  header#site-header .trigger:focus-visible:after{ transform:scaleX(1); }
+  header#site-header .trigger:focus-visible{ color:var(--green); }
+  header#site-header .link:hover::after,
+  header#site-header .trigger:hover::after,
+  header#site-header .link:focus-visible::after,
+  header#site-header .trigger:focus-visible::after{ transform:scaleX(1); }
 
-  /* Dropdown panel — fade & slide animation, green highlight on items */
+  /* Only About Us & Courses show a caret (down arrow) */
+  header#site-header .trigger .caret{font-size:12px; line-height:1; margin-left:2px; transform:translateY(1px)}
+
+  /* Dropdown */
   header#site-header .submenu{
     position:absolute; left:6px; top:100%; min-width:220px; padding:8px;
     background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
@@ -70,34 +73,19 @@
   header#site-header .submenu a{
     display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; text-decoration:none;
     color:var(--ink); font-weight:800; font-family:"Montserrat",sans-serif; font-size:14px;
-    transition: background .16s ease, color .16s ease, transform .16s ease;
+    transition: color .16s ease, transform .16s ease, background .16s ease;
   }
   header#site-header .submenu a:hover,
   header#site-header .submenu a:focus-visible{
-    background:#f5f8f1; color:var(--green); transform: translateX(2px);
+    color:var(--green); background:#f5f8f1; transform: translateX(2px);
   }
 
-  /* Mobile */
+  /* Mobile note: no hamburger per request; nav remains inline */
   @media (max-width:900px){
-    header#site-header .nav{padding:10px 0}
-    header#site-header .menu-toggle{
-      display:inline-flex;align-items:center;justify-content:center;
-      width:40px;height:40px;border-radius:10px;border:1px solid rgba(0,0,0,.08);
-      background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.86));
-      font-weight:900;
-    }
-    header#site-header nav[aria-label="Primary"]{display:none;position:absolute;left:0;right:0;top:100%;padding:10px 14px}
-    header#site-header .nav.open nav[aria-label="Primary"]{
-      display:block;
-      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.96));
-      border-bottom:1px solid rgba(0,0,0,.06)
-    }
-    header#site-header .menu{flex-direction:column;align-items:stretch}
-    header#site-header .menu > li{padding:4px 0}
-    header#site-header .submenu{position:relative;left:auto;top:auto;box-shadow:none;border:1px solid rgba(0,0,0,.05);margin-top:6px}
+    header#site-header nav[aria-label="Primary"]{flex-wrap:wrap; gap:6px 10px}
+    header#site-header .submenu{position:relative; left:auto; top:auto; box-shadow:none; border:1px solid rgba(0,0,0,.05); margin-top:6px}
   }
 
-  /* Motion safety */
   @media (prefers-reduced-motion: reduce){
     header#site-header *{transition:none !important}
   }
@@ -108,15 +96,13 @@
     <span>SEHR</span><span>ACADEMY</span>
   </a>
 
-  <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
-    ☰
-  </button>
-
   <nav id="primary-nav" aria-label="Primary">
     <ul class="menu" role="menubar">
-      <!-- About Us -->
+      <!-- About Us (dropdown) -->
       <li role="none">
-        <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">About Us ▾</button>
+        <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">
+          About Us <span class="caret">▾</span>
+        </button>
         <ul class="submenu" role="menu" aria-label="About Us">
           <li role="none"><a role="menuitem" href="https://sehracademy.com/faculty">Faculty</a></li>
           <li role="none"><a role="menuitem" href="https://sehracademy.com/management">Management</a></li>
@@ -125,9 +111,11 @@
         </ul>
       </li>
 
-      <!-- Courses -->
+      <!-- Courses (dropdown) -->
       <li role="none">
-        <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Courses ▾</button>
+        <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">
+          Courses <span class="caret">▾</span>
+        </button>
         <ul class="submenu" role="menu" aria-label="Courses">
           <li role="none"><a role="menuitem" href="https://sehracademy.com/ignite">Class 9 — Ignite</a></li>
           <li role="none"><a role="menuitem" href="https://sehracademy.com/ascent">Class 10 — Ascent</a></li>
@@ -138,31 +126,22 @@
         </ul>
       </li>
 
-      <!-- Existing pages -->
+      <!-- Single links -->
       <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
       <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/downloads">Downloads</a></li>
+      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/studentlogin">Student Login</a></li>
       <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/contact">Contact</a></li>
     </ul>
   </nav>
 </div>
 
 <script>
+/* Dropdown logic (no hamburger, just clean dropdowns) */
 (function(){
   const header = document.currentScript.closest('header#site-header');
-  const navWrap = header.querySelector('.nav');
-  const toggle = header.querySelector('.menu-toggle');
   const triggers = header.querySelectorAll('.trigger');
 
   function closeAll(){ header.querySelectorAll('.menu > li.open').forEach(li=>li.classList.remove('open')); }
-  function toggleMenu(open){
-    navWrap.classList.toggle('open', open);
-    toggle.setAttribute('aria-expanded', !!open);
-  }
-
-  toggle?.addEventListener('click', ()=>{
-    const isOpen = navWrap.classList.contains('open');
-    toggleMenu(!isOpen);
-  });
 
   triggers.forEach(btn=>{
     const li = btn.closest('li');
@@ -170,7 +149,7 @@
       const willOpen = !li.classList.contains('open');
       closeAll();
       li.classList.toggle('open', willOpen);
-      btn.setAttribute('aria-expanded', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
     });
     btn.addEventListener('keydown',(e)=>{
       if(e.key === 'Escape'){ li.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.focus(); }
