@@ -57,5 +57,45 @@
 
   "remarks": [],
 
-  "assignments": []
+  "assignments": [
+    {
+      "id": "first-term-25times",
+      "title": "First Term Exam - Wrong Answers",
+      "note": "All wrong answers of First Term Exam, to be written down 25 times and submitted.",
+      "subject": "All Subjects",
+      "issuedDate": "2025-08-31",
+      "dueDate": "2025-9-08",
+      "priority": "high",
+      "status": "assigned",
+      "faculty": "Mr. Shan",
+      "attachments": [
+        { "label": "Assignment Folder", "url": "https://drive.google.com/drive/folders/1KyGcHdpJUz-r_2h-kei9z_BQnA2UZjrD?usp=drive_link" }
+
+      ],
+      "checklist": [
+        { "text": "Biology",  "done": false },
+        { "text": "Physics",  "done": false },
+        { "text": "Chemistry",  "done": false }
+      ],
+      "tags": ["numericals","term-2"],
+      "requiresAck": true
+    },
+    {
+      "id": "seminar-on-animalkingdom",
+      "title": "Seminar on Kingdom Animalia",
+      "note": "Student needs to prepare and present the topic Kingdom Animalia in Class.",
+      "subject": "Zoology",
+      "issuedDate": "2025-08-31",
+      "dueDate": "2025-09-25",
+      "priority": "normal",
+      "status": "assigned",
+      "faculty": "Mr. Shan",
+      "attachments": [
+        { "label": "Due date 27th September", "url": "" }
+      ],
+      "checklist": [
+        { "text": "Kingdom Animalia", "done": false }
+      ]
+    }
+  ]
 }
