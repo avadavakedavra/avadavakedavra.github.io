@@ -74,8 +74,19 @@
     .hero h1{font-family:"Montserrat",sans-serif;margin:0;font-size:28px;letter-spacing:.2px}
     .hero .meta{color:var(--muted);font-size:14px;margin-top:4px}
     .term-pill{
-      justify-self:end;align-self:center;display:flex;background:var(--glass-strong);border:1px solid var(--border);border-radius:999px;overflow:hidden
-    }
+  justify-self:end;
+  align-self:center;
+  transform: translateX(6px);   /* subtle nudge to the right */
+  background: var(--glass-strong);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* keep safe on very small screens */
+@media (max-width:560px){
+  .term-pill{ transform: translateX(2px); }
+}
     .term-pill button{
       font-family:Montserrat;font-weight:700;letter-spacing:.2px;font-size:13px;padding:8px 14px;border:0;background:transparent;cursor:pointer;color:#334155
     }
@@ -214,10 +225,10 @@
 <script>
 (() => {
   const DATA_PATHS = [
-    'fidha.json',         // same folder
-    '/fidha.json',        // site root
-    '/students/fidha.json'// optional fallback if you store under /students
-  ];
+  '/students/fidha.json', // your GitHub Pages path (avadavakedavra.github.io/students/)
+  'fidha.json',           // local fallback (same folder)
+  '/fidha.json'           // root fallback
+];
 
   // Simple subject icon (watermark vibe)
   const SUBJ_ICON = {
