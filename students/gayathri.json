@@ -1,0 +1,61 @@
+{
+  "lock": {
+    "sha256": "316110f8e7e758a263e22a3bf74e50d4b30774047732677263d14f42d5753da8"
+  },
+  "meta": {
+    "name": "Gayathri Ratheesh",
+    "className": "Plus One Science / Class 11",
+    "joinDate": "2025-05-26",
+    "birthday": "13 October",
+    "avatar": "https://i.postimg.cc/kg0jdwGB/3ceb591b-1189-43f4-86b5-7e99675aceb0.png"
+  },
+  "termRanges": { "first": "May – Sep 2025", "second": "Sep – Dec 2025" },
+
+  "internals": {
+    "first": [
+      {"label":"QP01","subject":"Physics","pct":45},
+      {"label":"QP02","subject":"Maths","pct":52},
+      {"label":"QP03","subject":"Chemistry","pct":63},
+      {"label":"QP04","subject":"Biology","pct":78},
+      {"label":"QP05","subject":"Physics","pct":21},
+      {"label":"QP06","subject":"Maths","pct":41},
+      {"label":"QP07","subject":"Chemistry","pct":54},
+      {"label":"QP08","subject":"Biology","pct":46}
+    ],
+    "second": [
+      {"label":"QP09","subject":"Physics","pct":null},
+      {"label":"QP10","subject":"Maths","pct":null},
+      {"label":"QP11","subject":"Chemistry","pct":null},
+      {"label":"QP12","subject":"Biology","pct":null},
+      {"label":"QP13","subject":"Physics","pct":null},
+      {"label":"QP14","subject":"Maths","pct":null},
+      {"label":"QP15","subject":"Chemistry","pct":null},
+      {"label":"QP16","subject":"Biology","pct":null},
+      {"label":"QP17","subject":"Physics","pct":null},
+      {"label":"QP18","subject":"Maths","pct":null},
+      {"label":"QP19","subject":"Chemistry","pct":null},
+      {"label":"QP20","subject":"Biology","pct":null}
+    ]
+  },
+
+  "externals": {
+    "first": {
+      "sehr":   { "Physics": 61, "Maths": null, "Chemistry": 77, "Biology": 49 },
+      "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    },
+    "second": {
+      "sehr":   { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null },
+      "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+    }
+  },
+
+  "achievements": [
+    "Class Topper : June, July",
+    "100% Attendance : July",
+    "Event Coordinator : Onam 2025"
+  ],
+
+  "remarks": [],
+
+  "assignments": []
+}
