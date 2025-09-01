@@ -1,0 +1,33 @@
+{
+  "pinned": [
+    {
+      "id": "onam-results",
+      "title": "First Term results published",
+      "type": "results",
+      "priority": "high",
+      "start": "2025-09-01",
+      "end": "2025-09-07",
+      "cta": {"label": "Check Student Login", "url": "/studentlogin"}
+    }
+  ],
+  "items": [
+    {
+      "id": "qp09-class-test",
+      "title": "QP09 Class Test (Biology) on Oct 13",
+      "type": "exam",
+      "priority": "normal",
+      "start": "2025-09-25",
+      "end": "2025-10-13",
+      "cta": {"label": "View Schedule", "url": "/schedule"}
+    },
+    {
+      "id": "holiday",
+      "title": "Onam break ends — classes resume Oct 8",
+      "type": "notice",
+      "priority": "normal",
+      "start": "2025-09-15",
+      "end": "2025-10-08",
+      "cta": {"label": "See Updates", "url": "/#updates"}
+    }
+  ]
+}
