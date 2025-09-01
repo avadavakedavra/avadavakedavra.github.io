@@ -84,20 +84,20 @@
       "requiresAck": true
     },
     {
-      "id": "math-trigonometry-01",
-      "title": "Trigonometry Identities Practice",
-      "note": "Solve identity proofs from set A.\nMark the ones you found difficult.",
-      "subject": "Maths",
-      "issuedDate": "2025-08-20",
-      "dueDate": "2025-08-27",
+      "id": "seminar-on-plantkingdom",
+      "title": "Seminar on Kingdom Plantae",
+      "note": "Student needs to prepare for a presentation on the topic Kingdom Plantae ",
+      "subject": "Botany",
+      "issuedDate": "2025-08-31",
+      "dueDate": "2025-09-25",
       "priority": "normal",
-      "status": "completed",
-      "faculty": "Mr. Rahul",
+      "status": "assigned",
+      "faculty": "Mr. Shan",
       "attachments": [
-        { "label": "Practice Set A (PDF)", "url": "/files/math-trig-set-a.pdf" }
+        { "label": "Pending", "url": "" }
       ],
       "checklist": [
-        { "text": "Q1–Q10", "done": true }
+        { "text": "Completion", "done": false }
       ]
     }
   ]
