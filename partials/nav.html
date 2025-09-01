@@ -1,3 +1,6 @@
+here you go — **clean nav with no boxes** for “About Us” and “Courses”, same look as other items, and **smaller submenu font**. Replace your `/partials/nav.html` with this:
+
+```html
 <!-- Shared Navbar (Sehr Academy) -->
 <!-- Save as /partials/nav.html -->
 <style>
@@ -30,13 +33,14 @@
   header#site-header .menu{display:flex;gap:4px;align-items:center}
   header#site-header .menu > li{position:relative}
 
-  /* Base link/trigger style — font size smaller now */
+  /* Base link/trigger style — identical for all items (no boxes) */
   header#site-header .link,
   header#site-header .trigger{
     font-family:"Montserrat",sans-serif; color:var(--ink); text-decoration:none;
     font-weight:700; font-size:13px; letter-spacing:.2px;
     display:inline-flex; align-items:center; gap:6px; padding:6px 8px; border-radius:0;
     position:relative; transition:color .18s ease;
+    background:none; /* ensure no box */
   }
 
   /* Subtle green underline on hover/focus (no background box) */
@@ -59,7 +63,7 @@
 
   /* Dropdown */
   header#site-header .submenu{
-    position:absolute; left:6px; top:100%; min-width:200px; padding:8px;
+    position:absolute; left:6px; top:100%; min-width:200px; padding:6px;
     background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
     border:1px solid rgba(0,0,0,.06); border-radius:12px; box-shadow:0 18px 40px rgba(15,23,42,.14);
     visibility:hidden; opacity:0; transform: translateY(6px);
@@ -72,7 +76,7 @@
   }
   header#site-header .submenu a{
     display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; text-decoration:none;
-    color:var(--ink); font-weight:700; font-family:"Montserrat",sans-serif; font-size:13px;
+    color:var(--ink); font-weight:700; font-family:"Montserrat",sans-serif; font-size:12px; /* smaller submenu */
     transition: color .16s ease, transform .16s ease, background .16s ease;
   }
   header#site-header .submenu a:hover,
@@ -98,7 +102,7 @@
 
   <nav id="primary-nav" aria-label="Primary">
     <ul class="menu" role="menubar">
-      <!-- About Us (dropdown) -->
+      <!-- About Us (dropdown, same style as others; only shows caret) -->
       <li role="none">
         <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">
           About Us <span class="caret">▾</span>
@@ -111,7 +115,7 @@
         </ul>
       </li>
 
-      <!-- Courses (dropdown) -->
+      <!-- Courses (dropdown, same style as others; only shows caret) -->
       <li role="none">
         <button class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">
           Courses <span class="caret">▾</span>
@@ -161,3 +165,4 @@
   });
 })();
 </script>
+```
