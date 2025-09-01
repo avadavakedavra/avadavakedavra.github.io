@@ -761,7 +761,49 @@ align-items: center;
 }
 
 </style>
+<style>
+  /* === Compact Announcements (per-entry smaller) === */
+  .section-annc .card.annc{
+    padding:10px !important;
+    border-radius:12px !important;
+    font-size:11px !important;     /* base text smaller */
+    line-height:1.45 !important;
+  }
+  .section-annc .card.annc p{
+    margin:6px 0 !important;
+    font-weight:400 !important;     /* keep it light */
+  }
+  .section-annc .annc-title{
+    margin:0 0 4px !important;
+    font-size:14px !important;      /* smaller title */
+    font-weight:600 !important;
+    line-height:1.25 !important;
+  }
+  .section-annc .annc-date{
+    margin:0 0 6px !important;
+    font-size:11px !important;
+    font-weight:400 !important;
+    opacity:.8 !important;
+  }
+  .section-annc .annc-cta{ margin-top:6px !important; }
+  .section-annc .annc-cta a{
+    padding:6px 10px !important;    /* smaller chip */
+    font-size:12px !important;
+    border-radius:999px !important;
+  }
 
+  /* Tighten the wrapper a bit so the whole block feels smaller */
+  .section-annc .annc-wrap{
+    padding:12px !important;
+    box-shadow:0 12px 28px rgba(15,23,42,.12) !important;
+  }
+
+  /* Optional: compact the pinned/list grids’ row gap */
+  .section-annc .annc-pinned,
+  .section-annc .annc-list{
+    gap:10px !important;
+  }
+</style>
 <style>
   /* Selected tab highlight in Academic Updates */
   #updates .tabbar {
@@ -1665,6 +1707,7 @@ align-items: center;
   </script>
 </body>
 </html>
+
 
 
 
