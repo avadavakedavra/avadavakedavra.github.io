@@ -61,23 +61,25 @@
 
   "assignments": [
     {
-      "id": "chem-acids-bases-01",
-      "title": "Acids & Bases — Numericals Set",
-      "note": "Solve Q1–Q10 from the worksheet. Show full steps.\nFocus on **pH** calculations.",
-      "subject": "Chemistry",
-      "issuedDate": "2025-09-02",
-      "dueDate": "2025-09-09",
+      "id": "first-term-25times",
+      "title": "First Term Exam - Wrong Answers",
+      "note": "All wrong answers of First Term Exam, to be written down 25 times and submitted.",
+      "subject": "All Subjects",
+      "issuedDate": "2025-09-31",
+      "dueDate": "2025-10-08",
       "priority": "high",
       "status": "assigned",
-      "faculty": "Ms. Anjali",
+      "faculty": "Mr. Shan",
       "attachments": [
-        { "label": "Worksheet (PDF)", "url": "/files/chem-worksheet-01.pdf" }
+        { "label": "Assignment Folder", "url": "https://drive.google.com/drive/folders/1KyGcHdpJUz-r_2h-kei9z_BQnA2UZjrD?usp=drive_link" }
       ],
       "checklist": [
-        { "text": "Q1–Q5",  "done": false },
-        { "text": "Q6–Q10", "done": true }
+        { "text": "Biology",  "done": false },
+        { "text": "Physics",  "done": false },
+        { "text": "Chemistry",  "done": false },  
+        { "text": "Maths", "done": true }
       ],
-      "tags": ["numericals","term-2"],
+      "tags": ["numericals","term-1"],
       "requiresAck": true
     }
   ],
