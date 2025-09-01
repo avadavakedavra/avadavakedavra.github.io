@@ -28,7 +28,7 @@ body{
 
 /* Make all cards/boxes whiter with glass separation */
 .glass, .card, .f-card, .plan, .s-card, .contact-card, .carousel, .select, .lb-row{
-  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.85));
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.84)) !important;
   border:1px solid rgba(0,0,0,.06) !important;
   box-shadow:0 16px 44px rgba(15,23,42,.08) !important;
   backdrop-filter:blur(14px) saturate(140%) !important;
@@ -178,7 +178,7 @@ body{
     }
     .glass:hover{ transform: translateY(-3px); box-shadow:0 28px 70px rgba(16,24,40,.16) }
     .card{ padding:22px }
-    .muted{color: #374151;}
+    .muted{color:var(--muted)}
 
     .hero{padding:110px 0 60px;border-top:0; position:relative}
     .hero .container{display:grid; gap:20px}
@@ -363,6 +363,11 @@ body{
       .lb-ava{ width:48px; height:48px; border-radius:14px }
     }
   </style>
+
+<style id="a11y-contrast-overrides">
+  .muted { color:#374151 !important; }
+</style>
+
 </head>
 
 <body>
@@ -414,6 +419,75 @@ body{
         </div>
       </div>
     </section>
+    <!-- ===== Announcements (JSON-driven) ===== -->
+    <section class="section-annc" aria-labelledby="annc-title">
+      <style>
+        .section-annc{max-width:1180px;margin:18px auto;padding:0 20px}
+        .annc-wrap{background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.9));
+          border:1px solid rgba(255,255,255,.55);border-radius:18px;box-shadow:0 18px 40px rgba(15,23,42,.14);padding:14px}
+        .annc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        .annc-head h2{font-family:Montserrat,sans-serif;font-weight:900;margin:0}
+        .blink-dot{width:10px;height:10px;border-radius:999px;background:#ef4444;box-shadow:0 0 0 6px rgba(239,68,68,.18);animation:pulse 1.8s infinite}
+        @keyframes pulse{0%{transform:scale(1)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
+        .annc-pinned,.annc-list{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+        .card.annc{grid-column:span 6;position:relative;overflow:hidden;border-radius:14px;background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.55);padding:12px}
+        .annc-pinned .card.annc{grid-column:span 12;background:linear-gradient(180deg,#fff7ed,#ffffff);border:1px solid #fed7aa}
+        @media (max-width:980px){.card.annc{grid-column:span 12}}
+        .annc .title{font-weight:900;font-family:Montserrat,sans-serif}
+        .annc .meta{display:flex;gap:10px;flex-wrap:wrap;color:#374151;font-size:.9rem}
+        .annc .chip{padding:4px 8px;border-radius:999px;background:#fff;border:1px solid rgba(15,23,42,.08);font-weight:800;font-size:.8rem}
+        .annc .cta{margin-left:auto}
+        .annc .cta a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:Montserrat;font-weight:900;border:1px solid rgba(15,23,42,.1);border-radius:999px;padding:6px 10px;background:#fff}
+        .card.annc[data-priority="high"]{box-shadow:0 0 0 3px rgba(239,68,68,.18),0 18px 40px rgba(15,23,42,.14)}
+      </style>
+      <div class="annc-wrap">
+        <div class="annc-head">
+          <h2 id="annc-title">Announcements</h2>
+          <div class="blink-dot" aria-hidden="true"></div>
+        </div>
+        <div id="annc-pinned" class="annc-pinned" aria-live="polite"></div>
+        <div id="annc-list" class="annc-list" aria-live="polite"></div>
+      </div>
+      <script>
+        (async function announce(){
+          const hostPinned = document.getElementById('annc-pinned');
+          const hostList = document.getElementById('annc-list');
+          try{
+            const res = await fetch('/announcements.json', {cache:'no-cache'});
+            const data = await res.json();
+            const pinned = Array.isArray(data.pinned) ? data.pinned : [];
+            const items  = Array.isArray(data.items)  ? data.items  : [];
+            const now = new Date();
+            const active = arr => (arr||[]).filter(x => {
+              const s = x.start ? new Date(x.start) : null;
+              const e = x.end ? new Date(x.end) : null;
+              return (!s || s <= now) && (!e || e >= now);
+            });
+            const icon = t => ({exam:'📘', notice:'📣', results:'🏁', holiday:'🎉'})[t] || '📌';
+            const card = a => `
+              <article class="card annc" data-priority="${a.priority||'normal'}" aria-label="Announcement: ${a.title}">
+                <div class="annc meta">
+                  <span class="chip">${icon(a.type)} ${a.type||'notice'}</span>
+                  <span class="chip">Priority: ${a.priority||'normal'}</span>
+                  <span class="chip">${a.start||''}${a.end?(' → '+a.end):''}</span>
+                  <span class="cta">${a.cta?`<a href="${a.cta.url}" target="_blank" rel="noopener">${a.cta.label}</a>`:''}</span>
+                </div>
+                <div class="annc title">${a.title}</div>
+              </article>`;
+            const pinActive = active(pinned);
+            const listActive = active(items);
+            hostPinned.innerHTML = pinActive.length ? pinActive.map(card).join('') : '';
+            hostList.innerHTML   = listActive.length ? listActive.map(card).join('') :
+              `<article class="card annc" aria-label="Announcement: none">No announcements right now.</article>`;
+          }catch(e){
+            hostPinned.innerHTML = '';
+            hostList.innerHTML = `<article class="card annc" aria-label="Announcement: error">Announcements temporarily unavailable.</article>`;
+          }
+        })();
+      </script>
+    </section>
+    <!-- ===== /Announcements ===== -->
+
 
     <!-- ===== Academic Updates (Tabs + Subject-wise Leaderboard, REPLACED) ===== -->
     <section id="updates" class="updates">
@@ -561,7 +635,7 @@ body{
               <div class="lb-list">
                 <div class="lb-row">
                   <div class="lb-rank rank-1"><span>1</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha — Class 11 Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Fidha</div>
                     <div class="lb-bar" data-pct="67"><span></span></div>
@@ -570,7 +644,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-2"><span>2</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri — Origin Batch, Class 11 Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Gayathri</div>
                     <div class="lb-bar" data-pct="63"><span></span></div>
@@ -579,7 +653,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-3"><span>3</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha — Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Devanandha</div>
                     <div class="lb-bar" data-pct="61"><span></span></div>
@@ -594,7 +668,7 @@ body{
               <div class="lb-list">
                 <div class="lb-row">
                   <div class="lb-rank rank-1"><span>1</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha — Class 11 Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Fidha</div>
                     <div class="lb-bar" data-pct="65"><span></span></div>
@@ -603,7 +677,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-2"><span>2</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri — Origin Batch, Class 11 Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Gayathri</div>
                     <div class="lb-bar" data-pct="61"><span></span></div>
@@ -612,7 +686,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-3"><span>3</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha — Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Devanandha</div>
                     <div class="lb-bar" data-pct="54"><span></span></div>
@@ -627,7 +701,7 @@ body{
               <div class="lb-list">
                 <div class="lb-row">
                   <div class="lb-rank rank-1"><span>1</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha — Class 11 Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Fidha</div>
                     <div class="lb-bar" data-pct="87"><span></span></div>
@@ -636,7 +710,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-2"><span>2</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri — Origin Batch, Class 11 Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Gayathri</div>
                     <div class="lb-bar" data-pct="77"><span></span></div>
@@ -645,7 +719,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-3"><span>3</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha — Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Devanandha</div>
                     <div class="lb-bar" data-pct="54"><span></span></div>
@@ -660,7 +734,7 @@ body{
               <div class="lb-list">
                 <div class="lb-row">
                   <div class="lb-rank rank-1"><span>1</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha"><img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha — Class 11 Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Fidha</div>
                     <div class="lb-bar" data-pct="87"><span></span></div>
@@ -669,7 +743,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-2"><span>2</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri"><img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri — Origin Batch, Class 11 Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Gayathri</div>
                     <div class="lb-bar" data-pct="77"><span></span></div>
@@ -678,7 +752,7 @@ body{
                 </div>
                 <div class="lb-row">
                   <div class="lb-rank rank-3"><span>3</span></div>
-                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha"></a>
+                  <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha"><img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha — Plus One Science student at Sehr Academy"></a>
                   <div>
                     <div class="lb-name">Devanandha</div>
                     <div class="lb-bar" data-pct="54"><span></span></div>
@@ -695,7 +769,7 @@ body{
     <div class="lb-row">
       <div class="lb-rank rank-1"><span>1</span></div>
       <a class="lb-ava" href="https://sehracademy.com/devanandha" target="_blank" rel="noopener" aria-label="Open profile: Devanandha">
-        <img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha">
+        <img src="https://i.postimg.cc/8CxvnPpv/6f328cb2f9750cb51b98511d4b6b6155.png" alt="Devanandha — Plus One Science student at Sehr Academy">
       </a>
       <div>
         <div class="lb-name">Devanandha</div>
@@ -708,7 +782,7 @@ body{
     <div class="lb-row">
       <div class="lb-rank rank-2"><span>2</span></div>
       <a class="lb-ava" href="https://sehracademy.com/gayathri" target="_blank" rel="noopener" aria-label="Open profile: Gayathri">
-        <img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri">
+        <img src="https://i.postimg.cc/DwjLLPRB/cb6da44e9d7df1015648a024b69775de.png" alt="Gayathri — Origin Batch, Class 11 Science student at Sehr Academy">
       </a>
       <div>
         <div class="lb-name">Gayathri</div>
@@ -721,7 +795,7 @@ body{
     <div class="lb-row">
       <div class="lb-rank rank-3"><span>3</span></div>
       <a class="lb-ava" href="https://sehracademy.com/fidha" target="_blank" rel="noopener" aria-label="Open profile: Fidha">
-        <img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha">
+        <img src="https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png" alt="Fidha — Class 11 Plus One Science student at Sehr Academy">
       </a>
       <div>
         <div class="lb-name">Fidha</div>
@@ -1354,7 +1428,6 @@ body{
   </script>
 </body>
 </html>
-
 
 
 
