@@ -96,12 +96,14 @@
     }
 
     /* Footer */
-    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; gap:14px; justify-content:center; color:#334; font-size:14px}
+    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; flex-direction:column; gap:8px; justify-content:center; color:#334; font-size:14px}
+    footer .links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
     footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
+    .diag{opacity:.7; text-align:center; font-size:12px}
   </style>
 </head>
 <body>
-  <!-- Shared header -->
+  <!-- Shared header (uses your existing nav.js) -->
   <header id="site-header"></header>
   <script src="/assets/nav.js" defer></script>
 
@@ -172,19 +174,37 @@
   </details>
 
   <footer>
-    <a href="https://sehracademy.com/studentlogin">Student Login</a>
-    <a href="mailto:hello@sehracademy.com?subject=Syllabus%20Update%20Request">Report update</a>
+    <div class="links">
+      <a href="https://sehracademy.com/studentlogin">Student Login</a>
+      <a href="mailto:hello@sehracademy.com?subject=Syllabus%20Update%20Request">Report update</a>
+    </div>
+    <div class="diag" id="diag"></div>
   </footer>
 
   <script>
     /* ====== How it works ======
-      - Create /data/syllabus.json (see section 2 below)
+      - Create /data/syllabus.json
       - This page fetches it and renders 4 drop-downs (open by default).
       - Completed rows get "frosty green"; others stay frosty white.
       - You only edit the JSON to change status / expectedDate.
     */
 
-    const DATA_URL = '/data/syllabus.json?cb=' + Date.now();
+    // --- Robust path resolver (tries relative, then root) ---
+    const CANDIDATES = [
+      new URL('./data/syllabus.json?cb=' + Date.now(), location.href).toString(),
+      new URL('data/syllabus.json?cb=' + Date.now(), location.href).toString(),
+      location.origin + '/data/syllabus.json?cb=' + Date.now()
+    ];
+    async function fetchFirst(paths){
+      for(const p of paths){
+        try{
+          const r = await fetch(p, {cache:'no-store'});
+          if(r.ok) return { res: r, url: p };
+        }catch(e){/* ignore and try next */}
+      }
+      throw new Error('None of the candidate paths worked:\n' + paths.join('\n'));
+    }
+
     const lists = {
       physics: document.getElementById('list-physics'),
       chemistry: document.getElementById('list-chemistry'),
@@ -203,6 +223,7 @@
       mathematics: document.getElementById('count-mathematics'),
       biology: document.getElementById('count-biology')
     };
+    const diag = document.getElementById('diag');
 
     function makeRow(item){
       const div = document.createElement('div');
@@ -263,5 +284,27 @@
 
     async function init(){
       try{
-        const res = await fetch(DATA_URL, { cache:'no-store' });
-        if(!res.ok) throw new Error('HTTP '+res.status);
+        const { res, url } = await fetchFirst(CANDIDATES);
+        if (diag) diag.textContent = 'Loaded: ' + url.replace(location.origin, '');
+        const data = await res.json();
+
+        renderSimple(data.physics || [], lists.physics, 'physics');
+        renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
+        renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
+        renderBiology(data.biology || [], lists.biology, 'biology');
+      }catch(err){
+        console.error('Failed to load syllabus.json', err);
+        if (diag) diag.textContent = 'Load error — check that /data/syllabus.json exists (case-sensitive) and is valid JSON.';
+        Object.values(badges).forEach(b=>b.textContent='Load error');
+        Object.values(lists).forEach(m=>{
+          const d = document.createElement('div');
+          d.className='row';
+          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>. Check path & JSON validity.</div><div class="status pending">—</div><div class="date">Expected: —</div>';
+          m.appendChild(d);
+        });
+      }
+    }
+    init();
+  </script>
+</body>
+</html>
