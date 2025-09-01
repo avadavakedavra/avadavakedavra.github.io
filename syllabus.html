@@ -16,7 +16,6 @@
   <style>
     :root{
       --sehr-green:#8BC53F;
-      --sehr-green-2:#6cab2f;
       --ink:#0F172A;
       --muted:#5b6475;
       --glass-border: rgba(255,255,255,0.55);
@@ -55,6 +54,7 @@
     /* Controls: filter tabs + search */
     .controls{max-width:var(--maxw);margin:10px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));font-weight:800; cursor:pointer}
+    .chip:hover{filter:brightness(1.03)}
     .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45); box-shadow:0 6px 16px rgba(139,197,63,.18)}
     .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
     .search input{border:0;background:transparent;outline:none;flex:1;font-weight:700}
@@ -89,7 +89,7 @@
     .sum-left{display:flex;align-items:center;gap:12px}
     .subject-name{font-size:18px; color:#0b0f10; text-transform:uppercase; letter-spacing:.4px}
 
-    /* Click hint to far right (no arrow icons) */
+    /* Click hint to far right (no arrows) */
     .sum-right{display:flex; align-items:center; gap:14px}
     .hint{
       font-family:Montserrat; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.5px;
@@ -103,7 +103,7 @@
     /* Progress mini bar inside summary (gold gradient) */
     .prog-wrap{width:220px; display:flex; flex-direction:column; gap:4px}
     .prog-rail{width:100%; height:8px; border-radius:999px; background:rgba(0,0,0,.06); position:relative; overflow:hidden; border:1px solid rgba(0,0,0,.06)}
-    .prog-fill{height:100%; width:0%; background:var(--bar-gold); border-radius:999px; transition:width .35s ease}
+    .prog-fill{height:100%; width:0%; background:var(--bar-gold); border-radius:999px; transition:width .45s ease}
     .prog-note{font-size:10px; font-weight:900; color:#2b3345; text-transform:uppercase; letter-spacing:.4px; opacity:.8; text-align:right}
 
     /* Chapter list — square & crystal glass */
@@ -145,10 +145,7 @@
     .date:empty{ display:none } /* hide empty date cells */
 
     /* Footer */
-    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:flex; flex-direction:column; gap:8px; justify-content:center; color:#334; font-size:14px}
-    footer .links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
-    footer a{font-weight:800; font-family:Montserrat; padding:10px 14px; border-radius:12px; border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.75))}
-    .diag{opacity:.7; text-align:center; font-size:12px}
+    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:none}
 
     /* Compact mobile density */
     @media (max-width: 380px){
@@ -167,7 +164,7 @@
   <div class="pagehead">
     <div>
       <div class="title">Class 11 Syllabus — Completion Tracker</div>
-      <div class="subtitle">Filter by status, search chapters, and update via one JSON.</div>
+      <div class="subtitle">Filter by status, search chapters, and view live completion.</div>
       <div class="stamp" id="last-updated"></div>
     </div>
   </div>
@@ -292,13 +289,8 @@
     <div class="chapters" id="list-zoology"></div>
   </details>
 
-  <footer>
-    <div class="links">
-      <a href="https://sehracademy.com/studentlogin">Student Login</a>
-      <a href="mailto:hello@sehracademy.com?subject=Syllabus%20Update%20Request">Report update</a>
-    </div>
-    <div class="diag" id="diag"></div>
-  </footer>
+  <!-- Footer hidden (per your request) -->
+  <footer></footer>
 
   <script>
     /* ====== Data fetching (robust path resolver) ====== */
@@ -339,7 +331,6 @@
       botany: document.getElementById('note-botany'),
       zoology: document.getElementById('note-zoology')
     };
-    const diag = document.getElementById('diag');
     const lastUpdatedEl = document.getElementById('last-updated');
 
     /* ====== Utilities ====== */
@@ -369,10 +360,17 @@
       return div;
     }
 
+    // Smooth & reliable progress animation; ensures width is applied after layout.
     function setProgress(total, done, key){
+      const bar = bars[key];
+      const note = notes[key];
+      if(!bar || !note) return;
       const pct = total ? Math.round((done/total)*100) : 0;
-      bars[key].style.width = pct + '%';
-      notes[key].textContent = `${done}/${total}`;
+      // reset to 0 to ensure transition plays even when re-rendering
+      bar.style.width = '0%';
+      // apply after a frame so transition triggers
+      requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
+      note.textContent = `${done}/${total}`;
     }
 
     function renderSimple(arr, mount, key){
@@ -439,8 +437,7 @@
     /* ====== Init ====== */
     async function init(){
       try{
-        const { res, url } = await fetchFirst(CANDIDATES);
-        if (diag) diag.textContent = 'Loaded: ' + url.replace(location.origin, '');
+        const { res } = await fetchFirst(CANDIDATES);
         const data = await res.json();
 
         // Last updated stamp
@@ -463,7 +460,6 @@
         applyFilters();
       }catch(err){
         console.error('Failed to load syllabus.json', err);
-        if (diag) diag.textContent = 'Load error — check that /data/syllabus.json exists (case-sensitive) and is valid JSON.';
         // graceful placeholder
         Object.values(lists).forEach(m=>{
           const d = document.createElement('div');
