@@ -1,33 +1,19 @@
 {
-  "meta": {
-    "name": "Fidha",
-    "className": "Plus One Science / Class 11",
-    "joinDate": "2025-05-26",
-    "birthday": "5th September",
-    "avatar": "https://i.postimg.cc/TPKm9W6G/96bd66a1aac05c9874603a461aea9a20.png"
-  },
-  "termRanges": { "first": "May – Sep 2025" },
-
+  "termRanges": { "first": "May – Sep 2025", "second": "Sep – Dec 2025" },
   "internals": {
-    "first": [
-      {"label":"QP01","subject":"Physics","pct":51},
-      {"label":"QP02","subject":"Maths","pct":63},
-      {"label":"QP03","subject":"Chemistry","pct":66},
-      {"label":"QP04","subject":"Biology","pct":50},
-      {"label":"QP05","subject":"Physics","pct":37},
-      {"label":"QP06","subject":"Maths","pct":50},
-      {"label":"QP07","subject":"Chemistry","pct":57},
-      {"label":"QP08","subject":"Biology","pct":8}
+    "first": [ ... ],
+    "second": [
+      {"label":"QP09","subject":"Physics","pct":72},
+      {"label":"QP10","subject":"Maths","pct":55},
+      ...
+      {"label":"QP20","subject":"Biology","pct":64}
     ]
   },
-
   "externals": {
-    "sehr":   { "Physics": 65, "Maths": 1,  "Chemistry": 87, "Biology": 47 },
-    "school": { "Physics": 1,  "Maths": 1,  "Chemistry": 1,  "Biology": 1 }
-  },
-
-  "achievements": [
-    "Event Coordinator"
-  ],
-  "remarks": []
+    "first": { "sehr": { ... }, "school": { ... } },
+    "second": {
+      "sehr":   { "Physics": 70, "Maths": 64, "Chemistry": 78, "Biology": 69 },
+      "school": { "Physics": 68, "Maths": 61, "Chemistry": 75, "Biology": 65 }
+    }
+  }
 }
