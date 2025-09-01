@@ -55,5 +55,27 @@
 
   "remarks": [],
 
-  "assignments": []
+  "assignments": [
+    {
+      "id": "first-term-25times",
+      "title": "First Term Exam - Wrong Answers",
+      "note": "All wrong answers of First Term Exam, to be written down 25 times and submitted.",
+      "subject": "All Subjects",
+      "issuedDate": "2025-08-31",
+      "dueDate": "2025-9-08",
+      "priority": "high",
+      "status": "assigned",
+      "faculty": "Mr. Shan",
+      "attachments": [
+        { "label": "Assignment Folder", "url": "https://drive.google.com/drive/folders/1KyGcHdpJUz-r_2h-kei9z_BQnA2UZjrD?usp=drive_link" }
+
+      ],
+      "checklist": [
+        { "text": "Physics",  "done": false },
+        { "text": "Chemistry",  "done": false }
+      ],
+      "tags": ["numericals","term-2"],
+      "requiresAck": true
+    }
+  ]
 }
