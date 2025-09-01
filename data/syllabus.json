@@ -1,6 +1,6 @@
 {
   "physics": [
-    { "index": 1, "title": "Units and Measurements", "status": "pending", "expectedDate": "" },
+    { "index": 1, "title": "Units and Measurements", "status": "completed", "expectedDate": "" },
     { "index": 2, "title": "Motion in a Straight Line", "status": "pending", "expectedDate": "" },
     { "index": 3, "title": "Motion in a Plane", "status": "pending", "expectedDate": "" },
     { "index": 4, "title": "Laws of Motion", "status": "pending", "expectedDate": "" },
