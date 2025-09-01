@@ -163,8 +163,6 @@
     .ass-check .chk{ display:flex; align-items:center; gap:8px; font-weight:800; }
     .ass-check .dot{ width:10px; height:10px; border-radius:999px; background: rgba(15,23,42,.25); }
     .ass-check .done .dot{ background: var(--sehr-green); }
-    .ass-complete-tick{ font-weight:900; font-family: Montserrat; padding:2px 8px; border-radius:999px; background:#ecfdf5; border:1px solid #bbf7d0; }
-    .ass-complete-tick::before{ content:"✓ "; }
 
     /* ACHIEVEMENTS & REMARKS */
     .achievements, .remarks{ background: rgba(255,255,255,0.92); }
@@ -302,7 +300,7 @@
       </div>
     </section>
 
-    <!-- Assignments Section (now right after profile, before First Term) -->
+    <!-- Assignments Section (after profile, before First Term) -->
     <section class="section card assignments" id="assignments-section">
       <h2>Assignments</h2>
       <div class="assign-list" id="assign-list"></div>
@@ -565,7 +563,6 @@
         listEl.innerHTML = `<div class="ass-card"><div class="ass-title">No assignments yet</div></div>`;
         return;
       }
-      // sort: nearest due first (assigned), then completed ones by recent issued
       const now = new Date();
       const order = {critical:3, high:2, normal:1, low:0};
       arr.sort((a,b)=>{
@@ -574,10 +571,10 @@
         const ad = a.dueDate ? new Date(a.dueDate) : null;
         const bd = b.dueDate ? new Date(b.dueDate) : null;
         if(!ac && !bc && ad && bd){
-          if(ad >= now && bd >= now) return ad - bd;             // upcoming: sooner first
-          if(ad >= now && bd <  now) return -1;                  // upcoming before past
+          if(ad >= now && bd >= now) return ad - bd;
+          if(ad >= now && bd <  now) return -1;
           if(ad <  now && bd >= now) return 1;
-          return bd - ad;                                        // both past: most recent due first
+          return bd - ad;
         }
         const pa = order[(a.priority||'normal')] ?? 1;
         const pb = order[(b.priority||'normal')] ?? 1;
@@ -599,7 +596,6 @@
                 <span class="ass-subject">${a.subject||'Work'}</span>
                 <span class="ass-prio" data-p="${pr}">${pr.charAt(0).toUpperCase()+pr.slice(1)}</span>
                 <span class="ass-status ${completed?'done':''}">${statusLbl}</span>
-                ${completed ? `<span class="ass-complete-tick">Completed</span>` : ``}
               </div>
             </div>
             <div class="ass-title">${a.title||'Assignment'}</div>
@@ -814,7 +810,7 @@
       document.getElementById('term-range').textContent  = (DATA.termRanges?.first)  || FALLBACK.termRanges.first;
       document.getElementById('term2-range').textContent = (DATA.termRanges?.second) || FALLBACK.termRanges.second;
 
-      // Assignments (now full section)
+      // Assignments
       renderAllAssignments(DATA);
 
       // Internals
