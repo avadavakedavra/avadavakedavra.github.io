@@ -7,11 +7,32 @@
     "notes": "Back after Onam vacation." 
   },
   { 
-    "date": "2025-9-13", 
-    "time": "11:00 AM – 1:00 PM", 
+    "date": "2025-9-29", 
+    "time": "6:00 AM – 7:30 AM", 
     "title": "QP09 Class Test", 
     "cls": "Plus One",  
-    "notes": "Biology focus" 
+    "notes": "Biology focused" 
+  },
+  { 
+    "date": "2025-9-29", 
+    "time": "6:00 PM – 7:30 PM", 
+    "title": "QP10 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Physics focused" 
+  },
+  { 
+    "date": "2025-9-30", 
+    "time": "6:00 AM – 7:30 AM", 
+    "title": "QP11 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Mathematics focused" 
+  },
+ { 
+    "date": "2025-9-30", 
+    "time": "6:00 PM – 7:30 PM", 
+    "title": "QP12 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Biology focused" 
   },
   { 
     "date": "2025-9-15", 
