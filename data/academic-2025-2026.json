@@ -123,10 +123,16 @@
       "topic": "System of Particles and Rotational Motion Part 3"
     },
     {
-      "date": "2025-09-23",
+      "date": "2025-09-22",
       "time": "EVENING 6 PM",
       "subject": "Maths",
       "topic": "Linear Inequalities Part 3"
+    },
+    {
+      "date": "2025-09-23",
+      "time": "EVENING 6 PM",
+      "subject": "Chemistry",
+      "topic": "Thermodynamics Part 2"
     },
     {
       "date": "2025-09-24",
@@ -138,33 +144,19 @@
       "date": "2025-09-24",
       "time": "EVENING 6 PM",
       "subject": "Chemistry",
-      "topic": "Thermodynamics Part 2"
-    },
-    {
-      "date": "2025-09-25",
-      "time": "MORNING 6 AM",
-      "exam": true,
-      "subject": "EXAM",
-      "topic": "QP 10 - Class Test (Physics Focused)"
-    },
-    {
-      "date": "2025-09-25",
-      "time": "EVENING 6 PM",
-      "subject": "Chemistry",
       "topic": "Thermodynamics Part 4"
     },
     {
-      "date": "2025-09-26",
-      "time": "MORNING 6 AM",
-      "exam": true,
-      "subject": "EXAM",
-      "topic": "QP 12 - Class Test (Chemistry Focused)"
+      "date": "2025-09-25",
+      "time": "EVENING 6 PM",
+      "subject": "Zoology",
+      "topic": "Bio Molecules Part 2"
     },
     {
       "date": "2025-09-26",
       "time": "EVENING 6 PM",
-      "subject": "Zoology",
-      "topic": "Bio Molecules Part 2"
+      "subject": "Maths",
+      "topic": "Permutations and Combinations Part 1"
     },
     {
       "date": "2025-09-27",
@@ -174,12 +166,6 @@
     },
     {
       "date": "2025-09-27",
-      "time": "EVENING 6 PM",
-      "subject": "Maths",
-      "topic": "Permutations and Combinations Part 1"
-    },
-    {
-      "date": "2025-09-28",
       "time": "EVENING 6 PM",
       "subject": "Maths",
       "topic": "Permutations and Combinations Part 3"
@@ -192,11 +178,25 @@
       "topic": "QP 9 - Class Test (Biology Focused)"
     },
     {
+      "date": "2025-09-29",
+      "time": "EVENING 6 PM",
+      "exam": true,
+      "subject": "EXAM",
+      "topic": "QP 10 - Class Test (Physics Focused)"
+    },
+    {
       "date": "2025-09-30",
       "time": "MORNING 6 AM",
       "exam": true,
       "subject": "EXAM",
       "topic": "QP 11 - Class Test (Maths Focused)"
+    },
+    {
+      "date": "2025-09-30",
+      "time": "EVENING 6 PM",
+      "exam": true,
+      "subject": "EXAM",
+      "topic": "QP 12 - Class Test (Chemistry Focused)"
     }
   ]
 }
