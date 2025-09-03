@@ -308,19 +308,10 @@
         const end   = new Date(data.meta.end);
         if (Number.isNaN(start) || Number.isNaN(end)) throw new Error('Invalid start/end in meta');
 
-        const initial = (function(){
-          const monthParam = new URLSearchParams(location.search).get('month');
-          if (monthParam && /^\d{4}-\d{2}$/.test(monthParam)){
-            const [Y,M] = monthParam.split('-').map(Number);
-            return new Date(Y, M-1, 1);
-          }
-          if (data.meta.defaultMonth && /^\d{4}-\d{2}$/.test(data.meta.defaultMonth)){
-            const [Y,M] = data.meta.defaultMonth.split('-').map(Number);
-            return new Date(Y, M-1, 1);
-          }
-          const now = new Date();
-          return now < start ? start : (now > end ? end : now);
-        })();
+const initial = (()=>{
+  const now = new Date();                 // always use today
+  return clampAcademic(now, start, end);  // clamp to your calendar range
+})();
 
         function renderControls(start, end, currentYM){
           const sel = document.getElementById('monthSelect');
