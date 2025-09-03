@@ -1,6 +1,7 @@
 <!-- Shared Navbar (Sehr Academy) -->
 <!-- Save this file at /partials/nav.html -->
 <style>
+  /* === Original design (unchanged) === */
   header#site-header {
     position: sticky; top: 0; z-index: 40;
     background: rgba(255,255,255,.78);
@@ -37,7 +38,7 @@
   header#site-header .link:hover:after,
   header#site-header .trigger:hover:after{transform:scaleX(1)}
 
-  /* Dropdown */
+  /* Dropdown (level 1) */
   header#site-header .submenu{
     position:absolute;left:0;top:100%;min-width:200px;
     background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
@@ -51,11 +52,25 @@
   header#site-header .submenu a:hover{background:#f5f8f1;color:#8BC53F}
   header#site-header .menu > li.open > .submenu{display:block}
 
-  /* Mobile */
+  /* === Minimal additions for nested submenu (keeps same design) === */
+  header#site-header .submenu li{position:relative}
+  /* Position level-2 panel; inherits same styles as level-1 */
+  header#site-header .submenu .has-sub > .submenu{
+    position:absolute; left:100%; top:-6px; min-width:200px; display:none;
+  }
+  header#site-header .submenu li.open > .submenu{display:block}
+
+  /* Tiny arrow indicator for items that open a nested menu (same typography) */
+  header#site-header .submenu .has-sub > .trigger::after{
+    content:"▸"; position:static; transform:none; background:none; height:auto; margin-left:auto;
+  }
+
+  /* Mobile keeps same frosted look; stack submenus */
   @media (max-width:900px){
     header#site-header .menu-toggle{display:none}
     header#site-header .menu{flex-direction:column;align-items:flex-start}
     header#site-header .submenu{position:relative;left:auto;top:auto;box-shadow:none;border:1px solid rgba(0,0,0,.05);margin-top:4px}
+    header#site-header .submenu .has-sub > .submenu{position:relative;left:auto;top:auto;margin-top:4px}
   }
 </style>
 
@@ -90,8 +105,29 @@
         </ul>
       </li>
 
-      <!-- Existing -->
-      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
+      <!-- Classes (replaces Schedule link) -->
+      <li role="none">
+        <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Classes ▼</a>
+        <ul class="submenu" role="menu" aria-label="Classes">
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 9</a></li>
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 10</a></li>
+
+          <!-- Nested submenu (Class 11) — same design -->
+          <li role="none" class="has-sub">
+            <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 11</a>
+            <ul class="submenu" role="menu" aria-label="Class 11">
+              <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
+              <li role="none"><a role="menuitem" href="https://sehracademy.com/calendar">Calendar</a></li>
+              <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus">Syllabus</a></li>
+              <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
+            </ul>
+          </li>
+
+          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 12</a></li>
+        </ul>
+      </li>
+
+      <!-- Existing (kept) -->
       <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/downloads">Downloads</a></li>
       <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/studentlogin">Student Login</a></li>
       <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/contact">Contact</a></li>
@@ -104,16 +140,30 @@
   const header = document.currentScript.closest('header#site-header');
   const triggers = header.querySelectorAll('.trigger');
 
-  function closeAll(){ header.querySelectorAll('.menu > li.open').forEach(li=>li.classList.remove('open')); }
+  function closeSiblings(li){
+    const parentList = li.parentElement;
+    parentList.querySelectorAll(':scope > li.open').forEach(sib=>{
+      if(sib!==li) sib.classList.remove('open');
+    });
+    parentList.querySelectorAll(':scope > li .trigger[aria-expanded="true"]').forEach(t=>{
+      const tLi = t.closest('li');
+      if(tLi !== li) t.setAttribute('aria-expanded','false');
+    });
+  }
+
+  function closeAll(){
+    header.querySelectorAll('.open').forEach(li=>li.classList.remove('open'));
+    header.querySelectorAll('.trigger[aria-expanded="true"]').forEach(t=>t.setAttribute('aria-expanded','false'));
+  }
 
   triggers.forEach(btn=>{
     const li = btn.closest('li');
     btn.addEventListener('click',(e)=>{
       e.preventDefault();
       const willOpen = !li.classList.contains('open');
-      closeAll();
-      li.classList.toggle('open',willOpen);
-      btn.setAttribute('aria-expanded',willOpen);
+      closeSiblings(li);
+      li.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', willOpen);
     });
   });
 
