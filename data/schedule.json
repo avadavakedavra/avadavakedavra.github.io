@@ -35,6 +35,34 @@
     "notes": "Biology focused" 
   },
   { 
+    "date": "2025-10-27", 
+    "time": "6:00 AM – 7:30 AM", 
+    "title": "QP13 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Physics focused" 
+  },
+{ 
+    "date": "2025-10-31", 
+    "time": "6:00 AM – 7:30 AM", 
+    "title": "QP15 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Biology focused" 
+  },
+   { 
+    "date": "2025-10-30", 
+    "time": "6:00 PM – 7:30 PM", 
+    "title": "QP14 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Chemistry focused" 
+  },
+   { 
+    "date": "2025-10-31", 
+    "time": "6:00 PM – 7:30 PM", 
+    "title": "QP16 Class Test", 
+    "cls": "Plus One",  
+    "notes": "Mathematics focused" 
+  },
+  { 
     "date": "2025-9-15", 
     "time": "02:00 PM – 05:00 PM", 
     "title": "Crash Course Day 1", 
