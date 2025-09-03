@@ -61,11 +61,6 @@
     .title h1{margin:0;font-family:"Montserrat",sans-serif;font-weight:800;font-size:22px;letter-spacing:.2px}
     .badge{font-size:12px;font-weight:700;color:#0b0f10;background:#fff;border:1px solid var(--glass-edge);padding:4px 10px;border-radius:999px;line-height:1.1}
 
-    .legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:1200px;margin:0 auto 14px;padding:0 20px;color:var(--muted);font-size:13px}
-    .chip{display:inline-flex;align-items:center;gap:8px}
-    .swatch{width:18px;height:10px;border-radius:6px;border:1px solid var(--pill-br);background:#fff}
-    .swatch.morning{background:linear-gradient(180deg,#ffffff,#f1f5ff)}
-    .swatch.evening{background:linear-gradient(180deg,rgba(139,197,63,.18),rgba(139,197,63,.06))}
 
     .calendar{max-width:1200px;margin:0 auto 72px;padding:10px 20px 40px;display:grid;grid-template-rows:auto 1fr;gap:10px}
     .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;color:var(--muted);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
@@ -117,12 +112,6 @@
       <h1 id="page-title">Academic Calendar — May 2025 to Apr 2026</h1>
       <span id="badge" class="badge" style="display:none"></span>
     </div>
-  </div>
-
-  <div class="legend" aria-hidden="true">
-    <span class="chip"><span class="swatch morning"></span> Morning</span>
-    <span class="chip"><span class="swatch evening"></span> Evening</span>
-    <span class="chip">Subject colors: <b>Blue</b> Physics · <b>Green</b> Chemistry · <b>Red</b> Maths · <b>Yellow</b> Biology</span>
   </div>
 
   <main id="calendar" class="calendar" data-json="data/academic-2025-2026.json">
