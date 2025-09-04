@@ -15,7 +15,6 @@
   <style>
     :root{
       --primary:#8BC53F; --ink:#0f172a; --muted:#6b7280; --bg:#edf3e7;
-      --glass:linear-gradient(180deg,rgba(255,255,255,.68),rgba(255,255,255,.36));
       --border:#e6e8ec; --shadow:0 16px 44px rgba(15,23,42,.08);
       --r:16px; --r2:20px; --maxw:1180px;
       --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626; --info:#2563eb;
@@ -46,9 +45,9 @@
     h2{font-size:22px}
     .muted{color:var(--muted);font-weight:700}
 
-    /* Cards */
+    /* Frosted cards */
     .card{
-      background:var(--glass);
+      background:linear-gradient(180deg,rgba(255,255,255,.68),rgba(255,255,255,.36));
       border:1px solid rgba(255,255,255,.55);
       border-radius:var(--r2);
       box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.35);
@@ -59,25 +58,49 @@
     @media(min-width:980px){ .grid.cols-3{grid-template-columns:2fr 1fr 1fr} }
     @media(min-width:980px){ .grid.cols-2{grid-template-columns:1.4fr 1fr} }
 
-    /* Quick links */
-    .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    /* -------- Glossy white glass buttons (NO ARROWS) -------- */
+    .links{
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px
+    }
     @media(min-width:720px){ .links{grid-template-columns:repeat(3,minmax(0,1fr))} }
     @media(min-width:1080px){ .links{grid-template-columns:repeat(4,minmax(0,1fr))} }
     .link{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px 12px;
-      text-decoration:none;color:#0b0f10;font-weight:900;font-family:Montserrat;
-      box-shadow:0 10px 26px rgba(15,23,42,.08);
+      position:relative;
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      padding:14px 16px;border-radius:18px;font-family:Montserrat;font-weight:900;font-size:15px;
+      color:#0b0f10;text-decoration:none; user-select:none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,252,252,1) 55%, rgba(246,248,244,1) 100%);
+      border:1px solid rgba(0,0,0,.06);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.85),
+        inset 0 -1px 0 rgba(255,255,255,.6),
+        0 10px 26px rgba(15,23,42,.10);
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      overflow:hidden;
     }
-    .link:hover{outline:2px solid #e7f3db}
+    /* Glossy highlight strip */
+    .link::after{
+      content:""; position:absolute; left:0; right:0; top:0; height:42%;
+      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .link:hover{
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.9),
+        inset 0 -1px 0 rgba(255,255,255,.7),
+        0 14px 30px rgba(15,23,42,.14);
+      border-color: rgba(139,197,63,.25);
+    }
+    .link:active{ transform: translateY(0) scale(.99); }
 
-    /* Mini stat */
+    /* Mini stat & lists */
     .stat{display:grid;gap:8px}
     .stat .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
     .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#fff;font-weight:900}
-    .ok{color:var(--ok)} .warn{color:var(--warn)} .info{color:var(--info)}
+    .ok{color:#16a34a} .warn{color:#f59e0b} .info{color:#2563eb}
 
-    /* Lists */
     .list{display:grid;gap:10px;margin-top:12px}
     .item{
       background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:10px 12px;
@@ -88,16 +111,17 @@
     .meta{color:var(--muted);font-weight:700;font-size:12px}
     .empty{padding:14px;text-align:center;border:1px dashed #d8dee8;border-radius:12px;background:#fff;color:#6b7280;font-weight:900}
 
-    /* Profile pick */
     .row{display:grid;gap:10px}
     @media(min-width:760px){ .row.two{grid-template-columns:1fr 1fr} }
-    select,input[type="search"],button{
+    select,button{
       padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:#fff;font-weight:800
     }
     .btn{cursor:pointer}
     .note{font-size:12px;color:#6b7280}
 
-    /* Footer space */
+    /* Progress bar style */
+    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
+    .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
     .mt{margin-top:16px}
   </style>
 </head>
@@ -112,16 +136,16 @@
         <h1>Student Dashboard</h1>
         <div class="muted mt">Everything you need — profiles, classes, exams, downloads — in one place.</div>
 
-        <!-- Quick Links -->
+        <!-- Quick Links (glossy white glass buttons, no arrows) -->
         <div class="links">
-          <a class="link" href="/studentlogin.html">Student Login<span>→</span></a>
-          <a class="link" href="/student.html">Profiles<span>→</span></a>
-          <a class="link" href="/syllabus.html">Syllabus Tracker<span>→</span></a>
-          <a class="link" href="/calendar11.html">Calendar View<span>→</span></a>
-          <a class="link" href="/schedule.html">Daily Schedule<span>→</span></a>
-          <a class="link" href="/downloads.html">Downloads Library<span>→</span></a>
-          <a class="link" href="/roadmap.html">Roadmap (Sessions)<span>→</span></a>
-          <a class="link" href="/batchorigin.html">Class 11 — Origin<span>→</span></a>
+          <a class="link" href="/studentlogin.html">Student Login</a>
+          <a class="link" href="/student.html">Profiles</a>
+          <a class="link" href="/syllabus.html">Syllabus Tracker</a>
+          <a class="link" href="/calendar11.html">Calendar View</a>
+          <a class="link" href="/schedule.html">Daily Schedule</a>
+          <a class="link" href="/downloads.html">Downloads Library</a>
+          <a class="link" href="/roadmap.html">Roadmap (Sessions)</a>
+          <a class="link" href="/batchorigin.html">Class 11 — Origin</a>
         </div>
 
         <!-- Pick Student (deep links) -->
@@ -131,7 +155,7 @@
             <select id="studentSelect" aria-label="Select student"></select>
             <button id="openProfile" class="btn">Open Profile</button>
           </div>
-          <div class="note mt">Tip: this links to the dynamic profile page (e.g., <code>/student.html?id=fidha</code>).</div>
+          <div class="note mt">This links to the dynamic profile (e.g., <code>/student.html?id=fidha</code>).</div>
         </div>
       </section>
 
@@ -157,12 +181,12 @@
       </section>
     </div>
 
-    <!-- Subject Completion (from calendar vs syllabus) -->
+    <!-- Subject Completion -->
     <div class="container mt">
       <section class="card">
         <h2>Subject Completion</h2>
         <div id="subjBars" class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:10px"></div>
-        <div class="note mt">Estimated % based on calendar coverage of chapters in <code>/data/syllabus.json</code>.</div>
+        <div class="note mt">Estimated % from <code>/data/syllabus.json</code> vs <code>/data/academic-2025-2026.json</code>.</div>
       </section>
     </div>
   </main>
@@ -179,7 +203,7 @@
     const norm = s => (s||'').toString().toLowerCase().replace(/\s+/g,' ').trim();
     const baseTopic = t => (t||'').replace(/\s*[-–—]?\s*part\s*\d+.*$/i,'').trim();
     const partNum = t => { const m = (t||'').match(/part\s*(\d+)/i); return m ? +m[1] : 1; };
-    const tidyTime = t => (t||'').replace(/\b0?(\d)\b/,'$1'); // 06 -> 6
+    const tidyTime = t => (t||'').replace(/\b0?(\d)\b/,'$1');
     const fmtDate = iso => {
       const d = new Date(iso);
       return isNaN(+d) ? (iso||'') : d.toLocaleDateString(undefined, { day:'2-digit', month:'short', year:'numeric' });
@@ -193,13 +217,12 @@
     /* ===== State ===== */
     let students = [];
     let announcements = [];
-    let events = [];       // from academic-2025-2026.json
-    let schedule = [];     // from schedule.json
+    let events = [];       // academic events
+    let schedule = [];     // schedule.json
     let syllabusMap = {};  // subject -> chapters[]
 
     /* ===== Load all ===== */
     (async function(){
-      // JSONs (with safe fallbacks)
       const studentsJson = await tryJSON(['/students.json']);
       const annJson = await tryJSON(['/data/announcements.json','/announcements.json']);
       const academicJson = await tryJSON(['/data/academic-2025-2026.json']);
@@ -237,7 +260,7 @@
       });
     }
 
-    /* ===== Build: Next Class from academic events ===== */
+    /* ===== Build: Next Class ===== */
     function buildNextClass(){
       const host = document.getElementById('nextClass');
       const t0 = today();
@@ -258,7 +281,7 @@
       `).join('');
     }
 
-    /* ===== Build: Exams (from schedule.json + academic exams) ===== */
+    /* ===== Build: Exams ===== */
     function buildExams(){
       const host = document.getElementById('upcomingExams');
       const t0 = today();
@@ -274,3 +297,82 @@
       const all = [...fromSchedule, ...fromAcademic]
         .filter(x => x.date && x.date >= t0)
         .sort((a,b)=> a.date.localeCompare(b.date))
+        .slice(0,4);
+
+      if(!all.length){
+        host.innerHTML = `<div class="empty">No upcoming exams.</div>`;
+        return;
+      }
+      host.innerHTML = all.map(x=>`
+        <div class="item">
+          <div class="top"><b>${x.title || 'Exam'}</b><span class="pill">${fmtDate(x.date)}</span></div>
+          <div class="meta">${tidyTime(x.time||'')} • ${x.notes || ''}</div>
+        </div>
+      `).join('');
+    }
+
+    /* ===== Build: Announcements ===== */
+    function buildAnnouncements(){
+      const host = document.getElementById('annList');
+      if(!announcements.length){
+        host.innerHTML = `<div class="empty">No announcements right now.</div>`;
+        return;
+      }
+      const sorted = announcements.slice().sort((a,b)=> String(b.date||'').localeCompare(String(a.date||''))).slice(0,6);
+      host.innerHTML = sorted.map(a=>{
+        const url = a?.cta?.url || '#';
+        const label = a?.cta?.label || 'Open';
+        return `
+          <div class="item">
+            <div class="top"><b>${a.title || 'Announcement'}</b>${url && url!=='#' ? `<a class="pill" href="${url}">${label}</a>`:''}</div>
+            <div class="meta">${a.date ? fmtDate(a.date) : ''}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* ===== Build: Subject completion ===== */
+    function chapterTitle(obj){ return obj?.title || obj?.chapter || obj?.name || (typeof obj==='string' ? obj : ''); }
+
+    function computePct(subject){
+      const chaps = safeArr(syllabusMap[subject]);
+      if(!chaps.length || !events.length) return 0;
+      const subjectEvents = events.filter(e => (e.subject||'').trim() === subject);
+      const stats = chaps.map(ch=>{
+        const t = chapterTitle(ch);
+        const tNorm = norm(t);
+        const matches = subjectEvents.filter(e=>{
+          const topic = e.topic || '';
+          return norm(topic).includes(tNorm) || norm(baseTopic(topic)) === tNorm;
+        });
+        const partsDone = new Set(matches.map(m=>partNum(m.topic))).size || (matches.length?1:0);
+        const totalParts = ch.parts || ch.totalParts || Math.max(partsDone, matches.length?1:0);
+        const status = (ch.status||ch.state||'').toString().toLowerCase();
+        const explicitDone = status==='done' || status==='completed' || ch.completed===true;
+        const done = explicitDone || (totalParts>0 && partsDone >= totalParts);
+        return {done};
+      });
+      const total = stats.length;
+      const doneCount = stats.filter(x=>x.done).length;
+      return Math.round(doneCount/Math.max(total,1)*100);
+    }
+
+    function buildSubjectBars(){
+      const host = document.getElementById('subjBars');
+      const subjects = Object.keys(syllabusMap);
+      const order = ['Physics','Chemistry','Maths','Mathematics','Biology','Botany','Zoology'];
+      const ordered = [...order.filter(s=>subjects.includes(s)), ...subjects.filter(s=>!order.includes(s))];
+
+      host.innerHTML = ordered.map(s=>{
+        const pct = computePct(s);
+        return `
+          <div class="item" style="padding:14px">
+            <div class="top"><b>${s}</b><span class="pill">${pct}%</span></div>
+            <div class="bar"><i style="width:${pct}%"></i></div>
+          </div>
+        `;
+      }).join('') || `<div class="empty">Add subjects to <code>/data/syllabus.json</code> to see progress here.</div>`;
+    }
+  </script>
+</body>
+</html>
