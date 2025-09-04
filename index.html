@@ -399,7 +399,40 @@ body{
 }
 
 </style>
+<style>
+  /* Price slash styles */
+  .price-wrap{
+    display:inline-flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .price-old{
+    color:#b7bcc7;              /* muted */
+    font-weight:700;
+    text-decoration: line-through;
+    font-size: 0.42em;          /* smaller than the main price */
+    opacity:.9;
+  }
+  .price-new{
+    font-weight:900;
+    font-size: 1em;             /* inherits size from the container */
+    line-height:1;
+  }
 
+  /* When used inside the big Rupee price block */
+  .price-rupee .price-new{
+    font-size: 1em;             /* keeps your existing big size */
+  }
+
+  /* Optional: a small green “-20%” chip you can turn on if you like */
+  .discount-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 8px; border-radius:999px;
+    font-weight:800; font-size:11px; color:#0b2c09;
+    background: linear-gradient(180deg,#eaf6d5,#ffffff);
+    border:1px solid #dff0c7;
+    box-shadow: 0 6px 14px rgba(139,197,63,.15), inset 0 1px 0 #fff;
+    margin-left: 8px;
+  }
+</style>
 <style id="a11y-contrast-overrides">
   .muted { color:#374151 !important; }
 
@@ -1749,18 +1782,50 @@ align-items: center;
       next?.addEventListener('click', ()=> track.scrollBy({left:  scrollBy(), behavior:'smooth'}));
     });
   </script>
+<script>
+  (function applyPriceSlash(percent = 20){
+    // Format numbers like ₹ 2,499 in Indian locale
+    const fmtINR = (n)=> n.toLocaleString('en-IN');
+
+    // Find fee labels on batch cards and big Rupee prices in plans
+    const priceNodes = document.querySelectorAll('.fee, .price-rupee');
+
+    priceNodes.forEach(node => {
+      // Keep any trailing <small> like "/ month" in price-rupee blocks
+      let suffixHTML = '';
+      if(node.classList.contains('price-rupee')){
+        const small = node.querySelector('small');
+        if(small){ suffixHTML = small.outerHTML; small.remove(); }
+      }
+
+      // Extract numeric price from text (e.g., "₹ 2,499" -> 2499)
+      const raw = node.textContent.replace(/,/g,'');
+      const m = raw.match(/(\d+(?:\.\d+)?)/);
+      if(!m) return; // nothing to do
+
+      const original = parseFloat(m[1]);
+      if(!isFinite(original)) return;
+
+      // Compute 20% discount; round to nearest whole rupee
+      const discounted = Math.round(original * (1 - percent/100));
+
+      // Build the new HTML (old striked + new bold)
+      // Keep the node’s original font sizing by not changing its class
+      node.innerHTML = `
+        <span class="price-wrap" aria-live="polite">
+          <span class="price-old" aria-label="Old price">₹ ${fmtINR(original)}</span>
+          <span class="price-new" aria-label="Discounted price">₹ ${fmtINR(discounted)}</span>
+          ${suffixHTML}
+        </span>
+      `;
+
+      // OPTIONAL: If you want a little "-20%" chip after the price, uncomment below
+      // const chip = document.createElement('span');
+      // chip.className = 'discount-chip';
+      // chip.textContent = `-${percent}%`;
+      // node.appendChild(chip);
+    });
+  })(20); // pass the discount percentage here
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
