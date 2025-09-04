@@ -1,90 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sehr Academy — Interactive Roadmap</title>
-  <meta name="theme-color" content="#8BC53F" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Sehr Academy — Interactive Syllabus Roadmap</title>
+  <meta name="theme-color" content="#8BC53F"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
-      --primary:#8BC53F; --ink:#0f172a; --muted:#6b7280;
-      --radius:16px; --shadow:0 12px 30px rgba(15,23,42,.08);
+      --primary:#8BC53F; --primary-600:#78b338;
+      --ink:#0f172a; --muted:#6b7280;
+      --bg:#edf3e7; --glass:linear-gradient(180deg,rgba(255,255,255,.65),rgba(255,255,255,.35));
+      --border:#e6e8ec; --shadow:0 16px 44px rgba(15,23,42,.08);
+      --radius:16px; --radius-lg:20px; --maxw:1180px;
+      --gold:#e7c35c;
     }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
     body{
-      margin:0; font-family:Nunito, sans-serif; background:#f9fafb; color:var(--ink);
+      font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--ink); background:var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      background-image:
+        radial-gradient(900px 400px at -10% -10%, rgba(139,197,63,.08), transparent 60%),
+        radial-gradient(900px 400px at 110% 0%, rgba(139,197,63,.06), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0));
+      background-attachment: fixed, fixed, fixed;
     }
-    header#site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);backdrop-filter:saturate(175%) blur(10px);border-bottom:1px solid #e6e8ec}
-    main{max-width:1180px;margin:40px auto;padding:0 20px}
-    h1{font-family:Montserrat;font-weight:900;font-size:32px}
-    .roadmap{margin-top:30px;display:grid;gap:24px}
-    .milestone{
-      background:linear-gradient(180deg,#fff,#f8fbf2); border:1px solid #e5e7eb;
-      border-radius:var(--radius); box-shadow:var(--shadow);
-      padding:18px 20px; position:relative;
+
+    header#site-header{
+      position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);
+      border-bottom:1px solid rgba(230,232,236,.6);
+      backdrop-filter:saturate(175%) blur(10px)
     }
-    .milestone h2{margin:0;font-size:20px;font-family:Montserrat;font-weight:800}
-    .progress{margin:12px 0;height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-    .progress span{display:block;height:100%;background:linear-gradient(90deg,#d7f0af,var(--primary));width:0%;transition:width 1s}
-    .events{margin-top:10px}
-    .event{font-size:14px;font-weight:700;color:var(--muted);margin:4px 0}
+
+    main section{padding:54px 0}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+    h1,h2,h3{font-family:"Montserrat",sans-serif;margin:0}
+    h1{font-size:34px;line-height:1.15}
+    h2{font-size:26px}
+    h3{font-size:18px}
+
+    /* Card / Controls */
+    .card{
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,.55);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.35);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      padding:18px;
+    }
+    .toolbar{
+      display:grid;grid-template-columns:1fr 1.2fr;gap:18px;align-items:center
+    }
+    @media (max-width:900px){ .toolbar{grid-template-columns:1fr} }
+
+    .title-wrap{display:flex;flex-direction:column;gap:6px}
+    .subtitle{color:var(--muted);font-weight:700}
+
+    .controls{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:10px}
+    @media (max-width:900px){ .controls{grid-template-columns:1fr 1fr} }
+    .sel,.search{display:flex;flex-direction:column;gap:8px;font-weight:800}
+    label{font-family:Montserrat;font-size:12px;letter-spacing:.2px;color:#374151}
+    select,input[type="search"]{
+      padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:#fff;font-weight:800
+    }
+
+    /* Subject progress mini-cards */
+    .subject-grid{display:grid;gap:12px;margin-top:16px}
+    @media(min-width:900px){.subject-grid{grid-template-columns:repeat(4,1fr)}}
+    .subject{
+      border-radius:16px;padding:14px;background:linear-gradient(180deg,#f8fbf2,#ffffff);
+      border:1px solid rgba(255,255,255,.55); box-shadow:inset 0 1px 0 rgba(255,255,255,.6)
+    }
+    .subject .head{display:flex;align-items:center;justify-content:space-between}
+    .subject .name{font-family:Montserrat;font-weight:900}
+    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:10px}
+    .bar > i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);transition:width .8s ease}
+
+    /* Roadmap */
+    .road-wrap{margin-top:18px}
+    .road-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.6); background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.75));
+      font-weight:900
+    }
+    .road{
+      position:relative;padding:22px 10px;border-radius:16px;background:#fff;border:1px solid rgba(0,0,0,.06);box-shadow:0 18px 40px rgba(15,23,42,.12)
+    }
+    .rail{
+      position:relative;display:flex;gap:28px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 6px
+    }
+    .rail::-webkit-scrollbar{height:8px}
+    .rail::-webkit-scrollbar-thumb{background:#e1efd2;border-radius:999px}
+    .mile{
+      scroll-snap-align:start;min-width:220px;max-width:260px;flex:0 0 auto;position:relative;
+      border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px;background:linear-gradient(180deg,#ffffff,#fbfef7);
+      box-shadow:0 10px 26px rgba(15,23,42,.08)
+    }
+    .mile .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .mile .title{font-family:Montserrat;font-weight:900}
+    .state{
+      font-family:Montserrat;font-weight:900;font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:#fff
+    }
+    .state.done{color:#065f46;background:#ecfdf5;border-color:#bbf7d0}
+    .state.pending{color:#92400e;background:#fff7ed;border-color:#fed7aa}
+    .meta{color:var(--muted);font-weight:700;font-size:12px;margin-top:6px}
+    .dates{margin-top:8px;display:grid;gap:6px}
+    .date-chip{
+      display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:12px;padding:6px 10px;
+      border-radius:10px;background:#fff;border:1px solid rgba(0,0,0,.06)
+    }
+    details{margin-top:8px}
+    summary{cursor:pointer;font-weight:800}
+    .pct{font-family:Montserrat;font-weight:900}
+    .parts{font-weight:800;font-size:12px;color:#374151}
+
+    .empty{padding:16px;border-radius:14px;background:#fff;border:1px dashed #e2e8f0;text-align:center;font-weight:900;color:#6b7280;margin-top:10px}
+    .error{padding:16px;border-radius:14px;background:#fff5f5;border:1px solid #fecaca;color:#b91c1c;margin-top:10px}
   </style>
 </head>
 <body>
   <header id="site-header"></header>
+  <!-- Make sure this file exists: /assets/nav.js and it fetches /partials/nav.html -->
   <script src="/assets/nav.js" defer></script>
 
   <main>
-    <h1>Interactive Roadmap</h1>
-    <p>Track syllabus completion milestones with linked academic events.</p>
-    <div id="roadmap" class="roadmap"></div>
+    <section>
+      <div class="container">
+        <!-- Controls -->
+        <div class="card">
+          <div class="toolbar">
+            <div class="title-wrap">
+              <h1>Interactive Syllabus Roadmap</h1>
+              <div class="subtitle">Uses <code>/data/syllabus.json</code> and <code>/data/academic-2025-2026.json</code>.</div>
+            </div>
+            <div class="controls">
+              <div class="sel">
+                <label for="subject">Subject</label>
+                <select id="subject" aria-label="Subject"></select>
+              </div>
+              <div class="sel">
+                <label for="month">Month</label>
+                <select id="month" aria-label="Month"></select>
+              </div>
+              <div class="sel">
+                <label for="status">Show</label>
+                <select id="status" aria-label="Filter by status">
+                  <option value="all">All milestones</option>
+                  <option value="pending">Pending only</option>
+                  <option value="done">Completed only</option>
+                </select>
+              </div>
+              <div class="search">
+                <label for="q">Search chapter/topic</label>
+                <input id="q" type="search" placeholder="e.g., Thermodynamics, Gravitation…"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject progress summary -->
+          <div id="subject-summary" class="subject-grid" aria-live="polite"></div>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="road-wrap">
+          <div class="road-head">
+            <h2>Milestones</h2>
+            <div class="pill" id="pill-info">Loading…</div>
+          </div>
+          <div class="road">
+            <div id="rail" class="rail" aria-live="polite"></div>
+            <div id="empty" class="empty" hidden>No milestones match your filters.</div>
+            <div id="error" class="error" hidden>Couldn’t load data (/data/syllabus.json or /data/academic-2025-2026.json).</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
-    async function loadJSON(path){
-      const res = await fetch(path, {cache:'no-cache'});
-      return res.json();
-    }
+    /* ========= Helpers ========= */
+    const safeArray = v => Array.isArray(v) ? v : [];
+    const norm = s => (s||'').toString().toLowerCase().replace(/\s+/g,' ').trim();
+    const partNum = topic => { const m = (topic||'').match(/part\s*(\d+)/i); return m ? +m[1] : 1; };
+    const fmtDate = iso => {
+      const d = new Date(iso);
+      return isNaN(+d) ? (iso||'') : d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+    };
+    const todayISO = new Date().toISOString().slice(0,10);
 
-    function pctComplete(chapters){
-      const total = chapters.length;
-      const done = chapters.filter(c=>c.status==='done').length;
-      return total? Math.round(done/total*100):0;
-    }
+    /* ========= State ========= */
+    let subjMap = {};          // { Physics: [chapter objects], ... }
+    let subjects = [];         // ["Physics", "Chemistry", ...]
+    let months = [];           // ["2025-09", "2025-10", ...]
+    let eventsBySubject = {};  // { subject: [events...] }
+    let academicMeta = {};     // { defaultMonth?: "YYYY-MM" }
 
-    (async function(){
-      const syllabus = await loadJSON('/data/syllabus.json');
-      const calendar = await loadJSON('/data/academic-2025-2026.json');
-      const host = document.getElementById('roadmap');
+    /* ========= Load ========= */
+    (async function init(){
+      const errBox = document.getElementById('error');
+      try{
+        const [sylRes, acRes] = await Promise.all([
+          fetch('/data/syllabus.json', {cache:'no-cache'}),
+          fetch('/data/academic-2025-2026.json', {cache:'no-cache'})
+        ]);
+        if(!sylRes.ok || !acRes.ok) throw new Error('Fetch failed');
 
-      syllabus.subjects.forEach(sub=>{
-        const div = document.createElement('div');
-        div.className='milestone';
+        const syllabus = await sylRes.json();
+        const academic = await acRes.json();
 
-        // title + progress
-        div.innerHTML = `
-          <h2>${sub.name}</h2>
-          <div class="progress"><span style="width:${pctComplete(sub.chapters)}%"></span></div>
-          <div class="events"></div>
-        `;
+        // ----- Normalize syllabus shapes -----
+        // Accept either:
+        // A) { subjects: [ {name:"Physics", chapters:[...]}, ... ] }
+        // B) { subjects: { Physics:[...], Chemistry:[...] } }
+        // C) { Physics:[...], Chemistry:[...] }  (top-level)
+        if (Array.isArray(syllabus?.subjects)) {
+          syllabus.subjects.forEach(s => { if(s?.name) subjMap[s.name] = safeArray(s.chapters || s.items || s.list); });
+        } else if (syllabus?.subjects && typeof syllabus.subjects === 'object') {
+          Object.keys(syllabus.subjects).forEach(k => { subjMap[k] = safeArray(syllabus.subjects[k]); });
+        } else {
+          // top-level keys that are arrays
+          Object.keys(syllabus||{}).forEach(k => { if (Array.isArray(syllabus[k])) subjMap[k] = syllabus[k]; });
+        }
 
-        // link events (matching subject name)
-        const evWrap = div.querySelector('.events');
-        calendar.events
-          .filter(e=>e.subject && e.subject.toLowerCase().includes(sub.name.toLowerCase()))
-          .slice(0,3) // show first 3 upcoming
-          .forEach(e=>{
-            const p=document.createElement('div');
-            p.className='event';
-            p.textContent = `${e.date}: ${e.topic}`;
-            evWrap.appendChild(p);
-          });
+        subjects = Object.keys(subjMap);
+        if (!subjects.length) throw new Error('No subjects found in syllabus.json');
 
-        host.appendChild(div);
-      });
+        // ----- Academic events -----
+        academicMeta = academic?.meta || {};
+        const ev = safeArray(academic?.events);
+        // months present in events
+        months = Array.from(new Set(ev.map(e => (e.date||'').slice(0,7)).filter(Boolean))).sort();
+        // group by subject (exact string in calendar)
+        eventsBySubject = {};
+        ev.forEach(e => {
+          const s = (e.subject||'').trim();
+          if (!s) return;
+          (eventsBySubject[s] ||= []).push(e);
+        });
+
+        buildUI();
+      }catch(e){
+        console.error(e);
+        errBox.hidden = false;
+      }
     })();
+
+    /* ========= UI ========= */
+    function buildUI(){
+      const subjectSel = document.getElementById('subject');
+      const monthSel = document.getElementById('month');
+      const statusSel = document.getElementById('status');
+      const searchBox = document.getElementById('q');
+
+      // Subject order preference
+      const preferred = ['Physics','Chemistry','Maths','Mathematics','Biology','Botany','Zoology'];
+      const ordered = [
+        ...preferred.filter(s => subjects.includes(s)),
+        ...subjects.filter(s => !preferred.includes(s))
+      ];
+      subjectSel.innerHTML = ordered.map(s=>`<option value="${s}">${s}</option>`).join('');
+
+      // Month options and default
+      const defaultMonth = academicMeta.defaultMonth || new Date().toISOString().slice(0,7);
+      monthSel.innerHTML = months.map(m=>`<option value="${m}">${m}</option>`).join('');
+      if(months.includes(defaultMonth)) monthSel.value = defaultMonth;
+      else if(months.includes(new Date().toISOString().slice(0,7))) monthSel.value = new Date().toISOString().slice(0,7);
+      else monthSel.value = months[0] || '';
+
+      renderSubjectSummary();
+      renderRoadmap(subjectSel.value, monthSel.value, statusSel.value, searchBox.value);
+
+      subjectSel.addEventListener('change', ()=> renderRoadmap(subjectSel.value, monthSel.value, statusSel.value, searchBox.value));
+      monthSel.addEventListener('change',   ()=> renderRoadmap(subjectSel.value, monthSel.value, statusSel.value, searchBox.value));
+      statusSel.addEventListener('change',  ()=> renderRoadmap(subjectSel.value, monthSel.value, statusSel.value, searchBox.value));
+      searchBox.addEventListener('input',   ()=> renderRoadmap(subjectSel.value, monthSel.value, statusSel.value, searchBox.value));
+    }
+
+    function chapterTitle(obj){
+      return obj?.title || obj?.chapter || obj?.name || (typeof obj === 'string' ? obj : '');
+    }
+    function chapterPartsHint(obj){
+      return obj?.parts || obj?.totalParts || 0;
+    }
+    function chapterStatus(obj){
+      // normalize to 'done' | 'pending'
+      const s = norm(obj?.status || obj?.state || '');
+      const done = s === 'done' || s === 'completed' || obj?.completed === true;
+      return done ? 'done' : 'pending';
+    }
+
+    function computeSubjectProgress(subject){
+      const chapters = safeArray(subjMap[subject]);
+      const ev = eventsBySubject[subject] || [];
+
+      const chapStates = chapters.map(ch=>{
+        const title = chapterTitle(ch);
+        const tNorm = norm(title);
+
+        // match any event whose topic includes chapter title
+        const matches = ev.filter(e => norm(e.topic||'').includes(tNorm));
+
+        // parts inference
+        const explicitTotal = chapterPartsHint(ch);
+        const observedParts = new Set(matches.map(m=>partNum(m.topic||'')));
+        const inferredTotal = Math.max(explicitTotal, observedParts.size || (matches.length ? 1 : 0), explicitTotal ? 1 : 0);
+        const partsDone = observedParts.size || (matches.length ? 1 : 0);
+
+        const hasExplicitStatus = ('status' in (ch||{})) || ('state' in (ch||{})) || ('completed' in (ch||{}));
+        const isDone = hasExplicitStatus ? (chapterStatus(ch) === 'done') : (inferredTotal>0 && partsDone >= inferredTotal);
+
+        const dates = matches.map(m=>m.date).filter(Boolean).sort();
+        return { title, partsDone, totalParts: inferredTotal || 1, done: isDone, dates, events: matches };
+      });
+
+      const total = chapStates.length || 1;
+      const doneCount = chapStates.filter(c=>c.done).length;
+      const completionPct = Math.round((doneCount/total)*100);
+
+      return {chapters, chapStates, completionPct, doneCount, total};
+    }
+
+    function renderSubjectSummary(){
+      const host = document.getElementById('subject-summary');
+      host.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      subjects.forEach(subj=>{
+        const { completionPct } = computeSubjectProgress(subj);
+        const card = document.createElement('div');
+        card.className = 'subject';
+        card.innerHTML = `
+          <div class="head">
+            <div class="name">${subj}</div>
+            <div class="pct">${completionPct}%</div>
+          </div>
+          <div class="bar"><i style="width:${completionPct}%"></i></div>
+        `;
+        frag.appendChild(card);
+      });
+      host.appendChild(frag);
+    }
+
+    function renderRoadmap(subject, month, status, q){
+      const rail = document.getElementById('rail');
+      const empty = document.getElementById('empty');
+      const pill = document.getElementById('pill-info');
+      rail.innerHTML = '';
+      empty.hidden = true;
+
+      const { chapStates, completionPct, doneCount, total } = computeSubjectProgress(subject);
+      pill.textContent = `${subject} · ${completionPct}% complete · ${doneCount}/${total} chapters`;
+
+      // Filter by status and search
+      const qn = norm(q||'');
+      let items = chapStates.slice();
+      if (status === 'done') items = items.filter(it => it.done);
+      if (status === 'pending') items = items.filter(it => !it.done);
+      if (qn) items = items.filter(it => norm(it.title).includes(qn) ||
+                                         it.events.some(e => norm(e.topic).includes(qn)));
+
+      // Month window
+      const [Y, M] = (month||'').split('-').map(Number);
+      const mStart = isFinite(Y) && isFinite(M) ? new Date(Y, M-1, 1) : null;
+      const mEnd   = isFinite(Y) && isFinite(M) ? new Date(Y, M, 1) : null;
+
+      if (!items.length){ empty.hidden = false; return; }
+
+      const frag = document.createDocumentFragment();
+      items.forEach(it=>{
+        const inMonth = (mStart && mEnd)
+          ? it.events.filter(e => { const d = new Date(e.date); return !isNaN(+d) && d >= mStart && d < mEnd; })
+          : it.events;
+
+        const latest = it.dates.slice().sort().reverse()[0];
+        const stateCls = it.done ? 'done' : 'pending';
+        const stateTxt = it.done ? 'Completed' : (inMonth.length ? 'In progress' : 'Pending');
+        const parts = `${it.partsDone}/${Math.max(it.totalParts||1,1)} parts`;
+
+        const datesHTML = (inMonth.length ? inMonth : it.events).slice(0,8).map(e => {
+          const t = (e.time||'').replace(/\b0?(\d)\b/,'$1'); // 06 -> 6
+          return `<span class="date-chip">${fmtDate(e.date)} · ${t} · ${(e.topic||'')}</span>`;
+        }).join('');
+
+        const el = document.createElement('article');
+        el.className = 'mile';
+        el.innerHTML = `
+          <div class="top">
+            <div class="title">${it.title}</div>
+            <span class="state ${stateCls}">${stateTxt}</span>
+          </div>
+          <div class="meta"><span class="parts">${parts}</span></div>
+          ${datesHTML ? `<div class="dates">${datesHTML}</div>` : ``}
+          <details>
+            <summary>Details</summary>
+            <div class="meta" style="margin-top:6px">
+              ${latest ? `Last taught: <b>${fmtDate(latest)}</b>` : `Not taught yet`}
+            </div>
+            ${it.events?.length ? `<div class="dates" style="margin-top:6px">
+              ${it.events.slice(0,20).map(e=>`<span class="date-chip">${fmtDate(e.date)} · ${e.time||''} · ${e.topic||''}</span>`).join('')}
+            </div>`:``}
+          </details>
+        `;
+        frag.appendChild(el);
+      });
+
+      rail.appendChild(frag);
+    }
   </script>
 </body>
 </html>
