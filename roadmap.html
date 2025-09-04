@@ -19,8 +19,7 @@
       --r:16px; --r2:20px; --maxw:1180px;
       --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626; --info:#2563eb;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
+    *{box-sizing:border-box} html,body{margin:0;padding:0}
     body{
       font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--ink); background:var(--bg);
@@ -69,8 +68,7 @@
       display:flex;align-items:center;justify-content:center;text-align:center;
       padding:14px 16px;border-radius:18px;font-family:Montserrat;font-weight:900;font-size:15px;
       color:#0b0f10;text-decoration:none; user-select:none;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,252,252,1) 55%, rgba(246,248,244,1) 100%);
+      background:linear-gradient(180deg,#fff 0%,#fcfcfc 55%,#f6f8f4 100%);
       border:1px solid rgba(0,0,0,.06);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,.85),
@@ -79,35 +77,40 @@
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
       overflow:hidden;
     }
-    .link::after{
-      content:""; position:absolute; left:0; right:0; top:0; height:42%;
-      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0));
-      pointer-events:none;
-    }
-    .link:hover{
-      transform: translateY(-1px);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.9),
-        inset 0 -1px 0 rgba(255,255,255,.7),
-        0 14px 30px rgba(15,23,42,.14);
-      border-color: rgba(139,197,63,.25);
-    }
-    .link:active{ transform: translateY(0) scale(.99); }
+    .link::after{content:"";position:absolute;left:0;right:0;top:0;height:42%;
+      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0))}
+    .link:hover{transform:translateY(-1px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(255,255,255,.7), 0 14px 30px rgba(15,23,42,.14);
+      border-color:rgba(139,197,63,.25)}
+    .link:active{ transform: translateY(0) scale(.99) }
 
-    /* Mini stat & lists */
-    .stat{display:grid;gap:8px}
-    .stat .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#fff;font-weight:900}
-    .ok{color:#16a34a} .warn{color:#f59e0b} .info{color:#2563eb}
-
+    /* Generic lists */
     .list{display:grid;gap:10px;margin-top:12px}
     .item{
-      background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:10px 12px;
-      box-shadow:0 10px 26px rgba(15,23,42,.08);
-      display:grid;gap:4px
+      background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px 12px;
+      box-shadow:0 10px 26px rgba(15,23,42,.08);display:grid;gap:6px
     }
-    .item .top{display:flex;align-items:center;justify-content:space-between}
-    .meta{color:var(--muted);font-weight:700;font-size:12px}
+
+    /* === Alignment polish for Next Class / Exams === */
+    .item .top{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      align-items:center; /* vertical alignment fix */
+      gap:12px;
+      min-height:28px; /* consistent row height */
+    }
+    .item .title{
+      font-weight:900; font-family:Montserrat; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .item .right{display:flex;align-items:center;gap:8px}
+    .meta{
+      color:var(--muted);font-weight:700;font-size:13px;line-height:1.35;
+      display:flex;align-items:center;gap:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#fff;font-weight:900;font-size:12px
+    }
     .empty{padding:14px;text-align:center;border:1px dashed #d8dee8;border-radius:12px;background:#fff;color:#6b7280;font-weight:900}
 
     .row{display:grid;gap:10px}
@@ -117,16 +120,14 @@
     }
     .btn{cursor:pointer}
     .note{font-size:12px;color:#6b7280}
-
-    /* Progress bar style */
-    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
-    .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
     .mt{margin-top:16px}
 
+    /* Progress bar */
+    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
+    .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+
     /* === Filters (Year / Batch / Class) === */
-    .filters{
-      display:grid;gap:10px;margin-top:10px
-    }
+    .filters{display:grid;gap:10px;margin-top:10px}
     @media(min-width:860px){ .filters{grid-template-columns:1fr 1fr 1fr} }
     .filters select{
       background:linear-gradient(180deg, #ffffff, #f7f9f6);
@@ -135,7 +136,7 @@
       font-weight:900;border-radius:14px
     }
 
-    /* === Custom Student Dropdown with Avatars === */
+    /* === Custom Student Dropdown with Avatars (mirrors studentlogin UX, but visual custom) === */
     .student-picker{position:relative}
     .sp-trigger{
       width:100%; display:flex; align-items:center; gap:10px; justify-content:space-between;
@@ -146,7 +147,6 @@
     .sp-trigger img{width:26px;height:26px;border-radius:999px;object-fit:cover;border:1px solid #eee}
     .sp-trigger .label{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .sp-trigger .caret{margin-left:auto;opacity:.6}
-
     .sp-menu{
       position:absolute; z-index:50; left:0; right:0; top:calc(100% + 6px);
       background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:14px;
@@ -160,8 +160,6 @@
     .sp-option:hover{background:#f5f7f4}
     .sp-option img{width:28px;height:28px;border-radius:999px;object-fit:cover;border:1px solid #eee}
     .sp-empty{padding:10px;text-align:center;color:#6b7280;font-weight:800}
-
-    /* Keyboard focus */
     .sp-option:focus{outline:2px solid var(--primary); outline-offset:2px}
   </style>
 </head>
@@ -176,7 +174,7 @@
         <h1>Student Dashboard</h1>
         <div class="muted mt">Everything you need — profiles, classes, exams, downloads — in one place.</div>
 
-        <!-- Quick Links (glossy white glass buttons, no arrows) -->
+        <!-- Quick Links -->
         <div class="links">
           <a class="link" href="/studentlogin.html">Student Login</a>
           <a class="link" href="/student.html">Profiles</a>
@@ -188,18 +186,16 @@
           <a class="link" href="/batchorigin.html">Class 11 — Origin</a>
         </div>
 
-        <!-- Pick Student (deep links via filters + avatar dropdown) -->
+        <!-- Pick Student (filters like studentlogin + avatar dropdown) -->
         <div class="mt">
           <h2>Open My Profile</h2>
 
-          <!-- Filters from studentlogin-style flow -->
           <div class="filters" aria-label="Filter students">
             <select id="yearFilter" aria-label="Filter by year"><option value="">Year — All</option></select>
             <select id="batchFilter" aria-label="Filter by batch"><option value="">Batch — All</option></select>
             <select id="classFilter" aria-label="Filter by class"><option value="">Class — All</option></select>
           </div>
 
-          <!-- Custom student dropdown with avatar + name -->
           <div class="row two mt">
             <div class="student-picker" id="studentPicker">
               <button class="sp-trigger" id="spTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
@@ -214,7 +210,7 @@
 
             <button id="openProfile" class="btn">Open Profile</button>
           </div>
-          <div class="note mt">Filters: Year → Batch → Class, then choose a student. Deep link example: <code>/student.html?id=fidha</code>.</div>
+          <div class="note mt">Filters: Year → Batch → Class (from <code>/data/students.json</code>), then choose a student. Opens <code>student.url</code> or <code>/student.html?id=slug</code>.</div>
         </div>
       </section>
 
@@ -263,15 +259,10 @@
     const baseTopic = t => (t||'').replace(/\s*[-–—]?\s*part\s*\d+.*$/i,'').trim();
     const partNum = t => { const m = (t||'').match(/part\s*(\d+)/i); return m ? +m[1] : 1; };
     const tidyTime = t => (t||'').replace(/\b0?(\d)\b/,'$1');
-    const fmtDate = iso => {
-      const d = new Date(iso);
-      return isNaN(+d) ? (iso||'') : d.toLocaleDateString(undefined, { day:'2-digit', month:'short', year:'numeric' });
-    };
-    const dayOf = iso => {
-      const d = new Date(iso);
-      return isNaN(+d) ? '' : d.toLocaleDateString(undefined, { weekday:'short' });
-    };
+    const fmtDate = iso => { const d = new Date(iso); return isNaN(+d) ? (iso||'') : d.toLocaleDateString(undefined, { day:'2-digit', month:'short', year:'numeric' }); };
+    const dayOf = iso => { const d = new Date(iso); return isNaN(+d) ? '' : d.toLocaleDateString(undefined, { weekday:'short' }); };
     const today = () => new Date().toISOString().slice(0,10);
+    const escapeHtml = str => String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
     /* ===== State ===== */
     let students = [];
@@ -286,7 +277,7 @@
 
     /* ===== Load all ===== */
     (async function(){
-      const studentsJson = await tryJSON(['/students.json']);
+      const studentsJson = await tryJSON(['/data/students.json']); // ← exact path requested
       const annJson = await tryJSON(['/data/announcements.json','/announcements.json']);
       const academicJson = await tryJSON(['/data/academic-2025-2026.json']);
       const scheduleJson = await tryJSON(['/data/schedule.json','/schedule.json']);
@@ -306,8 +297,8 @@
         Object.keys(syllabusJson).forEach(k => { if (Array.isArray(syllabusJson[k])) syllabusMap[k] = syllabusJson[k]; });
       }
 
-      initFilters();
-      rebuildStudentMenu(); // initial render
+      initFiltersFromStudents();   // mirrors studentlogin filters
+      rebuildStudentMenu();        // initial render of avatar dropdown
 
       buildNextClass();
       buildExams();
@@ -318,11 +309,12 @@
       wirePickerUI();
     })();
 
-    /* ===== Filters (Year / Batch / Class) ===== */
-    function uniq(arr){ return Array.from(new Set(arr.filter(Boolean))); }
+    /* ===== Filters (mirror studentlogin.html logic) ===== */
+    function uniq(arr){ return Array.from(new Set(arr.filter(v => v !== undefined && v !== null && String(v).trim() !== ''))); }
     function val(el){ return (el?.value || '').trim(); }
 
-    function initFilters(){
+    function initFiltersFromStudents(){
+      // These keys mirror typical studentlogin usage: year, batch, className
       const years = uniq(students.map(s => s.year || s.meta?.year));
       const batches = uniq(students.map(s => s.batch || s.meta?.batch));
       const classes = uniq(students.map(s => s.className || s.meta?.className));
@@ -331,8 +323,33 @@
       fillSelect('batchFilter', batches, 'Batch — All');
       fillSelect('classFilter', classes, 'Class — All');
 
+      // Cascade-like behaviour (choose year narrows batches/classes, etc.)
       ['yearFilter','batchFilter','classFilter'].forEach(id=>{
-        document.getElementById(id).addEventListener('change', rebuildStudentMenu);
+        document.getElementById(id).addEventListener('change', ()=>{
+          // Recompute options based on current chosen filters (like studentlogin)
+          const yf = val(document.getElementById('yearFilter'));
+          const bf = val(document.getElementById('batchFilter'));
+
+          const filteredForOpts = students.filter(s=>{
+            const y = (s.year || s.meta?.year || '').toString();
+            const b = (s.batch || s.meta?.batch || '').toString();
+            return (!yf || y===yf) && (!bf || b===bf);
+          });
+
+          const nextBatches = uniq(filteredForOpts.map(s => s.batch || s.meta?.batch));
+          const nextClasses = uniq(filteredForOpts.map(s => s.className || s.meta?.className));
+
+          // Only repopulate the selects that are "downstream" of current change to mimic the UX
+          if(id === 'yearFilter'){
+            fillSelect('batchFilter', nextBatches, 'Batch — All');
+            fillSelect('classFilter', nextClasses, 'Class — All');
+          }
+          if(id === 'batchFilter'){
+            fillSelect('classFilter', nextClasses, 'Class — All');
+          }
+
+          rebuildStudentMenu();
+        });
       });
     }
 
@@ -355,7 +372,7 @@
       }).sort((a,b)=> (a.name||'').localeCompare(b.name||''));
     }
 
-    /* ===== Custom Student Dropdown ===== */
+    /* ===== Custom Student Dropdown (with avatars) ===== */
     function rebuildStudentMenu(){
       currentFiltered = applyFilters();
       const menu = document.getElementById('spMenu');
@@ -374,8 +391,8 @@
       const name = s.name || 'Unnamed';
       const cls = s.className || s.meta?.className || '';
       const avatar = s.avatar || s.meta?.avatar || 'https://i.postimg.cc/0yD2YhRZ/user.png';
-      const url = s.url || (`/student.html?id=${encodeURIComponent(s.slug||name.toLowerCase().replace(/\s+/g,'-'))}`);
-      // store data-* for retrieval
+      const slug = s.slug || (name.toLowerCase().replace(/\s+/g,'-'));
+      const url = s.url || (`/student.html?id=${encodeURIComponent(slug)}`);
       return `
         <div class="sp-option" role="option" tabindex="0"
              data-index="${i}"
@@ -419,11 +436,8 @@
       window.toggleMenu = function(open){
         trigger.setAttribute('aria-expanded', open?'true':'false');
         menu.classList.toggle('open', !!open);
-        if(open){
-          document.addEventListener('click', onDocClick);
-        } else {
-          document.removeEventListener('click', onDocClick);
-        }
+        if(open){ document.addEventListener('click', onDocClick); }
+        else { document.removeEventListener('click', onDocClick); }
       }
 
       trigger.addEventListener('click', ()=> toggleMenu(!menu.classList.contains('open')));
@@ -434,28 +448,22 @@
       document.getElementById('openProfile').addEventListener('click', ()=>{
         if(selectedStudent?.url){
           location.href = selectedStudent.url;
+        } else if(currentFiltered.length === 1){
+          const s = currentFiltered[0];
+          const slug = s.slug || (s.name||'').toLowerCase().replace(/\s+/g,'-');
+          const url = s.url || (`/student.html?id=${encodeURIComponent(slug)}`);
+          location.href = url;
         } else {
-          // If nothing selected but one match exists, open it directly for convenience
-          if(currentFiltered.length === 1){
-            const s = currentFiltered[0];
-            const url = s.url || (`/student.html?id=${encodeURIComponent(s.slug|| (s.name||'').toLowerCase().replace(/\s+/g,'-'))}`);
-            location.href = url;
-          } else {
-            alert('Please select a student.');
-          }
+          alert('Please select a student.');
         }
       });
     }
 
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
-
-    /* ===== Build: Next Class ===== */
+    /* ===== Next Class ===== */
     function buildNextClass(){
       const host = document.getElementById('nextClass');
       const t0 = today();
-      const upcoming = events
+      const upcoming = (events||[])
         .filter(e => e.date && e.subject && e.topic && e.date >= t0 && !e.exam)
         .sort((a,b)=> a.date.localeCompare(b.date))
         .slice(0,3);
@@ -466,22 +474,25 @@
       }
       host.innerHTML = upcoming.map(e => `
         <div class="item">
-          <div class="top"><b>${e.subject}</b><span class="pill">${fmtDate(e.date)} · ${dayOf(e.date)}</span></div>
-          <div class="meta">${tidyTime(e.time||'')} • ${e.topic||''}</div>
+          <div class="top">
+            <div class="title">${escapeHtml(e.subject)}</div>
+            <div class="right"><span class="pill">${fmtDate(e.date)} · ${dayOf(e.date)}</span></div>
+          </div>
+          <div class="meta">${tidyTime(e.time||'')} • <span title="${escapeHtml(e.topic||'')}">${escapeHtml(e.topic||'')}</span></div>
         </div>
       `).join('');
     }
 
-    /* ===== Build: Exams ===== */
+    /* ===== Exams ===== */
     function buildExams(){
       const host = document.getElementById('upcomingExams');
       const t0 = today();
 
-      const fromSchedule = schedule
+      const fromSchedule = (schedule||[])
         .filter(x => (x.title||'').toLowerCase().includes('qp') || (x.notes||'').toLowerCase().includes('test'))
         .map(x => ({date: (x.date||'').replace(/\/|\.|–/g,'-'), time:x.time, title:x.title, notes:x.notes}));
 
-      const fromAcademic = events
+      const fromAcademic = (events||[])
         .filter(e => e.exam || (e.subject||'').toLowerCase()==='exam')
         .map(e => ({date:e.date, time:e.time, title:e.topic, notes:e.subject}));
 
@@ -496,13 +507,16 @@
       }
       host.innerHTML = all.map(x=>`
         <div class="item">
-          <div class="top"><b>${x.title || 'Exam'}</b><span class="pill">${fmtDate(x.date)}</span></div>
-          <div class="meta">${tidyTime(x.time||'')} • ${x.notes || ''}</div>
+          <div class="top">
+            <div class="title">${escapeHtml(x.title || 'Exam')}</div>
+            <div class="right"><span class="pill">${fmtDate(x.date)}</span></div>
+          </div>
+          <div class="meta">${tidyTime(x.time||'')} • <span title="${escapeHtml(x.notes||'')}">${escapeHtml(x.notes || '')}</span></div>
         </div>
       `).join('');
     }
 
-    /* ===== Build: Announcements ===== */
+    /* ===== Announcements ===== */
     function buildAnnouncements(){
       const host = document.getElementById('annList');
       if(!announcements.length){
@@ -515,14 +529,17 @@
         const label = a?.cta?.label || 'Open';
         return `
           <div class="item">
-            <div class="top"><b>${a.title || 'Announcement'}</b>${url && url!=='#' ? `<a class="pill" href="${url}">${label}</a>`:''}</div>
+            <div class="top">
+              <div class="title">${escapeHtml(a.title || 'Announcement')}</div>
+              <div class="right">${url && url!=='#' ? `<a class="pill" href="${url}">${escapeHtml(label)}</a>`:''}</div>
+            </div>
             <div class="meta">${a.date ? fmtDate(a.date) : ''}</div>
           </div>
         `;
       }).join('');
     }
 
-    /* ===== Build: Subject completion ===== */
+    /* ===== Subject completion ===== */
     function chapterTitle(obj){ return obj?.title || obj?.chapter || obj?.name || (typeof obj==='string' ? obj : ''); }
 
     function computePct(subject){
@@ -558,7 +575,7 @@
         const pct = computePct(s);
         return `
           <div class="item" style="padding:14px">
-            <div class="top"><b>${s}</b><span class="pill">${pct}%</span></div>
+            <div class="top"><div class="title">${s}</div><div class="right"><span class="pill">${pct}%</span></div></div>
             <div class="bar"><i style="width:${pct}%"></i></div>
           </div>
         `;
