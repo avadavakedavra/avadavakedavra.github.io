@@ -79,7 +79,6 @@
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
       overflow:hidden;
     }
-    /* Glossy highlight strip */
     .link::after{
       content:""; position:absolute; left:0; right:0; top:0; height:42%;
       background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0));
@@ -123,6 +122,47 @@
     .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
     .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
     .mt{margin-top:16px}
+
+    /* === Filters (Year / Batch / Class) === */
+    .filters{
+      display:grid;gap:10px;margin-top:10px
+    }
+    @media(min-width:860px){ .filters{grid-template-columns:1fr 1fr 1fr} }
+    .filters select{
+      background:linear-gradient(180deg, #ffffff, #f7f9f6);
+      border:1px solid rgba(0,0,0,.06);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 8px 16px rgba(15,23,42,.06);
+      font-weight:900;border-radius:14px
+    }
+
+    /* === Custom Student Dropdown with Avatars === */
+    .student-picker{position:relative}
+    .sp-trigger{
+      width:100%; display:flex; align-items:center; gap:10px; justify-content:space-between;
+      padding:10px 12px; border-radius:14px; border:1px solid rgba(0,0,0,.06); background:#fff;
+      font-weight:900; cursor:pointer; box-shadow:0 8px 16px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.85);
+    }
+    .sp-trigger .left{display:flex;align-items:center;gap:10px;min-width:0}
+    .sp-trigger img{width:26px;height:26px;border-radius:999px;object-fit:cover;border:1px solid #eee}
+    .sp-trigger .label{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .sp-trigger .caret{margin-left:auto;opacity:.6}
+
+    .sp-menu{
+      position:absolute; z-index:50; left:0; right:0; top:calc(100% + 6px);
+      background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:14px;
+      box-shadow:0 18px 40px rgba(15,23,42,.14);
+      max-height:280px; overflow:auto; padding:6px; display:none;
+    }
+    .sp-menu.open{display:block}
+    .sp-option{
+      display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; cursor:pointer;
+    }
+    .sp-option:hover{background:#f5f7f4}
+    .sp-option img{width:28px;height:28px;border-radius:999px;object-fit:cover;border:1px solid #eee}
+    .sp-empty{padding:10px;text-align:center;color:#6b7280;font-weight:800}
+
+    /* Keyboard focus */
+    .sp-option:focus{outline:2px solid var(--primary); outline-offset:2px}
   </style>
 </head>
 <body>
@@ -148,14 +188,33 @@
           <a class="link" href="/batchorigin.html">Class 11 — Origin</a>
         </div>
 
-        <!-- Pick Student (deep links) -->
+        <!-- Pick Student (deep links via filters + avatar dropdown) -->
         <div class="mt">
           <h2>Open My Profile</h2>
+
+          <!-- Filters from studentlogin-style flow -->
+          <div class="filters" aria-label="Filter students">
+            <select id="yearFilter" aria-label="Filter by year"><option value="">Year — All</option></select>
+            <select id="batchFilter" aria-label="Filter by batch"><option value="">Batch — All</option></select>
+            <select id="classFilter" aria-label="Filter by class"><option value="">Class — All</option></select>
+          </div>
+
+          <!-- Custom student dropdown with avatar + name -->
           <div class="row two mt">
-            <select id="studentSelect" aria-label="Select student"></select>
+            <div class="student-picker" id="studentPicker">
+              <button class="sp-trigger" id="spTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="left">
+                  <img id="spAvatar" src="https://i.postimg.cc/0yD2YhRZ/user.png" alt="" />
+                  <span class="label" id="spLabel">Select student…</span>
+                </span>
+                <span class="caret">▾</span>
+              </button>
+              <div class="sp-menu" id="spMenu" role="listbox" tabindex="-1" aria-label="Students"></div>
+            </div>
+
             <button id="openProfile" class="btn">Open Profile</button>
           </div>
-          <div class="note mt">This links to the dynamic profile (e.g., <code>/student.html?id=fidha</code>).</div>
+          <div class="note mt">Filters: Year → Batch → Class, then choose a student. Deep link example: <code>/student.html?id=fidha</code>.</div>
         </div>
       </section>
 
@@ -221,6 +280,10 @@
     let schedule = [];     // schedule.json
     let syllabusMap = {};  // subject -> chapters[]
 
+    // Student picker state
+    let selectedStudent = null;
+    let currentFiltered = [];
+
     /* ===== Load all ===== */
     (async function(){
       const studentsJson = await tryJSON(['/students.json']);
@@ -243,21 +306,149 @@
         Object.keys(syllabusJson).forEach(k => { if (Array.isArray(syllabusJson[k])) syllabusMap[k] = syllabusJson[k]; });
       }
 
-      buildStudents();
+      initFilters();
+      rebuildStudentMenu(); // initial render
+
       buildNextClass();
       buildExams();
       buildAnnouncements();
       buildSubjectBars();
+
+      wireOpenProfile();
+      wirePickerUI();
     })();
 
-    /* ===== Build: Students ===== */
-    function buildStudents(){
-      const sel = document.getElementById('studentSelect');
-      sel.innerHTML = students.map(s => `<option value="${s.url || ('/student.html?id='+ (s.slug||''))}">${s.name} — ${s.className || ''}</option>`).join('');
-      document.getElementById('openProfile').addEventListener('click', ()=>{
-        const url = sel.value || '/student.html';
-        location.href = url;
+    /* ===== Filters (Year / Batch / Class) ===== */
+    function uniq(arr){ return Array.from(new Set(arr.filter(Boolean))); }
+    function val(el){ return (el?.value || '').trim(); }
+
+    function initFilters(){
+      const years = uniq(students.map(s => s.year || s.meta?.year));
+      const batches = uniq(students.map(s => s.batch || s.meta?.batch));
+      const classes = uniq(students.map(s => s.className || s.meta?.className));
+
+      fillSelect('yearFilter', years, 'Year — All');
+      fillSelect('batchFilter', batches, 'Batch — All');
+      fillSelect('classFilter', classes, 'Class — All');
+
+      ['yearFilter','batchFilter','classFilter'].forEach(id=>{
+        document.getElementById(id).addEventListener('change', rebuildStudentMenu);
       });
+    }
+
+    function fillSelect(id, values, label){
+      const sel = document.getElementById(id);
+      const opts = ['<option value="">' + label + '</option>']
+        .concat(values.map(v => `<option value="${String(v)}">${String(v)}</option>`));
+      sel.innerHTML = opts.join('');
+    }
+
+    function applyFilters(){
+      const yf = val(document.getElementById('yearFilter'));
+      const bf = val(document.getElementById('batchFilter'));
+      const cf = val(document.getElementById('classFilter'));
+      return students.filter(s=>{
+        const y = (s.year || s.meta?.year || '').toString();
+        const b = (s.batch || s.meta?.batch || '').toString();
+        const c = (s.className || s.meta?.className || '').toString();
+        return (!yf || y===yf) && (!bf || b===bf) && (!cf || c===cf);
+      }).sort((a,b)=> (a.name||'').localeCompare(b.name||''));
+    }
+
+    /* ===== Custom Student Dropdown ===== */
+    function rebuildStudentMenu(){
+      currentFiltered = applyFilters();
+      const menu = document.getElementById('spMenu');
+      if(!currentFiltered.length){
+        menu.innerHTML = `<div class="sp-empty">No students match these filters.</div>`;
+      } else {
+        menu.innerHTML = currentFiltered.map((s, i)=> renderOption(s, i)).join('');
+      }
+      selectedStudent = null;
+      document.getElementById('spLabel').textContent = 'Select student…';
+      document.getElementById('spAvatar').src = 'https://i.postimg.cc/0yD2YhRZ/user.png';
+      attachOptionHandlers();
+    }
+
+    function renderOption(s, i){
+      const name = s.name || 'Unnamed';
+      const cls = s.className || s.meta?.className || '';
+      const avatar = s.avatar || s.meta?.avatar || 'https://i.postimg.cc/0yD2YhRZ/user.png';
+      const url = s.url || (`/student.html?id=${encodeURIComponent(s.slug||name.toLowerCase().replace(/\s+/g,'-'))}`);
+      // store data-* for retrieval
+      return `
+        <div class="sp-option" role="option" tabindex="0"
+             data-index="${i}"
+             data-name="${escapeHtml(name)}"
+             data-class="${escapeHtml(cls)}"
+             data-avatar="${escapeHtml(avatar)}"
+             data-url="${escapeHtml(url)}">
+          <img src="${avatar}" alt="" />
+          <div style="display:flex;flex-direction:column;min-width:0">
+            <b style="font-family:Montserrat;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</b>
+            <span class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cls}</span>
+          </div>
+        </div>`;
+    }
+
+    function attachOptionHandlers(){
+      document.querySelectorAll('.sp-option').forEach(el=>{
+        el.addEventListener('click', ()=> chooseOption(el));
+        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); chooseOption(el);} });
+      });
+    }
+
+    function chooseOption(el){
+      const name = el.getAttribute('data-name');
+      const avatar = el.getAttribute('data-avatar');
+      const url = el.getAttribute('data-url');
+      selectedStudent = { name, avatar, url };
+      document.getElementById('spLabel').textContent = name;
+      document.getElementById('spAvatar').src = avatar;
+      toggleMenu(false);
+    }
+
+    function wirePickerUI(){
+      const trigger = document.getElementById('spTrigger');
+      const menu = document.getElementById('spMenu');
+
+      function onDocClick(e){
+        if(!document.getElementById('studentPicker').contains(e.target)) toggleMenu(false);
+      }
+
+      window.toggleMenu = function(open){
+        trigger.setAttribute('aria-expanded', open?'true':'false');
+        menu.classList.toggle('open', !!open);
+        if(open){
+          document.addEventListener('click', onDocClick);
+        } else {
+          document.removeEventListener('click', onDocClick);
+        }
+      }
+
+      trigger.addEventListener('click', ()=> toggleMenu(!menu.classList.contains('open')));
+      trigger.addEventListener('keydown', (e)=>{ if(e.key==='ArrowDown'){ e.preventDefault(); toggleMenu(true); const first = menu.querySelector('.sp-option'); first && first.focus(); }});
+    }
+
+    function wireOpenProfile(){
+      document.getElementById('openProfile').addEventListener('click', ()=>{
+        if(selectedStudent?.url){
+          location.href = selectedStudent.url;
+        } else {
+          // If nothing selected but one match exists, open it directly for convenience
+          if(currentFiltered.length === 1){
+            const s = currentFiltered[0];
+            const url = s.url || (`/student.html?id=${encodeURIComponent(s.slug|| (s.name||'').toLowerCase().replace(/\s+/g,'-'))}`);
+            location.href = url;
+          } else {
+            alert('Please select a student.');
+          }
+        }
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     }
 
     /* ===== Build: Next Class ===== */
