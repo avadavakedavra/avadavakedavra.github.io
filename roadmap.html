@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Student Dashboard</title>
+  <title>Sehr Academy — Teacher Dashboard</title>
   <meta name="theme-color" content="#8BC53F" />
 
   <!-- Fonts -->
@@ -43,6 +43,7 @@
     h1{font-size:32px}
     h2{font-size:22px}
     .muted{color:var(--muted);font-weight:700}
+    .mt{margin-top:16px}
 
     /* Frosted cards */
     .card{
@@ -57,23 +58,17 @@
     @media(min-width:980px){ .grid.cols-3{grid-template-columns:2fr 1fr 1fr} }
     @media(min-width:980px){ .grid.cols-2{grid-template-columns:1.4fr 1fr} }
 
-    /* -------- Glossy white glass buttons (NO ARROWS) -------- */
-    .links{
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px
-    }
+    /* Quick Links */
+    .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
     @media(min-width:720px){ .links{grid-template-columns:repeat(3,minmax(0,1fr))} }
     @media(min-width:1080px){ .links{grid-template-columns:repeat(4,minmax(0,1fr))} }
     .link{
-      position:relative;
-      display:flex;align-items:center;justify-content:center;text-align:center;
+      position:relative;display:flex;align-items:center;justify-content:center;text-align:center;
       padding:14px 16px;border-radius:18px;font-family:Montserrat;font-weight:900;font-size:15px;
       color:#0b0f10;text-decoration:none; user-select:none;
       background:linear-gradient(180deg,#fff 0%,#fcfcfc 55%,#f6f8f4 100%);
       border:1px solid rgba(0,0,0,.06);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.85),
-        inset 0 -1px 0 rgba(255,255,255,.6),
-        0 10px 26px rgba(15,23,42,.10);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.6), 0 10px 26px rgba(15,23,42,.10);
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
       overflow:hidden;
     }
@@ -82,85 +77,67 @@
     .link:hover{transform:translateY(-1px);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(255,255,255,.7), 0 14px 30px rgba(15,23,42,.14);
       border-color:rgba(139,197,63,.25)}
-    .link:active{ transform: translateY(0) scale(.99) }
 
     /* Generic lists */
     .list{display:grid;gap:10px;margin-top:12px}
     .item{
-      background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px 12px;
-      box-shadow:0 10px 26px rgba(15,23,42,.08);display:grid;gap:6px
+      background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px;
+      box-shadow:0 10px 26px rgba(15,23,42,.08);display:grid;gap:8px
     }
 
-    /* === Alignment polish for Next Class / Exams === */
+    /* Alignment + wrapping for readability */
     .item .top{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      align-items:center; /* vertical alignment fix */
-      gap:12px;
-      min-height:28px; /* consistent row height */
+      display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px;
     }
-    .item .title{
-      font-weight:900; font-family:Montserrat; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    .title{
+      font-weight:900;font-family:Montserrat;line-height:1.25;
+      white-space:normal; /* allow wrapping */
+      word-break:break-word; /* wrap long words */
     }
-    .item .right{display:flex;align-items:center;gap:8px}
-    .meta{
-      color:var(--muted);font-weight:700;font-size:13px;line-height:1.35;
-      display:flex;align-items:center;gap:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .right{display:flex;align-items:center;gap:8px}
     .pill{
       display:inline-flex;align-items:center;gap:8px;
-      padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#fff;font-weight:900;font-size:12px
+      padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#fff;
+      font-weight:900;font-size:12px;white-space:nowrap
     }
-    .empty{padding:14px;text-align:center;border:1px dashed #d8dee8;border-radius:12px;background:#fff;color:#6b7280;font-weight:900}
-
-    .row{display:grid;gap:10px}
-    @media(min-width:760px){ .row.two{grid-template-columns:1fr 1fr} }
-    select,button{
-      padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:#fff;font-weight:800
+    .meta{
+      color:var(--muted);font-weight:700;font-size:13px;line-height:1.45;
+      display:block; /* let it become multi-line */
+      white-space:normal; word-break:break-word;
     }
-    .btn{cursor:pointer}
-    .note{font-size:12px;color:#6b7280}
-    .mt{margin-top:16px}
 
-    /* Progress bar */
-    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
-    .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
-
-    /* === Filters (Year / Batch / Class) === */
+    /* Filters (Year / Batch / Class) */
     .filters{display:grid;gap:10px;margin-top:10px}
     @media(min-width:860px){ .filters{grid-template-columns:1fr 1fr 1fr} }
     .filters select{
       background:linear-gradient(180deg, #ffffff, #f7f9f6);
       border:1px solid rgba(0,0,0,.06);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 8px 16px rgba(15,23,42,.06);
-      font-weight:900;border-radius:14px
+      font-weight:900;border-radius:14px;padding:10px 12px
     }
 
-    /* === Custom Student Dropdown with Avatars (mirrors studentlogin UX, but visual custom) === */
-    .student-picker{position:relative}
-    .sp-trigger{
-      width:100%; display:flex; align-items:center; gap:10px; justify-content:space-between;
-      padding:10px 12px; border-radius:14px; border:1px solid rgba(0,0,0,.06); background:#fff;
-      font-weight:900; cursor:pointer; box-shadow:0 8px 16px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.85);
+    /* Teacher list of students (cards) */
+    .students{display:grid;gap:12px;margin-top:12px}
+    @media(min-width:640px){ .students{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media(min-width:980px){ .students{grid-template-columns:repeat(3,minmax(0,1fr))} }
+    @media(min-width:1200px){ .students{grid-template-columns:repeat(4,minmax(0,1fr))} }
+
+    .student{
+      display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:#fff;
+      border:1px solid rgba(0,0,0,.06);box-shadow:0 10px 26px rgba(15,23,42,.08);
+      text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
     }
-    .sp-trigger .left{display:flex;align-items:center;gap:10px;min-width:0}
-    .sp-trigger img{width:26px;height:26px;border-radius:999px;object-fit:cover;border:1px solid #eee}
-    .sp-trigger .label{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .sp-trigger .caret{margin-left:auto;opacity:.6}
-    .sp-menu{
-      position:absolute; z-index:50; left:0; right:0; top:calc(100% + 6px);
-      background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:14px;
-      box-shadow:0 18px 40px rgba(15,23,42,.14);
-      max-height:280px; overflow:auto; padding:6px; display:none;
-    }
-    .sp-menu.open{display:block}
-    .sp-option{
-      display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; cursor:pointer;
-    }
-    .sp-option:hover{background:#f5f7f4}
-    .sp-option img{width:28px;height:28px;border-radius:999px;object-fit:cover;border:1px solid #eee}
-    .sp-empty{padding:10px;text-align:center;color:#6b7280;font-weight:800}
-    .sp-option:focus{outline:2px solid var(--primary); outline-offset:2px}
+    .student:hover{transform:translateY(-1px); box-shadow:0 14px 30px rgba(15,23,42,.14); border-color:rgba(139,197,63,.25)}
+    .student img{width:40px;height:40px;border-radius:999px;object-fit:cover;border:1px solid #eee}
+    .student .name{font-weight:900;font-family:Montserrat;line-height:1.2}
+    .student .cls{color:var(--muted);font-weight:700;font-size:12px}
+
+    /* Progress bar */
+    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
+    .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+
+    .note{font-size:12px;color:#6b7280}
+    .empty{padding:14px;text-align:center;border:1px dashed #d8dee8;border-radius:12px;background:#fff;color:#6b7280;font-weight:900}
   </style>
 </head>
 <body>
@@ -171,8 +148,8 @@
     <div class="container grid cols-3">
       <!-- Left / Welcome + Quick Links -->
       <section class="card">
-        <h1>Student Dashboard</h1>
-        <div class="muted mt">Everything you need — profiles, classes, exams, downloads — in one place.</div>
+        <h1>Teacher Dashboard</h1>
+        <div class="muted mt">Manage classes, view upcoming sessions & exams, and open any student profile.</div>
 
         <!-- Quick Links -->
         <div class="links">
@@ -186,31 +163,20 @@
           <a class="link" href="/batchorigin.html">Class 11 — Origin</a>
         </div>
 
-        <!-- Pick Student (filters like studentlogin + avatar dropdown) -->
+        <!-- Filters (like studentlogin) -->
         <div class="mt">
-          <h2>Open My Profile</h2>
-
+          <h2>Find Students</h2>
           <div class="filters" aria-label="Filter students">
             <select id="yearFilter" aria-label="Filter by year"><option value="">Year — All</option></select>
             <select id="batchFilter" aria-label="Filter by batch"><option value="">Batch — All</option></select>
             <select id="classFilter" aria-label="Filter by class"><option value="">Class — All</option></select>
           </div>
 
-          <div class="row two mt">
-            <div class="student-picker" id="studentPicker">
-              <button class="sp-trigger" id="spTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span class="left">
-                  <img id="spAvatar" src="https://i.postimg.cc/0yD2YhRZ/user.png" alt="" />
-                  <span class="label" id="spLabel">Select student…</span>
-                </span>
-                <span class="caret">▾</span>
-              </button>
-              <div class="sp-menu" id="spMenu" role="listbox" tabindex="-1" aria-label="Students"></div>
-            </div>
-
-            <button id="openProfile" class="btn">Open Profile</button>
+          <!-- Students grid (no dropdown; show all matching) -->
+          <div id="studentList" class="students mt">
+            <div class="empty">Choose filters to list students.</div>
           </div>
-          <div class="note mt">Filters: Year → Batch → Class (from <code>/data/students.json</code>), then choose a student. Opens <code>student.url</code> or <code>/student.html?id=slug</code>.</div>
+          <div class="note mt" id="studentCount"></div>
         </div>
       </section>
 
@@ -271,13 +237,9 @@
     let schedule = [];     // schedule.json
     let syllabusMap = {};  // subject -> chapters[]
 
-    // Student picker state
-    let selectedStudent = null;
-    let currentFiltered = [];
-
     /* ===== Load all ===== */
     (async function(){
-      const studentsJson = await tryJSON(['/data/students.json']); // ← exact path requested
+      const studentsJson = await tryJSON(['/data/students.json']); // exact path
       const annJson = await tryJSON(['/data/announcements.json','/announcements.json']);
       const academicJson = await tryJSON(['/data/academic-2025-2026.json']);
       const scheduleJson = await tryJSON(['/data/schedule.json','/schedule.json']);
@@ -298,15 +260,12 @@
       }
 
       initFiltersFromStudents();   // mirrors studentlogin filters
-      rebuildStudentMenu();        // initial render of avatar dropdown
+      renderStudents();            // initial render
 
       buildNextClass();
       buildExams();
       buildAnnouncements();
       buildSubjectBars();
-
-      wireOpenProfile();
-      wirePickerUI();
     })();
 
     /* ===== Filters (mirror studentlogin.html logic) ===== */
@@ -314,7 +273,6 @@
     function val(el){ return (el?.value || '').trim(); }
 
     function initFiltersFromStudents(){
-      // These keys mirror typical studentlogin usage: year, batch, className
       const years = uniq(students.map(s => s.year || s.meta?.year));
       const batches = uniq(students.map(s => s.batch || s.meta?.batch));
       const classes = uniq(students.map(s => s.className || s.meta?.className));
@@ -323,10 +281,8 @@
       fillSelect('batchFilter', batches, 'Batch — All');
       fillSelect('classFilter', classes, 'Class — All');
 
-      // Cascade-like behaviour (choose year narrows batches/classes, etc.)
       ['yearFilter','batchFilter','classFilter'].forEach(id=>{
         document.getElementById(id).addEventListener('change', ()=>{
-          // Recompute options based on current chosen filters (like studentlogin)
           const yf = val(document.getElementById('yearFilter'));
           const bf = val(document.getElementById('batchFilter'));
 
@@ -339,7 +295,6 @@
           const nextBatches = uniq(filteredForOpts.map(s => s.batch || s.meta?.batch));
           const nextClasses = uniq(filteredForOpts.map(s => s.className || s.meta?.className));
 
-          // Only repopulate the selects that are "downstream" of current change to mimic the UX
           if(id === 'yearFilter'){
             fillSelect('batchFilter', nextBatches, 'Batch — All');
             fillSelect('classFilter', nextClasses, 'Class — All');
@@ -348,7 +303,7 @@
             fillSelect('classFilter', nextClasses, 'Class — All');
           }
 
-          rebuildStudentMenu();
+          renderStudents();
         });
       });
     }
@@ -372,91 +327,35 @@
       }).sort((a,b)=> (a.name||'').localeCompare(b.name||''));
     }
 
-    /* ===== Custom Student Dropdown (with avatars) ===== */
-    function rebuildStudentMenu(){
-      currentFiltered = applyFilters();
-      const menu = document.getElementById('spMenu');
-      if(!currentFiltered.length){
-        menu.innerHTML = `<div class="sp-empty">No students match these filters.</div>`;
-      } else {
-        menu.innerHTML = currentFiltered.map((s, i)=> renderOption(s, i)).join('');
-      }
-      selectedStudent = null;
-      document.getElementById('spLabel').textContent = 'Select student…';
-      document.getElementById('spAvatar').src = 'https://i.postimg.cc/0yD2YhRZ/user.png';
-      attachOptionHandlers();
-    }
+    /* ===== Students grid (no dropdown) ===== */
+    function renderStudents(){
+      const list = document.getElementById('studentList');
+      const count = document.getElementById('studentCount');
+      const matches = applyFilters();
 
-    function renderOption(s, i){
-      const name = s.name || 'Unnamed';
-      const cls = s.className || s.meta?.className || '';
-      const avatar = s.avatar || s.meta?.avatar || 'https://i.postimg.cc/0yD2YhRZ/user.png';
-      const slug = s.slug || (name.toLowerCase().replace(/\s+/g,'-'));
-      const url = s.url || (`/student.html?id=${encodeURIComponent(slug)}`);
-      return `
-        <div class="sp-option" role="option" tabindex="0"
-             data-index="${i}"
-             data-name="${escapeHtml(name)}"
-             data-class="${escapeHtml(cls)}"
-             data-avatar="${escapeHtml(avatar)}"
-             data-url="${escapeHtml(url)}">
-          <img src="${avatar}" alt="" />
-          <div style="display:flex;flex-direction:column;min-width:0">
-            <b style="font-family:Montserrat;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</b>
-            <span class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cls}</span>
-          </div>
-        </div>`;
-    }
-
-    function attachOptionHandlers(){
-      document.querySelectorAll('.sp-option').forEach(el=>{
-        el.addEventListener('click', ()=> chooseOption(el));
-        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); chooseOption(el);} });
-      });
-    }
-
-    function chooseOption(el){
-      const name = el.getAttribute('data-name');
-      const avatar = el.getAttribute('data-avatar');
-      const url = el.getAttribute('data-url');
-      selectedStudent = { name, avatar, url };
-      document.getElementById('spLabel').textContent = name;
-      document.getElementById('spAvatar').src = avatar;
-      toggleMenu(false);
-    }
-
-    function wirePickerUI(){
-      const trigger = document.getElementById('spTrigger');
-      const menu = document.getElementById('spMenu');
-
-      function onDocClick(e){
-        if(!document.getElementById('studentPicker').contains(e.target)) toggleMenu(false);
+      if(!matches.length){
+        list.innerHTML = `<div class="empty">No students match these filters.</div>`;
+        count.textContent = '';
+        return;
       }
 
-      window.toggleMenu = function(open){
-        trigger.setAttribute('aria-expanded', open?'true':'false');
-        menu.classList.toggle('open', !!open);
-        if(open){ document.addEventListener('click', onDocClick); }
-        else { document.removeEventListener('click', onDocClick); }
-      }
-
-      trigger.addEventListener('click', ()=> toggleMenu(!menu.classList.contains('open')));
-      trigger.addEventListener('keydown', (e)=>{ if(e.key==='ArrowDown'){ e.preventDefault(); toggleMenu(true); const first = menu.querySelector('.sp-option'); first && first.focus(); }});
-    }
-
-    function wireOpenProfile(){
-      document.getElementById('openProfile').addEventListener('click', ()=>{
-        if(selectedStudent?.url){
-          location.href = selectedStudent.url;
-        } else if(currentFiltered.length === 1){
-          const s = currentFiltered[0];
-          const slug = s.slug || (s.name||'').toLowerCase().replace(/\s+/g,'-');
-          const url = s.url || (`/student.html?id=${encodeURIComponent(slug)}`);
-          location.href = url;
-        } else {
-          alert('Please select a student.');
-        }
-      });
+      list.innerHTML = matches.map(s=>{
+        const name = s.name || 'Unnamed';
+        const cls = s.className || s.meta?.className || '';
+        const avatar = s.avatar || s.meta?.avatar || 'https://i.postimg.cc/0yD2YhRZ/user.png';
+        const slug = s.slug || (name.toLowerCase().replace(/\s+/g,'-'));
+        const url = s.url || (`/student.html?id=${encodeURIComponent(slug)}`);
+        return `
+          <a class="student" href="${url}">
+            <img src="${avatar}" alt="" />
+            <div>
+              <div class="name">${escapeHtml(name)}</div>
+              <div class="cls">${escapeHtml(cls)}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+      count.textContent = `${matches.length} student${matches.length>1?'s':''} shown`;
     }
 
     /* ===== Next Class ===== */
@@ -478,7 +377,7 @@
             <div class="title">${escapeHtml(e.subject)}</div>
             <div class="right"><span class="pill">${fmtDate(e.date)} · ${dayOf(e.date)}</span></div>
           </div>
-          <div class="meta">${tidyTime(e.time||'')} • <span title="${escapeHtml(e.topic||'')}">${escapeHtml(e.topic||'')}</span></div>
+          <div class="meta">${tidyTime(e.time||'')} • ${escapeHtml(e.topic||'')}</div>
         </div>
       `).join('');
     }
@@ -511,7 +410,7 @@
             <div class="title">${escapeHtml(x.title || 'Exam')}</div>
             <div class="right"><span class="pill">${fmtDate(x.date)}</span></div>
           </div>
-          <div class="meta">${tidyTime(x.time||'')} • <span title="${escapeHtml(x.notes||'')}">${escapeHtml(x.notes || '')}</span></div>
+          <div class="meta">${tidyTime(x.time||'')} • ${escapeHtml(x.notes || '')}</div>
         </div>
       `).join('');
     }
@@ -575,7 +474,10 @@
         const pct = computePct(s);
         return `
           <div class="item" style="padding:14px">
-            <div class="top"><div class="title">${s}</div><div class="right"><span class="pill">${pct}%</span></div></div>
+            <div class="top">
+              <div class="title">${s}</div>
+              <div class="right"><span class="pill">${pct}%</span></div>
+            </div>
             <div class="bar"><i style="width:${pct}%"></i></div>
           </div>
         `;
