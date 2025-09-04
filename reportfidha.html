@@ -1,154 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Student Profile</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#8BC53F">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sehr Academy — Lesson Plan Builder</title>
+<meta name="theme-color" content="#8BC53F" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --primary:#8BC53F; --ink:#0f172a; --muted:#6b7280; --bg:#ffffff;
+    --glass:rgba(255,255,255,.66); --glass-strong:rgba(255,255,255,.85);
+    --border:#e6e8ec; --shadow:0 22px 44px rgba(15,23,42,.10);
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;color:var(--ink);background:
+      linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.98)),
+      radial-gradient(900px 500px at 15% -10%, rgba(139,197,63,.10), transparent 55%),
+      radial-gradient(900px 500px at 85% 110%, rgba(139,197,63,.10), transparent 55%),
+      url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">\
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">\
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23ececec" stroke-width="1" opacity="0.35"/>\
+</pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+    background-attachment: fixed,fixed,fixed,fixed;
+    font-family:"Nunito",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
 
-  <style>
-    :root{
-      --sehr-green:#8BC53F; --ink:#0F172A; --muted:#5b6475;
-      --panel: rgba(255,255,255,0.75); --panel-strong: rgba(255,255,255,0.92);
-      --glass-border: rgba(255,255,255,0.55); --shadow: 0 10px 30px rgba(15,23,42,.10); --radius: 18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: Nunito, sans-serif; color:var(--ink);
-      background:#edf3e7;
-    }
-    .wrap{padding:32px 20px; max-width:1100px; margin:auto;}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-    .logo{font-family:Montserrat;font-weight:900;font-size:28px;text-decoration:none;color:var(--ink);}
-    .logo b{color:var(--sehr-green);}
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:var(--glass);border-bottom:1px solid var(--border);
+    backdrop-filter:saturate(175%) blur(10px);
+  }
+  .container{max-width:1180px;margin:0 auto;padding:16px 20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;
+    background:linear-gradient(145deg,#a3db64,#79b935);font-family:"Montserrat",sans-serif;
+    color:#0a2500;font-weight:900;letter-spacing:.3px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 24px rgba(139,197,63,.35)}
+  .title{font-family:"Montserrat",sans-serif;font-weight:800;font-size:20px}
+  .sub{color:var(--muted);font-size:13px}
 
-    .card{background:var(--panel);border:1px solid var(--glass-border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-top:18px;}
+  /* Controls / Glass blocks */
+  .panel{
+    background:linear-gradient(180deg,var(--glass-strong),rgba(255,255,255,.62));
+    border:1px solid var(--border);box-shadow:var(--shadow);border-radius:20px;padding:16px;margin-top:16px;
+    backdrop-filter:saturate(170%) blur(8px);
+  }
+  .row{display:grid;gap:12px}
+  @media (min-width:860px){ .row{grid-template-columns:repeat(12,1fr)} }
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-family:"Montserrat",sans-serif;font-weight:800;font-size:12px;letter-spacing:.3px}
+  select,input[type="text"],input[type="date"],input[type="time"],textarea{
+    padding:10px 12px;border-radius:12px;border:1px solid var(--border);outline:none;background:rgba(255,255,255,.82)
+  }
+  textarea{min-height:80px;resize:vertical}
+  .btn{
+    border:1px solid var(--border);border-radius:14px;padding:10px 14px;
+    background:linear-gradient(180deg,var(--glass-strong),rgba(255,255,255,.62));
+    font-family:"Montserrat",sans-serif;font-weight:800;letter-spacing:.3px;cursor:pointer;box-shadow:var(--shadow)
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(180deg,#b8e67d,#8BC53F);border-color:#a6d86a}
 
-    /* Profile */
-    .profile{display:grid;grid-template-columns:100px 1fr;gap:18px;align-items:center;}
-    .avatar{width:100px;height:100px;border-radius:18px;overflow:hidden;background:#fff}
-    .avatar img{width:100%;height:100%;object-fit:cover;}
-    .info{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:12px;}
-    .k{background:var(--panel-strong);border:1px solid var(--glass-border);border-radius:14px;padding:12px;}
-    .k small{display:block;color:var(--muted);font-size:12px;text-transform:uppercase}
-    .k b{font-family:Montserrat;font-size:16px;margin-top:4px;display:block}
+  .hint{color:var(--muted);font-size:12px}
 
-    /* Results Sections */
-    .section h2{font-family:Montserrat;font-weight:800;font-size:22px;margin:0 0 10px;}
+  /* Session cards */
+  .sessions{display:grid;gap:16px;margin-top:12px}
+  @media (min-width:860px){ .sessions{grid-template-columns:repeat(2,1fr)} }
+  .card{
+    position:relative;border-radius:16px;border:1px solid var(--border);padding:14px;
+    background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,255,255,.64));box-shadow:var(--shadow)
+  }
+  .card h3{margin:0 0 6px 0;font-family:"Montserrat",sans-serif;font-weight:800;font-size:16px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .pill{padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.82);
+    font-family:"Montserrat",sans-serif;font-weight:800;font-size:11px;letter-spacing:.3px}
+  .two{display:grid;gap:10px;grid-template-columns:1fr 1fr}
 
-    /* Subject averages */
-    .avg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:12px 0;}
-    .avg-card{background:#fff;border:1px solid var(--glass-border);border-radius:16px;padding:14px;position:relative;}
-    .avg-top{display:flex;justify-content:space-between;}
-    .avg-card .s{font-family:Montserrat;font-size:14px;font-weight:800}
-    .avg-card .v{font-family:Montserrat;font-weight:900;font-size:20px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .spacer{flex:1}
 
-    /* ==== TERM STYLING ==== */
-    details.term{background:var(--panel);border:1px solid var(--glass-border);border-radius:16px;margin-top:12px;}
-    details.term summary{
-      list-style:none;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-    }
-    details.term summary::-webkit-details-marker{display:none}
-    details.term summary span{
-      font-family:Montserrat,sans-serif;
-      font-weight:800;
-      font-size:11px;          /* very small letters */
-      text-transform:lowercase;
-      padding:6px 12px;
-      border-radius:999px;
-      background:#fff;
-      border:1px solid var(--glass-border);
-      box-shadow:inset 0 -1px 0 rgba(0,0,0,.05);
-    }
+  .empty{border:1px dashed #d9dfe5;background:rgba(255,255,255,.55);border-radius:12px;padding:16px;text-align:center;color:var(--muted)}
 
-    .term-body{padding:10px 16px 18px;background:rgba(255,255,255,0.6);border-top:1px dashed rgba(15,23,42,.08);}
-    .exam-row{display:grid;grid-template-columns:80px 1fr 70px;align-items:center;gap:12px;padding:10px 8px;}
-    .label{font-family:Montserrat;font-weight:800;background:#fff;border:1px solid var(--glass-border);border-radius:12px;padding:6px 10px;text-align:center;}
-    .bar{height:12px;border-radius:999px;background:rgba(15,23,42,.08);overflow:hidden;position:relative;}
-    .bar i{position:absolute;inset:0;width:0%;transition:width 1s; background:var(--sehr-green);}
-    .pct{text-align:right;font-family:Montserrat;font-weight:800}
-  </style>
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:28px 0 40px}
+  .danger{color:#b42318}
+  .ok{color:#0a5d1c}
+
+  /* Print */
+  @media print{
+    header,.toolbar{display:none!important}
+    body{background:white}
+    .panel{box-shadow:none;border:1px solid #e5e7eb}
+  }
+</style>
 </head>
-
 <body>
-  <div class="wrap">
-    <header id="site-header"></header>
-<script src="/assets/nav.js" defer></script>
+  <header>
+    <div class="container">
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <div class="title">Lesson Plan Builder</div>
+          <div class="sub">Mapped to academic calendar • White-glass UI</div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <!-- Profile -->
-    <section class="card profile">
-      <div class="avatar"><img src="" alt="Profile" id="profile-avatar"></div>
-      <div class="info">
-        <div class="k"><small>Student</small><b id="k-name">—</b></div>
-        <div class="k"><small>Class</small><b id="k-class">—</b></div>
-        <div class="k"><small>Joining</small><b id="k-join">—</b></div>
-        <div class="k"><small>Birthday</small><b id="k-bday">—</b></div>
+  <main class="container">
+    <!-- Builder Controls -->
+    <section class="panel">
+      <div class="row">
+        <div class="field" style="grid-column: span 3;">
+          <label>Teacher ID (optional)</label>
+          <input id="teacherId" type="text" placeholder="e.g., t_gayathri_phy" />
+        </div>
+        <div class="field" style="grid-column: span 3;">
+          <label>Batch</label>
+          <select id="batch">
+            <option value="Origin">Origin</option>
+            <option value="Ignite">Ignite</option>
+            <option value="Ascent">Ascent</option>
+            <option value="Legacy">Legacy</option>
+          </select>
+        </div>
+        <div class="field" style="grid-column: span 3;">
+          <label>Subject</label>
+          <select id="subject"></select>
+        </div>
+        <div class="field" style="grid-column: span 3;">
+          <label>Chapter</label>
+          <input id="chapterSearch" type="text" placeholder="Type to filter or enter chapter name" list="chaptersList"/>
+          <datalist id="chaptersList"></datalist>
+        </div>
+
+        <div class="field" style="grid-column: span 12;">
+          <div class="toolbar">
+            <button class="btn primary" id="mapFromCalendar">Map sessions from Academic JSON</button>
+            <button class="btn" id="addCustomPart">Add custom part</button>
+            <div class="spacer"></div>
+            <button class="btn" id="savePlan">Save</button>
+            <button class="btn" id="loadPlan">Load</button>
+            <button class="btn" id="exportPlan">Export JSON</button>
+            <button class="btn" id="printPlan">Print</button>
+          </div>
+          <div class="hint">Tip: Choose Subject → start typing the Chapter name. “Map sessions” scans <code>/data/academic-2025-2026.json</code> for matching topic names (ignores “Part 1/2/3”).</div>
+        </div>
       </div>
     </section>
 
-    <!-- Results -->
-    <section class="card">
-      <h2>Results</h2>
-
-      <!-- Subject averages -->
-      <div class="avg-grid">
-        <div class="avg-card"><div class="avg-top"><span class="s">Physics</span><span class="v">—</span></div></div>
-        <div class="avg-card"><div class="avg-top"><span class="s">Maths</span><span class="v">—</span></div></div>
-        <div class="avg-card"><div class="avg-top"><span class="s">Chemistry</span><span class="v">—</span></div></div>
-        <div class="avg-card"><div class="avg-top"><span class="s">Biology</span><span class="v">—</span></div></div>
-      </div>
-
-      <!-- First Term -->
-      <details class="term" open>
-        <summary>
-          <span>first term</span>
-          <span id="term-range">may – sep 2025</span>
-        </summary>
-        <div class="term-body" id="first-term"></div>
-      </details>
-
-      <!-- Second Term -->
-      <details class="term">
-        <summary>
-          <span>second term</span>
-          <span id="term2-range">sep – dec 2025</span>
-        </summary>
-        <div class="term-body" id="second-term"></div>
-      </details>
+    <!-- Sessions Area -->
+    <section class="panel">
+      <h2 style="margin:0 0 6px 0;font-family:Montserrat,sans-serif;font-weight:800;font-size:18px">Planned Sessions</h2>
+      <div id="sessions" class="sessions"></div>
+      <div id="emptyState" class="empty" style="display:none">No sessions yet. Click “Map sessions” or “Add custom part”.</div>
     </section>
-  </div>
 
-  <script>
-    // Example loader for fidha.json
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      const res = await fetch('/students/fidha.json');
-      const data = await res.json();
-      document.getElementById('profile-avatar').src = data.meta.avatar;
-      document.getElementById('k-name').textContent = data.meta.name;
-      document.getElementById('k-class').textContent = data.meta.className;
-      document.getElementById('k-join').textContent = data.meta.joinDate;
-      document.getElementById('k-bday').textContent = data.meta.birthday;
+    <!-- Debug / Status -->
+    <section class="panel">
+      <strong>Status:</strong>
+      <span id="status" class="hint">Waiting…</span>
+      <div class="hint" style="margin-top:6px">
+        Academic JSON path: <code>/data/academic-2025-2026.json</code>. Make sure it’s accessible (same domain).
+      </div>
+      <!--
+        Expected shapes (both supported):
+        A) { "date":"2025-09-08","day":"Monday","session":"Morning","time":"06:00 AM","subject":"Botany","topic":"Plant Kingdom Part 1" }
+        B) { "date":"2025-09-08","slot":"Morning","subject":"Botany","title":"Plant Kingdom - Part 1" }
+        The code normalizes keys and strips "Part X" when matching chapters.
+      -->
+    </section>
+  </main>
 
-      // Fill exam rows
-      const render = (arr, host) => {
-        host.innerHTML = arr.map(r => `
-          <div class="exam-row">
-            <div class="label">${r.label}</div>
-            <div class="bar"><i style="width:${r.pct||0}%"></i></div>
-            <div class="pct">${r.pct==null?'Pending':r.pct+'%'}</div>
-          </div>`).join('');
-      };
-      render(data.internals.first, document.getElementById('first-term'));
-      render(data.internals.second, document.getElementById('second-term'));
-    });
-  </script>
-</body>
-</html>
+  <footer>© Sehr Academy</footer>
+
+<script>
+(function(){
+  const state = {
+    academic: [],
+    subjects: [],
+    chaptersBySubject: new Map(),
+    sessions: [] // [{part, date, time, day, slot, subject, chapter, objectives, activities, homework, resources}]
+  };
+
+  const els = {
+    subject: document.getElementById('subject'),
+    chapterSearch: document.getElementById('chapterSearch'),
+    chaptersList: document.getElementById('chaptersList'),
+    sessions: document.getElementById('sessions'),
+    empty: document.getElementById('emptyState'),
+    status: document.getElementById('status'),
+    teacherId: document.getElementById('teacherId'),
+    batch: document.getElementById('batch'),
+  };
+
+  const PART_RX = /\bpart\s*\d+\b/i;
+
+  function setStatus(msg, ok=true){
+    els.status.textContent = msg;
+    els.status.className = ok ? 'ok' : 'danger';
+  }
+
+  function normalizeEntry(raw){
+    // Try to normalize various possible keys
+    let date = raw.date || raw.Date || raw.dt || null;
+    let day  = raw.day || raw.Day || null;
+    let slot = raw.session || raw.slot || raw.period || null; // Morning/Evening
+    let time = raw.time || raw.Time || null;
+    let subject = raw.subject || raw.Subject || '';
+    let topic = raw.topic || raw.title || raw.Topic || raw.Title || '';
+    return { date, day, slot, time, subject: String(subject).trim(), topic: String(topic).trim() };
+  }
+
+  function baseChapterName(topic){
+    if(!topic) return '';
+    // Remove separator variations: "-", "—"
+    let t = topic.replace(/[-—]/g,' ').trim();
+    // Remove Part x suffix anywhere
+    t = t.replace(PART_RX,'').trim();
+    // Remove trailing punctuation
+    return t.replace(/[–\-—:]+$/,'').trim();
+  }
+
+  function extractPartNumber(topic){
+    const m = String(topic||'').match(/part\s*(\d+)/i);
+    return m ? Number(m[1]) : null;
+  }
+
+  function toISODate(d){ // supports "YYYY-MM-DD" already
+    if(!d) return null;
+    if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+    // try parse "Sep 8 2025" or similar
+    const parsed = new Date(d);
+    if(isNaN(parsed)) return null;
+    return parsed.toISOString().slice(0,10);
+  }
+
+  function slotDefaultTime(slot){
+    if(!slot) return '';
+    const s = String(slot).toLowerCase();
+    if(s.includes('morning')) return '06:00';
+    if(s.includes('evening')) return '18:00';
+    return '';
+  }
+
+  async function loadAcade
