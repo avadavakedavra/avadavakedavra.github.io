@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Sehr Academy — Syllabus Roadmap & Sessions</title>
+  <title>Sehr Academy — Syllabus Sessions Finder</title>
   <meta name="theme-color" content="#8BC53F"/>
 
   <!-- Fonts -->
@@ -86,9 +86,7 @@
       border:1px solid rgba(255,255,255,.6); background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.78));
       font-weight:900
     }
-    .sessions{
-      margin-top:12px; display:grid; gap:10px;
-    }
+    .sessions{margin-top:12px; display:grid; gap:10px;}
     .sess{
       background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px;
       box-shadow:0 12px 26px rgba(15,23,42,.08);
@@ -113,8 +111,8 @@
         <div class="card">
           <div class="toolbar">
             <div>
-              <h1>Syllabus Roadmap</h1>
-              <div class="subtitle">Pick a subject, then a chapter — or search by chapter name. Data from <code>/data/syllabus.json</code> and <code>/data/academic-2025-2026.json</code>.</div>
+              <h1>Syllabus Sessions Finder</h1>
+              <div class="subtitle">Select a <b>Subject</b>, then a <b>Chapter</b> — or search by chapter name. Data from <code>/data/syllabus.json</code> and <code>/data/academic-2025-2026.json</code>.</div>
             </div>
 
             <div class="controls">
@@ -159,10 +157,21 @@
     const chapterTitle = obj => obj?.title || obj?.chapter || obj?.name || (typeof obj==='string' ? obj : '');
     const chapterPartsHint = obj => obj?.parts || obj?.totalParts || 0;
     const partNum = topic => { const m = (topic||'').match(/part\s*(\d+)/i); return m ? +m[1] : 1; };
+
+    // Get the "base" topic without trailing "Part N" / dashes, to improve matching
+    function baseTopic(topic=''){
+      return topic.replace(/\s*[-–—]?\s*part\s*\d+.*$/i,'').trim();
+    }
+
     const fmtDate = iso => {
       const d = new Date(iso);
       if (isNaN(+d)) return iso || '';
+      // "Tue, 09 Sep 2025"
       return d.toLocaleDateString(undefined, { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+    };
+    const dayOf = iso => {
+      const d = new Date(iso);
+      return isNaN(+d) ? '' : d.toLocaleDateString(undefined, { weekday:'long' });
     };
     const tidyTime = t => (t||'').replace(/\b0?(\d)\b/,'$1'); // 06 -> 6
 
@@ -170,8 +179,6 @@
     let subjMap = {};            // { "Physics":[chapters], ... }
     let subjects = [];
     let eventsBySubject = {};    // { "Physics":[{date,time,subject,topic}], ... }
-    let months = [];
-    let academicMeta = {};
 
     /* ===== Load JSONs ===== */
     (async function init(){
@@ -198,9 +205,7 @@
         if (!subjects.length) throw new Error('No subjects in syllabus.json');
 
         // Academic events, grouped by subject
-        academicMeta = academic?.meta || {};
         const ev = safeArray(academic?.events);
-        months = Array.from(new Set(ev.map(e => (e.date||'').slice(0,7)).filter(Boolean))).sort();
         eventsBySubject = {};
         ev.forEach(e => {
           const s = (e.subject||'').trim();
@@ -226,6 +231,7 @@
       const preferred = ['Physics','Chemistry','Maths','Mathematics','Biology','Botany','Zoology'];
       const ordered = [...preferred.filter(s=>subjects.includes(s)), ...subjects.filter(s=>!preferred.includes(s))];
       subjectSel.innerHTML = ordered.map(s=>`<option value="${s}">${s}</option>`).join('');
+
       // Populate chapter dropdown for the first subject
       populateChapters(subjectSel.value);
 
@@ -235,19 +241,17 @@
       // Wire events
       subjectSel.addEventListener('change', ()=>{
         populateChapters(subjectSel.value);
-        document.getElementById('q').value = '';
+        q.value = '';
         renderChapterDetails(subjectSel.value, chapterSel.value, '');
       });
       chapterSel.addEventListener('change', ()=>{
         renderChapterDetails(subjectSel.value, chapterSel.value, q.value);
       });
       q.addEventListener('input', ()=>{
-        // Try to auto-select chapter if search matches
+        // Soft-match: auto-select first chapter whose title contains the query
         const list = subjMap[subjectSel.value] || [];
         const hit = list.find(ch => norm(chapterTitle(ch)).includes(norm(q.value)));
-        if (hit){
-          chapterSel.value = chapterTitle(hit);
-        }
+        if (hit){ chapterSel.value = chapterTitle(hit); }
         renderChapterDetails(subjectSel.value, chapterSel.value, q.value);
       });
       clearBtn.addEventListener('click', ()=>{
@@ -268,7 +272,7 @@
       }).join('');
     }
 
-    /* ===== Progress bars (subject-wise) ===== */
+    /* ===== Subject progress bars ===== */
     function computeSubjectProgress(subject){
       const chapters = safeArray(subjMap[subject]);
       const ev = eventsBySubject[subject] || [];
@@ -276,15 +280,20 @@
       const chapStates = chapters.map(ch=>{
         const title = chapterTitle(ch);
         const tNorm = norm(title);
-        const matches = ev.filter(e => norm(e.topic||'').includes(tNorm)); // contains
+        const matches = ev.filter(e => {
+          const topic = e.topic || '';
+          // Match if chapter title is in topic OR topic's base matches chapter title
+          return norm(topic).includes(tNorm) || norm(baseTopic(topic)) === tNorm;
+        });
+
         const explicitTotal = chapterPartsHint(ch);
         const observedParts = new Set(matches.map(m=>partNum(m.topic||'')));
         const inferredTotal = Math.max(explicitTotal, observedParts.size || (matches.length ? 1 : 0), explicitTotal ? 1 : 0);
         const partsDone = observedParts.size || (matches.length ? 1 : 0);
 
-        // If user marks status in syllabus.json, respect it; else infer by parts
-        const s = norm(ch?.status || ch?.state || '');
-        const explicitDone = (s==='done' || s==='completed' || ch?.completed===true);
+        // Respect explicit status if present
+        const s = (ch.status||ch.state||'').toString().toLowerCase();
+        const explicitDone = (s==='done' || s==='completed' || ch.completed===true);
         const done = explicitDone ? true : (inferredTotal>0 && partsDone >= inferredTotal);
 
         return { done };
@@ -292,8 +301,7 @@
 
       const total = chapStates.length || 1;
       const doneCount = chapStates.filter(c=>c.done).length;
-      const pct = Math.round(doneCount/total*100);
-      return pct;
+      return Math.round(doneCount/total*100);
     }
 
     function renderSubjectSummary(){
@@ -316,7 +324,7 @@
       host.appendChild(frag);
     }
 
-    /* ===== Chapter details renderer ===== */
+    /* ===== Chapter details (COMPARE WITH ACADEMIC JSON) ===== */
     function renderChapterDetails(subject, chapterTitleStr, searchStr){
       const pill = document.getElementById('summary-pill');
       const sessionsHost = document.getElementById('sessions');
@@ -328,40 +336,43 @@
       }
       const events = eventsBySubject[subject] || [];
 
-      // If a search is given, prefer it; else use selected chapter
-      const qn = norm(searchStr||'');
-      const chapterKey = qn || norm(chapterTitleStr||'');
-      if(!chapterKey){ pill.textContent = `Select a chapter in ${subject}.`; return; }
+      // Choose the key to match by: search string (if given) else selected chapter
+      const query = norm(searchStr || chapterTitleStr || '');
+      if(!query){ pill.textContent = `Select a chapter in ${subject}.`; return; }
 
-      // Find all events where TOPIC includes the chapterKey
-      const matched = events.filter(e => norm(e.topic||'').includes(chapterKey));
+      // 1) STRICT CONTAINS: "Work, Energy and Power" in "Work, Energy and Power Part 2"
+      // 2) BASE EQUALITY:   baseTopic("Work, Energy and Power Part 2") === "work, energy and power"
+      const matched = events.filter(e => {
+        const topic = e.topic || '';
+        const cond1 = norm(topic).includes(query);
+        const cond2 = norm(baseTopic(topic)) === query;
+        return cond1 || cond2;
+      });
 
-      // Group by Part number (default 1 if not found)
-      const partsMap = new Map(); // part -> array of events (keep earliest as expected)
+      if(!matched.length){
+        pill.textContent = `${subject} · ${chapterTitleStr || searchStr || '—'} · 0 part(s)`;
+        empty.hidden = false;
+        return;
+      }
+
+      // Group by detected Part N (default 1 if no part number), sort by part then date
+      const partsMap = new Map();
       matched.forEach(e=>{
         const p = partNum(e.topic||'');
         if(!partsMap.has(p)) partsMap.set(p, []);
         partsMap.get(p).push(e);
       });
 
-      // Summary pill text
-      const partsCount = partsMap.size || (matched.length?1:0);
-      const niceChapterName = chapterTitleStr || (matched[0]?.topic?.split(' Part ')[0] || '');
-      pill.textContent = niceChapterName
-        ? `${subject} · ${niceChapterName} · ${partsCount || 0} part(s)`
-        : `${subject} · ${partsCount || 0} part(s)`;
-
-      if (!matched.length){
-        empty.hidden = false;
-        return;
-      }
-
-      // Build session cards in increasing Part order
       const parts = Array.from(partsMap.keys()).sort((a,b)=>a-b);
+
+      // Friendly chapter label: prefer the base of the first matched topic
+      const niceChapter = chapterTitleStr || baseTopic(matched[0].topic||'') || (searchStr || '');
+      pill.textContent = `${subject} · ${niceChapter} · ${parts.length} part(s)`;
+
       const frag = document.createDocumentFragment();
       parts.forEach(p=>{
-        // Choose earliest event for this Part as the expected start
-        const list = partsMap.get(p).slice().sort((a,b)=>(a.date>b.date?1:-1));
+        // Pick the earliest event for "expected" info
+        const list = partsMap.get(p).slice().sort((a,b)=> (a.date > b.date ? 1 : -1));
         const e0 = list[0];
         const el = document.createElement('div');
         el.className = 'sess';
@@ -370,9 +381,9 @@
             <div class="title">Part ${p}</div>
             <span class="chip">Expected</span>
           </div>
-          <div class="meta"><b>Date:</b> ${fmtDate(e0.date)}</div>
+          <div class="meta"><b>Chapter:</b> ${niceChapter}</div>
+          <div class="meta"><b>Date:</b> ${fmtDate(e0.date)} <small>(${dayOf(e0.date)})</small></div>
           <div class="meta"><b>Time:</b> ${tidyTime(e0.time || '')}</div>
-          <div class="meta"><b>Day:</b> ${fmtDate(e0.date).split(',')[0]}</div>
           <div class="meta"><b>Topic:</b> ${e0.topic || ''}</div>
         `;
         frag.appendChild(el);
