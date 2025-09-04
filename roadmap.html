@@ -2,487 +2,440 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Teacher Dashboard</title>
+  <title>Sehr Academy — Teacher Profile</title>
   <meta name="theme-color" content="#8BC53F" />
+  <meta name="description" content="Reusable teacher profile template for Sehr Academy — bio, subjects, batches, office hours, achievements, and sample lessons." />
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --primary:#8BC53F; --ink:#0f172a; --muted:#6b7280; --bg:#edf3e7;
-      --border:#e6e8ec; --shadow:0 16px 44px rgba(15,23,42,.08);
-      --r:16px; --r2:20px; --maxw:1180px;
-      --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626; --info:#2563eb;
+      --sehr-green:#8BC53F;
+      --sehr-green-ink:#6cab2f;
+      --ink:#0f172a;
+      --muted:#5b6475;
+      --glass: rgba(255,255,255,.72);
+      --glass-border: rgba(230,232,236,.7);
+      --glass-deep: rgba(255,255,255,.55);
+      --shadow: 0 10px 30px rgba(16,24,40,.10), 0 2px 6px rgba(16,24,40,.08);
+      --gold1:#e7c873; --gold2:#caa74e;
+      --blue:#3b82f6; --red:#ef4444; --yellow:#f59e0b; --green:#22c55e;
     }
-    *{box-sizing:border-box} html,body{margin:0;padding:0}
+    /* Page base */
+    html,body{height:100%}
     body{
-      font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      color:var(--ink); background:var(--bg);
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      background-image:
-        radial-gradient(900px 400px at -10% -10%, rgba(139,197,63,.08), transparent 60%),
-        radial-gradient(900px 400px at 110% 0%, rgba(139,197,63,.06), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0));
-      background-attachment: fixed, fixed, fixed;
+      margin:0; color:var(--ink);
+      font-family:"Nunito", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(139,197,63,.20), transparent 60%),
+        radial-gradient(1000px 700px at 100% 0%, rgba(139,197,63,.12), transparent 60%),
+        linear-gradient(180deg, #ffffff, #f7faf7 60%, #ffffff 100%);
+      background-attachment: fixed;
     }
+    .container{max-width:1080px;margin:0 auto;padding:24px;}
 
-    header#site-header{
-      position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);
-      border-bottom:1px solid rgba(230,232,236,.6);
-      backdrop-filter:saturate(175%) blur(10px)
+    /* Header / Hero */
+    .hero{
+      display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:center;
+      background:var(--glass); border:1px solid var(--glass-border);
+      backdrop-filter: saturate(170%) blur(12px);
+      padding:18px 20px; border-radius:18px; box-shadow:var(--shadow);
     }
+    .hero .photo{
+      width:110px;height:110px;border-radius:50%;
+      background:linear-gradient(135deg,rgba(255,255,255,.6),rgba(255,255,255,.2));
+      border:1px solid var(--glass-border); overflow:hidden; display:grid;place-items:center;
+    }
+    .hero .photo img{width:100%;height:100%;object-fit:cover}
+    .hero h1{margin:0; font-family:"Montserrat",sans-serif; font-weight:800; letter-spacing:.2px; font-size:28px}
+    .hero .designation{margin:2px 0 8px; color:var(--muted); font-weight:700}
+    .hero .tagline{margin:0; font-style:italic; color:#1f2937}
 
-    main{padding:40px 0}
-    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-    h1,h2,h3{font-family:Montserrat;margin:0}
-    h1{font-size:32px}
-    h2{font-size:22px}
-    .muted{color:var(--muted);font-weight:700}
-    .mt{margin-top:16px}
+    /* Quick pills */
+    .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;
+      background:linear-gradient(180deg, #ffffff, var(--glass-deep));
+      border:1px solid var(--glass-border); font-weight:700; font-size:14px}
+    .pill .dot{width:10px;height:10px;border-radius:6px;display:inline-block}
+    .dot.bio{background:linear-gradient(180deg,var(--gold1),var(--gold2))}
+    .dot.physics{background:var(--blue)}
+    .dot.chemistry{background:var(--green)}
+    .dot.maths{background:var(--red)}
+    .dot.biology{background:var(--yellow)}
 
-    /* Frosted cards */
+    /* Grid layout for sections */
+    .grid{display:grid; grid-template-columns: 1.1fr 0.9fr; gap:20px; margin-top:22px}
+
+    /* Frosty cards */
     .card{
-      background:linear-gradient(180deg,rgba(255,255,255,.68),rgba(255,255,255,.36));
-      border:1px solid rgba(255,255,255,.55);
-      border-radius:var(--r2);
-      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.35);
-      backdrop-filter: blur(12px) saturate(150%); -webkit-backdrop-filter: blur(12px) saturate(150%);
-      padding:18px;
+      background:var(--glass); border:1px solid var(--glass-border);
+      backdrop-filter: saturate(170%) blur(10px);
+      border-radius:18px; box-shadow:var(--shadow);
+      padding:18px 18px 16px;
     }
-    .grid{display:grid;gap:14px}
-    @media(min-width:980px){ .grid.cols-3{grid-template-columns:2fr 1fr 1fr} }
-    @media(min-width:980px){ .grid.cols-2{grid-template-columns:1.4fr 1fr} }
+    .card h2{margin:0 0 10px; font-family:"Montserrat",sans-serif; font-weight:800; font-size:18px}
+    .card p{margin:0 0 10px; line-height:1.6}
 
-    /* Quick Links */
-    .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
-    @media(min-width:720px){ .links{grid-template-columns:repeat(3,minmax(0,1fr))} }
-    @media(min-width:1080px){ .links{grid-template-columns:repeat(4,minmax(0,1fr))} }
-    .link{
-      position:relative;display:flex;align-items:center;justify-content:center;text-align:center;
-      padding:14px 16px;border-radius:18px;font-family:Montserrat;font-weight:900;font-size:15px;
-      color:#0b0f10;text-decoration:none; user-select:none;
-      background:linear-gradient(180deg,#fff 0%,#fcfcfc 55%,#f6f8f4 100%);
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.6), 0 10px 26px rgba(15,23,42,.10);
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-      overflow:hidden;
-    }
-    .link::after{content:"";position:absolute;left:0;right:0;top:0;height:42%;
-      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0))}
-    .link:hover{transform:translateY(-1px);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(255,255,255,.7), 0 14px 30px rgba(15,23,42,.14);
-      border-color:rgba(139,197,63,.25)}
+    .list{margin:10px 0 0; padding:0; list-style:none}
+    .list li{padding:10px 12px;border-radius:12px;border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#fff, var(--glass-deep)); margin-bottom:10px}
 
-    /* Generic lists */
-    .list{display:grid;gap:10px;margin-top:12px}
-    .item{
-      background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px;
-      box-shadow:0 10px 26px rgba(15,23,42,.08);display:grid;gap:8px
-    }
+    /* Subjects & Batches */
+    .subject-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .subject-badge{font-weight:800;padding:6px 10px;border-radius:10px;border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#fff,var(--glass-deep));}
+    .subject-Physics{box-shadow: inset 0 0 0 1000px rgba(59,130,246,.12)}
+    .subject-Chemistry{box-shadow: inset 0 0 0 1000px rgba(34,197,94,.14)}
+    .subject-Mathematics{box-shadow: inset 0 0 0 1000px rgba(239,68,68,.12)}
+    .subject-Biology{box-shadow: inset 0 0 0 1000px rgba(245,158,11,.16)}
+    .batch-chip{padding:6px 10px;border-radius:10px;border:1px dashed rgba(139,197,63,.45); font-weight:700}
 
-    /* Alignment + wrapping for readability */
-    .item .top{
-      display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px;
-    }
-    .title{
-      font-weight:900;font-family:Montserrat;line-height:1.25;
-      white-space:normal; /* allow wrapping */
-      word-break:break-word; /* wrap long words */
-    }
-    .right{display:flex;align-items:center;gap:8px}
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#fff;
-      font-weight:900;font-size:12px;white-space:nowrap
-    }
-    .meta{
-      color:var(--muted);font-weight:700;font-size:13px;line-height:1.45;
-      display:block; /* let it become multi-line */
-      white-space:normal; word-break:break-word;
-    }
+    /* Office Hours */
+    .oh-grid{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    .oh-item{padding:12px;border:1px solid var(--glass-border);border-radius:12px;
+      background:linear-gradient(180deg,#fff,var(--glass-deep)); display:flex;justify-content:space-between;align-items:center}
+    .oh-item .day{font-weight:800}
+    .oh-item .time{font-weight:700;color:var(--muted)}
 
-    /* Filters (Year / Batch / Class) */
-    .filters{display:grid;gap:10px;margin-top:10px}
-    @media(min-width:860px){ .filters{grid-template-columns:1fr 1fr 1fr} }
-    .filters select{
-      background:linear-gradient(180deg, #ffffff, #f7f9f6);
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 8px 16px rgba(15,23,42,.06);
-      font-weight:900;border-radius:14px;padding:10px 12px
+    /* Achievements */
+    .achv li{display:flex;gap:10px;align-items:flex-start}
+    .achv svg{flex:0 0 auto;margin-top:2px}
+
+    /* Sample Lesson */
+    .lesson{display:grid;gap:10px}
+    .lesson .media{
+      border-radius:14px; overflow:hidden; border:1px solid var(--glass-border);
+      background:#000; aspect-ratio:16/9; display:grid; place-items:center;
     }
-
-    /* Teacher list of students (cards) */
-    .students{display:grid;gap:12px;margin-top:12px}
-    @media(min-width:640px){ .students{grid-template-columns:repeat(2,minmax(0,1fr))} }
-    @media(min-width:980px){ .students{grid-template-columns:repeat(3,minmax(0,1fr))} }
-    @media(min-width:1200px){ .students{grid-template-columns:repeat(4,minmax(0,1fr))} }
-
-    .student{
-      display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:#fff;
-      border:1px solid rgba(0,0,0,.06);box-shadow:0 10px 26px rgba(15,23,42,.08);
-      text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    .lesson .media video, .lesson .media iframe{width:100%;height:100%}
+    .lesson .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{appearance:none;border:0;padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer;
+      background:linear-gradient(180deg, #ffffff, var(--glass-deep));
+      border:1px solid var(--glass-border); box-shadow:var(--shadow);
     }
-    .student:hover{transform:translateY(-1px); box-shadow:0 14px 30px rgba(15,23,42,.14); border-color:rgba(139,197,63,.25)}
-    .student img{width:40px;height:40px;border-radius:999px;object-fit:cover;border:1px solid #eee}
-    .student .name{font-weight:900;font-family:Montserrat;line-height:1.2}
-    .student .cls{color:var(--muted);font-weight:700;font-size:12px}
+    .btn.primary{background:linear-gradient(180deg, #a6db6a, #86c23f); color:#0b2510; border-color:#97ce57}
 
-    /* Progress bar */
-    .bar{height:12px;border-radius:999px;background:#e9ece7;position:relative;overflow:hidden;border:1px solid #eef2ea;margin-top:8px}
-    .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#f3df95,#e7c35c);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+    /* Testimonials */
+    .quotes{display:grid;gap:10px}
+    .quote{padding:14px;border:1px solid var(--glass-border);border-radius:14px;background:linear-gradient(180deg,#fff,var(--glass-deep))}
+    .quote strong{display:block;margin-bottom:4px}
 
-    .note{font-size:12px;color:#6b7280}
-    .empty{padding:14px;text-align:center;border:1px dashed #d8dee8;border-radius:12px;background:#fff;color:#6b7280;font-weight:900}
+    /* Quick Links row */
+    .quick{display:flex;flex-wrap:wrap;gap:10px}
+    .quick a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:inherit}
+    .quick .q{padding:10px 14px;border-radius:12px;border:1px solid var(--glass-border);
+      background:linear-gradient(180deg,#fff,var(--glass-deep)); font-weight:800}
+
+    /* Footer note */
+    .meta-note{margin-top:18px;color:var(--muted);font-size:14px}
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .grid{grid-template-columns: 1fr}
+      .hero{grid-template-columns: 86px 1fr}
+      .hero .photo{width:80px;height:80px}
+    }
   </style>
 </head>
 <body>
-  <header id="site-header"></header>
-  <script defer src="/assets/nav.js"></script>
-
-  <main>
-    <div class="container grid cols-3">
-      <!-- Left / Welcome + Quick Links -->
-      <section class="card">
-        <h1>Teacher Dashboard</h1>
-        <div class="muted mt">Manage classes, view upcoming sessions & exams, and open any student profile.</div>
-
-        <!-- Quick Links -->
-        <div class="links">
-          <a class="link" href="/studentlogin.html">Student Login</a>
-          <a class="link" href="/student.html">Profiles</a>
-          <a class="link" href="/syllabus.html">Syllabus Tracker</a>
-          <a class="link" href="/calendar11.html">Calendar View</a>
-          <a class="link" href="/schedule.html">Daily Schedule</a>
-          <a class="link" href="/downloads.html">Downloads Library</a>
-          <a class="link" href="/roadmap.html">Roadmap (Sessions)</a>
-          <a class="link" href="/batchorigin.html">Class 11 — Origin</a>
+  <main class="container" id="profile-root" data-slug="gayathri-biology">
+    <!-- HERO / HEADER -->
+    <header class="hero">
+      <div class="photo">
+        <img id="t-photo" src="/images/teachers/gayathri.jpg" alt="Ms. Gayathri — Biology"/>
+      </div>
+      <div>
+        <h1 id="t-name">Ms. Gayathri</h1>
+        <div class="designation" id="t-designation">Biology Faculty • Plus One/Plus Two</div>
+        <p class="tagline" id="t-tagline">“Igniting curiosity in Biology, one cell at a time.”</p>
+        <div class="pills">
+          <span class="pill"><span class="dot bio"></span><span id="t-exp">Experience: 6+ years</span></span>
+          <span class="pill"><span class="dot biology"></span><span id="t-primary">Primary: Biology</span></span>
+          <span class="pill"><span class="dot maths"></span><span id="t-support">Supports: Maths</span></span>
         </div>
+      </div>
+    </header>
 
-        <!-- Filters (like studentlogin) -->
-        <div class="mt">
-          <h2>Find Students</h2>
-          <div class="filters" aria-label="Filter students">
-            <select id="yearFilter" aria-label="Filter by year"><option value="">Year — All</option></select>
-            <select id="batchFilter" aria-label="Filter by batch"><option value="">Batch — All</option></select>
-            <select id="classFilter" aria-label="Filter by class"><option value="">Class — All</option></select>
+    <!-- GRID SECTIONS -->
+    <section class="grid" aria-label="Teacher details">
+      <!-- Left column -->
+      <div class="left-col">
+        <!-- Bio -->
+        <article class="card" id="bio">
+          <h2>Bio</h2>
+          <p id="t-bio">B.Sc, M.Sc in Botany. Passionate Biology teacher with focus on concept-driven learning and NCERT alignment. Mentors students for board and entrance readiness with structured notes and rapid revision trackers.</p>
+        </article>
+
+        <!-- Subjects & Batches -->
+        <article class="card" id="subjects-batches">
+          <h2>Subjects & Batches</h2>
+          <ul class="list" id="t-subjects">
+            <li>
+              <div class="subject-row">
+                <span class="subject-badge subject-Biology">Biology</span>
+                <span class="batch-chip">Ignite</span>
+                <span class="batch-chip">Ascent</span>
+              </div>
+            </li>
+            <li>
+              <div class="subject-row">
+                <span class="subject-badge subject-Mathematics">Mathematics (Support)</span>
+                <span class="batch-chip">Ignite</span>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <!-- Achievements -->
+        <article class="card" id="achievements">
+          <h2>Achievements</h2>
+          <ul class="list achv" id="t-achievements">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4" stroke="url(#g)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="var(--gold1)"/><stop offset="1" stop-color="var(--gold2)"/></linearGradient></defs></svg>
+              Guided 50+ students to 90%+ in Biology Boards.
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4" stroke="url(#g)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Guest speaker at Kerala Science Forum 2024.
+            </li>
+          </ul>
+        </article>
+      </div>
+
+      <!-- Right column -->
+      <div class="right-col">
+        <!-- Office Hours -->
+        <article class="card" id="office-hours">
+          <h2>Office Hours</h2>
+          <div class="oh-grid" id="t-office-hours">
+            <div class="oh-item"><span class="day">Mon–Fri</span><span class="time">4 PM – 6 PM</span></div>
+            <div class="oh-item"><span class="day">Saturday</span><span class="time">10 AM – 12 PM</span></div>
           </div>
+        </article>
 
-          <!-- Students grid (no dropdown; show all matching) -->
-          <div id="studentList" class="students mt">
-            <div class="empty">Choose filters to list students.</div>
+        <!-- Sample Lesson -->
+        <article class="card" id="sample-lesson">
+          <h2>Sample Lesson</h2>
+          <div class="lesson">
+            <div class="media">
+              <!-- Replace with your file or YouTube embed -->
+              <video id="t-video" controls poster="/images/teachers/lesson-poster.jpg">
+                <source src="/lessons/gayathri-intro.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="actions">
+              <a class="btn" id="t-notes" href="/notes/gayathri-demo.pdf" target="_blank" rel="noopener">Download Demo Notes (PDF)</a>
+              <a class="btn primary" id="t-message" href="/contact?to=gayathri">Message Teacher</a>
+            </div>
           </div>
-          <div class="note mt" id="studentCount"></div>
-        </div>
-      </section>
+        </article>
 
-      <!-- Middle / Next Class + Exams -->
-      <section class="card">
-        <h2>Next Class</h2>
-        <div id="nextClass" class="list mt">
-          <div class="empty">Loading next class…</div>
-        </div>
+        <!-- Testimonials (optional) -->
+        <article class="card" id="testimonials">
+          <h2>Student Feedback</h2>
+          <div class="quotes" id="t-testimonials">
+            <div class="quote"><strong>Fidha</strong> I finally understood Plant Kingdom clearly — love the flow and recap quizzes!</div>
+            <div class="quote"><strong>Gayathri</strong> Doubt-clearing hours are super helpful before tests.</div>
+          </div>
+        </article>
+      </div>
+    </section>
 
-        <h2 class="mt">Upcoming Exams</h2>
-        <div id="upcomingExams" class="list">
-          <div class="empty">Loading exams…</div>
-        </div>
-      </section>
-
-      <!-- Right / Announcements -->
-      <section class="card">
-        <h2>Announcements</h2>
-        <div id="annList" class="list mt">
-          <div class="empty">Fetching announcements…</div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Subject Completion -->
-    <div class="container mt">
-      <section class="card">
-        <h2>Subject Completion</h2>
-        <div id="subjBars" class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:10px"></div>
-        <div class="note mt">Estimated % from <code>/data/syllabus.json</code> vs <code>/data/academic-2025-2026.json</code>.</div>
-      </section>
-    </div>
+    <!-- Quick Links -->
+    <section class="card" style="margin-top:20px" id="quick-links">
+      <h2>Quick Links</h2>
+      <div class="quick" id="t-quick">
+        <a class="q" href="/schedule">View Schedule</a>
+        <a class="q" href="/assignments?teacher=gayathri">Teacher's Assignments</a>
+        <a class="q" href="/students">Student Profiles</a>
+      </div>
+      <div class="meta-note" id="t-updated">Last updated: <strong>Sep 4, 2025</strong></div>
+    </section>
   </main>
 
   <script>
-    /* ===== Utils ===== */
-    const tryJSON = async (paths) => {
-      for (const p of paths) {
-        try { const r = await fetch(p, {cache:'no-cache'}); if (r.ok) return await r.json(); } catch {}
+    /**
+     * Reusable Teacher Profile Template — Data Loader (Optional)
+     *
+     * How to use:
+     * 1) Duplicate this file per teacher, OR keep one file and pass ?slug=teacher-slug in the URL.
+     * 2) Place a JSON at /data/teachers/<slug>.json following the schema below.
+     * 3) If JSON is found, this script will populate and override the static fallback content.
+     *
+     * Example JSON (save as /data/teachers/gayathri-biology.json):
+     * {
+     *   "name": "Ms. Gayathri",
+     *   "designation": "Biology Faculty • Plus One/Plus Two",
+     *   "tagline": "Igniting curiosity in Biology, one cell at a time.",
+     *   "photo": "/images/teachers/gayathri.jpg",
+     *   "experience": "6+ years",
+     *   "primary": "Biology",
+     *   "supports": "Mathematics",
+     *   "bio": "B.Sc, M.Sc in Botany...",
+     *   "subjects": [
+     *     {"title":"Biology","batches":["Ignite","Ascent"]},
+     *     {"title":"Mathematics (Support)","batches":["Ignite"]}
+     *   ],
+     *   "office_hours": [
+     *     {"day":"Mon–Fri","time":"4 PM – 6 PM"},
+     *     {"day":"Saturday","time":"10 AM – 12 PM"}
+     *   ],
+     *   "achievements": [
+     *     "Guided 50+ students to 90%+ in Biology Boards.",
+     *     "Guest speaker at Kerala Science Forum 2024."
+     *   ],
+     *   "lesson": {
+     *     "video": "/lessons/gayathri-intro.mp4",
+     *     "poster": "/images/teachers/lesson-poster.jpg",
+     *     "notes": "/notes/gayathri-demo.pdf"
+     *   },
+     *   "testimonials": [
+     *     {"name":"Fidha","text":"I finally understood Plant Kingdom clearly — love the flow and recap quizzes!"},
+     *     {"name":"Gayathri","text":"Doubt-clearing hours are super helpful before tests."}
+     *   ],
+     *   "quick": [
+     *     {"label":"View Schedule","url":"/schedule"},
+     *     {"label":"Teacher's Assignments","url":"/assignments?teacher=gayathri"},
+     *     {"label":"Student Profiles","url":"/students"}
+     *   ],
+     *   "updated": "Sep 4, 2025"
+     * }
+     */
+
+    (function(){
+      const root = document.getElementById('profile-root');
+      const url = new URL(window.location.href);
+      const urlSlug = url.searchParams.get('slug');
+      const slug = urlSlug || root.getAttribute('data-slug') || 'teacher';
+      const jsonUrl = `/data/teachers/${slug}.json`;
+
+      // Map helpers
+      const el = (id) => document.getElementById(id);
+
+      function subjectClass(name){
+        const key = (name || '').toLowerCase();
+        if(key.includes('physics')) return 'subject-Physics';
+        if(key.includes('chem')) return 'subject-Chemistry';
+        if(key.includes('math')) return 'subject-Mathematics';
+        if(key.includes('bio')||key.includes('zool')||key.includes('bot')) return 'subject-Biology';
+        return '';
       }
-      return null;
-    };
-    const safeArr = v => Array.isArray(v) ? v : [];
-    const norm = s => (s||'').toString().toLowerCase().replace(/\s+/g,' ').trim();
-    const baseTopic = t => (t||'').replace(/\s*[-–—]?\s*part\s*\d+.*$/i,'').trim();
-    const partNum = t => { const m = (t||'').match(/part\s*(\d+)/i); return m ? +m[1] : 1; };
-    const tidyTime = t => (t||'').replace(/\b0?(\d)\b/,'$1');
-    const fmtDate = iso => { const d = new Date(iso); return isNaN(+d) ? (iso||'') : d.toLocaleDateString(undefined, { day:'2-digit', month:'short', year:'numeric' }); };
-    const dayOf = iso => { const d = new Date(iso); return isNaN(+d) ? '' : d.toLocaleDateString(undefined, { weekday:'short' }); };
-    const today = () => new Date().toISOString().slice(0,10);
-    const escapeHtml = str => String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-    /* ===== State ===== */
-    let students = [];
-    let announcements = [];
-    let events = [];       // academic events
-    let schedule = [];     // schedule.json
-    let syllabusMap = {};  // subject -> chapters[]
+      function setText(id, text){ if(el(id) && text){ el(id).textContent = text; } }
+      function setAttr(id, attr, val){ if(el(id) && val){ el(id).setAttribute(attr, val); } }
 
-    /* ===== Load all ===== */
-    (async function(){
-      const studentsJson = await tryJSON(['/data/students.json']); // exact path
-      const annJson = await tryJSON(['/data/announcements.json','/announcements.json']);
-      const academicJson = await tryJSON(['/data/academic-2025-2026.json']);
-      const scheduleJson = await tryJSON(['/data/schedule.json','/schedule.json']);
-      const syllabusJson = await tryJSON(['/data/syllabus.json']);
+      fetch(jsonUrl, {cache:'no-store'}).then(r=>{
+        if(!r.ok) throw new Error('No JSON');
+        return r.json();
+      }).then(data=>{
+        // Hero
+        setText('t-name', data.name);
+        setText('t-designation', data.designation);
+        setText('t-tagline', `“${data.tagline.replace(/^"|"$/g,'')}”`);
+        setAttr('t-photo','src', data.photo);
+        setAttr('t-photo','alt', `${data.name} — ${data.primary || 'Teacher'}`);
+        setText('t-exp', `Experience: ${data.experience}`);
+        if(data.primary) setText('t-primary', `Primary: ${data.primary}`);
+        if(data.supports) setText('t-support', `Supports: ${data.supports}`);
 
-      students = safeArr(studentsJson);
-      announcements = safeArr(annJson);
-      events = safeArr(academicJson?.events);
-      schedule = safeArr(scheduleJson);
+        // Bio
+        setText('t-bio', data.bio);
 
-      // Normalize syllabus (accept multiple shapes)
-      if (Array.isArray(syllabusJson?.subjects)) {
-        syllabusJson.subjects.forEach(s => { if(s?.name) syllabusMap[s.name] = safeArr(s.chapters || s.items || s.list); });
-      } else if (syllabusJson?.subjects && typeof syllabusJson.subjects === 'object') {
-        Object.keys(syllabusJson.subjects).forEach(k => { syllabusMap[k] = safeArr(syllabusJson.subjects[k]); });
-      } else if (syllabusJson) {
-        Object.keys(syllabusJson).forEach(k => { if (Array.isArray(syllabusJson[k])) syllabusMap[k] = syllabusJson[k]; });
-      }
-
-      initFiltersFromStudents();   // mirrors studentlogin filters
-      renderStudents();            // initial render
-
-      buildNextClass();
-      buildExams();
-      buildAnnouncements();
-      buildSubjectBars();
-    })();
-
-    /* ===== Filters (mirror studentlogin.html logic) ===== */
-    function uniq(arr){ return Array.from(new Set(arr.filter(v => v !== undefined && v !== null && String(v).trim() !== ''))); }
-    function val(el){ return (el?.value || '').trim(); }
-
-    function initFiltersFromStudents(){
-      const years = uniq(students.map(s => s.year || s.meta?.year));
-      const batches = uniq(students.map(s => s.batch || s.meta?.batch));
-      const classes = uniq(students.map(s => s.className || s.meta?.className));
-
-      fillSelect('yearFilter', years, 'Year — All');
-      fillSelect('batchFilter', batches, 'Batch — All');
-      fillSelect('classFilter', classes, 'Class — All');
-
-      ['yearFilter','batchFilter','classFilter'].forEach(id=>{
-        document.getElementById(id).addEventListener('change', ()=>{
-          const yf = val(document.getElementById('yearFilter'));
-          const bf = val(document.getElementById('batchFilter'));
-
-          const filteredForOpts = students.filter(s=>{
-            const y = (s.year || s.meta?.year || '').toString();
-            const b = (s.batch || s.meta?.batch || '').toString();
-            return (!yf || y===yf) && (!bf || b===bf);
+        // Subjects & batches
+        if(Array.isArray(data.subjects)){
+          const ul = document.getElementById('t-subjects');
+          ul.innerHTML = '';
+          data.subjects.forEach(sb=>{
+            const li = document.createElement('li');
+            const row = document.createElement('div');
+            row.className = 'subject-row';
+            const badge = document.createElement('span');
+            badge.className = `subject-badge ${subjectClass(sb.title)}`;
+            badge.textContent = sb.title;
+            row.appendChild(badge);
+            (sb.batches||[]).forEach(b=>{
+              const chip = document.createElement('span');
+              chip.className = 'batch-chip';
+              chip.textContent = b;
+              row.appendChild(chip);
+            });
+            li.appendChild(row);
+            ul.appendChild(li);
           });
+        }
 
-          const nextBatches = uniq(filteredForOpts.map(s => s.batch || s.meta?.batch));
-          const nextClasses = uniq(filteredForOpts.map(s => s.className || s.meta?.className));
+        // Office Hours
+        if(Array.isArray(data.office_hours)){
+          const wrap = document.getElementById('t-office-hours');
+          wrap.innerHTML = '';
+          data.office_hours.forEach(oh=>{
+            const item = document.createElement('div');
+            item.className = 'oh-item';
+            const d = document.createElement('span'); d.className='day'; d.textContent = oh.day;
+            const t = document.createElement('span'); t.className='time'; t.textContent = oh.time;
+            item.appendChild(d); item.appendChild(t);
+            wrap.appendChild(item);
+          });
+        }
 
-          if(id === 'yearFilter'){
-            fillSelect('batchFilter', nextBatches, 'Batch — All');
-            fillSelect('classFilter', nextClasses, 'Class — All');
+        // Achievements
+        if(Array.isArray(data.achievements)){
+          const ul = document.getElementById('t-achievements');
+          ul.innerHTML = '';
+          data.achievements.forEach(txt=>{
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4" stroke="url(#g)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="var(--gold1)"/><stop offset="1" stop-color="var(--gold2)"/></linearGradient></defs></svg>
+              ${txt}`;
+            ul.appendChild(li);
+          });
+        }
+
+        // Lesson
+        if(data.lesson){
+          if(data.lesson.poster) setAttr('t-video','poster',data.lesson.poster);
+          if(data.lesson.video){
+            const v = document.getElementById('t-video');
+            v.innerHTML = '';
+            const src = document.createElement('source');
+            src.src = data.lesson.video; src.type = 'video/mp4';
+            v.appendChild(src);
           }
-          if(id === 'batchFilter'){
-            fillSelect('classFilter', nextClasses, 'Class — All');
-          }
+          if(data.lesson.notes) setAttr('t-notes','href', data.lesson.notes);
+        }
 
-          renderStudents();
-        });
-      });
-    }
+        // Testimonials
+        if(Array.isArray(data.testimonials)){
+          const box = document.getElementById('t-testimonials');
+          box.innerHTML = '';
+          data.testimonials.forEach(q=>{
+            const d = document.createElement('div'); d.className='quote';
+            const strong = document.createElement('strong'); strong.textContent = q.name;
+            const text = document.createElement('div'); text.textContent = q.text;
+            d.appendChild(strong); d.appendChild(text); box.appendChild(d);
+          });
+        }
 
-    function fillSelect(id, values, label){
-      const sel = document.getElementById(id);
-      const opts = ['<option value="">' + label + '</option>']
-        .concat(values.map(v => `<option value="${String(v)}">${String(v)}</option>`));
-      sel.innerHTML = opts.join('');
-    }
+        // Quick links
+        if(Array.isArray(data.quick)){
+          const row = document.getElementById('t-quick');
+          row.innerHTML = '';
+          data.quick.forEach(q=>{
+            const a = document.createElement('a'); a.className='q'; a.href=q.url; a.textContent=q.label;
+            row.appendChild(a);
+          });
+        }
 
-    function applyFilters(){
-      const yf = val(document.getElementById('yearFilter'));
-      const bf = val(document.getElementById('batchFilter'));
-      const cf = val(document.getElementById('classFilter'));
-      return students.filter(s=>{
-        const y = (s.year || s.meta?.year || '').toString();
-        const b = (s.batch || s.meta?.batch || '').toString();
-        const c = (s.className || s.meta?.className || '').toString();
-        return (!yf || y===yf) && (!bf || b===bf) && (!cf || c===cf);
-      }).sort((a,b)=> (a.name||'').localeCompare(b.name||''));
-    }
-
-    /* ===== Students grid (no dropdown) ===== */
-    function renderStudents(){
-      const list = document.getElementById('studentList');
-      const count = document.getElementById('studentCount');
-      const matches = applyFilters();
-
-      if(!matches.length){
-        list.innerHTML = `<div class="empty">No students match these filters.</div>`;
-        count.textContent = '';
-        return;
-      }
-
-      list.innerHTML = matches.map(s=>{
-        const name = s.name || 'Unnamed';
-        const cls = s.className || s.meta?.className || '';
-        const avatar = s.avatar || s.meta?.avatar || 'https://i.postimg.cc/0yD2YhRZ/user.png';
-        const slug = s.slug || (name.toLowerCase().replace(/\s+/g,'-'));
-        const url = s.url || (`/student.html?id=${encodeURIComponent(slug)}`);
-        return `
-          <a class="student" href="${url}">
-            <img src="${avatar}" alt="" />
-            <div>
-              <div class="name">${escapeHtml(name)}</div>
-              <div class="cls">${escapeHtml(cls)}</div>
-            </div>
-          </a>
-        `;
-      }).join('');
-      count.textContent = `${matches.length} student${matches.length>1?'s':''} shown`;
-    }
-
-    /* ===== Next Class ===== */
-    function buildNextClass(){
-      const host = document.getElementById('nextClass');
-      const t0 = today();
-      const upcoming = (events||[])
-        .filter(e => e.date && e.subject && e.topic && e.date >= t0 && !e.exam)
-        .sort((a,b)=> a.date.localeCompare(b.date))
-        .slice(0,3);
-
-      if(!upcoming.length){
-        host.innerHTML = `<div class="empty">No upcoming classes found.</div>`;
-        return;
-      }
-      host.innerHTML = upcoming.map(e => `
-        <div class="item">
-          <div class="top">
-            <div class="title">${escapeHtml(e.subject)}</div>
-            <div class="right"><span class="pill">${fmtDate(e.date)} · ${dayOf(e.date)}</span></div>
-          </div>
-          <div class="meta">${tidyTime(e.time||'')} • ${escapeHtml(e.topic||'')}</div>
-        </div>
-      `).join('');
-    }
-
-    /* ===== Exams ===== */
-    function buildExams(){
-      const host = document.getElementById('upcomingExams');
-      const t0 = today();
-
-      const fromSchedule = (schedule||[])
-        .filter(x => (x.title||'').toLowerCase().includes('qp') || (x.notes||'').toLowerCase().includes('test'))
-        .map(x => ({date: (x.date||'').replace(/\/|\.|–/g,'-'), time:x.time, title:x.title, notes:x.notes}));
-
-      const fromAcademic = (events||[])
-        .filter(e => e.exam || (e.subject||'').toLowerCase()==='exam')
-        .map(e => ({date:e.date, time:e.time, title:e.topic, notes:e.subject}));
-
-      const all = [...fromSchedule, ...fromAcademic]
-        .filter(x => x.date && x.date >= t0)
-        .sort((a,b)=> a.date.localeCompare(b.date))
-        .slice(0,4);
-
-      if(!all.length){
-        host.innerHTML = `<div class="empty">No upcoming exams.</div>`;
-        return;
-      }
-      host.innerHTML = all.map(x=>`
-        <div class="item">
-          <div class="top">
-            <div class="title">${escapeHtml(x.title || 'Exam')}</div>
-            <div class="right"><span class="pill">${fmtDate(x.date)}</span></div>
-          </div>
-          <div class="meta">${tidyTime(x.time||'')} • ${escapeHtml(x.notes || '')}</div>
-        </div>
-      `).join('');
-    }
-
-    /* ===== Announcements ===== */
-    function buildAnnouncements(){
-      const host = document.getElementById('annList');
-      if(!announcements.length){
-        host.innerHTML = `<div class="empty">No announcements right now.</div>`;
-        return;
-      }
-      const sorted = announcements.slice().sort((a,b)=> String(b.date||'').localeCompare(String(a.date||''))).slice(0,6);
-      host.innerHTML = sorted.map(a=>{
-        const url = a?.cta?.url || '#';
-        const label = a?.cta?.label || 'Open';
-        return `
-          <div class="item">
-            <div class="top">
-              <div class="title">${escapeHtml(a.title || 'Announcement')}</div>
-              <div class="right">${url && url!=='#' ? `<a class="pill" href="${url}">${escapeHtml(label)}</a>`:''}</div>
-            </div>
-            <div class="meta">${a.date ? fmtDate(a.date) : ''}</div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    /* ===== Subject completion ===== */
-    function chapterTitle(obj){ return obj?.title || obj?.chapter || obj?.name || (typeof obj==='string' ? obj : ''); }
-
-    function computePct(subject){
-      const chaps = safeArr(syllabusMap[subject]);
-      if(!chaps.length || !events.length) return 0;
-      const subjectEvents = events.filter(e => (e.subject||'').trim() === subject);
-      const stats = chaps.map(ch=>{
-        const t = chapterTitle(ch);
-        const tNorm = norm(t);
-        const matches = subjectEvents.filter(e=>{
-          const topic = e.topic || '';
-          return norm(topic).includes(tNorm) || norm(baseTopic(topic)) === tNorm;
-        });
-        const partsDone = new Set(matches.map(m=>partNum(m.topic))).size || (matches.length?1:0);
-        const totalParts = ch.parts || ch.totalParts || Math.max(partsDone, matches.length?1:0);
-        const status = (ch.status||ch.state||'').toString().toLowerCase();
-        const explicitDone = status==='done' || status==='completed' || ch.completed===true;
-        const done = explicitDone || (totalParts>0 && partsDone >= totalParts);
-        return {done};
-      });
-      const total = stats.length;
-      const doneCount = stats.filter(x=>x.done).length;
-      return Math.round(doneCount/Math.max(total,1)*100);
-    }
-
-    function buildSubjectBars(){
-      const host = document.getElementById('subjBars');
-      const subjects = Object.keys(syllabusMap);
-      const order = ['Physics','Chemistry','Maths','Mathematics','Biology','Botany','Zoology'];
-      const ordered = [...order.filter(s=>subjects.includes(s)), ...subjects.filter(s=>!order.includes(s))];
-
-      host.innerHTML = ordered.map(s=>{
-        const pct = computePct(s);
-        return `
-          <div class="item" style="padding:14px">
-            <div class="top">
-              <div class="title">${s}</div>
-              <div class="right"><span class="pill">${pct}%</span></div>
-            </div>
-            <div class="bar"><i style="width:${pct}%"></i></div>
-          </div>
-        `;
-      }).join('') || `<div class="empty">Add subjects to <code>/data/syllabus.json</code> to see progress here.</div>`;
-    }
+        if(data.updated){
+          const up = document.getElementById('t-updated');
+          up.innerHTML = `Last updated: <strong>${data.updated}</strong>`;
+        }
+      }).catch(()=>{/* silently keep fallback content */});
+    })();
   </script>
 </body>
 </html>
