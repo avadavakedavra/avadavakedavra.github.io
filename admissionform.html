@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehr Academy — Student Admission Form</title>
+  <meta name="theme-color" content="#8BC53F" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --sehr:#8BC53F; --ink:#0b0f10; --muted:#6b7280; --dark:#1f2937;
+      --paper:#ffffff; --line:rgba(0,0,0,.08); --soft:#f5f7f2; --shadow:0 18px 44px rgba(16,24,40,.10);
+      --radius:16px; --radius-sm:12px; --maxw:210mm;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--ink); background:#ffffff;
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.98)),
+        url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">\
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">\
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23ececec" stroke-width="1" opacity="0.35"/></pattern></defs>\
+<rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+      background-attachment: fixed, fixed;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{max-width:var(--maxw);margin:14mm auto;padding:12mm}
+    .card{
+      background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+      box-shadow:var(--shadow); overflow:hidden; width:100%;
+    }
+    .head{ position:relative; padding:18px 22px 12px 22px; border-bottom:1px solid var(--line); }
+    .brand{display:flex; align-items:center; gap:14px}
+    .brand .name{display:flex; align-items:baseline; gap:8px; text-decoration:none}
+    .name span:nth-child(1){font-family:Montserrat,sans-serif; font-weight:900; font-size:30px; color:var(--sehr)}
+    .name span:nth-child(2){font-family:Montserrat,sans-serif; font-weight:900; font-size:30px; color:#0b0f10}
+    .addr{color:var(--dark); font-weight:800; letter-spacing:.3px}
+    .subaddr{color:var(--muted); font-size:12px}
+
+    .ribbon{ position:absolute; right:0; top:0; display:flex; align-items:center; gap:10px; color:#fff; background:#263238; padding:14px 22px 14px 40px; clip-path:polygon(24px 0, 100% 0, 100% 100%, 0 100%); font-family:Montserrat,sans-serif; font-weight:900; font-size:18px; letter-spacing:.6px; }
+    .ribbon::before{content:""; position:absolute; right:calc(100% - 24px); top:0; bottom:0; width:24px; background:var(--sehr)}
+
+    .section{padding:16px 22px; border-bottom:1px solid var(--line)}
+    .section h3{margin:0 0 10px; font-family:Montserrat,sans-serif; letter-spacing:.3px; font-size:14px; color:#0f172a}
+    .grid{display:grid; gap:10px}
+    .grid.cols-2{grid-template-columns:1fr 1fr}
+    .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+    @media(max-width:860px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+
+    .field{display:grid; gap:6px}
+    .label{font-size:12px; color:#394150; font-weight:700}
+    .value{min-height:34px; padding:8px 10px; border:1px solid #e7e7e7; border-radius:10px; background:linear-gradient(180deg,#f9fafb,#ffffff)}
+    .value[contenteditable]{outline:2px dashed transparent}
+    .value[contenteditable]:focus{outline-color:#dff0c7}
+
+    /* Subjects selection style (reuse check style) */
+    .subjects{margin-top:6px}
+    .subject-row{display:grid; grid-template-columns:1fr 120px 160px; gap:10px; align-items:center; border-bottom:1px dashed #ececec; padding:8px 0}
+    .sub-name{font-weight:700}
+    .sel{display:flex; align-items:center; gap:8px}
+    .check{ width:34px; height:34px; display:inline-grid; place-items:center; border-radius:8px; background:linear-gradient(180deg,#f7f7f7,#ffffff); border:1px solid #ddd; box-shadow:inset 0 1px 0 #fff; cursor:pointer; }
+    .check[data-selected="true"]{ background:linear-gradient(180deg,#eaf6d5,#ffffff); border-color:#dff0c7; box-shadow:0 6px 14px rgba(139,197,63,.18), inset 0 1px 0 #fff; }
+    .check svg{width:20px; height:20px; opacity:0}
+    .check[data-selected="true"] svg{opacity:1}
+    .check:focus{ outline:3px solid #b9e49a; outline-offset:3px }
+    .fee{min-width:120px; text-align:right; font-variant-numeric:tabular-nums; padding-right:6px}
+    .note{color:var(--muted); font-size:12px}
+
+    /* Security deposit block */
+    .deposit{
+      background:#fbfdf7; border:1px solid #e6f2d8; border-radius:12px; padding:12px; display:grid; gap:8px
+    }
+    .deposit .row{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
+    .badge{background:#eef8df; border:1px solid #e0f2c8; color:#2a3d10; font-weight:800; font-size:12px; padding:6px 10px; border-radius:999px; display:inline-block}
+    .stamp{
+      display:inline-block; padding:6px 10px; border:2px solid #178a00; color:#178a00; font-weight:900; letter-spacing:1.2px;
+      border-radius:8px; transform:rotate(-2deg); opacity:.0; transition:.2s ease; font-family:Montserrat,sans-serif;
+    }
+    .stamp.show{opacity:1}
+    .stamp small{display:block; font-weight:700; letter-spacing:0; opacity:.8}
+
+    .terms{padding:10px 22px 16px; color:#4b5563; font-size:12.5px}
+    .footer{ padding:14px 22px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; border-top:1px solid var(--line); background:#f9faf8 }
+    .logo-word{font-family:Montserrat,sans-serif; font-weight:900; letter-spacing:.4px}
+    .logo-word span:first-child{color:var(--sehr)}
+    .sigwrap{display:grid; gap:18px; grid-template-columns:1fr 1fr}
+    @media(max-width:860px){.sigwrap{grid-template-columns:1fr}}
+    .sig{min-height:72px; display:flex; align-items:end; justify-content:center}
+    .sig .line{border-top:2px solid #111; padding-top:6px; font-weight:700; text-align:center; width:100%}
+    .muted{color:#6b7280}
+
+    /* Controls */
+    .controls{
+      display:flex; gap:8px; justify-content:flex-end; margin-top:8px
+    }
+    .btn{border:1px solid #dfead2; background:linear-gradient(180deg,#eef8df,#ffffff); font-weight:800; padding:8px 12px; border-radius:10px; cursor:pointer}
+
+    /* Keep sections intact on print & add watermark */
+    .section{ break-inside: avoid; }
+
+    /* Print to A4 */
+    @page{ size: A4; margin: 12mm; }
+    @media print{
+      body{background:#fff}
+      .wrap{margin:0 auto; padding:0}
+      .card{box-shadow:none; border-radius:0}
+      .ribbon{position:absolute}
+      .controls{display:none !important}
+      body::after{
+        content:"SEHR ACADEMY";
+        position:fixed; left:0; right:0; top:45%; text-align:center;
+        font-family:Montserrat,sans-serif; font-weight:900; font-size:72px;
+        color:#8BC53F; opacity:0.07; pointer-events:none; transform:rotate(-12deg);
+      }
+    }
+
+    /* Small visual polish */
+    .value{ transition: box-shadow .15s ease, background .15s ease }
+    .value[contenteditable]:focus{
+      background:linear-gradient(180deg,#f3fbec,#ffffff);
+      box-shadow: 0 0 0 2px #dff0c7 inset;
+    }
+    .subject-row:hover{ background:rgba(139,197,63,.04) }
+
+    /* tiny helper button for "Today" */
+    .tinybtn{
+      font-size:11px; padding:4px 8px; border:1px solid #e3edd7; border-radius:8px;
+      background:linear-gradient(180deg,#f7fbf1,#ffffff); cursor:pointer; margin-left:8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="card" id="admission">
+      <div class="head">
+        <div class="ribbon">ADMISSION FORM</div>
+        <div class="brand">
+          <div class="name"><span>SEHR</span><span>ACADEMY</span></div>
+          <div>
+            <div class="addr value" contenteditable>Plus One Science</div>
+            <div class="subaddr value" contenteditable>Ganeshamangalam, Vatanapally</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr auto; gap:10px; margin-top:12px">
+          <div class="grid cols-3">
+            <div class="field">
+              <div class="label">Student Name</div>
+              <div class="value" contenteditable>xxxxxx</div>
+            </div>
+            <div class="field">
+              <div class="label">Date of Birth</div>
+              <div class="value" contenteditable>dd/mm/yyyy</div>
+            </div>
+            <div class="field">
+              <div class="label">Gender</div>
+              <div class="value" contenteditable>Male / Female / Other</div>
+            </div>
+          </div>
+          <div style="display:grid; justify-items:end; gap:6px">
+            <span class="badge">REGN NO</span>
+            <div class="value" id="regnNo" contenteditable style="min-width:160px; text-align:right; font-weight:800">xxxxxx</div>
+            <div class="muted" style="font-size:12px">Admission Date: <b id="admDate"></b>
+              <button type="button" class="tinybtn" id="btnTodayAdm" title="Set Admission Date to today">Today</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact & Address -->
+      <div class="section">
+        <h3>Contact & Address</h3>
+        <div class="grid cols-2">
+          <div class="field">
+            <div class="label">Parent / Guardian Name</div>
+            <div class="value" contenteditable>xxxxxx</div>
+          </div>
+          <div class="field">
+            <div class="label">Relationship</div>
+            <div class="value" contenteditable>Father / Mother / Guardian</div>
+          </div>
+        </div>
+        <div class="grid cols-3" style="margin-top:8px">
+          <div class="field">
+            <div class="label">Student Mobile</div>
+            <div class="value" contenteditable>+91 xxxxx xxxxx</div>
+          </div>
+          <div class="field">
+            <div class="label">Parent Mobile</div>
+            <div class="value" contenteditable>+91 xxxxx xxxxx</div>
+          </div>
+          <div class="field">
+            <div class="label">Email</div>
+            <div class="value" contenteditable>name@example.com</div>
+          </div>
+        </div>
+        <div class="field" style="margin-top:8px">
+          <div class="label">Address</div>
+          <div class="value" contenteditable>House / Street / Locality, City, District, PIN</div>
+        </div>
+      </div>
+
+      <!-- Academic Details -->
+      <div class="section">
+        <h3>Academic Details</h3>
+        <div class="grid cols-3">
+          <div class="field">
+            <div class="label">Class / Stream</div>
+            <div class="value" contenteditable>Plus One Science</div>
+          </div>
+          <div class="field">
+            <div class="label">School Name</div>
+            <div class="value" contenteditable>xxxxxx</div>
+          </div>
+          <div class="field">
+            <div class="label">Batch</div>
+            <div class="value" contenteditable>Origin / Ascent / Legacy / Ignite</div>
+          </div>
+        </div>
+        <div class="grid cols-3" style="margin-top:8px">
+          <div class="field">
+            <div class="label">Start Date
+              <button type="button" class="tinybtn" id="btnTodayStart" title="Set Start Date to today">Today</button>
+            </div>
+            <div class="value" contenteditable>dd/mm/yyyy</div>
+          </div>
+          <div class="field">
+            <div class="label">Preferred Time</div>
+            <div class="value" contenteditable>Morning / Evening</div>
+          </div>
+          <div class="field">
+            <div class="label">Referred By</div>
+            <div class="value" contenteditable>Friend / School / Instagram / Other</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subjects Opted -->
+      <div class="section">
+        <h3>Subjects Opted</h3>
+        <div class="subjects" id="subs">
+          <div class="subject-row" data-subject="Mathematics">
+            <div class="sub-name">Mathematics <span class="note">— select if opted</span></div>
+            <div class="sel">
+              <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 700 / month</div>
+          </div>
+
+          <div class="subject-row" data-subject="Physics">
+            <div class="sub-name">Physics</div>
+            <div class="sel">
+              <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 700 / month</div>
+          </div>
+
+          <div class="subject-row" data-subject="Chemistry">
+            <div class="sub-name">Chemistry</div>
+            <div class="sel">
+              <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 600 / month</div>
+          </div>
+
+          <div class="subject-row" data-subject="Biology">
+            <div class="sub-name">Biology</div>
+            <div class="sel">
+              <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 500 / month</div>
+          </div>
+
+          <div class="subject-row" data-subject="English">
+            <div class="sub-name">English</div>
+            <div class="sel">
+              <div class="check" data-selected="false" role="checkbox" aria-checked="false" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Not selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 300 / month</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Deposit -->
+      <div class="section">
+        <h3>Security Deposit</h3>
+        <div class="deposit">
+          <div class="row">
+            <div>
+              <div class="label">Amount</div>
+              <div class="value" contenteditable id="depAmt">₹ 2,000</div>
+              <div class="note">Refundable at the time of leaving the tuition (subject to clearance of dues).</div>
+            </div>
+            <div style="display:grid; gap:8px; justify-items:end">
+              <span class="badge">DEPOSIT STATUS</span>
+              <span id="depositStamp" class="stamp">RECEIVED
+                <small id="depositDate"></small>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label">Remarks</div>
+            <div class="value" contenteditable style="flex:1">xxxxxx</div>
+            <div class="sel">
+              <button type="button" class="btn" id="toggleDeposit">Mark as Received</button>
+              <button type="button" class="btn" id="unmarkDeposit">Unmark</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Declarations -->
+      <div class="section">
+        <h3>Declarations</h3>
+        <ul style="margin:6px 0 0 18px; padding:0; color:#374151; font-size:13px">
+          <li>The information provided above is true to the best of my knowledge.</li>
+          <li>I agree to pay the monthly tuition fees on time and follow Sehr Academy rules.</li>
+          <li>Security deposit is refundable upon leaving, after clearance of pending dues and return of institute property (if any).</li>
+        </ul>
+      </div>
+
+      <!-- Signatures -->
+      <div class="section">
+        <div class="sigwrap">
+          <div class="sig"><div class="line">Parent/Guardian Signature</div></div>
+          <div class="sig"><div class="line">Student Signature</div></div>
+        </div>
+      </div>
+
+      <div class="terms">
+        <b>Terms & Notes:</b> Fees are non-refundable for the current billing cycle once classes commence. Any change in subjects/batch timing is subject to availability. Institute may revise fee structure and policies with prior notice.
+      </div>
+
+      <div class="footer">
+        <div class="logo-word"><span>SEHR</span> ACADEMY</div>
+        <div>
+          <div><b>+91 9539409586</b> · <b>+91 9037789586</b></div>
+          <div>sehracademy.com</div>
+          <div>Ganeshamangalam, Vatanapally</div>
+        </div>
+        <div class="muted">Form Version: SA-ADM-01</div>
+      </div>
+    </article>
+
+    <div class="controls">
+      <button class="btn" id="btnPrint">Print / Save PDF</button>
+    </div>
+  </div>
+
+  <script>
+    // Helpers
+    const rupee = n => '₹ ' + (Math.round(n)||0).toLocaleString('en-IN');
+    const parseMoney = s => {
+      if(!s) return 0;
+      const n = parseFloat(String(s).replace(/[^0-9.-]/g,''));
+      return isFinite(n) ? n : 0;
+    };
+
+    // Set admission date
+    function setAdmDateToday(){
+      document.getElementById('admDate').textContent =
+        new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+    }
+    setAdmDateToday();
+
+    // One-click "Today" helper buttons
+    document.getElementById('btnTodayAdm')?.addEventListener('click', setAdmDateToday);
+    document.getElementById('btnTodayStart')?.addEventListener('click', ()=>{
+      const startField = Array.from(document.querySelectorAll('.field'))
+        .find(f => f.querySelector('.label')?.textContent.trim().startsWith('Start Date'))
+        ?.querySelector('.value');
+      if(startField){
+        startField.textContent =
+          new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'});
+      }
+    });
+
+    // Subject toggle logic + ARIA
+    document.querySelectorAll('.check').forEach(box=>{
+      const label = box.parentElement.querySelector('.note');
+      const name = box.closest('.subject-row')?.dataset.subject || 'Subject';
+      box.setAttribute('aria-label', `Toggle ${name}`);
+      const toggle=()=>{
+        const sel = box.dataset.selected !== 'true';
+        box.dataset.selected = sel ? 'true':'false';
+        box.setAttribute('aria-checked', sel?'true':'false');
+        if(label){ label.textContent = sel ? 'Selected' : 'Not selected'; }
+      };
+      box.addEventListener('click', toggle);
+      box.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); } });
+    });
+
+    // Deposit stamp toggle + UX polish (disable/enable buttons)
+    const stamp = document.getElementById('depositStamp');
+    const dateEl = document.getElementById('depositDate');
+    function mark(){
+      stamp.classList.add('show');
+      dateEl.textContent = new Date().toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+      refreshDepositButtons();
+    }
+    function unmark(){
+      stamp.classList.remove('show');
+      dateEl.textContent='';
+      refreshDepositButtons();
+    }
+    document.getElementById('toggleDeposit').addEventListener('click', mark);
+    document.getElementById('unmarkDeposit').addEventListener('click', unmark);
+    function refreshDepositButtons(){
+      const received = stamp.classList.contains('show');
+      document.getElementById('toggleDeposit').disabled = received;
+      document.getElementById('unmarkDeposit').disabled = !received;
+    }
+    refreshDepositButtons();
+
+    // --- Quick validation before print ---
+    function highlight(el){ el.style.boxShadow='0 0 0 2px #ffb4b4 inset'; }
+    function clearHL(el){ el.style.boxShadow='none'; }
+    function getField(labelText){
+      return Array.from(document.querySelectorAll('.field'))
+        .find(f => f.querySelector('.label')?.textContent.trim() === labelText)
+        ?.querySelector('.value');
+    }
+
+    document.getElementById('btnPrint').addEventListener('click', ()=>{
+      const required = ['Student Name','Parent / Guardian Name','Student Mobile','Class / Stream','Start Date'];
+      let ok = true;
+      required.forEach(lbl=>{
+        const v = getField(lbl);
+        if(!v) return;
+        const t = (v.textContent||'').trim();
+        if(!t || /x{3,}/i.test(t)){ ok=false; highlight(v); } else { clearHL(v); }
+      });
+      if(!ok){ alert('Please fill the highlighted fields before printing.'); return; }
+      window.print();
+    });
+  </script>
+</body>
+</html>
