@@ -14,17 +14,12 @@
     }
   },
   "events": [
-    {
-      "date": "2025-09-08",
-      "time": "MORNING 6 AM",
-      "subject": "Botany",
-      "topic": "Plant Kingdom Part 1"
-    },
+
     {
       "date": "2025-09-08",
       "time": "EVENING 6 PM",
       "subject": "Botany",
-      "topic": "Plant Kingdom Part 2"
+      "topic": "Plant Kingdom Part 1&2"
     },
     {
       "date": "2025-09-09",
