@@ -41,13 +41,13 @@
     },
     {
       "date": "2025-09-10",
-      "time": "MORNING 6 AM",
+      "time": "EVENING 6 PM",
       "subject": "Chemistry",
       "topic": "Chemical Bonding and Molecular Structure Part 2"
     },
     {
-      "date": "2025-09-10",
-      "time": "EVENING 6 PM",
+      "date": "2025-09-18",
+      "time": "MORNING 6 AM",
       "subject": "Maths",
       "topic": "Linear Inequalities Part 1"
     },
