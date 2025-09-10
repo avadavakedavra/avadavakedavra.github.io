@@ -82,22 +82,5 @@
       "tags": ["numericals","term-2"],
       "requiresAck": true
     },
-    {
-      "id": "seminar-on-plantkingdom",
-      "title": "Seminar on Kingdom Plantae",
-      "note": "Student needs to prepare and present the topic Kingdom Plantae in Class.",
-      "subject": "Botany",
-      "issuedDate": "2025-08-31",
-      "dueDate": "2025-09-25",
-      "priority": "normal",
-      "status": "assigned",
-      "faculty": "Mr. Shan",
-      "attachments": [
-        { "label": "Due date 25th September", "url": "" }
-      ],
-      "checklist": [
-        { "text": "Kingdom Plantae", "done": false }
-      ]
-    }
   ]
 }
