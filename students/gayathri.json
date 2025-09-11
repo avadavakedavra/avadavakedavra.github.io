@@ -40,8 +40,8 @@
 
   "externals": {
     "first": {
-      "sehr":   { "Physics": 61, "Maths": null, "Chemistry": 77, "Biology": 49 },
-      "school": { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null }
+      "sehr":   { "Physics": 61, "Maths": 48, "Chemistry": 77, "Biology": 49 },
+      "school": { "Physics": 62, "Maths": 50, "Chemistry": 41, "Biology": null }
     },
     "second": {
       "sehr":   { "Physics": null, "Maths": null, "Chemistry": null, "Biology": null },
