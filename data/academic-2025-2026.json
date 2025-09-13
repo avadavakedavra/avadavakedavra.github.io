@@ -19,77 +19,77 @@
       "time": "EVENING 6 PM",
       "subject": "Botany",
       "topic": "Plant Kingdom Part 1&2",
-      "teacher": "Shan"
+      "teacher": ""
     },
     {
       "date": "2025-09-11",
       "time": "MORNING 6 AM",
       "subject": "Chemistry",
       "topic": "Chemical Bonding and Molecular Structure Part 3",
-      "teacher": "Shan"
+      "teacher": ""
     },
     {
       "date": "2025-09-09",
       "time": "EVENING 6 PM",
       "subject": "Chemistry",
       "topic": "Chemical Bonding and Molecular Structure Part 1",
-      "teacher": "Shan"
+      "teacher": ""
     },
     {
       "date": "2025-09-10",
       "time": "EVENING 6 PM",
       "subject": "Chemistry",
       "topic": "Chemical Bonding and Molecular Structure Part 2",
-      "teacher": "Shan"
+      "teacher": ""
     },
     {
       "date": "2025-09-12",
       "time": "EVENING 6 to 7 PM",
       "subject": "Physics",
       "topic": "Laws of Motion - Revision",
-      "teacher": "Shan"
+      "teacher": ""
     },
     {
       "date": "2025-09-12",
       "time": "EVENING 7 to 8 PM",
       "subject": "Chemistry",
       "topic": "LIVE - Thermodynamics",
-      "teacher": "Shan"
+      "teacher": "Shifna Miss"
     },
     {
       "date": "2025-09-13",
       "time": "EVENING 6.30 to 7.30 PM",
       "subject": "Chemistry",
       "topic": "LIVE - Chemical Bonding and Molecular Structure",
-      "teacher": "Shan"
+      "teacher": "Nandana Miss"
     },
     {
       "date": "2025-09-13",
       "time": "EVENING 7.30 to 9.00 PM",
       "subject": "Physics",
       "topic": "Work, Energy & Power",
-      "teacher": "Shan"
+      "teacher": ""
     },
     {
       "date": "2025-09-15",
       "time": "MORNING 6 AM",
       "subject": "Zoology",
       "topic": "LIVE - Structural Organisation in Animals",
-      "teacher": "Shan"
+      "teacher": "Janvi Miss"
     },
     {
       "date": "2025-09-15",
       "time": "EVENING 6.30 to 7.30 PM",
       "subject": "Zoology",
       "topic": "LIVE - Morphology of Flowering Plants",
-      "teacher": "Shan"
+      "teacher": "Nandha Miss"
     },
     {
       "date": "2025-09-23",
       "time": "EVENING 6.30 to 7.30 PM",
       "subject": "Zoology",
       "topic": "LIVE - Body fluids and circulation",
-      "teacher": "Shan"
+      "teacher": "Revathy Miss"
     }
   ]
 }
