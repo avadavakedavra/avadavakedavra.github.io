@@ -61,12 +61,18 @@
       appearance:none;border:1px solid var(--glass-edge);background:#fff;border-radius:10px;padding:8px 12px;
       font-weight:800;letter-spacing:.2px;box-shadow:var(--shadow);min-width:220px
     }
+    .select.small{min-width:180px}
 
     /* Page heading */
     .heading{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin:18px auto 8px;padding:0 20px}
-    .title{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+    .title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
     .title h1{margin:0;font-family:"Montserrat",sans-serif;font-weight:800;font-size:22px;letter-spacing:.2px}
     .badge{font-size:12px;font-weight:700;color:#0b0f10;background:#fff;border:1px solid var(--glass-edge);padding:4px 10px;border-radius:999px;line-height:1.1}
+
+    /* Filters row (right of title) */
+    .filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .filters .label{font-size:12px;color:var(--muted);font-weight:800}
+    .filters .clear{display:none}
 
     .calendar{max-width:1200px;margin:0 auto 72px;padding:10px 20px 40px;display:grid;grid-template-rows:auto 1fr;gap:10px}
     .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;color:var(--muted);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
@@ -121,6 +127,11 @@
       font-weight:800;
     }
 
+    @media (max-width:1100px){
+      .heading{align-items:flex-start;gap:12px}
+      .title{flex:1 1 auto}
+      .filters{width:100%}
+    }
     @media (max-width:900px){.event-title{font-size:14px}}
     @media (max-width:700px){.weekdays{display:none}.grid{gap:8px}.day{padding:10px;border-radius:12px}.date{font-size:18px}}
   </style>
@@ -142,6 +153,17 @@
       <h1 id="page-title">Academic Calendar — May 2025 to Apr 2026</h1>
       <span id="badge" class="badge" style="display:none"></span>
     </div>
+    <!-- Filters live here (to the right of the title on wide screens) -->
+    <div class="filters" aria-label="Filters" role="group">
+      <span class="label" aria-hidden="true">Filter:</span>
+      <select id="subjectFilter" class="select small" aria-label="Filter by subject">
+        <option value="">All Subjects</option>
+      </select>
+      <select id="teacherFilter" class="select small" aria-label="Filter by teacher">
+        <option value="">All Teachers</option>
+      </select>
+      <button id="clearFilters" class="btn clear" title="Clear filters">✕ Clear</button>
+    </div>
   </div>
 
   <main id="calendar" class="calendar" data-json="data/academic-2025-2026.json">
@@ -154,7 +176,7 @@
   <script>
     const qs = new URLSearchParams(location.search);
     const dataParam = qs.get('data'); // override JSON path
-    const monthParam = qs.get('month'); // yyyy-mm to start on
+    const monthParam = qs.get('month'); // yyyy-mm to start on (optional)
     const calendarEl = document.getElementById('calendar');
     const jsonPath = dataParam || calendarEl.dataset.json || 'data/academic-2025-2026.json';
 
@@ -175,10 +197,15 @@
     const stripBrackets = (txt='') => String(txt).replace(/\[|\]/g,'').trim();
     const compactTime   = (txt='') => String(txt)
       .replace(/:00\s*(AM|PM)/i,' $1')
-      .replace(/AM/i,'AM')
-      .replace(/PM/i,'PM')
+      .replace(/\bAM\b/i,'AM')
+      .replace(/\bPM\b/i,'PM')
       .replace(/MORNING\s*(\d+)\s*AM/i,'MORNING $1 AM')
       .replace(/EVENING\s*(\d+)\s*PM/i,'EVENING $1 PM');
+
+    // Global state
+    let RAW_DATA = null;
+    let CURRENT_YM = null;
+    const FILTERS = { subject: '', teacher: '' }; // empty = no filter
 
     async function loadJSON(path){
       const res = await fetch(path, {cache:'no-store'});
@@ -227,13 +254,42 @@
       };
     }
 
-    function renderCalendar(meta, events, ym){
+    function filterEvents(events){
+      const subj = FILTERS.subject.trim().toLowerCase();
+      const teach = FILTERS.teacher.trim().toLowerCase();
+      if (!subj && !teach) return events;
+      return events.filter(e => {
+        const eSubj = stripBrackets(e.subject || '').toLowerCase();
+        const eTeach = stripBrackets(e.teacher || '').toLowerCase();
+        const okSubj = subj ? eSubj === subj : true;
+        const okTeach = teach ? eTeach === teach : true;
+        return okSubj && okTeach;
+      });
+    }
+
+    function updateFilterBadge(){
+      const badge = document.getElementById('badge');
+      const clearBtn = document.getElementById('clearFilters');
+      const parts = [];
+      if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
+      if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
+      if (parts.length){
+        badge.textContent = 'Filters — ' + parts.join(' · ');
+        badge.style.display='';
+        clearBtn.style.display='inline-block';
+      } else {
+        badge.style.display='none';
+        clearBtn.style.display='none';
+      }
+    }
+
+    function renderCalendar(meta, allEvents, ym){
+      CURRENT_YM = ym; // persist current view
       const [y, m] = ym.split('-').map(Number);
       const year = y, monthIndex = m-1;
       document.title = meta.pageTitle || `Sehr Academy — Academic Calendar (${MONTHS[monthIndex]} ${year})`;
       document.getElementById('page-title').textContent = meta.title || `Academic Calendar — ${MONTHS[monthIndex]} ${year}`;
-      const badge = document.getElementById('badge');
-      if (meta.badge){ badge.textContent = meta.badge; badge.style.display=''; } else { badge.style.display='none'; }
+      updateFilterBadge();
 
       const grid = document.getElementById('calendar-grid');
       grid.innerHTML = '';
@@ -244,6 +300,9 @@
       const leadingBlanks = toMonIndex(first.getDay());
       const totalCells = leadingBlanks + daysInMonth;
       const trailingBlanks = (7 - (totalCells % 7)) % 7;
+
+      // APPLY FILTERS
+      const events = filterEvents(allEvents || []);
 
       const byDay = {};
       for (const e of events){
@@ -309,7 +368,7 @@
           const showExamPill = meta.showExamPill !== false; // default true
 
           // Detect LIVE topics ("LIVE - ...")
-          const isLive = /^LIVE\s*-/i.test(cleanTopic);
+          const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
 
           // Apply classes (include 'live' if LIVE-)
           eDiv.className = `event ${timeClass}${isLive ? ' live' : ''}`;
@@ -330,19 +389,73 @@
       grid.appendChild(frag);
     }
 
+    function populateFiltersFromData(allEvents){
+      const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+      const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+
+      const subjSel = document.getElementById('subjectFilter');
+      const teachSel = document.getElementById('teacherFilter');
+
+      // Clear existing (keep first option = All ...)
+      subjSel.length = 1; // keep index 0
+      teachSel.length = 1;
+
+      subjects.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s; o.textContent = s; subjSel.appendChild(o);
+      });
+      teachers.forEach(t => {
+        const o = document.createElement('option');
+        o.value = t; o.textContent = t; teachSel.appendChild(o);
+      });
+    }
+
     (async function init(){
       try{
         const data = await loadJSON(jsonPath);
+        RAW_DATA = data; // store
         const start = new Date(data.meta.start);
         const end   = new Date(data.meta.end);
         if (Number.isNaN(start) || Number.isNaN(end)) throw new Error('Invalid start/end in meta');
 
+        // Populate filters from JSON once
+        populateFiltersFromData(data.events || []);
+
+        // Wire filter handlers
+        const subjSel = document.getElementById('subjectFilter');
+        const teachSel = document.getElementById('teacherFilter');
+        const clearBtn = document.getElementById('clearFilters');
+
+        function applyFiltersAndRender(){
+          const ym = document.getElementById('monthSelect').value || CURRENT_YM;
+          const perMonthMeta = (RAW_DATA.monthMeta && RAW_DATA.monthMeta[ym]) || {};
+          const meta = { ...RAW_DATA.meta, ...perMonthMeta };
+          renderCalendar(meta, RAW_DATA.events || [], ym);
+          renderControls(start, end, ym);
+        }
+
+        subjSel.onchange = ()=>{ FILTERS.subject = subjSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
+        teachSel.onchange = ()=>{ FILTERS.teacher = teachSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
+        clearBtn.onclick = ()=>{
+          FILTERS.subject = '';
+          FILTERS.teacher = '';
+          subjSel.value = '';
+          teachSel.value = '';
+          updateFilterBadge();
+          applyFiltersAndRender();
+        };
+
         const initial = (()=>{
+          if (monthParam) {
+            const [yy, mm] = monthParam.split('-').map(Number);
+            const proposed = new Date(yy, (mm||1)-1, 1);
+            return clampAcademic(proposed, start, end);
+          }
           const now = new Date();                 // always use today
           return clampAcademic(now, start, end);  // clamp to your calendar range
         })();
 
-        function renderControls(start, end, currentYM){
+        function renderMonthControls(start, end, currentYM){
           const sel = document.getElementById('monthSelect');
           sel.innerHTML = '';
           const cur = new Date(start); cur.setDate(1);
@@ -373,8 +486,10 @@
         };
         sel.onchange = applyMonth;
 
-        renderControls(start, end, initial.toISOString().slice(0,7));
-        const idx = Array.from(sel.options).findIndex(o => o.value === initial.toISOString().slice(0,7));
+        // First render
+        const initialYM = initial.toISOString().slice(0,7);
+        renderControls(start, end, initialYM);
+        const idx = Array.from(sel.options).findIndex(o => o.value === initialYM);
         if (idx >= 0) sel.selectedIndex = idx;
         applyMonth();
 
