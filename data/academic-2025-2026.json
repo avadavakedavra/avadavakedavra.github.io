@@ -47,7 +47,13 @@
     },
     {
       "date": "2025-09-12",
-      "time": "EVENING 6 PM",
+      "time": "EVENING 6 to 7 PM",
+      "subject": "Physics",
+      "topic": "Laws of Motion - Revision"
+    },
+    {
+      "date": "2025-09-12",
+      "time": "EVENING 7 to 8 PM",
       "subject": "Chemistry",
       "topic": "LIVE - Thermodynamics"
     },
