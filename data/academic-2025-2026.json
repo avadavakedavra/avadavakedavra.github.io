@@ -64,13 +64,6 @@
       "teacher": "Shifna Miss"
     },
     {
-      "date": "2025-09-16",
-      "time": "EVENING 7.30 to 9 PM",
-      "subject": "Physics",
-      "topic": "Work, Energy & Power",
-      "teacher": ""
-    },
-    {
       "date": "2025-09-15",
       "time": "MORNING 6 AM",
       "subject": "Zoology",
@@ -90,6 +83,13 @@
       "subject": "Mathematics",
       "topic": "LIVE - Binomial Theorom",
       "teacher": "Renjini Miss"
+    },
+   {
+      "date": "2025-09-16",
+      "time": "EVENING 7.30 to 9 PM",
+      "subject": "Physics",
+      "topic": "Work, Energy & Power",
+      "teacher": ""
     },
     {
       "date": "2025-09-23",
