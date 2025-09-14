@@ -174,330 +174,360 @@
   </main>
 
   <script>
-    const qs = new URLSearchParams(location.search);
-    const dataParam = qs.get('data'); // override JSON path
-    const monthParam = qs.get('month'); // yyyy-mm to start on (optional)
-    const calendarEl = document.getElementById('calendar');
-    const jsonPath = dataParam || calendarEl.dataset.json || 'data/academic-2025-2026.json';
+  // ====== EDIT THESE ======
+  const SHEET_ID = "1d5b07U_wV7Dn6RKRpVGhN1hCzdD8NJK9tKli_VIaIoo";
+  const API_KEY  = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
+  const TAB_META   = "Meta";
+  const TAB_EVENTS = "Events";
+  // ========================
 
-    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    const wd = n => ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][n];
-    const toMonIndex = jsDay => (jsDay + 6) % 7; // Mon=0 … Sun=6
+  const qs = new URLSearchParams(location.search);
+  const monthParam = qs.get('month'); // yyyy-mm to start on (optional)
 
-    const isMorning = t => /MORNING/i.test(t || '');
-    const isEvening = t => /EVENING/i.test(t || '');
-    function subjectClass(subj=""){
-      const s = String(subj).trim().toLowerCase();
-      if (/physics/.test(s)) return 'physics';
-      if (/chem/.test(s))   return 'chemistry';
-      if (/math/.test(s))   return 'maths';
-      if (/botany|zoology|biology/.test(s)) return 'biology';
-      return '';
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const toMonIndex = jsDay => (jsDay + 6) % 7; // Mon=0 … Sun=6
+
+  const isMorning = t => /MORNING/i.test(t || '');
+  const isEvening = t => /EVENING/i.test(t || '');
+  function subjectClass(subj=""){
+    const s = String(subj).trim().toLowerCase();
+    if (/physics/.test(s)) return 'physics';
+    if (/chem/.test(s))   return 'chemistry';
+    if (/math/.test(s))   return 'maths';
+    if (/botany|zoology|biology/.test(s)) return 'biology';
+    return '';
+  }
+  const stripBrackets = (txt='') => String(txt).replace(/\[|\]/g,'').trim();
+  const compactTime   = (txt='') => String(txt)
+    .replace(/:00\s*(AM|PM)/i,' $1')
+    .replace(/\bAM\b/i,'AM')
+    .replace(/\bPM\b/i,'PM')
+    .replace(/MORNING\s*(\d+)\s*AM/i,'MORNING $1 AM')
+    .replace(/EVENING\s*(\d+)\s*PM/i,'EVENING $1 PM');
+
+  // Global state
+  let RAW_DATA = null;
+  let CURRENT_YM = null;
+  const FILTERS = { subject: '', teacher: '' };
+
+  // ---- Google Sheets helpers ----
+  const gapiBase = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values`;
+
+  async function readRange(rangeA1){
+    const url = `${gapiBase}/${encodeURIComponent(rangeA1)}?key=${API_KEY}`;
+    const res = await fetch(url, {cache:'no-store'});
+    if(!res.ok) throw new Error(`Sheets API failed for range "${rangeA1}" — ${res.status}`);
+    return res.json(); // { range, majorDimension, values: [...] }
+  }
+
+  function valuesToObject(values){
+    // Expects two columns: A=key, B=value
+    const obj = {};
+    (values || []).forEach(row => {
+      const key = (row[0] || '').trim();
+      const val = (row[1] || '').trim();
+      if (key) obj[key] = val;
+    });
+    return obj;
+  }
+
+  function parseBool(v){
+    return /^true$/i.test(String(v).trim());
+  }
+
+  function toISODate(d){
+    const s = String(d || '').trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    const dt = new Date(s);
+    if (!isNaN(dt)) return dt.toISOString().slice(0,10);
+    return s;
+  }
+
+  function rowsToEvents(values){
+    // Expect header row:
+    // date | time | subject | topic | teacher | exam
+    if (!values || values.length === 0) return [];
+    const [header, ...rows] = values;
+    const idx = (name) => header.findIndex(h => String(h || '').toLowerCase().trim() === name);
+
+    const cDate    = idx('date');
+    const cTime    = idx('time');
+    const cSubject = idx('subject');
+    const cTopic   = idx('topic');
+    const cTeacher = idx('teacher');
+    const cExam    = idx('exam');
+
+    return rows.map(r => ({
+      date:    toISODate(r[cDate]),
+      time:    r[cTime]    || '',
+      subject: r[cSubject] || '',
+      topic:   r[cTopic]   || '',
+      teacher: r[cTeacher] || '',
+      exam:    parseBool(r[cExam]),
+    })).filter(e => e.date); // keep only rows with date
+  }
+
+  async function loadFromGoogleSheets(){
+    // Meta
+    const metaResp = await readRange(`${TAB_META}!A1:B200`);
+    const metaKV = valuesToObject(metaResp.values || []);
+    if (!metaKV.start || !metaKV.end){
+      throw new Error('Meta sheet must have "start" and "end" keys.');
     }
-    const stripBrackets = (txt='') => String(txt).replace(/\[|\]/g,'').trim();
-    const compactTime   = (txt='') => String(txt)
-      .replace(/:00\s*(AM|PM)/i,' $1')
-      .replace(/\bAM\b/i,'AM')
-      .replace(/\bPM\b/i,'PM')
-      .replace(/MORNING\s*(\d+)\s*AM/i,'MORNING $1 AM')
-      .replace(/EVENING\s*(\d+)\s*PM/i,'EVENING $1 PM');
+    const meta = {
+      start: metaKV.start,
+      end: metaKV.end,
+      title: metaKV.title || '',
+      pageTitle: metaKV.pageTitle || '',
+      showExamPill: metaKV.showExamPill ? parseBool(metaKV.showExamPill) : true,
+    };
 
-    // Global state
-    let RAW_DATA = null;
-    let CURRENT_YM = null;
-    const FILTERS = { subject: '', teacher: '' }; // empty = no filter
+    // Events
+    const eventsResp = await readRange(`${TAB_EVENTS}!A1:Z20000`);
+    const events = rowsToEvents(eventsResp.values || []);
 
-    async function loadJSON(path){
-      const res = await fetch(path, {cache:'no-store'});
-      if(!res.ok) throw new Error('Failed to load '+path+' — '+res.status);
-      return res.json();
+    return { meta, events, monthMeta: {} };
+  }
+
+  function clampAcademic(date, start, end){
+    if (date < start) return new Date(start);
+    if (date > end) return new Date(end);
+    return date;
+  }
+
+  function makeMonthOptions(start, end){
+    const opts = [];
+    const cur = new Date(start);
+    cur.setDate(1);
+    while (cur <= end){
+      opts.push({value:cur.toISOString().slice(0,7), label: MONTHS[cur.getMonth()]+' '+cur.getFullYear()});
+      cur.setMonth(cur.getMonth()+1);
+    }
+    return opts;
+  }
+
+  function renderControls(start, end, currentYM){
+    const sel = document.getElementById('monthSelect');
+    sel.innerHTML = '';
+    makeMonthOptions(start, end).forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt.value; o.textContent = opt.label;
+      if (opt.value === currentYM) o.selected = true;
+      sel.appendChild(o);
+    });
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    prevBtn.disabled = currentYM === sel.options[0].value;
+    nextBtn.disabled = currentYM === sel.options[sel.options.length-1].value;
+
+    prevBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i>0){ sel.selectedIndex = i-1; sel.dispatchEvent(new Event('change')); } };
+    nextBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); } };
+  }
+
+  function filterEvents(events){
+    const subj = FILTERS.subject.trim().toLowerCase();
+    const teach = FILTERS.teacher.trim().toLowerCase();
+    if (!subj && !teach) return events;
+    return events.filter(e => {
+      const eSubj = stripBrackets(e.subject || '').toLowerCase();
+      const eTeach = stripBrackets(e.teacher || '').toLowerCase();
+      const okSubj = subj ? eSubj === subj : true;
+      const okTeach = teach ? eTeach === teach : true;
+      return okSubj && okTeach;
+    });
+  }
+
+  function updateFilterBadge(){
+    const badge = document.getElementById('badge');
+    const clearBtn = document.getElementById('clearFilters');
+    const parts = [];
+    if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
+    if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
+    if (parts.length){
+      badge.textContent = 'Filters — ' + parts.join(' · ');
+      badge.style.display='';
+      clearBtn.style.display='inline-block';
+    } else {
+      badge.style.display='none';
+      clearBtn.style.display='none';
+    }
+  }
+
+  function renderCalendar(meta, allEvents, ym){
+    CURRENT_YM = ym;
+    const [y, m] = ym.split('-').map(Number);
+    const year = y, monthIndex = m-1;
+
+    const monthName = MONTHS[monthIndex];
+    const titleText = (meta.title || `Academic Calendar — ${monthName} ${year}`)
+      .replace(/\{MONTH\}/g, monthName)
+      .replace(/\{YEAR\}/g, String(year));
+    const pageTitleText = (meta.pageTitle || `Sehr Academy — Academic Calendar (${monthName} ${year})`)
+      .replace(/\{MONTH\}/g, monthName)
+      .replace(/\{YEAR\}/g, String(year));
+
+    document.title = pageTitleText;
+    document.getElementById('page-title').textContent = titleText;
+    updateFilterBadge();
+
+    const grid = document.getElementById('calendar-grid');
+    grid.innerHTML = '';
+
+    const first = new Date(year, monthIndex, 1);
+    const last  = new Date(year, monthIndex + 1, 0);
+    const daysInMonth = last.getDate();
+    const leadingBlanks = toMonIndex(first.getDay());
+    const totalCells = leadingBlanks + daysInMonth;
+    const trailingBlanks = (7 - (totalCells % 7)) % 7;
+
+    const events = filterEvents(allEvents || []);
+
+    const byDay = {};
+    for (const e of events){
+      const d = new Date(e.date);
+      if (d.getMonth() !== monthIndex || d.getFullYear() !== year) continue;
+      const day = d.getDate();
+      (byDay[day] ||= []).push(e);
     }
 
-    function clampAcademic(date, start, end){
-      if (date < start) return new Date(start);
-      if (date > end) return new Date(end);
-      return date;
-    }
+    const frag = document.createDocumentFragment();
+    const mkEmpty = () => {
+      const c = document.createElement('div');
+      c.className = 'day dim';
+      c.innerHTML = `
+        <div class="day-header"><span class="date">&nbsp;</span><span class="weekday">&nbsp;</span></div>
+        <div class="accent" style="opacity:.2"></div>
+        <div class="events"></div>`;
+      return c;
+    };
+    for (let i=0;i<leadingBlanks;i++) frag.appendChild(mkEmpty());
 
-    function makeMonthOptions(start, end){
-      const opts = [];
-      const cur = new Date(start);
-      cur.setDate(1);
-      while (cur <= end){
-        opts.push({value:cur.toISOString().slice(0,7), label: MONTHS[cur.getMonth()]+' '+cur.getFullYear()});
-        cur.setMonth(cur.getMonth()+1);
-      }
-      return opts;
-    }
+    const weekdayName = n => ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][n];
 
-    function renderControls(start, end, currentYM){
-      const sel = document.getElementById('monthSelect');
-      sel.innerHTML = '';
-      makeMonthOptions(start, end).forEach(opt => {
-        const o = document.createElement('option');
-        o.value = opt.value; o.textContent = opt.label;
-        if (opt.value === currentYM) o.selected = true;
-        sel.appendChild(o);
+    for (let dateNum=1; dateNum<=daysInMonth; dateNum++){
+      const dowMonIdx = (leadingBlanks + (dateNum-1)) % 7;
+      const c = document.createElement('div');
+      c.className = 'day';
+      c.innerHTML = `
+        <div class="day-header">
+          <span class="date">${dateNum}</span>
+          <span class="weekday">${weekdayName(dowMonIdx)}</span>
+        </div>
+        <div class="accent"></div>
+        <div class="events"></div>`;
+
+      const evWrap = c.querySelector('.events');
+      const todays = (byDay[dateNum] || []);
+
+      todays.forEach(e => {
+        const eDiv = document.createElement('div');
+        const timeClass = isMorning(e.time) ? 'morning' : (isEvening(e.time) ? 'evening' : 'morning');
+        const subjClass = subjectClass(e.subject);
+        const cleanSubject = stripBrackets(e.subject);
+        const cleanTopic   = stripBrackets(e.topic || '—');
+        const timeText     = compactTime(e.time || '');
+        const teacherName  = stripBrackets(e.teacher || '');
+        const showExamPill = (RAW_DATA?.meta?.showExamPill !== false);
+        const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
+
+        eDiv.className = `event ${timeClass}${isLive ? ' live' : ''}`;
+        eDiv.innerHTML = `
+          <p class="event-title">${cleanTopic}</p>
+          <div class="event-meta">
+            ${timeText ? `<span class="pill time"><strong>${timeText}</strong></span>` : ''}
+            ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
+            ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
+          </div>`;
+        evWrap.appendChild(eDiv);
       });
-      const prevBtn = document.getElementById('prev');
-      const nextBtn = document.getElementById('next');
-      prevBtn.disabled = currentYM === sel.options[0].value;
-      nextBtn.disabled = currentYM === sel.options[sel.options.length-1].value;
 
-      prevBtn.onclick = ()=>{
-        const i = sel.selectedIndex;
-        if (i>0){ sel.selectedIndex = i-1; sel.dispatchEvent(new Event('change')); }
-      };
-      nextBtn.onclick = ()=>{
-        const i = sel.selectedIndex;
-        if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); }
-      };
+      frag.appendChild(c);
     }
+    for (let i=0;i<trailingBlanks;i++) frag.appendChild(mkEmpty());
+    grid.appendChild(frag);
+  }
 
-    function filterEvents(events){
-      const subj = FILTERS.subject.trim().toLowerCase();
-      const teach = FILTERS.teacher.trim().toLowerCase();
-      if (!subj && !teach) return events;
-      return events.filter(e => {
-        const eSubj = stripBrackets(e.subject || '').toLowerCase();
-        const eTeach = stripBrackets(e.teacher || '').toLowerCase();
-        const okSubj = subj ? eSubj === subj : true;
-        const okTeach = teach ? eTeach === teach : true;
-        return okSubj && okTeach;
-      });
-    }
+  function populateFiltersFromData(allEvents){
+    const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+    const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
 
-    function updateFilterBadge(){
-      const badge = document.getElementById('badge');
-      const clearBtn = document.getElementById('clearFilters');
-      const parts = [];
-      if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
-      if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
-      if (parts.length){
-        badge.textContent = 'Filters — ' + parts.join(' · ');
-        badge.style.display='';
-        clearBtn.style.display='inline-block';
-      } else {
-        badge.style.display='none';
-        clearBtn.style.display='none';
-      }
-    }
+    const subjSel = document.getElementById('subjectFilter');
+    const teachSel = document.getElementById('teacherFilter');
+    subjSel.length = 1; // keep "All Subjects"
+    teachSel.length = 1; // keep "All Teachers"
 
-    function renderCalendar(meta, allEvents, ym){
-      CURRENT_YM = ym; // persist current view
-      const [y, m] = ym.split('-').map(Number);
-      const year = y, monthIndex = m-1;
-      document.title = meta.pageTitle || `Sehr Academy — Academic Calendar (${MONTHS[monthIndex]} ${year})`;
-      document.getElementById('page-title').textContent = meta.title || `Academic Calendar — ${MONTHS[monthIndex]} ${year}`;
-      updateFilterBadge();
+    subjects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; subjSel.appendChild(o); });
+    teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teachSel.appendChild(o); });
+  }
 
-      const grid = document.getElementById('calendar-grid');
-      grid.innerHTML = '';
+  (async function init(){
+    try{
+      const data = await loadFromGoogleSheets();
+      RAW_DATA = data;
 
-      const first = new Date(year, monthIndex, 1);
-      const last  = new Date(year, monthIndex + 1, 0);
-      const daysInMonth = last.getDate();
-      const leadingBlanks = toMonIndex(first.getDay());
-      const totalCells = leadingBlanks + daysInMonth;
-      const trailingBlanks = (7 - (totalCells % 7)) % 7;
+      // Populate filter dropdowns once
+      populateFiltersFromData(data.events || []);
 
-      // APPLY FILTERS
-      const events = filterEvents(allEvents || []);
-
-      const byDay = {};
-      for (const e of events){
-        const d = new Date(e.date);
-        if (d.getMonth() !== monthIndex || d.getFullYear() !== year) continue;
-        const day = d.getDate();
-        (byDay[day] ||= []).push(e);
-      }
-
-      const frag = document.createDocumentFragment();
-      const mkEmpty = () => {
-        const c = document.createElement('div');
-        c.className = 'day dim';
-        c.innerHTML = `
-          <div class="day-header"><span class="date">&nbsp;</span><span class="weekday">&nbsp;</span></div>
-          <div class="accent" style="opacity:.2"></div>
-          <div class="events"></div>`;
-        return c;
-      };
-      for (let i=0;i<leadingBlanks;i++) frag.appendChild(mkEmpty());
-
-      const weekdayName = n => ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][n];
-
-      for (let dateNum=1; dateNum<=daysInMonth; dateNum++){
-        const dowMonIdx = (leadingBlanks + (dateNum-1)) % 7;
-        const c = document.createElement('div');
-        c.className = 'day';
-        c.innerHTML = `
-          <div class="day-header">
-            <span class="date">${dateNum}</span>
-            <span class="weekday">${weekdayName(dowMonIdx)}</span>
-          </div>
-          <div class="accent"></div>
-          <div class="events"></div>`;
-
-        const evWrap = c.querySelector('.events');
-        const todays = (byDay[dateNum] || []);
-
-        const sundayRow = todays.find(e => e.sunday);
-        if (sundayRow){
-          const eDiv = document.createElement('div');
-          eDiv.className = 'event morning';
-          eDiv.innerHTML = `
-            <p class="event-title">No Classes — Sunday</p>
-            <div class="event-meta">
-              <span class="pill note"><strong>Sunday</strong></span>
-            </div>`;
-          evWrap.appendChild(eDiv);
-        }
-
-        todays.filter(e => !e.sunday).forEach(e => {
-          const eDiv = document.createElement('div');
-
-          // Determine time styling
-          const timeClass = isMorning(e.time) ? 'morning' : (isEvening(e.time) ? 'evening' : 'morning');
-
-          // Subject class & cleaned fields
-          const subjClass = subjectClass(e.subject);
-          const cleanSubject = stripBrackets(e.subject);
-          const cleanTopic   = stripBrackets(e.topic || '—');
-          const timeText     = compactTime(e.time || '');
-          const teacherName  = stripBrackets(e.teacher || '');   // read from JSON
-          const showExamPill = meta.showExamPill !== false; // default true
-
-          // Detect LIVE topics ("LIVE - ...")
-          const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
-
-          // Apply classes (include 'live' if LIVE-)
-          eDiv.className = `event ${timeClass}${isLive ? ' live' : ''}`;
-
-          eDiv.innerHTML = `
-            <p class="event-title">${cleanTopic}</p>
-            <div class="event-meta">
-              ${timeText ? `<span class="pill time"><strong>${timeText}</strong></span>` : ''}
-              ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
-              ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
-            </div>`;
-          evWrap.appendChild(eDiv);
-        });
-
-        frag.appendChild(c);
-      }
-      for (let i=0;i<trailingBlanks;i++) frag.appendChild(mkEmpty());
-      grid.appendChild(frag);
-    }
-
-    function populateFiltersFromData(allEvents){
-      const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-      const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-
+      // Wire filters
       const subjSel = document.getElementById('subjectFilter');
       const teachSel = document.getElementById('teacherFilter');
+      const clearBtn = document.getElementById('clearFilters');
 
-      // Clear existing (keep first option = All ...)
-      subjSel.length = 1; // keep index 0
-      teachSel.length = 1;
-
-      subjects.forEach(s => {
-        const o = document.createElement('option');
-        o.value = s; o.textContent = s; subjSel.appendChild(o);
-      });
-      teachers.forEach(t => {
-        const o = document.createElement('option');
-        o.value = t; o.textContent = t; teachSel.appendChild(o);
-      });
-    }
-
-    (async function init(){
-      try{
-        const data = await loadJSON(jsonPath);
-        RAW_DATA = data; // store
-        const start = new Date(data.meta.start);
-        const end   = new Date(data.meta.end);
-        if (Number.isNaN(start) || Number.isNaN(end)) throw new Error('Invalid start/end in meta');
-
-        // Populate filters from JSON once
-        populateFiltersFromData(data.events || []);
-
-        // Wire filter handlers
-        const subjSel = document.getElementById('subjectFilter');
-        const teachSel = document.getElementById('teacherFilter');
-        const clearBtn = document.getElementById('clearFilters');
-
-        function applyFiltersAndRender(){
-          const ym = document.getElementById('monthSelect').value || CURRENT_YM;
-          const perMonthMeta = (RAW_DATA.monthMeta && RAW_DATA.monthMeta[ym]) || {};
-          const meta = { ...RAW_DATA.meta, ...perMonthMeta };
-          renderCalendar(meta, RAW_DATA.events || [], ym);
-          renderControls(start, end, ym);
-        }
-
-        subjSel.onchange = ()=>{ FILTERS.subject = subjSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-        teachSel.onchange = ()=>{ FILTERS.teacher = teachSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-        clearBtn.onclick = ()=>{
-          FILTERS.subject = '';
-          FILTERS.teacher = '';
-          subjSel.value = '';
-          teachSel.value = '';
-          updateFilterBadge();
-          applyFiltersAndRender();
-        };
-
-        const initial = (()=>{
-          if (monthParam) {
-            const [yy, mm] = monthParam.split('-').map(Number);
-            const proposed = new Date(yy, (mm||1)-1, 1);
-            return clampAcademic(proposed, start, end);
-          }
-          const now = new Date();                 // always use today
-          return clampAcademic(now, start, end);  // clamp to your calendar range
-        })();
-
-        function renderMonthControls(start, end, currentYM){
-          const sel = document.getElementById('monthSelect');
-          sel.innerHTML = '';
-          const cur = new Date(start); cur.setDate(1);
-          while (cur <= end){
-            const ym = cur.toISOString().slice(0,7);
-            const label = MONTHS[cur.getMonth()]+' '+cur.getFullYear();
-            const o = document.createElement('option');
-            o.value = ym; o.textContent = label;
-            if (ym === currentYM) o.selected = true;
-            sel.appendChild(o);
-            cur.setMonth(cur.getMonth()+1);
-          }
-          const prevBtn = document.getElementById('prev');
-          const nextBtn = document.getElementById('next');
-          prevBtn.disabled = currentYM === sel.options[0].value;
-          nextBtn.disabled = currentYM === sel.options[sel.options.length-1].value;
-          prevBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i>0){ sel.selectedIndex = i-1; sel.dispatchEvent(new Event('change')); } };
-          nextBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); } };
-        }
-
-        const sel = document.getElementById('monthSelect');
-        const applyMonth = () => {
-          const ym = sel.value;
-          const perMonthMeta = (data.monthMeta && data.monthMeta[ym]) || {};
-          const meta = { ...data.meta, ...perMonthMeta };
-          renderCalendar(meta, data.events || [], ym);
-          renderControls(start, end, ym);
-        };
-        sel.onchange = applyMonth;
-
-        // First render
-        const initialYM = initial.toISOString().slice(0,7);
-        renderControls(start, end, initialYM);
-        const idx = Array.from(sel.options).findIndex(o => o.value === initialYM);
-        if (idx >= 0) sel.selectedIndex = idx;
-        applyMonth();
-
-      }catch(err){
-        console.error(err);
-        document.getElementById('calendar-grid').innerHTML = '<p style="color:#c00;font-weight:700">Failed to load academic calendar data. Check the JSON path or ?data=... query.</p>';
+      function applyFiltersAndRender(){
+        const ym = document.getElementById('monthSelect').value || CURRENT_YM;
+        const meta = { ...RAW_DATA.meta };
+        renderCalendar(meta, RAW_DATA.events || [], ym);
+        const start = new Date(RAW_DATA.meta.start);
+        const end   = new Date(RAW_DATA.meta.end);
+        renderControls(start, end, ym);
       }
-    })();
-  </script>
+
+      subjSel.onchange = ()=>{ FILTERS.subject = subjSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
+      teachSel.onchange = ()=>{ FILTERS.teacher = teachSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
+      document.getElementById('clearFilters').onclick = ()=>{
+        FILTERS.subject = '';
+        FILTERS.teacher = '';
+        subjSel.value = '';
+        teachSel.value = '';
+        updateFilterBadge();
+        applyFiltersAndRender();
+      };
+
+      // Initial month
+      const start = new Date(RAW_DATA.meta.start);
+      const end   = new Date(RAW_DATA.meta.end);
+      const initial = (()=>{
+        if (monthParam) {
+          const [yy, mm] = monthParam.split('-').map(Number);
+          const proposed = new Date(yy, (mm||1)-1, 1);
+          return clampAcademic(proposed, start, end);
+        }
+        const now = new Date();
+        return clampAcademic(now, start, end);
+      })();
+
+      const sel = document.getElementById('monthSelect');
+      const applyMonth = () => {
+        const ym = sel.value;
+        const meta = { ...RAW_DATA.meta };
+        renderCalendar(meta, RAW_DATA.events || [], ym);
+        renderControls(start, end, ym);
+      };
+      sel.onchange = applyMonth;
+
+      const initialYM = initial.toISOString().slice(0,7);
+      renderControls(start, end, initialYM);
+      const idx = Array.from(sel.options).findIndex(o => o.value === initialYM);
+      if (idx >= 0) sel.selectedIndex = idx;
+      applyMonth();
+
+    }catch(err){
+      console.error(err);
+      document.getElementById('calendar-grid').innerHTML =
+        '<p style="color:#c00;font-weight:700">Failed to load from Google Sheets. Check API key, Sheet sharing, tab names, and ranges.</p>';
+    }
+  })();
+</script>
+
 </body>
 </html>
