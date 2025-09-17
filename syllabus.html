@@ -4,22 +4,20 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Class 11 Syllabus (Completion Tracker)</title>
+  <title>Sehr Academy — Class 11 Syllabus (Live from Google Sheets)</title>
   <meta name="theme-color" content="#8BC53F" />
-  <meta name="description" content="Class 11 syllabus completion tracker for Physics, Chemistry, Mathematics, Biology — filter by status, search by chapter, live dates." />
+  <meta name="description" content="Class 11 syllabus completion tracker for Physics, Chemistry, Mathematics, Biology — filter by status, search by chapter or teacher, live dates." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
       --sehr-green:#8BC53F;
       --ink:#0F172A;
-      --muted:#5b6475;
-      --glass-border: rgba(255,255,255,0.55);
-      --shadow: 0 20px 45px rgba(15,23,42,.12);
+      --glass-border: rgba(0,0,0,.08);
       --radius: 16px;
       --maxw:1180px;
       --frost-white: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
@@ -37,32 +35,25 @@
       color:#111; line-height:1.65; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Header (shared) */
-    header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);border-bottom:1px solid rgba(230,232,236,.6);backdrop-filter:saturate(175%) blur(10px)}
+    /* Header */
     .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-    .brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
-    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:var(--sehr-green);letter-spacing:.4px}
-    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
-
-    /* Page head */
-    .pagehead{max-width:var(--maxw);margin:18px auto 12px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .pagehead{max-width:var(--maxw);margin:22px auto 10px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .title{font-family:Montserrat;font-weight:900;font-size:26px;letter-spacing:.2px}
-    .subtitle{color:#6b7280;font-weight:700}
+    .subtitle{color:#6b7280;font-weight:800}
     .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
 
-    /* Controls: filter tabs + search */
-    .controls{max-width:var(--maxw);margin:10px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));font-weight:800; cursor:pointer; user-select:none}
+    /* Controls */
+    .controls{max-width:var(--maxw);margin:6px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.85));font-weight:800; cursor:pointer; user-select:none}
     .chip:hover{filter:brightness(1.03)}
     .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45); box-shadow:0 6px 16px rgba(139,197,63,.18)}
     .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
-    .search input{border:0;background:transparent;outline:none;flex:1;font-weight:700}
+    .search input{border:0;background:transparent;outline:none;flex:1;font-weight:800}
 
-    /* Legend */
+    /* Legend panel */
     .panel{max-width:var(--maxw); margin:10px auto 0; padding:16px 20px; border-radius:var(--radius);
-      border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:var(--shadow);}
-    .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:700;color:#334}
+      border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:0 20px 45px rgba(15,23,42,.10);}
+    .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:800;color:#334}
     .dot{width:10px;height:10px;border-radius:999px;background:#cfd6df}
     .dot.pending{background:#cfd6df}
     .dot.ongoing{background:#f6c761}
@@ -70,43 +61,26 @@
 
     /* Subject accordions */
     details.group{max-width:var(--maxw); margin:14px auto; border-radius:16px; border:1px solid var(--glass-border);
-      background:var(--frost-white); box-shadow:var(--shadow); overflow:hidden}
+      background:var(--frost-white); box-shadow:0 20px 45px rgba(15,23,42,.10); overflow:hidden}
     details.group > summary{
       list-style:none; cursor:pointer; padding:16px 18px; user-select:none; display:grid;
       grid-template-columns: 1fr auto; align-items:center; gap:10px;
       font-family:Montserrat; font-weight:900; font-size:18px;
       background:linear-gradient(180deg,#ffffff, #f2f6f1);
       border-bottom:1px solid rgba(230,232,236,.6);
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-      position:relative;
     }
     details.group > summary::-webkit-details-marker{display:none}
-    details.group > summary:hover{
-      transform: translateY(-1px);
-      box-shadow:0 10px 24px rgba(139,197,63,.18);
-      filter: drop-shadow(0 0 6px rgba(139,197,63,.12));
-    }
     .sum-left{display:flex;align-items:center;gap:12px}
     .subject-name{font-size:18px; color:#0b0f10; text-transform:uppercase; letter-spacing:.4px}
-
-    /* Click hint to far right (no arrows) */
     .sum-right{display:flex; align-items:center; gap:14px}
-    .hint{
-      font-family:Montserrat; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.5px;
-      color:#2b3345; opacity:.78; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:999px; padding:6px 10px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
-    }
-    .hint-open{display:none}
-    details[open] .hint-open{display:inline}
-    details[open] .hint-closed{display:none}
 
-    /* Progress mini bar inside summary (gold gradient) */
+    /* Progress mini bar */
     .prog-wrap{width:220px; display:flex; flex-direction:column; gap:4px}
     .prog-rail{width:100%; height:8px; border-radius:999px; background:rgba(0,0,0,.06); position:relative; overflow:hidden; border:1px solid rgba(0,0,0,.06)}
     .prog-fill{height:100%; width:0%; background:var(--bar-gold); border-radius:999px; transition:width .45s ease}
     .prog-note{font-size:10px; font-weight:900; color:#2b3345; text-transform:uppercase; letter-spacing:.4px; opacity:.8; text-align:right}
 
-    /* Chapter list — square & crystal glass */
+    /* Chapters */
     .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
     .row{
       display:grid; grid-template-columns: 1fr auto auto auto; gap:12px; align-items:center;
@@ -132,7 +106,7 @@
     }
     .row .name{font-weight:800}
 
-    /* Square status, teacher, & date pills */
+    /* Pills */
     .status, .teacher, .date{
       font-family:Montserrat; font-weight:900; font-size:12px; padding:6px 8px;
       border-radius:8px; border:1px solid var(--glass-border);
@@ -144,35 +118,21 @@
     .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
     .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
     .teacher{max-width:220px}
-    .date{ background:var(--pill-bg); color:#2b3345 }
-    .date:empty{ display:none } /* hide empty date cells */
+    .date{ color:#2b3345 }
+    .date:empty{ display:none }
 
-    /* Footer */
-    footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:none}
-
-    /* Compact mobile density */
+    /* Mobile */
     @media (max-width: 640px){
-      /* Stack pills on small screens for readability */
       .row{grid-template-columns: 1fr; align-items:start}
       .status, .teacher, .date{justify-self:start; min-width:unset}
-    }
-    @media (max-width: 380px){
-      .row{padding:10px}
-      .prog-wrap{width:160px}
-      details.group > summary{grid-template-columns: 1fr; gap:8px}
-      .sum-right{justify-content:space-between}
     }
   </style>
 </head>
 <body>
-  <!-- Shared header -->
-  <header id="site-header"></header>
-  <script src="/assets/nav.js" defer></script>
-
   <div class="pagehead">
     <div>
       <div class="title">Class 11 Syllabus — Completion Tracker</div>
-      <div class="subtitle">Filter by status, search chapters, and view live completion.</div>
+      <div class="subtitle">Filter by status, search by chapter or teacher. Data live from Google Sheets.</div>
       <div class="stamp" id="last-updated"></div>
     </div>
   </div>
@@ -186,12 +146,11 @@
       <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
     </div>
 
-    <!-- NEW: Collapse All -->
     <button id="btn-collapse-all" class="chip" type="button" title="Collapse all subjects">Collapse All</button>
 
-    <div class="search" role="search">
+    <div class="search" role="search" title="Type to search chapter titles or teacher names">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.2-4.2M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="#2b3345" stroke-width="2" stroke-linecap="round"/></svg>
-      <input id="search" type="search" placeholder="Search chapters…" aria-label="Search chapters by name" />
+      <input id="search" type="search" placeholder="Search chapters or teachers…" aria-label="Search chapters by name or teacher" />
     </div>
   </div>
 
@@ -204,21 +163,16 @@
     </div>
   </section>
 
-  <!-- Subjects (closed by default) -->
+  <!-- Subjects -->
   <details class="group" data-subject="physics">
     <summary>
-      <span class="sum-left">
-        <span class="subject-name">Physics</span>
-      </span>
+      <span class="sum-left"><span class="subject-name">Physics</span></span>
       <span class="sum-right">
         <span class="prog-wrap">
           <span class="prog-rail"><span class="prog-fill" id="bar-physics"></span></span>
           <span class="prog-note" id="note-physics">0/0</span>
         </span>
-        <span>
-          <span class="hint hint-closed">Click to open</span>
-          <span class="hint hint-open">Click to close</span>
-        </span>
+        <span class="chip">Click to toggle</span>
       </span>
     </summary>
     <div class="chapters" id="list-physics"></div>
@@ -226,18 +180,13 @@
 
   <details class="group" data-subject="chemistry">
     <summary>
-      <span class="sum-left">
-        <span class="subject-name">Chemistry</span>
-      </span>
+      <span class="sum-left"><span class="subject-name">Chemistry</span></span>
       <span class="sum-right">
         <span class="prog-wrap">
           <span class="prog-rail"><span class="prog-fill" id="bar-chemistry"></span></span>
           <span class="prog-note" id="note-chemistry">0/0</span>
         </span>
-        <span>
-          <span class="hint hint-closed">Click to open</span>
-          <span class="hint hint-open">Click to close</span>
-        </span>
+        <span class="chip">Click to toggle</span>
       </span>
     </summary>
     <div class="chapters" id="list-chemistry"></div>
@@ -245,38 +194,27 @@
 
   <details class="group" data-subject="mathematics">
     <summary>
-      <span class="sum-left">
-        <span class="subject-name">Mathematics</span>
-      </span>
+      <span class="sum-left"><span class="subject-name">Mathematics</span></span>
       <span class="sum-right">
         <span class="prog-wrap">
           <span class="prog-rail"><span class="prog-fill" id="bar-mathematics"></span></span>
           <span class="prog-note" id="note-mathematics">0/0</span>
         </span>
-        <span>
-          <span class="hint hint-closed">Click to open</span>
-          <span class="hint hint-open">Click to close</span>
-        </span>
+        <span class="chip">Click to toggle</span>
       </span>
     </summary>
     <div class="chapters" id="list-mathematics"></div>
   </details>
 
-  <!-- Biology split into two separate dropdowns -->
   <details class="group" data-subject="botany">
     <summary>
-      <span class="sum-left">
-        <span class="subject-name">Biology — Botany</span>
-      </span>
+      <span class="sum-left"><span class="subject-name">Biology — Botany</span></span>
       <span class="sum-right">
         <span class="prog-wrap">
           <span class="prog-rail"><span class="prog-fill" id="bar-botany"></span></span>
           <span class="prog-note" id="note-botany">0/0</span>
         </span>
-        <span>
-          <span class="hint hint-closed">Click to open</span>
-          <span class="hint hint-open">Click to close</span>
-        </span>
+        <span class="chip">Click to toggle</span>
       </span>
     </summary>
     <div class="chapters" id="list-botany"></div>
@@ -284,28 +222,25 @@
 
   <details class="group" data-subject="zoology">
     <summary>
-      <span class="sum-left">
-        <span class="subject-name">Biology — Zoology</span>
-      </span>
+      <span class="sum-left"><span class="subject-name">Biology — Zoology</span></span>
       <span class="sum-right">
         <span class="prog-wrap">
           <span class="prog-rail"><span class="prog-fill" id="bar-zoology"></span></span>
           <span class="prog-note" id="note-zoology">0/0</span>
         </span>
-        <span>
-          <span class="hint hint-closed">Click to open</span>
-          <span class="hint hint-open">Click to close</span>
-        </span>
+        <span class="chip">Click to toggle</span>
       </span>
     </summary>
     <div class="chapters" id="list-zoology"></div>
   </details>
 
-  <!-- Footer hidden (per your request) -->
-  <footer></footer>
-
   <script>
-    /* ====== Data fetching (robust path resolver) ====== */
+    /* =================== CONFIG: Google Sheets (GViz) =================== */
+    const SHEET_ID   = "1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
+    const SHEET_NAME = "Sheet1";
+    const GVIZ_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+    // Optional local fallback JSON
     const CANDIDATES = [
       new URL('./data/syllabus.json?cb=' + Date.now(), location.href).toString(),
       new URL('data/syllabus.json?cb=' + Date.now(), location.href).toString(),
@@ -318,10 +253,10 @@
           if(r.ok) return { res: r, url: p };
         }catch(e){}
       }
-      throw new Error('None of the candidate paths worked:\\n' + paths.join('\\n'));
+      throw new Error('No local fallback JSON was found.');
     }
 
-    /* ====== Refs ====== */
+    /* =================== Refs =================== */
     const lists = {
       physics: document.getElementById('list-physics'),
       chemistry: document.getElementById('list-chemistry'),
@@ -345,7 +280,7 @@
     };
     const lastUpdatedEl = document.getElementById('last-updated');
 
-    /* ====== Utilities ====== */
+    /* =================== Utilities =================== */
     function fmtDayMonth(s){
       if(!s) return '';
       const d = new Date(s);
@@ -376,9 +311,8 @@
 
       div.className = 'row ' + (st==='completed' ? 'completed' : '');
       div.dataset.status = st;
-      // Include teacher names in dataset for potential future filtering/search
-      div.dataset.teachers = teachers.toLowerCase();
       div.dataset.name = (item.title || '').toLowerCase();
+      div.dataset.teachers = teachers.toLowerCase();
 
       const dateHTML = when ? `<div class="date" title="${when}">${when}</div>` : `<div class="date"></div>`;
       const teacherHTML = `<div class="teacher" title="${teachers}">${teachers}</div>`;
@@ -392,7 +326,6 @@
       return div;
     }
 
-    // Smooth & reliable progress animation; ensures width is applied after layout.
     function setProgress(total, done, key){
       const bar = bars[key];
       const note = notes[key];
@@ -418,7 +351,6 @@
       const botany = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
       const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
 
-      // Botany
       lists.botany.innerHTML = '';
       let doneB=0;
       botany.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
@@ -427,7 +359,6 @@
       });
       setProgress(botany.length, doneB, 'botany');
 
-      // Zoology
       lists.zoology.innerHTML = '';
       let doneZ=0;
       zoology.sort((a,b)=>(a.index||999)-(b.index||999')).forEach(ch=>{
@@ -437,7 +368,7 @@
       setProgress(zoology.length, doneZ, 'zoology');
     }
 
-    /* ====== Filters & Search ====== */
+    /* =================== Filters & Search =================== */
     const filterState = { value:'all', query:'' };
 
     function applyFilters(){
@@ -466,19 +397,84 @@
       applyFilters();
     });
 
-    /* ====== NEW: Collapse All handler ====== */
     document.getElementById('btn-collapse-all').addEventListener('click', ()=>{
       document.querySelectorAll('details.group[open]').forEach(d=> d.open = false);
     });
 
-    /* ====== Init ====== */
+    /* =================== Google Sheets (GViz) Loader =================== */
+    async function fetchGViz() {
+      const r = await fetch(GVIZ_URL, { cache: "no-store" });
+      const txt = await r.text();
+      const m = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/);
+      if (!m) throw new Error("GViz: unexpected response");
+      return JSON.parse(m[1]);
+    }
+
+    function gvizTableToObjects(gviz) {
+      const cols = gviz.table.cols.map(c => (c.label || "").trim());
+      return gviz.table.rows.map(row => {
+        const obj = {};
+        (row.c || []).forEach((cell, i) => {
+          obj[cols[i]] = cell ? cell.v : "";
+        });
+        return obj;
+      });
+    }
+
+    function normalizeRow(row) {
+      const subject = String(row.Subject || "").trim().toLowerCase();
+      const stream  = String(row.Stream  || "").trim().toLowerCase();
+      const teachersList = String(row["Teacher(s)"] || "").split(",").map(s => s.trim()).filter(Boolean);
+
+      const it = {
+        index: Number(row.Index) || undefined,
+        title: String(row.Title || "").trim(),
+        status: String(row.Status || "pending").trim().toLowerCase(),
+        expectedDate: row.ExpectedDate ? String(row.ExpectedDate).slice(0,10) : "",
+      };
+
+      // Teacher(s)
+      if (teachersList.length > 1) it.teachers = teachersList;
+      else if (teachersList.length === 1) it.teacher = teachersList[0];
+      else if (row.Teacher) it.teacher = String(row.Teacher).trim();
+
+      // Biology streams
+      if (subject === "biology" || subject === "botany" || subject === "zoology") {
+        it.stream = stream || (subject !== "biology" ? subject : "");
+        return { bucket: "biology", item: it };
+      }
+      return { bucket: subject, item: it };
+    }
+
+    async function loadFromGoogleSheets() {
+      const gviz = await fetchGViz();
+      const rows = gvizTableToObjects(gviz);
+
+      const data = {
+        meta: { lastUpdated: new Date().toISOString() },
+        physics: [], chemistry: [], mathematics: [], biology: []
+      };
+
+      rows.forEach(r => {
+        const { bucket, item } = normalizeRow(r);
+        if (!bucket) return;
+        if (bucket === "physics" || bucket === "chemistry" || bucket === "mathematics") {
+          data[bucket].push(item);
+        } else if (bucket === "biology") {
+          data.biology.push(item);
+        }
+      });
+
+      return data;
+    }
+
+    /* =================== Init (Sheets first, then fallback) =================== */
     async function init(){
       try{
-        const { res } = await fetchFirst(CANDIDATES);
-        const data = await res.json();
+        // Primary: Google Sheets
+        const data = await loadFromGoogleSheets();
 
-        // Last updated stamp
-        if (data.meta && data.meta.lastUpdated){
+        if (lastUpdatedEl && data.meta?.lastUpdated){
           const d = new Date(data.meta.lastUpdated);
           if (!isNaN(d)){
             lastUpdatedEl.textContent = 'Last updated: ' + d.toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
@@ -490,20 +486,36 @@
         renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
         renderBioStreams(data.biology || []);
 
-        // Ensure closed by default
-        document.querySelectorAll('details.group').forEach(d => d.open = false);
-
-        // Apply filters once rendered
-        applyFilters();
       }catch(err){
-        console.error('Failed to load syllabus.json', err);
-        // graceful placeholder
-        Object.values(lists).forEach(m=>{
-          const d = document.createElement('div');
-          d.className='row';
-          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>.</div><div class="status">ERROR</div><div class="teacher">—</div><div class="date"></div>';
-          m.appendChild(d);
-        });
+        console.warn('Sheets load failed, trying local /data/syllabus.json', err);
+        try{
+          const { res } = await fetchFirst(CANDIDATES);
+          const data = await res.json();
+
+          if (data.meta && data.meta.lastUpdated){
+            const d = new Date(data.meta.lastUpdated);
+            if (!isNaN(d)){
+              lastUpdatedEl.textContent = 'Last updated: ' + d.toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+            }
+          }
+
+          renderSimple(data.physics || [], lists.physics, 'physics');
+          renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
+          renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
+          renderBioStreams(data.biology || []);
+        }catch(e){
+          console.error('Failed to load fallback JSON', e);
+          Object.values(lists).forEach(m=>{
+            const d = document.createElement('div');
+            d.className='row';
+            d.innerHTML = '<div class="name">Couldn’t load data (Sheets & JSON failed).</div><div class="status">ERROR</div><div class="teacher">—</div><div class="date"></div>';
+            m.appendChild(d);
+          });
+        }
+      } finally {
+        // Close all groups by default and apply filters once rendered
+        document.querySelectorAll('details.group').forEach(d => d.open = false);
+        applyFilters();
       }
     }
     init();
