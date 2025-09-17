@@ -127,6 +127,27 @@
       font-weight:800;
     }
 
+    /* ===== COMPLETED SESSIONS ===== */
+    .event.completed{
+      position: relative;
+      opacity: .6;                    /* overall fade */
+      filter: grayscale(35%) brightness(.9);
+      border-color:#c9cdd5 !important;
+    }
+    .event.completed::after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(30,41,59,.10), rgba(15,23,42,.18)); /* subtle dark veil */
+      pointer-events:none;
+    }
+    .event.completed .event-title,
+    .event.completed .pill{
+      color:#1f2937 !important;
+    }
+    /* keep the left color strip subtle but visible */
+    .event.completed::before{ opacity:.4 }
+
     @media (max-width:1100px){
       .heading{align-items:flex-start;gap:12px}
       .title{flex:1 1 auto}
@@ -341,8 +362,8 @@
     const badge = document.getElementById('badge');
     const clearBtn = document.getElementById('clearFilters');
     const parts = [];
-    if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
-    if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
+    if ( FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
+    if ( FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
     if (parts.length){
       badge.textContent = 'Filters — ' + parts.join(' · ');
       badge.style.display='';
@@ -358,7 +379,7 @@
     const [y, m] = ym.split('-').map(Number);
     const year = y, monthIndex = m-1;
 
-    const monthName = MONTHS[monthIndex];
+    const monthName = ["January","February","March","April","May","June","July","August","September","October","November","December"][monthIndex];
     const titleText = (meta.title || `Academic Calendar — ${monthName} ${year}`)
       .replace(/\{MONTH\}/g, monthName)
       .replace(/\{YEAR\}/g, String(year));
@@ -376,7 +397,8 @@
     const first = new Date(year, monthIndex, 1);
     const last  = new Date(year, monthIndex + 1, 0);
     const daysInMonth = last.getDate();
-    const leadingBlanks = toMonIndex(first.getDay());
+    const leadingBlanks = (first.getDay() + 6) % 7; // Mon=0
+
     const totalCells = leadingBlanks + daysInMonth;
     const trailingBlanks = (7 - (totalCells % 7)) % 7;
 
@@ -421,7 +443,9 @@
 
       todays.forEach(e => {
         const eDiv = document.createElement('div');
-        const timeClass = isMorning(e.time) ? 'morning' : (isEvening(e.time) ? 'evening' : 'morning');
+
+        const timeClass = isMorning(e.time) ? 'morning' :
+                          (isEvening(e.time) ? 'evening' : 'morning');
         const subjClass = subjectClass(e.subject);
         const cleanSubject = stripBrackets(e.subject);
         const cleanTopic   = stripBrackets(e.topic || '—');
@@ -430,7 +454,13 @@
         const showExamPill = (RAW_DATA?.meta?.showExamPill !== false);
         const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
 
-        eDiv.className = `event ${timeClass}${isLive ? ' live' : ''}`;
+        /* ===== NEW: mark completed if event date is before today ===== */
+        const eventDate = new Date(e.date);
+        const today = new Date();
+        today.setHours(0,0,0,0);               // compare by date only
+        const completedClass = eventDate < today ? ' completed' : '';
+
+        eDiv.className = `event ${timeClass}${isLive ? ' live' : ''}${completedClass}`;
         eDiv.innerHTML = `
           <p class="event-title">${cleanTopic}</p>
           <div class="event-meta">
