@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Class 11 Syllabus (Live from Google Sheets)</title>
+  <title>Sehr Academy — Class 11 Syllabus (Google Sheets)</title>
   <meta name="theme-color" content="#8BC53F" />
-  <meta name="description" content="Class 11 syllabus tracker: filter by status, search chapters/teachers, live from Google Sheets with local JSON fallback." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -16,7 +15,6 @@
   <style>
     :root{
       --sehr-green:#8BC53F;
-      --ink:#0F172A;
       --glass-border: rgba(0,0,0,.08);
       --radius: 16px;
       --maxw:1180px;
@@ -27,125 +25,56 @@
       --hint-bg: linear-gradient(180deg,#ffffff,#f5f7fb);
       --pill-bg: linear-gradient(180deg,#ffffff, rgba(255,255,255,.82));
     }
-    *{box-sizing:border-box}
-    html,body{margin:0}
-    body{
-      font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
-      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 50%, #f7f8fa 100%);
-      color:#111; line-height:1.65; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-
-    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-    .pagehead{max-width:var(--maxw);margin:22px auto 10px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .title{font-family:Montserrat;font-weight:900;font-size:26px;letter-spacing:.2px}
+    body{margin:0;font-family:Nunito;background:#fff}
+    .pagehead{max-width:var(--maxw);margin:22px auto 10px;padding:0 20px}
+    .title{font-family:Montserrat;font-weight:900;font-size:26px}
     .subtitle{color:#6b7280;font-weight:800}
     .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
-
-    .controls{max-width:var(--maxw);margin:6px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.85));font-weight:800; cursor:pointer; user-select:none}
-    .chip:hover{filter:brightness(1.03)}
-    .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45); box-shadow:0 6px 16px rgba(139,197,63,.18)}
-    .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
+    .controls{max-width:var(--maxw);margin:6px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border);background:#fff;font-weight:800;cursor:pointer}
+    .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45)}
+    .search{flex:1;min-width:240px;display:flex;align-items:center;gap:8px;background:var(--hint-bg);border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px}
     .search input{border:0;background:transparent;outline:none;flex:1;font-weight:800}
-
-    .panel{max-width:var(--maxw); margin:10px auto 0; padding:16px 20px; border-radius:var(--radius);
-      border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:0 20px 45px rgba(15,23,42,.10);}
-    .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:800;color:#334}
-    .dot{width:10px;height:10px;border-radius:999px;background:#cfd6df}
+    .panel{max-width:var(--maxw);margin:10px auto;padding:16px 20px;border-radius:var(--radius);border:1px solid var(--glass-border);background:var(--frost-white)}
+    .legend{display:flex;gap:12px;font-weight:800}
+    .dot{width:10px;height:10px;border-radius:999px}
     .dot.pending{background:#cfd6df}
     .dot.ongoing{background:#f6c761}
     .dot.completed{background:#69c04c}
-
-    details.group{max-width:var(--maxw); margin:14px auto; border-radius:16px; border:1px solid var(--glass-border);
-      background:var(--frost-white); box-shadow:0 20px 45px rgba(15,23,42,.10); overflow:hidden}
-    details.group > summary{
-      list-style:none; cursor:pointer; padding:16px 18px; user-select:none; display:grid;
-      grid-template-columns: 1fr auto; align-items:center; gap:10px;
-      font-family:Montserrat; font-weight:900; font-size:18px;
-      background:linear-gradient(180deg,#ffffff, #f2f6f1);
-      border-bottom:1px solid rgba(230,232,236,.6);
-    }
-    details.group > summary::-webkit-details-marker{display:none}
-    .sum-left{display:flex;align-items:center;gap:12px}
-    .subject-name{font-size:18px; color:#0b0f10; text-transform:uppercase; letter-spacing:.4px}
-    .sum-right{display:flex; align-items:center; gap:14px}
-
-    .prog-wrap{width:220px; display:flex; flex-direction:column; gap:4px}
-    .prog-rail{width:100%; height:8px; border-radius:999px; background:rgba(0,0,0,.06); position:relative; overflow:hidden; border:1px solid rgba(0,0,0,.06)}
-    .prog-fill{height:100%; width:0%; background:var(--bar-gold); border-radius:999px; transition:width .45s ease}
-    .prog-note{font-size:10px; font-weight:900; color:#2b3345; text-transform:uppercase; letter-spacing:.4px; opacity:.8; text-align:right}
-
-    .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
-    .row{
-      display:grid; grid-template-columns: 1fr auto auto auto; gap:12px; align-items:center;
-      padding:14px 14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.55);
-      background:var(--crystal);
-      backdrop-filter: blur(9px) saturate(160%);
-      -webkit-backdrop-filter: blur(9px) saturate(160%);
-      box-shadow:0 10px 28px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.45);
-      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease, border-color .18s ease;
-    }
-    .row:hover{
-      transform:translateY(-2px);
-      box-shadow:0 16px 36px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.55);
-      border-color:rgba(255,255,255,.75);
-      filter:drop-shadow(0 0 6px rgba(139,197,63,.18));
-    }
-    .row.completed{
-      background: var(--frost-green);
-      border-color: rgba(139,197,63,.55);
-      box-shadow:0 12px 30px rgba(139,197,63,.18), inset 0 1px 0 rgba(255,255,255,.6);
-    }
-    .row .name{font-weight:800}
-
-    .status, .teacher, .date{
-      font-family:Montserrat; font-weight:900; font-size:12px; padding:6px 8px;
-      border-radius:8px; border:1px solid var(--glass-border);
-      min-width:96px; text-align:center; letter-spacing:.3px;
-      background:var(--pill-bg); color:#334;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .status{ text-transform:uppercase; }
-    .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
-    .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
-    .teacher{max-width:220px}
-    .date{ color:#2b3345 }
-    .date:empty{ display:none }
-
-    @media (max-width: 640px){
-      .row{grid-template-columns: 1fr; align-items:start}
-      .status, .teacher, .date{justify-self:start; min-width:unset}
-    }
+    details.group{max-width:var(--maxw);margin:14px auto;border-radius:16px;border:1px solid var(--glass-border);background:var(--frost-white)}
+    details.group > summary{cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;font-family:Montserrat;font-weight:900}
+    .subject-name{text-transform:uppercase}
+    .prog-wrap{width:180px}
+    .prog-rail{width:100%;height:8px;border-radius:999px;background:#eee;overflow:hidden}
+    .prog-fill{height:100%;width:0%;background:var(--bar-gold);transition:width .45s ease}
+    .prog-note{font-size:10px;font-weight:900;text-align:right}
+    .chapters{padding:12px;display:grid;gap:10px}
+    .row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;padding:12px;border-radius:12px;background:var(--crystal)}
+    .row.completed{background:var(--frost-green)}
+    .status,.teacher,.date{font-family:Montserrat;font-weight:900;font-size:12px;padding:6px 8px;border-radius:8px;background:var(--pill-bg);min-width:80px;text-align:center}
+    @media(max-width:640px){.row{grid-template-columns:1fr}.status,.teacher,.date{justify-self:start}}
   </style>
 </head>
 <body>
   <div class="pagehead">
-    <div>
-      <div class="title">Class 11 Syllabus — Completion Tracker</div>
-      <div class="subtitle">Filter by status, search by chapter or teacher. Data live from Google Sheets.</div>
-      <div class="stamp" id="last-updated"></div>
-    </div>
+    <div class="title">Class 11 Syllabus — Tracker</div>
+    <div class="subtitle">Live from Google Sheets</div>
+    <div class="stamp" id="last-updated"></div>
   </div>
 
   <div class="controls">
-    <div id="filters" role="tablist" aria-label="Filter chapters by status">
+    <div id="filters">
       <button data-filter="all" class="chip" aria-pressed="true">All</button>
       <button data-filter="pending" class="chip" aria-pressed="false">Pending</button>
       <button data-filter="ongoing" class="chip" aria-pressed="false">Ongoing</button>
       <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
     </div>
-
-    <button id="btn-collapse-all" class="chip" type="button" title="Collapse all subjects">Collapse All</button>
-
-    <div class="search" role="search" title="Type to search chapter titles or teacher names">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.2-4.2M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="#2b3345" stroke-width="2" stroke-linecap="round"/></svg>
-      <input id="search" type="search" placeholder="Search chapters or teachers…" aria-label="Search chapters by name or teacher" />
+    <div class="search">
+      <input id="search" type="search" placeholder="Search chapters or teachers…" />
     </div>
   </div>
 
-  <section class="panel" aria-label="Legend">
+  <section class="panel">
     <div class="legend">
       <span class="chip"><span class="dot pending"></span> Pending</span>
       <span class="chip"><span class="dot ongoing"></span> Ongoing</span>
@@ -153,345 +82,35 @@
     </div>
   </section>
 
-  <details class="group" data-subject="physics">
-    <summary>
-      <span class="sum-left"><span class="subject-name">Physics</span></span>
-      <span class="sum-right">
-        <span class="prog-wrap">
-          <span class="prog-rail"><span class="prog-fill" id="bar-physics"></span></span>
-          <span class="prog-note" id="note-physics">0/0</span>
-        </span>
-        <span class="chip">Click to toggle</span>
-      </span>
-    </summary>
-    <div class="chapters" id="list-physics"></div>
-  </details>
-
-  <details class="group" data-subject="chemistry">
-    <summary>
-      <span class="sum-left"><span class="subject-name">Chemistry</span></span>
-      <span class="sum-right">
-        <span class="prog-wrap">
-          <span class="prog-rail"><span class="prog-fill" id="bar-chemistry"></span></span>
-          <span class="prog-note" id="note-chemistry">0/0</span>
-        </span>
-        <span class="chip">Click to toggle</span>
-      </span>
-    </summary>
-    <div class="chapters" id="list-chemistry"></div>
-  </details>
-
-  <details class="group" data-subject="mathematics">
-    <summary>
-      <span class="sum-left"><span class="subject-name">Mathematics</span></span>
-      <span class="sum-right">
-        <span class="prog-wrap">
-          <span class="prog-rail"><span class="prog-fill" id="bar-mathematics"></span></span>
-          <span class="prog-note" id="note-mathematics">0/0</span>
-        </span>
-        <span class="chip">Click to toggle</span>
-      </span>
-    </summary>
-    <div class="chapters" id="list-mathematics"></div>
-  </details>
-
-  <details class="group" data-subject="botany">
-    <summary>
-      <span class="sum-left"><span class="subject-name">Biology — Botany</span></span>
-      <span class="sum-right">
-        <span class="prog-wrap">
-          <span class="prog-rail"><span class="prog-fill" id="bar-botany"></span></span>
-          <span class="prog-note" id="note-botany">0/0</span>
-        </span>
-        <span class="chip">Click to toggle</span>
-      </span>
-    </summary>
-    <div class="chapters" id="list-botany"></div>
-  </details>
-
-  <details class="group" data-subject="zoology">
-    <summary>
-      <span class="sum-left"><span class="subject-name">Biology — Zoology</span></span>
-      <span class="sum-right">
-        <span class="prog-wrap">
-          <span class="prog-rail"><span class="prog-fill" id="bar-zoology"></span></span>
-          <span class="prog-note" id="note-zoology">0/0</span>
-        </span>
-        <span class="chip">Click to toggle</span>
-      </span>
-    </summary>
-    <div class="chapters" id="list-zoology"></div>
-  </details>
+  <details class="group"><summary><span class="subject-name">Physics</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-physics"></div></div><div class="prog-note" id="note-physics">0/0</div></span></summary><div class="chapters" id="list-physics"></div></details>
+  <details class="group"><summary><span class="subject-name">Chemistry</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-chemistry"></div></div><div class="prog-note" id="note-chemistry">0/0</div></span></summary><div class="chapters" id="list-chemistry"></div></details>
+  <details class="group"><summary><span class="subject-name">Mathematics</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-mathematics"></div></div><div class="prog-note" id="note-mathematics">0/0</div></span></summary><div class="chapters" id="list-mathematics"></div></details>
+  <details class="group"><summary><span class="subject-name">Botany</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-botany"></div></div><div class="prog-note" id="note-botany">0/0</div></span></summary><div class="chapters" id="list-botany"></div></details>
+  <details class="group"><summary><span class="subject-name">Zoology</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-zoology"></div></div><div class="prog-note" id="note-zoology">0/0</div></span></summary><div class="chapters" id="list-zoology"></div></details>
 
   <script>
-    /* =================== CONFIG: Google Sheets (GViz) =================== */
-    const SHEET_ID   = "1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
-    const SHEET_NAME = "Sheet1";
-    const GVIZ_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const SHEET_ID="1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
+    const SHEET_NAME="Sheet1";
+    const GVIZ_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const lists={physics:document.getElementById('list-physics'),chemistry:document.getElementById('list-chemistry'),mathematics:document.getElementById('list-mathematics'),botany:document.getElementById('list-botany'),zoology:document.getElementById('list-zoology')};
+    const bars={physics:document.getElementById('bar-physics'),chemistry:document.getElementById('bar-chemistry'),mathematics:document.getElementById('bar-mathematics'),botany:document.getElementById('bar-botany'),zoology:document.getElementById('bar-zoology')};
+    const notes={physics:document.getElementById('note-physics'),chemistry:document.getElementById('note-chemistry'),mathematics:document.getElementById('note-mathematics'),botany:document.getElementById('note-botany'),zoology:document.getElementById('note-zoology')};
+    const lastUpdatedEl=document.getElementById('last-updated');
 
-    // Optional local fallback JSON
-    const CANDIDATES = [
-      new URL('./data/syllabus.json?cb=' + Date.now(), location.href).toString(),
-      new URL('data/syllabus.json?cb=' + Date.now(), location.href).toString(),
-      location.origin + '/data/syllabus.json?cb=' + Date.now()
-    ];
-    async function fetchFirst(paths){
-      for(const p of paths){
-        try{
-          const r = await fetch(p, {cache:'no-store'});
-          if(r.ok) return { res: r, url: p };
-        }catch(e){}
-      }
-      throw new Error('No local fallback JSON was found.');
-    }
+    function fmtDayMonth(s){if(!s)return'';const d=new Date(s);if(isNaN(d))return'';return d.getDate().toString().padStart(2,'0')+" "+d.toLocaleString('en-GB',{month:'short'})}
+    function formatTeachers(it){if(Array.isArray(it.teachers))return it.teachers.join(', ');return it.teacher||'—'}
 
-    /* =================== Refs =================== */
-    const lists = {
-      physics: document.getElementById('list-physics'),
-      chemistry: document.getElementById('list-chemistry'),
-      mathematics: document.getElementById('list-mathematics'),
-      botany: document.getElementById('list-botany'),
-      zoology: document.getElementById('list-zoology')
-    };
-    const bars = {
-      physics: document.getElementById('bar-physics'),
-      chemistry: document.getElementById('bar-chemistry'),
-      mathematics: document.getElementById('bar-mathematics'),
-      botany: document.getElementById('bar-botany'),
-      zoology: document.getElementById('bar-zoology')
-    };
-    const notes = {
-      physics: document.getElementById('note-physics'),
-      chemistry: document.getElementById('note-chemistry'),
-      mathematics: document.getElementById('note-mathematics'),
-      botany: document.getElementById('note-botany'),
-      zoology: document.getElementById('note-zoology')
-    };
-    const lastUpdatedEl = document.getElementById('last-updated');
+    function makeRow(it){const div=document.createElement('div');const st=(it.status||'pending').toLowerCase();const when=fmtDayMonth(it.expectedDate||'');const teachers=formatTeachers(it);div.className='row '+(st==='completed'?'completed':'');div.dataset.status=st;div.dataset.name=(it.title||'').toLowerCase();div.dataset.teachers=teachers.toLowerCase();div.innerHTML=`<div class="name">${it.index?it.index+'. ':''}${it.title}</div><div class="status ${st}">${st.toUpperCase()}</div><div class="teacher">${teachers}</div><div class="date">${when}</div>`;return div;}
+    function setProgress(total,done,key){const pct=total?Math.round(done/total*100):0;bars[key].style.width=pct+"%";notes[key].textContent=`${done}/${total}`;}
+    function render(arr,mount,key){mount.innerHTML='';let done=0;arr.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{if(ch.status==='completed')done++;mount.appendChild(makeRow(ch))});setProgress(arr.length,done,key);}
+    function renderBio(bio){const bot=bio.filter(x=>x.stream==='botany');const zoo=bio.filter(x=>x.stream==='zoology');render(bot,lists.botany,'botany');render(zoo,lists.zoology,'zoology');}
 
-    /* =================== Utilities =================== */
-    function fmtDayMonth(s){
-      if(!s) return '';
-      const d = new Date(s);
-      if(isNaN(d)) return '';
-      const day = d.getDate().toString().padStart(2,'0');
-      const mon = d.toLocaleString('en-GB',{month:'short'});
-      return `${day} ${mon}`;
-    }
+    document.getElementById('filters').addEventListener('click',e=>{if(e.target.matches('button[data-filter]')){document.querySelectorAll('#filters button').forEach(b=>b.setAttribute('aria-pressed','false'));e.target.setAttribute('aria-pressed','true');applyFilters(e.target.dataset.filter,document.getElementById('search').value.toLowerCase())}});
+    document.getElementById('search').addEventListener('input',e=>applyFilters(document.querySelector('#filters button[aria-pressed="true"]').dataset.filter,e.target.value.toLowerCase()));
+    function applyFilters(f,q){document.querySelectorAll('.row').forEach(r=>{const st=r.dataset.status;const nm=r.dataset.name;const tc=r.dataset.teachers;const sm=f==='all'||st===f;const tm=!q||nm.includes(q)||tc.includes(q);r.style.display=sm&&tm?'':'none';});}
 
-    function formatTeachers(item){
-      let t = '';
-      if (Array.isArray(item.teachers)) {
-        t = item.teachers.filter(Boolean).join(', ');
-      } else if (typeof item.teacher === 'string') {
-        t = item.teacher.trim();
-      } else if (typeof item.teachers === 'string') {
-        t = item.teachers.trim();
-      }
-      return t || '—';
-    }
-
-    function makeRow(item){
-      const div = document.createElement('div');
-      const st = (item.status || 'pending').toLowerCase();
-      const when = fmtDayMonth(item.expectedDate || '');
-      const teachers = formatTeachers(item);
-
-      div.className = 'row ' + (st==='completed' ? 'completed' : '');
-      div.dataset.status = st;
-      div.dataset.name = (item.title || '').toLowerCase();
-      div.dataset.teachers = teachers.toLowerCase();
-
-      const dateHTML = when ? `<div class="date" title="${when}">${when}</div>` : `<div class="date"></div>`;
-      const teacherHTML = `<div class="teacher" title="${teachers}">${teachers}</div>`;
-
-      div.innerHTML = `
-        <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
-        <div class="status ${st}">${st.toUpperCase()}</div>
-        ${teacherHTML}
-        ${dateHTML}
-      `;
-      return div;
-    }
-
-    function setProgress(total, done, key){
-      const bar = bars[key];
-      const note = notes[key];
-      if(!bar || !note) return;
-      const pct = total ? Math.round((done/total)*100) : 0;
-      bar.style.width = '0%';
-      requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
-      note.textContent = `${done}/${total}`;
-    }
-
-    function renderSimple(arr, mount, key){
-      mount.innerHTML = '';
-      const sorted = [...arr].sort((a,b)=>(a.index||999)-(b.index||999));
-      let done = 0;
-      sorted.forEach(ch => {
-        if((ch.status||'').toLowerCase()==='completed') done++;
-        mount.appendChild(makeRow(ch));
-      });
-      setProgress(sorted.length, done, key);
-    }
-
-    function renderBioStreams(bio){
-      const botany = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
-      const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
-
-      lists.botany.innerHTML = '';
-      let doneB=0;
-      botany.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
-        if((ch.status||'').toLowerCase()==='completed') doneB++;
-        lists.botany.appendChild(makeRow(ch));
-      });
-      setProgress(botany.length, doneB, 'botany');
-
-      lists.zoology.innerHTML = '';
-      let doneZ=0;
-      zoology.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{ /* ✅ fixed stray quote */
-        if((ch.status||'').toLowerCase()==='completed') doneZ++;
-        lists.zoology.appendChild(makeRow(ch));
-      });
-      setProgress(zoology.length, doneZ, 'zoology');
-    }
-
-    /* =================== Filters & Search =================== */
-    const filterState = { value:'all', query:'' };
-    function applyFilters(){
-      const rows = document.querySelectorAll('.chapters .row');
-      rows.forEach(r=>{
-        const st = r.dataset.status;
-        const name = r.dataset.name || '';
-        const teachers = r.dataset.teachers || '';
-        const statusMatch = (filterState.value==='all' || st===filterState.value);
-        const q = (filterState.query || '');
-        const textMatch = (!q || name.includes(q) || teachers.includes(q));
-        r.style.display = (statusMatch && textMatch) ? '' : 'none';
-      });
-    }
-    document.getElementById('filters').addEventListener('click', e=>{
-      if(e.target.matches('button[data-filter]')){
-        filterState.value = e.target.dataset.filter;
-        [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', String(b===e.target)));
-        applyFilters();
-      }
-    });
-    document.getElementById('search').addEventListener('input', e=>{
-      filterState.query = (e.target.value || '').toLowerCase().trim();
-      applyFilters();
-    });
-    document.getElementById('btn-collapse-all')?.addEventListener('click', ()=>{
-      document.querySelectorAll('details.group[open]').forEach(d=> d.open = false);
-    });
-
-    /* =================== GViz fetch with Date() normalization =================== */
-    async function fetchGVizRaw() {
-      const r = await fetch(GVIZ_URL, { cache: "no-store" });
-      if (!r.ok) throw new Error(`GViz HTTP ${r.status}`);
-      return r.text();
-    }
-    function normalizeGVizToJSON(txt){
-      const m = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);?/);
-      if(!m) throw new Error("GViz: unexpected response format");
-      let payload = m[1];
-      // Convert Date(YYYY,MM,DD[,HH,MM,SS]) → ISO
-      payload = payload.replace(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)/g,
-        (_,Y,M,D,h='0',m='0',s='0')=>{
-          const iso = new Date(Date.UTC(+Y, +M, +D, +h, +m, +s)).toISOString();
-          return `"${iso}"`;
-        });
-      return JSON.parse(payload);
-    }
-    async function loadFromGoogleSheets(){
-      const txt = await fetchGVizRaw();
-      const gviz = normalizeGVizToJSON(txt);
-
-      const cols = gviz.table.cols.map(c => (c.label || "").trim());
-      const rows = gviz.table.rows.map(row => {
-        const obj = {};
-        (row.c || []).forEach((cell, i) => { obj[cols[i]] = cell ? cell.v : ""; });
-        return obj;
-      });
-
-      const data = { meta: { lastUpdated: new Date().toISOString() },
-                     physics: [], chemistry: [], mathematics: [], biology: [] };
-
-      rows.forEach(r => {
-        const subject = String(r.Subject || "").trim().toLowerCase();
-        const stream  = String(r.Stream  || "").trim().toLowerCase();
-        const teachersList = String(r["Teacher(s)"] || "").split(",").map(s => s.trim()).filter(Boolean);
-
-        const it = {
-          index: Number(r.Index) || undefined,
-          title: String(r.Title || "").trim(),
-          status: String(r.Status || "pending").trim().toLowerCase(),
-          expectedDate: r.ExpectedDate ? String(r.ExpectedDate).slice(0,10) : "",
-        };
-        if (teachersList.length > 1) it.teachers = teachersList;
-        else if (teachersList.length === 1) it.teacher = teachersList[0];
-        else if (r.Teacher) it.teacher = String(r.Teacher).trim();
-
-        if (subject === "biology" || subject === "botany" || subject === "zoology") {
-          it.stream = stream || (subject !== "biology" ? subject : "");
-          data.biology.push(it);
-        } else if (subject === "physics" || subject === "chemistry" || subject === "mathematics") {
-          data[subject].push(it);
-        }
-      });
-
-      return data;
-    }
-
-    /* =================== Init (Sheets first, then fallback) =================== */
-    async function init(){
-      try{
-        const data = await loadFromGoogleSheets();
-
-        if (lastUpdatedEl && data.meta?.lastUpdated){
-          const d = new Date(data.meta.lastUpdated);
-          if (!isNaN(d)){
-            lastUpdatedEl.textContent = 'Last updated: ' + d.toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-          }
-        }
-
-        renderSimple(data.physics || [], lists.physics, 'physics');
-        renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
-        renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
-        renderBioStreams(data.biology || []);
-
-      }catch(err){
-        console.warn('Sheets load failed, trying local /data/syllabus.json', err);
-        try{
-          const { res } = await fetchFirst(CANDIDATES);
-          const data = await res.json();
-
-          if (data.meta && data.meta.lastUpdated){
-            const d = new Date(data.meta.lastUpdated);
-            if (!isNaN(d)){
-              lastUpdatedEl.textContent = 'Last updated: ' + d.toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-            }
-          }
-
-          renderSimple(data.physics || [], lists.physics, 'physics');
-          renderSimple(data.chemistry || [], lists.chemistry, 'chemistry');
-          renderSimple(data.mathematics || [], lists.mathematics, 'mathematics');
-          renderBioStreams(data.biology || []);
-        }catch(e){
-          console.error('Failed to load fallback JSON', e);
-          Object.values(lists).forEach(m=>{
-            const d = document.createElement('div');
-            d.className='row';
-            d.innerHTML = '<div class="name">Couldn’t load data (Sheets & JSON failed).</div><div class="status">ERROR</div><div class="teacher">—</div><div class="date"></div>';
-            m.appendChild(d);
-          });
-        }
-      } finally {
-        document.querySelectorAll('details.group').forEach(d => d.open = false);
-        applyFilters();
-      }
-    }
-    init();
+    async function load(){const r=await fetch(GVIZ_URL);const txt=await r.text();const m=txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/);let payload=m[1];payload=payload.replace(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)/g,(_,Y,M,D,h='0',mi='0',s='0')=>`"${new Date(Date.UTC(+Y,+M,+D,+h,+mi,+s)).toISOString()}"`);const gviz=JSON.parse(payload);const cols=gviz.table.cols.map(c=>(c.label||"").trim());const rows=gviz.table.rows.map(row=>{const o={};(row.c||[]).forEach((c,i)=>o[cols[i]]=c?c.v:"");return o});const data={physics:[],chemistry:[],mathematics:[],biology:[]};rows.forEach(r=>{const subj=(r.Subject||'').toLowerCase();const stream=(r.Stream||'').toLowerCase();const it={index:+r.Index||undefined,title:r.Title,status:(r.Status||'').toLowerCase(),expectedDate:r.ExpectedDate?String(r.ExpectedDate).slice(0,10):"",teacher:r.Teacher,teachers:r["Teacher(s)"]?r["Teacher(s)"].split(',').map(s=>s.trim()):[]};if(subj==='physics'||subj==='chemistry'||subj==='mathematics'){data[subj].push(it)}else if(subj==='biology'||subj==='botany'||subj==='zoology'){it.stream=stream||subj;data.biology.push(it)}});render(data.physics,lists.physics,'physics');render(data.chemistry,lists.chemistry,'chemistry');render(data.mathematics,lists.mathematics,'mathematics');renderBio(data.biology);lastUpdatedEl.textContent="Last updated: "+new Date().toLocaleString('en-IN');}
+    load();
   </script>
 </body>
 </html>
