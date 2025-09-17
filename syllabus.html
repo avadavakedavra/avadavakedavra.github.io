@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sehr Academy — Class 11 Syllabus (Live from Google Sheets)</title>
   <meta name="theme-color" content="#8BC53F" />
-  <meta name="description" content="Class 11 syllabus completion tracker for Physics, Chemistry, Mathematics, Biology — filter by status, search by chapter or teacher, live dates." />
+  <meta name="description" content="Class 11 syllabus tracker: filter by status, search chapters/teachers, live from Google Sheets with local JSON fallback." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -35,14 +35,12 @@
       color:#111; line-height:1.65; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Header */
     .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
     .pagehead{max-width:var(--maxw);margin:22px auto 10px;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .title{font-family:Montserrat;font-weight:900;font-size:26px;letter-spacing:.2px}
     .subtitle{color:#6b7280;font-weight:800}
     .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
 
-    /* Controls */
     .controls{max-width:var(--maxw);margin:6px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border); background:linear-gradient(180deg,#fff,rgba(255,255,255,.85));font-weight:800; cursor:pointer; user-select:none}
     .chip:hover{filter:brightness(1.03)}
@@ -50,7 +48,6 @@
     .search{flex:1; min-width:240px; display:flex; align-items:center; gap:8px; background:var(--hint-bg); border:1px solid var(--glass-border); border-radius:12px; padding:8px 12px}
     .search input{border:0;background:transparent;outline:none;flex:1;font-weight:800}
 
-    /* Legend panel */
     .panel{max-width:var(--maxw); margin:10px auto 0; padding:16px 20px; border-radius:var(--radius);
       border:1px solid var(--glass-border); background:var(--frost-white); box-shadow:0 20px 45px rgba(15,23,42,.10);}
     .legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:800;color:#334}
@@ -59,7 +56,6 @@
     .dot.ongoing{background:#f6c761}
     .dot.completed{background:#69c04c}
 
-    /* Subject accordions */
     details.group{max-width:var(--maxw); margin:14px auto; border-radius:16px; border:1px solid var(--glass-border);
       background:var(--frost-white); box-shadow:0 20px 45px rgba(15,23,42,.10); overflow:hidden}
     details.group > summary{
@@ -74,13 +70,11 @@
     .subject-name{font-size:18px; color:#0b0f10; text-transform:uppercase; letter-spacing:.4px}
     .sum-right{display:flex; align-items:center; gap:14px}
 
-    /* Progress mini bar */
     .prog-wrap{width:220px; display:flex; flex-direction:column; gap:4px}
     .prog-rail{width:100%; height:8px; border-radius:999px; background:rgba(0,0,0,.06); position:relative; overflow:hidden; border:1px solid rgba(0,0,0,.06)}
     .prog-fill{height:100%; width:0%; background:var(--bar-gold); border-radius:999px; transition:width .45s ease}
     .prog-note{font-size:10px; font-weight:900; color:#2b3345; text-transform:uppercase; letter-spacing:.4px; opacity:.8; text-align:right}
 
-    /* Chapters */
     .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
     .row{
       display:grid; grid-template-columns: 1fr auto auto auto; gap:12px; align-items:center;
@@ -106,7 +100,6 @@
     }
     .row .name{font-weight:800}
 
-    /* Pills */
     .status, .teacher, .date{
       font-family:Montserrat; font-weight:900; font-size:12px; padding:6px 8px;
       border-radius:8px; border:1px solid var(--glass-border);
@@ -121,7 +114,6 @@
     .date{ color:#2b3345 }
     .date:empty{ display:none }
 
-    /* Mobile */
     @media (max-width: 640px){
       .row{grid-template-columns: 1fr; align-items:start}
       .status, .teacher, .date{justify-self:start; min-width:unset}
@@ -137,7 +129,6 @@
     </div>
   </div>
 
-  <!-- Controls -->
   <div class="controls">
     <div id="filters" role="tablist" aria-label="Filter chapters by status">
       <button data-filter="all" class="chip" aria-pressed="true">All</button>
@@ -154,7 +145,6 @@
     </div>
   </div>
 
-  <!-- Legend -->
   <section class="panel" aria-label="Legend">
     <div class="legend">
       <span class="chip"><span class="dot pending"></span> Pending</span>
@@ -163,7 +153,6 @@
     </div>
   </section>
 
-  <!-- Subjects -->
   <details class="group" data-subject="physics">
     <summary>
       <span class="sum-left"><span class="subject-name">Physics</span></span>
@@ -291,7 +280,6 @@
     }
 
     function formatTeachers(item){
-      // Accept either `teacher: "Name"` or `teachers: ["A", "B"]`
       let t = '';
       if (Array.isArray(item.teachers)) {
         t = item.teachers.filter(Boolean).join(', ');
@@ -361,7 +349,7 @@
 
       lists.zoology.innerHTML = '';
       let doneZ=0;
-      zoology.sort((a,b)=>(a.index||999)-(b.index||999')).forEach(ch=>{
+      zoology.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{ /* ✅ fixed stray quote */
         if((ch.status||'').toLowerCase()==='completed') doneZ++;
         lists.zoology.appendChild(makeRow(ch));
       });
@@ -370,7 +358,6 @@
 
     /* =================== Filters & Search =================== */
     const filterState = { value:'all', query:'' };
-
     function applyFilters(){
       const rows = document.querySelectorAll('.chapters .row');
       rows.forEach(r=>{
@@ -383,7 +370,6 @@
         r.style.display = (statusMatch && textMatch) ? '' : 'none';
       });
     }
-
     document.getElementById('filters').addEventListener('click', e=>{
       if(e.target.matches('button[data-filter]')){
         filterState.value = e.target.dataset.filter;
@@ -391,77 +377,66 @@
         applyFilters();
       }
     });
-
     document.getElementById('search').addEventListener('input', e=>{
       filterState.query = (e.target.value || '').toLowerCase().trim();
       applyFilters();
     });
-
-    document.getElementById('btn-collapse-all').addEventListener('click', ()=>{
+    document.getElementById('btn-collapse-all')?.addEventListener('click', ()=>{
       document.querySelectorAll('details.group[open]').forEach(d=> d.open = false);
     });
 
-    /* =================== Google Sheets (GViz) Loader =================== */
-    async function fetchGViz() {
+    /* =================== GViz fetch with Date() normalization =================== */
+    async function fetchGVizRaw() {
       const r = await fetch(GVIZ_URL, { cache: "no-store" });
-      const txt = await r.text();
-      const m = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/);
-      if (!m) throw new Error("GViz: unexpected response");
-      return JSON.parse(m[1]);
+      if (!r.ok) throw new Error(`GViz HTTP ${r.status}`);
+      return r.text();
     }
-
-    function gvizTableToObjects(gviz) {
-      const cols = gviz.table.cols.map(c => (c.label || "").trim());
-      return gviz.table.rows.map(row => {
-        const obj = {};
-        (row.c || []).forEach((cell, i) => {
-          obj[cols[i]] = cell ? cell.v : "";
+    function normalizeGVizToJSON(txt){
+      const m = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);?/);
+      if(!m) throw new Error("GViz: unexpected response format");
+      let payload = m[1];
+      // Convert Date(YYYY,MM,DD[,HH,MM,SS]) → ISO
+      payload = payload.replace(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)/g,
+        (_,Y,M,D,h='0',m='0',s='0')=>{
+          const iso = new Date(Date.UTC(+Y, +M, +D, +h, +m, +s)).toISOString();
+          return `"${iso}"`;
         });
+      return JSON.parse(payload);
+    }
+    async function loadFromGoogleSheets(){
+      const txt = await fetchGVizRaw();
+      const gviz = normalizeGVizToJSON(txt);
+
+      const cols = gviz.table.cols.map(c => (c.label || "").trim());
+      const rows = gviz.table.rows.map(row => {
+        const obj = {};
+        (row.c || []).forEach((cell, i) => { obj[cols[i]] = cell ? cell.v : ""; });
         return obj;
       });
-    }
 
-    function normalizeRow(row) {
-      const subject = String(row.Subject || "").trim().toLowerCase();
-      const stream  = String(row.Stream  || "").trim().toLowerCase();
-      const teachersList = String(row["Teacher(s)"] || "").split(",").map(s => s.trim()).filter(Boolean);
-
-      const it = {
-        index: Number(row.Index) || undefined,
-        title: String(row.Title || "").trim(),
-        status: String(row.Status || "pending").trim().toLowerCase(),
-        expectedDate: row.ExpectedDate ? String(row.ExpectedDate).slice(0,10) : "",
-      };
-
-      // Teacher(s)
-      if (teachersList.length > 1) it.teachers = teachersList;
-      else if (teachersList.length === 1) it.teacher = teachersList[0];
-      else if (row.Teacher) it.teacher = String(row.Teacher).trim();
-
-      // Biology streams
-      if (subject === "biology" || subject === "botany" || subject === "zoology") {
-        it.stream = stream || (subject !== "biology" ? subject : "");
-        return { bucket: "biology", item: it };
-      }
-      return { bucket: subject, item: it };
-    }
-
-    async function loadFromGoogleSheets() {
-      const gviz = await fetchGViz();
-      const rows = gvizTableToObjects(gviz);
-
-      const data = {
-        meta: { lastUpdated: new Date().toISOString() },
-        physics: [], chemistry: [], mathematics: [], biology: []
-      };
+      const data = { meta: { lastUpdated: new Date().toISOString() },
+                     physics: [], chemistry: [], mathematics: [], biology: [] };
 
       rows.forEach(r => {
-        const { bucket, item } = normalizeRow(r);
-        if (!bucket) return;
-        if (bucket === "physics" || bucket === "chemistry" || bucket === "mathematics") {
-          data[bucket].push(item);
-        } else if (bucket === "biology") {
-          data.biology.push(item);
+        const subject = String(r.Subject || "").trim().toLowerCase();
+        const stream  = String(r.Stream  || "").trim().toLowerCase();
+        const teachersList = String(r["Teacher(s)"] || "").split(",").map(s => s.trim()).filter(Boolean);
+
+        const it = {
+          index: Number(r.Index) || undefined,
+          title: String(r.Title || "").trim(),
+          status: String(r.Status || "pending").trim().toLowerCase(),
+          expectedDate: r.ExpectedDate ? String(r.ExpectedDate).slice(0,10) : "",
+        };
+        if (teachersList.length > 1) it.teachers = teachersList;
+        else if (teachersList.length === 1) it.teacher = teachersList[0];
+        else if (r.Teacher) it.teacher = String(r.Teacher).trim();
+
+        if (subject === "biology" || subject === "botany" || subject === "zoology") {
+          it.stream = stream || (subject !== "biology" ? subject : "");
+          data.biology.push(it);
+        } else if (subject === "physics" || subject === "chemistry" || subject === "mathematics") {
+          data[subject].push(it);
         }
       });
 
@@ -471,7 +446,6 @@
     /* =================== Init (Sheets first, then fallback) =================== */
     async function init(){
       try{
-        // Primary: Google Sheets
         const data = await loadFromGoogleSheets();
 
         if (lastUpdatedEl && data.meta?.lastUpdated){
@@ -513,7 +487,6 @@
           });
         }
       } finally {
-        // Close all groups by default and apply filters once rendered
         document.querySelectorAll('details.group').forEach(d => d.open = false);
         applyFilters();
       }
