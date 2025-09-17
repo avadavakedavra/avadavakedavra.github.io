@@ -68,7 +68,7 @@
     .dot.ongoing{background:#f6c761}
     .dot.completed{background:#69c04c}
 
-    /* Subject accordions (highlighted summaries) */
+    /* Subject accordions */
     details.group{max-width:var(--maxw); margin:14px auto; border-radius:16px; border:1px solid var(--glass-border);
       background:var(--frost-white); box-shadow:var(--shadow); overflow:hidden}
     details.group > summary{
@@ -109,7 +109,7 @@
     /* Chapter list — square & crystal glass */
     .chapters{padding:8px 16px 18px 16px; display:grid; gap:10px}
     .row{
-      display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center;
+      display:grid; grid-template-columns: 1fr auto auto auto; gap:12px; align-items:center;
       padding:14px 14px;
       border-radius:12px;
       border:1px solid rgba(255,255,255,.55);
@@ -132,15 +132,18 @@
     }
     .row .name{font-weight:800}
 
-    /* Square status & date pills (date is frosty white) */
-    .status, .date{
+    /* Square status, teacher, & date pills */
+    .status, .teacher, .date{
       font-family:Montserrat; font-weight:900; font-size:12px; padding:6px 8px;
       border-radius:8px; border:1px solid var(--glass-border);
       min-width:96px; text-align:center; letter-spacing:.3px;
+      background:var(--pill-bg); color:#334;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .status{ text-transform:uppercase; background:var(--pill-bg); color:#334 }
+    .status{ text-transform:uppercase; }
     .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
     .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7); color:#0a5a1a; border-color:rgba(139,197,63,.55)}
+    .teacher{max-width:220px}
     .date{ background:var(--pill-bg); color:#2b3345 }
     .date:empty{ display:none } /* hide empty date cells */
 
@@ -148,6 +151,11 @@
     footer{max-width:var(--maxw); margin:28px auto 40px; padding:0 20px; display:none}
 
     /* Compact mobile density */
+    @media (max-width: 640px){
+      /* Stack pills on small screens for readability */
+      .row{grid-template-columns: 1fr; align-items:start}
+      .status, .teacher, .date{justify-self:start; min-width:unset}
+    }
     @media (max-width: 380px){
       .row{padding:10px}
       .prog-wrap{width:160px}
@@ -310,7 +318,7 @@
           if(r.ok) return { res: r, url: p };
         }catch(e){}
       }
-      throw new Error('None of the candidate paths worked:\n' + paths.join('\n'));
+      throw new Error('None of the candidate paths worked:\\n' + paths.join('\\n'));
     }
 
     /* ====== Refs ====== */
@@ -347,18 +355,38 @@
       return `${day} ${mon}`;
     }
 
+    function formatTeachers(item){
+      // Accept either `teacher: "Name"` or `teachers: ["A", "B"]`
+      let t = '';
+      if (Array.isArray(item.teachers)) {
+        t = item.teachers.filter(Boolean).join(', ');
+      } else if (typeof item.teacher === 'string') {
+        t = item.teacher.trim();
+      } else if (typeof item.teachers === 'string') {
+        t = item.teachers.trim();
+      }
+      return t || '—';
+    }
+
     function makeRow(item){
       const div = document.createElement('div');
       const st = (item.status || 'pending').toLowerCase();
       const when = fmtDayMonth(item.expectedDate || '');
+      const teachers = formatTeachers(item);
+
       div.className = 'row ' + (st==='completed' ? 'completed' : '');
       div.dataset.status = st;
+      // Include teacher names in dataset for potential future filtering/search
+      div.dataset.teachers = teachers.toLowerCase();
       div.dataset.name = (item.title || '').toLowerCase();
 
-      const dateHTML = when ? `<div class="date">${when}</div>` : `<div class="date"></div>`;
+      const dateHTML = when ? `<div class="date" title="${when}">${when}</div>` : `<div class="date"></div>`;
+      const teacherHTML = `<div class="teacher" title="${teachers}">${teachers}</div>`;
+
       div.innerHTML = `
         <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
         <div class="status ${st}">${st.toUpperCase()}</div>
+        ${teacherHTML}
         ${dateHTML}
       `;
       return div;
@@ -402,7 +430,7 @@
       // Zoology
       lists.zoology.innerHTML = '';
       let doneZ=0;
-      zoology.sort((a,b)=>(a.index||999)-(b.index||999)).forEach(ch=>{
+      zoology.sort((a,b)=>(a.index||999)-(b.index||999')).forEach(ch=>{
         if((ch.status||'').toLowerCase()==='completed') doneZ++;
         lists.zoology.appendChild(makeRow(ch));
       });
@@ -417,8 +445,10 @@
       rows.forEach(r=>{
         const st = r.dataset.status;
         const name = r.dataset.name || '';
+        const teachers = r.dataset.teachers || '';
         const statusMatch = (filterState.value==='all' || st===filterState.value);
-        const textMatch = (!filterState.query || name.includes(filterState.query));
+        const q = (filterState.query || '');
+        const textMatch = (!q || name.includes(q) || teachers.includes(q));
         r.style.display = (statusMatch && textMatch) ? '' : 'none';
       });
     }
@@ -471,7 +501,7 @@
         Object.values(lists).forEach(m=>{
           const d = document.createElement('div');
           d.className='row';
-          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>.</div><div class="status">ERROR</div><div class="date"></div>';
+          d.innerHTML = '<div class="name">Couldn’t load <code>/data/syllabus.json</code>.</div><div class="status">ERROR</div><div class="teacher">—</div><div class="date"></div>';
           m.appendChild(d);
         });
       }
