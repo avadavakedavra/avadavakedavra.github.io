@@ -141,8 +141,70 @@
     }
     /* keep the colored left strip visible but gently reduced */
     .event.completed::before{ opacity:.45 }
+    
+/* === Correct Color Mapping: OFFLINE=Green, ONLINE=Blue === */
+.event.offline{
+  background: linear-gradient(180deg, rgba(235,250,236,.96), rgba(220,245,224,.90));
+  border-color:#cfe9d1;
+  box-shadow:0 10px 24px rgba(84,193,90,.12), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.event.offline::before{
+  background: linear-gradient(180deg,#94e09b,#54c15a);
+}
 
-    @media (max-width:1100px){
+.event.online{
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,245,255,.92));
+  border-color:#dde6f6;
+  box-shadow:0 10px 24px rgba(78,142,247,.12), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.event.online::before{
+  background: linear-gradient(180deg,#8bb4ff,#4e8ef7);
+}
+
+/* Friday gold override */
+.event.fri-special{
+  background: linear-gradient(180deg, #FFF7D6, #FFE7A3);
+  border-color: #EFD48A;
+  box-shadow: 0 10px 24px rgba(227,178,60,.16), inset 0 1px 0 rgba(255,255,255,.7);
+}
+.event.fri-special::before{
+  background: linear-gradient(180deg, #F3C96A, #E3B23C);
+}
+    /* === ONLINE 🖥️ Violet Full Override === */
+    .event.online-pc{
+      background: linear-gradient(180deg, #F2E9FF, #E0D1FF);
+      border-color: #CBB5FF;
+      box-shadow: 0 10px 24px rgba(151, 135, 244, .25), inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .event.online-pc::before{
+      background: linear-gradient(180deg, #B699FF, #9787F4);
+    }
+/* === Origin Batch Only Pill === */
+.pill.origin {
+  background: linear-gradient(180deg, #FFF7D6, #FFE7A3);
+  border: 1px solid #EFD48A;
+  color: #3b2f0a;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  margin-left: 6px;
+  box-shadow: 0 2px 6px rgba(227,178,60,.2);
+}
+/* === Subject Pill White Style === */
+.pill.subject {
+  background: #ffffff !important;
+  color: #222 !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+
+
+
+    
+
+@media (max-width:1100px){
       .heading{align-items:flex-start;gap:12px}
       .title{flex:1 1 auto}
       .filters{width:100%}
@@ -454,7 +516,15 @@
         today.setHours(0,0,0,0);
         const completedClass = eventDate < today ? ' completed' : '';
 
-        eDiv.className = `event ${timeClass}${isLive ? ' live' : ''}${completedClass}`;
+        const isOffline = /^OFFLINE\s*- /i.test(cleanTopic) || /^OFFLINE\s*-/i.test(cleanTopic);
+const isOnline  = /^ONLINE\s*- /i.test(cleanTopic)  || /^ONLINE\s*-/i.test(cleanTopic);
+const isOnlinePC = /^ONLINE\s*🖥️/i.test(cleanTopic) || /^ONLINE\s*\u{1F5A5}\u{FE0F}/iu.test(cleanTopic);
+let extraModeClass = '';
+if (isOnlinePC) extraModeClass = ' online-pc';
+else if (isOffline) extraModeClass = ' offline';
+else if (isOnline) extraModeClass = ' online';
+const thuClass = (dowMonIdx === 4 && !isOnlinePC) ? ' fri-special' : '';
+eDiv.className = `event ${timeClass}${extraModeClass}${thuClass}${isLive ? ' live' : ''}${completedClass}`;
         eDiv.innerHTML = `
           <p class="event-title">${cleanTopic}</p>
           <div class="event-meta">
