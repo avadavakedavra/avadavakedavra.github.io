@@ -125,22 +125,23 @@
     }
 
     /* ===== COMPLETED SESSIONS (subtle white fade, not grey) ===== */
-    .event.completed{
-      position: relative;
-      opacity: .92;                 /* only a slight fade */
-      /* no grayscale/brightness filters */
-      border-color: var(--glass-edge); /* keep native border tone */
-    }
-    .event.completed::after{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:12px;
-      /* soft white veil, brighter at top, lighter at bottom */
-      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.35));
-      pointer-events:none;
-    }
-    /* keep the colored left strip visible but gently reduced */
-    .event.completed::before{ opacity:.45 }
+.event.completed {
+  position: relative;
+  opacity: 0.6; /* more faded */
+  filter: grayscale(80%) brightness(0.9); /* soft grey tint */
+  border-color: #d0d0d0 !important;
+}
+.event.completed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(240,240,240,0.6));
+  pointer-events: none;
+}
+.event.completed::before {
+  opacity: 0.3; /* dim the left strip */
+}
     
 /* === Correct Color Mapping: OFFLINE=Green, ONLINE=Blue === */
 .event.offline{
