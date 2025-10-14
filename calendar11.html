@@ -199,6 +199,18 @@
   border: 1px solid #e0e0e0 !important;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+/* Class/level pill */
+.pill.level{
+  background: linear-gradient(180deg,#ffffff,#fbfcfe);
+  border:1px solid #e6e9ef;
+  color:#0b0f10;
+  font-weight:800;
+  padding:6px 10px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04);
+  font-size:12px;
+}
+
 
 
 
@@ -232,16 +244,19 @@
       <span id="badge" class="badge" style="display:none"></span>
     </div>
     <!-- Filters live here (to the right of the title on wide screens) -->
-    <div class="filters" aria-label="Filters" role="group">
-      <span class="label" aria-hidden="true">Filter:</span>
-      <select id="subjectFilter" class="select small" aria-label="Filter by subject">
-        <option value="">All Subjects</option>
-      </select>
-      <select id="teacherFilter" class="select small" aria-label="Filter by teacher">
-        <option value="">All Teachers</option>
-      </select>
-      <button id="clearFilters" class="btn clear" title="Clear filters">✕ Clear</button>
-    </div>
+   <div class="filters" aria-label="Filters" role="group">
+  <span class="label" aria-hidden="true">Filter:</span>
+  <select id="subjectFilter" class="select small" aria-label="Filter by subject">
+    <option value="">All Subjects</option>
+  </select>
+  <select id="teacherFilter" class="select small" aria-label="Filter by teacher">
+    <option value="">All Teachers</option>
+  </select>
+  <select id="classFilter" class="select small" aria-label="Filter by class">
+    <option value="">All Classes</option>
+  </select>
+  <button id="clearFilters" class="btn clear" title="Clear filters">✕ Clear</button>
+</div>
   </div>
 
   <main id="calendar" class="calendar" data-json="data/academic-2025-2026.json">
@@ -286,7 +301,8 @@
   // Global state
   let RAW_DATA = null;
   let CURRENT_YM = null;
-  const FILTERS = { subject: '', teacher: '' };
+const FILTERS = { subject: '', teacher: '', class: '' };
+
 
   // ---- Google Sheets helpers ----
   const gapiBase = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values`;
@@ -321,29 +337,31 @@
     return s;
   }
 
-  function rowsToEvents(values){
-    // Expect header row:
-    // date | time | subject | topic | teacher | exam
-    if (!values || values.length === 0) return [];
-    const [header, ...rows] = values;
-    const idx = (name) => header.findIndex(h => String(h || '').toLowerCase().trim() === name);
+function rowsToEvents(values){
+  // Expect header row:
+  // date | time | subject | topic | teacher | exam | class
+  if (!values || values.length === 0) return [];
+  const [header, ...rows] = values;
+  const idx = (name) => header.findIndex(h => String(h || '').toLowerCase().trim() === name);
 
-    const cDate    = idx('date');
-    const cTime    = idx('time');
-    const cSubject = idx('subject');
-    const cTopic   = idx('topic');
-    const cTeacher = idx('teacher');
-    const cExam    = idx('exam');
+  const cDate    = idx('date');
+  const cTime    = idx('time');
+  const cSubject = idx('subject');
+  const cTopic   = idx('topic');
+  const cTeacher = idx('teacher');
+  const cExam    = idx('exam');
+  const cClass   = idx('class'); // new
 
-    return rows.map(r => ({
-      date:    toISODate(r[cDate]),
-      time:    r[cTime]    || '',
-      subject: r[cSubject] || '',
-      topic:   r[cTopic]   || '',
-      teacher: r[cTeacher] || '',
-      exam:    parseBool(r[cExam]),
-    })).filter(e => e.date); // keep only rows with date
-  }
+  return rows.map(r => ({
+    date:    toISODate(r[cDate]),
+    time:    r[cTime]    || '',
+    subject: r[cSubject] || '',
+    topic:   r[cTopic]   || '',
+    teacher: r[cTeacher] || '',
+    exam:    parseBool(r[cExam]),
+    class:   (cClass >= 0 ? (r[cClass] || '') : ''), // new: safe extraction
+  })).filter(e => e.date); // keep only rows with date
+}
 
   async function loadFromGoogleSheets(){
     // Meta
@@ -402,18 +420,27 @@
     nextBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); } };
   }
 
-  function filterEvents(events){
-    const subj = FILTERS.subject.trim().toLowerCase();
-    const teach = FILTERS.teacher.trim().toLowerCase();
-    if (!subj && !teach) return events;
-    return events.filter(e => {
-      const eSubj = stripBrackets(e.subject || '').toLowerCase();
-      const eTeach = stripBrackets(e.teacher || '').toLowerCase();
-      const okSubj = subj ? eSubj === subj : true;
-      const okTeach = teach ? eTeach === teach : true;
-      return okSubj && okTeach;
-    });
-  }
+function filterEvents(events){
+  const subj = FILTERS.subject.trim().toLowerCase();
+  const teach = FILTERS.teacher.trim().toLowerCase();
+  const cls = FILTERS.class.trim().toLowerCase();
+
+  if (!subj && !teach && !cls) return events;
+
+  return events.filter(e => {
+    const eSubj = stripBrackets(e.subject || '').toLowerCase();
+    const eTeach = stripBrackets(e.teacher || '').toLowerCase();
+    const eClass = stripBrackets(e.class || '').toLowerCase();
+
+    const okSubj = subj ? eSubj === subj : true;
+    const okTeach = teach ? eTeach === teach : true;
+    const okClass = cls ? eClass === cls : true;
+
+    return okSubj && okTeach && okClass;
+  });
+}
+
+
 
   function updateFilterBadge(){
     const badge = document.getElementById('badge');
@@ -421,6 +448,8 @@
     const parts = [];
     if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
     if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
+	if (FILTERS.class) parts.push(`Class: ${FILTERS.class}`);
+
     if (parts.length){
       badge.textContent = 'Filters — ' + parts.join(' · ');
       badge.style.display='';
@@ -526,13 +555,17 @@ else if (isOffline) extraModeClass = ' offline';
 else if (isOnline) extraModeClass = ' online';
 const thuClass = (dowMonIdx === 4 && !isOnlinePC) ? ' fri-special' : '';
 eDiv.className = `event ${timeClass}${extraModeClass}${thuClass}${isLive ? ' live' : ''}${completedClass}`;
-        eDiv.innerHTML = `
-          <p class="event-title">${cleanTopic}</p>
-          <div class="event-meta">
-            ${timeText ? `<span class="pill time"><strong>${timeText}</strong></span>` : ''}
-            ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
-            ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
-          </div>`;
+const className = stripBrackets(e.class || ''); // new
+
+eDiv.innerHTML = `
+  <p class="event-title">${cleanTopic}</p>
+  <div class="event-meta">
+    ${timeText ? `<span class="pill time"><strong>${timeText}</strong></span>` : ''}
+    ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
+    ${className ? `<span class="pill level"><strong>${className}</strong></span>` : ''}
+    ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
+  </div>`;
+
         evWrap.appendChild(eDiv);
       });
 
@@ -542,18 +575,24 @@ eDiv.className = `event ${timeClass}${extraModeClass}${thuClass}${isLive ? ' liv
     grid.appendChild(frag);
   }
 
-  function populateFiltersFromData(allEvents){
-    const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-    const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+function populateFiltersFromData(allEvents){
+  const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+  const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+  const classes  = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.class||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
 
-    const subjSel = document.getElementById('subjectFilter');
-    const teachSel = document.getElementById('teacherFilter');
-    subjSel.length = 1; // keep "All Subjects"
-    teachSel.length = 1; // keep "All Teachers"
+  const subjSel = document.getElementById('subjectFilter');
+  const teachSel = document.getElementById('teacherFilter');
+  const classSel = document.getElementById('classFilter');
 
-    subjects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; subjSel.appendChild(o); });
-    teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teachSel.appendChild(o); });
-  }
+  subjSel.length = 1;
+  teachSel.length = 1;
+  classSel.length = 1;
+
+  subjects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; subjSel.appendChild(o); });
+  teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teachSel.appendChild(o); });
+  classes.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; classSel.appendChild(o); });
+}
+
 
   (async function init(){
     try{
@@ -579,14 +618,19 @@ eDiv.className = `event ${timeClass}${extraModeClass}${thuClass}${isLive ? ' liv
 
       subjSel.onchange = ()=>{ FILTERS.subject = subjSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
       teachSel.onchange = ()=>{ FILTERS.teacher = teachSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-      document.getElementById('clearFilters').onclick = ()=>{
-        FILTERS.subject = '';
-        FILTERS.teacher = '';
-        subjSel.value = '';
-        teachSel.value = '';
-        updateFilterBadge();
-        applyFiltersAndRender();
-      };
+const classSel = document.getElementById('classFilter');
+classSel.onchange = ()=>{ FILTERS.class = classSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
+
+document.getElementById('clearFilters').onclick = ()=>{
+  FILTERS.subject = '';
+  FILTERS.teacher = '';
+  FILTERS.class = '';
+  subjSel.value = '';
+  teachSel.value = '';
+  classSel.value = '';
+  updateFilterBadge();
+  applyFiltersAndRender();
+};
 
       // Initial month
       const start = new Date(RAW_DATA.meta.start);
