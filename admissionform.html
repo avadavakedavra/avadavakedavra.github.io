@@ -59,7 +59,7 @@
     .value[contenteditable]{outline:2px dashed transparent}
     .value[contenteditable]:focus{outline-color:#dff0c7}
 
-    /* Subjects selection style (reuse check style) */
+    /* Subjects */
     .subjects{margin-top:6px}
     .subject-row{display:grid; grid-template-columns:1fr 120px 160px; gap:10px; align-items:center; border-bottom:1px dashed #ececec; padding:8px 0}
     .sub-name{font-weight:700}
@@ -72,7 +72,7 @@
     .fee{min-width:120px; text-align:right; font-variant-numeric:tabular-nums; padding-right:6px}
     .note{color:var(--muted); font-size:12px}
 
-    /* Security deposit block */
+    /* Deposit */
     .deposit{
       background:#fbfdf7; border:1px solid #e6f2d8; border-radius:12px; padding:12px; display:grid; gap:8px
     }
@@ -96,9 +96,7 @@
     .muted{color:#6b7280}
 
     /* Controls */
-    .controls{
-      display:flex; gap:8px; justify-content:flex-end; margin-top:8px
-    }
+    .controls{ display:flex; gap:8px; justify-content:flex-end; margin-top:8px }
     .btn{border:1px solid #dfead2; background:linear-gradient(180deg,#eef8df,#ffffff); font-weight:800; padding:8px 12px; border-radius:10px; cursor:pointer}
 
     /* Keep sections intact on print & add watermark */
@@ -120,19 +118,18 @@
       }
     }
 
-    /* Small visual polish */
+    /* Small polish */
     .value{ transition: box-shadow .15s ease, background .15s ease }
-    .value[contenteditable]:focus{
-      background:linear-gradient(180deg,#f3fbec,#ffffff);
-      box-shadow: 0 0 0 2px #dff0c7 inset;
-    }
+    .value[contenteditable]:focus{ background:linear-gradient(180deg,#f3fbec,#ffffff); box-shadow: 0 0 0 2px #dff0c7 inset; }
     .subject-row:hover{ background:rgba(139,197,63,.04) }
 
-    /* tiny helper button for "Today" */
-    .tinybtn{
-      font-size:11px; padding:4px 8px; border:1px solid #e3edd7; border-radius:8px;
-      background:linear-gradient(180deg,#f7fbf1,#ffffff); cursor:pointer; margin-left:8px;
-    }
+    /* Fee Summary (above deposit) */
+    .feesummary{ margin-top:12px; padding:14px; border:1px solid #e6f2d8; border-radius:12px; background:#fbfdf7; display:grid; gap:10px }
+    .feesummary .row{ display:grid; grid-template-columns:1fr 180px; align-items:center; gap:10px }
+    .feesummary .right{ text-align:right; font-weight:800 }
+    .feesummary .grand{ background:#111; color:#fff; padding:8px 12px; border-radius:10px; display:flex; align-items:center; justify-content:space-between; font-weight:900 }
+    .feesummary .note{ font-size:12px; color:#4b5563; display:flex; justify-content:space-between }
+    .tinybtn{ font-size:11px; padding:4px 8px; border:1px solid #e3edd7; border-radius:8px; background:linear-gradient(180deg,#f7fbf1,#ffffff); cursor:pointer; margin-left:8px; }
   </style>
 </head>
 <body>
@@ -219,7 +216,7 @@
             <div class="value" contenteditable>xxxxxx</div>
           </div>
           <div class="field">
-            <div class="label">Batch</div>
+            <div class="label">Courses Applied</div>
             <div class="value" contenteditable>Origin / Ascent / Legacy / Ignite</div>
           </div>
         </div>
@@ -231,8 +228,8 @@
             <div class="value" contenteditable>dd/mm/yyyy</div>
           </div>
           <div class="field">
-            <div class="label">Preferred Time</div>
-            <div class="value" contenteditable>Morning / Evening</div>
+            <div class="label">Preferred Mode</div>
+            <div class="value" contenteditable>Online / Offline / Hybrid</div>
           </div>
           <div class="field">
             <div class="label">Referred By</div>
@@ -245,8 +242,8 @@
       <div class="section">
         <h3>Subjects Opted</h3>
         <div class="subjects" id="subs">
-          <div class="subject-row" data-subject="Mathematics">
-            <div class="sub-name">Mathematics <span class="note">— select if opted</span></div>
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>Mathematics</div>
             <div class="sel">
               <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
@@ -256,8 +253,8 @@
             <div class="fee value" contenteditable>₹ 700 / month</div>
           </div>
 
-          <div class="subject-row" data-subject="Physics">
-            <div class="sub-name">Physics</div>
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>Physics</div>
             <div class="sel">
               <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
@@ -267,8 +264,8 @@
             <div class="fee value" contenteditable>₹ 700 / month</div>
           </div>
 
-          <div class="subject-row" data-subject="Chemistry">
-            <div class="sub-name">Chemistry</div>
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>Chemistry</div>
             <div class="sel">
               <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
@@ -278,8 +275,8 @@
             <div class="fee value" contenteditable>₹ 600 / month</div>
           </div>
 
-          <div class="subject-row" data-subject="Biology">
-            <div class="sub-name">Biology</div>
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>Biology</div>
             <div class="sel">
               <div class="check" data-selected="true" role="checkbox" aria-checked="true" tabindex="0">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
@@ -289,8 +286,8 @@
             <div class="fee value" contenteditable>₹ 500 / month</div>
           </div>
 
-          <div class="subject-row" data-subject="English">
-            <div class="sub-name">English</div>
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>English</div>
             <div class="sel">
               <div class="check" data-selected="false" role="checkbox" aria-checked="false" tabindex="0">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
@@ -299,6 +296,48 @@
             </div>
             <div class="fee value" contenteditable>₹ 300 / month</div>
           </div>
+
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>Subject 6</div>
+            <div class="sel">
+              <div class="check" data-selected="false" role="checkbox" aria-checked="false" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Not selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 0 / month</div>
+          </div>
+
+          <div class="subject-row">
+            <div class="sub-name value" contenteditable>Subject 7</div>
+            <div class="sel">
+              <div class="check" data-selected="false" role="checkbox" aria-checked="false" tabindex="0">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0b2c09" d="M20.3 5.7a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l4.3 4.3 9.3-9.3a1 1 0 0 1 1.4 0z"/></svg>
+              </div>
+              <span class="note">Not selected</span>
+            </div>
+            <div class="fee value" contenteditable>₹ 0 / month</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fee Summary (always visible) -->
+      <div class="section">
+        <h3>Fee Summary</h3>
+        <div class="feesummary" id="feeSummary">
+          <div class="row">
+            <div class="label">Sub Total</div>
+            <div id="tuitionTotal" class="right">₹ 0</div>
+          </div>
+          <div class="row">
+            <div class="label">Discounts</div>
+            <div id="discountAmt" class="value" contenteditable style="text-align:right">₹ 0</div>
+          </div>
+          <div class="grand">
+            <span>Grand Total</span>
+            <span id="grandTotal">₹ 0</span>
+          </div>
+          <div class="note"><span>Early Enrollment Discount</span><span id="discountPct">0%</span></div>
         </div>
       </div>
 
@@ -327,6 +366,15 @@
               <button type="button" class="btn" id="unmarkDeposit">Unmark</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Additional Information (before Declarations) -->
+      <div class="section">
+        <h3>Additional Information</h3>
+        <div class="field">
+          <div class="label">Any additional information</div>
+          <div class="value" contenteditable style="min-height:90px">Notes about learning needs, prior coaching, medical considerations, transport, fee agreements, or anything else…</div>
         </div>
       </div>
 
@@ -359,7 +407,7 @@
           <div>sehracademy.com</div>
           <div>Ganeshamangalam, Vatanapally</div>
         </div>
-        <div class="muted">Form Version: SA-ADM-01</div>
+        <div class="muted">Form Version: SA-ADM-02</div>
       </div>
     </article>
 
@@ -384,7 +432,7 @@
     }
     setAdmDateToday();
 
-    // One-click "Today" helper buttons
+    // "Today" helpers
     document.getElementById('btnTodayAdm')?.addEventListener('click', setAdmDateToday);
     document.getElementById('btnTodayStart')?.addEventListener('click', ()=>{
       const startField = Array.from(document.querySelectorAll('.field'))
@@ -396,22 +444,93 @@
       }
     });
 
-    // Subject toggle logic + ARIA
+    // Subject toggle logic + ARIA (names editable)
+    function currentSubjectName(box){
+      const row = box.closest('.subject-row');
+      const nameEl = row?.querySelector('.sub-name');
+      const name = (nameEl?.textContent || 'Subject').trim() || 'Subject';
+      return name;
+    }
+    function updateAria(box){
+      box.setAttribute('aria-label', `Toggle ${currentSubjectName(box)}`);
+    }
     document.querySelectorAll('.check').forEach(box=>{
       const label = box.parentElement.querySelector('.note');
-      const name = box.closest('.subject-row')?.dataset.subject || 'Subject';
-      box.setAttribute('aria-label', `Toggle ${name}`);
       const toggle=()=>{
         const sel = box.dataset.selected !== 'true';
         box.dataset.selected = sel ? 'true':'false';
         box.setAttribute('aria-checked', sel?'true':'false');
         if(label){ label.textContent = sel ? 'Selected' : 'Not selected'; }
+        updateAria(box);
+        recalcTotals();
       };
+      updateAria(box);
       box.addEventListener('click', toggle);
       box.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); } });
     });
 
-    // Deposit stamp toggle + UX polish (disable/enable buttons)
+    // Recalc on fee/discount edits
+    document.querySelectorAll('.subjects .fee.value')
+      .forEach(el=> el.addEventListener('input', recalcTotals));
+
+    const discountEl = document.getElementById('discountAmt');
+    if(discountEl){
+      ['input','blur','keyup','paste'].forEach(ev =>
+        discountEl.addEventListener(ev, recalcTotals)
+      );
+      discountEl.addEventListener('blur', ()=>{
+        discountEl.textContent = (discountEl.textContent || '').trim();
+      });
+    }
+
+    // Main calculator: sums selected subjects; discount can be ₹ or %
+    function recalcTotals(){
+      const rows = Array.from(document.querySelectorAll('.subjects .subject-row'));
+      let tuition = 0;
+      rows.forEach(r=>{
+        const selected = r.querySelector('.check')?.dataset.selected === 'true';
+        if(selected){
+          const feeText = r.querySelector('.fee')?.textContent || '0';
+          tuition += parseMoney(feeText);
+        }
+      });
+
+      const discountRaw = (document.getElementById('discountAmt')?.textContent || '0').trim();
+      let discount = 0;
+      if (/%\s*$/i.test(discountRaw)) {
+        const pct = parseFloat(discountRaw.replace(/[^0-9.\-]/g,''));
+        if (isFinite(pct)) discount = tuition * (pct/100);
+      } else {
+        discount = parseMoney(discountRaw);
+      }
+      discount = Math.min(Math.max(discount,0), tuition);
+
+      const grand = Math.max(tuition - discount, 0);
+
+      const tuitionTotalEl = document.getElementById('tuitionTotal');
+      const grandTotalEl   = document.getElementById('grandTotal');
+      if (tuitionTotalEl) tuitionTotalEl.textContent = rupee(tuition);
+      if (grandTotalEl)   grandTotalEl.textContent   = rupee(grand);
+
+      const pctEl = document.getElementById('discountPct');
+      if (pctEl){
+        let pctVal = 0;
+        if (tuition > 0){
+          if (/%\s*$/i.test(discountRaw)){
+            const pctIn = parseFloat(discountRaw.replace(/[^0-9.\-]/g,''));
+            pctVal = isFinite(pctIn) ? pctIn : 0;
+          } else {
+            pctVal = Math.round((discount/tuition)*100);
+          }
+        }
+        pctEl.textContent = (isFinite(pctVal) ? pctVal : 0) + '%';
+      }
+    }
+
+    // Initial calc
+    recalcTotals();
+
+    // Deposit stamp toggle
     const stamp = document.getElementById('depositStamp');
     const dateEl = document.getElementById('depositDate');
     function mark(){
@@ -424,8 +543,8 @@
       dateEl.textContent='';
       refreshDepositButtons();
     }
-    document.getElementById('toggleDeposit').addEventListener('click', mark);
-    document.getElementById('unmarkDeposit').addEventListener('click', unmark);
+    document.getElementById('toggleDeposit')?.addEventListener('click', mark);
+    document.getElementById('unmarkDeposit')?.addEventListener('click', unmark);
     function refreshDepositButtons(){
       const received = stamp.classList.contains('show');
       document.getElementById('toggleDeposit').disabled = received;
@@ -433,7 +552,7 @@
     }
     refreshDepositButtons();
 
-    // --- Quick validation before print ---
+    // Print validation
     function highlight(el){ el.style.boxShadow='0 0 0 2px #ffb4b4 inset'; }
     function clearHL(el){ el.style.boxShadow='none'; }
     function getField(labelText){
@@ -441,7 +560,6 @@
         .find(f => f.querySelector('.label')?.textContent.trim() === labelText)
         ?.querySelector('.value');
     }
-
     document.getElementById('btnPrint').addEventListener('click', ()=>{
       const required = ['Student Name','Parent / Guardian Name','Student Mobile','Class / Stream','Start Date'];
       let ok = true;
