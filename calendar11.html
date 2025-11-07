@@ -18,19 +18,16 @@
       --sehr-green:#8BC53F;
       --ink:#0F172A; --ink-soft:#152036; --muted:#5b6475;
       --frost:#ffffff; --frost-tint:#f7f9fb; --glass-edge:#e6e8ec; --shadow:0 10px 30px rgba(15,23,42,.06);
-      --evening-a: rgba(139,197,63,.14); --evening-b: rgba(139,197,63,.06);
+      --pill-br:#dfe4ea;
+
+      /* Subject palettes */
       --phys-a:#4e8ef7; --phys-b:#8bb4ff;
       --chem-a:#54c15a; --chem-b:#94e09b;
       --math-a:#f35c5c; --math-b:#ff9a9a;
       --bio-a:#ffd84e;  --bio-b:#fff19e;
-      --pill-br:#dfe4ea;
 
       /* Gold palette for teacher pill */
-      --gold-a:#fbe9a7;
-      --gold-b:#f3c96a;
-      --gold-c:#e3b23c;
-      --gold-br:#e8d7a6;
-      --gold-glow:rgba(227,178,60,.25);
+      --gold-a:#fbe9a7; --gold-b:#f3c96a; --gold-c:#e3b23c; --gold-br:#e8d7a6; --gold-glow:rgba(227,178,60,.25);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -69,7 +66,7 @@
     .title h1{margin:0;font-family:"Montserrat",sans-serif;font-weight:800;font-size:22px;letter-spacing:.2px}
     .badge{font-size:12px;font-weight:700;color:#0b0f10;background:#fff;border:1px solid var(--glass-edge);padding:4px 10px;border-radius:999px;line-height:1.1}
 
-    /* Filters row (right of title) */
+    /* Filters row */
     .filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .filters .label{font-size:12px;color:var(--muted);font-weight:800}
     .filters .clear{display:none}
@@ -86,12 +83,14 @@
     .accent{height:3px;width:100%;background:linear-gradient(90deg,#e9f1e6,var(--sehr-green),#e9f1e6);border-radius:999px;opacity:.45;flex:none}
     .events{display:flex;flex-direction:column;gap:8px;margin-top:1px}
 
-    .event{position:relative;border-radius:12px;padding:10px 12px;backdrop-filter: blur(6px) saturate(120%);transition:transform .15s ease, box-shadow .15s ease;will-change:transform;border:1px solid var(--glass-edge);box-shadow:0 10px 24px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.5)}
-    .event::before{content:""; position:absolute; left:0; top:0; bottom:0; width:5px; border-radius:12px 0 0 12px; opacity:.9}
-    .event.morning{background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,245,255,.92));border-color:#dde6f6;box-shadow:0 10px 24px rgba(78,142,247,.08), inset 0 1px 0 rgba(255,255,255,.6)}
-    .event.morning::before{ background:linear-gradient(180deg,#8bb4ff,#4e8ef7) }
-    .event.evening{background:linear-gradient(180deg, rgba(235,250,236,.96), rgba(220,245,224,.90)), radial-gradient(120% 120% at 100% -10%, var(--evening-a), var(--evening-b));border-color:#cfe9d1;box-shadow:0 10px 24px rgba(84,193,90,.10), inset 0 1px 0 rgba(255,255,255,.6)}
-    .event.evening::before{ background:linear-gradient(180deg,#94e09b,#54c15a) }
+    .event{
+      position:relative;border-radius:12px;padding:10px 12px;backdrop-filter: blur(6px) saturate(120%);
+      transition:transform .15s ease, box-shadow .15s ease;will-change:transform;border:1px solid var(--glass-edge);
+      box-shadow:0 10px 24px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.5);
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92));
+    }
+    .event::before{content:""; position:absolute; left:0; top:0; bottom:0; width:5px; border-radius:12px 0 0 12px; opacity:.9; background:linear-gradient(180deg,#e9f1e6,#cfe9d1)}
+    .event:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.6)}
 
     /* Live event style */
     .event.live{
@@ -99,115 +98,70 @@
       border-color: #f7b0b0;
       box-shadow: 0 10px 24px rgba(243,92,92,.12), inset 0 1px 0 rgba(255,255,255,.6);
     }
-    .event.live::before{
-      background: linear-gradient(180deg, #ff6b6b, #f35c5c);
-    }
+    .event.live::before{ background: linear-gradient(180deg, #ff6b6b, #f35c5c); }
 
-    .event:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.6)}
     .event-title{margin:0 0 6px;font-family:"Montserrat",sans-serif;font-weight:800;font-size:15px;line-height:1.25;color:var(--ink-soft);letter-spacing:.2px}
     .event-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12px;color:#0b0f10}
+
     .pill{display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:6px 10px;background:#fff;border:1px solid var(--pill-br);font-weight:800;line-height:1.05}
-    .pill.time{background:linear-gradient(180deg,#ffffff,#f4f7fa);border-color:#dfe6ee;text-transform:uppercase}
     .pill.subject{color:#0b0f10;border:none}
     .pill.subject.physics{background-image:linear-gradient(180deg,var(--phys-b),var(--phys-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(78,142,247,.22)}
     .pill.subject.chemistry{background-image:linear-gradient(180deg,var(--chem-b),var(--chem-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(84,193,90,.22)}
     .pill.subject.maths{background-image:linear-gradient(180deg,var(--math-b),var(--math-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(243,92,92,.22)}
     .pill.subject.biology{background-image:linear-gradient(180deg,var(--bio-b),var(--bio-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(255,216,78,.22)}
-    .pill.note{background:linear-gradient(180deg,#ffffff,#f7f9ff);border:1px solid #e5e9f9}
 
     /* GOLD teacher pill (name only) */
     .pill.teacher{
-  background: linear-gradient(180deg, #FBE7A1 0%, #F5C14A 50%, #D89A00 100%);
-  color: #3a2f00;            /* darker text for readability */
-  border: 1px solid #d4a017; /* subtle gold border */
-  box-shadow: 0 0 4px rgba(216,154,0,0.35);
-  font-weight: 800;
+      background: linear-gradient(180deg, #FBE7A1 0%, #F5C14A 50%, #D89A00 100%);
+      color: #3a2f00;
+      border: 1px solid #d4a017;
+      box-shadow: 0 0 4px rgba(216,154,0,0.35);
+      font-weight: 800;
     }
 
-    /* ===== COMPLETED SESSIONS (subtle white fade, not grey) ===== */
-.event.completed {
-  position: relative;
-  opacity: 0.6; /* more faded */
-  filter: grayscale(80%) brightness(0.9); /* soft grey tint */
-  border-color: #d0d0d0 !important;
-}
-.event.completed::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(240,240,240,0.6));
-  pointer-events: none;
-}
-.event.completed::before {
-  opacity: 0.3; /* dim the left strip */
-}
-    
-/* === Correct Color Mapping: OFFLINE=Green, ONLINE=Blue === */
-.event.offline{
-  background: linear-gradient(180deg, rgba(235,250,236,.96), rgba(220,245,224,.90));
-  border-color:#cfe9d1;
-  box-shadow:0 10px 24px rgba(84,193,90,.12), inset 0 1px 0 rgba(255,255,255,.6);
-}
-.event.offline::before{
-  background: linear-gradient(180deg,#94e09b,#54c15a);
-}
+    /* Completed sessions */
+    .event.completed { position: relative; opacity: 0.6; filter: grayscale(80%) brightness(0.9); border-color: #d0d0d0 !important; }
+    .event.completed::after { content: ""; position: absolute; inset: 0; border-radius: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(240,240,240,0.6)); pointer-events: none; }
+    .event.completed::before { opacity: 0.3; }
 
-.event.online{
-  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,245,255,.92));
-  border-color:#dde6f6;
-  box-shadow:0 10px 24px rgba(78,142,247,.12), inset 0 1px 0 rgba(255,255,255,.6);
-}
-.event.online::before{
-  background: linear-gradient(180deg,#8bb4ff,#4e8ef7);
-}
+    /* Mode overrides */
+    .event.offline{ background: linear-gradient(180deg, rgba(235,250,236,.96), rgba(220,245,224,.90)); border-color:#cfe9d1; box-shadow:0 10px 24px rgba(84,193,90,.12), inset 0 1px 0 rgba(255,255,255,.6); }
+    .event.offline::before{ background: linear-gradient(180deg,#94e09b,#54c15a); }
+    .event.online{ background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,245,255,.92)); border-color:#dde6f6; box-shadow:0 10px 24px rgba(78,142,247,.12), inset 0 1px 0 rgba(255,255,255,.6); }
+    .event.online::before{ background: linear-gradient(180deg,#8bb4ff,#4e8ef7); }
+    .event.online-pc{ background: linear-gradient(180deg, #F2E9FF, #E0D1FF); border-color: #CBB5FF; box-shadow: 0 10px 24px rgba(151, 135, 244, .25), inset 0 1px 0 rgba(255,255,255,.7); }
+    .event.online-pc::before{ background: linear-gradient(180deg, #B699FF, #9787F4); }
 
-/* ----- REPLACED: Friday gold override is no longer applied by weekday ----- */
-/* New: apply gold to events whose titles start with "SPECIAL CLASS" */
-.event.special{
-  background: linear-gradient(180deg, #FFF7D6, #FFE7A3);
-  border-color: #EFD48A;
-  box-shadow: 0 10px 24px rgba(227,178,60,.16), inset 0 1px 0 rgba(255,255,255,.7);
-}
-.event.special::before{
-  background: linear-gradient(180deg, #F3C96A, #E3B23C);
-}
+    /* Class 12 theme */
+    .event.class-12{ background: linear-gradient(180deg, rgba(255,230,230,.98), rgba(255,200,200,.95)); border-color:#f5a1a1; box-shadow:0 10px 24px rgba(243,92,92,.14), inset 0 1px 0 rgba(255,255,255,.7); color:#3b0b0b; }
+    .event.class-12::before{ background: linear-gradient(180deg,#ff6b6b,#f35c5c); }
 
-/* New: Class 12 red override — visible for any event that belongs to Class 12.
-   This intentionally has higher priority so it will visually override .special when both apply. */
-.event.class-12{
-  background: linear-gradient(180deg, rgba(255,230,230,.98), rgba(255,200,200,.95));
-  border-color:#f5a1a1;
-  box-shadow:0 10px 24px rgba(243,92,92,.14), inset 0 1px 0 rgba(255,255,255,.7);
-  color: #3b0b0b;
-}
-.event.class-12::before{
-  background: linear-gradient(180deg,#ff6b6b,#f35c5c);
-}
-
-/* === ONLINE 🖥️ Violet Full Override === */
-    .event.online-pc{
-      background: linear-gradient(180deg, #F2E9FF, #E0D1FF);
-      border-color: #CBB5FF;
-      box-shadow: 0 10px 24px rgba(151, 135, 244, .25), inset 0 1px 0 rgba(255,255,255,.7);
+    /* Class 11 light-blue theme */
+    .event.class-11{
+      background: linear-gradient(180deg, rgba(230,240,255,.98), rgba(212,230,255,.95));
+      border-color: #bfd4ff;
+      box-shadow: 0 10px 24px rgba(78,142,247,.14), inset 0 1px 0 rgba(255,255,255,.7);
+      color:#0b284d;
     }
-    .event.online-pc::before{
-      background: linear-gradient(180deg, #B699FF, #9787F4);
+    .event.class-11::before{ background: linear-gradient(180deg,#8bb4ff,#4e8ef7); }
+
+    /* ===== SPECIAL CLASS — MUST OVERRIDE EVERYTHING =====
+       Place last + add explicit combinations + use !important on key props. */
+    .event.special,
+    .event.special.live,
+    .event.special.class-12,
+    .event.special.class-11,
+    .event.special.online,
+    .event.special.online-pc,
+    .event.special.offline{
+      background: linear-gradient(180deg, #FFF7D6, #FFE7A3) !important;
+      border-color: #EFD48A !important;
+      box-shadow: 0 10px 24px rgba(227,178,60,.22), inset 0 1px 0 rgba(255,255,255,.75) !important;
+      color:#3b2a00 !important;
     }
-/* === Origin Batch Only Pill === */
-.pill.origin {
-  background: linear-gradient(180deg, #FFF7D6, #FFE7A3);
-  border: 1px solid #EFD48A;
-  color: #3b2f0a;
-  font-weight: 700;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  margin-left: 6px;
-  box-shadow: 0 2px 6px rgba(227,178,60,.2);
-}
-...
-    /* rest unchanged */
+    .event.special::before{
+      background: linear-gradient(180deg, #F3C96A, #E3B23C) !important;
+    }
   </style>
 </head>
 <body>
@@ -227,20 +181,20 @@
       <h1 id="page-title">Academic Calendar — May 2025 to Apr 2026</h1>
       <span id="badge" class="badge" style="display:none"></span>
     </div>
-    <!-- Filters live here (to the right of the title on wide screens) -->
-   <div class="filters" aria-label="Filters" role="group">
-  <span class="label" aria-hidden="true">Filter:</span>
-  <select id="subjectFilter" class="select small" aria-label="Filter by subject">
-    <option value="">All Subjects</option>
-  </select>
-  <select id="teacherFilter" class="select small" aria-label="Filter by teacher">
-    <option value="">All Teachers</option>
-  </select>
-  <select id="classFilter" class="select small" aria-label="Filter by class">
-    <option value="">All Classes</option>
-  </select>
-  <button id="clearFilters" class="btn clear" title="Clear filters">✕ Clear</button>
-</div>
+    <!-- Filters -->
+    <div class="filters" aria-label="Filters" role="group">
+      <span class="label" aria-hidden="true">Filter:</span>
+      <select id="subjectFilter" class="select small" aria-label="Filter by subject">
+        <option value="">All Subjects</option>
+      </select>
+      <select id="teacherFilter" class="select small" aria-label="Filter by teacher">
+        <option value="">All Teachers</option>
+      </select>
+      <select id="classFilter" class="select small" aria-label="Filter by class">
+        <option value="">All Classes</option>
+      </select>
+      <button id="clearFilters" class="btn clear" title="Clear filters">✕ Clear</button>
+    </div>
   </div>
 
   <main id="calendar" class="calendar" data-json="data/academic-2025-2026.json">
@@ -262,10 +216,14 @@
   const monthParam = qs.get('month'); // yyyy-mm to start on (optional)
 
   const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const toMonIndex = jsDay => (jsDay + 6) % 7; // Mon=0 … Sun=6
 
-  const isMorning = t => /MORNING/i.test(t || '');
-  const isEvening = t => /EVENING/i.test(t || '');
+  /* === Session helpers === */
+  function getSessionName(min){
+    if (min < 12*60) return 'Morning';
+    if (min < 17*60) return 'Afternoon';
+    return 'Evening';
+  }
+
   function subjectClass(subj=""){
     const s = String(subj).trim().toLowerCase();
     if (/physics/.test(s)) return 'physics';
@@ -278,15 +236,51 @@
   const compactTime   = (txt='') => String(txt)
     .replace(/:00\s*(AM|PM)/i,' $1')
     .replace(/\bAM\b/i,'AM')
-    .replace(/\bPM\b/i,'PM')
-    .replace(/MORNING\s*(\d+)\s*AM/i,'MORNING $1 AM')
-    .replace(/EVENING\s*(\d+)\s*PM/i,'EVENING $1 PM');
+    .replace(/\bPM\b/i,'PM');
+
+  // ---- Time helpers for split start/end ----
+  function parseTimeToMinutes(str=''){
+    const s = String(str).trim();
+    if (!s) return null;
+    const m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+    if (!m) return null;
+    let hh = parseInt(m[1],10);
+    const mm = m[2] ? parseInt(m[2],10) : 0;
+    const ap = m[3] ? m[3].toUpperCase() : null;
+    if (ap){
+      if (hh === 12) hh = 0;
+      if (ap === 'PM') hh += 12;
+    }
+    if (hh<0 || hh>23 || mm<0 || mm>59) return null;
+    return hh*60 + mm;
+  }
+
+  function formatTime12(minutes){
+    if (minutes == null) return '';
+    let hh = Math.floor(minutes/60);
+    const mm = minutes % 60;
+    const ap = hh >= 12 ? 'PM' : 'AM';
+    hh = hh % 12; if (hh === 0) hh = 12;
+    const mmStr = mm.toString().padStart(2,'0');
+    return `${hh}:${mmStr} ${ap}`;
+  }
+
+  function makeTimeLabel(e){
+    const startMin = e.startMin != null ? e.startMin : parseTimeToMinutes(e.startTime);
+    const endMin   = e.endMin   != null ? e.endMin   : parseTimeToMinutes(e.endTime);
+    if (startMin != null){
+      const session = getSessionName(startMin);
+      const startTxt = formatTime12(startMin);
+      const endTxt = endMin != null ? formatTime12(endMin) : '';
+      return { text: endTxt ? `${session} ${startTxt} to ${endTxt}` : `${session} ${startTxt}`, session };
+    }
+    return { text: compactTime(e.time || ''), session: null };
+  }
 
   // Global state
   let RAW_DATA = null;
   let CURRENT_YM = null;
-const FILTERS = { subject: '', teacher: '', class: '' };
-
+  const FILTERS = { subject: '', teacher: '', class: '' };
 
   // ---- Google Sheets helpers ----
   const gapiBase = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values`;
@@ -295,11 +289,10 @@ const FILTERS = { subject: '', teacher: '', class: '' };
     const url = `${gapiBase}/${encodeURIComponent(rangeA1)}?key=${API_KEY}`;
     const res = await fetch(url, {cache:'no-store'});
     if(!res.ok) throw new Error(`Sheets API failed for range "${rangeA1}" — ${res.status}`);
-    return res.json(); // { range, majorDimension, values: [...] }
+    return res.json();
   }
 
   function valuesToObject(values){
-    // Expects two columns: A=key, B=value
     const obj = {};
     (values || []).forEach(row => {
       const key = (row[0] || '').trim();
@@ -309,9 +302,7 @@ const FILTERS = { subject: '', teacher: '', class: '' };
     return obj;
   }
 
-  function parseBool(v){
-    return /^true$/i.test(String(v).trim());
-  }
+  function parseBool(v){ return /^true$/i.test(String(v).trim()); }
 
   function toISODate(d){
     const s = String(d || '').trim();
@@ -321,34 +312,44 @@ const FILTERS = { subject: '', teacher: '', class: '' };
     return s;
   }
 
-function rowsToEvents(values){
-  // Expect header row:
-  // date | time | subject | topic | teacher | exam | class
-  if (!values || values.length === 0) return [];
-  const [header, ...rows] = values;
-  const idx = (name) => header.findIndex(h => String(h || '').toLowerCase().trim() === name);
+  function rowsToEvents(values){
+    if (!values || values.length === 0) return [];
+    const [header, ...rows] = values;
+    const norm = (h)=> String(h||'').toLowerCase().trim();
+    const idx = (name) => header.findIndex(h => norm(h) === name);
 
-  const cDate    = idx('date');
-  const cTime    = idx('time');
-  const cSubject = idx('subject');
-  const cTopic   = idx('topic');
-  const cTeacher = idx('teacher');
-  const cExam    = idx('exam');
-  const cClass   = idx('class'); // new
+    const cDate    = idx('date');
+    const cTime    = idx('time');
+    const cSubject = idx('subject');
+    const cTopic   = idx('topic');
+    const cTeacher = idx('teacher');
+    const cExam    = idx('exam');
+    const cClass   = idx('class');
 
-  return rows.map(r => ({
-    date:    toISODate(r[cDate]),
-    time:    r[cTime]    || '',
-    subject: r[cSubject] || '',
-    topic:   r[cTopic]   || '',
-    teacher: r[cTeacher] || '',
-    exam:    parseBool(r[cExam]),
-    class:   (cClass >= 0 ? (r[cClass] || '') : ''), // new: safe extraction
-  })).filter(e => e.date); // keep only rows with date
-}
+    const cStart   = (()=>{ for (const n of ['start time','start','from','start_time']){ const i = header.findIndex(h => norm(h) === n); if (i>=0) return i; } return -1; })();
+    const cEnd     = (()=>{ for (const n of ['end time','end','to','end_time']){ const i = header.findIndex(h => norm(h) === n); if (i>=0) return i; } return -1; })();
+
+    return rows.map(r => {
+      const startStr = (cStart >= 0 ? (r[cStart] || '') : '').toString().trim();
+      const endStr   = (cEnd   >= 0 ? (r[cEnd]   || '') : '').toString().trim();
+      const startMin = parseTimeToMinutes(startStr);
+      const endMin   = parseTimeToMinutes(endStr);
+      return {
+        date:    toISODate(r[cDate]),
+        time:    r[cTime]    || '',
+        startTime: startStr || '',
+        endTime:   endStr   || '',
+        startMin, endMin,
+        subject: r[cSubject] || '',
+        topic:   r[cTopic]   || '',
+        teacher: r[cTeacher] || '',
+        exam:    parseBool(r[cExam]),
+        class:   (cClass >= 0 ? (r[cClass] || '') : ''),
+      };
+    }).filter(e => e.date);
+  }
 
   async function loadFromGoogleSheets(){
-    // Meta
     const metaResp = await readRange(`${TAB_META}!A1:B200`);
     const metaKV = valuesToObject(metaResp.values || []);
     if (!metaKV.start || !metaKV.end){
@@ -362,10 +363,8 @@ function rowsToEvents(values){
       showExamPill: metaKV.showExamPill ? parseBool(metaKV.showExamPill) : true,
     };
 
-    // Events
     const eventsResp = await readRange(`${TAB_EVENTS}!A1:Z20000`);
     const events = rowsToEvents(eventsResp.values || []);
-
     return { meta, events, monthMeta: {} };
   }
 
@@ -404,27 +403,22 @@ function rowsToEvents(values){
     nextBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); } };
   }
 
-function filterEvents(events){
-  const subj = FILTERS.subject.trim().toLowerCase();
-  const teach = FILTERS.teacher.trim().toLowerCase();
-  const cls = FILTERS.class.trim().toLowerCase();
+  function filterEvents(events){
+    const subj = FILTERS.subject.trim().toLowerCase();
+    const teach = FILTERS.teacher.trim().toLowerCase();
+    const cls = FILTERS.class.trim().toLowerCase();
+    if (!subj && !teach && !cls) return events;
 
-  if (!subj && !teach && !cls) return events;
-
-  return events.filter(e => {
-    const eSubj = stripBrackets(e.subject || '').toLowerCase();
-    const eTeach = stripBrackets(e.teacher || '').toLowerCase();
-    const eClass = stripBrackets(e.class || '').toLowerCase();
-
-    const okSubj = subj ? eSubj === subj : true;
-    const okTeach = teach ? eTeach === teach : true;
-    const okClass = cls ? eClass === cls : true;
-
-    return okSubj && okTeach && okClass;
-  });
-}
-
-
+    return events.filter(e => {
+      const eSubj = stripBrackets(e.subject || '').toLowerCase();
+      const eTeach = stripBrackets(e.teacher || '').toLowerCase();
+      const eClass = stripBrackets(e.class || '').toLowerCase();
+      const okSubj = subj ? eSubj === subj : true;
+      const okTeach = teach ? eTeach === teach : true;
+      const okClass = cls ? eClass === cls : true;
+      return okSubj && okTeach && okClass;
+    });
+  }
 
   function updateFilterBadge(){
     const badge = document.getElementById('badge');
@@ -432,8 +426,7 @@ function filterEvents(events){
     const parts = [];
     if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
     if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
-	if (FILTERS.class) parts.push(`Class: ${FILTERS.class}`);
-
+    if (FILTERS.class) parts.push(`Class: ${FILTERS.class}`);
     if (parts.length){
       badge.textContent = 'Filters — ' + parts.join(' · ');
       badge.style.display='';
@@ -449,7 +442,7 @@ function filterEvents(events){
     const [y, m] = ym.split('-').map(Number);
     const year = y, monthIndex = m-1;
 
-    const monthName = ["January","February","March","April","May","June","July","August","September","October","November","December"][monthIndex];
+    const monthName = MONTHS[monthIndex];
     const titleText = (meta.title || `Academic Calendar — ${monthName} ${year}`)
       .replace(/\{MONTH\}/g, monthName)
       .replace(/\{YEAR\}/g, String(year));
@@ -514,50 +507,48 @@ function filterEvents(events){
       todays.forEach(e => {
         const eDiv = document.createElement('div');
 
-        const timeClass = isMorning(e.time) ? 'morning' :
-                          (isEvening(e.time) ? 'evening' : 'morning');
-        const subjClass = subjectClass(e.subject);
-        const cleanSubject = stripBrackets(e.subject);
+        let extraModeClass = '';
         const cleanTopic   = stripBrackets(e.topic || '—');
-        const timeText     = compactTime(e.time || '');
-        const teacherName  = stripBrackets(e.teacher || '');
-        const showExamPill = (RAW_DATA?.meta?.showExamPill !== false);
         const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
 
-        /* Mark completed if event date is before today */
+        const isOffline = /^OFFLINE\s*- /i.test(cleanTopic) || /^OFFLINE\s*-/i.test(cleanTopic);
+        const isOnline  = /^ONLINE\s*- /i.test(cleanTopic)  || /^ONLINE\s*-/i.test(cleanTopic);
+        const isOnlinePC = /^ONLINE\s*🖥️/i.test(cleanTopic) || /^ONLINE\s*\u{1F5A5}\u{FE0F}/iu.test(cleanTopic);
+        if (isOnlinePC) extraModeClass = ' online-pc';
+        else if (isOffline) extraModeClass = ' offline';
+        else if (isOnline) extraModeClass = ' online';
+
+        const cleanSubject = stripBrackets(e.subject);
+        const subjClass = subjectClass(e.subject);
+        const { text: timeText, session } = makeTimeLabel(e);
+        const teacherName  = stripBrackets(e.teacher || '');
+        const showExamPill = (RAW_DATA?.meta?.showExamPill !== false);
+
+        /* Completed marker */
         const eventDate = new Date(e.date);
-        const today = new Date();
-        today.setHours(0,0,0,0);
+        const today = new Date(); today.setHours(0,0,0,0);
         const completedClass = eventDate < today ? ' completed' : '';
 
-        const isOffline = /^OFFLINE\s*- /i.test(cleanTopic) || /^OFFLINE\s*-/i.test(cleanTopic);
-const isOnline  = /^ONLINE\s*- /i.test(cleanTopic)  || /^ONLINE\s*-/i.test(cleanTopic);
-const isOnlinePC = /^ONLINE\s*🖥️/i.test(cleanTopic) || /^ONLINE\s*\u{1F5A5}\u{FE0F}/iu.test(cleanTopic);
-let extraModeClass = '';
-if (isOnlinePC) extraModeClass = ' online-pc';
-else if (isOffline) extraModeClass = ' offline';
-else if (isOnline) extraModeClass = ' online';
+        /* Special + class 12 + class 11 logic */
+        const className = stripBrackets(e.class || '');
+        const isSpecialTitle = /^SPECIAL CLASS/i.test(cleanTopic);
+        const isClass12 = (/\b12\b/i.test(className) || /class\s*12/i.test(className));
+        const isClass11 = (/\b11\b/i.test(className) || /class\s*11/i.test(className));
+        const specialClass = isSpecialTitle ? ' special' : '';
+        const class12Class = isClass12 ? ' class-12' : '';
+        const class11Class = isClass11 ? ' class-11' : '';
 
-// ---------- NEW LOGIC: detect "SPECIAL CLASS" in title and detect Class 12 ----------
-const className = stripBrackets(e.class || '');
-const isSpecialTitle = /^SPECIAL CLASS/i.test(cleanTopic); // topic/title starts with "SPECIAL CLASS"
-const isClass12 = (/\b12\b/i.test(className) || /class\s*12/i.test(className)); // matches "12" or "Class 12"
-// add classes accordingly: 'special' for special-title, 'class-12' for Class 12
-const specialClass = isSpecialTitle ? ' special' : '';
-const class12Class = isClass12 ? ' class-12' : '';
-// -------------------------------------------------------------------------------
+        eDiv.className = `event${extraModeClass}${specialClass}${class12Class}${class11Class}${isLive ? ' live' : ''}${completedClass}`;
 
-eDiv.className = `event ${timeClass}${extraModeClass}${specialClass}${class12Class}${isLive ? ' live' : ''}${completedClass}`;
-
-eDiv.innerHTML = `
-  <p class="event-title">${cleanTopic}</p>
-  <div class="event-meta">
-    ${timeText ? `<span class="pill time"><strong>${timeText}</strong></span>` : ''}
-    ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
-    ${className ? `<span class="pill level"><strong>${className}</strong></span>` : ''}
-    ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
-  </div>`;
-
+        const sessionClass = session ? session.toLowerCase() : '';
+        eDiv.innerHTML = `
+          <p class="event-title">${cleanTopic}</p>
+          <div class="event-meta">
+            ${timeText ? `<span class="pill time ${sessionClass}"><strong>${timeText}</strong></span>` : ''}
+            ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
+            ${className ? `<span class="pill level"><strong>${className}</strong></span>` : ''}
+            ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
+          </div>`;
         evWrap.appendChild(eDiv);
       });
 
@@ -567,36 +558,32 @@ eDiv.innerHTML = `
     grid.appendChild(frag);
   }
 
-function populateFiltersFromData(allEvents){
-  const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-  const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-  const classes  = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.class||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+  function populateFiltersFromData(allEvents){
+    const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+    const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+    const classes  = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.class||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
 
-  const subjSel = document.getElementById('subjectFilter');
-  const teachSel = document.getElementById('teacherFilter');
-  const classSel = document.getElementById('classFilter');
+    const subjSel = document.getElementById('subjectFilter');
+    const teachSel = document.getElementById('teacherFilter');
+    const classSel = document.getElementById('classFilter');
 
-  subjSel.length = 1;
-  teachSel.length = 1;
-  classSel.length = 1;
+    subjSel.length = 1; teachSel.length = 1; classSel.length = 1;
 
-  subjects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; subjSel.appendChild(o); });
-  teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teachSel.appendChild(o); });
-  classes.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; classSel.appendChild(o); });
-}
-
+    subjects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; subjSel.appendChild(o); });
+    teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teachSel.appendChild(o); });
+    classes.forEach(c => { const o=document.createElement('option'); o.value=c; classSel.appendChild(o); });
+  }
 
   (async function init(){
     try{
       const data = await loadFromGoogleSheets();
       RAW_DATA = data;
 
-      // Populate filter dropdowns once
       populateFiltersFromData(data.events || []);
 
-      // Wire filters
       const subjSel = document.getElementById('subjectFilter');
       const teachSel = document.getElementById('teacherFilter');
+      const classSel = document.getElementById('classFilter');
       const clearBtn = document.getElementById('clearFilters');
 
       function applyFiltersAndRender(){
@@ -610,19 +597,18 @@ function populateFiltersFromData(allEvents){
 
       subjSel.onchange = ()=>{ FILTERS.subject = subjSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
       teachSel.onchange = ()=>{ FILTERS.teacher = teachSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-const classSel = document.getElementById('classFilter');
-classSel.onchange = ()=>{ FILTERS.class = classSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
+      classSel.onchange = ()=>{ FILTERS.class = classSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
 
-document.getElementById('clearFilters').onclick = ()=>{
-  FILTERS.subject = '';
-  FILTERS.teacher = '';
-  FILTERS.class = '';
-  subjSel.value = '';
-  teachSel.value = '';
-  classSel.value = '';
-  updateFilterBadge();
-  applyFiltersAndRender();
-};
+      clearBtn.onclick = ()=>{
+        FILTERS.subject = '';
+        FILTERS.teacher = '';
+        FILTERS.class = '';
+        subjSel.value = '';
+        teachSel.value = '';
+        classSel.value = '';
+        updateFilterBadge();
+        applyFiltersAndRender();
+      };
 
       // Initial month
       const start = new Date(RAW_DATA.meta.start);
@@ -658,7 +644,6 @@ document.getElementById('clearFilters').onclick = ()=>{
         '<p style="color:#c00;font-weight:700">Failed to load from Google Sheets. Check API key, Sheet sharing, tab names, and ranges.</p>';
     }
   })();
-</script>
-
+  </script>
 </body>
 </html>
