@@ -162,6 +162,65 @@
     .event.special::before{
       background: linear-gradient(180deg, #F3C96A, #E3B23C) !important;
     }
+/* ===== CRASH CLASSES — BRIGHT ORANGE (OVERRIDES ALL) ===== */
+.event.crash,
+.event.crash.live,
+.event.crash.class-11,
+.event.crash.class-12,
+.event.crash.online,
+.event.crash.online-pc,
+.event.crash.offline,
+.event.crash.special{
+  background: linear-gradient(180deg, #FFD8A8, #FF9F1C) !important;
+  border-color: #FF8C00 !important;
+  box-shadow: 0 12px 28px rgba(255,140,0,.35),
+              inset 0 1px 0 rgba(255,255,255,.75) !important;
+  color: #4a2600 !important;
+}
+
+.event.crash::before{
+  background: linear-gradient(180deg, #FFB703, #FB8500) !important;
+}
+/* ===== PLUS TWO — BRIGHT RED (OVERRIDES ALL) ===== */
+.event.plustwo,
+.event.plustwo.live,
+.event.plustwo.class-11,
+.event.plustwo.class-12,
+.event.plustwo.online,
+.event.plustwo.online-pc,
+.event.plustwo.offline,
+.event.plustwo.special{
+  background: linear-gradient(180deg, #FFD6D6, #FF2D2D) !important;
+  border-color: #E60000 !important;
+  box-shadow: 0 12px 30px rgba(230,0,0,.4),
+              inset 0 1px 0 rgba(255,255,255,.75) !important;
+  color: #4a0000 !important;
+}
+
+.event.plustwo::before{
+  background: linear-gradient(180deg, #FF6B6B, #E60000) !important;
+}
+
+/* ===== PLUS ONE — BRIGHT BLUE (OVERRIDES ALL) ===== */
+.event.plusone,
+.event.plusone.live,
+.event.plusone.class-11,
+.event.plusone.class-12,
+.event.plusone.online,
+.event.plusone.online-pc,
+.event.plusone.offline,
+.event.plusone.special{
+  background: linear-gradient(180deg, #D6E9FF, #1E88FF) !important;
+  border-color: #005FCC !important;
+  box-shadow: 0 12px 30px rgba(30,136,255,.4),
+              inset 0 1px 0 rgba(255,255,255,.75) !important;
+  color: #002a5c !important;
+}
+
+.event.plusone::before{
+  background: linear-gradient(180deg, #6BB6FF, #005FCC) !important;
+}
+
   </style>
 </head>
 <body>
@@ -324,7 +383,13 @@
     const cTopic   = idx('topic');
     const cTeacher = idx('teacher');
     const cExam    = idx('exam');
-    const cClass   = idx('class');
+    const cClass = (() => {
+  for (const n of ['class', 'class ', 'class/batch', 'batch', 'grade', 'level']) {
+    const i = header.findIndex(h => norm(h) === n);
+    if (i >= 0) return i;
+  }
+  return -1;
+})();
 
     const cStart   = (()=>{ for (const n of ['start time','start','from','start_time']){ const i = header.findIndex(h => norm(h) === n); if (i>=0) return i; } return -1; })();
     const cEnd     = (()=>{ for (const n of ['end time','end','to','end_time']){ const i = header.findIndex(h => norm(h) === n); if (i>=0) return i; } return -1; })();
@@ -403,22 +468,24 @@
     nextBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); } };
   }
 
-  function filterEvents(events){
-    const subj = FILTERS.subject.trim().toLowerCase();
-    const teach = FILTERS.teacher.trim().toLowerCase();
-    const cls = FILTERS.class.trim().toLowerCase();
-    if (!subj && !teach && !cls) return events;
+function filterEvents(events){
+  const subj = FILTERS.subject.trim().toLowerCase();
+  const teach = FILTERS.teacher.trim().toLowerCase();
+  const cls = FILTERS.class.trim().toLowerCase();
+  if (!subj && !teach && !cls) return events;
 
-    return events.filter(e => {
-      const eSubj = stripBrackets(e.subject || '').toLowerCase();
-      const eTeach = stripBrackets(e.teacher || '').toLowerCase();
-      const eClass = stripBrackets(e.class || '').toLowerCase();
-      const okSubj = subj ? eSubj === subj : true;
-      const okTeach = teach ? eTeach === teach : true;
-      const okClass = cls ? eClass === cls : true;
-      return okSubj && okTeach && okClass;
-    });
-  }
+  return events.filter(e => {
+    const eSubj = stripBrackets(e.subject || '').toLowerCase();
+    const eTeach = stripBrackets(e.teacher || '').toLowerCase();
+    const eClass = stripBrackets(e.class || '').toLowerCase();
+
+    const okSubj = subj ? eSubj === subj : true;
+    const okTeach = teach ? eTeach === teach : true;
+    const okClass = cls ? eClass.includes(cls) : true;
+
+    return okSubj && okTeach && okClass;
+  });
+}
 
   function updateFilterBadge(){
     const badge = document.getElementById('badge');
@@ -508,7 +575,10 @@
         const eDiv = document.createElement('div');
 
         let extraModeClass = '';
-        const cleanTopic   = stripBrackets(e.topic || '—');
+        const cleanTopic = stripBrackets(e.topic || '—');
+	const isCrash   = /^crash\b/i.test(cleanTopic);
+	const isPlusTwo = /^plustwo\b/i.test(cleanTopic);
+	const isPlusOne = /^plusone\b/i.test(cleanTopic);
         const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
 
         const isOffline = /^OFFLINE\s*- /i.test(cleanTopic) || /^OFFLINE\s*-/i.test(cleanTopic);
@@ -538,7 +608,13 @@
         const class12Class = isClass12 ? ' class-12' : '';
         const class11Class = isClass11 ? ' class-11' : '';
 
-        eDiv.className = `event${extraModeClass}${specialClass}${class12Class}${class11Class}${isLive ? ' live' : ''}${completedClass}`;
+eDiv.className =
+  `event${extraModeClass}${specialClass}${class12Class}${class11Class}` +
+  `${isLive ? ' live' : ''}` +
+  `${isCrash ? ' crash' : ''}` +
+  `${isPlusTwo ? ' plustwo' : ''}` +
+  `${isPlusOne ? ' plusone' : ''}` +
+  `${completedClass}`;
 
         const sessionClass = session ? session.toLowerCase() : '';
         eDiv.innerHTML = `
