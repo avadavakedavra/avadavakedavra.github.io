@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Class 11 Syllabus</title>
+  <title>Sehr Academy — Class 11 Syllabus (Google Sheets API)</title>
   <meta name="theme-color" content="#8BC53F" />
 
   <!-- Fonts -->
@@ -30,108 +30,296 @@
 
     .pagehead{max-width:var(--maxw);margin:22px auto 10px;padding:0 20px}
     .title{font-family:Montserrat;font-weight:900;font-size:26px}
-    .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345}
+    .subtitle{color:#6b7280;font-weight:800}
+    .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
 
-    .controls{max-width:var(--maxw);margin:6px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap}
+    .controls{max-width:var(--maxw);margin:6px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border);background:#fff;font-weight:800;cursor:pointer}
     .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45)}
-    .search{flex:1;min-width:240px;display:flex;gap:8px;background:var(--hint-bg);border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px}
+    .search{flex:1;min-width:240px;display:flex;align-items:center;gap:8px;background:var(--hint-bg);border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px}
     .search input{border:0;background:transparent;outline:none;flex:1;font-weight:800}
 
-    details.group{max-width:var(--maxw);margin:14px auto;border-radius:16px;border:1px solid var(--glass-border);background:var(--frost-white);overflow:hidden}
-    summary{cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;font-family:Montserrat;font-weight:900}
-    .subject-name{text-transform:uppercase}
+    .panel{max-width:var(--maxw);margin:10px auto;padding:16px 20px;border-radius:var(--radius);border:1px solid var(--glass-border);background:var(--frost-white)}
+    .legend{display:flex;gap:12px;font-weight:800}
+    .dot{width:10px;height:10px;border-radius:999px}
+    .dot.pending{background:#cfd6df}
+    .dot.ongoing{background:#f6c761}
+    .dot.completed{background:#69c04c}
 
-    .prog-wrap{width:200px}
-    .prog-rail{height:8px;border-radius:999px;background:#eee;border:1px solid #e5e7eb;overflow:hidden}
-    .prog-fill{height:100%;width:0%;background:var(--bar-gold)}
+    details.group{max-width:var(--maxw);margin:14px auto;border-radius:16px;border:1px solid var(--glass-border);background:var(--frost-white);overflow:hidden}
+    details.group > summary{cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;font-family:Montserrat;font-weight:900}
+    .subject-name{text-transform:uppercase}
+    .prog-wrap{width:200px;display:flex;flex-direction:column;gap:4px}
+    .prog-rail{width:100%;height:8px;border-radius:999px;background:#eee;overflow:hidden;border:1px solid #e5e7eb}
+    .prog-fill{height:100%;width:0%;background:var(--bar-gold);transition:width .45s ease}
     .prog-note{font-size:10px;font-weight:900;text-align:right}
 
     .chapters{padding:12px;display:grid;gap:10px}
-    .row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;padding:12px;border-radius:12px;background:var(--crystal)}
+    .row{
+      display:grid;grid-template-columns:1fr auto auto auto;gap:12px;
+      padding:12px;border-radius:12px;background:var(--crystal);
+      border:1px solid rgba(0,0,0,.04)
+    }
     .row.completed{background:var(--frost-green)}
-    .row.ongoing{background:linear-gradient(180deg,#fff8e8,#fff3d9)}
+.row.ongoing{
+  background: linear-gradient(180deg, #FFF8E8, #FFF3D9); /* very light orange */
+  border-color: rgba(248, 181, 0, 0.22);                /* soft amber border */
+  box-shadow: 0 0 0 0 rgba(0,0,0,0);                    /* keep it clean */
+}
 
     .name{font-weight:800}
-    .status,.teacher,.date{font-family:Montserrat;font-weight:900;font-size:12px;padding:6px 8px;border-radius:8px;background:var(--pill-bg);text-align:center}
-
-    @media(max-width:640px){
-      .row{grid-template-columns:1fr}
+    .status,.teacher,.date{font-family:Montserrat;font-weight:900;font-size:12px;padding:6px 8px;border-radius:8px;background:var(--pill-bg);min-width:92px;text-align:center}
+    .teacher {
+      background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
+      color:#5a4300;
+      border:1px solid #e6a200;
+      box-shadow:0 0 6px rgba(248,181,0,0.4);
     }
+    .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
+    .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7);color:#0a5a1a;border:1px solid rgba(139,197,63,.45)}
+
+    .error{max-width:var(--maxw);margin:14px auto;padding:12px 16px;border-radius:12px;border:1px solid #fca5a5;background:#fff1f2;color:#7f1d1d;font-weight:800;display:none}
+    @media(max-width:640px){.row{grid-template-columns:1fr}.status,.teacher,.date{justify-self:start;min-width:unset}}
   </style>
 </head>
 <body>
-
-<div class="pagehead">
-  <div class="title">Class 11 Syllabus — Tracker</div>
-  <div class="stamp" id="last-updated"></div>
-</div>
-
-<div class="controls">
-  <div id="filters">
-    <button class="chip" data-filter="all" aria-pressed="true">All</button>
-    <button class="chip" data-filter="pending">Pending</button>
-    <button class="chip" data-filter="ongoing">Ongoing</button>
-    <button class="chip" data-filter="completed">Completed</button>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
+  <div class="pagehead">
+    <div class="title">Class 11 Syllabus — Tracker</div>
+    <div class="stamp" id="last-updated"></div>
   </div>
-  <div class="search">
-    <input id="search" placeholder="Search chapters or teachers…" />
+
+  <div class="controls">
+    <div id="filters">
+      <button data-filter="all" class="chip" aria-pressed="true">All</button>
+      <button data-filter="pending" class="chip" aria-pressed="false">Pending</button>
+      <button data-filter="ongoing" class="chip" aria-pressed="false">Ongoing</button>
+      <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
+    </div>
+    <div class="search">
+      <input id="search" type="search" placeholder="Search chapters or teachers…" />
+    </div>
   </div>
-</div>
 
-<details class="group">
-  <summary>
-    <span class="subject-name">Physics</span>
-    <span class="prog-wrap">
-      <div class="prog-rail"><div class="prog-fill" id="bar-physics"></div></div>
-      <div class="prog-note" id="note-physics">0/0</div>
-    </span>
-  </summary>
-  <div class="chapters" id="list-physics"></div>
-</details>
+  <section class="panel">
+    <div class="legend">
+      <span class="chip"><span class="dot pending"></span> Pending</span>
+      <span class="chip"><span class="dot ongoing"></span> Ongoing</span>
+      <span class="chip"><span class="dot completed"></span> Completed</span>
+    </div>
+  </section>
 
-<details class="group">
-  <summary>
-    <span class="subject-name">Chemistry</span>
-    <span class="prog-wrap">
-      <div class="prog-rail"><div class="prog-fill" id="bar-chemistry"></div></div>
-      <div class="prog-note" id="note-chemistry">0/0</div>
-    </span>
-  </summary>
-  <div class="chapters" id="list-chemistry"></div>
-</details>
+  <div id="error" class="error">Could not load Google Sheet (check API key, sharing, or range).</div>
 
-<details class="group">
-  <summary>
-    <span class="subject-name">Mathematics</span>
-    <span class="prog-wrap">
-      <div class="prog-rail"><div class="prog-fill" id="bar-mathematics"></div></div>
-      <div class="prog-note" id="note-mathematics">0/0</div>
-    </span>
-  </summary>
-  <div class="chapters" id="list-mathematics"></div>
-</details>
+  <details class="group"><summary><span class="subject-name">Physics</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-physics"></div></div><div class="prog-note" id="note-physics">0/0</div></span></summary><div class="chapters" id="list-physics"></div></details>
+  <details class="group"><summary><span class="subject-name">Chemistry</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-chemistry"></div></div><div class="prog-note" id="note-chemistry">0/0</div></span></summary><div class="chapters" id="list-chemistry"></div></details>
+  <details class="group"><summary><span class="subject-name">Mathematics</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-mathematics"></div></div><div class="prog-note" id="note-mathematics">0/0</div></span></summary><div class="chapters" id="list-mathematics"></div></details>
+  <details class="group"><summary><span class="subject-name">Botany</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-botany"></div></div><div class="prog-note" id="note-botany">0/0</div></span></summary><div class="chapters" id="list-botany"></div></details>
+  <details class="group"><summary><span class="subject-name">Zoology</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-zoology"></div></div><div class="prog-note" id="note-zoology">0/0</div></span></summary><div class="chapters" id="list-zoology"></div></details>
 
-<script>
-const lists={
-  physics:document.getElementById('list-physics'),
-  chemistry:document.getElementById('list-chemistry'),
-  mathematics:document.getElementById('list-mathematics')
-};
-const bars={
-  physics:document.getElementById('bar-physics'),
-  chemistry:document.getElementById('bar-chemistry'),
-  mathematics:document.getElementById('bar-mathematics')
-};
-const notes={
-  physics:document.getElementById('note-physics'),
-  chemistry:document.getElementById('note-chemistry'),
-  mathematics:document.getElementById('note-mathematics')
-};
+  <script>
+    /* =================== CONFIG: Sheets API v4 =================== */
+    const SHEET_ID   = "1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
+    const SHEET_NAME = "Sheet1";
+    const RANGE      = `${SHEET_NAME}!A1:H`; // Subject | Index | Title | Status | ExpectedDate | Stream | Teacher | Teacher(s)
+    const API_KEY    = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
 
-document.getElementById('last-updated').textContent =
-  "Last updated: " + new Date().toLocaleString("en-IN");
-</script>
+    const SHEETS_URL = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}?key=${API_KEY}`;
 
+    /* =================== Refs =================== */
+    const lists = {
+      physics: document.getElementById('list-physics'),
+      chemistry: document.getElementById('list-chemistry'),
+      mathematics: document.getElementById('list-mathematics'),
+      botany: document.getElementById('list-botany'),
+      zoology: document.getElementById('list-zoology')
+    };
+    const bars = {
+      physics: document.getElementById('bar-physics'),
+      chemistry: document.getElementById('bar-chemistry'),
+      mathematics: document.getElementById('bar-mathematics'),
+      botany: document.getElementById('bar-botany'),
+      zoology: document.getElementById('bar-zoology')
+    };
+    const notes = {
+      physics: document.getElementById('note-physics'),
+      chemistry: document.getElementById('note-chemistry'),
+      mathematics: document.getElementById('note-mathematics'),
+      botany: document.getElementById('note-botany'),
+      zoology: document.getElementById('note-zoology')
+    };
+    const lastUpdatedEl = document.getElementById('last-updated');
+    const errorBox = document.getElementById('error');
+
+    /* =================== Utilities =================== */
+    function fmtDayMonth(s){
+      if(!s) return '';
+      let d = new Date(s);
+      if (isNaN(d)) {
+        const m = String(s).match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
+        if (m) d = new Date(+m[3], +m[2]-1, +m[1]);
+      }
+      if(isNaN(d)) return '';
+      const day = d.getDate().toString().padStart(2,'0');
+      const mon = d.toLocaleString('en-GB',{month:'short'});
+      return `${day} ${mon}`;
+    }
+
+    function formatTeachers(item){
+      if (Array.isArray(item.teachers) && item.teachers.length) return item.teachers.join(', ');
+      if (item.teacher) return item.teacher;
+      return '—';
+    }
+
+    function makeRow(item){
+      const st    = (item.status || 'pending').toLowerCase();
+      const when  = fmtDayMonth(item.expectedDate || '');
+      const teach = formatTeachers(item);
+      const div   = document.createElement('div');
+      div.className = 'row ' + st;
+      div.dataset.status   = st;
+      div.dataset.name     = (item.title || '').toLowerCase();
+      div.dataset.teachers = teach.toLowerCase();
+      div.innerHTML = `
+        <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
+        <div class="status ${st}">${st.toUpperCase()}</div>
+        <div class="teacher">${teach}</div>
+        <div class="date">${when}</div>
+      `;
+      return div;
+    }
+
+    function setProgress(total, done, key){
+      const pct = total ? Math.round((done/total)*100) : 0;
+      bars[key].style.width = pct + "%";
+      notes[key].textContent = `${done}/${total}`;
+    }
+
+    function renderSimple(arr, mount, key){
+      mount.innerHTML = '';
+      const sorted = [...arr].sort((a,b)=>(a.index||999)-(b.index||999));
+      let done = 0;
+      sorted.forEach(ch => {
+        if((ch.status||'').toLowerCase()==='completed') done++;
+        mount.appendChild(makeRow(ch));
+      });
+      setProgress(sorted.length, done, key);
+    }
+
+    function renderBioStreams(bio){
+      const botany  = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
+      const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
+      renderSimple(botany,  lists.botany,  'botany');
+      renderSimple(zoology, lists.zoology, 'zoology');
+    }
+
+    /* =================== Filters & Search =================== */
+    const filterState = { value:'all', query:'' };
+    function applyFilters(){
+      const rows = document.querySelectorAll('.chapters .row');
+      rows.forEach(r=>{
+        const st = r.dataset.status;
+        const name = r.dataset.name || '';
+        const tch = r.dataset.teachers || '';
+        const statusMatch = (filterState.value==='all' || st===filterState.value);
+        const q = (filterState.query || '');
+        const textMatch = (!q || name.includes(q) || tch.includes(q));
+        r.style.display = (statusMatch && textMatch) ? '' : 'none';
+      });
+    }
+    document.getElementById('filters').addEventListener('click', e=>{
+      if(e.target.matches('button[data-filter]')){
+        filterState.value = e.target.dataset.filter;
+        [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', String(b===e.target)));
+        applyFilters();
+      }
+    });
+    document.getElementById('search').addEventListener('input', e=>{
+      filterState.query = (e.target.value || '').toLowerCase().trim();
+      applyFilters();
+    });
+
+    /* =================== Sheets API fetch & normalize =================== */
+    async function fetchSheetValues(){
+      const res = await fetch(SHEETS_URL, { cache: "no-store" });
+      if(!res.ok){
+        const txt = await res.text();
+        throw new Error(`Sheets API ${res.status}: ${txt}`);
+      }
+      const json = await res.json(); // { range, values: [...] }
+      return json.values || [];
+    }
+
+    function rowsToObjects(values){
+      if(!values.length) return [];
+      const headers = values[0].map(h => String(h||'').trim());
+      return values.slice(1).map(row => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = row[i] ?? "");
+        return obj;
+      });
+    }
+
+    function normalizeRow(r){
+      const subject = String(r.Subject || "").trim().toLowerCase();
+      const stream  = String(r.Stream  || "").trim().toLowerCase();
+
+      const rawTeachers = String(r["Teacher(s)"] || "")
+        .split(",").map(s => s.trim()).filter(Boolean);
+
+      const it = {
+        index: Number(r.Index) || undefined,
+        title: String(r.Title || "").trim(),
+        status: String(r.Status || "pending").trim().toLowerCase(),
+        expectedDate: r.ExpectedDate ? String(r.ExpectedDate) : ""
+      };
+      if (rawTeachers.length > 1) it.teachers = rawTeachers;
+      else if (rawTeachers.length === 1) it.teacher = rawTeachers[0];
+      else if (r.Teacher) it.teacher = String(r.Teacher).trim();
+
+      if (subject === "biology" || subject === "botany" || subject === "zoology") {
+        it.stream = stream || (subject !== "biology" ? subject : "");
+        return { bucket: "biology", item: it };
+      }
+      return { bucket: subject, item: it };
+    }
+
+    async function init(){
+      try{
+        const values = await fetchSheetValues();
+        const rows   = rowsToObjects(values);
+
+        const data = { physics:[], chemistry:[], mathematics:[], biology:[] };
+        rows.forEach(r => {
+          const { bucket, item } = normalizeRow(r);
+          if (!bucket) return;
+          if (bucket === "physics" || bucket === "chemistry" || bucket === "mathematics") {
+            data[bucket].push(item);
+          } else if (bucket === "biology") {
+            data.biology.push(item);
+          }
+        });
+
+        renderSimple(data.physics,     lists.physics,     'physics');
+        renderSimple(data.chemistry,   lists.chemistry,   'chemistry');
+        renderSimple(data.mathematics, lists.mathematics, 'mathematics');
+        renderBioStreams(data.biology);
+
+        if (lastUpdatedEl) {
+          lastUpdatedEl.textContent = "Last updated: " + new Date().toLocaleString("en-IN");
+        }
+
+        // closed by default; apply filters once
+        document.querySelectorAll('details.group').forEach(d => d.open = false);
+        applyFilters();
+
+      } catch (err) {
+        console.error(err);
+        if (errorBox){ errorBox.style.display='block'; }
+      }
+    }
+    init();
+  </script>
 </body>
 </html>
