@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Sehr Academy</title>
 
-  <!-- Fonts -->
+  <!-- Fonts (same family, minimal weights) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
@@ -15,6 +17,7 @@
       --green:#8BC53F;
       --black:#0b0f10;
       --gray:#6b7280;
+      --border:#e5e7eb;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -26,59 +29,25 @@
       line-height:1.6;
     }
 
-    /* ===== MENU BAR ===== */
-    header{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background:#ffffff;
-      border-bottom:1px solid #e5e7eb;
-    }
-
-    .nav{
-      max-width:1100px;
-      margin:auto;
-      padding:14px 20px;
+    /* ===== HERO / INDEX ===== */
+    main{
+      min-height:calc(100vh - 72px);
       display:flex;
       align-items:center;
-      justify-content:space-between;
     }
 
-    .brand{
-      font-size:22px;
-      font-weight:800;
-      letter-spacing:.3px;
-    }
-
-    .brand span{
-      color:var(--green);
-    }
-
-    nav a{
-      text-decoration:none;
-      color:var(--black);
-      font-weight:600;
-      margin-left:18px;
-      font-size:14px;
-    }
-
-    nav a:hover{
-      color:var(--green);
-    }
-
-    /* ===== HERO / INDEX ===== */
     .hero{
       max-width:1100px;
       margin:auto;
-      padding:100px 20px;
+      padding:80px 20px;
       text-align:center;
     }
 
     .hero h1{
-      font-size:42px;
+      font-size:44px;
       font-weight:800;
-      line-height:1.2;
-      margin-bottom:16px;
+      line-height:1.15;
+      margin-bottom:18px;
     }
 
     .hero h1 span{
@@ -86,7 +55,7 @@
     }
 
     .hero p{
-      max-width:700px;
+      max-width:720px;
       margin:0 auto 28px;
       color:var(--gray);
       font-size:16px;
@@ -96,78 +65,103 @@
     .hero .location{
       font-size:14px;
       font-weight:600;
-      margin-bottom:30px;
+      margin-bottom:34px;
+      color:#111827;
+    }
+
+    .cta{
+      display:inline-flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
     }
 
     .btn{
-      display:inline-block;
       padding:14px 26px;
       border-radius:999px;
-      background:var(--green);
-      color:#000;
       font-weight:800;
       text-decoration:none;
-      transition:transform .2s ease, box-shadow .2s ease;
-      box-shadow:0 10px 25px rgba(139,197,63,.35);
+      transition:all .2s ease;
     }
 
-    .btn:hover{
+    .btn-primary{
+      background:var(--green);
+      color:#000;
+      box-shadow:0 10px 26px rgba(139,197,63,.35);
+    }
+
+    .btn-primary:hover{
       transform:translateY(-2px);
-      box-shadow:0 14px 30px rgba(139,197,63,.45);
+      box-shadow:0 14px 32px rgba(139,197,63,.45);
     }
 
-    /* ===== FOOTER (MINIMAL) ===== */
+    .btn-ghost{
+      border:1px solid var(--border);
+      color:var(--black);
+      background:#fff;
+    }
+
+    .btn-ghost:hover{
+      border-color:var(--green);
+      color:var(--green);
+    }
+
+    /* ===== FOOTER ===== */
     footer{
-      border-top:1px solid #e5e7eb;
+      border-top:1px solid var(--border);
       padding:16px 20px;
       text-align:center;
       font-size:13px;
       color:var(--gray);
     }
 
-    @media(max-width:600px){
+    @media(max-width:640px){
       .hero h1{font-size:32px}
+      .hero{padding:60px 16px}
     }
   </style>
 </head>
 
 <body>
 
-<!-- MENU BAR -->
-<header>
-  <div class="nav">
-    <div class="brand"><span>SEHR</span> Academy</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
+  <!-- EXISTING NAV BAR (UNCHANGED) -->
+  <header id="site-header"></header>
+  <script src="/assets/nav.js" defer></script>
 
-<!-- INDEX / HERO -->
-<main id="home">
-  <section class="hero">
-    <h1>Personalized coaching that helps students <span>excel</span></h1>
+  <!-- INDEX / HERO -->
+  <main>
+    <section class="hero">
+      <h1>
+        Personalized coaching that helps students <span>excel</span>
+      </h1>
 
-    <p>
-      Sehr Academy provides focused tuition and exam preparation for school students,
-      with small batches and concept-first teaching.
-    </p>
+      <p>
+        Sehr Academy offers focused tuition and exam preparation with
+        small batches, strong fundamentals, and consistent mentoring.
+      </p>
 
-    <div class="location">
-      📍 Vatanappally, Thrissur
-    </div>
+      <div class="location">
+        📍 Offline classes at <b>Vatanappally, Thrissur</b>
+      </div>
 
-    <a class="btn" href="https://wa.me/919539409586" target="_blank" rel="noopener">
-      Contact on WhatsApp
-    </a>
-  </section>
-</main>
+      <div class="cta">
+        <a class="btn btn-primary"
+           href="https://wa.me/919539409586"
+           target="_blank" rel="noopener">
+          Contact on WhatsApp
+        </a>
 
-<!-- FOOTER -->
-<footer id="contact">
-  © 2025 Sehr Academy
-</footer>
+        <a class="btn btn-ghost" href="#about">
+          Learn More
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 Sehr Academy
+  </footer>
 
 </body>
 </html>
