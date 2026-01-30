@@ -175,7 +175,89 @@ select{
   min-width:30px;
   text-align:center;
 }
+/* ===== GAUGE TRACKER ===== */
+.gauge-grid{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+.gauge-card{
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.gauge-title{
+  font-family:Montserrat;
+  font-weight:900;
+  letter-spacing:0.1em;
+  font-size:14px;
+  margin-bottom:12px;
+}
+
+.gauge{
+  position:relative;
+  width:200px;
+  height:100px;
+  margin:10px auto 0;
+  overflow:hidden;
+}
+
+.gauge-bg{
+  width:200px;
+  height:100px;
+  border-radius:200px 200px 0 0;
+  background:
+    conic-gradient(
+      #ef4444 0deg 30deg,        /* LOW – small red */
+      #facc15 30deg 150deg,     /* MEDIUM – large yellow */
+      #22c55e 150deg 180deg     /* HIGH – small green */
+    );
+}
+
+.gauge-mask{
+  position:absolute;
+  top:14px;
+  left:14px;
+  width:172px;
+  height:86px;
+  background:#fff;
+  border-radius:200px 200px 0 0;
+}
+
+.needle{
+  position:absolute;
+  bottom:0;
+  left:50%;
+  width:4px;
+  height:90px;
+  background:#111827;
+  transform-origin:bottom center;
+  transform:rotate(-90deg);
+  transition:transform 0.8s ease;
+}
+
+.gauge-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  font-weight:800;
+  margin-top:8px;
+  padding:0 12px;
+}
+
+.gauge-percent{
+  margin-top:10px;
+  font-weight:900;
+  font-size:16px;
+}
 </style>
+
+
 </head>
 
 <body>
@@ -195,6 +277,12 @@ select{
     <option value="">Select</option>
   </select>
 </div>
+<h2 style="margin-top:50px;font-family:Montserrat;">
+  Subject Progress Tracker
+</h2>
+
+<div id="gaugeContainer" class="gauge-grid"></div>
+
 
 <div class="plan-container" id="dayCards"></div>
 
@@ -222,11 +310,12 @@ function populateStudents(){
     select.add(new Option(s, s));
   });
 
-  select.addEventListener("change", () => {
-    const rows = ALL_DATA.filter(r => r.Student === select.value);
-    renderDayCards(rows);
-    renderSubjectWise(rows);
-  });
+select.addEventListener("change", () => {
+  const rows = ALL_DATA.filter(r => r.Student === select.value);
+  renderDayCards(rows);
+  renderSubjectWise(rows);
+  renderGauges(rows); // ✅ ADD THIS LINE
+});
 }
 
 /* ---------- DAY CARDS ---------- */
@@ -308,6 +397,54 @@ function renderSubjectWise(rows){
     container.appendChild(block);
   });
 }
+/* ---------- SUBJECT GAUGES ---------- */
+function renderGauges(rows){
+  const container = document.getElementById("gaugeContainer");
+  container.innerHTML = "";
+
+  const subjects = [...new Set(rows.map(r => r.Subject))];
+
+  subjects.forEach(sub => {
+    const subRows = rows.filter(r => r.Subject === sub);
+    const total = subRows.length;
+    const completed = subRows.filter(r => r.Status === "completed").length;
+
+    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    // map 0–100% → -90° to +90°
+    const angle = -90 + (percent * 180) / 100;
+
+    const card = document.createElement("div");
+    card.className = "gauge-card";
+
+    card.innerHTML = `
+      <div class="gauge-title">${sub.toUpperCase()}</div>
+
+      <div class="gauge">
+        <div class="gauge-bg" style="
+          background: conic-gradient(
+            from 180deg,
+            #ef4444 0deg,
+            #f97316 180deg
+          );
+        "></div>
+        <div class="gauge-mask"></div>
+        <div class="needle" style="transform:rotate(${angle}deg)"></div>
+      </div>
+
+      <div class="gauge-labels">
+        <span>Low</span>
+        <span>Medium</span>
+        <span>High</span>
+      </div>
+
+      <div class="gauge-percent">${percent}% Completed</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 </script>
 
 </body>
