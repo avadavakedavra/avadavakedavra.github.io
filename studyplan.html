@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sehr Academy — Study Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sehr Academy | Study Dashboard</title>
 
-<!-- Fonts (same as student login) -->
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@ body{
   color:var(--ink);
 }
 
-/* ===== NAVBAR (same as student login) ===== */
+/* ===== NAVBAR ===== */
 header{
   position:sticky;top:0;z-index:40;
   background:rgba(255,255,255,.78);
@@ -44,7 +44,7 @@ header{
 
 main{max-width:var(--maxw);margin:30px auto;padding:0 20px}
 
-/* ===== Controls ===== */
+/* ===== UI ===== */
 select{
   padding:12px 14px;
   border-radius:14px;
@@ -52,14 +52,18 @@ select{
   font-weight:700;
 }
 
-/* ===== Cards ===== */
+.section-title{
+  font-family:Montserrat;
+  font-weight:900;
+  margin:40px 0 20px;
+}
+
 .card{
   background:var(--glass);
   border:1px solid var(--border);
   border-radius:var(--radius);
   padding:20px;
   box-shadow:var(--shadow);
-  margin-bottom:24px;
 }
 
 .grid{
@@ -92,18 +96,13 @@ select{
 .completed{background:#dcfce7;color:#166534}
 .pending{background:#ffffff;border:1px solid #e5e7eb}
 
-/* ===== Speedometer ===== */
+/* ===== SPEEDOMETER ===== */
 .tracker-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:24px;
 }
-
-.gauge{
-  width:180px;
-  margin:auto;
-  position:relative;
-}
+.gauge{width:180px;margin:auto;position:relative}
 .gauge svg{width:100%}
 .bg{stroke:#e5e7eb;stroke-width:14;fill:none}
 .progress{
@@ -124,6 +123,18 @@ select{
   font-weight:900;
   font-size:22px;
 }
+
+/* ===== SUBJECT TOPICS ===== */
+.topic{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  margin-bottom:6px;
+}
+.topic.completed{background:#dcfce7}
 </style>
 </head>
 
@@ -139,84 +150,101 @@ select{
 <main>
 
 <div class="card">
-  <label style="font-weight:800">Select Student</label><br>
+  <label style="font-weight:800">Select Student</label><br><br>
   <select id="studentSelect">
     <option value="">Select</option>
   </select>
 </div>
 
-<h2 style="font-family:Montserrat">Daily Study Plan</h2>
-<div class="grid" id="days"></div>
+<h2 class="section-title">Daily Study Plan</h2>
+<div class="grid" id="dayGrid"></div>
 
-<h2 style="font-family:Montserrat;margin-top:50px">Subject Progress</h2>
-<div class="tracker-grid" id="trackers"></div>
+<h2 class="section-title">Subject Progress</h2>
+<div class="tracker-grid" id="trackerGrid"></div>
+
+<h2 class="section-title">Subject-wise Topic Breakdown</h2>
+<div id="subjectTopics"></div>
 
 </main>
 
 <script>
 const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjF9cHXk96gY7A66x-KNDIPOS6YC-zyVSV2f4PEx1tCCQruYGxMjGtoRH0Jz-z87CizRfCPypL802aXHqN44n2miYngScxqZDRPdoNvXzDseHLb8jGiBiBN_xqMEbFlBsuBrwLnxBNf_XvBQrDh-y668g33f_RcJu_8lVc4iapHj4azThHK-L03i-t3TiIIMS5Jv2QfnrgazKVpkJ48zw5jKJPzcvk4eCUtRmWdcWrYpJnshAVrO1hZXzDbV39gNeNlARqSmtto34K5-ppaY8Msui-62A&lib=MvGSsCthjbGW7s5xhObuf00FNOc6D1c8x";
-let DATA=[];
+let DATA = [];
 
+/* ---------- LOAD DATA ---------- */
 fetch(API_URL)
-  .then(r=>r.json())
-  .then(d=>{DATA=d;initStudents();});
+  .then(r => r.json())
+  .then(d => {
+    DATA = d;
+    populateStudents();
+  });
 
-function initStudents(){
-  const sel=document.getElementById("studentSelect");
-  [...new Set(DATA.map(r=>r.Student))].forEach(s=>{
+/* ---------- STUDENTS ---------- */
+function populateStudents(){
+  const sel = document.getElementById("studentSelect");
+  [...new Set(DATA.map(r => r.Student))].forEach(s=>{
     sel.add(new Option(s,s));
   });
-  sel.onchange=()=>render(sel.value);
+  sel.onchange = () => renderStudent(sel.value);
 }
 
-function render(student){
-  const rows=DATA.filter(r=>r.Student===student);
+/* ---------- MAIN RENDER ---------- */
+function renderStudent(student){
+  const rows = DATA.filter(r => r.Student === student);
   renderDays(rows);
   renderTrackers(rows);
+  renderSubjects(rows);
 }
 
+/* ---------- DAYS ---------- */
 function renderDays(rows){
-  const today=new Date();today.setHours(0,0,0,0);
-  const map={Yesterday:[],Today:[],Tomorrow:[]};
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const map = {Yesterday:[], Today:[], Tomorrow:[]};
 
   rows.forEach(r=>{
     if(!r.ExpectedDate) return;
-    const d=new Date(r.ExpectedDate);d.setHours(0,0,0,0);
-    const diff=(d-today)/(86400000);
-    if(diff===-1) map.Yesterday.push(r);
-    if(diff===0) map.Today.push(r);
-    if(diff===1) map.Tomorrow.push(r);
+    const d = new Date(r.ExpectedDate);
+    d.setHours(0,0,0,0);
+    const diff = (d - today) / 86400000;
+    if(diff === -1) map.Yesterday.push(r);
+    if(diff === 0) map.Today.push(r);
+    if(diff === 1) map.Tomorrow.push(r);
   });
 
-  const box=document.getElementById("days");
-  box.innerHTML="";
-  Object.entries(map).forEach(([k,v])=>{
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML=`<h3>${k}</h3>`;
-    v.forEach(x=>{
-      c.innerHTML+=`
-      <div class="chapter">
-        <div class="subject">${x.Subject}</div>
-        <div>${x.Title}</div>
-        <span class="status ${x.Status}">${x.Status}</span>
-      </div>`;
+  const grid = document.getElementById("dayGrid");
+  grid.innerHTML = "";
+
+  Object.entries(map).forEach(([label,list])=>{
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `<h3>${label}</h3>`;
+    list.forEach(x=>{
+      c.innerHTML += `
+        <div class="chapter">
+          <div class="subject">${x.Subject}</div>
+          <div>${x.Title}</div>
+          <span class="status ${x.Status}">${x.Status}</span>
+        </div>`;
     });
-    box.appendChild(c);
+    grid.appendChild(c);
   });
 }
 
+/* ---------- TRACKERS ---------- */
 function renderTrackers(rows){
-  const box=document.getElementById("trackers");
-  box.innerHTML="";
-  [...new Set(rows.map(r=>r.Subject))].forEach(s=>{
-    const total=rows.filter(r=>r.Subject===s).length;
-    const done=rows.filter(r=>r.Subject===s&&r.Status==="completed").length;
-    const pct=Math.round((done/total)*100)||0;
+  const grid = document.getElementById("trackerGrid");
+  grid.innerHTML = "";
 
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML=`
+  [...new Set(rows.map(r=>r.Subject))].forEach(sub=>{
+    const total = rows.filter(r=>r.Subject===sub).length;
+    const done = rows.filter(r=>r.Subject===sub && r.Status==="completed").length;
+    const pct = Math.round((done/total)*100) || 0;
+
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `
       <div class="gauge">
         <svg viewBox="0 0 180 100">
           <path d="M10 90 A80 80 0 0 1 170 90" class="bg"/>
@@ -224,10 +252,36 @@ function renderTrackers(rows){
         </svg>
         <div class="percent">${pct}%</div>
       </div>
-      <h4 style="text-align:center;font-family:Montserrat">${s}</h4>`;
-    box.appendChild(c);
+      <h4 style="text-align:center;font-family:Montserrat">${sub}</h4>`;
+    grid.appendChild(c);
 
-    c.querySelector(".progress").style.strokeDashoffset=251*(1-pct/100);
+    c.querySelector(".progress").style.strokeDashoffset = 251 * (1 - pct/100);
+  });
+}
+
+/* ---------- SUBJECT TOPICS ---------- */
+function renderSubjects(rows){
+  const box = document.getElementById("subjectTopics");
+  box.innerHTML = "";
+
+  [...new Set(rows.map(r=>r.Subject))].forEach(sub=>{
+    const list = rows
+      .filter(r=>r.Subject===sub)
+      .sort((a,b)=>a.Index-b.Index);
+
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `<h3>${sub}</h3>`;
+
+    list.forEach(t=>{
+      c.innerHTML += `
+        <div class="topic ${t.Status}">
+          <strong>${t.Index}</strong>
+          ${t.Title}
+          ${t.Status==="completed" ? "✔" : ""}
+        </div>`;
+    });
+    box.appendChild(c);
   });
 }
 </script>
