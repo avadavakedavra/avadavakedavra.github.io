@@ -22,8 +22,9 @@ body{
 }
 
 /* HEADER */
-header{background:#fff;border-bottom:1px solid var(--border);}
+header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;}
 .wrap{max-width:1200px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+.brand{cursor:pointer;}
 .brand span:first-child{font-family:'Montserrat';font-weight:900;color:var(--green);font-size:22px;}
 .brand span:last-child{font-family:'Montserrat';font-weight:900;font-size:22px;}
 .controls{display:flex;gap:8px;flex-wrap:wrap;}
@@ -34,12 +35,24 @@ header{background:#fff;border-bottom:1px solid var(--border);}
 .filter{position:relative;}
 .filter-btn{padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font-weight:700;cursor:pointer;min-width:120px;text-align:left;}
 .filter-menu{position:absolute;top:110%;left:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 25px rgba(0,0,0,.15);padding:10px;display:none;max-height:250px;overflow:auto;z-index:999;}
-.filter-menu label{display:block;margin-bottom:6px;font-size:14px;cursor:pointer;}
+.filter-menu div{padding:6px 8px;font-size:14px;cursor:pointer;border-radius:6px;}
+.filter-menu div:hover{background:#f2f4f7;}
 .filter.open .filter-menu{display:block;}
 
 /* CALENDAR */
 .calendar{max-width:1200px;margin:auto;padding:20px;}
-.weekdays{display:grid;grid-template-columns:repeat(7,1fr);font-weight:800;margin-bottom:10px;color:#6b7280;}
+.weekdays{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  font-weight:800;
+  margin-bottom:10px;
+  color:#6b7280;
+  position:sticky;
+  top:70px;
+  background:var(--bg);
+  z-index:500;
+  padding:8px 0;
+}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;}
 .day{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;min-height:160px;}
 .day.today{border:2px solid var(--green);box-shadow:0 0 15px rgba(139,197,63,.25);}
@@ -75,7 +88,9 @@ header{background:#fff;border-bottom:1px solid var(--border);}
 
 <header>
 <div class="wrap">
-<div class="brand"><span>SEHR</span><span>ACADEMY</span></div>
+<div class="brand" onclick="window.location.href='https://sehracademy.com'">
+<span>SEHR</span><span>ACADEMY</span>
+</div>
 <div class="controls">
 <button id="prev" class="btn">◀</button>
 <select id="monthSelect" class="select"></select>
@@ -86,16 +101,26 @@ header{background:#fff;border-bottom:1px solid var(--border);}
 </header>
 
 <div class="heading">
-<div class="filter"><button class="filter-btn">Class ▾</button><div class="filter-menu" id="classMenu"></div></div>
-<div class="filter"><button class="filter-btn">Teacher ▾</button><div class="filter-menu" id="teacherMenu"></div></div>
 <div class="filter">
-<button class="filter-btn">Mode ▾</button>
+<button class="filter-btn" id="classBtn">Class ▾</button>
+<div class="filter-menu" id="classMenu"></div>
+</div>
+
+<div class="filter">
+<button class="filter-btn" id="teacherBtn">Teacher ▾</button>
+<div class="filter-menu" id="teacherMenu"></div>
+</div>
+
+<div class="filter">
+<button class="filter-btn" id="modeBtn">Mode ▾</button>
 <div class="filter-menu" id="modeMenu">
-<label><input type="checkbox" value="Online"> Online</label>
-<label><input type="checkbox" value="Offline"> Offline</label>
+<div data-value="Online">Online</div>
+<div data-value="Offline">Offline</div>
 </div>
 </div>
+
 <input type="text" id="searchInput" class="select" placeholder="Search topic...">
+<button id="clearAll" class="btn">Clear All</button>
 </div>
 
 <main class="calendar">
@@ -120,20 +145,34 @@ let selectedClasses=[];
 let selectedTeachers=[];
 let selectedModes=[];
 
+function updateButtons(){
+classBtn.textContent = selectedClasses.length ? selectedClasses[0]+" ▾" : "Class ▾";
+teacherBtn.textContent = selectedTeachers.length ? selectedTeachers[0]+" ▾" : "Teacher ▾";
+modeBtn.textContent = selectedModes.length ? selectedModes[0]+" ▾" : "Mode ▾";
+}
+
+function clearFilters(){
+selectedClasses=[];
+selectedTeachers=[];
+selectedModes=[];
+searchValue="";
+searchInput.value="";
+updateButtons();
+renderCalendar(CURRENT_YM);
+}
+
+clearAll.onclick=clearFilters;
+
 function formatTimeRange(start,end){
 if(!start||!end)return "";
 function convert(t){
 t=t.toString().replace(":",".");
-
 let hour=parseFloat(t);
 if(isNaN(hour))return "";
-
 let h=Math.floor(hour);
 let m=Math.round((hour-h)*60);
 let suffix=h>=12?"pm":"am";
-
 h=h%12;if(h===0)h=12;
-
 if(m===0)return h;
 return h+"."+ (m<10?"0"+m:m);
 }
@@ -174,29 +213,32 @@ const classes=[...new Set(DATA.map(e=>e.class).filter(Boolean))].sort();
 const teachers=[...new Set(DATA.map(e=>e.teacher).filter(Boolean))].sort();
 
 classes.forEach(c=>{
-classMenu.innerHTML+=`<label><input type="checkbox" value="${c}"> ${c}</label>`;
+classMenu.innerHTML+=`<div data-value="${c}">${c}</div>`;
 });
 teachers.forEach(t=>{
-teacherMenu.innerHTML+=`<label><input type="checkbox" value="${t}"> ${t}</label>`;
+teacherMenu.innerHTML+=`<div data-value="${t}">${t}</div>`;
 });
 
-document.querySelectorAll("#classMenu input").forEach(cb=>{
-cb.addEventListener("change",()=>{
-selectedClasses=[...document.querySelectorAll("#classMenu input:checked")].map(i=>i.value);
+document.querySelectorAll("#classMenu div").forEach(item=>{
+item.addEventListener("click",()=>{
+selectedClasses=[item.dataset.value];
+updateButtons();
 renderCalendar(CURRENT_YM);
 });
 });
 
-document.querySelectorAll("#teacherMenu input").forEach(cb=>{
-cb.addEventListener("change",()=>{
-selectedTeachers=[...document.querySelectorAll("#teacherMenu input:checked")].map(i=>i.value);
+document.querySelectorAll("#teacherMenu div").forEach(item=>{
+item.addEventListener("click",()=>{
+selectedTeachers=[item.dataset.value];
+updateButtons();
 renderCalendar(CURRENT_YM);
 });
 });
 
-document.querySelectorAll("#modeMenu input").forEach(cb=>{
-cb.addEventListener("change",()=>{
-selectedModes=[...document.querySelectorAll("#modeMenu input:checked")].map(i=>i.value);
+document.querySelectorAll("#modeMenu div").forEach(item=>{
+item.addEventListener("click",()=>{
+selectedModes=[item.dataset.value];
+updateButtons();
 renderCalendar(CURRENT_YM);
 });
 });
