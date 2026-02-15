@@ -1,748 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Academic Calendar (May 2025 – Apr 2026)</title>
-  <meta name="theme-color" content="#8BC53F" />
-  <meta name="description" content="Sehr Academy — Academic Calendar (May 2025 – Apr 2026). Frosty-glass design with month navigation. Powered by a single JSON file." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sehr Academy — Academic Calendar</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --sehr-green:#8BC53F;
-      --ink:#0F172A; --ink-soft:#152036; --muted:#5b6475;
-      --frost:#ffffff; --frost-tint:#f7f9fb; --glass-edge:#e6e8ec; --shadow:0 10px 30px rgba(15,23,42,.06);
-      --pill-br:#dfe4ea;
-
-      /* Subject palettes */
-      --phys-a:#4e8ef7; --phys-b:#8bb4ff;
-      --chem-a:#54c15a; --chem-b:#94e09b;
-      --math-a:#f35c5c; --math-b:#ff9a9a;
-      --bio-a:#ffd84e;  --bio-b:#fff19e;
-
-      /* Gold palette for teacher pill */
-      --gold-a:#fbe9a7; --gold-b:#f3c96a; --gold-c:#e3b23c; --gold-br:#e8d7a6; --gold-glow:rgba(227,178,60,.25);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Nunito",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--ink); background:#fff;
-      background-image:
-        radial-gradient(60rem 60rem at -10% -10%, rgba(139,197,63,.08), transparent 55%),
-        radial-gradient(60rem 60rem at 110% 10%, rgba(139,197,63,.06), transparent 50%),
-        linear-gradient(180deg, #fff, #fff);
-      background-attachment: fixed,fixed,fixed;
-    }
-    header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.78);backdrop-filter:saturate(175%) blur(10px);border-bottom:1px solid rgba(230,232,236,.6)}
-    .wrap{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{display:flex;align-items:baseline;gap:10px;text-decoration:none}
-    .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:900;font-size:22px;color:var(--sehr-green)}
-    .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:900;font-size:22px;color:#0b0f10}
-
-    /* Controls */
-    .controls{display:flex;align-items:center;gap:10px}
-    .btn{
-      appearance:none;border:1px solid var(--glass-edge);background:#fff;border-radius:10px;padding:8px 12px;
-      font-weight:800;letter-spacing:.2px;cursor:pointer;box-shadow:var(--shadow)
-    }
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .select{
-      appearance:none;border:1px solid var(--glass-edge);background:#fff;border-radius:10px;padding:8px 12px;
-      font-weight:800;letter-spacing:.2px;box-shadow:var(--shadow);min-width:220px
-    }
-    .select.small{min-width:180px}
-
-    /* Page heading */
-    .heading{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin:18px auto 8px;padding:0 20px}
-    .title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    .title h1{margin:0;font-family:"Montserrat",sans-serif;font-weight:800;font-size:22px;letter-spacing:.2px}
-    .badge{font-size:12px;font-weight:700;color:#0b0f10;background:#fff;border:1px solid var(--glass-edge);padding:4px 10px;border-radius:999px;line-height:1.1}
-
-    /* Filters row */
-    .filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .filters .label{font-size:12px;color:var(--muted);font-weight:800}
-    .filters .clear{display:none}
-
-    .calendar{max-width:1200px;margin:0 auto 72px;padding:10px 20px 40px;display:grid;grid-template-rows:auto 1fr;gap:10px}
-    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;color:var(--muted);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
-    .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:start}
-
-    .day{background:linear-gradient(180deg, var(--frost), var(--frost-tint));border:1px solid var(--glass-edge);border-radius:14px;box-shadow:var(--shadow);padding:12px;display:flex;flex-direction:column;gap:10px}
-    .day.dim{opacity:.5}
-    .day-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-    .date{font-family:"Montserrat",sans-serif;font-weight:800;font-size:18px;color:#0b0f10;letter-spacing:.2px;line-height:1}
-    .weekday{font-size:12px;color:var(--muted);font-weight:800;line-height:1}
-    .accent{height:3px;width:100%;background:linear-gradient(90deg,#e9f1e6,var(--sehr-green),#e9f1e6);border-radius:999px;opacity:.45;flex:none}
-    .events{display:flex;flex-direction:column;gap:8px;margin-top:1px}
-
-    .event{
-      position:relative;border-radius:12px;padding:10px 12px;backdrop-filter: blur(6px) saturate(120%);
-      transition:transform .15s ease, box-shadow .15s ease;will-change:transform;border:1px solid var(--glass-edge);
-      box-shadow:0 10px 24px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.5);
-      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92));
-    }
-    .event::before{content:""; position:absolute; left:0; top:0; bottom:0; width:5px; border-radius:12px 0 0 12px; opacity:.9; background:linear-gradient(180deg,#e9f1e6,#cfe9d1)}
-    .event:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.6)}
-
-    /* Live event style */
-    .event.live{
-      background: linear-gradient(180deg, rgba(255,230,230,.96), rgba(255,205,205,.92));
-      border-color: #f7b0b0;
-      box-shadow: 0 10px 24px rgba(243,92,92,.12), inset 0 1px 0 rgba(255,255,255,.6);
-    }
-    .event.live::before{ background: linear-gradient(180deg, #ff6b6b, #f35c5c); }
-
-    .event-title{margin:0 0 6px;font-family:"Montserrat",sans-serif;font-weight:800;font-size:15px;line-height:1.25;color:var(--ink-soft);letter-spacing:.2px}
-    .event-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12px;color:#0b0f10}
-
-    .pill{display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:6px 10px;background:#fff;border:1px solid var(--pill-br);font-weight:800;line-height:1.05}
-    .pill.subject{color:#0b0f10;border:none}
-    .pill.subject.physics{background-image:linear-gradient(180deg,var(--phys-b),var(--phys-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(78,142,247,.22)}
-    .pill.subject.chemistry{background-image:linear-gradient(180deg,var(--chem-b),var(--chem-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(84,193,90,.22)}
-    .pill.subject.maths{background-image:linear-gradient(180deg,var(--math-b),var(--math-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(243,92,92,.22)}
-    .pill.subject.biology{background-image:linear-gradient(180deg,var(--bio-b),var(--bio-a));box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(255,216,78,.22)}
-
-    /* GOLD teacher pill (name only) */
-    .pill.teacher{
-      background: linear-gradient(180deg, #FBE7A1 0%, #F5C14A 50%, #D89A00 100%);
-      color: #3a2f00;
-      border: 1px solid #d4a017;
-      box-shadow: 0 0 4px rgba(216,154,0,0.35);
-      font-weight: 800;
-    }
-
-    /* Completed sessions */
-    .event.completed { position: relative; opacity: 0.6; filter: grayscale(80%) brightness(0.9); border-color: #d0d0d0 !important; }
-    .event.completed::after { content: ""; position: absolute; inset: 0; border-radius: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(240,240,240,0.6)); pointer-events: none; }
-    .event.completed::before { opacity: 0.3; }
-
-    /* Mode overrides */
-    .event.offline{ background: linear-gradient(180deg, rgba(235,250,236,.96), rgba(220,245,224,.90)); border-color:#cfe9d1; box-shadow:0 10px 24px rgba(84,193,90,.12), inset 0 1px 0 rgba(255,255,255,.6); }
-    .event.offline::before{ background: linear-gradient(180deg,#94e09b,#54c15a); }
-    .event.online{ background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,245,255,.92)); border-color:#dde6f6; box-shadow:0 10px 24px rgba(78,142,247,.12), inset 0 1px 0 rgba(255,255,255,.6); }
-    .event.online::before{ background: linear-gradient(180deg,#8bb4ff,#4e8ef7); }
-    .event.online-pc{ background: linear-gradient(180deg, #F2E9FF, #E0D1FF); border-color: #CBB5FF; box-shadow: 0 10px 24px rgba(151, 135, 244, .25), inset 0 1px 0 rgba(255,255,255,.7); }
-    .event.online-pc::before{ background: linear-gradient(180deg, #B699FF, #9787F4); }
-
-    /* Class 12 theme */
-    .event.class-12{ background: linear-gradient(180deg, rgba(255,230,230,.98), rgba(255,200,200,.95)); border-color:#f5a1a1; box-shadow:0 10px 24px rgba(243,92,92,.14), inset 0 1px 0 rgba(255,255,255,.7); color:#3b0b0b; }
-    .event.class-12::before{ background: linear-gradient(180deg,#ff6b6b,#f35c5c); }
-
-    /* Class 11 light-blue theme */
-    .event.class-11{
-      background: linear-gradient(180deg, rgba(230,240,255,.98), rgba(212,230,255,.95));
-      border-color: #bfd4ff;
-      box-shadow: 0 10px 24px rgba(78,142,247,.14), inset 0 1px 0 rgba(255,255,255,.7);
-      color:#0b284d;
-    }
-    .event.class-11::before{ background: linear-gradient(180deg,#8bb4ff,#4e8ef7); }
-
-    /* ===== SPECIAL CLASS — MUST OVERRIDE EVERYTHING =====
-       Place last + add explicit combinations + use !important on key props. */
-    .event.special,
-    .event.special.live,
-    .event.special.class-12,
-    .event.special.class-11,
-    .event.special.online,
-    .event.special.online-pc,
-    .event.special.offline{
-      background: linear-gradient(180deg, #FFF7D6, #FFE7A3) !important;
-      border-color: #EFD48A !important;
-      box-shadow: 0 10px 24px rgba(227,178,60,.22), inset 0 1px 0 rgba(255,255,255,.75) !important;
-      color:#3b2a00 !important;
-    }
-    .event.special::before{
-      background: linear-gradient(180deg, #F3C96A, #E3B23C) !important;
-    }
-/* ===== CRASH CLASSES — BRIGHT ORANGE (OVERRIDES ALL) ===== */
-.event.crash,
-.event.crash.live,
-.event.crash.class-11,
-.event.crash.class-12,
-.event.crash.online,
-.event.crash.online-pc,
-.event.crash.offline,
-.event.crash.special{
-  background: linear-gradient(180deg, #FFD8A8, #FF9F1C) !important;
-  border-color: #FF8C00 !important;
-  box-shadow: 0 12px 28px rgba(255,140,0,.35),
-              inset 0 1px 0 rgba(255,255,255,.75) !important;
-  color: #4a2600 !important;
+<style>
+:root{
+  --green:#8BC53F;
+  --border:#e6e8ec;
+  --bg:#f8f7f4;
 }
 
-.event.crash::before{
-  background: linear-gradient(180deg, #FFB703, #FB8500) !important;
-}
-/* ===== PLUS TWO — BRIGHT RED (OVERRIDES ALL) ===== */
-.event.plustwo,
-.event.plustwo.live,
-.event.plustwo.class-11,
-.event.plustwo.class-12,
-.event.plustwo.online,
-.event.plustwo.online-pc,
-.event.plustwo.offline,
-.event.plustwo.special{
-  background: linear-gradient(180deg, #FFD6D6, #FF2D2D) !important;
-  border-color: #E60000 !important;
-  box-shadow: 0 12px 30px rgba(230,0,0,.4),
-              inset 0 1px 0 rgba(255,255,255,.75) !important;
-  color: #4a0000 !important;
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:#1f2937;
 }
 
-.event.plustwo::before{
-  background: linear-gradient(180deg, #FF6B6B, #E60000) !important;
-}
+/* HEADER */
+header{background:#fff;border-bottom:1px solid var(--border);}
+.wrap{max-width:1200px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+.brand span:first-child{font-family:'Montserrat';font-weight:900;color:var(--green);font-size:22px;}
+.brand span:last-child{font-family:'Montserrat';font-weight:900;font-size:22px;}
+.controls{display:flex;gap:8px;flex-wrap:wrap;}
+.btn,.select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:#fff;font-weight:700;cursor:pointer;}
 
-/* ===== PLUS ONE — BRIGHT BLUE (OVERRIDES ALL) ===== */
-.event.plusone,
-.event.plusone.live,
-.event.plusone.class-11,
-.event.plusone.class-12,
-.event.plusone.online,
-.event.plusone.online-pc,
-.event.plusone.offline,
-.event.plusone.special{
-  background: linear-gradient(180deg, #D6E9FF, #1E88FF) !important;
-  border-color: #005FCC !important;
-  box-shadow: 0 12px 30px rgba(30,136,255,.4),
-              inset 0 1px 0 rgba(255,255,255,.75) !important;
-  color: #002a5c !important;
-}
+/* FILTERS */
+.heading{max-width:1200px;margin:20px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;}
+.filter{position:relative;}
+.filter-btn{padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font-weight:700;cursor:pointer;min-width:120px;text-align:left;}
+.filter-menu{position:absolute;top:110%;left:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 25px rgba(0,0,0,.15);padding:10px;display:none;max-height:250px;overflow:auto;z-index:999;}
+.filter-menu label{display:block;margin-bottom:6px;font-size:14px;cursor:pointer;}
+.filter.open .filter-menu{display:block;}
 
-.event.plusone::before{
-  background: linear-gradient(180deg, #6BB6FF, #005FCC) !important;
-}
-/* ===== SUBJECT PILLS — BRIGHT WHITE MILKY GLASS ===== */
-.pill.subject{
-  background: rgba(255, 255, 255, 0.92) !important;
-  backdrop-filter: blur(6px) saturate(140%);
-  -webkit-backdrop-filter: blur(6px) saturate(140%);
-  color: #0b0f10 !important;
-  border: 1px solid rgba(220, 220, 220, 0.9) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.8),
-    0 4px 12px rgba(15,23,42,0.12) !important;
-}
+/* CALENDAR */
+.calendar{max-width:1200px;margin:auto;padding:20px;}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);font-weight:800;margin-bottom:10px;color:#6b7280;}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;}
+.day{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;min-height:160px;}
+.day.today{border:2px solid var(--green);box-shadow:0 0 15px rgba(139,197,63,.25);}
+.day.holiday{background:#fff5e6;border:2px solid #e6c48f;}
+.date{font-weight:800;font-family:'Montserrat';margin-bottom:8px;}
 
-/* kill subject-specific gradients completely */
-.pill.subject.physics,
-.pill.subject.chemistry,
-.pill.subject.maths,
-.pill.subject.biology{
-  background: rgba(255, 255, 255, 0.92) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.85),
-    0 4px 12px rgba(15,23,42,0.12) !important;
-}
+/* EVENTS */
+.event{border-radius:10px;padding:10px;margin-top:8px;border:1px solid rgba(0,0,0,.05);transition:all .2s ease;}
+.event:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 16px 30px rgba(0,0,0,.22);}
+.event.upcoming{box-shadow:0 6px 12px rgba(0,0,0,.08);}
+.event.today-event{box-shadow:0 14px 22px rgba(0,0,0,.18);}
+.event.faded{opacity:.4;filter:grayscale(50%);box-shadow:none;}
 
+/* CLASS COLORS */
+.event.class-10{background:linear-gradient(180deg,#f4efe6,#e7dfd2);}
+.event.class-11{background:linear-gradient(180deg,#e8f1f8,#dbe7f2);}
+.event.class-12{background:linear-gradient(180deg,#f6e8e8,#edd9d9);}
+.event.neet{background:linear-gradient(180deg,#eef3e7,#dde6d3);}
+.event.jee{background:linear-gradient(180deg,#eee9f5,#e2dced);}
 
-  </style>
+/* PILLS */
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;margin-right:5px;margin-top:5px;}
+.pill.mode-online{background:#4CAF50;color:#fff;border:none;}
+.pill.mode-offline{background:#7b5e57;color:#fff;border:none;}
+.pill.teacher{background:#f4f1ea;border:1px solid #e2dbcf;color:#5c4d3c;}
+
+.event-title{font-family:'Montserrat';font-weight:800;font-size:14px;margin-bottom:6px;}
+.empty{font-size:12px;opacity:.5;margin-top:8px;}
+</style>
 </head>
+
 <body>
-  <header>
-    <div class="wrap">
-      <a class="brand" href="https://www.sehracademy.com/" aria-label="Sehr Academy"><span>SEHR</span><span>ACADEMY</span></a>
-      <div class="controls">
-        <button id="prev" class="btn" title="Previous Month">◀ Prev</button>
-        <select id="monthSelect" class="select" aria-label="Select month"></select>
-        <button id="next" class="btn" title="Next Month">Next ▶</button>
-      </div>
-    </div>
-  </header>
 
-  <div class="heading">
-    <div class="title">
-      <h1 id="page-title">Academic Calendar — May 2025 to Apr 2026</h1>
-      <span id="badge" class="badge" style="display:none"></span>
-    </div>
-    <!-- Filters -->
-    <div class="filters" aria-label="Filters" role="group">
-      <span class="label" aria-hidden="true">Filter:</span>
-      <select id="subjectFilter" class="select small" aria-label="Filter by subject">
-        <option value="">All Subjects</option>
-      </select>
-      <select id="teacherFilter" class="select small" aria-label="Filter by teacher">
-        <option value="">All Teachers</option>
-      </select>
-      <select id="classFilter" class="select small" aria-label="Filter by class">
-        <option value="">All Classes</option>
-      </select>
-      <button id="clearFilters" class="btn clear" title="Clear filters">✕ Clear</button>
-    </div>
-  </div>
+<header>
+<div class="wrap">
+<div class="brand"><span>SEHR</span><span>ACADEMY</span></div>
+<div class="controls">
+<button id="prev" class="btn">◀</button>
+<select id="monthSelect" class="select"></select>
+<button id="next" class="btn">▶</button>
+<button id="todayBtn" class="btn">Today</button>
+</div>
+</div>
+</header>
 
-  <main id="calendar" class="calendar" data-json="data/academic-2025-2026.json">
-    <div class="weekdays" role="row" aria-hidden="true">
-      <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
-    </div>
-    <div id="calendar-grid" class="grid" aria-live="polite"></div>
-  </main>
+<div class="heading">
+<div class="filter"><button class="filter-btn">Class ▾</button><div class="filter-menu" id="classMenu"></div></div>
+<div class="filter"><button class="filter-btn">Teacher ▾</button><div class="filter-menu" id="teacherMenu"></div></div>
+<div class="filter">
+<button class="filter-btn">Mode ▾</button>
+<div class="filter-menu" id="modeMenu">
+<label><input type="checkbox" value="Online"> Online</label>
+<label><input type="checkbox" value="Offline"> Offline</label>
+</div>
+</div>
+<input type="text" id="searchInput" class="select" placeholder="Search topic...">
+</div>
 
-  <script>
-  // ====== EDIT THESE ======
-  const SHEET_ID = "1d5b07U_wV7Dn6RKRpVGhN1hCzdD8NJK9tKli_VIaIoo";
-  const API_KEY  = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
-  const TAB_META   = "Meta";
-  const TAB_EVENTS = "Events";
-  // ========================
+<main class="calendar">
+<div class="weekdays">
+<div>Mon</div><div>Tue</div><div>Wed</div>
+<div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+</div>
+<div id="calendar-grid" class="grid"></div>
+</main>
 
-  const qs = new URLSearchParams(location.search);
-  const monthParam = qs.get('month'); // yyyy-mm to start on (optional)
+<script>
+const SHEET_ID  = "1d5b07U_wV7Dn6RKRpVGhN1hCzdD8NJK9tKli_VIaIoo";
+const API_KEY   = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
+const TAB_EVENTS = "Events";
 
-  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-  /* === Session helpers === */
-  function getSessionName(min){
-    if (min < 12*60) return 'Morning';
-    if (min < 17*60) return 'Afternoon';
-    return 'Evening';
-  }
+let DATA=[];
+let CURRENT_YM="";
+let searchValue="";
+let selectedClasses=[];
+let selectedTeachers=[];
+let selectedModes=[];
 
-  function subjectClass(subj=""){
-    const s = String(subj).trim().toLowerCase();
-    if (/physics/.test(s)) return 'physics';
-    if (/chem/.test(s))   return 'chemistry';
-    if (/math/.test(s))   return 'maths';
-    if (/botany|zoology|biology/.test(s)) return 'biology';
-    return '';
-  }
-  const stripBrackets = (txt='') => String(txt).replace(/\[|\]/g,'').trim();
-  const compactTime   = (txt='') => String(txt)
-    .replace(/:00\s*(AM|PM)/i,' $1')
-    .replace(/\bAM\b/i,'AM')
-    .replace(/\bPM\b/i,'PM');
+function formatTimeRange(start,end){
+if(!start||!end)return "";
+function convert(t){
+t=t.toString().replace(":",".");
 
-  // ---- Time helpers for split start/end ----
-  function parseTimeToMinutes(str=''){
-    const s = String(str).trim();
-    if (!s) return null;
-    const m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
-    if (!m) return null;
-    let hh = parseInt(m[1],10);
-    const mm = m[2] ? parseInt(m[2],10) : 0;
-    const ap = m[3] ? m[3].toUpperCase() : null;
-    if (ap){
-      if (hh === 12) hh = 0;
-      if (ap === 'PM') hh += 12;
-    }
-    if (hh<0 || hh>23 || mm<0 || mm>59) return null;
-    return hh*60 + mm;
-  }
+let hour=parseFloat(t);
+if(isNaN(hour))return "";
 
-  function formatTime12(minutes){
-    if (minutes == null) return '';
-    let hh = Math.floor(minutes/60);
-    const mm = minutes % 60;
-    const ap = hh >= 12 ? 'PM' : 'AM';
-    hh = hh % 12; if (hh === 0) hh = 12;
-    const mmStr = mm.toString().padStart(2,'0');
-    return `${hh}:${mmStr} ${ap}`;
-  }
+let h=Math.floor(hour);
+let m=Math.round((hour-h)*60);
+let suffix=h>=12?"pm":"am";
 
-  function makeTimeLabel(e){
-    const startMin = e.startMin != null ? e.startMin : parseTimeToMinutes(e.startTime);
-    const endMin   = e.endMin   != null ? e.endMin   : parseTimeToMinutes(e.endTime);
-    if (startMin != null){
-      const session = getSessionName(startMin);
-      const startTxt = formatTime12(startMin);
-      const endTxt = endMin != null ? formatTime12(endMin) : '';
-      return { text: endTxt ? `${session} ${startTxt} to ${endTxt}` : `${session} ${startTxt}`, session };
-    }
-    return { text: compactTime(e.time || ''), session: null };
-  }
+h=h%12;if(h===0)h=12;
 
-  // Global state
-  let RAW_DATA = null;
-  let CURRENT_YM = null;
-  const FILTERS = { subject: '', teacher: '', class: '' };
-
-  // ---- Google Sheets helpers ----
-  const gapiBase = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values`;
-
-  async function readRange(rangeA1){
-    const url = `${gapiBase}/${encodeURIComponent(rangeA1)}?key=${API_KEY}`;
-    const res = await fetch(url, {cache:'no-store'});
-    if(!res.ok) throw new Error(`Sheets API failed for range "${rangeA1}" — ${res.status}`);
-    return res.json();
-  }
-
-  function valuesToObject(values){
-    const obj = {};
-    (values || []).forEach(row => {
-      const key = (row[0] || '').trim();
-      const val = (row[1] || '').trim();
-      if (key) obj[key] = val;
-    });
-    return obj;
-  }
-
-  function parseBool(v){ return /^true$/i.test(String(v).trim()); }
-
-  function toISODate(d){
-    const s = String(d || '').trim();
-    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-    const dt = new Date(s);
-    if (!isNaN(dt)) return dt.toISOString().slice(0,10);
-    return s;
-  }
-
-  function rowsToEvents(values){
-    if (!values || values.length === 0) return [];
-    const [header, ...rows] = values;
-    const norm = (h)=> String(h||'').toLowerCase().trim();
-    const idx = (name) => header.findIndex(h => norm(h) === name);
-
-    const cDate    = idx('date');
-    const cTime    = idx('time');
-    const cSubject = idx('subject');
-    const cTopic   = idx('topic');
-    const cTeacher = idx('teacher');
-    const cExam    = idx('exam');
-    const cClass = (() => {
-  for (const n of ['class', 'class ', 'class/batch', 'batch', 'grade', 'level']) {
-    const i = header.findIndex(h => norm(h) === n);
-    if (i >= 0) return i;
-  }
-  return -1;
-})();
-
-    const cStart   = (()=>{ for (const n of ['start time','start','from','start_time']){ const i = header.findIndex(h => norm(h) === n); if (i>=0) return i; } return -1; })();
-    const cEnd     = (()=>{ for (const n of ['end time','end','to','end_time']){ const i = header.findIndex(h => norm(h) === n); if (i>=0) return i; } return -1; })();
-
-    return rows.map(r => {
-      const startStr = (cStart >= 0 ? (r[cStart] || '') : '').toString().trim();
-      const endStr   = (cEnd   >= 0 ? (r[cEnd]   || '') : '').toString().trim();
-      const startMin = parseTimeToMinutes(startStr);
-      const endMin   = parseTimeToMinutes(endStr);
-      return {
-        date:    toISODate(r[cDate]),
-        time:    r[cTime]    || '',
-        startTime: startStr || '',
-        endTime:   endStr   || '',
-        startMin, endMin,
-        subject: r[cSubject] || '',
-        topic:   r[cTopic]   || '',
-        teacher: r[cTeacher] || '',
-        exam:    parseBool(r[cExam]),
-        class:   (cClass >= 0 ? (r[cClass] || '') : ''),
-      };
-    }).filter(e => e.date);
-  }
-
-  async function loadFromGoogleSheets(){
-    const metaResp = await readRange(`${TAB_META}!A1:B200`);
-    const metaKV = valuesToObject(metaResp.values || []);
-    if (!metaKV.start || !metaKV.end){
-      throw new Error('Meta sheet must have "start" and "end" keys.');
-    }
-    const meta = {
-      start: metaKV.start,
-      end: metaKV.end,
-      title: metaKV.title || '',
-      pageTitle: metaKV.pageTitle || '',
-      showExamPill: metaKV.showExamPill ? parseBool(metaKV.showExamPill) : true,
-    };
-
-    const eventsResp = await readRange(`${TAB_EVENTS}!A1:Z20000`);
-    const events = rowsToEvents(eventsResp.values || []);
-    return { meta, events, monthMeta: {} };
-  }
-
-  function clampAcademic(date, start, end){
-    if (date < start) return new Date(start);
-    if (date > end) return new Date(end);
-    return date;
-  }
-
-  function makeMonthOptions(start, end){
-    const opts = [];
-    const cur = new Date(start);
-    cur.setDate(1);
-    while (cur <= end){
-      opts.push({value:cur.toISOString().slice(0,7), label: MONTHS[cur.getMonth()]+' '+cur.getFullYear()});
-      cur.setMonth(cur.getMonth()+1);
-    }
-    return opts;
-  }
-
-  function renderControls(start, end, currentYM){
-    const sel = document.getElementById('monthSelect');
-    sel.innerHTML = '';
-    makeMonthOptions(start, end).forEach(opt => {
-      const o = document.createElement('option');
-      o.value = opt.value; o.textContent = opt.label;
-      if (opt.value === currentYM) o.selected = true;
-      sel.appendChild(o);
-    });
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
-    prevBtn.disabled = currentYM === sel.options[0].value;
-    nextBtn.disabled = currentYM === sel.options[sel.options.length-1].value;
-
-    prevBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i>0){ sel.selectedIndex = i-1; sel.dispatchEvent(new Event('change')); } };
-    nextBtn.onclick = ()=>{ const i = sel.selectedIndex; if (i<sel.options.length-1){ sel.selectedIndex = i+1; sel.dispatchEvent(new Event('change')); } };
-  }
-
-function filterEvents(events){
-  const subj = FILTERS.subject.trim().toLowerCase();
-  const teach = FILTERS.teacher.trim().toLowerCase();
-  const cls = FILTERS.class.trim().toLowerCase();
-  if (!subj && !teach && !cls) return events;
-
-  return events.filter(e => {
-    const eSubj = stripBrackets(e.subject || '').toLowerCase();
-    const eTeach = stripBrackets(e.teacher || '').toLowerCase();
-    const eClass = stripBrackets(e.class || '').toLowerCase();
-
-    const okSubj = subj ? eSubj === subj : true;
-    const okTeach = teach ? eTeach === teach : true;
-    const okClass = cls ? eClass.includes(cls) : true;
-
-    return okSubj && okTeach && okClass;
-  });
+if(m===0)return h;
+return h+"."+ (m<10?"0"+m:m);
+}
+let startFormatted=convert(start);
+let endFormatted=convert(end);
+let endHour=parseFloat(end);
+let suffix=endHour>=12?"pm":"am";
+return `${startFormatted} - ${endFormatted} ${suffix}`;
 }
 
-  function updateFilterBadge(){
-    const badge = document.getElementById('badge');
-    const clearBtn = document.getElementById('clearFilters');
-    const parts = [];
-    if (FILTERS.subject) parts.push(`Subject: ${FILTERS.subject}`);
-    if (FILTERS.teacher) parts.push(`Teacher: ${FILTERS.teacher}`);
-    if (FILTERS.class) parts.push(`Class: ${FILTERS.class}`);
-    if (parts.length){
-      badge.textContent = 'Filters — ' + parts.join(' · ');
-      badge.style.display='';
-      clearBtn.style.display='inline-block';
-    } else {
-      badge.style.display='none';
-      clearBtn.style.display='none';
-    }
-  }
+async function fetchData(){
+const url=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${TAB_EVENTS}!A1:Z1000?key=${API_KEY}`;
+const res=await fetch(url);
+const json=await res.json();
+if(!json.values){alert("No data found.");return;}
 
-  function renderCalendar(meta, allEvents, ym){
-    CURRENT_YM = ym;
-    const [y, m] = ym.split('-').map(Number);
-    const year = y, monthIndex = m-1;
+const [header,...rows]=json.values;
+const lowerHeader=header.map(h=>h.toLowerCase());
+const idx=n=>lowerHeader.indexOf(n);
 
-    const monthName = MONTHS[monthIndex];
-    const titleText = (meta.title || `Academic Calendar — ${monthName} ${year}`)
-      .replace(/\{MONTH\}/g, monthName)
-      .replace(/\{YEAR\}/g, String(year));
-    const pageTitleText = (meta.pageTitle || `Sehr Academy — Academic Calendar (${monthName} ${year})`)
-      .replace(/\{MONTH\}/g, monthName)
-      .replace(/\{YEAR\}/g, String(year));
+DATA=rows.map(r=>({
+date:r[idx("date")]||"",
+subject:r[idx("subject")]||"",
+topic:r[idx("topic")]||"",
+teacher:r[idx("teacher")]||"",
+class:r[idx("class")]||"",
+mode:r[idx("mode")]||"",
+start:r[idx("start time")]||"",
+end:r[idx("end time")]||""
+})).filter(e=>e.date);
 
-    document.title = pageTitleText;
-    document.getElementById('page-title').textContent = titleText;
-    updateFilterBadge();
+populateFilters();
+generateMonths();
+}
 
-    const grid = document.getElementById('calendar-grid');
-    grid.innerHTML = '';
+function populateFilters(){
+const classes=[...new Set(DATA.map(e=>e.class).filter(Boolean))].sort();
+const teachers=[...new Set(DATA.map(e=>e.teacher).filter(Boolean))].sort();
 
-    const first = new Date(year, monthIndex, 1);
-    const last  = new Date(year, monthIndex + 1, 0);
-    const daysInMonth = last.getDate();
-    const leadingBlanks = (first.getDay() + 6) % 7; // Mon=0
+classes.forEach(c=>{
+classMenu.innerHTML+=`<label><input type="checkbox" value="${c}"> ${c}</label>`;
+});
+teachers.forEach(t=>{
+teacherMenu.innerHTML+=`<label><input type="checkbox" value="${t}"> ${t}</label>`;
+});
 
-    const totalCells = leadingBlanks + daysInMonth;
-    const trailingBlanks = (7 - (totalCells % 7)) % 7;
+document.querySelectorAll("#classMenu input").forEach(cb=>{
+cb.addEventListener("change",()=>{
+selectedClasses=[...document.querySelectorAll("#classMenu input:checked")].map(i=>i.value);
+renderCalendar(CURRENT_YM);
+});
+});
 
-    const events = filterEvents(allEvents || []);
+document.querySelectorAll("#teacherMenu input").forEach(cb=>{
+cb.addEventListener("change",()=>{
+selectedTeachers=[...document.querySelectorAll("#teacherMenu input:checked")].map(i=>i.value);
+renderCalendar(CURRENT_YM);
+});
+});
 
-    const byDay = {};
-    for (const e of events){
-      const d = new Date(e.date);
-      if (d.getMonth() !== monthIndex || d.getFullYear() !== year) continue;
-      const day = d.getDate();
-      (byDay[day] ||= []).push(e);
-    }
+document.querySelectorAll("#modeMenu input").forEach(cb=>{
+cb.addEventListener("change",()=>{
+selectedModes=[...document.querySelectorAll("#modeMenu input:checked")].map(i=>i.value);
+renderCalendar(CURRENT_YM);
+});
+});
+}
 
-    const frag = document.createDocumentFragment();
-    const mkEmpty = () => {
-      const c = document.createElement('div');
-      c.className = 'day dim';
-      c.innerHTML = `
-        <div class="day-header"><span class="date">&nbsp;</span><span class="weekday">&nbsp;</span></div>
-        <div class="accent" style="opacity:.2"></div>
-        <div class="events"></div>`;
-      return c;
-    };
-    for (let i=0;i<leadingBlanks;i++) frag.appendChild(mkEmpty());
+function generateMonths(){
+const sel=monthSelect;
+sel.innerHTML="";
+const startYear=2026;
+const startMonth=0;
+const lastDate=new Date(DATA[DATA.length-1].date);
+const endYear=lastDate.getFullYear();
+const endMonth=lastDate.getMonth();
 
-    const weekdayName = n => ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][n];
+let y=startYear,m=startMonth;
+while(y<endYear||(y===endYear&&m<=endMonth)){
+sel.innerHTML+=`<option value="${y}-${String(m+1).padStart(2,"0")}">${MONTHS[m]} ${y}</option>`;
+m++;if(m>11){m=0;y++;}
+}
 
-    for (let dateNum=1; dateNum<=daysInMonth; dateNum++){
-      const dowMonIdx = (leadingBlanks + (dateNum-1)) % 7;
-      const c = document.createElement('div');
-      c.className = 'day';
-      c.innerHTML = `
-        <div class="day-header">
-          <span class="date">${dateNum}</span>
-          <span class="weekday">${weekdayName(dowMonIdx)}</span>
-        </div>
-        <div class="accent"></div>
-        <div class="events"></div>`;
+const today=new Date();
+const currentYM=today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0");
+const index=[...sel.options].findIndex(o=>o.value===currentYM);
+sel.selectedIndex=index>=0?index:0;
+renderCalendar(sel.value);
+}
 
-      const evWrap = c.querySelector('.events');
-      const todays = (byDay[dateNum] || []);
+function renderCalendar(ym){
+CURRENT_YM=ym;
+const grid=document.getElementById("calendar-grid");
+grid.innerHTML="";
 
-      todays.forEach(e => {
-        const eDiv = document.createElement('div');
+const [year,month]=ym.split("-").map(Number);
+const first=new Date(year,month-1,1);
+const last=new Date(year,month,0);
+const days=last.getDate();
+const lead=(first.getDay()+6)%7;
 
-        let extraModeClass = '';
-        const cleanTopic = stripBrackets(e.topic || '—');
-	const isCrash   = /^crash\b/i.test(cleanTopic);
-	const isPlusTwo = /^plustwo\b/i.test(cleanTopic);
-	const isPlusOne = /^plusone\b/i.test(cleanTopic);
-        const isLive = /^LIVE\s*- /i.test(cleanTopic) || /^LIVE\s*-/i.test(cleanTopic);
+for(let i=0;i<lead;i++){grid.innerHTML+=`<div class="day"></div>`;}
 
-        const isOffline = /^OFFLINE\s*- /i.test(cleanTopic) || /^OFFLINE\s*-/i.test(cleanTopic);
-        const isOnline  = /^ONLINE\s*- /i.test(cleanTopic)  || /^ONLINE\s*-/i.test(cleanTopic);
-        const isOnlinePC = /^ONLINE\s*🖥️/i.test(cleanTopic) || /^ONLINE\s*\u{1F5A5}\u{FE0F}/iu.test(cleanTopic);
-        if (isOnlinePC) extraModeClass = ' online-pc';
-        else if (isOffline) extraModeClass = ' offline';
-        else if (isOnline) extraModeClass = ' online';
+for(let d=1;d<=days;d++){
+const cellDate=new Date(year,month-1,d);
+const today=new Date();today.setHours(0,0,0,0);
+cellDate.setHours(0,0,0,0);
 
-        const cleanSubject = stripBrackets(e.subject);
-        const subjClass = subjectClass(e.subject);
-        const { text: timeText, session } = makeTimeLabel(e);
-        const teacherName  = stripBrackets(e.teacher || '');
-        const showExamPill = (RAW_DATA?.meta?.showExamPill !== false);
+const div=document.createElement("div");
+div.className="day";
+if(cellDate.getTime()===today.getTime())div.classList.add("today");
+div.innerHTML=`<div class="date">${d}</div>`;
 
-        /* Completed marker */
-        const eventDate = new Date(e.date);
-        const today = new Date(); today.setHours(0,0,0,0);
-        const completedClass = eventDate < today ? ' completed' : '';
+const dateStr=`${year}-${String(month).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
 
-        /* Special + class 12 + class 11 logic */
-        const className = stripBrackets(e.class || '');
-        const isSpecialTitle = /^SPECIAL CLASS/i.test(cleanTopic);
-        const isClass12 = (/\b12\b/i.test(className) || /class\s*12/i.test(className));
-        const isClass11 = (/\b11\b/i.test(className) || /class\s*11/i.test(className));
-        const specialClass = isSpecialTitle ? ' special' : '';
-        const class12Class = isClass12 ? ' class-12' : '';
-        const class11Class = isClass11 ? ' class-11' : '';
+const events=DATA.filter(e=>
+e.date===dateStr &&
+(selectedClasses.length===0||selectedClasses.includes(e.class)) &&
+(selectedTeachers.length===0||selectedTeachers.includes(e.teacher)) &&
+(selectedModes.length===0||selectedModes.includes(e.mode)) &&
+(!searchValue||e.topic.toLowerCase().includes(searchValue))
+);
 
-eDiv.className =
-  `event${extraModeClass}${specialClass}${class12Class}${class11Class}` +
-  `${isLive ? ' live' : ''}` +
-  `${isCrash ? ' crash' : ''}` +
-  `${isPlusTwo ? ' plustwo' : ''}` +
-  `${isPlusOne ? ' plusone' : ''}` +
-  `${completedClass}`;
+if(events.length===0){div.innerHTML+=`<div class="empty">No sessions scheduled.</div>`;}
 
-        const sessionClass = session ? session.toLowerCase() : '';
-        eDiv.innerHTML = `
-          <p class="event-title">${cleanTopic}</p>
-          <div class="event-meta">
-            ${timeText ? `<span class="pill time ${sessionClass}"><strong>${timeText}</strong></span>` : ''}
-            ${cleanSubject ? `<span class="pill subject ${subjClass}"><strong>${e.exam ? (showExamPill ? 'Exam' : cleanSubject) : cleanSubject}</strong></span>` : ''}
-            ${className ? `<span class="pill level"><strong>${className}</strong></span>` : ''}
-            ${teacherName ? `<span class="pill teacher">${teacherName}</span>` : ''}
-          </div>`;
-        evWrap.appendChild(eDiv);
-      });
+events.forEach(e=>{
+const ev=document.createElement("div");
+ev.className="event";
 
-      frag.appendChild(c);
-    }
-    for (let i=0;i<trailingBlanks;i++) frag.appendChild(mkEmpty());
-    grid.appendChild(frag);
-  }
+const className=e.class.toLowerCase();
+if(className.includes("10"))ev.classList.add("class-10");
+else if(className.includes("11"))ev.classList.add("class-11");
+else if(className.includes("12"))ev.classList.add("class-12");
+else if(className.includes("neet"))ev.classList.add("neet");
+else if(className.includes("jee"))ev.classList.add("jee");
 
-  function populateFiltersFromData(allEvents){
-    const subjects = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.subject||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-    const teachers = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.teacher||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-    const classes  = Array.from(new Set((allEvents||[]).map(e => stripBrackets(e.class||'')).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+const eventDate=new Date(e.date);
+eventDate.setHours(0,0,0,0);
+if(eventDate<today)ev.classList.add("faded");
+else if(eventDate.getTime()===today.getTime())ev.classList.add("today-event");
+else ev.classList.add("upcoming");
 
-    const subjSel = document.getElementById('subjectFilter');
-    const teachSel = document.getElementById('teacherFilter');
-    const classSel = document.getElementById('classFilter');
+if(e.subject==="Holiday")div.classList.add("holiday");
 
-    subjSel.length = 1; teachSel.length = 1; classSel.length = 1;
+let pills="";
+if(e.class)pills+=`<span class="pill">${e.class}</span>`;
+if(e.start&&e.end)pills+=`<span class="pill">${formatTimeRange(e.start,e.end)}</span>`;
+if(e.mode==="Online")pills+=`<span class="pill mode-online">Online</span>`;
+if(e.mode==="Offline")pills+=`<span class="pill mode-offline">Offline</span>`;
+if(e.subject)pills+=`<span class="pill">${e.subject}</span>`;
+if(e.teacher)pills+=`<span class="pill teacher">${e.teacher}</span>`;
 
-    subjects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; subjSel.appendChild(o); });
-    teachers.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teachSel.appendChild(o); });
-    classes.forEach(c => { const o=document.createElement('option'); o.value=c; classSel.appendChild(o); });
-  }
+ev.innerHTML=`<div class="event-title">${e.topic}</div><div>${pills}</div>`;
+div.appendChild(ev);
+});
+grid.appendChild(div);
+}
+}
 
-  (async function init(){
-    try{
-      const data = await loadFromGoogleSheets();
-      RAW_DATA = data;
+document.querySelectorAll(".filter-btn").forEach(btn=>{
+btn.addEventListener("click",function(){this.parentElement.classList.toggle("open");});
+});
 
-      populateFiltersFromData(data.events || []);
+document.addEventListener("click",function(e){
+document.querySelectorAll(".filter").forEach(f=>{
+if(!f.contains(e.target)){f.classList.remove("open");}
+});
+});
 
-      const subjSel = document.getElementById('subjectFilter');
-      const teachSel = document.getElementById('teacherFilter');
-      const classSel = document.getElementById('classFilter');
-      const clearBtn = document.getElementById('clearFilters');
+monthSelect.onchange=e=>renderCalendar(e.target.value);
+searchInput.oninput=e=>{searchValue=e.target.value.toLowerCase();renderCalendar(CURRENT_YM);};
+prev.onclick=()=>{if(monthSelect.selectedIndex>0){monthSelect.selectedIndex--;renderCalendar(monthSelect.value);}};
+next.onclick=()=>{if(monthSelect.selectedIndex<monthSelect.options.length-1){monthSelect.selectedIndex++;renderCalendar(monthSelect.value);}};
+todayBtn.onclick=()=>{const today=new Date();const ym=today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0");const index=[...monthSelect.options].findIndex(o=>o.value===ym);if(index>=0){monthSelect.selectedIndex=index;renderCalendar(ym);}};
 
-      function applyFiltersAndRender(){
-        const ym = document.getElementById('monthSelect').value || CURRENT_YM;
-        const meta = { ...RAW_DATA.meta };
-        renderCalendar(meta, RAW_DATA.events || [], ym);
-        const start = new Date(RAW_DATA.meta.start);
-        const end   = new Date(RAW_DATA.meta.end);
-        renderControls(start, end, ym);
-      }
+fetchData();
+</script>
 
-      subjSel.onchange = ()=>{ FILTERS.subject = subjSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-      teachSel.onchange = ()=>{ FILTERS.teacher = teachSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-      classSel.onchange = ()=>{ FILTERS.class = classSel.value || ''; updateFilterBadge(); applyFiltersAndRender(); };
-
-      clearBtn.onclick = ()=>{
-        FILTERS.subject = '';
-        FILTERS.teacher = '';
-        FILTERS.class = '';
-        subjSel.value = '';
-        teachSel.value = '';
-        classSel.value = '';
-        updateFilterBadge();
-        applyFiltersAndRender();
-      };
-
-      // Initial month
-      const start = new Date(RAW_DATA.meta.start);
-      const end   = new Date(RAW_DATA.meta.end);
-      const initial = (()=>{
-        if (monthParam) {
-          const [yy, mm] = monthParam.split('-').map(Number);
-          const proposed = new Date(yy, (mm||1)-1, 1);
-          return clampAcademic(proposed, start, end);
-        }
-        const now = new Date();
-        return clampAcademic(now, start, end);
-      })();
-
-      const sel = document.getElementById('monthSelect');
-      const applyMonth = () => {
-        const ym = sel.value;
-        const meta = { ...RAW_DATA.meta };
-        renderCalendar(meta, RAW_DATA.events || [], ym);
-        renderControls(start, end, ym);
-      };
-      sel.onchange = applyMonth;
-
-      const initialYM = initial.toISOString().slice(0,7);
-      renderControls(start, end, initialYM);
-      const idx = Array.from(sel.options).findIndex(o => o.value === initialYM);
-      if (idx >= 0) sel.selectedIndex = idx;
-      applyMonth();
-
-    }catch(err){
-      console.error(err);
-      document.getElementById('calendar-grid').innerHTML =
-        '<p style="color:#c00;font-weight:700">Failed to load from Google Sheets. Check API key, Sheet sharing, tab names, and ranges.</p>';
-    }
-  })();
-  </script>
 </body>
 </html>
