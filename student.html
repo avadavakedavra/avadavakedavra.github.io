@@ -23,6 +23,7 @@ body{
   display:flex;
 }
 
+
 .sidebar{
   width:260px;
   min-height:100vh;
@@ -221,6 +222,22 @@ h2{
   opacity:1;
   pointer-events:all;
 }
+.portal-header{
+  margin-bottom:40px;
+}
+
+.portal-title{
+  font-family:'Playfair Display', serif;
+  font-size:26px;
+  font-weight:700;
+  letter-spacing:0.5px;
+}
+
+.portal-sub{
+  color:#6b7280;
+  font-size:14px;
+  margin-top:4px;
+}
 .status-paid{color:#16a34a;font-weight:700;}
 .status-pending{color:#dc2626;font-weight:700;}
 .status-partial{color:#f59e0b;font-weight:700;}
@@ -246,7 +263,10 @@ h2{
 </div>
 
 <div class="main">
-
+<div class="portal-header">
+  <div class="portal-title">SEHR Academic Performance Portal</div>
+  <div class="portal-sub">Student Analytics Dashboard</div>
+</div>
 <!-- OVERVIEW -->
 <div id="overview" class="section active">
   <div class="card">
@@ -389,26 +409,68 @@ async function load(){
   // Attendance
   document.getElementById("totalClasses").innerText=data.attendance.total_classes;
   document.getElementById("attendedClasses").innerText=data.attendance.attended;
-  document.getElementById("attendancePercent").innerText=data.attendance.percentage+"%";
+const percent=data.attendance.percentage;
+let label="";
+let color="";
+
+if(percent>=95){
+  label="Excellent";
+  color="#16a34a";
+}else if(percent>=85){
+  label="Good";
+  color="#ca8a04";
+}else{
+  label="Needs Attention";
+  color="#dc2626";
+}
+
+document.getElementById("attendancePercent").innerHTML=
+  `<span style="color:${color};font-weight:800;">
+    ${percent}% – ${label}
+  </span>`;
 
   // Fees
   buildFees();
 
-  // Remarks
-  document.getElementById("remarksList").innerHTML=
-    data.remarks.map(r=>`
-      <div style="margin-bottom:12px;">
+// Remarks
+if(data.remarks && data.remarks.length > 0){
+
+  document.getElementById("remarksList").innerHTML =
+    data.remarks.map(r => `
+<div style="margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f1f5f9;">
         <b>${new Date(r.date).toLocaleDateString()}</b><br>
         ${r.remark}
-      </div>`).join("");
+      </div>
+    `).join("");
 
-  // Achievements
-  document.getElementById("achievementList").innerHTML=
-    data.achievements.map(a=>`
+}else{
+
+  document.getElementById("remarksList").innerHTML =
+`<div style="color:#9ca3af;font-weight:500;text-align:center;padding:20px 0;">
+       No remarks added yet.
+     </div>`;
+
+}
+
+// Achievements
+if(data.achievements && data.achievements.length > 0){
+
+  document.getElementById("achievementList").innerHTML =
+    data.achievements.map(a => `
       <div style="margin-bottom:12px;">
         <b>${a.title}</b><br>
         ${a.description}
-      </div>`).join("");
+      </div>
+    `).join("");
+
+}else{
+
+  document.getElementById("achievementList").innerHTML =
+    `<div style="color:#9ca3af;font-weight:500;text-align:center;padding:20px 0;">
+       No achievements added yet.
+     </div>`;
+
+}
 document.getElementById("loader").classList.remove("active");
   setupYearDropdown();
 }
