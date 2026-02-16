@@ -22,41 +22,129 @@ body{
   color:var(--dark);
   display:flex;
 }
+
 .sidebar{
   width:260px;
-  background:var(--lime);
-  color:white;
   min-height:100vh;
-  padding:30px 20px;
+  padding:35px 22px;
   position:fixed;
+  overflow:hidden;
+
+  /* Frosted glass effect */
+  background:rgba(139,197,63,0.75);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  /* Subtle glass border */
+  border-right:1px solid rgba(255,255,255,0.25);
+
+  /* Soft shadow depth */
+  box-shadow:4px 0 30px rgba(0,0,0,0.08);
+
+  color: #ffffff;
+}
+/* Abstract modern pattern */
+.sidebar::before{
+  content:"";
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%);
+  top:-100px;
+  left:-120px;
+  z-index:0;
+}
+
+.sidebar::after{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  background:radial-gradient(circle at 70% 70%, rgba(255,255,255,0.2), transparent 70%);
+  bottom:-120px;
+  right:-80px;
+  z-index:0;
+}
+.sidebar > *{
+  position:relative;
+  z-index:2;
+}
+.sidebar h2{
+  font-family:'Playfair Display', serif;
+  font-weight:700;
+  color:#ffffff;
+  text-shadow:0 3px 10px rgba(0,0,0,0.35);
+}
+
+#sideClass{
+  color:rgba(255,255,255,0.85);
+  font-weight:500;
+  letter-spacing:0.5px;
+}
+
+.menu-item{
+  font-weight:700;
+  color:#ffffff;
+  text-shadow:0 2px 8px rgba(0,0,0,0.3);
 }
 .profile-side{text-align:center;margin-bottom:40px;}
 .profile-side img{
-  width:90px;height:90px;border-radius:50%;
-  object-fit:cover;border:4px solid white;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid rgba(255,255,255,0.9);
+  box-shadow:0 8px 25px rgba(0,0,0,0.2);
 }
 .profile-side h2{
   font-family:'Playfair Display',serif;
   margin:15px 0 5px;
 }
 .menu-item{
-  padding:12px;border-radius:8px;
-  cursor:pointer;margin-bottom:10px;
+  padding:12px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  margin-bottom:8px;
+  font-weight:600;
+  letter-spacing:0.3px;
+  transition:all .25s ease;
+  border-left:3px solid transparent;
+  padding-left:14px;
 }
-.menu-item.active,.menu-item:hover{
-  background:white;color:var(--lime);
+
+
+.menu-item:hover{
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(8px);
+}
+
+.menu-item.active{
+  background:#111827;        /* deep charcoal, not pure black */
+  color:#ffffff;
+  box-shadow:none;
+  border-left:3px solid white;
+}
+.menu-item:not(.active){
+  opacity:0.9;
 }
 .main{
   margin-left:260px;
-  padding:40px 50px;
+  padding:60px 60px;
   width:100%;
 }
 .card{
   background:white;
   padding:30px;
-  border-radius:18px;
+  border:1px solid #f1f5f9;
+  border-radius:20px;
   box-shadow:0 10px 30px rgba(0,0,0,.06);
   margin-bottom:35px;
+  transition:all 0.3s ease;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 45px rgba(0,0,0,0.08);
 }
 .section{display:none;}
 .section.active{display:block;}
@@ -79,7 +167,7 @@ body{
   font-size:13px;color:#6b7280;
   margin-bottom:8px;text-transform:uppercase;
 }
-.info-value{font-size:18px;font-weight:700;}
+.info-value{font-size:20px;font-weight:800;}
 .subject-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -96,12 +184,42 @@ body{
   border-radius:999px;overflow:hidden;
   margin-top:8px;
 }
-.progress-fill{height:100%;border-radius:999px;}
+.progress-fill{
+  height:100%;
+  border-radius:999px;
+  transition:width 0.8s ease-in-out;
+}
+h2{
+  font-family:'Playfair Display', serif;
+  font-weight:700;
+  letter-spacing:0.5px;
+  font-size:24px;
+}
 .year-select{
   padding:8px 14px;
   border-radius:8px;
   border:1px solid #ddd;
   font-weight:600;
+}
+.loader{
+  position:fixed;
+  inset:0;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:18px;
+  z-index:9999;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s ease;
+}
+
+.loader.active{
+  opacity:1;
+  pointer-events:all;
 }
 .status-paid{color:#16a34a;font-weight:700;}
 .status-pending{color:#dc2626;font-weight:700;}
@@ -110,7 +228,9 @@ body{
 </head>
 
 <body>
-
+<div id="loader" class="loader">
+  Loading...
+</div>
 <div class="sidebar">
   <div class="profile-side">
     <img id="sidePhoto">
@@ -244,7 +364,7 @@ function calculateRemainingDays(){
 }
 
 async function load(){
-  const id=getId();
+  document.getElementById("loader").classList.add("active");  const id=getId();
   const res=await fetch(API+"?id="+id);
   const data=await res.json();
   globalData=data;
@@ -289,7 +409,7 @@ async function load(){
         <b>${a.title}</b><br>
         ${a.description}
       </div>`).join("");
-
+document.getElementById("loader").classList.remove("active");
   setupYearDropdown();
 }
 
