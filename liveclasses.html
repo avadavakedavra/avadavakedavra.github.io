@@ -54,7 +54,28 @@ header::after{
   margin:12px auto 0;
   border-radius:2px;
 }
+.loader{
+  position:fixed;
+  inset:0;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:18px;
+  color:#1f2937;
+  z-index:9999;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s ease;
+}
 
+.loader.active{
+  opacity:1;
+  pointer-events:all;
+}
 .container{
   max-width:1100px;
   margin:40px auto;
@@ -196,7 +217,9 @@ button:disabled{
 </head>
 
 <body>
-
+<div id="loader" class="loader active">
+  Loading Live Classes...
+</div>
 <header>
   <h1>Live Learning Portal</h1>
   <p>SEHR Academy</p>
@@ -373,11 +396,15 @@ function joinClass(link,className,subject){
 }
 
 fetchClasses().then(classes=>{
-  allClasses=classes;
+  allClasses = classes;
   populateFilter(classes);
   render();
   document.getElementById("classFilter").addEventListener("change",render);
   setInterval(render,1000);
+
+  document.getElementById("loader").classList.remove("active");
+}).catch(()=>{
+  document.getElementById("loader").innerText = "Failed to load classes.";
 });
 </script>
 
