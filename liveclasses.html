@@ -299,16 +299,10 @@ function render(){
 
   const running = filtered.find(c => now >= new Date(c.start) && now <= new Date(c.end));
 
-  let display = [];
-
-  if(running){
-    display.push(running);
-    const upcoming = filtered.filter(c => new Date(c.start) > now);
-    display = display.concat(upcoming.slice(0,2));
-  }else{
-    const upcoming = filtered.filter(c => new Date(c.start) > now);
-    display = upcoming.slice(0,3);
-  }
+  const upcoming = filtered.filter(c => new Date(c.start) > now);
+  const completed = filtered
+    .filter(c => new Date(c.end) < now)
+    .sort((a,b)=>new Date(b.end)-new Date(a.end)); // most recent first
 
   const liveSection = document.getElementById("liveSection");
   const upcomingSection = document.getElementById("upcomingSection");
@@ -316,78 +310,46 @@ function render(){
   liveSection.innerHTML = "";
   upcomingSection.innerHTML = "";
 
-  if(display.length === 0){
+  if(filtered.length === 0){
     liveSection.innerHTML = "<div class='section-title'>No live sessions scheduled.</div>";
     return;
   }
 
+  // ===== LIVE SECTION =====
   if(running){
     liveSection.innerHTML = "<div class='section-title'>🔴 Live Now</div>";
+    const liveGrid = document.createElement("div");
+    liveGrid.className = "grid";
+    liveGrid.appendChild(buildCard(running, now));
+    liveSection.appendChild(liveGrid);
   }
 
-  upcomingSection.innerHTML += "<div class='section-title'>Upcoming Classes</div>";
+  // ===== UPCOMING SECTION =====
+  const upcomingToShow = running ? upcoming.slice(0,2) : upcoming.slice(0,3);
 
-  const grid = document.createElement("div");
-  grid.className = "grid";
+  if(upcomingToShow.length > 0){
+    upcomingSection.innerHTML += "<div class='section-title'>Upcoming Classes</div>";
+    const upcomingGrid = document.createElement("div");
+    upcomingGrid.className = "grid";
+    upcomingToShow.forEach(c=>{
+      upcomingGrid.appendChild(buildCard(c, now));
+    });
+    upcomingSection.appendChild(upcomingGrid);
+  }
 
-  display.forEach(c=>{
+  // ===== COMPLETED SECTION =====
+  const completedToShow = completed.slice(0,3);
 
-    const start = new Date(c.start);
-    const end = new Date(c.end);
-
-    const joinWindowStart = new Date(start.getTime() - 10*60000);
-
-    let statusClass="", badgeContent="", buttonText="", disabled=false;
-
-    if(now < joinWindowStart){
-      statusClass="upcoming";
-      badgeContent="UPCOMING";
-      buttonText="Not Available";
-      disabled=true;
-    }
-    else if(now >= joinWindowStart && now <= end){
-      if(now >= start){
-        statusClass="live";
-        badgeContent=`<span class="live-dot"></span> LIVE`;
-      }else{
-        statusClass="upcoming";
-        badgeContent="STARTING SOON";
-      }
-      buttonText="Join Now";
-    }
-    else{
-      statusClass="ended";
-      badgeContent="ENDED";
-      buttonText="Class Ended";
-      disabled=true;
-    }
-
-    const card=document.createElement("div");
-    card.className="card";
-
-    card.innerHTML=`
-      <div class="thumb" style="background-image:url('${c.thumbnail||''}')"></div>
-      <div class="card-body">
-        <div class="subject">${c.subject}</div>
-        <div class="topic">${c.topic||''}</div>
-        <div class="teacher">By ${c.teacher||'SEHR Faculty'}</div>
-        <div class="meta">${c.className}</div>
-        <div class="meta">${formatTime(start)} - ${formatTime(end)}</div>
-        ${now < start ? `<div class="countdown">${getCountdown(start)}</div>`:''}
-        <span class="badge ${statusClass}">${badgeContent}</span>
-        <button ${disabled?'disabled':''}
-          onclick="joinClass('${c.meetingLink}','${c.className}','${c.subject}')">
-          ${buttonText}
-        </button>
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
-
-  upcomingSection.appendChild(grid);
+  if(completedToShow.length > 0){
+    upcomingSection.innerHTML += "<div class='section-title'>Recently Completed</div>";
+    const completedGrid = document.createElement("div");
+    completedGrid.className = "grid";
+    completedToShow.forEach(c=>{
+      completedGrid.appendChild(buildCard(c, now));
+    });
+    upcomingSection.appendChild(completedGrid);
+  }
 }
-
 function joinClass(link,className,subject){
   fetch(API_URL+"?action=logAttendance&class="+
     encodeURIComponent(className)+
@@ -406,6 +368,60 @@ fetchClasses().then(classes=>{
 }).catch(()=>{
   document.getElementById("loader").innerText = "Failed to load classes.";
 });
+function buildCard(c, now){
+
+  const start = new Date(c.start);
+  const end = new Date(c.end);
+
+  const joinWindowStart = new Date(start.getTime() - 10*60000);
+
+  let statusClass="", badgeContent="", buttonText="", disabled=false;
+
+  if(now < joinWindowStart){
+    statusClass="upcoming";
+    badgeContent="UPCOMING";
+    buttonText="Not Available";
+    disabled=true;
+  }
+  else if(now >= joinWindowStart && now <= end){
+    if(now >= start){
+      statusClass="live";
+      badgeContent=`<span class="live-dot"></span> LIVE`;
+    }else{
+      statusClass="upcoming";
+      badgeContent="STARTING SOON";
+    }
+    buttonText="Join Now";
+  }
+  else{
+    statusClass="ended";
+    badgeContent="ENDED";
+    buttonText="Class Ended";
+    disabled=true;
+  }
+
+  const card=document.createElement("div");
+  card.className="card";
+
+  card.innerHTML=`
+    <div class="thumb" style="background-image:url('${c.thumbnail||''}')"></div>
+    <div class="card-body">
+      <div class="subject">${c.subject}</div>
+      <div class="topic">${c.topic||''}</div>
+      <div class="teacher">By ${c.teacher||'SEHR Faculty'}</div>
+      <div class="meta">${c.className}</div>
+      <div class="meta">${formatTime(start)} - ${formatTime(end)}</div>
+      ${now < start ? `<div class="countdown">${getCountdown(start)}</div>`:''}
+      <span class="badge ${statusClass}">${badgeContent}</span>
+      <button ${disabled?'disabled':''}
+        onclick="joinClass('${c.meetingLink}','${c.className}','${c.subject}')">
+        ${buttonText}
+      </button>
+    </div>
+  `;
+
+  return card;
+}
 </script>
 
 </body>
