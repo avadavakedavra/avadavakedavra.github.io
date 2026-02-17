@@ -1,65 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Learning Portal — SEHR Academy</title>
+<title>Live Learning Portal — Sehr Academy</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --lime:#8BC53F;
-  --bg:#f5f7f4;
-  --dark:#1f2937;
+  --green:#8BC53F;
+  --black:#0b0f10;
+  --gray:#6b7280;
   --border:#e5e7eb;
   --danger:#ef4444;
-  --grey:#9ca3af;
   --soon:#f59e0b;
 }
 
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
-  margin:0;
-  font-family:Montserrat,sans-serif;
-  background:var(--bg);
-  color:var(--dark);
+  font-family:"Montserrat",sans-serif;
+  background:#f5f7f4;
+  color:var(--black);
+  line-height:1.6;
 }
 
-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:#fff;
-  padding:30px 20px;
+/* ===== PORTAL HERO ===== */
+.portal-hero{
+  padding:60px 20px 30px;
   text-align:center;
+  background:#fff;
   border-bottom:1px solid var(--border);
 }
 
-header h1{
-  margin:0;
-  font-size:22px;
+.portal-hero h1{
+  font-size:28px;
   font-weight:800;
+  margin-bottom:8px;
 }
 
-header p{
-  margin:8px 0 0;
+.portal-hero p{
+  color:var(--gray);
   font-size:14px;
-  color:var(--grey);
 }
 
-header::after{
-  content:"";
-  display:block;
-  width:60px;
-  height:3px;
-  background:var(--lime);
-  margin:12px auto 0;
-  border-radius:2px;
-}
-
-/* Loader */
+/* ===== LOADER ===== */
 .loader{
   position:fixed;
   inset:0;
@@ -73,14 +59,14 @@ header::after{
   z-index:9999;
   opacity:0;
   pointer-events:none;
-  transition:opacity 0.3s ease;
+  transition:opacity .3s ease;
 }
 .loader.active{
   opacity:1;
   pointer-events:all;
 }
 
-/* Layout */
+/* ===== LAYOUT ===== */
 .container{
   max-width:1100px;
   margin:40px auto;
@@ -95,35 +81,35 @@ select{
   padding:10px 14px;
   border-radius:8px;
   border:1px solid var(--border);
-  font-family:Montserrat;
-  font-weight:600;
-}
-
-.section-title{
   font-weight:700;
-  margin:30px 0 8px;
 }
 
-.section-date{
-  font-size:13px;
-  color:var(--grey);
-  margin-bottom:15px;
+/* ===== SECTION ===== */
+.section-title{
+  font-weight:800;
+  margin:30px 0 15px;
+  position:relative;
+  padding-bottom:6px;
+}
+
+.section-title::after{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:40px;
+  height:3px;
+  background:var(--green);
+  border-radius:3px;
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
   gap:20px;
-  opacity:0;
-  transform:translateY(10px);
-  transition:all 0.4s ease;
 }
 
-.grid.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-
+/* ===== CARD ===== */
 .card{
   background:#fff;
   border-radius:14px;
@@ -131,35 +117,13 @@ select{
   overflow:hidden;
   display:flex;
   flex-direction:column;
-  transition:all 0.25s ease;
+  transition:all .25s ease;
   border:2px solid transparent;
-}
-.portal-hero{
-  padding:60px 20px 30px;
-  text-align:center;
-  background:#fff;
-  border-bottom:1px solid var(--border);
-}
-
-.portal-inner{
-  max-width:900px;
-  margin:auto;
-}
-
-.portal-hero h1{
-  font-size:28px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-.portal-hero p{
-  color:var(--gray);
-  font-size:14px;
 }
 
 .card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+  transform:translateY(-6px);
+  box-shadow:0 14px 30px rgba(0,0,0,0.08);
 }
 
 .card.soon{
@@ -168,7 +132,7 @@ select{
 }
 
 @keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(245,158,11,0.4);}
+  0%{box-shadow:0 0 0 0 rgba(245,158,11,.4);}
   70%{box-shadow:0 0 0 8px rgba(245,158,11,0);}
   100%{box-shadow:0 0 0 0 rgba(245,158,11,0);}
 }
@@ -185,21 +149,32 @@ select{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(to bottom, transparent, rgba(0,0,0,0.25));
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,.25));
 }
 
 .card-body{
   padding:18px;
-  flex:1;
   display:flex;
   flex-direction:column;
+  flex:1;
 }
 
-.subject{font-weight:700;margin-bottom:6px;}
-.topic{font-size:13px;opacity:0.7;margin-bottom:4px;}
-.teacher{font-size:12px;opacity:0.7;margin-bottom:8px;}
-.meta{font-size:12px;opacity:0.8;margin-bottom:6px;}
-.countdown{font-size:12px;font-weight:600;color:var(--lime);margin-bottom:8px;}
+.class-pill{
+  display:inline-block;
+  padding:4px 10px;
+  background:#eef6e2;
+  color:#4b7f19;
+  font-size:11px;
+  border-radius:6px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.subject{font-weight:800;margin-bottom:4px;}
+.topic{font-size:13px;color:var(--gray);margin-bottom:6px;}
+.teacher{font-size:12px;color:var(--gray);margin-bottom:6px;}
+.meta{font-size:12px;color:var(--gray);margin-bottom:6px;}
+.countdown{font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px;}
 
 .badge{
   display:inline-flex;
@@ -208,12 +183,12 @@ select{
   padding:4px 8px;
   font-size:11px;
   border-radius:6px;
-  font-weight:700;
+  font-weight:800;
   margin-bottom:10px;
 }
 
 .live{background:var(--danger);color:#fff;}
-.upcoming{background:var(--lime);color:#fff;}
+.upcoming{background:var(--green);color:#fff;}
 .ended{background:#d1d5db;color:#111;}
 .soon-badge{background:var(--soon);color:#fff;}
 
@@ -221,8 +196,9 @@ select{
   width:8px;height:8px;background:#fff;border-radius:50%;
   animation:blink 1s infinite;
 }
+
 @keyframes blink{
-  0%{opacity:1;}50%{opacity:0.3;}100%{opacity:1;}
+  0%{opacity:1;}50%{opacity:.3;}100%{opacity:1;}
 }
 
 button{
@@ -230,30 +206,57 @@ button{
   padding:10px;
   border:none;
   border-radius:8px;
-  font-weight:700;
+  font-weight:800;
   cursor:pointer;
-  background:var(--lime);
-  color:#fff;
+  background:var(--green);
+  transition:all .2s ease;
 }
+
+button:hover:not(:disabled){
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(139,197,63,.35);
+}
+
 button:disabled{
   background:#ccc;
   cursor:not-allowed;
 }
+
+/* ===== FOOTER ===== */
+footer{
+  border-top:1px solid var(--border);
+  padding:25px 20px;
+  margin-top:60px;
+  text-align:center;
+  font-size:13px;
+  color:var(--gray);
+  background:#fff;
+}
+footer a{
+  color:var(--black);
+  font-weight:700;
+  text-decoration:none;
+  margin:0 8px;
+}
+footer a:hover{color:var(--green);}
+
 </style>
 </head>
 
 <body>
+
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
+
 <div id="loader" class="loader active">
   Loading Live Classes...
 </div>
+
 <section class="portal-hero">
-  <div class="portal-inner">
-    <h1>Live Learning Portal</h1>
-    <p>Join your scheduled sessions and stay updated.</p>
-  </div>
+  <h1>Live Learning Portal</h1>
+  <p>Join your scheduled sessions and stay updated.</p>
 </section>
+
 <div class="container">
 
 <div class="filter">
@@ -267,91 +270,77 @@ button:disabled{
 
 </div>
 
+<footer>
+  © 2025 Sehr Academy  
+  | <a href="/live.html">Live Portal</a>  
+  | <a href="/academiccalendar.html">Academic Calendar</a>  
+  | <a href="https://wa.me/919539409586" target="_blank">Contact</a>
+</footer>
+
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwYmCIYvjAI9ok41rJxNQWoFXw3SQP_tIk6nXVGyzMIDTy9c7Ajvvcjq-wHyavDtXBpQA/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbwYmCIYvjAI9ok41rJxNQWoFXw3SQP_tIk6nXVGyzMIDTy9c7Ajvvcjq-wHyavDtXBpQA/exec";
 
-let allClasses = [];
-let lastFetchTime = 0;
-let cachedData = null;
+let allClasses=[];
+let cachedData=null;
+let lastFetch=0;
 
+// 30 second API cache
 async function fetchClasses(){
-  const now = Date.now();
-  if(cachedData && (now - lastFetchTime) < 30000){
+  const now=Date.now();
+  if(cachedData && (now-lastFetch)<30000){
     return cachedData;
   }
-  const res = await fetch(API_URL);
-  const data = await res.json();
-  cachedData = data;
-  lastFetchTime = now;
+  const res=await fetch(API_URL);
+  const data=await res.json();
+  cachedData=data;
+  lastFetch=now;
   return data;
 }
 
 function formatTime(date){
-  return new Date(date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-}
-
-function formatFullDate(date){
-  return new Date(date).toLocaleDateString(undefined,{
-    weekday:'long',year:'numeric',month:'long',day:'numeric'
-  });
+  return new Date(date).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 }
 
 function getCountdown(start){
-  const now = new Date();
-  const diff = new Date(start) - now;
-  if(diff <= 0) return "";
-  const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  if(days>0) return `Starts in ${days}d ${hours}h ${minutes}m`;
-  if(hours>0) return `Starts in ${hours}h ${minutes}m`;
-  return `Starts in ${minutes}m ${seconds}s`;
+  const now=new Date();
+  const diff=new Date(start)-now;
+  if(diff<=0)return"";
+  const sec=Math.floor(diff/1000);
+  const d=Math.floor(sec/86400);
+  const h=Math.floor((sec%86400)/3600);
+  const m=Math.floor((sec%3600)/60);
+  if(d>0)return`Starts in ${d}d ${h}h ${m}m`;
+  if(h>0)return`Starts in ${h}h ${m}m`;
+  return`Starts in ${m}m`;
 }
 
 function populateFilter(classes){
-  const select = document.getElementById("classFilter");
-  const unique = [...new Set(classes.map(c => c.className))];
+  const select=document.getElementById("classFilter");
+  const unique=[...new Set(classes.map(c=>c.className))];
   unique.forEach(cls=>{
-    const option = document.createElement("option");
-    option.value = cls;
-    option.textContent = cls;
-    select.appendChild(option);
+    const opt=document.createElement("option");
+    opt.value=cls;
+    opt.textContent=cls;
+    select.appendChild(opt);
   });
 }
 
-function buildCard(c, now){
-  const start = new Date(c.start);
-  const end = new Date(c.end);
-  const joinWindowStart = new Date(start.getTime() - 10*60000);
-  const timeDiff = start - now;
+function buildCard(c,now){
+  const start=new Date(c.start);
+  const end=new Date(c.end);
+  const joinWindow=new Date(start.getTime()-10*60000);
+  let statusClass="",badge="",btn="Join Now",disabled=false,cardClass="card";
 
-  let statusClass="", badgeContent="", buttonText="", disabled=false;
-  let cardClass="card";
-
-  if(now < joinWindowStart){
-    statusClass="upcoming";
-    badgeContent="UPCOMING";
-    buttonText="Not Available";
-    disabled=true;
-  }
-  else if(now >= joinWindowStart && now <= end){
-    if(now >= start){
-      statusClass="live";
-      badgeContent=`<span class="live-dot"></span> LIVE`;
+  if(now<joinWindow){
+    statusClass="upcoming";badge="UPCOMING";btn="Not Available";disabled=true;
+  }else if(now>=joinWindow&&now<=end){
+    if(now>=start){
+      statusClass="live";badge=`<span class="live-dot"></span> LIVE`;
     }else{
-      statusClass="soon-badge";
-      badgeContent="STARTING SOON";
-      cardClass+=" soon";
+      statusClass="soon-badge";badge="STARTING SOON";cardClass+=" soon";
     }
-    buttonText="Join Now";
-  }
-  else{
-    statusClass="ended";
-    badgeContent="ENDED";
-    buttonText="Class Ended";
-    disabled=true;
+  }else{
+    statusClass="ended";badge="ENDED";btn="Class Ended";disabled=true;
   }
 
   const card=document.createElement("div");
@@ -360,16 +349,16 @@ function buildCard(c, now){
   card.innerHTML=`
     <div class="thumb" style="background-image:url('${c.thumbnail||''}')"></div>
     <div class="card-body">
+      <div class="class-pill">${c.className}</div>
       <div class="subject">${c.subject}</div>
       <div class="topic">${c.topic||''}</div>
       <div class="teacher">By ${c.teacher||'SEHR Faculty'}</div>
-      <div class="meta">${c.className}</div>
       <div class="meta">${formatTime(start)} - ${formatTime(end)}</div>
-      ${now < start ? `<div class="countdown">${getCountdown(start)}</div>`:''}
-      <span class="badge ${statusClass}">${badgeContent}</span>
+      ${now<start?`<div class="countdown">${getCountdown(start)}</div>`:''}
+      <span class="badge ${statusClass}">${badge}</span>
       <button ${disabled?'disabled':''}
         onclick="window.open('${c.meetingLink}','_blank')">
-        ${buttonText}
+        ${btn}
       </button>
     </div>
   `;
@@ -377,55 +366,45 @@ function buildCard(c, now){
 }
 
 function render(){
-  const now = new Date();
-  const selectedClass = document.getElementById("classFilter").value;
-  let filtered = selectedClass==="All"?allClasses:
-    allClasses.filter(c=>c.className===selectedClass);
+  const now=new Date();
+  const selected=document.getElementById("classFilter").value;
+  let filtered=selected==="All"?allClasses:
+    allClasses.filter(c=>c.className===selected);
 
   filtered.sort((a,b)=>new Date(a.start)-new Date(b.start));
 
-  const running = filtered.find(c=>now>=new Date(c.start)&&now<=new Date(c.end));
-  const upcoming = filtered.filter(c=>new Date(c.start)>now);
-  const completed = filtered.filter(c=>new Date(c.end)<now)
+  const running=filtered.find(c=>now>=new Date(c.start)&&now<=new Date(c.end));
+  const upcoming=filtered.filter(c=>new Date(c.start)>now);
+  const completed=filtered.filter(c=>new Date(c.end)<now)
     .sort((a,b)=>new Date(b.end)-new Date(a.end));
 
-  const liveSection=document.getElementById("liveSection");
-  const upcomingSection=document.getElementById("upcomingSection");
-  liveSection.innerHTML="";
-  upcomingSection.innerHTML="";
-
-  if(filtered.length===0){
-    liveSection.innerHTML="<div class='section-title'>No live sessions scheduled.</div>";
-    return;
-  }
+  const liveSec=document.getElementById("liveSection");
+  const upSec=document.getElementById("upcomingSection");
+  liveSec.innerHTML="";upSec.innerHTML="";
 
   if(running){
-    liveSection.innerHTML=`<div class="section-title">🔴 Live Now</div>
-      <div class="section-date">${formatFullDate(running.start)}</div>`;
+    liveSec.innerHTML=`<div class="section-title">Live Now</div>`;
     const grid=document.createElement("div");
-    grid.className="grid visible";
+    grid.className="grid";
     grid.appendChild(buildCard(running,now));
-    liveSection.appendChild(grid);
+    liveSec.appendChild(grid);
   }
 
-  const upcomingToShow = running?upcoming.slice(0,2):upcoming.slice(0,3);
-
-  if(upcomingToShow.length>0){
-    upcomingSection.innerHTML+=`<div class="section-title">Upcoming Classes</div>
-      <div class="section-date">${formatFullDate(upcomingToShow[0].start)}</div>`;
+  const upcomingShow=running?upcoming.slice(0,2):upcoming.slice(0,3);
+  if(upcomingShow.length){
+    upSec.innerHTML+=`<div class="section-title">Upcoming Classes</div>`;
     const grid=document.createElement("div");
-    grid.className="grid visible";
-    upcomingToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
-    upcomingSection.appendChild(grid);
+    grid.className="grid";
+    upcomingShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+    upSec.appendChild(grid);
   }
 
-  const completedToShow=completed.slice(0,3);
-  if(completedToShow.length>0){
-    upcomingSection.innerHTML+=`<div class="section-title">Recently Completed</div>`;
+  if(completed.length){
+    upSec.innerHTML+=`<div class="section-title">Recently Completed</div>`;
     const grid=document.createElement("div");
-    grid.className="grid visible";
-    completedToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
-    upcomingSection.appendChild(grid);
+    grid.className="grid";
+    completed.slice(0,3).forEach(c=>grid.appendChild(buildCard(c,now)));
+    upSec.appendChild(grid);
   }
 }
 
