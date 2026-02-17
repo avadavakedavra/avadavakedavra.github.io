@@ -15,6 +15,7 @@
   --border:#e5e7eb;
   --danger:#ef4444;
   --grey:#9ca3af;
+  --soon:#f59e0b;
 }
 
 *{box-sizing:border-box}
@@ -27,6 +28,9 @@ body{
 }
 
 header{
+  position:sticky;
+  top:0;
+  z-index:100;
   background:#fff;
   padding:30px 20px;
   text-align:center;
@@ -54,28 +58,29 @@ header::after{
   margin:12px auto 0;
   border-radius:2px;
 }
+
+/* Loader */
 .loader{
   position:fixed;
   inset:0;
   background:rgba(255,255,255,0.75);
   backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:700;
   font-size:18px;
-  color:#1f2937;
   z-index:9999;
   opacity:0;
   pointer-events:none;
   transition:opacity 0.3s ease;
 }
-
 .loader.active{
   opacity:1;
   pointer-events:all;
 }
+
+/* Layout */
 .container{
   max-width:1100px;
   margin:40px auto;
@@ -96,13 +101,27 @@ select{
 
 .section-title{
   font-weight:700;
-  margin:30px 0 15px;
+  margin:30px 0 8px;
+}
+
+.section-date{
+  font-size:13px;
+  color:var(--grey);
+  margin-bottom:15px;
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
   gap:20px;
+  opacity:0;
+  transform:translateY(10px);
+  transition:all 0.4s ease;
+}
+
+.grid.visible{
+  opacity:1;
+  transform:translateY(0);
 }
 
 .card{
@@ -112,13 +131,61 @@ select{
   overflow:hidden;
   display:flex;
   flex-direction:column;
+  transition:all 0.25s ease;
+  border:2px solid transparent;
+}
+.portal-hero{
+  padding:60px 20px 30px;
+  text-align:center;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+}
+
+.portal-inner{
+  max-width:900px;
+  margin:auto;
+}
+
+.portal-hero h1{
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.portal-hero p{
+  color:var(--gray);
+  font-size:14px;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+}
+
+.card.soon{
+  border:2px solid var(--soon);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(245,158,11,0.4);}
+  70%{box-shadow:0 0 0 8px rgba(245,158,11,0);}
+  100%{box-shadow:0 0 0 0 rgba(245,158,11,0);}
 }
 
 .thumb{
+  position:relative;
   width:100%;
   aspect-ratio:1/1;
   background-size:cover;
   background-position:center;
+}
+
+.thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom, transparent, rgba(0,0,0,0.25));
 }
 
 .card-body{
@@ -128,35 +195,11 @@ select{
   flex-direction:column;
 }
 
-.subject{
-  font-weight:700;
-  margin-bottom:6px;
-}
-
-.topic{
-  font-size:13px;
-  opacity:0.7;
-  margin-bottom:4px;
-}
-
-.teacher{
-  font-size:12px;
-  opacity:0.7;
-  margin-bottom:8px;
-}
-
-.meta{
-  font-size:12px;
-  opacity:0.8;
-  margin-bottom:6px;
-}
-
-.countdown{
-  font-size:12px;
-  font-weight:600;
-  color:var(--lime);
-  margin-bottom:8px;
-}
+.subject{font-weight:700;margin-bottom:6px;}
+.topic{font-size:13px;opacity:0.7;margin-bottom:4px;}
+.teacher{font-size:12px;opacity:0.7;margin-bottom:8px;}
+.meta{font-size:12px;opacity:0.8;margin-bottom:6px;}
+.countdown{font-size:12px;font-weight:600;color:var(--lime);margin-bottom:8px;}
 
 .badge{
   display:inline-flex;
@@ -169,33 +212,17 @@ select{
   margin-bottom:10px;
 }
 
-.live{
-  background:var(--danger);
-  color:#fff;
-}
-
-.upcoming{
-  background:var(--lime);
-  color:#fff;
-}
-
-.ended{
-  background:#d1d5db;
-  color:#111;
-}
+.live{background:var(--danger);color:#fff;}
+.upcoming{background:var(--lime);color:#fff;}
+.ended{background:#d1d5db;color:#111;}
+.soon-badge{background:var(--soon);color:#fff;}
 
 .live-dot{
-  width:8px;
-  height:8px;
-  background:#fff;
-  border-radius:50%;
+  width:8px;height:8px;background:#fff;border-radius:50%;
   animation:blink 1s infinite;
 }
-
 @keyframes blink{
-  0%{opacity:1;}
-  50%{opacity:0.3;}
-  100%{opacity:1;}
+  0%{opacity:1;}50%{opacity:0.3;}100%{opacity:1;}
 }
 
 button{
@@ -208,7 +235,6 @@ button{
   background:var(--lime);
   color:#fff;
 }
-
 button:disabled{
   background:#ccc;
   cursor:not-allowed;
@@ -217,14 +243,17 @@ button:disabled{
 </head>
 
 <body>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 <div id="loader" class="loader active">
   Loading Live Classes...
 </div>
-<header>
-  <h1>Live Learning Portal</h1>
-  <p>SEHR Academy</p>
-</header>
-
+<section class="portal-hero">
+  <div class="portal-inner">
+    <h1>Live Learning Portal</h1>
+    <p>Join your scheduled sessions and stay updated.</p>
+  </div>
+</section>
 <div class="container">
 
 <div class="filter">
@@ -242,39 +271,45 @@ button:disabled{
 const API_URL = "https://script.google.com/macros/s/AKfycbwYmCIYvjAI9ok41rJxNQWoFXw3SQP_tIk6nXVGyzMIDTy9c7Ajvvcjq-wHyavDtXBpQA/exec";
 
 let allClasses = [];
+let lastFetchTime = 0;
+let cachedData = null;
 
 async function fetchClasses(){
+  const now = Date.now();
+  if(cachedData && (now - lastFetchTime) < 30000){
+    return cachedData;
+  }
   const res = await fetch(API_URL);
-  return await res.json();
+  const data = await res.json();
+  cachedData = data;
+  lastFetchTime = now;
+  return data;
 }
 
 function formatTime(date){
   return new Date(date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 
+function formatFullDate(date){
+  return new Date(date).toLocaleDateString(undefined,{
+    weekday:'long',year:'numeric',month:'long',day:'numeric'
+  });
+}
+
 function getCountdown(start){
   const now = new Date();
   const diff = new Date(start) - now;
-
   if(diff <= 0) return "";
-
   const totalSeconds = Math.floor(diff / 1000);
-
-  const days = Math.floor(totalSeconds / (3600 * 24));
-  const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-
-  if(days > 0){
-    return `Starts in ${days}d ${hours}h ${minutes}m`;
-  }
-
-  if(hours > 0){
-    return `Starts in ${hours}h ${minutes}m`;
-  }
-
+  if(days>0) return `Starts in ${days}d ${hours}h ${minutes}m`;
+  if(hours>0) return `Starts in ${hours}h ${minutes}m`;
   return `Starts in ${minutes}m ${seconds}s`;
 }
+
 function populateFilter(classes){
   const select = document.getElementById("classFilter");
   const unique = [...new Set(classes.map(c => c.className))];
@@ -286,96 +321,14 @@ function populateFilter(classes){
   });
 }
 
-function render(){
-
-  const now = new Date();
-  const selectedClass = document.getElementById("classFilter").value;
-
-  let filtered = selectedClass === "All"
-    ? allClasses
-    : allClasses.filter(c => c.className === selectedClass);
-
-  filtered.sort((a,b)=>new Date(a.start)-new Date(b.start));
-
-  const running = filtered.find(c => now >= new Date(c.start) && now <= new Date(c.end));
-
-  const upcoming = filtered.filter(c => new Date(c.start) > now);
-  const completed = filtered
-    .filter(c => new Date(c.end) < now)
-    .sort((a,b)=>new Date(b.end)-new Date(a.end)); // most recent first
-
-  const liveSection = document.getElementById("liveSection");
-  const upcomingSection = document.getElementById("upcomingSection");
-
-  liveSection.innerHTML = "";
-  upcomingSection.innerHTML = "";
-
-  if(filtered.length === 0){
-    liveSection.innerHTML = "<div class='section-title'>No live sessions scheduled.</div>";
-    return;
-  }
-
-  // ===== LIVE SECTION =====
-  if(running){
-    liveSection.innerHTML = "<div class='section-title'>🔴 Live Now</div>";
-    const liveGrid = document.createElement("div");
-    liveGrid.className = "grid";
-    liveGrid.appendChild(buildCard(running, now));
-    liveSection.appendChild(liveGrid);
-  }
-
-  // ===== UPCOMING SECTION =====
-  const upcomingToShow = running ? upcoming.slice(0,2) : upcoming.slice(0,3);
-
-  if(upcomingToShow.length > 0){
-    upcomingSection.innerHTML += "<div class='section-title'>Upcoming Classes</div>";
-    const upcomingGrid = document.createElement("div");
-    upcomingGrid.className = "grid";
-    upcomingToShow.forEach(c=>{
-      upcomingGrid.appendChild(buildCard(c, now));
-    });
-    upcomingSection.appendChild(upcomingGrid);
-  }
-
-  // ===== COMPLETED SECTION =====
-  const completedToShow = completed.slice(0,3);
-
-  if(completedToShow.length > 0){
-    upcomingSection.innerHTML += "<div class='section-title'>Recently Completed</div>";
-    const completedGrid = document.createElement("div");
-    completedGrid.className = "grid";
-    completedToShow.forEach(c=>{
-      completedGrid.appendChild(buildCard(c, now));
-    });
-    upcomingSection.appendChild(completedGrid);
-  }
-}
-function joinClass(link,className,subject){
-  fetch(API_URL+"?action=logAttendance&class="+
-    encodeURIComponent(className)+
-    "&subject="+encodeURIComponent(subject));
-  window.open(link,'_blank');
-}
-
-fetchClasses().then(classes=>{
-  allClasses = classes;
-  populateFilter(classes);
-  render();
-  document.getElementById("classFilter").addEventListener("change",render);
-  setInterval(render,1000);
-
-  document.getElementById("loader").classList.remove("active");
-}).catch(()=>{
-  document.getElementById("loader").innerText = "Failed to load classes.";
-});
 function buildCard(c, now){
-
   const start = new Date(c.start);
   const end = new Date(c.end);
-
   const joinWindowStart = new Date(start.getTime() - 10*60000);
+  const timeDiff = start - now;
 
   let statusClass="", badgeContent="", buttonText="", disabled=false;
+  let cardClass="card";
 
   if(now < joinWindowStart){
     statusClass="upcoming";
@@ -388,8 +341,9 @@ function buildCard(c, now){
       statusClass="live";
       badgeContent=`<span class="live-dot"></span> LIVE`;
     }else{
-      statusClass="upcoming";
+      statusClass="soon-badge";
       badgeContent="STARTING SOON";
+      cardClass+=" soon";
     }
     buttonText="Join Now";
   }
@@ -401,7 +355,7 @@ function buildCard(c, now){
   }
 
   const card=document.createElement("div");
-  card.className="card";
+  card.className=cardClass;
 
   card.innerHTML=`
     <div class="thumb" style="background-image:url('${c.thumbnail||''}')"></div>
@@ -414,14 +368,75 @@ function buildCard(c, now){
       ${now < start ? `<div class="countdown">${getCountdown(start)}</div>`:''}
       <span class="badge ${statusClass}">${badgeContent}</span>
       <button ${disabled?'disabled':''}
-        onclick="joinClass('${c.meetingLink}','${c.className}','${c.subject}')">
+        onclick="window.open('${c.meetingLink}','_blank')">
         ${buttonText}
       </button>
     </div>
   `;
-
   return card;
 }
+
+function render(){
+  const now = new Date();
+  const selectedClass = document.getElementById("classFilter").value;
+  let filtered = selectedClass==="All"?allClasses:
+    allClasses.filter(c=>c.className===selectedClass);
+
+  filtered.sort((a,b)=>new Date(a.start)-new Date(b.start));
+
+  const running = filtered.find(c=>now>=new Date(c.start)&&now<=new Date(c.end));
+  const upcoming = filtered.filter(c=>new Date(c.start)>now);
+  const completed = filtered.filter(c=>new Date(c.end)<now)
+    .sort((a,b)=>new Date(b.end)-new Date(a.end));
+
+  const liveSection=document.getElementById("liveSection");
+  const upcomingSection=document.getElementById("upcomingSection");
+  liveSection.innerHTML="";
+  upcomingSection.innerHTML="";
+
+  if(filtered.length===0){
+    liveSection.innerHTML="<div class='section-title'>No live sessions scheduled.</div>";
+    return;
+  }
+
+  if(running){
+    liveSection.innerHTML=`<div class="section-title">🔴 Live Now</div>
+      <div class="section-date">${formatFullDate(running.start)}</div>`;
+    const grid=document.createElement("div");
+    grid.className="grid visible";
+    grid.appendChild(buildCard(running,now));
+    liveSection.appendChild(grid);
+  }
+
+  const upcomingToShow = running?upcoming.slice(0,2):upcoming.slice(0,3);
+
+  if(upcomingToShow.length>0){
+    upcomingSection.innerHTML+=`<div class="section-title">Upcoming Classes</div>
+      <div class="section-date">${formatFullDate(upcomingToShow[0].start)}</div>`;
+    const grid=document.createElement("div");
+    grid.className="grid visible";
+    upcomingToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+    upcomingSection.appendChild(grid);
+  }
+
+  const completedToShow=completed.slice(0,3);
+  if(completedToShow.length>0){
+    upcomingSection.innerHTML+=`<div class="section-title">Recently Completed</div>`;
+    const grid=document.createElement("div");
+    grid.className="grid visible";
+    completedToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+    upcomingSection.appendChild(grid);
+  }
+}
+
+fetchClasses().then(classes=>{
+  allClasses=classes;
+  populateFilter(classes);
+  render();
+  document.getElementById("classFilter").addEventListener("change",render);
+  setInterval(render,1000);
+  document.getElementById("loader").classList.remove("active");
+});
 </script>
 
 </body>
