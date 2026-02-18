@@ -1,409 +1,442 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy – Premium Billing Portal</title>
+<title>Live Learning Portal — SEHR Academy</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --lime:#8BC53F;
-  --lime-dark:#6fb22c;
-  --glass:rgba(255,255,255,0.65);
-  --glass-strong:rgba(255,255,255,0.85);
-  --border:rgba(255,255,255,0.35);
-  --text:#111827;
-  --muted:#6b7280;
+  --bg:#f5f7f4;
+  --dark:#1f2937;
+  --border:#e5e7eb;
+  --danger:#ef4444;
+  --grey:#9ca3af;
+  --soon:#f59e0b;
 }
+
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#e8f0ff,#f3f8ff,#eef7f2);
-  color:var(--text);
+  font-family:Montserrat,sans-serif;
+  background:var(--bg);
+  color:var(--dark);
 }
 
-/* Space below navbar */
-.main-content{
-  padding:120px 40px 40px;
-}
-.institutional{
-  margin-top:8px;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.4;
-}
-
-.institutional span{
-  font-weight:600;
-  color:#374151;
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#fff;
+  padding:30px 20px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
 }
 
-.wrapper{
-  max-width:1250px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:30px;
-}
-
-.card{
-  background:var(--glass);
-  backdrop-filter:blur(20px);
-  border-radius:28px;
-  padding:35px;
-  border:1px solid var(--border);
-  box-shadow:
-  0 35px 90px rgba(0,0,0,0.12),
-  inset 0 1px 0 rgba(255,255,255,0.6);
-}
-.premium-panel{
-  border-top:4px solid;
-  border-image: linear-gradient(90deg,#8BC53F,#6fb22c) 1;
-}
-
-.header{
-  font-family:'Montserrat',sans-serif;
-  font-size:26px;
+header h1{
+  margin:0;
+  font-size:22px;
   font-weight:800;
 }
 
-.session-info{
+header p{
+  margin:8px 0 0;
   font-size:14px;
-  color:var(--muted);
-  margin:8px 0 18px;
+  color:var(--grey);
 }
 
-.month-pill-container{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.month-pill{
-  padding:8px 16px;
-  border-radius:40px;
-  font-size:12px;
-  font-weight:600;
-  background:rgba(255,255,255,0.7);
-  color:#9ca3af;
-}
-
-.month-pill.active{
-  background:linear-gradient(135deg,#8BC53F,#6fb22c);
-  color:white;
-  box-shadow:0 10px 25px rgba(139,197,63,0.35);
-}
-
-label{
-  font-weight:600;
-  margin-top:20px;
+header::after{
+  content:"";
   display:block;
+  width:60px;
+  height:3px;
+  background:var(--lime);
+  margin:12px auto 0;
+  border-radius:2px;
+}
+
+/* Loader */
+.loader{
+  position:fixed;
+  inset:0;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:18px;
+  z-index:9999;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s ease;
+}
+.loader.active{
+  opacity:1;
+  pointer-events:all;
+}
+
+/* Layout */
+.container{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.filter{
+  margin-bottom:30px;
 }
 
 select{
-  width:100%;
-  padding:15px;
-  border-radius:16px;
-  border:1px solid rgba(0,0,0,0.05);
-  margin-top:8px;
-  background:rgba(255,255,255,0.9);
+  padding:10px 14px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  font-family:Montserrat;
+  font-weight:600;
 }
 
-.subjects label{
-  display:block;
-  margin-top:6px;
-}
-
-.plan-box{
-  margin-top:24px;
-  padding:24px;
-  border-radius:22px;
-  background:linear-gradient(135deg,#8BC53F,#6fb22c);
-  color:white;
+.section-title{
   font-weight:700;
-  text-align:center;
-  font-size:20px;
+  margin:30px 0 8px;
 }
 
-.advance-box{
-  margin-top:24px;
-  padding:24px;
-  border-radius:22px;
-  background:linear-gradient(135deg,#0f172a,#1e293b);
-  color:white;
-  font-weight:700;
-  text-align:center;
-  font-size:20px;
-}
-
-.summary-title{
-  font-weight:700;
-  font-size:20px;
+.section-date{
+  font-size:13px;
+  color:var(--grey);
   margin-bottom:15px;
 }
 
-.summary-card{
-  background:var(--glass-strong);
-  border-radius:22px;
-  padding:20px;
-  margin-bottom:16px;
-  border:1px solid var(--border);
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+  opacity:0;
+  transform:translateY(10px);
+  transition:all 0.4s ease;
 }
 
-.due-date{
-  color:var(--lime-dark);
+.grid.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.card{
+  background:#fff;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:all 0.25s ease;
+  border:2px solid transparent;
+}
+.portal-hero{
+  padding:60px 20px 30px;
+  text-align:center;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+}
+
+.portal-inner{
+  max-width:900px;
+  margin:auto;
+}
+
+.portal-hero h1{
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.portal-hero p{
+  color:var(--gray);
+  font-size:14px;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+}
+
+.card.soon{
+  border:2px solid var(--soon);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(245,158,11,0.4);}
+  70%{box-shadow:0 0 0 8px rgba(245,158,11,0);}
+  100%{box-shadow:0 0 0 0 rgba(245,158,11,0);}
+}
+
+.thumb{
+  position:relative;
+  width:100%;
+  aspect-ratio:1/1;
+  background-size:cover;
+  background-position:center;
+}
+
+.thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom, transparent, rgba(0,0,0,0.25));
+}
+
+.card-body{
+  padding:18px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.subject{font-weight:700;margin-bottom:6px;}
+.topic{font-size:13px;opacity:0.7;margin-bottom:4px;}
+.teacher{font-size:12px;opacity:0.7;margin-bottom:8px;}
+.meta{font-size:12px;opacity:0.8;margin-bottom:6px;}
+.countdown{font-size:12px;font-weight:600;color:var(--lime);margin-bottom:8px;}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 8px;
+  font-size:11px;
+  border-radius:6px;
   font-weight:700;
+  margin-bottom:10px;
 }
 
-.note{
-  margin-top:20px;
-  font-size:13px;
-  color:var(--muted);
+.live{background:var(--danger);color:#fff;}
+.upcoming{background:var(--lime);color:#fff;}
+.ended{background:#d1d5db;color:#111;}
+.soon-badge{background:var(--soon);color:#fff;}
+
+.live-dot{
+  width:8px;height:8px;background:#fff;border-radius:50%;
+  animation:blink 1s infinite;
+}
+@keyframes blink{
+  0%{opacity:1;}50%{opacity:0.3;}100%{opacity:1;}
 }
 
-@media(max-width:900px){
-.wrapper{grid-template-columns:1fr;}
+button{
+  margin-top:auto;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  font-weight:700;
+  cursor:pointer;
+  background:var(--lime);
+  color:#fff;
+}
+button:disabled{
+  background:#ccc;
+  cursor:not-allowed;
 }
 </style>
 </head>
+
 <body>
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
-
-<div class="main-content">
-  <div class="wrapper">
-
-<div class="card">
-<div class="header">Billing Details</div>
-<div class="institutional">
-  SEHR Academy<br>
-  <span>Fee Structure – Academic Year 2026–2027</span>
+<div id="loader" class="loader active">
+  Loading Live Classes...
 </div>
-<div id="sessionInfo" class="session-info"></div>
-<div id="monthPills" class="month-pill-container"></div>
+<section class="portal-hero">
+  <div class="portal-inner">
+    <h1>Live Learning Portal</h1>
+    <p>Join your scheduled sessions and stay updated.</p>
+  </div>
+</section>
+<div class="container">
 
-<label>Select Class</label>
-<select id="classSelect">
-<option value="">-- Select Class --</option>
-<option value="10">Class 10</option>
-<option value="11">Class 11</option>
-<option value="12">Class 12</option>
-</select>
-
-<div id="subjectSection" style="display:none;">
-<label>Select Subjects (₹500 per subject)</label>
-<div class="subjects">
-<label><input type="checkbox" value="Physics"> Physics</label>
-<label><input type="checkbox" value="Chemistry"> Chemistry</label>
-<label><input type="checkbox" value="Mathematics"> Mathematics</label>
-<label><input type="checkbox" value="Biology"> Biology</label>
-</div>
+<div class="filter">
+  <select id="classFilter">
+    <option value="All">All Classes</option>
+  </select>
 </div>
 
-<div id="monthlyBox" class="plan-box" style="display:none;"></div>
-
-<label>Date of Admission</label>
-<div style="display:flex;gap:10px;">
-<select id="day"></select>
-<select id="month"></select>
-<select id="year"></select>
-</div>
-
-<div id="advanceBox"></div>
-</div>
-
-<div class="card premium-panel" id="summaryPanel">
-<div class="summary-title">Payment Information</div>
-<div id="summaryContent"></div>
-</div>
+<div id="liveSection"></div>
+<div id="upcomingSection"></div>
 
 </div>
-</div>   <!-- this closes main-content -->
 
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwYmCIYvjAI9ok41rJxNQWoFXw3SQP_tIk6nXVGyzMIDTy9c7Ajvvcjq-wHyavDtXBpQA/exec";
 
-let monthlyFee=0;
-populateDates();
-setTodayDefault();
-calculate();
+let allClasses = [];
+let lastFetchTime = 0;
+let cachedData = null;
 
-
-document.getElementById("classSelect").addEventListener("change",updateClass);
-document.querySelectorAll(".subjects input").forEach(cb=>cb.addEventListener("change",calculate));
-["day","month","year"].forEach(id=>{
-document.getElementById(id).addEventListener("change",calculate);
-});
-
-function populateDates(){
-for(let i=1;i<=31;i++) day.innerHTML+=`<option value="${i}">${i}</option>`;
-const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-months.forEach((m,i)=>month.innerHTML+=`<option value="${i}">${m}</option>`);
-year.innerHTML=`<option value="2026">2026</option>`;
+async function fetchClasses(){
+  const now = Date.now();
+  if(cachedData && (now - lastFetchTime) < 30000){
+    return cachedData;
+  }
+  const res = await fetch(API_URL);
+  const data = await res.json();
+  cachedData = data;
+  lastFetchTime = now;
+  return data;
 }
-function setTodayDefault(){
 
-  const today = new Date();
+function formatTime(date){
+  return new Date(date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
 
-  // Only auto-set if year is 2026 (since calculator is locked to 2026)
-  if(today.getFullYear() === 2026){
+function formatFullDate(date){
+  return new Date(date).toLocaleDateString(undefined,{
+    weekday:'long',year:'numeric',month:'long',day:'numeric'
+  });
+}
 
-    day.value = today.getDate();
-    month.value = today.getMonth(); 
-    year.value = 2026;
+function getCountdown(start){
+  const now = new Date();
+  const diff = new Date(start) - now;
+  if(diff <= 0) return "";
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if(days>0) return `Starts in ${days}d ${hours}h ${minutes}m`;
+  if(hours>0) return `Starts in ${hours}h ${minutes}m`;
+  return `Starts in ${minutes}m ${seconds}s`;
+}
 
+function populateFilter(classes){
+  const select = document.getElementById("classFilter");
+  const unique = [...new Set(classes.map(c => c.className))];
+  unique.forEach(cls=>{
+    const option = document.createElement("option");
+    option.value = cls;
+    option.textContent = cls;
+    select.appendChild(option);
+  });
+}
+
+function buildCard(c, now){
+  const start = new Date(c.start);
+  const end = new Date(c.end);
+  const joinWindowStart = new Date(start.getTime() - 10*60000);
+  const timeDiff = start - now;
+
+  let statusClass="", badgeContent="", buttonText="", disabled=false;
+  let cardClass="card";
+
+  if(now < joinWindowStart){
+    statusClass="upcoming";
+    badgeContent="UPCOMING";
+    buttonText="Not Available";
+    disabled=true;
+  }
+  else if(now >= joinWindowStart && now <= end){
+    if(now >= start){
+      statusClass="live";
+      badgeContent=`<span class="live-dot"></span> LIVE`;
+    }else{
+      statusClass="soon-badge";
+      badgeContent="STARTING SOON";
+      cardClass+=" soon";
+    }
+    buttonText="Join Now";
+  }
+  else{
+    statusClass="ended";
+    badgeContent="ENDED";
+    buttonText="Class Ended";
+    disabled=true;
   }
 
+  const card=document.createElement("div");
+  card.className=cardClass;
+
+  card.innerHTML=`
+    <div class="thumb" style="background-image:url('${c.thumbnail||''}')"></div>
+    <div class="card-body">
+      <div class="subject">${c.subject}</div>
+      <div class="topic">${c.topic||''}</div>
+      <div class="teacher">By ${c.teacher||'SEHR Faculty'}</div>
+      <div class="meta">${c.className}</div>
+      <div class="meta">${formatTime(start)} - ${formatTime(end)}</div>
+      ${now < start ? `<div class="countdown">${getCountdown(start)}</div>`:''}
+      <span class="badge ${statusClass}">${badgeContent}</span>
+      <button ${disabled?'disabled':''}
+        onclick="window.open('${c.meetingLink}','_blank')">
+        ${buttonText}
+      </button>
+    </div>
+  `;
+  return card;
 }
 
-function updateClass(){
-summaryPanel.style.display="none";
-advanceBox.innerHTML="";
+function render(){
+  const now = new Date();
+  const selectedClass = document.getElementById("classFilter").value;
+  let filtered = selectedClass==="All"?allClasses:
+    allClasses.filter(c=>c.className===selectedClass);
 
-if(classSelect.value==="12"){
-sessionInfo.innerHTML=`Academic Session: 1 March 2026 – 31 March 2027`;
-subjectSection.style.display="block";
-}
-if(classSelect.value==="11"){
-sessionInfo.innerHTML=`Academic Session: 1 June 2026 – 31 March 2027`;
-subjectSection.style.display="block";
-}
-if(classSelect.value==="10"){
-sessionInfo.innerHTML=`Academic Session: 1 April 2026 – 31 March 2027`;
-subjectSection.style.display="none";
-monthlyFee=1000;
-monthlyBox.style.display="block";
-monthlyBox.innerHTML="Monthly Plan – ₹1000 / month";
-calculate();
-}
+  filtered.sort((a,b)=>new Date(a.start)-new Date(b.start));
+
+  const running = filtered.find(c=>now>=new Date(c.start)&&now<=new Date(c.end));
+  const upcoming = filtered.filter(c=>new Date(c.start)>now);
+  const completed = filtered.filter(c=>new Date(c.end)<now)
+    .sort((a,b)=>new Date(b.end)-new Date(a.end));
+
+  const liveSection=document.getElementById("liveSection");
+  const upcomingSection=document.getElementById("upcomingSection");
+  liveSection.innerHTML="";
+  upcomingSection.innerHTML="";
+
+  if(filtered.length===0){
+    liveSection.innerHTML="<div class='section-title'>No live sessions scheduled.</div>";
+    return;
+  }
+
+  if(running){
+    liveSection.innerHTML=`<div class="section-title">🔴 Live Now</div>
+      <div class="section-date">${formatFullDate(running.start)}</div>`;
+    const grid=document.createElement("div");
+    grid.className="grid visible";
+    grid.appendChild(buildCard(running,now));
+    liveSection.appendChild(grid);
+  }
+
+  const upcomingToShow = running?upcoming.slice(0,2):upcoming.slice(0,3);
+
+  if(upcomingToShow.length>0){
+    upcomingSection.innerHTML+=`<div class="section-title">Upcoming Classes</div>
+      <div class="section-date">${formatFullDate(upcomingToShow[0].start)}</div>`;
+    const grid=document.createElement("div");
+    grid.className="grid visible";
+    upcomingToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+    upcomingSection.appendChild(grid);
+  }
+
+  const completedToShow=completed.slice(0,3);
+  if(completedToShow.length>0){
+    upcomingSection.innerHTML+=`<div class="section-title">Recently Completed</div>`;
+    const grid=document.createElement("div");
+    grid.className="grid visible";
+    completedToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+    upcomingSection.appendChild(grid);
+  }
 }
 
-function renderMonthPills(months){
-const container=document.getElementById("monthPills");
-container.innerHTML="";
-months.forEach(m=>{
-const pill=document.createElement("div");
-pill.className="month-pill active";
-pill.innerText=m;
-container.appendChild(pill);
+fetchClasses().then(classes=>{
+  allClasses=classes;
+  populateFilter(classes);
+  render();
+  document.getElementById("classFilter").addEventListener("change",render);
+  setInterval(render,1000);
+  document.getElementById("loader").classList.remove("active");
 });
-}
-
-function calculate(){
-
-if(!classSelect.value) return;
-
-if(classSelect.value==="11"||classSelect.value==="12"){
-const selected=[...document.querySelectorAll(".subjects input:checked")].map(x=>x.value);
-if(selected.length===0) return;
-const pcm=["Physics","Chemistry","Mathematics"];
-const hasPCM=pcm.every(s=>selected.includes(s));
-if(hasPCM && selected.length===3) monthlyFee=1000;
-else if(hasPCM && selected.includes("Biology")) monthlyFee=1500;
-else monthlyFee=selected.length*500;
-monthlyBox.style.display="block";
-monthlyBox.innerHTML="Monthly Plan – ₹"+monthlyFee+" / month";
-}
-
-const m=+month.value;
-
-let startMonth;
-if(classSelect.value==="12") startMonth=2;
-if(classSelect.value==="11") startMonth=5;
-if(classSelect.value==="10") startMonth=3;
-
-let effectiveMonth=Math.max(m,startMonth);
-let startDate=new Date(2026,effectiveMonth,1);
-let end=new Date(2027,2,31);
-
-let months=[];
-let temp=new Date(startDate);
-
-while(temp<=end){
-if(temp.getMonth()!==4)
-months.push(temp.toLocaleString('default',{month:'long'}));
-temp.setMonth(temp.getMonth()+1);
-}
-
-renderMonthPills(months);
-
-const totalMonths=months.length;
-const totalFee=totalMonths*monthlyFee;
-
-if(totalMonths<=4){
-advanceBox.innerHTML=`<div class="advance-box">Admission Payment (Full Amount)<br>₹${totalFee}</div>`;
-summaryPanel.style.display="none";
-return;
-}
-
-const admissionMonths=months.slice(0,4);
-const admissionAmount=admissionMonths.length*monthlyFee;
-const remainingMonths=months.slice(4);
-
-advanceBox.innerHTML=`<div class="advance-box">Admission Payment (4 Month Fee Advance)<br>₹${admissionAmount}</div>`;
-
-let html=`
-<div class="summary-card">
-<strong>Total Academic Fee</strong>
-₹${totalFee}<br>
-Total Months Covered: ${totalMonths}
-</div>
-
-<div class="summary-card">
-<strong>Due on Admission Date</strong><br>
-Months Covered: ${admissionMonths.join(", ")}<br>
-Amount Payable: ₹${admissionAmount}
-</div>
-`;
-
-if(effectiveMonth < 5){
-if(remainingMonths.length<=4){
-html+=`
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 June 2026</span></strong>
-Months Covered: ${remainingMonths.join(", ")}<br>
-Amount Payable: ₹${remainingMonths.length*monthlyFee}
-</div>`;
-}else{
-const juneBatch=remainingMonths.slice(0,4);
-const sepBatch=remainingMonths.slice(4);
-
-html+=`
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 June 2026</span></strong><br>
-Months Covered: ${juneBatch.join(", ")}<br>
-Amount Payable: ₹${juneBatch.length*monthlyFee}
-</div>
-
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 September 2026</span></strong><br>
-Months Covered: ${sepBatch.join(", ")}<br>
-Amount Payable: ₹${sepBatch.length*monthlyFee}
-</div>`;
-}
-}else{
-html+=`
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 September 2026</span></strong><br>
-Months Covered: ${remainingMonths.join(", ")}<br>
-Amount Payable: ₹${remainingMonths.length*monthlyFee}
-</div>`;
-}
-
-html+=`
-<div class="note">
-• Admission Fee: ₹0<br>
-• The month of May are holidays and not charged.<br>
-• Fees once paid are non-refundable.<br>
-</div>
-`;
-
-summaryContent.innerHTML=html;
-summaryPanel.style.display="block";
-}
 </script>
 
 </body>
