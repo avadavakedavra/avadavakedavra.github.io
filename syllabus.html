@@ -1,325 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sehr Academy — Class 11 Syllabus (Google Sheets API)</title>
-  <meta name="theme-color" content="#8BC53F" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEHR Academy — Syllabus Tracker</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --sehr-green:#8BC53F;
-      --glass-border: rgba(0,0,0,.08);
-      --radius: 16px;
-      --maxw:1180px;
-      --frost-white: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
-      --frost-green: linear-gradient(180deg, rgba(214, 244, 190, .95), rgba(180, 232, 140, .78));
-      --crystal: linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.30));
-      --bar-gold: linear-gradient(90deg, #FBE7A1 0%, #F5C14A 50%, #D89A00 100%);
-      --hint-bg: linear-gradient(180deg,#ffffff,#f5f7fb);
-      --pill-bg: linear-gradient(180deg,#ffffff, rgba(255,255,255,.82));
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Nunito,system-ui;background:#fff;color:#0f172a}
-
-    .pagehead{max-width:var(--maxw);margin:22px auto 10px;padding:0 20px}
-    .title{font-family:Montserrat;font-weight:900;font-size:26px}
-    .subtitle{color:#6b7280;font-weight:800}
-    .stamp{font-family:Montserrat;font-weight:800;font-size:12px;color:#2b3345;opacity:.85}
-
-    .controls{max-width:var(--maxw);margin:6px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--glass-border);background:#fff;font-weight:800;cursor:pointer}
-    .chip[aria-pressed="true"]{outline:2px solid rgba(139,197,63,.45)}
-    .search{flex:1;min-width:240px;display:flex;align-items:center;gap:8px;background:var(--hint-bg);border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px}
-    .search input{border:0;background:transparent;outline:none;flex:1;font-weight:800}
-
-    .panel{max-width:var(--maxw);margin:10px auto;padding:16px 20px;border-radius:var(--radius);border:1px solid var(--glass-border);background:var(--frost-white)}
-    .legend{display:flex;gap:12px;font-weight:800}
-    .dot{width:10px;height:10px;border-radius:999px}
-    .dot.pending{background:#cfd6df}
-    .dot.ongoing{background:#f6c761}
-    .dot.completed{background:#69c04c}
-
-    details.group{max-width:var(--maxw);margin:14px auto;border-radius:16px;border:1px solid var(--glass-border);background:var(--frost-white);overflow:hidden}
-    details.group > summary{cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;font-family:Montserrat;font-weight:900}
-    .subject-name{text-transform:uppercase}
-    .prog-wrap{width:200px;display:flex;flex-direction:column;gap:4px}
-    .prog-rail{width:100%;height:8px;border-radius:999px;background:#eee;overflow:hidden;border:1px solid #e5e7eb}
-    .prog-fill{height:100%;width:0%;background:var(--bar-gold);transition:width .45s ease}
-    .prog-note{font-size:10px;font-weight:900;text-align:right}
-
-    .chapters{padding:12px;display:grid;gap:10px}
-    .row{
-      display:grid;grid-template-columns:1fr auto auto auto;gap:12px;
-      padding:12px;border-radius:12px;background:var(--crystal);
-      border:1px solid rgba(0,0,0,.04)
-    }
-    .row.completed{background:var(--frost-green)}
-.row.ongoing{
-  background: linear-gradient(180deg, #FFF8E8, #FFF3D9); /* very light orange */
-  border-color: rgba(248, 181, 0, 0.22);                /* soft amber border */
-  box-shadow: 0 0 0 0 rgba(0,0,0,0);                    /* keep it clean */
+<style>
+:root{
+  --green:#8BC53F;
+  --green-dark:#6fb22c;
+  --dark:#1f2937;
+  --border:#e5e7eb;
+  --bg:linear-gradient(135deg,#f6fff0,#eef8e4,#f9fafb);
 }
 
-    .name{font-weight:800}
-    .status,.teacher,.date{font-family:Montserrat;font-weight:900;font-size:12px;padding:6px 8px;border-radius:8px;background:var(--pill-bg);min-width:92px;text-align:center}
-    .teacher {
-      background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
-      color:#5a4300;
-      border:1px solid #e6a200;
-      box-shadow:0 0 6px rgba(248,181,0,0.4);
-    }
-    .status.ongoing{background:linear-gradient(180deg,#fff7e6,#fff4d6)}
-    .status.completed{background:linear-gradient(180deg,#e8fadf,#d9f7c7);color:#0a5a1a;border:1px solid rgba(139,197,63,.45)}
+*{box-sizing:border-box}
 
-    .error{max-width:var(--maxw);margin:14px auto;padding:12px 16px;border-radius:12px;border:1px solid #fca5a5;background:#fff1f2;color:#7f1d1d;font-weight:800;display:none}
-    @media(max-width:640px){.row{grid-template-columns:1fr}.status,.teacher,.date{justify-self:start;min-width:unset}}
-  </style>
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+  padding-top:100px; /* space for navbar */
+}
+
+/* ================= SELECTION SCREEN ================= */
+
+.selector{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#f7fff0,#eef8e4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+
+.selector-card{
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(12px);
+  padding:45px;
+  border-radius:24px;
+  box-shadow:0 30px 60px rgba(0,0,0,.08);
+  text-align:center;
+  width:90%;
+  max-width:520px;
+}
+
+.selector-card h1{
+  font-family:'Montserrat';
+  font-weight:900;
+  margin-bottom:30px;
+  letter-spacing:1px;
+}
+
+.class-btn{
+  display:block;
+  width:100%;
+  padding:14px;
+  margin:12px 0;
+  border-radius:14px;
+  border:2px solid var(--green);
+  background:#fff;
+  font-weight:800;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.class-btn:hover{
+  background:linear-gradient(90deg,var(--green),var(--green-dark));
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+/* ================= LOADER ================= */
+
+.loader{
+  position:fixed;
+  inset:0;
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:2000;
+}
+
+.spinner{
+  width:45px;
+  height:45px;
+  border:4px solid #e5e7eb;
+  border-top:4px solid var(--green);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin-bottom:15px;
+}
+
+@keyframes spin{
+  100%{transform:rotate(360deg)}
+}
+
+/* ================= HEADER ================= */
+
+.header{
+  padding:35px 20px 15px;
+  text-align:center;
+  font-family:'Montserrat';
+  font-weight:900;
+  font-size:26px;
+  letter-spacing:1px;
+}
+
+/* ================= SUBJECT CARD ================= */
+
+.subject{
+  max-width:1150px;
+  margin:35px auto;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(14px);
+  border-radius:24px;
+  box-shadow:0 30px 60px rgba(0,0,0,.08);
+  overflow:hidden;
+  transition:.3s;
+}
+
+.subject:hover{
+  transform:translateY(-3px);
+}
+
+.subject h2{
+  margin:0;
+  padding:20px 28px;
+  background:linear-gradient(90deg,var(--green),var(--green-dark));
+  color:#fff;
+  font-family:'Montserrat';
+  font-size:15px;
+  letter-spacing:1px;
+}
+
+/* ================= CHAPTER ROW ================= */
+
+.chapter{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 28px;
+  border-top:1px solid var(--border);
+  gap:14px;
+  flex-wrap:wrap;
+  transition:.2s;
+}
+
+.chapter:hover{
+  background:#f9fef5;
+}
+
+.left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-weight:700;
+}
+
+.index{
+  background:var(--green);
+  color:#fff;
+  padding:6px 12px;
+  border-radius:10px;
+  font-size:13px;
+  font-family:'Montserrat';
+}
+
+.right{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+/* ================= PILLS ================= */
+
+.pill{
+  padding:6px 12px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:800;
+  font-family:'Montserrat';
+}
+
+/* Status Colors */
+.status.pending{
+  background:#f3f4f6;
+  color:#6b7280;
+}
+
+.status.ongoing{
+  background:#fff3cd;
+  color:#8a6d3b;
+}
+
+.status.completed{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.teacher{
+  background:linear-gradient(180deg,#fceabb,#f8b500);
+  color:#5a4300;
+}
+
+.date{
+  background:#eef2ff;
+  color:#1e3a8a;
+}
+
+.error{
+  text-align:center;
+  color:red;
+  font-weight:700;
+  margin-top:20px;
+}
+</style>
 </head>
+
 <body>
+
+<!-- SAME NAVBAR AS BILLING PORTAL -->
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
-  <div class="pagehead">
-    <div class="title">Class 11 Syllabus — Tracker</div>
-    <div class="stamp" id="last-updated"></div>
+
+<!-- ================= SELECTION SCREEN ================= -->
+
+<div class="selector" id="selector">
+  <div class="selector-card">
+    <h1>Select Academic Program</h1>
+    <button class="class-btn" onclick="loadClass('Class 11')">Class 11</button>
+    <button class="class-btn" onclick="loadClass('Class 12')">Class 12</button>
+    <button class="class-btn" onclick="loadClass('10 STATE')">Class 10 – STATE</button>
+    <button class="class-btn" onclick="loadClass('10 CBSE')">Class 10 – CBSE</button>
   </div>
+</div>
 
-  <div class="controls">
-    <div id="filters">
-      <button data-filter="all" class="chip" aria-pressed="true">All</button>
-      <button data-filter="pending" class="chip" aria-pressed="false">Pending</button>
-      <button data-filter="ongoing" class="chip" aria-pressed="false">Ongoing</button>
-      <button data-filter="completed" class="chip" aria-pressed="false">Completed</button>
-    </div>
-    <div class="search">
-      <input id="search" type="search" placeholder="Search chapters or teachers…" />
-    </div>
-  </div>
+<!-- ================= LOADER ================= -->
 
-  <section class="panel">
-    <div class="legend">
-      <span class="chip"><span class="dot pending"></span> Pending</span>
-      <span class="chip"><span class="dot ongoing"></span> Ongoing</span>
-      <span class="chip"><span class="dot completed"></span> Completed</span>
-    </div>
-  </section>
+<div class="loader" id="loader">
+  <div class="spinner"></div>
+  <div id="loaderText">Loading...</div>
+</div>
 
-  <div id="error" class="error">Could not load Google Sheet (check API key, sharing, or range).</div>
+<!-- ================= SYLLABUS CONTAINER ================= -->
 
-  <details class="group"><summary><span class="subject-name">Physics</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-physics"></div></div><div class="prog-note" id="note-physics">0/0</div></span></summary><div class="chapters" id="list-physics"></div></details>
-  <details class="group"><summary><span class="subject-name">Chemistry</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-chemistry"></div></div><div class="prog-note" id="note-chemistry">0/0</div></span></summary><div class="chapters" id="list-chemistry"></div></details>
-  <details class="group"><summary><span class="subject-name">Mathematics</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-mathematics"></div></div><div class="prog-note" id="note-mathematics">0/0</div></span></summary><div class="chapters" id="list-mathematics"></div></details>
-  <details class="group"><summary><span class="subject-name">Botany</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-botany"></div></div><div class="prog-note" id="note-botany">0/0</div></span></summary><div class="chapters" id="list-botany"></div></details>
-  <details class="group"><summary><span class="subject-name">Zoology</span><span class="prog-wrap"><div class="prog-rail"><div class="prog-fill" id="bar-zoology"></div></div><div class="prog-note" id="note-zoology">0/0</div></span></summary><div class="chapters" id="list-zoology"></div></details>
+<div id="syllabus"></div>
 
-  <script>
-    /* =================== CONFIG: Sheets API v4 =================== */
-    const SHEET_ID   = "1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
-    const SHEET_NAME = "Sheet1";
-    const RANGE      = `${SHEET_NAME}!A1:H`; // Subject | Index | Title | Status | ExpectedDate | Stream | Teacher | Teacher(s)
-    const API_KEY    = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
+<script>
 
-    const SHEETS_URL = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}?key=${API_KEY}`;
+const SHEET_ID = "1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
+const API_KEY = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
 
-    /* =================== Refs =================== */
-    const lists = {
-      physics: document.getElementById('list-physics'),
-      chemistry: document.getElementById('list-chemistry'),
-      mathematics: document.getElementById('list-mathematics'),
-      botany: document.getElementById('list-botany'),
-      zoology: document.getElementById('list-zoology')
-    };
-    const bars = {
-      physics: document.getElementById('bar-physics'),
-      chemistry: document.getElementById('bar-chemistry'),
-      mathematics: document.getElementById('bar-mathematics'),
-      botany: document.getElementById('bar-botany'),
-      zoology: document.getElementById('bar-zoology')
-    };
-    const notes = {
-      physics: document.getElementById('note-physics'),
-      chemistry: document.getElementById('note-chemistry'),
-      mathematics: document.getElementById('note-mathematics'),
-      botany: document.getElementById('note-botany'),
-      zoology: document.getElementById('note-zoology')
-    };
-    const lastUpdatedEl = document.getElementById('last-updated');
-    const errorBox = document.getElementById('error');
+const SUBJECTS = {
+  "Class 11": ["physics","chemistry","mathematics","biology"],
+  "Class 12": ["physics","chemistry","mathematics","biology"],
+  "10 STATE": ["mathematics","physics","chemistry","biology","english","social science"],
+  "10 CBSE": ["mathematics","physics","chemistry","biology","english","social science"]
+};
 
-    /* =================== Utilities =================== */
-    function fmtDayMonth(s){
-      if(!s) return '';
-      let d = new Date(s);
-      if (isNaN(d)) {
-        const m = String(s).match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
-        if (m) d = new Date(+m[3], +m[2]-1, +m[1]);
-      }
-      if(isNaN(d)) return '';
-      const day = d.getDate().toString().padStart(2,'0');
-      const mon = d.toLocaleString('en-GB',{month:'short'});
-      return `${day} ${mon}`;
-    }
+function formatDate(dateStr){
+  if(!dateStr) return "";
+  const d = new Date(dateStr);
+  if(isNaN(d)) return dateStr;
+  return d.toLocaleDateString("en-GB",{day:'2-digit',month:'short'});
+}
 
-    function formatTeachers(item){
-      if (Array.isArray(item.teachers) && item.teachers.length) return item.teachers.join(', ');
-      if (item.teacher) return item.teacher;
-      return '—';
-    }
+async function loadClass(sheetName){
 
-    function makeRow(item){
-      const st    = (item.status || 'pending').toLowerCase();
-      const when  = fmtDayMonth(item.expectedDate || '');
-      const teach = formatTeachers(item);
-      const div   = document.createElement('div');
-      div.className = 'row ' + st;
-      div.dataset.status   = st;
-      div.dataset.name     = (item.title || '').toLowerCase();
-      div.dataset.teachers = teach.toLowerCase();
-      div.innerHTML = `
-        <div class="name">${item.index ? (item.index + '. ') : ''}${item.title}</div>
-        <div class="status ${st}">${st.toUpperCase()}</div>
-        <div class="teacher">${teach}</div>
-        <div class="date">${when}</div>
-      `;
-      return div;
-    }
+  document.getElementById("selector").style.display="none";
+  document.getElementById("loader").style.display="flex";
+  document.getElementById("loaderText").innerText="Loading "+sheetName+" Syllabus...";
 
-    function setProgress(total, done, key){
-      const pct = total ? Math.round((done/total)*100) : 0;
-      bars[key].style.width = pct + "%";
-      notes[key].textContent = `${done}/${total}`;
-    }
+  const range = `${sheetName}!A1:F`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?key=${API_KEY}`;
 
-    function renderSimple(arr, mount, key){
-      mount.innerHTML = '';
-      const sorted = [...arr].sort((a,b)=>(a.index||999)-(b.index||999));
-      let done = 0;
-      sorted.forEach(ch => {
-        if((ch.status||'').toLowerCase()==='completed') done++;
-        mount.appendChild(makeRow(ch));
-      });
-      setProgress(sorted.length, done, key);
-    }
+  try{
+    const res = await fetch(url);
+    const data = await res.json();
+    const rows = data.values;
+    renderSheet(sheetName, rows);
+  }catch(err){
+    document.getElementById("syllabus").innerHTML='<div class="error">Error loading sheet. Check API key or sharing settings.</div>';
+  }
 
-    function renderBioStreams(bio){
-      const botany  = (bio || []).filter(x => (x.stream||'').toLowerCase()==='botany');
-      const zoology = (bio || []).filter(x => (x.stream||'').toLowerCase()==='zoology');
-      renderSimple(botany,  lists.botany,  'botany');
-      renderSimple(zoology, lists.zoology, 'zoology');
-    }
+  document.getElementById("loader").style.display="none";
+}
 
-    /* =================== Filters & Search =================== */
-    const filterState = { value:'all', query:'' };
-    function applyFilters(){
-      const rows = document.querySelectorAll('.chapters .row');
-      rows.forEach(r=>{
-        const st = r.dataset.status;
-        const name = r.dataset.name || '';
-        const tch = r.dataset.teachers || '';
-        const statusMatch = (filterState.value==='all' || st===filterState.value);
-        const q = (filterState.query || '');
-        const textMatch = (!q || name.includes(q) || tch.includes(q));
-        r.style.display = (statusMatch && textMatch) ? '' : 'none';
-      });
-    }
-    document.getElementById('filters').addEventListener('click', e=>{
-      if(e.target.matches('button[data-filter]')){
-        filterState.value = e.target.dataset.filter;
-        [...e.currentTarget.querySelectorAll('button')].forEach(b=>b.setAttribute('aria-pressed', String(b===e.target)));
-        applyFilters();
-      }
-    });
-    document.getElementById('search').addEventListener('input', e=>{
-      filterState.query = (e.target.value || '').toLowerCase().trim();
-      applyFilters();
+function renderSheet(sheetName, values){
+
+  if(!values || values.length===0) return;
+
+  const headers = values[0];
+  const rows = values.slice(1).map(row=>{
+    let obj={};
+    headers.forEach((h,i)=>obj[h]=row[i]||"");
+    return obj;
+  });
+
+  let html=`<div class="header">${sheetName.toUpperCase()} SYLLABUS TRACKER</div>`;
+
+  SUBJECTS[sheetName].forEach(subject=>{
+    const subjectRows = rows.filter(r=> (r.Subject||"").toLowerCase()===subject);
+
+    if(subjectRows.length===0) return;
+
+    html+=`<div class="subject"><h2>${subject.toUpperCase()}</h2>`;
+
+    subjectRows.sort((a,b)=>(+a.Index||999)-(+b.Index||999));
+
+    subjectRows.forEach(r=>{
+      html+=`
+      <div class="chapter">
+        <div class="left">
+          <div class="index">${r.Index}</div>
+          <div>${r.Title}</div>
+        </div>
+        <div class="right">
+          ${r.Teacher?`<div class="pill teacher">${r.Teacher}</div>`:''}
+          ${r.ExpectedDate?`<div class="pill date">${formatDate(r.ExpectedDate)}</div>`:''}
+          <div class="pill status ${(r.Status||"pending").toLowerCase()}">${(r.Status||"pending").toUpperCase()}</div>
+        </div>
+      </div>`;
     });
 
-    /* =================== Sheets API fetch & normalize =================== */
-    async function fetchSheetValues(){
-      const res = await fetch(SHEETS_URL, { cache: "no-store" });
-      if(!res.ok){
-        const txt = await res.text();
-        throw new Error(`Sheets API ${res.status}: ${txt}`);
-      }
-      const json = await res.json(); // { range, values: [...] }
-      return json.values || [];
-    }
+    html+=`</div>`;
+  });
 
-    function rowsToObjects(values){
-      if(!values.length) return [];
-      const headers = values[0].map(h => String(h||'').trim());
-      return values.slice(1).map(row => {
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = row[i] ?? "");
-        return obj;
-      });
-    }
+  document.getElementById("syllabus").innerHTML=html;
+}
 
-    function normalizeRow(r){
-      const subject = String(r.Subject || "").trim().toLowerCase();
-      const stream  = String(r.Stream  || "").trim().toLowerCase();
+</script>
 
-      const rawTeachers = String(r["Teacher(s)"] || "")
-        .split(",").map(s => s.trim()).filter(Boolean);
-
-      const it = {
-        index: Number(r.Index) || undefined,
-        title: String(r.Title || "").trim(),
-        status: String(r.Status || "pending").trim().toLowerCase(),
-        expectedDate: r.ExpectedDate ? String(r.ExpectedDate) : ""
-      };
-      if (rawTeachers.length > 1) it.teachers = rawTeachers;
-      else if (rawTeachers.length === 1) it.teacher = rawTeachers[0];
-      else if (r.Teacher) it.teacher = String(r.Teacher).trim();
-
-      if (subject === "biology" || subject === "botany" || subject === "zoology") {
-        it.stream = stream || (subject !== "biology" ? subject : "");
-        return { bucket: "biology", item: it };
-      }
-      return { bucket: subject, item: it };
-    }
-
-    async function init(){
-      try{
-        const values = await fetchSheetValues();
-        const rows   = rowsToObjects(values);
-
-        const data = { physics:[], chemistry:[], mathematics:[], biology:[] };
-        rows.forEach(r => {
-          const { bucket, item } = normalizeRow(r);
-          if (!bucket) return;
-          if (bucket === "physics" || bucket === "chemistry" || bucket === "mathematics") {
-            data[bucket].push(item);
-          } else if (bucket === "biology") {
-            data.biology.push(item);
-          }
-        });
-
-        renderSimple(data.physics,     lists.physics,     'physics');
-        renderSimple(data.chemistry,   lists.chemistry,   'chemistry');
-        renderSimple(data.mathematics, lists.mathematics, 'mathematics');
-        renderBioStreams(data.biology);
-
-        if (lastUpdatedEl) {
-          lastUpdatedEl.textContent = "Last updated: " + new Date().toLocaleString("en-IN");
-        }
-
-        // closed by default; apply filters once
-        document.querySelectorAll('details.group').forEach(d => d.open = false);
-        applyFilters();
-
-      } catch (err) {
-        console.error(err);
-        if (errorBox){ errorBox.style.display='block'; }
-      }
-    }
-    init();
-  </script>
 </body>
 </html>
