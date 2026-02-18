@@ -22,8 +22,23 @@ body{
   margin:0;
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#e8f0ff,#f3f8ff,#eef7f2);
-  padding:40px;
   color:var(--text);
+}
+
+/* Space below navbar */
+.main-content{
+  padding:120px 40px 40px;
+}
+.institutional{
+  margin-top:8px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.4;
+}
+
+.institutional span{
+  font-weight:600;
+  color:#374151;
 }
 
 .wrapper{
@@ -40,7 +55,13 @@ body{
   border-radius:28px;
   padding:35px;
   border:1px solid var(--border);
-  box-shadow:0 30px 80px rgba(0,0,0,0.08);
+  box-shadow:
+  0 35px 90px rgba(0,0,0,0.12),
+  inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.premium-panel{
+  border-top:4px solid;
+  border-image: linear-gradient(90deg,#8BC53F,#6fb22c) 1;
 }
 
 .header{
@@ -150,11 +171,18 @@ select{
 </style>
 </head>
 <body>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 
-<div class="wrapper">
+<div class="main-content">
+  <div class="wrapper">
 
 <div class="card">
 <div class="header">Billing Details</div>
+<div class="institutional">
+  SEHR Academy<br>
+  <span>Fee Structure – Academic Year 2026–2027</span>
+</div>
 <div id="sessionInfo" class="session-info"></div>
 <div id="monthPills" class="month-pill-container"></div>
 
@@ -188,17 +216,21 @@ select{
 <div id="advanceBox"></div>
 </div>
 
-<div class="card" id="summaryPanel" style="display:none;">
+<div class="card premium-panel" id="summaryPanel">
 <div class="summary-title">Payment Information</div>
 <div id="summaryContent"></div>
 </div>
 
 </div>
+</div>   <!-- this closes main-content -->
 
 <script>
 
 let monthlyFee=0;
 populateDates();
+setTodayDefault();
+calculate();
+
 
 document.getElementById("classSelect").addEventListener("change",updateClass);
 document.querySelectorAll(".subjects input").forEach(cb=>cb.addEventListener("change",calculate));
@@ -211,6 +243,20 @@ for(let i=1;i<=31;i++) day.innerHTML+=`<option value="${i}">${i}</option>`;
 const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 months.forEach((m,i)=>month.innerHTML+=`<option value="${i}">${m}</option>`);
 year.innerHTML=`<option value="2026">2026</option>`;
+}
+function setTodayDefault(){
+
+  const today = new Date();
+
+  // Only auto-set if year is 2026 (since calculator is locked to 2026)
+  if(today.getFullYear() === 2026){
+
+    day.value = today.getDate();
+    month.value = today.getMonth(); 
+    year.value = 2026;
+
+  }
+
 }
 
 function updateClass(){
