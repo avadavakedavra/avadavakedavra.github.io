@@ -20,7 +20,11 @@ body{
   font-family:Montserrat,sans-serif;
   background:var(--bg);
   color:var(--dark);
+}
+
+.dashboard-wrapper{
   display:flex;
+  margin-top:110px; /* pushes below navbar */
 }
 
 
@@ -245,9 +249,12 @@ h2{
 </head>
 
 <body>
+  <header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 <div id="loader" class="loader">
   Loading...
 </div>
+  <div class="dashboard-wrapper">
 <div class="sidebar">
   <div class="profile-side">
     <img id="sidePhoto">
@@ -351,7 +358,7 @@ h2{
     <div id="achievementList"></div>
   </div>
 </div>
-
+</div> <!-- closes dashboard-wrapper -->
 </div>
 
 <script>
