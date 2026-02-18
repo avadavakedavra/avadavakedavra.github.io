@@ -1,227 +1,211 @@
 <!-- Shared Navbar (Sehr Academy) -->
-<!-- Save this file at /partials/nav.html -->
+<header id="site-header">
+
 <style>
-  /* === Original design (unchanged) === */
-  header#site-header {
-    position: sticky; top: 0; z-index: 40;
-    background: rgba(255,255,255,.78);
-    border-bottom: 1px solid rgba(230,232,236,.6);
-    backdrop-filter: saturate(175%) blur(10px);
+/* === Original design (unchanged) === */
+header#site-header {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(255,255,255,.78);
+  border-bottom: 1px solid rgba(230,232,236,.6);
+  backdrop-filter: saturate(175%) blur(10px);
+}
+header#site-header .container {max-width:1180px;margin:0 auto;padding:0 20px}
+header#site-header .nav {display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+header#site-header .brand {display:flex;align-items:baseline;gap:8px;text-decoration:none}
+header#site-header .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#8BC53F;letter-spacing:.4px}
+header#site-header .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+
+header#site-header nav[aria-label="Primary"]{display:flex;gap:4px;align-items:center}
+header#site-header .menu, header#site-header .submenu{list-style:none;margin:0;padding:0}
+header#site-header .menu{display:flex;gap:14px;align-items:center}
+header#site-header .menu > li{position:relative}
+
+header#site-header .link, header#site-header .trigger{
+  font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;
+  font-weight:700;font-size:13px;letter-spacing:.2px;position:relative;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 8px;cursor:pointer;
+}
+header#site-header .link:hover,
+header#site-header .trigger:hover {color:#8BC53F}
+
+header#site-header .link:after, header#site-header .trigger:after{
+  content:"";position:absolute;left:0;right:0;bottom:-4px;
+  height:2px;background:#8BC53F;transform:scaleX(0);transform-origin:left;
+  transition:transform .18s;
+}
+header#site-header .link:hover:after,
+header#site-header .trigger:hover:after{transform:scaleX(1)}
+
+header#site-header .submenu{
+  position:absolute;left:0;top:100%;min-width:200px;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
+  border:1px solid rgba(0,0,0,.06);border-radius:10px;
+  box-shadow:0 14px 32px rgba(15,23,42,.14);
+  padding:6px;display:none;
+}
+header#site-header .submenu a{
+  display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;
+  text-decoration:none;color:#0b0f10;font-weight:700;
+  font-family:"Montserrat",sans-serif;font-size:13px;
+}
+header#site-header .submenu a:hover{background:#f5f8f1;color:#8BC53F}
+header#site-header .menu > li.open > .submenu{display:block}
+
+/* Nested submenu */
+header#site-header .submenu li{position:relative}
+header#site-header .submenu .has-sub > .submenu{
+  position:absolute; left:100%; top:-6px; min-width:200px; display:none;
+}
+header#site-header .submenu li.open > .submenu{display:block}
+header#site-header .submenu .has-sub > .trigger::after{
+  content:"▸"; position:static; transform:none; background:none;
+  height:auto; margin-left:auto;
+}
+
+/* ===== MOBILE FIX ===== */
+header#site-header .menu-toggle{
+  display:none;
+  font-size:22px;
+  background:none;
+  border:none;
+  font-weight:800;
+  cursor:pointer;
+  color:#0b0f10;
+}
+
+@media (max-width:900px){
+
+  header#site-header .menu-toggle{display:block}
+
+  header#site-header nav[aria-label="Primary"]{
+    display:none;
+    width:100%;
   }
-  header#site-header .container {max-width:1180px;margin:0 auto;padding:0 20px}
-  header#site-header .nav {display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-  header#site-header .brand {display:flex;align-items:baseline;gap:8px;text-decoration:none}
-  header#site-header .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#8BC53F;letter-spacing:.4px}
-  header#site-header .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
 
-  header#site-header nav[aria-label="Primary"]{display:flex;gap:4px;align-items:center}
-  header#site-header .menu, header#site-header .submenu{list-style:none;margin:0;padding:0}
-  header#site-header .menu{display:flex;gap:14px;align-items:center}
-  header#site-header .menu > li{position:relative}
-
-  /* All menu links */
-  header#site-header .link, header#site-header .trigger{
-    font-family:"Montserrat",sans-serif;color:#0b0f10;text-decoration:none;
-    font-weight:700;font-size:13px;letter-spacing:.2px;position:relative;
-    display:inline-flex;align-items:center;gap:6px;
-    padding:6px 8px;
+  header#site-header nav.active{
+    display:block;
   }
-  header#site-header .link:hover,
-  header#site-header .trigger:hover {color:#8BC53F}
 
-  /* underline hover */
-  header#site-header .link:after, header#site-header .trigger:after{
-    content:"";position:absolute;left:0;right:0;bottom:-4px;
-    height:2px;background:#8BC53F;transform:scaleX(0);transform-origin:left;
-    transition:transform .18s;
+  header#site-header .menu{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+    width:100%;
+    padding-top:10px;
   }
-  header#site-header .link:hover:after,
-  header#site-header .trigger:hover:after{transform:scaleX(1)}
 
-  /* Dropdown (level 1) */
+  header#site-header .menu > li{
+    width:100%;
+  }
+
+  header#site-header .link,
+  header#site-header .trigger{
+    width:100%;
+    justify-content:space-between;
+  }
+
   header#site-header .submenu{
-    position:absolute;left:0;top:100%;min-width:200px;
-    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.9));
-    border:1px solid rgba(0,0,0,.06);border-radius:10px;box-shadow:0 14px 32px rgba(15,23,42,.14);
-    padding:6px;display:none;
+    position:relative;
+    left:auto;
+    top:auto;
+    box-shadow:none;
+    border:1px solid rgba(0,0,0,.05);
+    margin-top:4px;
   }
-  header#site-header .submenu a{
-    display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;text-decoration:none;
-    color:#0b0f10;font-weight:700;font-family:"Montserrat",sans-serif;font-size:13px;
-  }
-  header#site-header .submenu a:hover{background:#f5f8f1;color:#8BC53F}
-  header#site-header .menu > li.open > .submenu{display:block}
 
-  /* === Minimal additions for nested submenu (keeps same design) === */
-  header#site-header .submenu li{position:relative}
-  /* Position level-2 panel; inherits same styles as level-1 */
   header#site-header .submenu .has-sub > .submenu{
-    position:absolute; left:100%; top:-6px; min-width:200px; display:none;
+    position:relative;
+    left:auto;
+    top:auto;
+    margin-top:4px;
   }
-  header#site-header .submenu li.open > .submenu{display:block}
-
-  /* Tiny arrow indicator for items that open a nested menu (same typography) */
-  header#site-header .submenu .has-sub > .trigger::after{
-    content:"▸"; position:static; transform:none; background:none; height:auto; margin-left:auto;
-  }
-
-  /* Mobile keeps same frosted look; stack submenus */
-  @media (max-width:900px){
-    header#site-header .menu-toggle{display:none}
-    header#site-header .menu{flex-direction:column;align-items:flex-start}
-    header#site-header .submenu{position:relative;left:auto;top:auto;box-shadow:none;border:1px solid rgba(0,0,0,.05);margin-top:4px}
-    header#site-header .submenu .has-sub > .submenu{position:relative;left:auto;top:auto;margin-top:4px}
-  }
+}
 </style>
 
 <div class="container nav">
-  <a class="brand" href="https://sehracademy.com/#home" aria-label="Sehr Academy">
+  <a class="brand" href="https://sehracademy.com/#home">
     <span>SEHR</span><span>ACADEMY</span>
   </a>
 
+  <!-- Mobile Toggle -->
+  <button class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+
   <nav id="primary-nav" aria-label="Primary">
     <ul class="menu" role="menubar">
-      <!-- About Us -->
-      <li role="none">
-        <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">About Us ▼</a>
-        <ul class="submenu" role="menu" aria-label="About Us">
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/faculty">Faculty</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/management">Management</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/gallery">Gallery</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/events">Events</a></li>
+
+      <li>
+        <a class="trigger">About Us ▼</a>
+        <ul class="submenu">
+          <li><a href="https://sehracademy.com/faculty">Faculty</a></li>
+          <li><a href="https://sehracademy.com/management">Management</a></li>
+          <li><a href="https://sehracademy.com/gallery">Gallery</a></li>
+          <li><a href="https://sehracademy.com/events">Events</a></li>
         </ul>
       </li>
 
-      <!-- Courses -->
-      <li role="none">
-        <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Courses ▼</a>
-        <ul class="submenu" role="menu" aria-label="Courses">
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 10 CBSE</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchascent">Class 11 CBSE</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchorigin">Class 12 CBSE</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 10 KL STATE</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 11 KL STATE</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">Class 12 KL STATE</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">NEET</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">JEE Mains</a></li>
-          
+      <li>
+        <a class="trigger">Courses ▼</a>
+        <ul class="submenu">
+          <li><a href="https://sehracademy.com/batchcomingsoon">Class 10 CBSE</a></li>
+          <li><a href="https://sehracademy.com/batchascent">Class 11 CBSE</a></li>
+          <li><a href="https://sehracademy.com/batchorigin">Class 12 CBSE</a></li>
+          <li><a href="https://sehracademy.com/batchcomingsoon">Class 10 STATE</a></li>
+          <li><a href="https://sehracademy.com/batchcomingsoon">Class 11 STATE</a></li>
+          <li><a href="https://sehracademy.com/batchcomingsoon">Class 12 STATE</a></li>
+          <li><a href="https://sehracademy.com/batchcomingsoon">NEET</a></li>
+          <li><a href="https://sehracademy.com/batchcomingsoon">JEE Mains</a></li>
         </ul>
       </li>
 
-      <!-- Classes (replaces Schedule link) -->
-      <li role="none">
-        <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Classes ▼</a>
-        <ul class="submenu" role="menu" aria-label="Classes">
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">NEET</a></li>
-          <li role="none"><a role="menuitem" href="https://sehracademy.com/batchcomingsoon">JEE Mains</a></li>
-
-          <!-- Nested submenu (Class 11) — same design -->
-
-                    <li role="none" class="has-sub">
-            <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 10 CBSE</a>
-            <ul class="submenu" role="menu" aria-label="Class 11">
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/academiccalendar">Calendar</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus">Syllabus</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
-            </ul>
-          </li>
-
-          
-          <li role="none" class="has-sub">
-            <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 11 CBSE</a>
-            <ul class="submenu" role="menu" aria-label="Class 11">
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/academiccalendar">Calendar</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus">Syllabus</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
-            </ul>
-          </li>
-
-          <li role="none" class="has-sub">
-  <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 12 CBSE</a>
-  <ul class="submenu" role="menu" aria-label="Class 12">
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/academiccalendar">Calendar</a></li>
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus12">Syllabus</a></li>
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
-  </ul>
-</li>
-
-                              <li role="none" class="has-sub">
-            <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 10 KL STATE</a>
-            <ul class="submenu" role="menu" aria-label="Class 11">
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/academiccalendar">Calendar</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus">Syllabus</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
-            </ul>
-          </li>
-
-          
-          <li role="none" class="has-sub">
-            <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 11 KL STATE</a>
-            <ul class="submenu" role="menu" aria-label="Class 11">
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/academiccalendar">Calendar</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus">Syllabus</a></li>
-              <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
-            </ul>
-          </li>
-
-          <li role="none" class="has-sub">
-  <a class="trigger" role="menuitem" aria-haspopup="true" aria-expanded="false">Class 12 KL STATE</a>
-  <ul class="submenu" role="menu" aria-label="Class 12">
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/schedule">Schedule</a></li>
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/academiccalendar">Calendar</a></li>
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/syllabus12">Syllabus</a></li>
-    <li role="none"><a role="menuitem" href="https://sehracademy.com/assignments">Assignments</a></li>
-  </ul>
-</li>
-
+      <li>
+        <a class="trigger">Classes ▼</a>
+        <ul class="submenu">
+          <li><a href="https://sehracademy.com/batchcomingsoon">NEET</a></li>
+          <li><a href="https://sehracademy.com/batchcomingsoon">JEE Mains</a></li>
         </ul>
       </li>
 
-      <!-- Existing (kept) -->
-      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/downloads">Downloads</a></li>
-      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/studentlogin">Student Login</a></li>
-      <li role="none"><a class="link" role="menuitem" href="https://sehracademy.com/contact">Contact</a></li>
+      <li><a class="link" href="https://sehracademy.com/downloads">Downloads</a></li>
+      <li><a class="link" href="https://sehracademy.com/studentlogin">Student Login</a></li>
+      <li><a class="link" href="https://sehracademy.com/contact">Contact</a></li>
+
     </ul>
   </nav>
 </div>
 
 <script>
 (function(){
-  const header = document.currentScript.closest('header#site-header');
+  const header = document.getElementById('site-header');
   const triggers = header.querySelectorAll('.trigger');
-
-  function closeSiblings(li){
-    const parentList = li.parentElement;
-    parentList.querySelectorAll(':scope > li.open').forEach(sib=>{
-      if(sib!==li) sib.classList.remove('open');
-    });
-    parentList.querySelectorAll(':scope > li .trigger[aria-expanded="true"]').forEach(t=>{
-      const tLi = t.closest('li');
-      if(tLi !== li) t.setAttribute('aria-expanded','false');
-    });
-  }
+  const toggle = header.querySelector('.menu-toggle');
+  const nav = header.querySelector('#primary-nav');
 
   function closeAll(){
     header.querySelectorAll('.open').forEach(li=>li.classList.remove('open'));
-    header.querySelectorAll('.trigger[aria-expanded="true"]').forEach(t=>t.setAttribute('aria-expanded','false'));
   }
 
   triggers.forEach(btn=>{
     const li = btn.closest('li');
     btn.addEventListener('click',(e)=>{
       e.preventDefault();
-      const willOpen = !li.classList.contains('open');
-      closeSiblings(li);
-      li.classList.toggle('open', willOpen);
-      btn.setAttribute('aria-expanded', willOpen);
+      const isOpen = li.classList.contains('open');
+      closeAll();
+      if(!isOpen) li.classList.add('open');
     });
   });
 
-  document.addEventListener('click',(e)=>{ if(!header.contains(e.target)) closeAll(); });
+  if(toggle){
+    toggle.addEventListener('click', ()=>{
+      const isOpen = nav.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+  }
+
+  document.addEventListener('click',(e)=>{
+    if(!header.contains(e.target)) closeAll();
+  });
 })();
 </script>
+
+</header>
