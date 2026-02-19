@@ -317,6 +317,8 @@ h2{
 <div id="attendance" class="section">
   <div class="card">
     <h2>Attendance</h2>
+
+    <!-- Overall Summary -->
     <div class="info-grid">
       <div class="info-box">
         <div class="info-label">Total Classes</div>
@@ -331,6 +333,13 @@ h2{
         <div class="info-value" id="attendancePercent"></div>
       </div>
     </div>
+
+    <!-- Monthly Breakdown -->
+    <div style="margin-top:35px;">
+      <h3 style="margin-bottom:15px;">Monthly Breakdown</h3>
+      <div id="attendanceMonthly"></div>
+    </div>
+
   </div>
 </div>
 
@@ -434,6 +443,44 @@ document.getElementById("attendancePercent").innerHTML=
   `<span style="color:${color};font-weight:800;">
     ${percent}% – ${label}
   </span>`;
+  // Monthly Breakdown
+if(data.attendance.monthly && data.attendance.monthly.length > 0){
+
+  document.getElementById("attendanceMonthly").innerHTML =
+    data.attendance.monthly.map(m => {
+
+      const percent = m.total > 0
+        ? ((m.attended / m.total) * 100).toFixed(1)
+        : 0;
+
+      return `
+        <div class="subject-card" style="margin-bottom:15px;">
+          <div style="display:flex;justify-content:space-between;">
+            <div><b>${m.month}</b></div>
+            <div>${m.attended} / ${m.total}</div>
+          </div>
+
+          <div class="progress-bar" style="margin-top:10px;">
+            <div class="progress-fill"
+                 style="width:${percent}%;
+                        background:${getGradient(percent)}">
+            </div>
+          </div>
+
+          <div style="margin-top:6px;font-size:13px;color:#6b7280;">
+            ${percent}% Attendance
+          </div>
+        </div>
+      `;
+    }).join("");
+
+}else{
+
+  document.getElementById("attendanceMonthly").innerHTML =
+    `<div style="color:#9ca3af;padding:20px 0;text-align:center;">
+      No attendance data available.
+    </div>`;
+}
 
   // Fees
   buildFees();
