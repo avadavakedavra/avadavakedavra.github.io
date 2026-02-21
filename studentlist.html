@@ -1,150 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy Admin</title>
+<title>Sehr Academy — Student Database</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --green:#8BC53F;
+  --border:#e6e8ec;
+  --bg:#f8f7f4;
+}
 
 body{
   margin:0;
-  font-family:'Montserrat',sans-serif;
-  background:#f2f4f8;
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:#1f2937;
 }
 
-/* ================= HEADER ================= */
-
-.header{
-  background:white;
-  padding:18px 30px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+/* HEADER */
+header{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
-.logo{
-  font-weight:700;
-  font-size:18px;
-  color:#1a73e8;
-}
-
-.badge-top{
-  background:#e3f2fd;
-  padding:6px 14px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:600;
-  color:#1a73e8;
-}
-
-/* ================= MAIN ================= */
-
-.container{
+.wrap{
   max-width:1200px;
-  margin:40px auto;
-  padding:0 20px;
-}
-
-.title-row{
+  margin:auto;
+  padding:14px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
 }
 
-h1{
-  margin:0;
-  font-size:26px;
+.brand{
+  cursor:pointer;
 }
 
-.student-count{
-  font-size:14px;
-  color:#666;
+.brand span:first-child{
+  font-family:'Montserrat';
+  font-weight:900;
+  color:var(--green);
+  font-size:22px;
 }
 
-/* ================= FILTER CARD ================= */
-
-.filter-card{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.05);
-  margin-bottom:25px;
+.brand span:last-child{
+  font-family:'Montserrat';
+  font-weight:900;
+  font-size:22px;
 }
 
-.filters{
+.page-badge{
+  font-weight:700;
+  background:#f2f4f7;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:13px;
+}
+
+/* HEADING + FILTERS */
+.heading{
+  max-width:1200px;
+  margin:20px auto;
+  padding:0 20px;
   display:flex;
+  gap:10px;
   flex-wrap:wrap;
-  gap:15px;
   align-items:center;
 }
 
-select, input{
-  padding:10px 12px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  min-width:160px;
-  font-family:'Montserrat',sans-serif;
+.filter{
+  position:relative;
 }
 
-.multi{
-  height:42px;
-}
-
-button{
-  padding:10px 20px;
-  border:none;
+.filter-btn{
+  padding:8px 14px;
+  border:1px solid var(--border);
   border-radius:8px;
-  background:#1a73e8;
-  color:white;
+  background:#fff;
+  font-weight:700;
   cursor:pointer;
+  min-width:120px;
+  text-align:left;
+}
+
+.filter-menu{
+  position:absolute;
+  top:110%;
+  left:0;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:0 12px 25px rgba(0,0,0,.15);
+  padding:10px;
+  display:none;
+  max-height:250px;
+  overflow:auto;
+  z-index:999;
+}
+
+.filter-menu div{
+  padding:6px 8px;
+  font-size:14px;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.filter-menu div:hover{
+  background:#f2f4f7;
+}
+
+.filter.open .filter-menu{
+  display:block;
+}
+
+.search{
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:8px;
   font-weight:600;
-  transition:0.2s;
 }
 
-button:hover{
-  background:#155ec5;
-}
-
-/* ================= TABLE CARD ================= */
-
-.table-card{
-  background:white;
-  border-radius:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.05);
-  overflow:hidden;
+/* TABLE */
+.table-wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
 }
 
 th{
-  background:#f8f9fb;
+  background:#fff;
+  font-family:'Montserrat';
+  font-weight:800;
   padding:14px;
   text-align:left;
-  font-weight:600;
-  font-size:14px;
+  border-bottom:1px solid var(--border);
 }
 
 td{
   padding:14px;
-  border-top:1px solid #eee;
+  border-top:1px solid var(--border);
   font-size:14px;
 }
 
 tbody tr{
-  transition:0.2s ease;
+  transition:.2s ease;
   cursor:pointer;
 }
 
 tbody tr:hover{
-  background:#f1f7ff;
+  background:#f4f7f2;
+  transform:scale(1.01);
 }
 
 .student-name{
@@ -154,160 +175,177 @@ tbody tr:hover{
 }
 
 .student-name img{
-  width:36px;
-  height:36px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   object-fit:cover;
+  border:2px solid var(--border);
 }
 
-.badge{
-  padding:4px 10px;
-  border-radius:20px;
-  font-size:12px;
-  background:#e3f2fd;
-  color:#1a73e8;
+.pill{
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:6px;
+  border:1px solid #ddd;
+  background:#fff;
 }
 
-.error{
-  color:red;
-  margin-top:10px;
+.pill.class{
+  background:#eef5e6;
+  border:none;
 }
 
+.empty{
+  text-align:center;
+  padding:40px;
+  font-weight:600;
+  opacity:.5;
+}
 </style>
 </head>
+
 <body>
 
-<div class="header">
-  <div class="logo">SEHR Academy Admin</div>
-  <div class="badge-top">Student Management</div>
+<header>
+<div class="wrap">
+<div class="brand" onclick="window.location.href='https://sehracademy.com'">
+<span>SEHR</span><span>ACADEMY</span>
+</div>
+<div class="page-badge">Student Database</div>
+</div>
+</header>
+
+<div class="heading">
+
+<div class="filter">
+<button class="filter-btn" id="classBtn">Class ▾</button>
+<div class="filter-menu" id="classMenu"></div>
 </div>
 
-<div class="container">
+<div class="filter">
+<button class="filter-btn" id="syllabusBtn">Syllabus ▾</button>
+<div class="filter-menu" id="syllabusMenu"></div>
+</div>
 
-  <div class="title-row">
-    <h1>Student Database</h1>
-    <div class="student-count" id="studentCount">0 students</div>
-  </div>
+<select id="sortSelect" class="filter-btn">
+<option value="">Sort By</option>
+<option value="name">Name A-Z</option>
+<option value="class">Class</option>
+<option value="admission">Admission No</option>
+</select>
 
-  <div class="filter-card">
-    <div class="filters">
+<input type="text" id="searchInput" class="search" placeholder="Search name...">
 
-      <input type="password" id="adminPassword" placeholder="Admin Password">
+</div>
 
-      <select id="classFilter" multiple>
-        <option value="11">Class 11</option>
-        <option value="12">Class 12</option>
-      </select>
-
-      <select id="syllabusFilter" multiple>
-        <option value="State">State</option>
-        <option value="CBSE">CBSE</option>
-      </select>
-
-      <select id="sortBy">
-        <option value="">Sort By</option>
-        <option value="name">Name A-Z</option>
-        <option value="class">Class</option>
-        <option value="admission">Admission No</option>
-      </select>
-
-      <button onclick="loadStudents()">Load Students</button>
-
-    </div>
-
-    <div class="error" id="errorMsg"></div>
-  </div>
-
-  <div class="table-card">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Admission No</th>
-          <th>Class</th>
-          <th>Syllabus</th>
-          <th>School</th>
-          <th>Joining Date</th>
-        </tr>
-      </thead>
-      <tbody id="studentTable"></tbody>
-    </table>
-  </div>
-
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Admission No</th>
+<th>Class</th>
+<th>Syllabus</th>
+<th>School</th>
+<th>Joining Date</th>
+</tr>
+</thead>
+<tbody id="studentBody"></tbody>
+</table>
 </div>
 
 <script>
 
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxDGwmT8fs6X2bTKO2d9dhpgr9k11BygstAG5aT51dqRBa2f9-dojKrI-F7Ll57xCMh/exec";
-let allStudents = [];
+const API_URL = "https://script.google.com/macros/s/AKfycbxDGwmT8fs6X2bTKO2d9dhpgr9k11BygstAG5aT51dqRBa2f9-dojKrI-F7Ll57xCMh/exec?action=studentList";
 
-async function loadStudents(){
+let STUDENTS = [];
+let selectedClass = "";
+let selectedSyllabus = "";
+let searchValue = "";
 
-  const password = document.getElementById("adminPassword").value;
-  const errorMsg = document.getElementById("errorMsg");
+/* FETCH */
+async function fetchStudents(){
+  const res = await fetch(API_URL);
+  const data = await res.json();
+  STUDENTS = data.students || [];
+  populateFilters();
+  render();
+}
 
-  if(!password){
-    errorMsg.innerHTML = "Enter password.";
+/* FILTER POPULATION */
+function populateFilters(){
+  const classes = [...new Set(STUDENTS.map(s=>s.class))].filter(Boolean).sort();
+  const syllabus = [...new Set(STUDENTS.map(s=>s.syllabus))].filter(Boolean).sort();
+
+  classMenu.innerHTML="";
+  syllabusMenu.innerHTML="";
+
+  classes.forEach(c=>{
+    classMenu.innerHTML += `<div data-value="${c}">${c}</div>`;
+  });
+
+  syllabus.forEach(s=>{
+    syllabusMenu.innerHTML += `<div data-value="${s}">${s}</div>`;
+  });
+
+  document.querySelectorAll("#classMenu div").forEach(item=>{
+    item.onclick=()=>{
+      selectedClass=item.dataset.value;
+      classBtn.textContent=selectedClass+" ▾";
+      render();
+    }
+  });
+
+  document.querySelectorAll("#syllabusMenu div").forEach(item=>{
+    item.onclick=()=>{
+      selectedSyllabus=item.dataset.value;
+      syllabusBtn.textContent=selectedSyllabus+" ▾";
+      render();
+    }
+  });
+}
+
+/* RENDER */
+function render(){
+
+  let filtered = [...STUDENTS];
+
+  if(selectedClass){
+    filtered = filtered.filter(s=>String(s.class)===selectedClass);
+  }
+
+  if(selectedSyllabus){
+    filtered = filtered.filter(s=>String(s.syllabus)===selectedSyllabus);
+  }
+
+  if(searchValue){
+    filtered = filtered.filter(s=>s.full_name.toLowerCase().includes(searchValue));
+  }
+
+  const sort = sortSelect.value;
+
+  if(sort==="name"){
+    filtered.sort((a,b)=>a.full_name.localeCompare(b.full_name));
+  }
+  if(sort==="class"){
+    filtered.sort((a,b)=>Number(a.class)-Number(b.class));
+  }
+  if(sort==="admission"){
+    filtered.sort((a,b)=>a.admission_no.localeCompare(b.admission_no));
+  }
+
+  const body = document.getElementById("studentBody");
+  body.innerHTML="";
+
+  if(filtered.length===0){
+    body.innerHTML=`<tr><td colspan="6" class="empty">No students found.</td></tr>`;
     return;
   }
 
-  errorMsg.innerHTML = "";
-
-  const url = `${WEBAPP_URL}?action=studentList&password=${encodeURIComponent(password)}`;
-
-  const response = await fetch(url);
-  const data = await response.json();
-
-  if(data.error){
-    errorMsg.innerHTML = "Incorrect password.";
-    return;
-  }
-
-  allStudents = data.students;
-  applyFilters();
-}
-
-function applyFilters(){
-
-  let students = [...allStudents];
-
-  const classSelected = [...document.getElementById("classFilter").selectedOptions].map(o=>o.value);
-  const syllabusSelected = [...document.getElementById("syllabusFilter").selectedOptions].map(o=>o.value);
-  const sortBy = document.getElementById("sortBy").value;
-
-  if(classSelected.length){
-    students = students.filter(s => classSelected.includes(String(s.class)));
-  }
-
-  if(syllabusSelected.length){
-    students = students.filter(s => syllabusSelected.includes(String(s.syllabus)));
-  }
-
-  if(sortBy === "name"){
-    students.sort((a,b)=>a.full_name.localeCompare(b.full_name));
-  }
-
-  if(sortBy === "class"){
-    students.sort((a,b)=>Number(a.class)-Number(b.class));
-  }
-
-  if(sortBy === "admission"){
-    students.sort((a,b)=>a.admission_no.localeCompare(b.admission_no));
-  }
-
-  document.getElementById("studentCount").innerText = students.length + " students";
-
-  renderTable(students);
-}
-
-function renderTable(students){
-
-  const table = document.getElementById("studentTable");
-  table.innerHTML = "";
-
-  students.forEach(s => {
-
-    table.innerHTML += `
+  filtered.forEach(s=>{
+    body.innerHTML += `
       <tr onclick="openStudent('${s.id}')">
         <td>
           <div class="student-name">
@@ -316,7 +354,7 @@ function renderTable(students){
           </div>
         </td>
         <td>${s.admission_no}</td>
-        <td><span class="badge">${s.class}</span></td>
+        <td><span class="pill class">${s.class}</span></td>
         <td>${s.syllabus}</td>
         <td>${s.school_name}</td>
         <td>${s.joining_date}</td>
@@ -325,13 +363,34 @@ function renderTable(students){
   });
 }
 
+/* OPEN PROFILE */
 function openStudent(id){
   window.open(`https://sehracademy.com/student?id=${encodeURIComponent(id)}`, '_blank');
 }
 
-document.getElementById("classFilter").addEventListener("change", applyFilters);
-document.getElementById("syllabusFilter").addEventListener("change", applyFilters);
-document.getElementById("sortBy").addEventListener("change", applyFilters);
+/* EVENTS */
+searchInput.oninput=e=>{
+  searchValue=e.target.value.toLowerCase();
+  render();
+};
+
+sortSelect.onchange=render;
+
+document.querySelectorAll(".filter-btn").forEach(btn=>{
+  btn.addEventListener("click",function(){
+    this.parentElement.classList.toggle("open");
+  });
+});
+
+document.addEventListener("click",function(e){
+  document.querySelectorAll(".filter").forEach(f=>{
+    if(!f.contains(e.target)){
+      f.classList.remove("open");
+    }
+  });
+});
+
+fetchStudents();
 
 </script>
 
