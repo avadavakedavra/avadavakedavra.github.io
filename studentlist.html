@@ -258,23 +258,60 @@ tbody tr:hover{
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxDGwmT8fs6X2bTKO2d9dhpgr9k11BygstAG5aT51dqRBa2f9-dojKrI-F7Ll57xCMh/exec?action=studentList";
+const BASE_URL = "https://script.google.com/macros/s/AKfycbxDGwmT8fs6X2bTKO2d9dhpgr9k11BygstAG5aT51dqRBa2f9-dojKrI-F7Ll57xCMh/exec";
 
 let STUDENTS = [];
+let USER_PASSWORD = "";
 let selectedClass = "";
 let selectedSyllabus = "";
 let searchValue = "";
 
-/* FETCH */
-async function fetchStudents(){
-  const res = await fetch(API_URL);
-  const data = await res.json();
-  STUDENTS = data.students || [];
-  populateFilters();
-  render();
+/* ================= PASSWORD PROMPT ================= */
+
+window.addEventListener("load", () => {
+  showPasswordPrompt();
+});
+
+function showPasswordPrompt(){
+  const pass = prompt("Enter Admin Password:");
+  
+  if(!pass){
+    alert("Access required.");
+    showPasswordPrompt();
+    return;
+  }
+
+  USER_PASSWORD = pass;
+  fetchStudents();
 }
 
-/* FILTER POPULATION */
+/* ================= FETCH ================= */
+
+async function fetchStudents(){
+
+  try{
+
+    const url = `${BASE_URL}?action=studentList&password=${encodeURIComponent(USER_PASSWORD)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if(data.error){
+      alert("Incorrect password.");
+      showPasswordPrompt();
+      return;
+    }
+
+    STUDENTS = data.students || [];
+    populateFilters();
+    render();
+
+  } catch(err){
+    alert("Server error.");
+  }
+}
+
+/* ================= FILTER POPULATION ================= */
+
 function populateFilters(){
   const classes = [...new Set(STUDENTS.map(s=>s.class))].filter(Boolean).sort();
   const syllabus = [...new Set(STUDENTS.map(s=>s.syllabus))].filter(Boolean).sort();
@@ -307,7 +344,8 @@ function populateFilters(){
   });
 }
 
-/* RENDER */
+/* ================= RENDER ================= */
+
 function render(){
 
   let filtered = [...STUDENTS];
@@ -329,9 +367,11 @@ function render(){
   if(sort==="name"){
     filtered.sort((a,b)=>a.full_name.localeCompare(b.full_name));
   }
+
   if(sort==="class"){
     filtered.sort((a,b)=>Number(a.class)-Number(b.class));
   }
+
   if(sort==="admission"){
     filtered.sort((a,b)=>a.admission_no.localeCompare(b.admission_no));
   }
@@ -363,12 +403,14 @@ function render(){
   });
 }
 
-/* OPEN PROFILE */
+/* ================= OPEN PROFILE ================= */
+
 function openStudent(id){
   window.open(`https://sehracademy.com/student?id=${encodeURIComponent(id)}`, '_blank');
 }
 
-/* EVENTS */
+/* ================= EVENTS ================= */
+
 searchInput.oninput=e=>{
   searchValue=e.target.value.toLowerCase();
   render();
@@ -390,9 +432,6 @@ document.addEventListener("click",function(e){
   });
 });
 
-fetchStudents();
-
 </script>
-
 </body>
 </html>
