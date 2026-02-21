@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy - Students</title>
+<title>SEHR Academy - Student Database</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 
@@ -49,11 +49,6 @@ th, td{
   border-bottom:1px solid #eee;
 }
 
-th{
-  background:#f9fafb;
-  font-weight:600;
-}
-
 .student-name{
   display:flex;
   align-items:center;
@@ -79,15 +74,11 @@ th{
 <body>
 
 <div class="container">
-  <h1>List of Students</h1>
+  <h1>Student Database</h1>
 
   <div class="controls">
-    <input type="text" id="search" placeholder="Search by name">
-    <select id="classFilter">
-      <option value="">All Classes</option>
-      <option value="11">Class 11</option>
-      <option value="12">Class 12</option>
-    </select>
+    <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+    <button onclick="loadStudents()">Load</button>
   </div>
 
   <table>
@@ -102,60 +93,62 @@ th{
         <th>Birthday</th>
       </tr>
     </thead>
-    <tbody id="studentTable">
-    </tbody>
+    <tbody id="studentTable"></tbody>
   </table>
 </div>
 
 <script>
-const SHEET_ID = "1d5b07U_wV7Dn6RKRpVGhN1hCzdD8NJK9tKli_VIaIoo";
-const API_KEY = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
-const SHEET_NAME = "students_import";
 
-async function fetchStudents() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxDGwmT8fs6X2bTKO2d9dhpgr9k11BygstAG5aT51dqRBa2f9-dojKrI-F7Ll57xCMh/exec";
+
+async function loadStudents() {
+
+  const password = document.getElementById("adminPassword").value;
+
+  if (!password) {
+    alert("Enter password");
+    return;
+  }
+
+  const url = `${WEBAPP_URL}?action=studentList&password=${password}`;
+
   const response = await fetch(url);
   const data = await response.json();
-  const rows = data.values.slice(1);
-  renderTable(rows);
+
+  if (data.error) {
+    alert("Wrong password");
+    return;
+  }
+
+  renderTable(data.students);
 }
 
-function renderTable(rows){
+function renderTable(students){
+
   const table = document.getElementById("studentTable");
   table.innerHTML = "";
 
-  const searchValue = document.getElementById("search").value.toLowerCase();
-  const classValue = document.getElementById("classFilter").value;
-
-  rows.forEach(row => {
-    const [id, admission_no, full_name, className, syllabus, school_name, parent_name, joining_date, birthday, photo] = row;
-
-    if(searchValue && !full_name.toLowerCase().includes(searchValue)) return;
-    if(classValue && className !== classValue) return;
+  students.forEach(s => {
 
     table.innerHTML += `
       <tr>
         <td>
           <div class="student-name">
-            <img src="${photo}" alt="">
-            ${full_name}
+            <img src="${s.photo || ''}">
+            ${s.full_name}
           </div>
         </td>
-        <td>${admission_no}</td>
-        <td><span class="badge">${className}</span></td>
-        <td>${syllabus}</td>
-        <td>${school_name}</td>
-        <td>${joining_date}</td>
-        <td>${birthday}</td>
+        <td>${s.admission_no}</td>
+        <td><span class="badge">${s.class}</span></td>
+        <td>${s.syllabus}</td>
+        <td>${s.school_name}</td>
+        <td>${s.joining_date}</td>
+        <td>${s.birthday}</td>
       </tr>
     `;
   });
 }
 
-document.getElementById("search").addEventListener("input", fetchStudents);
-document.getElementById("classFilter").addEventListener("change", fetchStudents);
-
-fetchStudents();
 </script>
 
 </body>
