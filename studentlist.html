@@ -64,7 +64,7 @@ header{
   font-size:13px;
 }
 
-/* HEADING + FILTERS */
+/* FILTER SECTION */
 .heading{
   max-width:1200px;
   margin:20px auto;
@@ -88,6 +88,12 @@ header{
   cursor:pointer;
   min-width:120px;
   text-align:left;
+}
+
+.filter-btn.active{
+  background:var(--green);
+  color:#fff;
+  border-color:var(--green);
 }
 
 .filter-menu{
@@ -238,6 +244,8 @@ tbody tr:hover{
 
 <input type="text" id="searchInput" class="search" placeholder="Search name...">
 
+<button id="clearAll" class="filter-btn">Clear All</button>
+
 </div>
 
 <div class="table-wrap">
@@ -266,52 +274,39 @@ let selectedClass = "";
 let selectedSyllabus = "";
 let searchValue = "";
 
-/* ================= PASSWORD PROMPT ================= */
-
+/* PASSWORD PROMPT */
 window.addEventListener("load", () => {
-  showPasswordPrompt();
+  requestPassword();
 });
 
-function showPasswordPrompt(){
+function requestPassword(){
   const pass = prompt("Enter Admin Password:");
-  
   if(!pass){
-    alert("Access required.");
-    showPasswordPrompt();
+    requestPassword();
     return;
   }
-
   USER_PASSWORD = pass;
   fetchStudents();
 }
 
-/* ================= FETCH ================= */
-
+/* FETCH */
 async function fetchStudents(){
+  const url = `${BASE_URL}?action=studentList&password=${encodeURIComponent(USER_PASSWORD)}`;
+  const res = await fetch(url);
+  const data = await res.json();
 
-  try{
-
-    const url = `${BASE_URL}?action=studentList&password=${encodeURIComponent(USER_PASSWORD)}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if(data.error){
-      alert("Incorrect password.");
-      showPasswordPrompt();
-      return;
-    }
-
-    STUDENTS = data.students || [];
-    populateFilters();
-    render();
-
-  } catch(err){
-    alert("Server error.");
+  if(data.error){
+    alert("Incorrect password.");
+    requestPassword();
+    return;
   }
+
+  STUDENTS = data.students || [];
+  populateFilters();
+  render();
 }
 
-/* ================= FILTER POPULATION ================= */
-
+/* FILTER POPULATION */
 function populateFilters(){
   const classes = [...new Set(STUDENTS.map(s=>s.class))].filter(Boolean).sort();
   const syllabus = [...new Set(STUDENTS.map(s=>s.syllabus))].filter(Boolean).sort();
@@ -331,6 +326,8 @@ function populateFilters(){
     item.onclick=()=>{
       selectedClass=item.dataset.value;
       classBtn.textContent=selectedClass+" ▾";
+      classBtn.classList.add("active");
+      classBtn.parentElement.classList.remove("open");
       render();
     }
   });
@@ -339,15 +336,15 @@ function populateFilters(){
     item.onclick=()=>{
       selectedSyllabus=item.dataset.value;
       syllabusBtn.textContent=selectedSyllabus+" ▾";
+      syllabusBtn.classList.add("active");
+      syllabusBtn.parentElement.classList.remove("open");
       render();
     }
   });
 }
 
-/* ================= RENDER ================= */
-
+/* RENDER */
 function render(){
-
   let filtered = [...STUDENTS];
 
   if(selectedClass){
@@ -403,14 +400,26 @@ function render(){
   });
 }
 
-/* ================= OPEN PROFILE ================= */
+/* CLEAR ALL */
+clearAll.onclick = () => {
+  selectedClass="";
+  selectedSyllabus="";
+  searchValue="";
+  searchInput.value="";
+  sortSelect.value="";
+  classBtn.textContent="Class ▾";
+  syllabusBtn.textContent="Syllabus ▾";
+  classBtn.classList.remove("active");
+  syllabusBtn.classList.remove("active");
+  render();
+};
 
+/* OPEN PROFILE */
 function openStudent(id){
   window.open(`https://sehracademy.com/student?id=${encodeURIComponent(id)}`, '_blank');
 }
 
-/* ================= EVENTS ================= */
-
+/* EVENTS */
 searchInput.oninput=e=>{
   searchValue=e.target.value.toLowerCase();
   render();
@@ -433,5 +442,6 @@ document.addEventListener("click",function(e){
 });
 
 </script>
+
 </body>
 </html>
