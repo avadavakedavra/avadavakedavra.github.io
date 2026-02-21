@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEHR Academy - Students</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Montserrat',sans-serif;
+  background:#f4f6f9;
+}
+
+.container{
+  padding:30px;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+.controls{
+  display:flex;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+input, select{
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+th, td{
+  padding:14px;
+  text-align:left;
+  border-bottom:1px solid #eee;
+}
+
+th{
+  background:#f9fafb;
+  font-weight:600;
+}
+
+.student-name{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.student-name img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.badge{
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+  background:#e3f2fd;
+  color:#1976d2;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>List of Students</h1>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="Search by name">
+    <select id="classFilter">
+      <option value="">All Classes</option>
+      <option value="11">Class 11</option>
+      <option value="12">Class 12</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Admission No</th>
+        <th>Class</th>
+        <th>Syllabus</th>
+        <th>School</th>
+        <th>Joining Date</th>
+        <th>Birthday</th>
+      </tr>
+    </thead>
+    <tbody id="studentTable">
+    </tbody>
+  </table>
+</div>
+
+<script>
+const SHEET_ID = "1d5b07U_wV7Dn6RKRpVGhN1hCzdD8NJK9tKli_VIaIoo";
+const API_KEY = AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo;
+const SHEET_NAME = "students_import";
+
+async function fetchStudents() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  const rows = data.values.slice(1);
+  renderTable(rows);
+}
+
+function renderTable(rows){
+  const table = document.getElementById("studentTable");
+  table.innerHTML = "";
+
+  const searchValue = document.getElementById("search").value.toLowerCase();
+  const classValue = document.getElementById("classFilter").value;
+
+  rows.forEach(row => {
+    const [id, admission_no, full_name, className, syllabus, school_name, parent_name, joining_date, birthday, photo] = row;
+
+    if(searchValue && !full_name.toLowerCase().includes(searchValue)) return;
+    if(classValue && className !== classValue) return;
+
+    table.innerHTML += `
+      <tr>
+        <td>
+          <div class="student-name">
+            <img src="${photo}" alt="">
+            ${full_name}
+          </div>
+        </td>
+        <td>${admission_no}</td>
+        <td><span class="badge">${className}</span></td>
+        <td>${syllabus}</td>
+        <td>${school_name}</td>
+        <td>${joining_date}</td>
+        <td>${birthday}</td>
+      </tr>
+    `;
+  });
+}
+
+document.getElementById("search").addEventListener("input", fetchStudents);
+document.getElementById("classFilter").addEventListener("change", fetchStudents);
+
+fetchStudents();
+</script>
+
+</body>
+</html>
