@@ -3,107 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy – Student Database</title>
+<title>SEHR Academy Admin</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 body{
   margin:0;
   font-family:'Montserrat',sans-serif;
-  background:#f4f6f9;
+  background:#f2f4f8;
 }
 
 /* ================= HEADER ================= */
 
 .header{
   background:white;
-  padding:15px 30px;
+  padding:18px 30px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
 
 .logo{
   font-weight:700;
-  font-size:20px;
-  color:#1976d2;
+  font-size:18px;
+  color:#1a73e8;
 }
 
-.admin-badge{
+.badge-top{
   background:#e3f2fd;
-  padding:6px 12px;
+  padding:6px 14px;
   border-radius:20px;
   font-size:12px;
   font-weight:600;
-  color:#1976d2;
+  color:#1a73e8;
 }
 
-/* ================= CONTAINER ================= */
+/* ================= MAIN ================= */
 
 .container{
-  padding:30px;
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 20px;
 }
 
-h1{
+.title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   margin-bottom:20px;
 }
 
-/* ================= FILTER BAR ================= */
+h1{
+  margin:0;
+  font-size:26px;
+}
+
+.student-count{
+  font-size:14px;
+  color:#666;
+}
+
+/* ================= FILTER CARD ================= */
+
+.filter-card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom:25px;
+}
 
 .filters{
   display:flex;
   flex-wrap:wrap;
   gap:15px;
-  margin-bottom:20px;
+  align-items:center;
 }
 
 select, input{
-  padding:10px;
-  border-radius:6px;
+  padding:10px 12px;
+  border-radius:8px;
   border:1px solid #ddd;
+  min-width:160px;
   font-family:'Montserrat',sans-serif;
 }
 
 .multi{
-  min-width:140px;
+  height:42px;
 }
 
 button{
-  padding:10px 18px;
+  padding:10px 20px;
   border:none;
-  border-radius:6px;
-  background:#1976d2;
+  border-radius:8px;
+  background:#1a73e8;
   color:white;
   cursor:pointer;
   font-weight:600;
+  transition:0.2s;
 }
 
 button:hover{
-  opacity:0.9;
+  background:#155ec5;
 }
 
-/* ================= TABLE ================= */
+/* ================= TABLE CARD ================= */
+
+.table-card{
+  background:white;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+  overflow:hidden;
+}
 
 table{
   width:100%;
   border-collapse:collapse;
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 5px 15px rgba(0,0,0,0.05);
-}
-
-th, td{
-  padding:14px;
-  text-align:left;
-  border-bottom:1px solid #eee;
 }
 
 th{
-  background:#f9fafb;
+  background:#f8f9fb;
+  padding:14px;
+  text-align:left;
   font-weight:600;
+  font-size:14px;
+}
+
+td{
+  padding:14px;
+  border-top:1px solid #eee;
+  font-size:14px;
 }
 
 tbody tr{
@@ -113,18 +145,17 @@ tbody tr{
 
 tbody tr:hover{
   background:#f1f7ff;
-  transform:scale(1.01);
 }
 
 .student-name{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
 }
 
 .student-name img{
-  width:40px;
-  height:40px;
+  width:36px;
+  height:36px;
   border-radius:50%;
   object-fit:cover;
 }
@@ -134,69 +165,74 @@ tbody tr:hover{
   border-radius:20px;
   font-size:12px;
   background:#e3f2fd;
-  color:#1976d2;
-}
-
-.hidden{
-  display:none;
+  color:#1a73e8;
 }
 
 .error{
   color:red;
-  font-weight:600;
-  margin-bottom:10px;
+  margin-top:10px;
 }
+
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="logo">SEHR Academy Admin</div>
-  <div class="admin-badge">Student Management</div>
+  <div class="badge-top">Student Management</div>
 </div>
 
 <div class="container">
 
-  <h1>Student Database</h1>
-
-  <div class="filters">
-    <input type="password" id="adminPassword" placeholder="Admin Password">
-
-    <select id="classFilter" class="multi" multiple>
-      <option value="11">Class 11</option>
-      <option value="12">Class 12</option>
-    </select>
-
-    <select id="syllabusFilter" class="multi" multiple>
-      <option value="State">State</option>
-      <option value="CBSE">CBSE</option>
-    </select>
-
-    <select id="sortBy">
-      <option value="">Sort By</option>
-      <option value="name">Name A-Z</option>
-      <option value="class">Class</option>
-      <option value="admission">Admission No</option>
-    </select>
-
-    <button onclick="loadStudents()">Load Students</button>
+  <div class="title-row">
+    <h1>Student Database</h1>
+    <div class="student-count" id="studentCount">0 students</div>
   </div>
 
-  <div id="errorMsg" class="error"></div>
+  <div class="filter-card">
+    <div class="filters">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Admission No</th>
-        <th>Class</th>
-        <th>Syllabus</th>
-        <th>School</th>
-        <th>Joining Date</th>
-      </tr>
-    </thead>
-    <tbody id="studentTable"></tbody>
-  </table>
+      <input type="password" id="adminPassword" placeholder="Admin Password">
+
+      <select id="classFilter" multiple>
+        <option value="11">Class 11</option>
+        <option value="12">Class 12</option>
+      </select>
+
+      <select id="syllabusFilter" multiple>
+        <option value="State">State</option>
+        <option value="CBSE">CBSE</option>
+      </select>
+
+      <select id="sortBy">
+        <option value="">Sort By</option>
+        <option value="name">Name A-Z</option>
+        <option value="class">Class</option>
+        <option value="admission">Admission No</option>
+      </select>
+
+      <button onclick="loadStudents()">Load Students</button>
+
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Admission No</th>
+          <th>Class</th>
+          <th>Syllabus</th>
+          <th>School</th>
+          <th>Joining Date</th>
+        </tr>
+      </thead>
+      <tbody id="studentTable"></tbody>
+    </table>
+  </div>
 
 </div>
 
@@ -205,12 +241,12 @@ tbody tr:hover{
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxDGwmT8fs6X2bTKO2d9dhpgr9k11BygstAG5aT51dqRBa2f9-dojKrI-F7Ll57xCMh/exec";
 let allStudents = [];
 
-async function loadStudents() {
+async function loadStudents(){
 
   const password = document.getElementById("adminPassword").value;
   const errorMsg = document.getElementById("errorMsg");
 
-  if (!password) {
+  if(!password){
     errorMsg.innerHTML = "Enter password.";
     return;
   }
@@ -222,7 +258,7 @@ async function loadStudents() {
   const response = await fetch(url);
   const data = await response.json();
 
-  if (data.error) {
+  if(data.error){
     errorMsg.innerHTML = "Incorrect password.";
     return;
   }
@@ -235,29 +271,31 @@ function applyFilters(){
 
   let students = [...allStudents];
 
-  const classSelected = [...document.getElementById("classFilter").selectedOptions].map(o => o.value);
-  const syllabusSelected = [...document.getElementById("syllabusFilter").selectedOptions].map(o => o.value);
+  const classSelected = [...document.getElementById("classFilter").selectedOptions].map(o=>o.value);
+  const syllabusSelected = [...document.getElementById("syllabusFilter").selectedOptions].map(o=>o.value);
   const sortBy = document.getElementById("sortBy").value;
 
-  if (classSelected.length){
+  if(classSelected.length){
     students = students.filter(s => classSelected.includes(String(s.class)));
   }
 
-  if (syllabusSelected.length){
+  if(syllabusSelected.length){
     students = students.filter(s => syllabusSelected.includes(String(s.syllabus)));
   }
 
-  if (sortBy === "name"){
-    students.sort((a,b)=> a.full_name.localeCompare(b.full_name));
+  if(sortBy === "name"){
+    students.sort((a,b)=>a.full_name.localeCompare(b.full_name));
   }
 
-  if (sortBy === "class"){
-    students.sort((a,b)=> Number(a.class)-Number(b.class));
+  if(sortBy === "class"){
+    students.sort((a,b)=>Number(a.class)-Number(b.class));
   }
 
-  if (sortBy === "admission"){
-    students.sort((a,b)=> a.admission_no.localeCompare(b.admission_no));
+  if(sortBy === "admission"){
+    students.sort((a,b)=>a.admission_no.localeCompare(b.admission_no));
   }
+
+  document.getElementById("studentCount").innerText = students.length + " students";
 
   renderTable(students);
 }
@@ -291,7 +329,6 @@ function openStudent(id){
   window.open(`https://sehracademy.com/student?id=${encodeURIComponent(id)}`, '_blank');
 }
 
-// Auto apply filters on change
 document.getElementById("classFilter").addEventListener("change", applyFilters);
 document.getElementById("syllabusFilter").addEventListener("change", applyFilters);
 document.getElementById("sortBy").addEventListener("change", applyFilters);
