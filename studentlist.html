@@ -249,7 +249,7 @@ function renderTable(students){
   students.forEach(s => {
 
     table.innerHTML += `
-      <tr>
+      <tr onclick="goToStudent('${s.id}')" style="cursor:pointer; transition:0.2s;">
         <td>
           <div class="student-name">
             <img src="${s.photo || ''}">
@@ -265,6 +265,9 @@ function renderTable(students){
       </tr>
     `;
   });
+}
+function goToStudent(id) {
+  window.location.href = `https://sehracademy.com/student?id=${encodeURIComponent(id)}`;
 }
 
 </script>
