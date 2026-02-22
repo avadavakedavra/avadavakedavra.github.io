@@ -328,7 +328,7 @@ function buildCard(c, now){
   if(now < joinWindowStart){
     statusClass="upcoming";
     badgeContent="UPCOMING";
-    buttonText="Not Available";
+    buttonText="Access will be enabled 10 minutes before the scheduled start time.";
     disabled=true;
   }
   else if(now >= joinWindowStart && now <= end){
