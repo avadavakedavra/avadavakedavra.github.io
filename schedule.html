@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEHR Academy – Event Hub</title>
+<meta name="description" content="Sehr Academy Event Hub — view upcoming classes, exams, meetings, holidays, and birthdays." />
+<meta name="theme-color" content="#8BC53F" />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -243,13 +248,19 @@ fetch(url)
     type:r[11]
   }));
   render();
+})
+.catch(err=>{
+  upcomingContainer.innerHTML=
+    `<div style="color:#dc2626;font-weight:600;text-align:center;padding:30px;">
+      Failed to load events. Please try again later.
+    </div>`;
 });
 
 function render(){
   const today=new Date();
   const weekEnd=new Date(); weekEnd.setDate(today.getDate()+7);
 
-  let birthdayToday=0,testsWeek=0,monthCount=0;
+  let birthdayToday=0,testsWeek=0,monthEventCount=0;
 
   todayContainer.innerHTML="";
   upcomingContainer.innerHTML="";
@@ -269,7 +280,7 @@ function render(){
 
     if(isBirthdayToday) birthdayToday++;
     if(e.type==="exam" && e.date>=today && e.date<=weekEnd) testsWeek++;
-    if(e.date.getMonth()===today.getMonth()) monthCount++;
+    if(e.date.getMonth()===today.getMonth()) monthEventCount++;
 
     const div=document.createElement("div");
     div.className="event";
@@ -293,7 +304,7 @@ function render(){
 
   birthdayCount.innerText=`🎂 ${birthdayToday} Birthdays Today`;
   testWeekCount.innerText=`📝 ${testsWeek} Tests This Week`;
-  monthCount.innerText=`📅 ${monthCount} Events This Month`;
+  monthCount.innerText=`📅 ${monthEventCount} Events This Month`;
 }
 
 function sameDay(d1,d2){
