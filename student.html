@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEHR Academy Premium Dashboard</title>
+<meta name="description" content="Sehr Academy student academic performance portal — view results, attendance, fees, and achievements." />
+<meta name="theme-color" content="#8BC53F" />
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -460,6 +464,16 @@ function getId(){
   return new URL(window.location.href).searchParams.get("id");
 }
 
+function escapeHtml(str){
+  if(!str) return "";
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
 function calculateAge(birthday){
   const birth=new Date(birthday);
   const today=new Date();
@@ -480,7 +494,9 @@ function calculateRemainingDays(){
 }
 
 async function load(){
-  document.getElementById("loader").classList.add("active");  const id=getId();
+  document.getElementById("loader").classList.add("active");
+  const id=getId();
+  try{
   const res=await fetch(API+"?id="+id);
   const data=await res.json();
   globalData=data;
@@ -537,8 +553,8 @@ if(data.attendance.monthly && data.attendance.monthly.length > 0){
       return `
         <div class="subject-card" style="margin-bottom:15px;">
           <div style="display:flex;justify-content:space-between;">
-            <div><b>${m.month}</b></div>
-            <div>${m.attended} / ${m.total}</div>
+            <div><b>${escapeHtml(m.month)}</b></div>
+            <div>${escapeHtml(String(m.attended))} / ${escapeHtml(String(m.total))}</div>
           </div>
 
           <div class="progress-bar" style="margin-top:10px;">
@@ -572,8 +588,8 @@ if(data.remarks && data.remarks.length > 0){
   document.getElementById("remarksList").innerHTML =
     data.remarks.map(r => `
 <div style="margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f1f5f9;">
-        <b>${new Date(r.date).toLocaleDateString()}</b><br>
-        ${r.remark}
+        <b>${escapeHtml(new Date(r.date).toLocaleDateString())}</b><br>
+        ${escapeHtml(r.remark)}
       </div>
     `).join("");
 
@@ -592,8 +608,8 @@ if(data.achievements && data.achievements.length > 0){
   document.getElementById("achievementList").innerHTML =
     data.achievements.map(a => `
       <div style="margin-bottom:12px;">
-        <b>${a.title}</b><br>
-        ${a.description}
+        <b>${escapeHtml(a.title)}</b><br>
+        ${escapeHtml(a.description)}
       </div>
     `).join("");
 
@@ -605,8 +621,15 @@ if(data.achievements && data.achievements.length > 0){
      </div>`;
 
 }
-document.getElementById("loader").classList.remove("active");
   setupYearDropdown();
+  }catch(err){
+    document.querySelector(".main").innerHTML+=
+      `<div style="color:#dc2626;font-weight:600;text-align:center;padding:30px;">
+        Failed to load student data. Please try again later.
+      </div>`;
+  }finally{
+    document.getElementById("loader").classList.remove("active");
+  }
 }
 
 function buildFees(){
@@ -658,11 +681,18 @@ function setupYearDropdown(){
 }
 
 async function loadYear(year){
+  document.getElementById("loader").classList.add("active");
+  try{
   const id=getId();
   const res=await fetch(API+"?id="+id+"&year="+year);
   const data=await res.json();
   globalData=data;
   buildResults();
+  }catch(err){
+    console.error("Failed to load year data",err);
+  }finally{
+    document.getElementById("loader").classList.remove("active");
+  }
 }
 
 function buildResults(){

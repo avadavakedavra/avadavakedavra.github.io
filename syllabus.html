@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEHR Academy — Syllabus Tracker</title>
+<meta name="description" content="Sehr Academy Syllabus Tracker — view chapter-wise progress for Class 10, 11, and 12." />
+<meta name="theme-color" content="#8BC53F" />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -102,6 +107,7 @@ body{
   cursor:pointer;
   font-size:14px;
   font-weight:600;
+  font-family:'Poppins',sans-serif;
   transition:.2s;
 }
 
@@ -346,7 +352,7 @@ function renderSheet(sheetName, values){
   let html=`
   <div class="page-header">
     <div class="page-title">${sheetName.toUpperCase()} SYLLABUS TRACKER</div>
-    <div class="back-btn" onclick="goBack()">← Back to Selection</div>
+    <button class="back-btn" onclick="goBack()">← Back to Selection</button>
   </div>
   `;
 
