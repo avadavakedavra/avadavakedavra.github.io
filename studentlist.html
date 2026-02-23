@@ -1,126 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sehr Academy — Student Database</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SEHR ACADEMY - Students</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
 :root{
-  --green:#8BC53F;
-  --border:#e6e8ec;
-  --bg:#f8f7f4;
+  --bg:hsl(220 20% 97%);
+  --fg:hsl(222 47% 11%);
+  --card:#fff;
+  --muted:hsl(220 9% 46%);
+  --border:hsl(220 13% 91%);
+  --accent:#8BC53F; /* 🔥 LIGHT GREEN */
+  --success:hsl(142 71% 45%);
+  --danger:hsl(0 84% 60%);
+  --radius:14px;
 }
 
 body{
-  margin:0;
-  font-family:'Nunito',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   background:var(--bg);
-  color:#1f2937;
+  color:var(--fg);
 }
 
-.table-wrap{
-  max-width:1300px;
+/* HEADER */
+.header{
+  position:sticky;
+  top:0;
+  background:rgba(255,255,255,.95);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{
+  max-width:1400px;
   margin:auto;
-  padding:20px;
-  overflow-x:auto;
+  height:64px;
+  padding:0 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
+.logo{font-weight:800;font-size:20px}
+.logo span{color:var(--accent)}
 
-table{
-  width:100%;
-  border-collapse:collapse;
+/* MAIN */
+.main{max-width:1400px;margin:auto;padding:32px 24px}
+
+/* STATS */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:32px;
+}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr}}
+
+.stat-card{
   background:#fff;
   border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  min-width:1200px;
+  border-radius:var(--radius);
+  padding:20px;
 }
+.stat-title{font-size:14px;color:var(--muted)}
+.stat-value{font-size:22px;font-weight:700;margin-top:6px}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
 
-th{
-  font-family:'Montserrat';
-  padding:14px;
-  text-align:left;
-  border-bottom:1px solid var(--border);
-  font-size:13px;
+/* SECTION */
+.section-title{font-size:20px;font-weight:700}
+.section-desc{font-size:14px;color:var(--muted);margin-top:4px}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:24px 0;
 }
-
-td{
-  padding:14px;
-  border-top:1px solid var(--border);
+.search-input{
+  width:280px;
+  height:40px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  padding:0 12px;
   font-size:14px;
 }
-
-tr{
-  cursor:pointer;
-  transition:.2s;
-}
-
-tr:hover{
-  background:#f3f7ef;
-}
-
-.student-name{
+.filter-group{
   display:flex;
-  align-items:center;
-  gap:10px;
+  gap:4px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:4px;
+  background:#fff;
 }
-
-.student-name img{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  object-fit:cover;
+.filter-btn{
+  border:none;
+  background:none;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:12px;
+  cursor:pointer;
+  color:var(--muted);
 }
-
-.student-link{
-  text-decoration:none;
-  color:inherit;
+.filter-btn.active{
+  background:var(--accent);
+  color:#fff;
+}
+.btn{
+  padding:8px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+}
+.btn-accent{
+  background:var(--accent);
+  border:none;
+  color:#fff;
   font-weight:600;
 }
 
-.student-link:hover{
-  color:var(--green);
+/* TABLE */
+.table-wrap{
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:#fff;
+  overflow-x:auto;
 }
-
-/* 🔒 Blur financial columns */
-.blur{
-  filter:blur(6px);
-  transition:.3s ease;
-}
-
-/* When row active, remove blur */
-tr.active .blur{
-  filter:none;
-}
-
-/* Status Colors */
-.pill{
-  padding:4px 8px;
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead{background:hsl(220 14% 95%)}
+th{
+  padding:14px 16px;
   font-size:11px;
-  font-weight:800;
-  border-radius:6px;
-  color:#fff;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--muted);
+  text-align:left;
+}
+td{padding:16px;border-top:1px solid var(--border)}
+tbody tr:hover{background:hsl(220 14% 96%);cursor:pointer}
+
+/* Student */
+.student-name{display:flex;align-items:center;gap:10px}
+.student-name img{
+  width:36px;height:36px;border-radius:50%;
+  object-fit:cover;background:#eee;
+}
+.student-link{
+  text-decoration:none;
+  font-weight:600;
+  color:var(--fg);
+}
+.student-link:hover{text-decoration:underline}
+
+/* BLUR */
+.blur{filter:blur(6px);transition:.3s}
+tr.active .blur{filter:blur(0)}
+
+/* STATUS */
+.pill{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
 }
 
-.CLEARED{ background:#16a34a; }
-.OVERDUE{ background:#dc2626; }
-.INACTIVE{ background:#6b7280; }
-.SPONSORSHIP{ background:#2563eb; }
+.pill.CLEARED{
+  background:hsla(142,71%,45%,.12);
+  color:var(--success);
+}
 
-@media(max-width:640px){
-  .wrap{padding:10px 12px;}
-  .table-wrap{padding:10px 0 10px 0;}
-  th,td{padding:10px 10px;font-size:13px;}
+.pill.OVERDUE{
+  background:hsla(0,84%,60%,.12);
+  color:var(--danger);
+}
+
+.pill.INACTIVE{
+  background:#f1f1f1;
+  color:#666;
+}
+
+.footer-info{
+  margin-top:16px;
+  font-size:12px;
+  color:var(--muted);
 }
 </style>
 </head>
 
 <body>
 
-<header id="site-header"></header>
-<script src="/assets/nav.js" defer></script>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">SEHR <span>ACADEMY</span></div>
+    <div>Admin</div>
+  </div>
+</header>
+
+<main class="main">
+
+<div class="stats-grid" id="statsGrid"></div>
+
+<div class="section-title">Student Records</div>
+<div class="section-desc">Manage admissions, fees, and student details</div>
+
+<div class="toolbar">
+  <input id="searchInput" class="search-input" placeholder="Search students...">
+
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="filter-group" id="filterGroup">
+      <button class="filter-btn active" data-filter="ALL">All</button>
+      <button class="filter-btn" data-filter="ACTIVE">Active</button>
+      <button class="filter-btn" data-filter="INACTIVE">Inactive</button>
+    </div>
+
+    <button class="btn">Export</button>
+    <button class="btn btn-accent">+ Add Student</button>
+  </div>
+</div>
 
 <div class="table-wrap">
 <table>
@@ -140,91 +242,141 @@ tr.active .blur{
 <th>Next Amount</th>
 </tr>
 </thead>
-<tbody id="studentBody"></tbody>
+<tbody id="tableBody"></tbody>
 </table>
 </div>
 
+<div id="footerInfo" class="footer-info"></div>
+
+</main>
+
 <script>
+const BASE_URL="https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec";
 
-const BASE_URL = "https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec";
+let STUDENTS=[];
+let FILTER="ALL";
+let SEARCH="";
 
-let STUDENTS = [];
-let USER_PASSWORD = "";
+window.onload=()=>{
+  const pass=prompt("Enter Admin Password:");
+  if(!pass)location.reload();
 
-window.onload = () => {
-  USER_PASSWORD = prompt("Enter Admin Password:");
-  if (!USER_PASSWORD) {
-    location.reload();
-    return;
-  }
-  fetchStudents();
+  fetch(`${BASE_URL}?action=studentList&password=${encodeURIComponent(pass)}`)
+  .then(r=>r.json())
+  .then(data=>{
+    if(data.error){alert("Wrong Password");location.reload();}
+    STUDENTS=data.students||[];
+    render();
+  });
 };
 
-async function fetchStudents(){
-  const res = await fetch(`${BASE_URL}?action=studentList&password=${encodeURIComponent(USER_PASSWORD)}`);
-  const data = await res.json();
-
-  if (data.error){
-    alert("Wrong Password");
-    location.reload();
-    return;
-  }
-
-  STUDENTS = data.students || [];
-  render();
-}
-
 function render(){
-  const body = document.getElementById("studentBody");
-  body.innerHTML = "";
 
-  STUDENTS.forEach(s => {
-
-    const statusText = (s.status || "").toUpperCase().trim();
-
-    body.innerHTML += `
-    <tr onclick="toggleRow(this)">
-      <td>
-        <div class="student-name">
-          <img src="${s.photo || ''}">
-          <a class="student-link" 
-             href="https://sehracademy.com/student?id=${encodeURIComponent(s.id)}" 
-             onclick="event.stopPropagation()" 
-             target="_blank">
-             ${s.full_name || ''}
-          </a>
-        </div>
-      </td>
-      <td>${s.admission_no || '-'}</td>
-      <td>${s.class || '-'}</td>
-      <td>${s.syllabus || '-'}</td>
-      <td>${s.school_name || '-'}</td>
-
-      <td class="blur">${formatDate(s.joining_date)}</td>
-      <td class="blur">₹${Number(s.total_fee || 0).toLocaleString()}</td>
-      <td class="blur">₹${Number(s.total_paid || 0).toLocaleString()}</td>
-      <td class="blur">₹${Number(s.balance || 0).toLocaleString()}</td>
-      <td class="blur"><span class="pill ${statusText}">${statusText}</span></td>
-      <td class="blur">${s.next_due || '-'}</td>
-      <td class="blur">₹${Number(s.next_due_amount || 0).toLocaleString()}</td>
-    </tr>
-    `;
+  const filtered=STUDENTS.filter(s=>{
+    const admission=(s.admission_status||"").toUpperCase();
+    const matchFilter=FILTER==="ALL"||admission===FILTER;
+    const matchSearch=(s.full_name||"").toLowerCase().includes(SEARCH);
+    return matchFilter&&matchSearch;
   });
+
+  document.getElementById("tableBody").innerHTML=
+  filtered.map(s=>{
+    const feeStatus=(s.status||"").toUpperCase();
+    return `
+<tr onclick="this.classList.toggle('active')">
+<td>
+<div class="student-name">
+<img src="${s.photo||''}">
+<a class="student-link"
+href="https://sehracademy.com/student?id=${encodeURIComponent(s.id)}"
+onclick="event.stopPropagation()" target="_blank">
+${s.full_name||''}
+</a>
+</div>
+</td>
+<td>${s.admission_no||'-'}</td>
+<td>${s.class||'-'}</td>
+<td>${s.syllabus||'-'}</td>
+<td>${s.school_name||'-'}</td>
+<td class="blur">${formatDate(s.joining_date)}</td>
+<td class="blur">₹${Number(s.total_fee||0).toLocaleString()}</td>
+<td class="blur">₹${Number(s.total_paid||0).toLocaleString()}</td>
+<td class="blur">₹${Number(s.balance||0).toLocaleString()}</td>
+<td class="blur"><span class="pill ${feeStatus}">${feeStatus}</span></td>
+<td class="blur">${s.next_due||'-'}</td>
+<td class="blur">₹${Number(s.next_due_amount||0).toLocaleString()}</td>
+</tr>`;
+  }).join("");
+
+  document.getElementById("footerInfo").innerText=
+  `Showing ${filtered.length} of ${STUDENTS.length} students`;
+
+  renderStats();
 }
 
-/* Toggle blur */
-function toggleRow(row){
-  row.classList.toggle("active");
+function renderStats(){
+
+  const total=STUDENTS.length;
+
+  const activeStudents=STUDENTS.filter(s=>
+    (s.admission_status||"").toUpperCase()==="ACTIVE"
+  );
+
+  const activeCount=activeStudents.length;
+
+  const overdueCount=STUDENTS.filter(s=>
+    (s.status||"").toUpperCase()==="OVERDUE"
+  ).length;
+
+  const outstandingBalance=activeStudents.reduce((sum,s)=>
+    sum+Number(s.balance||0),0);
+
+  document.getElementById("statsGrid").innerHTML=`
+<div class="stat-card">
+<div class="stat-title">Total Students</div>
+<div class="stat-value">${total}</div>
+<div class="stat-sub">${activeCount} active</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">Active Students</div>
+<div class="stat-value">${activeCount}</div>
+<div class="stat-sub">${total?Math.round(activeCount/total*100):0}% of total</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">Outstanding Balance</div>
+<div class="stat-value">₹${outstandingBalance.toLocaleString("en-IN")}</div>
+<div class="stat-sub">${overdueCount} overdue payments</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">Overdue</div>
+<div class="stat-value">${overdueCount}</div>
+<div class="stat-sub">Needs attention</div>
+</div>
+`;
 }
 
-/* Format Date */
+document.getElementById("searchInput").addEventListener("input",e=>{
+  SEARCH=e.target.value.toLowerCase();
+  render();
+});
+
+document.getElementById("filterGroup").addEventListener("click",e=>{
+  if(e.target.dataset.filter){
+    FILTER=e.target.dataset.filter;
+    document.querySelectorAll(".filter-btn")
+    .forEach(b=>b.classList.toggle("active",b===e.target));
+    render();
+  }
+});
+
 function formatDate(dateStr){
-  if (!dateStr) return "-";
-  const d = new Date(dateStr);
-  if (isNaN(d)) return dateStr;
-  return d.toLocaleDateString('en-IN');
+  if(!dateStr)return"-";
+  const d=new Date(dateStr);
+  return isNaN(d)?dateStr:d.toLocaleDateString("en-IN");
 }
-
 </script>
 
 </body>
