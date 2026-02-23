@@ -29,27 +29,7 @@ body{
   color:var(--ink);
 }
 
-/* ===== NAVBAR ===== */
-header{
-  position:sticky;top:0;z-index:40;
-  background:#ffffffcc;
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(10px);
-}
-.container{
-  max-width:var(--maxw);
-  margin:auto;
-  padding:12px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.brand{
-  font-family:Montserrat;
-  font-weight:900;
-  font-size:26px;
-}
-.brand span:first-child{color:var(--sehr-green)}
+/* ===== LAYOUT ===== */
 
 main{
   max-width:var(--maxw);
@@ -298,12 +278,8 @@ select{
 
 <body>
 
-<header>
-  <div class="container">
-    <div class="brand"><span>SEHR</span> ACADEMY</div>
-    <div style="font-weight:700">Student Dashboard</div>
-  </div>
-</header>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 
 <main>
 

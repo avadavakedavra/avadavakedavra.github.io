@@ -22,16 +22,9 @@ body{
 }
 
 /* HEADER */
-header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1000;}
-.wrap{max-width:1200px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
-.brand{cursor:pointer;}
-.brand span:first-child{font-family:'Montserrat';font-weight:900;color:var(--green);font-size:22px;}
-.brand span:last-child{font-family:'Montserrat';font-weight:900;font-size:22px;}
+.heading{max-width:1200px;margin:16px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 .controls{display:flex;gap:8px;flex-wrap:wrap;}
 .btn,.select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:#fff;font-weight:700;cursor:pointer;}
-
-/* FILTERS */
-.heading{max-width:1200px;margin:20px auto;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap;}
 .filter{position:relative;}
 .filter-btn{padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font-weight:700;cursor:pointer;min-width:120px;text-align:left;}
 .filter-menu{position:absolute;top:110%;left:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 25px rgba(0,0,0,.15);padding:10px;display:none;max-height:250px;overflow:auto;z-index:999;}
@@ -48,7 +41,7 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
   margin-bottom:10px;
   color:#6b7280;
   position:sticky;
-  top:70px;
+  top:72px;
   background:var(--bg);
   z-index:500;
   padding:8px 0;
@@ -86,19 +79,8 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 
 <body>
 
-<header>
-<div class="wrap">
-<div class="brand" onclick="window.location.href='https://sehracademy.com'">
-<span>SEHR</span> <span>ACADEMY</span>
-</div>
-<div class="controls">
-<button id="prev" class="btn">◀</button>
-<select id="monthSelect" class="select"></select>
-<button id="next" class="btn">▶</button>
-<button id="todayBtn" class="btn">Today</button>
-</div>
-</div>
-</header>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 
 <div class="heading">
 <div class="filter">
@@ -121,6 +103,12 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 
 <input type="text" id="searchInput" class="select" placeholder="Search topic...">
 <button id="clearAll" class="btn">Clear All</button>
+<div style="margin-left:auto;display:flex;gap:8px;">
+<button id="prev" class="btn">◀</button>
+<select id="monthSelect" class="select"></select>
+<button id="next" class="btn">▶</button>
+<button id="todayBtn" class="btn">Today</button>
+</div>
 </div>
 
 <main class="calendar">

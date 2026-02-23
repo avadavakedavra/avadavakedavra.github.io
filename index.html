@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Sehr Academy</title>
+  <meta name="description" content="Sehr Academy offers focused tuition and exam preparation with small batches, strong fundamentals, and consistent mentoring. Offline classes at Vatanappally, Thrissur." />
+  <meta property="og:title" content="Sehr Academy" />
+  <meta property="og:description" content="Personalised coaching for Class 10, 11, 12 — NEET & JEE Mains. Small batches, offline classes at Vatanappally, Thrissur." />
+  <meta property="og:url" content="https://sehracademy.com/" />
+  <meta name="theme-color" content="#8BC53F" />
 
   <!-- Fonts (same family, minimal weights) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,9 +120,69 @@
       color:var(--gray);
     }
 
+    /* ===== ABOUT SECTION ===== */
+    #about{
+      max-width:1100px;
+      margin:0 auto;
+      padding:60px 20px 80px;
+    }
+
+    #about h2{
+      font-size:30px;
+      font-weight:800;
+      text-align:center;
+      margin-bottom:10px;
+    }
+
+    #about .section-sub{
+      text-align:center;
+      color:var(--gray);
+      font-size:15px;
+      font-weight:500;
+      margin-bottom:44px;
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:24px;
+    }
+
+    .feature{
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:28px 24px;
+      text-align:center;
+      background:#fafafa;
+      transition:box-shadow .2s ease;
+    }
+
+    .feature:hover{
+      box-shadow:0 8px 24px rgba(0,0,0,.07);
+    }
+
+    .feature-icon{
+      font-size:32px;
+      margin-bottom:14px;
+    }
+
+    .feature h3{
+      font-size:16px;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .feature p{
+      font-size:14px;
+      color:var(--gray);
+      font-weight:500;
+    }
+
     @media(max-width:640px){
       .hero h1{font-size:32px}
       .hero{padding:60px 16px}
+      #about{padding:40px 16px 60px}
+      #about h2{font-size:24px}
     }
   </style>
 </head>
@@ -147,7 +212,7 @@
       <div class="cta">
         <a class="btn btn-primary"
            href="https://wa.me/919539409586"
-           target="_blank" rel="noopener">
+           target="_blank" rel="noopener noreferrer">
           Contact on WhatsApp
         </a>
 
@@ -158,9 +223,39 @@
     </section>
   </main>
 
+  <!-- ABOUT SECTION -->
+  <section id="about" aria-labelledby="about-heading">
+    <h2 id="about-heading">Why Sehr Academy?</h2>
+    <p class="section-sub">A focused learning environment built around every student's success.</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">👥</div>
+        <h3>Small Batches</h3>
+        <p>Limited seats per batch so every student gets individual attention and personalised feedback.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📚</div>
+        <h3>Strong Fundamentals</h3>
+        <p>Concept-first teaching for Physics, Chemistry, Mathematics and Biology — from Class 10 to Class 12.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📅</div>
+        <h3>Structured Schedule</h3>
+        <p>A clear academic calendar, live-class portal, and syllabus tracker keep students on track all year.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🏆</div>
+        <h3>Exam Preparation</h3>
+        <p>Targeted preparation for board exams, NEET, and JEE Mains with regular tests and PYQ practice.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
-    © 2025 Sehr Academy
+    © 2026 Sehr Academy &nbsp;·&nbsp;
+    <a href="https://wa.me/919539409586" target="_blank" rel="noopener noreferrer" style="color:inherit;">WhatsApp</a>
   </footer>
 
 </body>
