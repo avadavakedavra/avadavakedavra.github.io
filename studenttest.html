@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEHR Academy – Student Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --lime:#8BC53F;
+  --dark:#1f2937;
+  --bg:#f6f8f5;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Montserrat,sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+}
+
+/* NAVBAR PRESERVED */
+header#site-header{position:sticky;top:0;z-index:1000}
+
+/* LAYOUT */
+.container{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR DESKTOP */
+.sidebar{
+  width:240px;
+  background:rgba(139,197,63,0.9);
+  color:white;
+  padding:25px;
+  position:fixed;
+  height:100%;
+  transition:.3s;
+}
+
+.sidebar h2{
+  font-family:'Playfair Display',serif;
+  margin:15px 0;
+}
+
+.menu-item{
+  margin:12px 0;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.menu-item.active{font-weight:800}
+
+/* MAIN */
+.main{
+  margin-left:240px;
+  padding:40px 20px;
+  flex:1;
+  max-width:1200px;
+}
+
+/* CARDS */
+.card{
+  background:white;
+  padding:25px;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  margin-bottom:25px;
+}
+
+/* LOGIN OVERLAY */
+#loginOverlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#f5f7f4,#eef2f7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+  .sidebar{
+    position:fixed;
+    left:-240px;
+    top:0;
+    z-index:999;
+  }
+
+  .sidebar.open{
+    left:0;
+  }
+
+  .main{
+    margin-left:0;
+  }
+
+  .mobile-menu{
+    display:block;
+    position:fixed;
+    top:15px;
+    left:15px;
+    z-index:1100;
+    background:var(--lime);
+    color:white;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+}
+
+.mobile-menu{display:none}
+
+/* Attendance warning */
+.warning{
+  background:#fee2e2;
+  color:#b91c1c;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:15px;
+  font-weight:600;
+}
+.status-badge{
+  padding:6px 12px;
+  border-radius:20px;
+  font-weight:700;
+  display:inline-block;
+}
+.status-overdue{background:#dc2626;color:white;}
+.status-cleared{background:#16a34a;color:white;}
+.status-scholarship{background:#ca8a04;color:white;}
+.status-inactive{background:#6b7280;color:white;}
+</style>
+</head>
+
+<body>
+
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
+
+<div class="mobile-menu" onclick="toggleSidebar()">☰</div>
+
+<div class="container">
+
+<div class="sidebar" id="sidebar">
+  <h2 id="sideName"></h2>
+  <div id="sideClass"></div>
+  <hr style="margin:20px 0;opacity:.3">
+  <div class="menu-item active" onclick="showSection('overview')">Overview</div>
+  <div class="menu-item" onclick="showSection('results')">Results</div>
+  <div class="menu-item" onclick="showSection('attendance')">Attendance</div>
+  <div class="menu-item" onclick="showSection('fees')">Fees</div>
+  <div class="menu-item" onclick="showSection('remarks')">Remarks</div>
+  <div class="menu-item" onclick="showSection('achievements')">Achievements</div>
+</div>
+
+<div class="main">
+
+<div id="overview" class="section active">
+  <div class="card">
+    <h2 id="studentName"></h2>
+    <p>Syllabus: <b id="syllabusDisplay"></b></p>
+    <p>Age: <b id="ageDisplay"></b></p>
+    <p>Course Duration Remaining: <b id="courseRemaining"></b></p>
+  </div>
+</div>
+
+<div id="results" class="section">
+  <div class="card">
+    <h2>Results</h2>
+    <div id="resultsContainer"></div>
+  </div>
+</div>
+
+<div id="attendance" class="section">
+  <div class="card">
+    <h2>Attendance</h2>
+    <div id="attendanceWarning"></div>
+    <div id="attendanceData"></div>
+  </div>
+</div>
+
+<div id="fees" class="section">
+  <div class="card">
+    <h2>Fee Status</h2>
+    <div id="feeStatus"></div>
+  </div>
+</div>
+
+<div id="remarks" class="section">
+  <div class="card">
+    <h2>Remarks</h2>
+    <div id="remarksList"></div>
+  </div>
+</div>
+
+<div id="achievements" class="section">
+  <div class="card">
+    <h2>Achievements</h2>
+    <div id="achievementList"></div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+const API="https://script.google.com/macros/s/AKfycbxRVrtRzMLbguKBfPLYYGTALf73wlSrbYIS3fWyABHvNUiZi2wrLog2CpIHRMBnNzXU/exec";
+
+function getId(){
+  return new URL(window.location.href).searchParams.get("id");
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+function showSection(id){
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+function calculateAge(birthday){
+  const birth=new Date(birthday);
+  const today=new Date();
+  let years=today.getFullYear()-birth.getFullYear();
+  return years+" Years";
+}
+
+function calculateRemainingDays(effectiveStart){
+  const today=new Date();
+  let year=today.getFullYear();
+  if(today.getMonth()>2) year+=1;
+  const march=new Date(year,2,31);
+  const diff=Math.ceil((march-today)/(1000*60*60*24));
+  return diff>0?diff+" Days Remaining":"Course Completed";
+}
+
+/* LOGIN FLOW */
+
+async function load(){
+  const id=getId();
+  const res=await fetch(API+"?id="+id);
+  const data=await res.json();
+  if(data.locked){
+    showLogin(data.student);
+  }
+}
+
+function showLogin(student){
+  document.body.insertAdjacentHTML("beforeend",`
+    <div id="loginOverlay">
+      <div style="background:white;padding:40px;border-radius:20px;width:320px;text-align:center">
+        <img src="${student.photo}" style="width:80px;height:80px;border-radius:50%">
+        <h3 style="margin:15px 0">${student.full_name}</h3>
+        <input type="date" id="dobInput" style="width:100%;padding:10px;margin-bottom:10px">
+        <button onclick="verifyDOB()" style="width:100%;padding:10px;background:#8BC53F;color:white;border:none;border-radius:8px;font-weight:700">Unlock</button>
+        <div id="loginError" style="color:red;margin-top:10px;display:none">Incorrect DOB</div>
+      </div>
+    </div>
+  `);
+}
+
+async function verifyDOB(){
+  const id=getId();
+  const dob=document.getElementById("dobInput").value;
+  const res=await fetch(API+"?id="+id+"&dob="+dob);
+  const data=await res.json();
+  if(data.error){
+    document.getElementById("loginError").style.display="block";
+    return;
+  }
+  document.getElementById("loginOverlay").remove();
+  initialize(data);
+}
+
+function initialize(data){
+
+  document.getElementById("studentName").innerText=data.student.full_name;
+  document.getElementById("sideName").innerText=data.student.full_name;
+  document.getElementById("sideClass").innerText="Class "+data.student.class;
+  document.getElementById("syllabusDisplay").innerText=data.student.syllabus;
+  document.getElementById("ageDisplay").innerText=calculateAge(data.student.birthday);
+  document.getElementById("courseRemaining").innerText=calculateRemainingDays(data.student.effective_start);
+
+  /* Attendance */
+  let total=0,attended=0;
+  data.attendance.forEach(a=>{
+    total+=Number(a.total_classes);
+    attended+=Number(a.attended_classes);
+  });
+  const percent=total?((attended/total)*100).toFixed(1):0;
+  document.getElementById("attendanceData").innerHTML=`${attended}/${total} (${percent}%)`;
+
+  if(percent<75 && percent>0){
+    document.getElementById("attendanceWarning").innerHTML=
+      `<div class="warning">Attendance below required threshold (75%).</div>`;
+  }
+
+  /* Fees */
+  let statusHTML="";
+  if(data.student.status==="OVERDUE"){
+    statusHTML=`<span class="status-badge status-overdue">OVERDUE</span><br>Overdue by ${Math.abs(data.student.days_overdue)} days`;
+  }else if(data.student.status==="CLEARED"){
+    statusHTML=`<span class="status-badge status-cleared">CLEARED</span><br>Next Due: ${data.student.next_due}`;
+  }else if(data.student.status==="SCHOLARSHIP"){
+    statusHTML=`<span class="status-badge status-scholarship">FULL SCHOLARSHIP</span>`;
+  }else{
+    statusHTML=`<span class="status-badge status-inactive">INACTIVE</span>`;
+  }
+  document.getElementById("feeStatus").innerHTML=statusHTML;
+
+  /* Results Clean View */
+  const categories=["Monthly Exams","Sehr Major Exams","School Exams"];
+  let resultHTML="";
+  categories.forEach(cat=>{
+    const exams=data.all_exams.filter(e=>e.exam_category===cat);
+    if(exams.length){
+      resultHTML+=`<h3 style="margin-top:20px">${cat}</h3>`;
+      exams.forEach(e=>{
+        resultHTML+=`<p>${e.subject} – ${e.percentage}%</p>`;
+      });
+    }
+  });
+  document.getElementById("resultsContainer").innerHTML=resultHTML;
+
+  /* Remarks & Achievements */
+  const remarks=data.remarks.filter(r=>r.type==="Remark");
+  const achievements=data.remarks.filter(r=>r.type==="Achievement");
+
+  document.getElementById("remarksList").innerHTML=
+    remarks.length?remarks.map(r=>`<p>${r.remark_or_achievement}</p>`).join(""):"No remarks.";
+
+  document.getElementById("achievementList").innerHTML=
+    achievements.length?achievements.map(a=>`<p>${a.remark_or_achievement}</p>`).join(""):"No achievements.";
+}
+
+load();
+</script>
+
+</body>
+</html>
