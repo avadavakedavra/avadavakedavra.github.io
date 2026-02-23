@@ -35,7 +35,14 @@ header#site-header .link:after, header#site-header .trigger:after{
   transition:transform .18s;
 }
 header#site-header .link:hover:after,
-header#site-header .trigger:hover:after{transform:scaleX(1)}
+header#site-header .trigger:hover:after,
+header#site-header .link.active-page:after,
+header#site-header .trigger.active-page:after{transform:scaleX(1)}
+
+header#site-header .link.active-page,
+header#site-header .trigger.active-page{color:#8BC53F}
+
+header#site-header .submenu a.active-page{color:#8BC53F;background:#f5f8f1}
 
 header#site-header .submenu{
   position:absolute;left:0;top:100%;min-width:200px;

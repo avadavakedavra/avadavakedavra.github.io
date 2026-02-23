@@ -21,34 +21,6 @@ body{
   color:#1f2937;
 }
 
-header{
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-}
-
-.wrap{
-  max-width:1300px;
-  margin:auto;
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-}
-
-.brand span:first-child{
-  font-family:'Montserrat';
-  font-weight:900;
-  color:var(--green);
-  font-size:22px;
-}
-
-.brand span:last-child{
-  font-family:'Montserrat';
-  font-weight:900;
-  font-size:22px;
-}
-
 .table-wrap{
   max-width:1300px;
   margin:auto;
@@ -147,13 +119,8 @@ tr.active .blur{
 
 <body>
 
-<header>
-<div class="wrap">
-  <div class="brand">
-    <span>SEHR</span><span>ACADEMY</span>
-  </div>
-</div>
-</header>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 
 <div class="table-wrap">
 <table>
