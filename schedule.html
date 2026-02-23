@@ -144,6 +144,43 @@ select{
 @media(max-width:900px){
   .main-content{padding:110px 20px;}
 }
+
+@media(max-width:640px){
+  .main-content{padding:90px 12px 40px;}
+  .card{
+    padding:18px 14px;
+    border-radius:18px;
+  }
+  .header{font-size:20px;}
+  .dashboard{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .summary-box{padding:14px 12px;}
+  select{
+    width:100%;
+    min-height:44px;
+    padding:12px;
+  }
+  .event{
+    padding:16px 14px;
+    padding-right:14px;
+  }
+  .event img{
+    position:static;
+    display:block;
+    margin-top:10px;
+    width:56px;
+    height:56px;
+  }
+  .section-title{
+    font-size:15px;
+    cursor:pointer;
+    min-height:44px;
+    display:flex;
+    align-items:center;
+  }
+}
 </style>
 </head>
 

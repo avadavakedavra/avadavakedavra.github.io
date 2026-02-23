@@ -81,6 +81,29 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 
 .event-title{font-family:'Montserrat';font-weight:800;font-size:14px;margin-bottom:6px;}
 .empty{font-size:12px;opacity:.5;margin-top:8px;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .calendar{padding:10px;}
+  .calendar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .weekdays,.grid{min-width:560px;}
+  .day{min-height:120px;padding:8px;}
+  .weekdays{top:64px;}
+}
+
+@media(max-width:640px){
+  .wrap{padding:10px 12px;flex-wrap:wrap;gap:8px;}
+  .controls{gap:6px;flex-wrap:wrap;}
+  .btn,.select{padding:10px 10px;min-height:44px;}
+  .heading{padding:0 12px;}
+  .filter-btn{min-height:44px;padding:10px 12px;}
+  .calendar{padding:8px 0;}
+  .calendar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .weekdays,.grid{min-width:480px;}
+  .day{min-height:100px;padding:6px;}
+  .event-title{font-size:12px;}
+  .pill{font-size:10px;padding:3px 6px;}
+}
 </style>
 </head>
 
@@ -124,11 +147,13 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 </div>
 
 <main class="calendar">
+<div class="calendar-scroll">
 <div class="weekdays">
 <div>Mon</div><div>Tue</div><div>Wed</div>
 <div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
 </div>
 <div id="calendar-grid" class="grid"></div>
+</div>
 </main>
 
 <script>

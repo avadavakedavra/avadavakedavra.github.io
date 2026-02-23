@@ -244,6 +244,86 @@ h2{
 .status-paid{color:#16a34a;font-weight:700;}
 .status-pending{color:#dc2626;font-weight:700;}
 .status-partial{color:#f59e0b;font-weight:700;}
+
+/* ===== SIDEBAR TOGGLE BUTTON (mobile only) ===== */
+.sidebar-toggle{
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:1200;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:var(--lime);
+  border:none;
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform 0.3s ease;
+    z-index:1100;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .sidebar.open{
+    transform:translateX(0);
+  }
+  .main{
+    margin-left:0;
+    padding:24px 16px;
+  }
+  .sidebar-toggle{
+    display:flex;
+  }
+  .dashboard-wrapper{
+    display:block;
+  }
+}
+
+@media(max-width:640px){
+  .main{
+    padding:16px 12px;
+  }
+  .card{
+    padding:18px 14px;
+  }
+  .profile-side img{
+    width:100px;
+    height:100px;
+  }
+  .info-grid{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .subject-grid{
+    grid-template-columns:1fr;
+  }
+  .portal-title{
+    font-size:20px;
+  }
+  .year-select{
+    width:100%;
+    padding:12px 14px;
+  }
+  select, .year-select{
+    min-height:44px;
+  }
+  .menu-item{
+    min-height:44px;
+    display:flex;
+    align-items:center;
+  }
+}
 </style>
 </head>
 
@@ -253,6 +333,7 @@ h2{
 <div id="loader" class="loader">
   Loading...
 </div>
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
   <div class="dashboard-wrapper">
 <div class="sidebar">
   <div class="profile-side">
@@ -657,6 +738,22 @@ function showSection(e,id){
 }
 
 load();
+
+// Sidebar toggle for mobile
+(function(){
+  const toggle = document.getElementById('sidebarToggle');
+  const sidebar = document.querySelector('.sidebar');
+  if(toggle && sidebar){
+    toggle.addEventListener('click', function(){
+      sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if(!sidebar.contains(e.target) && !toggle.contains(e.target)){
+        sidebar.classList.remove('open');
+      }
+    });
+  }
+})();
 
 </script>
 </body>
