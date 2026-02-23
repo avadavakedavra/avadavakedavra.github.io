@@ -255,6 +255,42 @@ select{
   font-weight:900;
   font-size:16px;
 }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px){
+  .container{
+    padding:10px 14px;
+  }
+  main{
+    padding:0 14px;
+    margin:20px auto;
+  }
+  select{
+    width:100%;
+    min-height:44px;
+    padding:12px 14px;
+  }
+  .plan-container{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .subject-block{
+    padding:16px;
+  }
+  .topic{
+    flex-wrap:wrap;
+    padding:10px 12px;
+    min-height:44px;
+  }
+  .gauge{
+    width:160px;
+    height:80px;
+  }
+  .gauge-bg,.gauge-mask+div{
+    width:160px;
+    height:80px;
+  }
+}
 </style>
 
 
