@@ -9,7 +9,8 @@
 
 <style>
 :root{
-  --lime:#8BC53F;
+  --lime:#6BA000;
+  --lime-dark:#5a8800;
   --bg:#f5f7f4;
   --dark:#1f2937;
   --border:#e5e7eb;
@@ -79,6 +80,10 @@ header::after{
 
 .filter{
   margin-bottom:30px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
 }
 
 select{
@@ -87,6 +92,11 @@ select{
   border:1px solid var(--border);
   font-family:Montserrat;
   font-weight:600;
+}
+
+.last-updated{
+  font-size:12px;
+  color:var(--grey);
 }
 
 .section-title{
@@ -124,6 +134,32 @@ select{
   transition:all 0.25s ease;
   border:2px solid transparent;
 }
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+}
+
+.card.live-card{
+  border-color:var(--danger);
+  box-shadow:0 4px 12px rgba(239,68,68,0.15);
+}
+
+.card.ended-card{
+  opacity:0.75;
+}
+
+.card.soon{
+  border:2px solid var(--soon);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(245,158,11,0.4);}
+  70%{box-shadow:0 0 0 8px rgba(245,158,11,0);}
+  100%{box-shadow:0 0 0 0 rgba(245,158,11,0);}
+}
+
 .portal-hero{
   padding:60px 20px 30px;
   text-align:center;
@@ -143,24 +179,8 @@ select{
 }
 
 .portal-hero p{
-  color:var(--gray);
+  color:var(--grey);
   font-size:14px;
-}
-
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 28px rgba(0,0,0,0.08);
-}
-
-.card.soon{
-  border:2px solid var(--soon);
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(245,158,11,0.4);}
-  70%{box-shadow:0 0 0 8px rgba(245,158,11,0);}
-  100%{box-shadow:0 0 0 0 rgba(245,158,11,0);}
 }
 
 .thumb{
@@ -183,17 +203,19 @@ select{
   flex:1;
   display:flex;
   flex-direction:column;
+  line-height:1.6;
 }
 
-.subject{font-weight:700;margin-bottom:6px;}
+.subject{font-weight:700;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .topic{font-size:13px;opacity:0.7;margin-bottom:4px;}
-.teacher{font-size:12px;opacity:0.7;margin-bottom:8px;}
+.teacher{font-size:12px;font-weight:600;opacity:0.8;margin-bottom:8px;}
 .meta{font-size:12px;opacity:0.8;margin-bottom:6px;}
 .countdown{font-size:12px;font-weight:600;color:var(--lime);margin-bottom:8px;}
-  #site-header{
-  position: sticky;
-  top: 0;
-  z-index: 9999;
+
+#site-header{
+  position:sticky;
+  top:0;
+  z-index:9999;
 }
 
 .badge{
@@ -223,17 +245,40 @@ select{
 button{
   margin-top:auto;
   padding:10px;
+  min-height:44px;
   border:none;
   border-radius:8px;
   font-weight:700;
   cursor:pointer;
   background:var(--lime);
   color:#fff;
+  font-family:Montserrat;
+  transition:background 0.2s ease,transform 0.15s ease;
+}
+button:not(:disabled):hover{
+  background:var(--lime-dark);
+  transform:scale(1.02);
+}
+button:not(:disabled):active{
+  transform:scale(0.98);
+}
+button:focus-visible{
+  outline:3px solid var(--dark);
+  outline-offset:2px;
 }
 button:disabled{
-  background:#ccc;
+  background:#d1d5db;
+  color:#6b7280;
   cursor:not-allowed;
 }
+
+.empty-state{
+  text-align:center;
+  padding:48px 20px;
+  color:var(--grey);
+}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+.empty-msg{font-size:15px;font-weight:600;}
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
@@ -271,6 +316,10 @@ button:disabled{
   .section-title{
     font-size:16px;
   }
+  .filter{
+    flex-direction:column;
+    align-items:flex-start;
+  }
 }
 </style>
 </head>
@@ -290,9 +339,10 @@ button:disabled{
 <div class="container">
 
 <div class="filter">
-  <select id="classFilter">
+  <select id="classFilter" aria-label="Filter by class">
     <option value="All">All Classes</option>
   </select>
+  <div id="lastUpdated" class="last-updated" aria-live="polite"></div>
 </div>
 
 <div id="liveSection"></div>
@@ -306,170 +356,280 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwYmCIYvjAI9ok41rJxNQWo
 let allClasses = [];
 let lastFetchTime = 0;
 let cachedData = null;
+let lastUpdated = null;
+let renderTimeout = null;
 
-async function fetchClasses(){
+function isValidUrl(url) {
+  try {
+    const u = new URL(url);
+    return u.protocol === 'https:' || u.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+async function fetchClasses() {
   const now = Date.now();
-  if(cachedData && (now - lastFetchTime) < 30000){
+  if (cachedData && (now - lastFetchTime) < 30000) {
     return cachedData;
   }
   const res = await fetch(API_URL);
+  if (!res.ok) throw new Error(`Failed to fetch classes: HTTP ${res.status}`);
   const data = await res.json();
   cachedData = data;
   lastFetchTime = now;
+  lastUpdated = new Date();
   return data;
 }
 
-function formatTime(date){
+function formatTime(date) {
   return new Date(date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 
-function formatFullDate(date){
-  return new Date(date).toLocaleDateString(undefined,{
-    weekday:'long',year:'numeric',month:'long',day:'numeric'
+function formatFullDate(date) {
+  return new Date(date).toLocaleDateString(undefined, {
+    weekday:'long', year:'numeric', month:'long', day:'numeric'
   });
 }
 
-function getCountdown(start){
+function getCountdown(start) {
   const now = new Date();
   const diff = new Date(start) - now;
-  if(diff <= 0) return "";
+  if (diff <= 0) return "";
   const totalSeconds = Math.floor(diff / 1000);
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  if(days>0) return `Starts in ${days}d ${hours}h ${minutes}m`;
-  if(hours>0) return `Starts in ${hours}h ${minutes}m`;
+  if (days > 0) return `Starts in ${days}d ${hours}h ${minutes}m`;
+  if (hours > 0) return `Starts in ${hours}h ${minutes}m`;
   return `Starts in ${minutes}m ${seconds}s`;
 }
 
-function populateFilter(classes){
+function getStatus(c, now) {
+  const start = new Date(c.start);
+  const end = new Date(c.end);
+  const joinWindowStart = new Date(start.getTime() - 10 * 60000);
+  if (now >= start && now <= end) return 'live';
+  if (now >= joinWindowStart && now < start) return 'soon';
+  if (now < joinWindowStart) return 'upcoming';
+  return 'ended';
+}
+
+function populateFilter(classes) {
   const select = document.getElementById("classFilter");
   const unique = [...new Set(classes.map(c => c.className))];
-  unique.forEach(cls=>{
+  unique.forEach(cls => {
     const option = document.createElement("option");
     option.value = cls;
     option.textContent = cls;
     select.appendChild(option);
   });
+  const saved = localStorage.getItem('classFilter');
+  if (saved && unique.includes(saved)) {
+    select.value = saved;
+  }
 }
 
-function buildCard(c, now){
+function buildCard(c, now) {
   const start = new Date(c.start);
   const end = new Date(c.end);
-  const joinWindowStart = new Date(start.getTime() - 10*60000);
-  const timeDiff = start - now;
+  const status = getStatus(c, now);
 
-  let statusClass="", badgeContent="", buttonText="", disabled=false;
-  let cardClass="card";
+  let statusClass, badgeContent, buttonText, disabled = false;
+  let cardClass = "card";
 
-  if(now < joinWindowStart){
-    statusClass="upcoming";
-    badgeContent="UPCOMING";
-    buttonText="Access will be enabled 10 minutes before the scheduled start time.";
-    disabled=true;
-  }
-  else if(now >= joinWindowStart && now <= end){
-    if(now >= start){
-      statusClass="live";
-      badgeContent=`<span class="live-dot"></span> LIVE`;
-    }else{
-      statusClass="soon-badge";
-      badgeContent="STARTING SOON";
-      cardClass+=" soon";
-    }
-    buttonText="Join Now";
-  }
-  else{
-    statusClass="ended";
-    badgeContent="ENDED";
-    buttonText="Class Ended";
-    disabled=true;
+  if (status === 'live') {
+    statusClass = "live";
+    badgeContent = `<span class="live-dot"></span> LIVE`;
+    buttonText = "Join Now";
+    cardClass += " live-card";
+  } else if (status === 'soon') {
+    statusClass = "soon-badge";
+    badgeContent = "STARTING SOON";
+    cardClass += " soon";
+    buttonText = "Join Now";
+  } else if (status === 'upcoming') {
+    statusClass = "upcoming";
+    badgeContent = "UPCOMING";
+    buttonText = "Access will be enabled 10 minutes before the scheduled start time.";
+    disabled = true;
+  } else {
+    statusClass = "ended";
+    badgeContent = "ENDED";
+    buttonText = "Class Ended";
+    disabled = true;
+    cardClass += " ended-card";
   }
 
-  const card=document.createElement("div");
-  card.className=cardClass;
+  const card = document.createElement("div");
+  card.className = cardClass;
 
-  card.innerHTML=`
-    <div class="thumb" style="background-image:url('${c.thumbnail||''}')"></div>
+  const safeSubject = escapeHtml(c.subject);
+  const safeTopic = escapeHtml(c.topic);
+  const safeTeacher = escapeHtml(c.teacher || 'SEHR Faculty');
+  const safeClass = escapeHtml(c.className);
+  const safeThumbnail = (c.thumbnail && isValidUrl(c.thumbnail))
+    ? c.thumbnail.replace(/'/g, '%27')
+    : '';
+
+  const btnAttrs = disabled
+    ? `disabled aria-disabled="true"`
+    : `data-url="${encodeURIComponent(c.meetingLink || '')}" aria-label="Join ${safeSubject} class"`;
+
+  card.innerHTML = `
+    <div class="thumb"${safeThumbnail ? ` style="background-image:url('${safeThumbnail}')"` : ''}></div>
     <div class="card-body">
-      <div class="subject">${c.subject}</div>
-      <div class="topic">${c.topic||''}</div>
-      <div class="teacher">By ${c.teacher||'SEHR Faculty'}</div>
-      <div class="meta">${c.className}</div>
+      <div class="subject" title="${safeSubject}">${safeSubject}</div>
+      <div class="topic">${safeTopic}</div>
+      <div class="teacher">By ${safeTeacher}</div>
+      <div class="meta">${safeClass}</div>
       <div class="meta">${formatTime(start)} - ${formatTime(end)}</div>
-      ${now < start ? `<div class="countdown">${getCountdown(start)}</div>`:''}
+      ${now < start ? `<div class="countdown" role="status" aria-live="polite">${getCountdown(start)}</div>` : ''}
       <span class="badge ${statusClass}">${badgeContent}</span>
-      <button ${disabled?'disabled':''}
-        onclick="window.open('${c.meetingLink}','_blank')">
-        ${buttonText}
-      </button>
+      <button ${btnAttrs}>${escapeHtml(buttonText)}</button>
     </div>
   `;
+
+  if (!disabled) {
+    card.querySelector('button').addEventListener('click', function () {
+      const url = decodeURIComponent(this.dataset.url || '');
+      if (isValidUrl(url)) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    });
+  }
+
   return card;
 }
 
-function render(){
+function showError(msg) {
+  const liveSection = document.getElementById("liveSection");
+  liveSection.innerHTML = `<div class="empty-state">
+    <div class="empty-icon">⚠️</div>
+    <div class="empty-msg">${escapeHtml(msg)}</div>
+  </div>`;
+}
+
+function render() {
   const now = new Date();
   const selectedClass = document.getElementById("classFilter").value;
-  let filtered = selectedClass==="All"?allClasses:
-    allClasses.filter(c=>c.className===selectedClass);
+  let filtered = selectedClass === "All" ? allClasses :
+    allClasses.filter(c => c.className === selectedClass);
 
-  filtered.sort((a,b)=>new Date(a.start)-new Date(b.start));
+  filtered.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-  const running = filtered.find(c=>now>=new Date(c.start)&&now<=new Date(c.end));
-  const upcoming = filtered.filter(c=>new Date(c.start)>now);
-  const completed = filtered.filter(c=>new Date(c.end)<now)
-    .sort((a,b)=>new Date(b.end)-new Date(a.end));
+  const running = filtered.find(c => now >= new Date(c.start) && now <= new Date(c.end));
+  const upcoming = filtered.filter(c => new Date(c.start) > now);
+  const completed = filtered.filter(c => new Date(c.end) < now)
+    .sort((a, b) => new Date(b.end) - new Date(a.end));
 
-  const liveSection=document.getElementById("liveSection");
-  const upcomingSection=document.getElementById("upcomingSection");
-  liveSection.innerHTML="";
-  upcomingSection.innerHTML="";
+  const liveSection = document.getElementById("liveSection");
+  const upcomingSection = document.getElementById("upcomingSection");
+  liveSection.innerHTML = "";
+  upcomingSection.innerHTML = "";
 
-  if(filtered.length===0){
-    liveSection.innerHTML="<div class='section-title'>No live sessions scheduled.</div>";
+  if (lastUpdated) {
+    const updEl = document.getElementById("lastUpdated");
+    if (updEl) updEl.textContent = `Last updated: ${lastUpdated.toLocaleTimeString()}`;
+  }
+
+  if (filtered.length === 0) {
+    liveSection.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <div class="empty-msg">No live sessions scheduled for this class.</div>
+    </div>`;
     return;
   }
 
-  if(running){
-    liveSection.innerHTML=`<div class="section-title">🔴 Live Now</div>
+  if (running) {
+    liveSection.innerHTML = `<div class="section-title">🔴 Live Now</div>
       <div class="section-date">${formatFullDate(running.start)}</div>`;
-    const grid=document.createElement("div");
-    grid.className="grid visible";
-    grid.appendChild(buildCard(running,now));
+    const grid = document.createElement("div");
+    grid.className = "grid visible";
+    grid.appendChild(buildCard(running, now));
     liveSection.appendChild(grid);
   }
 
-  const upcomingToShow = running?upcoming.slice(0,2):upcoming.slice(0,3);
+  const upcomingToShow = running ? upcoming.slice(0, 2) : upcoming.slice(0, 3);
 
-  if(upcomingToShow.length>0){
-    upcomingSection.innerHTML+=`<div class="section-title">Upcoming Classes</div>
+  if (upcomingToShow.length > 0) {
+    upcomingSection.innerHTML += `<div class="section-title">Upcoming Classes</div>
       <div class="section-date">${formatFullDate(upcomingToShow[0].start)}</div>`;
-    const grid=document.createElement("div");
-    grid.className="grid visible";
-    upcomingToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+    const grid = document.createElement("div");
+    grid.className = "grid visible";
+    upcomingToShow.forEach(c => grid.appendChild(buildCard(c, now)));
     upcomingSection.appendChild(grid);
   }
 
-  const completedToShow=completed.slice(0,3);
-  if(completedToShow.length>0){
-    upcomingSection.innerHTML+=`<div class="section-title">Recently Completed</div>`;
-    const grid=document.createElement("div");
-    grid.className="grid visible";
-    completedToShow.forEach(c=>grid.appendChild(buildCard(c,now)));
+  const completedToShow = completed.slice(0, 3);
+  if (completedToShow.length > 0) {
+    upcomingSection.innerHTML += `<div class="section-title">Recently Completed</div>`;
+    const grid = document.createElement("div");
+    grid.className = "grid visible";
+    completedToShow.forEach(c => grid.appendChild(buildCard(c, now)));
     upcomingSection.appendChild(grid);
   }
 }
 
-fetchClasses().then(classes=>{
-  allClasses=classes;
-  populateFilter(classes);
-  render();
-  document.getElementById("classFilter").addEventListener("change",render);
-  setInterval(render,1000);
-  document.getElementById("loader").classList.remove("active");
-});
+function scheduleRender() {
+  if (renderTimeout) clearTimeout(renderTimeout);
+  const now = new Date();
+
+  const hasActiveCountdown = allClasses.some(c => {
+    const start = new Date(c.start);
+    const soon = new Date(start.getTime() - 10 * 60000);
+    return now >= soon && now < start;
+  });
+
+  let interval;
+  if (hasActiveCountdown) {
+    interval = 1000;
+  } else {
+    const futureTimes = allClasses.flatMap(c => {
+      const start = new Date(c.start);
+      const end = new Date(c.end);
+      const soon = new Date(start.getTime() - 10 * 60000);
+      return [soon, start, end];
+    }).filter(t => t > now).map(t => t - now);
+
+    interval = futureTimes.length > 0
+      ? Math.min(Math.min(...futureTimes) + 100, 60000)
+      : 60000;
+  }
+
+  renderTimeout = setTimeout(() => {
+    render();
+    scheduleRender();
+  }, interval);
+}
+
+fetchClasses()
+  .then(classes => {
+    allClasses = classes;
+    populateFilter(classes);
+    render();
+    scheduleRender();
+    document.getElementById("classFilter").addEventListener("change", e => {
+      localStorage.setItem('classFilter', e.target.value);
+      render();
+    });
+    document.getElementById("loader").classList.remove("active");
+  })
+  .catch(err => {
+    console.error("Failed to load classes:", err);
+    document.getElementById("loader").classList.remove("active");
+    showError("Unable to load live classes. Please check your connection and try again.");
+  });
 </script>
 
 </body>
