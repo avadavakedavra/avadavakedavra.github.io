@@ -1,24 +1,41 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h1>Student Login</h1>
+    <form id="loginForm">
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" name="studentID" required>
+        <button type="submit">Login</button>
+    </form>
+    <div id="studentInfo"></div>
     <script>
-        const DATA_URL = 'https://script.google.com/macros/s/AKfycbzudeZ677Mxp0KZGtILfVVBk0cB4V2zwpXrpqtemE4cHt7Sp7_Vc6U3_shwcpYmB15vRA/exec?action=list';
+        const form = document.getElementById('loginForm');
+        const studentInfoDiv = document.getElementById('studentInfo');
 
-        function loadStudents() {
-            fetch(DATA_URL)
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const studentID = document.getElementById('studentID').value;
+
+            fetch('https://script.google.com/macros/s/AKfycbzudeZ677Mxp0KZGtILfVVBk0cB4V2zwpXrpqtemE4cHt7Sp7_Vc6U3_shwcpYmB15vRA/exec?studentID=' + studentID)
                 .then(response => response.json())
                 .then(data => {
-                    // Process the student data
-                    console.log(data);
+                    if (data.success) {
+                        studentInfoDiv.innerHTML = `<h2>Welcome, ${data.student.name}</h2><p>Your grade: ${data.student.grade}</p>`;
+                    } else {
+                        studentInfoDiv.innerHTML = '<p>Login failed. Please check your ID.</p>';
+                    }
                 })
                 .catch(error => {
-                    console.error('Error fetching student data:', error);
+                    console.error('Error:', error);
+                    studentInfoDiv.innerHTML = '<p>An error occurred. Please try again later.</p>';
                 });
-        }
-
-        loadStudents();
+        });
     </script>
 </body>
 </html>
