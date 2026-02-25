@@ -2,789 +2,486 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy Premium Dashboard</title>
-<meta name="description" content="Sehr Academy student academic performance portal — view results, attendance, fees, and achievements." />
-<meta name="theme-color" content="#8BC53F" />
-
+<title>SEHR Student Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --lime:#8BC53F;
-  --bg:#f5f7f4;
-  --dark:#1f2937;
+  --bg:linear-gradient(135deg,#f6f8f6,#f2f7f3,#eef6f0);
+  --fg:#1f2937;
+
+  --card:rgba(255,255,255,0.75);
+  --card-fg:#1f2937;
+
+  --muted:#eef2f1;
+  --muted-fg:#6b7280;
+
+  --border:rgba(0,0,0,0.05);
+
+  /* SEHR LIME PRIMARY */
+  --primary:88,56%,51%;
+  --primary-fg:#ffffff;
+
+  --accent:88,56%,51%;
+  --accent-fg:#ffffff;
+
+  --destructive:0,72%,55%;
+  --success:142,65%,38%;
+  --warning:38,92%,50%;
+
+  --grad-primary:linear-gradient(135deg,hsl(88,56%,51%),hsl(95,55%,45%));
+  --grad-accent:linear-gradient(135deg,hsl(88,56%,51%),hsl(105,50%,45%));
+  --grad-hero:linear-gradient(135deg,#1f2937,#2f3a2f);
+
+  --radius:1rem;
+
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Montserrat,sans-serif;
-  background:var(--bg);
-  color:var(--dark);
-}
-
-.dashboard-wrapper{
-  display:flex;
-}
-
-
-.sidebar{
-  width:260px;
-  min-height:100vh;
-  padding:35px 22px;
-  position:fixed;
-  overflow:hidden;
-
-  /* Frosted glass effect */
-  background:rgba(139,197,63,0.75);
+/* NAVBAR */
+.main-navbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(255,255,255,0.75);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
-
-  /* Subtle glass border */
-  border-right:1px solid rgba(255,255,255,0.25);
-
-  /* Soft shadow depth */
-  box-shadow:4px 0 30px rgba(0,0,0,0.08);
-
-  color: #ffffff;
-}
-/* Abstract modern pattern */
-.sidebar::before{
-  content:"";
-  position:absolute;
-  width:400px;
-  height:400px;
-  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%);
-  top:-100px;
-  left:-120px;
-  z-index:0;
+  border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
-.sidebar::after{
-  content:"";
-  position:absolute;
-  width:300px;
-  height:300px;
-  background:radial-gradient(circle at 70% 70%, rgba(255,255,255,0.2), transparent 70%);
-  bottom:-120px;
-  right:-80px;
-  z-index:0;
-}
-.sidebar > *{
-  position:relative;
-  z-index:2;
-}
-.sidebar h2{
-  font-family:'Playfair Display', serif;
-  font-weight:700;
-  color:#ffffff;
-  text-shadow:0 3px 10px rgba(0,0,0,0.35);
-}
-
-#sideClass{
-  color:rgba(255,255,255,0.85);
-  font-weight:500;
-  letter-spacing:0.5px;
-}
-
-.menu-item{
-  font-weight:700;
-  color:#ffffff;
-  text-shadow:0 2px 8px rgba(0,0,0,0.3);
-}
-.profile-side{text-align:center;margin-bottom:40px;}
-.profile-side img{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  object-fit:cover;
-  border:4px solid rgba(255,255,255,0.9);
-  box-shadow:0 8px 25px rgba(0,0,0,0.2);
-}
-.profile-side h2{
-  font-family:'Playfair Display',serif;
-  margin:15px 0 5px;
-}
-.menu-item{
-  padding:12px 14px;
-  border-radius:12px;
-  cursor:pointer;
-  margin-bottom:8px;
-  font-weight:600;
-  letter-spacing:0.3px;
-  transition:all .25s ease;
-  border-left:3px solid transparent;
-  padding-left:14px;
-}
-
-
-.menu-item:hover{
-  background:rgba(255,255,255,0.25);
-  backdrop-filter:blur(8px);
-}
-
-.menu-item.active{
-  background:#111827;        /* deep charcoal, not pure black */
-  color:#ffffff;
-  box-shadow:none;
-  border-left:3px solid white;
-}
-.menu-item:not(.active){
-  opacity:0.9;
-}
-.main{
-  margin-left:260px;
-  padding:60px 60px;
-  width:100%;
-}
-.card{
-  background:white;
-  padding:30px;
-  border:1px solid #f1f5f9;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,.06);
-  margin-bottom:35px;
-  transition:all 0.3s ease;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 18px 45px rgba(0,0,0,0.08);
-}
-.section{display:none;}
-.section.active{display:block;}
-.badge{
-  background:var(--lime);
-  color:white;padding:6px 14px;
-  border-radius:20px;
-}
-.info-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:25px;
-}
-.info-box{
-  background:#f9fafb;
-  padding:18px 20px;
-  border-radius:14px;
-}
-.info-label{
-  font-size:13px;color:#6b7280;
-  margin-bottom:8px;text-transform:uppercase;
-}
-.info-value{font-size:20px;font-weight:800;}
-.subject-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;margin-top:20px;
-}
-.subject-card{
-  background:#fff;padding:18px;
-  border-radius:16px;
-  box-shadow:0 5px 15px rgba(0,0,0,.05);
-}
-.subject-score{font-size:24px;font-weight:800;}
-.progress-bar{
-  height:10px;background:#eee;
-  border-radius:999px;overflow:hidden;
-  margin-top:8px;
-}
-.progress-fill{
-  height:100%;
-  border-radius:999px;
-  transition:width 0.8s ease-in-out;
-}
-h2{
-  font-family:'Playfair Display', serif;
-  font-weight:700;
-  letter-spacing:0.5px;
-  font-size:24px;
-}
-.year-select{
-  padding:8px 14px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  font-weight:600;
-}
-.loader{
-  position:fixed;
-  inset:0;
-  background:rgba(255,255,255,0.7);
-  backdrop-filter:blur(4px);
+.nav-wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
   display:flex;
+  justify-content:space-between;
   align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:18px;
-  z-index:9999;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.3s ease;
 }
 
-.loader.active{
-  opacity:1;
-  pointer-events:all;
-}
-.portal-header{
-  margin-bottom:40px;
-}
-
-.portal-title{
-  font-family:'Playfair Display', serif;
-  font-size:26px;
-  font-weight:700;
-  letter-spacing:0.5px;
-}
-
-.portal-sub{
-  color:#6b7280;
-  font-size:14px;
-  margin-top:4px;
-}
-.status-paid{color:#16a34a;font-weight:700;}
-.status-pending{color:#dc2626;font-weight:700;}
-.status-partial{color:#f59e0b;font-weight:700;}
-
-/* ===== SIDEBAR TOGGLE BUTTON (mobile only) ===== */
-.sidebar-toggle{
-  display:none;
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  z-index:1200;
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:var(--lime);
-  border:none;
-  color:#fff;
-  font-size:22px;
+.brand{
+  font-family:'Montserrat', sans-serif;
+  font-weight:800;
+  font-size:20px;
   cursor:pointer;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 16px rgba(0,0,0,0.2);
 }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
-  .sidebar{
-    transform:translateX(-100%);
-    transition:transform 0.3s ease;
-    z-index:1100;
-    top:0;
-    height:100vh;
-    overflow-y:auto;
-  }
-  .sidebar.open{
-    transform:translateX(0);
-  }
-  .main{
-    margin-left:0;
-    padding:24px 16px;
-  }
-  .sidebar-toggle{
-    display:flex;
-  }
-  .dashboard-wrapper{
-    display:block;
-  }
+.brand span{
+  color:hsl(var(--primary));
 }
 
+nav a{
+  text-decoration:none;
+  margin-left:20px;
+  font-size:14px;
+  font-weight:600;
+  color:#374151;
+  transition:all .2s ease;
+}
+
+nav a:hover{
+  color:hsl(var(--primary));
+}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg);min-height:100vh}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-display)}
+button{cursor:pointer;font-family:inherit}
+input{font-family:inherit}
+/* Login */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--grad-hero);padding:1rem}
+.login-card{background:var(--card);border-radius:1.5rem;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 25px 60px rgba(0,0,0,.3)}
+.login-card h1{text-align:center;font-size:1.5rem;margin-bottom:.25rem}
+.login-card p.sub{text-align:center;color:var(--muted-fg);font-size:.875rem;margin-bottom:1.5rem}
+.login-card .logo{width:56px;height:56px;border-radius:1rem;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.35rem;color:var(--muted-fg)}
+.form-group input{width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:.6rem;font-size:.9rem;outline:none;transition:border .2s}
+.form-group input:focus{border-color:hsl(var(--primary))}
+.btn-primary{width:100%;padding:.75rem;border:none;border-radius:.6rem;background:var(--grad-primary);color:#fff;font-weight:700;font-size:.95rem;transition:opacity .2s}
+.btn-primary:hover{opacity:.9}
+.btn-primary:disabled{opacity:.5}
+.error-msg{background:hsl(var(--destructive)/.1);color:hsl(var(--destructive));border:1px solid hsl(var(--destructive)/.3);border-radius:.6rem;padding:.6rem 1rem;font-size:.85rem;margin-bottom:1rem;display:none}
+/* Dashboard */
+.header{
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.05);
+  color:var(--fg);
+}
+.header-inner{max-width:64rem;margin:0 auto;padding:1.5rem 1rem;display:flex;align-items:center;gap:1.25rem}
+.header img.avatar{width:5rem;height:5rem;border-radius:1rem;object-fit:cover;border:2px solid rgba(255,255,255,.2);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.avatar-placeholder{width:5rem;height:5rem;border-radius:1rem;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2)}
+.header h1{font-size:1.5rem;font-weight:700}
+.header .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+.badge{font-size:.75rem;padding:.25rem .75rem;border-radius:999px;background:rgba(255,255,255,.15)}
+.badge-active{
+  background:var(--grad-primary);
+  color:#fff;
+  font-weight:600;
+}
+.badge-inactive{background:hsl(var(--destructive)/.8);font-weight:600}
+.toolbar{max-width:64rem;margin:0 auto;padding:.75rem 1rem;display:flex;justify-content:flex-end}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:.5rem;padding:.4rem 1rem;font-size:.8rem;color:var(--muted-fg);display:flex;align-items:center;gap:.35rem;transition:background .2s}
+.btn-logout:hover{background:var(--muted)}
+/* Tabs */
+.tabs{max-width:64rem;margin:0 auto;padding:0 1rem}
+.tab-list{display:flex;gap:.25rem;overflow-x:auto;border-bottom:2px solid var(--border);padding-bottom:0;scrollbar-width:none}
+.tab-list::-webkit-scrollbar{display:none}
+.tab-btn{padding:.6rem 1rem;border:none;background:none;font-size:.8rem;font-weight:600;color:var(--muted-fg);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab-btn.active{color:hsl(var(--primary));border-bottom-color:hsl(var(--primary))}
+.tab-btn:hover{color:var(--fg)}
+.tab-content{max-width:64rem;margin:0 auto;padding:1rem}
+/* Cards & Stats */
+.card{
+  background:var(--card);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.4);
+  border-radius:1.2rem;
+  padding:1.25rem;
+  box-shadow:0 10px 30px rgba(0,0,0,0.04);
+  transition:all .25s ease;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.stat-card{display:flex;align-items:flex-start;gap:1rem}
+.stat-icon{width:2.75rem;height:2.75rem;border-radius:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-fg);font-weight:500}
+.stat-value{font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:var(--card-fg)}
+.stat-sub{font-size:.7rem;color:var(--muted-fg)}
+/* Progress bar */
+.progress-wrap{margin-top:.5rem}
+.progress-header{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.4rem}
+.progress-track{height:.6rem;background:var(--muted);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;border-radius:999px;transition:width .7s}
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{text-align:left;padding:.6rem .75rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-fg);border-bottom:2px solid var(--border);font-weight:600}
+td{padding:.6rem .75rem;border-bottom:1px solid var(--border);color:var(--card-fg)}
+tr:last-child td{border-bottom:none}
+/* Filter */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{padding:.35rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:.75rem;font-weight:600;color:var(--muted-fg);transition:all .2s}
+.filter-btn.active{background:hsl(var(--primary));color:#fff;border-color:hsl(var(--primary))}
+/* Fees */
+.status-banner{border-radius:1rem;padding:1.25rem;display:flex;align-items:center;gap:1rem}
+.status-banner.cleared{background:hsl(var(--accent)/.1);border:1px solid hsl(var(--accent)/.3)}
+.status-banner.due{background:hsl(var(--destructive)/.1);border:1px solid hsl(var(--destructive)/.3)}
+/* Achievement / Remark card */
+.item-card{display:flex;align-items:flex-start;gap:.75rem}
+.item-icon{width:2.5rem;height:2.5rem;border-radius:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* Empty state */
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted-fg)}
+.empty svg{margin:0 auto .75rem}
+/* Grade badges */
+.grade{display:inline-block;padding:.15rem .5rem;border-radius:.4rem;font-size:.75rem;font-weight:700}
+.grade-a{background:hsl(var(--accent)/.15);color:hsl(var(--accent))}
+.grade-b{background:hsl(230,65%,52%,.15);color:hsl(var(--primary))}
+.grade-c{background:hsl(var(--warning)/.15);color:hsl(var(--warning))}
+.grade-d,.grade-f{background:hsl(var(--destructive)/.15);color:hsl(var(--destructive))}
+/* Responsive */
 @media(max-width:640px){
-  .main{
-    padding:16px 12px;
-  }
-  .card{
-    padding:18px 14px;
-  }
-  .profile-side img{
-    width:100px;
-    height:100px;
-  }
-  .info-grid{
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-  .subject-grid{
-    grid-template-columns:1fr;
-  }
-  .portal-title{
-    font-size:20px;
-  }
-  .year-select{
-    width:100%;
-    padding:12px 14px;
-  }
-  select, .year-select{
-    min-height:44px;
-  }
-  .menu-item{
-    min-height:44px;
-    display:flex;
-    align-items:center;
-  }
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .header h1{font-size:1.2rem}
+  .header-inner{gap:.75rem}
+  .header img.avatar,.avatar-placeholder{width:3.5rem;height:3.5rem}
+  .tab-btn{font-size:.72rem;padding:.5rem .7rem}
 }
+@media(max-width:400px){
+  .stats-grid{grid-template-columns:1fr}
+}
+/* Spinner */
+.spinner{display:inline-block;width:1.2rem;height:1.2rem;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
-
 <body>
-  <header id="site-header"></header>
-<script src="/assets/nav.js" defer></script>
-<div id="loader" class="loader">
-  Loading...
-</div>
-<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
-  <div class="dashboard-wrapper">
-<div class="sidebar">
-  <div class="profile-side">
-    <img id="sidePhoto">
-    <h2 id="sideName"></h2>
-    <div id="sideClass"></div>
-  </div>
-  <div class="menu-item active" onclick="showSection(event,'overview')">Overview</div>
-  <div class="menu-item" onclick="showSection(event,'results')">Results</div>
-  <div class="menu-item" onclick="showSection(event,'attendance')">Attendance</div>
-  <div class="menu-item" onclick="showSection(event,'fees')">Fees</div>
-  <div class="menu-item" onclick="showSection(event,'remarks')">Remarks</div>
-  <div class="menu-item" onclick="showSection(event,'achievements')">Achievements</div>
-</div>
-
-<div class="main">
-<div class="portal-header">
-  <div class="portal-title">SEHR Academic Performance Portal</div>
-  <div class="portal-sub">Student Analytics Dashboard</div>
-</div>
-<!-- OVERVIEW -->
-<div id="overview" class="section active">
-  <div class="card">
-    <h2 id="studentName"></h2>
-    <div class="info-grid">
-      <div class="info-box">
-        <div class="info-label">Rank</div>
-        <div class="badge" id="rank"></div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Final Exam Score</div>
-        <div class="info-value"><b id="overall"></b></div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Syllabus</div>
-        <div class="info-value" id="syllabusDisplay"></div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Age</div>
-        <div class="info-value" id="ageDisplay"></div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Course Duration Remaining</div>
-        <div class="info-value" id="courseRemaining"></div>
-      </div>
+<header class="main-navbar">
+  <div class="nav-wrap">
+    <div class="brand" onclick="window.location.href='https://sehracademy.com'">
+      <span>SEHR</span> ACADEMY
     </div>
+    <nav>
+      <a href="https://sehracademy.com">Home</a>
+      <a href="https://api.whatsapp.com/send/?phone=919539409586&text&type=phone_number&app_absent=0">Contact</a>
+    </nav>
   </div>
-</div>
-
-<!-- RESULTS -->
-<div id="results" class="section">
-  <div class="card">
-    <h2>Results</h2>
-    Academic Year:
-    <select id="yearSelect" class="year-select"></select>
-    <div id="subjectBoxes" class="subject-grid"></div>
-    <div id="majorExamSection"></div>
-  </div>
-</div>
-
-<!-- ATTENDANCE -->
-<div id="attendance" class="section">
-  <div class="card">
-    <h2>Attendance</h2>
-
-    <!-- Overall Summary -->
-    <div class="info-grid">
-      <div class="info-box">
-        <div class="info-label">Total Classes</div>
-        <div class="info-value" id="totalClasses"></div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Attended</div>
-        <div class="info-value" id="attendedClasses"></div>
-      </div>
-      <div class="info-box">
-        <div class="info-label">Attendance %</div>
-        <div class="info-value" id="attendancePercent"></div>
-      </div>
-    </div>
-
-    <!-- Monthly Breakdown -->
-    <div style="margin-top:35px;">
-      <h3 style="margin-bottom:15px;">Monthly Breakdown</h3>
-      <div id="attendanceMonthly"></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- FEES -->
-<div id="fees" class="section">
-  <div class="card">
-    <h2>Fee Schedule</h2>
-    <div id="feeDetails"></div>
-  </div>
-</div>
-
-<!-- REMARKS -->
-<div id="remarks" class="section">
-  <div class="card">
-    <h2>Remarks</h2>
-    <div id="remarksList"></div>
-  </div>
-</div>
-
-<!-- ACHIEVEMENTS -->
-<div id="achievements" class="section">
-  <div class="card">
-    <h2>Achievements</h2>
-    <div id="achievementList"></div>
-  </div>
-</div>
-</div> <!-- closes dashboard-wrapper -->
-</div>
-
+</header>
+<div id="app"></div>
 <script>
-
-const API="https://script.google.com/macros/s/AKfycbzudeZ677Mxp0KZGtILfVVBk0cB4V2zwpXrpqtemE4cHt7Sp7_Vc6U3_shwcpYmB15vRA/exec";
-
-let globalData=null;
-
-function getId(){
-  return new URL(window.location.href).searchParams.get("id");
+const API_URL="https://script.google.com/macros/s/AKfycbxspO_xdvjIj2D17BZmmy-q2Xn06ccwBxv0b05ZW8oilYj2IUDqRJ-f_Wis5WVUkQnwRQ/exec";
+let DATA=null;
+let currentTab="overview";
+let resultFilter="All";
+const ICONS={
+  grad:`<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>`,
+  trophy:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20h10c0-.76-.85-1.25-2.03-1.79C14.47 17.98 14 17.55 14 17v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
+  trend:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  users:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  rupee:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3c2.8 0 5-2.2 5-5H6"/></svg>`,
+  cal:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>`,
+  book:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`,
+  check:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`,
+  alert:`<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
+  clock:`<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  logout:`<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>`,
+  msg:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>`,
+};
+function $(sel){return document.querySelector(sel)}
+function el(tag,attrs,html){
+  const e=document.createElement(tag);
+  if(attrs)Object.entries(attrs).forEach(([k,v])=>{if(k==='className')e.className=v;else e.setAttribute(k,v)});
+  if(html!==undefined)e.innerHTML=html;
+  return e;
 }
-
-function escapeHtml(str){
-  if(!str) return "";
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
-}
-
-function calculateAge(birthday){
-  const birth=new Date(birthday);
-  const today=new Date();
-  let years=today.getFullYear()-birth.getFullYear();
-  let months=today.getMonth()-birth.getMonth();
-  if(months<0){years--;months+=12;}
-  return `${years} Years ${months} Months`;
-}
-
-function calculateRemainingDays(){
-  const today=new Date();
-  let year=today.getFullYear();
-  if(today.getMonth()>2){year+=1;}
-  const end=new Date(year,2,31);
-  const diff=end-today;
-  if(diff<=0)return"Completed";
-  return `${Math.ceil(diff/(1000*60*60*24))} Days Remaining`;
-}
-
-async function load(){
-  document.getElementById("loader").classList.add("active");
-  const id=getId();
-  try{
-  const res=await fetch(API+"?id="+id);
-  const data=await res.json();
-  globalData=data;
-
-  document.getElementById("studentName").innerText=data.student.full_name;
-  document.getElementById("sideName").innerText=data.student.full_name;
-  document.getElementById("sideClass").innerText="Class "+data.student.class;
-  document.getElementById("sidePhoto").src=data.student.photo;
-  document.getElementById("rank").innerText=data.analytics.rank;
-
-  // FINAL EXAM ONLY
-  if(data.analytics.final_average && data.analytics.final_average>0){
-    document.getElementById("overall").innerText=data.analytics.final_average+"%";
-  }else{
-    document.getElementById("overall").innerText="NA";
-  }
-
-  document.getElementById("syllabusDisplay").innerText=data.student.syllabus;
-  document.getElementById("ageDisplay").innerText=calculateAge(data.student.birthday);
-  document.getElementById("courseRemaining").innerText=calculateRemainingDays();
-
-  // Attendance
-  document.getElementById("totalClasses").innerText=data.attendance.total_classes;
-  document.getElementById("attendedClasses").innerText=data.attendance.attended;
-const percent=data.attendance.percentage;
-let label="";
-let color="";
-
-if(percent>=95){
-  label="Excellent";
-  color="#16a34a";
-}else if(percent>=85){
-  label="Good";
-  color="#ca8a04";
-}else{
-  label="Needs Attention";
-  color="#dc2626";
-}
-
-document.getElementById("attendancePercent").innerHTML=
-  `<span style="color:${color};font-weight:800;">
-    ${percent}% – ${label}
-  </span>`;
-  // Monthly Breakdown
-if(data.attendance.monthly && data.attendance.monthly.length > 0){
-
-  document.getElementById("attendanceMonthly").innerHTML =
-    data.attendance.monthly.map(m => {
-
-      const percent = m.total > 0
-        ? ((m.attended / m.total) * 100).toFixed(1)
-        : 0;
-
-      return `
-        <div class="subject-card" style="margin-bottom:15px;">
-          <div style="display:flex;justify-content:space-between;">
-            <div><b>${escapeHtml(m.month)}</b></div>
-            <div>${escapeHtml(String(m.attended))} / ${escapeHtml(String(m.total))}</div>
-          </div>
-
-          <div class="progress-bar" style="margin-top:10px;">
-            <div class="progress-fill"
-                 style="width:${percent}%;
-                        background:${getGradient(percent)}">
-            </div>
-          </div>
-
-          <div style="margin-top:6px;font-size:13px;color:#6b7280;">
-            ${percent}% Attendance
-          </div>
+/* ---- LOGIN ---- */
+function renderLogin(){
+  const app=$('#app');
+  app.innerHTML=`
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="logo">${ICONS.grad}</div>
+      <h1>SEHR Student Portal</h1>
+      <p class="sub">Enter your Student ID and Date of Birth</p>
+      <div class="error-msg" id="err"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Student ID</label>
+          <input id="sid" type="text" placeholder="e.g. einstein" required autocomplete="username">
         </div>
-      `;
-    }).join("");
-
-}else{
-
-  document.getElementById("attendanceMonthly").innerHTML =
-    `<div style="color:#9ca3af;padding:20px 0;text-align:center;">
-      No attendance data available.
-    </div>`;
-}
-
-  // Fees
-  buildFees();
-
-// Remarks
-if(data.remarks && data.remarks.length > 0){
-
-  document.getElementById("remarksList").innerHTML =
-    data.remarks.map(r => `
-<div style="margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f1f5f9;">
-        <b>${escapeHtml(new Date(r.date).toLocaleDateString())}</b><br>
-        ${escapeHtml(r.remark)}
-      </div>
-    `).join("");
-
-}else{
-
-  document.getElementById("remarksList").innerHTML =
-`<div style="color:#9ca3af;font-weight:500;text-align:center;padding:20px 0;">
-       No remarks added yet.
-     </div>`;
-
-}
-
-// Achievements
-if(data.achievements && data.achievements.length > 0){
-
-  document.getElementById("achievementList").innerHTML =
-    data.achievements.map(a => `
-      <div style="margin-bottom:12px;">
-        <b>${escapeHtml(a.title)}</b><br>
-        ${escapeHtml(a.description)}
-      </div>
-    `).join("");
-
-}else{
-
-  document.getElementById("achievementList").innerHTML =
-    `<div style="color:#9ca3af;font-weight:500;text-align:center;padding:20px 0;">
-       No achievements added yet.
-     </div>`;
-
-}
-  setupYearDropdown();
-  }catch(err){
-    document.querySelector(".main").innerHTML+=
-      `<div style="color:#dc2626;font-weight:600;text-align:center;padding:30px;">
-        Failed to load student data. Please try again later.
-      </div>`;
-  }finally{
-    document.getElementById("loader").classList.remove("active");
-  }
-}
-
-function buildFees(){
-
-  const container=document.getElementById("feeDetails");
-
-  const terms=[
-    {
-      name:"Term 1",
-      percent:"33%",
-      months:"4 Month Fee",
-      due:"1 March"
-    },
-    {
-      name:"Term 2",
-      percent:"33%",
-      months:"4 Month Fee",
-      due:"1 June"
-    },
-    {
-      name:"Term 3",
-      percent:"33%",
-      months:"4 Month Fee",
-      due:"1 September"
-    }
-  ];
-
-  container.innerHTML=terms.map(t=>`
-    <div class="subject-card" style="margin-bottom:20px;">
-      <h3>${t.name}</h3>
-
-      <div style="margin-top:6px;color:#6b7280;">
-        ${t.percent} of Total Fee • ${t.months}
-      </div>
-
-      <div style="margin-top:10px;">
-        Due Date: ${t.due}
-      </div>
+        <div class="form-group">
+          <label>Date of Birth (DDMMYYYY)</label>
+          <input id="pwd" type="password" placeholder="e.g. 05092008" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
+      </form>
     </div>
-  `).join("");
-}
-function setupYearDropdown(){
-  const years=globalData.available_years||[];
-  const select=document.getElementById("yearSelect");
-  select.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join("");
-  select.value=globalData.academic_year;
-  select.addEventListener("change",()=>loadYear(select.value));
-  loadYear(select.value);
-}
-
-async function loadYear(year){
-  document.getElementById("loader").classList.add("active");
-  try{
-  const id=getId();
-  const res=await fetch(API+"?id="+id+"&year="+year);
-  const data=await res.json();
-  globalData=data;
-  buildResults();
-  }catch(err){
-    console.error("Failed to load year data",err);
-  }finally{
-    document.getElementById("loader").classList.remove("active");
-  }
-}
-
-function buildResults(){
-  const subjects=["Physics","Chemistry","Mathematics","Biology"];
-  const subjectBox=document.getElementById("subjectBoxes");
-  subjectBox.innerHTML="";
-
-  subjects.forEach(sub=>{
-    const scores=globalData.monthly_exams.filter(x=>x.subject===sub)
-      .map(x=>Number(x.percentage));
-    const avg=scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:0;
-
-    subjectBox.innerHTML+=`
-      <div class="subject-card">
-        <h4>${sub}</h4>
-        <div class="subject-score">${avg.toFixed(1)}%</div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${avg}%;background:${getGradient(avg)}"></div>
-        </div>
-      </div>`;
-  });
-
-  document.getElementById("majorExamSection").innerHTML=
-    `<h2 style="margin-top:30px;">Sehr Academy Exams</h2>
-     ${buildExamSections(globalData.sehr_major_exams)}
-     <h2 style="margin-top:40px;">School Exams</h2>
-     ${buildExamSections(globalData.school_exams)}`;
-}
-
-function buildExamSections(exams){
-  const map={
-    first_term:"First Terminal Examination - August",
-    second_term:"Second Terminal Examination - December",
-    model:"Model Examination - February",
-    final:"Final Examination"
+  </div>`;
+  $('#loginForm').onsubmit=async e=>{
+    e.preventDefault();
+    const btn=$('#loginBtn'),err=$('#err');
+    btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+    err.style.display='none';
+    try{
+      const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'login',id:$('#sid').value.trim(),password:$('#pwd').value.trim()})});
+      const d=await res.json();
+      if(d.success){DATA=d;currentTab='overview';renderDashboard();}
+      else{err.textContent=d.message||'Login failed';err.style.display='block';}
+    }catch(ex){err.textContent='Network error. Try again.';err.style.display='block';}
+    btn.disabled=false;btn.textContent='Sign In';
   };
-  return Object.keys(map).map(key=>{
-    const filtered=exams.filter(e=>e.exam_type===key);
-    if(!filtered.length)return"";
-    return `<h3 style="margin-top:20px;">${map[key]}</h3>${buildMajorBoxes(filtered)}`;
-  }).join("");
 }
-
-function buildMajorBoxes(exams){
-  const subjects=["Physics","Chemistry","Mathematics","Biology"];
-  return `<div class="subject-grid">${
-    subjects.map(sub=>{
-      const subExams=exams.filter(e=>e.subject===sub);
-      const avg=subExams.length?subExams.reduce((a,b)=>a+Number(b.percentage),0)/subExams.length:0;
-      return `<div class="subject-card">
-        <h4>${sub}</h4>
-        <div class="subject-score">${avg.toFixed(1)}%</div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${avg}%;background:${getGradient(avg)}"></div>
-        </div>
-      </div>`;
-    }).join("")
-  }</div>`;
-}
-
-function getGradient(score){
-  if(score<50)return"linear-gradient(90deg,#ef4444,#dc2626)";
-  if(score<75)return"linear-gradient(90deg,#f59e0b,#fbbf24)";
-  if(score<90)return"linear-gradient(90deg,#eab308,#ca8a04)";
-  return"linear-gradient(90deg,#8BC53F,#65a30d)";
-}
-
-function showSection(e,id){
-  document.querySelectorAll(".menu-item").forEach(m=>m.classList.remove("active"));
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  e.target.classList.add("active");
-  document.getElementById(id).classList.add("active");
-}
-
-load();
-
-// Sidebar toggle for mobile
-(function(){
-  const toggle = document.getElementById('sidebarToggle');
-  const sidebar = document.querySelector('.sidebar');
-  if(toggle && sidebar){
-    toggle.addEventListener('click', function(){
-      sidebar.classList.toggle('open');
-    });
-    document.addEventListener('click', function(e){
-      if(!sidebar.contains(e.target) && !toggle.contains(e.target)){
-        sidebar.classList.remove('open');
-      }
-    });
+/* ---- DASHBOARD ---- */
+function renderDashboard(){
+  const s=DATA.student;
+  const app=$('#app');
+  app.innerHTML='';
+  // Header
+  const hdr=el('div',{className:'header'});
+  const inner=el('div',{className:'header-inner'});
+  if(s.photo){
+    inner.innerHTML+=`<img class="avatar" src="${s.photo}" alt="${s.name}">`;
+  }else{
+    inner.innerHTML+=`<div class="avatar-placeholder"><span style="color:#fff">${ICONS.grad}</span></div>`;
   }
-})();
-
+  const info=el('div',{style:'flex:1;min-width:0'});
+  info.innerHTML=`<h1>${s.name}</h1>
+    <div class="badges">
+      <span class="badge">ID: ${s.id}</span>
+      <span class="badge">Class ${s.class}</span>
+      <span class="badge ${s.admission_status==='Active'?'badge-active':'badge-inactive'}">${s.admission_status}</span>
+    </div>`;
+  inner.appendChild(info);
+  hdr.appendChild(inner);
+  app.appendChild(hdr);
+  // Toolbar
+  const tb=el('div',{className:'toolbar'});
+  const lb=el('button',{className:'btn-logout'},ICONS.logout+' Logout');
+  lb.onclick=()=>{DATA=null;renderLogin();};
+  tb.appendChild(lb);
+  app.appendChild(tb);
+  // Tabs
+  const TABS=[
+    {id:'overview',label:'Overview'},{id:'results',label:'Results'},{id:'attendance',label:'Attendance'},
+    {id:'fees',label:'Fees'},{id:'syllabus',label:'Syllabus'},{id:'remarks',label:'Remarks'},{id:'achievements',label:'Achievements'}
+  ];
+  const tabsWrap=el('div',{className:'tabs'});
+  const tabList=el('div',{className:'tab-list'});
+  TABS.forEach(t=>{
+    const b=el('button',{className:'tab-btn'+(currentTab===t.id?' active':'')},t.label);
+    b.onclick=()=>{currentTab=t.id;renderDashboard();};
+    tabList.appendChild(b);
+  });
+  tabsWrap.appendChild(tabList);
+  app.appendChild(tabsWrap);
+  const content=el('div',{className:'tab-content'});
+  app.appendChild(content);
+  const renderers={overview:renderOverview,results:renderResults,attendance:renderAttendance,fees:renderFees,syllabus:renderSyllabus,remarks:renderRemarks,achievements:renderAchievements};
+  renderers[currentTab](content);
+}
+/* ---- OVERVIEW ---- */
+function renderOverview(container){
+  const o=DATA.overview||{};const a=DATA.attendance||{};const f=DATA.fees||{};const sy=DATA.syllabus||{};const ec=DATA.exam_categories||{};
+  const stats=[
+    {icon:ICONS.trophy,label:'Class Rank',value:'#'+o.rank,sub:'of '+o.total_students+' students',grad:'var(--grad-primary)'},
+    {icon:ICONS.trend,label:'Average',value:o.final_average+'%',grad:'var(--grad-accent)'},
+    {icon:ICONS.cal,label:'Attendance',value:a.percentage+'%',sub:a.attended+'/'+a.total_classes,grad:'var(--grad-warm)'},
+    {icon:ICONS.rupee,label:'Fees Paid',value:'₹'+(f.total_paid||0).toLocaleString(),sub:'Balance: ₹'+(f.balance||0).toLocaleString(),grad:'var(--grad-primary)'},
+    {icon:ICONS.book,label:'Syllabus',value:(sy.percentage||0)+'%',sub:(sy.completed_chapters||0)+'/'+(sy.total_chapters||0)+' chapters',grad:'var(--grad-accent)'},
+    {icon:ICONS.users,label:'Total Students',value:o.total_students,grad:'var(--grad-warm)'},
+  ];
+  const grid=el('div',{className:'stats-grid'});
+  stats.forEach(s=>{
+    const c=el('div',{className:'card stat-card'});
+    c.innerHTML=`<div class="stat-icon" style="background:${s.grad};color:#fff">${s.icon}</div>
+      <div><p class="stat-label">${s.label}</p><p class="stat-value">${s.value}</p>${s.sub?'<p class="stat-sub">'+s.sub+'</p>':''}</div>`;
+    grid.appendChild(c);
+  });
+  container.appendChild(grid);
+  if(ec&&Object.keys(ec).length){
+    const wrap=el('div',{className:'card',style:'margin-top:1rem'});
+    wrap.innerHTML='<h3 style="font-size:1.1rem;margin-bottom:1rem">Performance by Exam Type</h3>';
+    Object.entries(ec).forEach(([k,v])=>{
+      const color=v>=75?'var(--grad-accent)':v>=50?'var(--grad-primary)':'var(--grad-warm)';
+      wrap.innerHTML+=`<div class="progress-wrap" style="margin-bottom:.75rem">
+        <div class="progress-header"><span style="font-weight:500">${k}</span><span style="color:var(--muted-fg);font-weight:600">${v}%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${v}%;background:${color}"></div></div></div>`;
+    });
+    container.appendChild(wrap);
+  }
+}
+/* ---- RESULTS ---- */
+function renderResults(container){
+  const results=DATA.results||[];
+  if(!results.length){container.innerHTML='<div class="card empty">'+ICONS.book+'<p>No results available.</p></div>';return;}
+  const types=['All',...new Set(results.map(r=>r.exam_type).filter(Boolean))];
+  const fb=el('div',{className:'filter-bar'});
+  types.forEach(t=>{
+    const b=el('button',{className:'filter-btn'+(resultFilter===t?' active':'')},t);
+    b.onclick=()=>{resultFilter=t;renderDashboard();};
+    fb.appendChild(b);
+  });
+  container.appendChild(fb);
+  const filtered=resultFilter==='All'?results:results.filter(r=>r.exam_type===resultFilter);
+  const wrap=el('div',{className:'card table-wrap'});
+  let rows=filtered.map(r=>{
+    const gc=gradeClass(r.grade);
+    return `<tr><td>${r.exam_name||''}</td><td>${r.subject||''}</td><td>${r.marks_obtained}/${r.total_marks}</td><td>${r.percentage}%</td><td><span class="grade ${gc}">${r.grade}</span></td></tr>`;
+  }).join('');
+  wrap.innerHTML=`<table><thead><tr><th>Exam</th><th>Subject</th><th>Marks</th><th>%</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table>`;
+  container.appendChild(wrap);
+}
+function gradeClass(g){
+  if(!g)return '';
+  const c=g.charAt(0).toUpperCase();
+  if(c==='A')return 'grade-a';if(c==='B')return 'grade-b';if(c==='C')return 'grade-c';return 'grade-d';
+}
+/* ---- ATTENDANCE ---- */
+function renderAttendance(container){
+  const a=DATA.attendance||{};
+  const pct=a.percentage||0;
+  const summary=el('div',{className:'stats-grid',style:'margin-bottom:1rem'});
+  [{l:'Total Classes',v:a.total_classes,g:'var(--grad-primary)'},{l:'Attended',v:a.attended,g:'var(--grad-accent)'},{l:'Absent',v:a.absent,g:'var(--grad-warm)'}].forEach(s=>{
+    const c=el('div',{className:'card',style:'text-align:center'});
+    c.innerHTML=`<div class="stat-icon" style="background:${s.g};color:#fff;margin:0 auto .5rem">${ICONS.cal}</div>
+      <p style="font-size:1.5rem;font-weight:700;font-family:var(--font-display)">${s.v}</p><p class="stat-sub">${s.l}</p>`;
+    summary.appendChild(c);
+  });
+  container.appendChild(summary);
+  const bar=el('div',{className:'card'});
+  bar.innerHTML=`<div class="progress-header"><span style="font-weight:500">Overall Attendance</span><span style="color:var(--muted-fg);font-weight:600">${pct}%</span></div>
+    <div class="progress-track" style="height:.75rem"><div class="progress-fill" style="width:${pct}%;background:${pct>=75?'var(--grad-accent)':'var(--grad-warm)'}"></div></div>`;
+  container.appendChild(bar);
+  if(a.monthly&&a.monthly.length){
+    const tbl=el('div',{className:'card table-wrap',style:'margin-top:1rem'});
+    let rows=a.monthly.map(m=>`<tr><td>${m.month}</td><td>${m.attended_classes}/${m.total_classes}</td><td>${m.total_classes?Math.round(m.attended_classes/m.total_classes*100):0}%</td></tr>`).join('');
+    tbl.innerHTML=`<h3 style="margin-bottom:.75rem;font-size:1rem">Monthly Breakdown</h3><table><thead><tr><th>Month</th><th>Attended</th><th>%</th></tr></thead><tbody>${rows}</tbody></table>`;
+    container.appendChild(tbl);
+  }
+}
+/* ---- FEES ---- */
+function renderFees(container){
+  const f=DATA.fees||{};
+  const cleared=f.status==='CLEARED'||f.balance===0;
+  const banner=el('div',{className:'status-banner '+(cleared?'cleared':'due')});
+  banner.innerHTML=`<span style="color:${cleared?'hsl(var(--accent))':'hsl(var(--destructive))'}">${cleared?ICONS.check:ICONS.alert}</span>
+    <div><p style="font-size:1.1rem;font-weight:700;font-family:var(--font-display);color:${cleared?'hsl(var(--accent))':'hsl(var(--destructive))'}">${f.status==='CLEARED'?'All Dues Cleared':f.status==='OVERDUE'?'Payment Overdue':f.status||'Pending'}</p>
+    ${f.next_due&&f.next_due!=='NONE'?'<p style="font-size:.85rem;color:var(--muted-fg)">Next due: <strong>'+f.next_due+'</strong> — ₹'+(f.next_due_amount||0).toLocaleString()+'</p>':''}</div>`;
+  container.appendChild(banner);
+  const grid=el('div',{className:'stats-grid',style:'margin-top:1rem'});
+  [{l:'Total Fee',v:f.total_fee,c:'var(--fg)'},{l:'Paid',v:f.total_paid,c:'hsl(var(--accent))'},{l:'Balance',v:f.balance,c:f.balance>0?'hsl(var(--destructive))':'hsl(var(--accent))'}].forEach(s=>{
+    const c=el('div',{className:'card',style:'text-align:center'});
+    c.innerHTML=`<p class="stat-sub">${s.l}</p><p style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:${s.c};margin-top:.25rem">₹${(s.v||0).toLocaleString()}</p>`;
+    grid.appendChild(c);
+  });
+  container.appendChild(grid);
+  const pct=f.total_fee?Math.round((f.total_paid/f.total_fee)*100):0;
+  const bar=el('div',{className:'card',style:'margin-top:1rem'});
+  bar.innerHTML=`<div class="progress-header"><span style="font-weight:500">Payment Progress</span><span style="color:var(--muted-fg);font-weight:600">${pct}%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:var(--grad-accent)"></div></div>`;
+  container.appendChild(bar);
+  if(f.terms&&f.terms.length){
+    const tw=el('div',{className:'card',style:'margin-top:1rem'});
+    tw.innerHTML='<h3 style="font-size:1rem;margin-bottom:.75rem">Instalment Plan</h3>';
+    f.terms.forEach(t=>{
+      tw.innerHTML+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:.5rem">${ICONS.clock}<div><p style="font-size:.85rem;font-weight:500">${t.name}</p><p style="font-size:.7rem;color:var(--muted-fg)">Due: ${t.due_date}</p></div></div>
+        <span style="font-weight:700;font-size:.85rem">₹${(t.amount||0).toLocaleString()}</span></div>`;
+    });
+    container.appendChild(tw);
+  }
+}
+/* ---- SYLLABUS ---- */
+function renderSyllabus(container){
+  const s=DATA.syllabus||{};
+  const rem=(s.total_chapters||0)-(s.completed_chapters||0);
+  const grid=el('div',{className:'stats-grid'});
+  [{l:'Total Chapters',v:s.total_chapters,g:'var(--grad-primary)',i:ICONS.book},{l:'Completed',v:s.completed_chapters,g:'var(--grad-accent)',i:ICONS.check},{l:'Remaining',v:rem,g:'var(--grad-warm)',i:ICONS.book}].forEach(x=>{
+    const c=el('div',{className:'card',style:'text-align:center'});
+    c.innerHTML=`<div class="stat-icon" style="background:${x.g};color:#fff;margin:0 auto .5rem">${x.i}</div>
+      <p style="font-size:1.5rem;font-weight:700;font-family:var(--font-display)">${x.v}</p><p class="stat-sub">${x.l}</p>`;
+    grid.appendChild(c);
+  });
+  container.appendChild(grid);
+  const bar=el('div',{className:'card',style:'margin-top:1rem'});
+  bar.innerHTML=`<div class="progress-header"><span style="font-weight:500">Syllabus Completion</span><span style="color:var(--muted-fg);font-weight:600">${s.percentage||0}%</span></div>
+    <div class="progress-track" style="height:.75rem"><div class="progress-fill" style="width:${s.percentage||0}%;background:var(--grad-accent)"></div></div>`;
+  container.appendChild(bar);
+}
+/* ---- REMARKS ---- */
+function renderRemarks(container){
+  const r=DATA.remarks||[];
+  if(!r.length){container.innerHTML='<div class="card empty">'+ICONS.msg+'<p>No remarks recorded yet.</p></div>';return;}
+  r.forEach(rm=>{
+    const c=el('div',{className:'card',style:'margin-bottom:.75rem'});
+    c.innerHTML=`<div class="item-card"><div class="item-icon" style="background:var(--grad-primary);color:#fff">${ICONS.msg}</div>
+      <div><p style="font-size:.9rem;font-weight:500">${rm.remark}</p>
+      <p style="font-size:.75rem;color:var(--muted-fg);margin-top:.35rem">${rm.teacher?rm.teacher+' · ':''}${rm.date||''}</p></div></div>`;
+    container.appendChild(c);
+  });
+}
+/* ---- ACHIEVEMENTS ---- */
+function renderAchievements(container){
+  const a=DATA.achievements||[];
+  if(!a.length){container.innerHTML='<div class="card empty">'+ICONS.trophy+'<p>No achievements recorded yet.</p></div>';return;}
+  const grid=el('div',{style:'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem'});
+  a.forEach(ac=>{
+    const c=el('div',{className:'card'});
+    c.innerHTML=`<div class="item-card"><div class="item-icon" style="background:var(--grad-warm);color:#fff">${ICONS.trophy}</div>
+      <div><h4 style="font-weight:600;font-family:var(--font-display)">${ac.title}</h4>
+      ${ac.description?'<p style="font-size:.85rem;color:var(--muted-fg);margin-top:.25rem">'+ac.description+'</p>':''}
+      ${ac.date?'<p style="font-size:.7rem;color:var(--muted-fg);margin-top:.35rem">'+ac.date+'</p>':''}</div></div>`;
+    grid.appendChild(c);
+  });
+  container.appendChild(grid);
+}
+// Boot
+renderLogin();
 </script>
 </body>
 </html>
