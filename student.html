@@ -256,7 +256,7 @@ function renderLogin(){
         </div>
         <div class="form-group">
           <label>Date of Birth (DDMMYYYY)</label>
-          <input id="pwd" type="password" placeholder="e.g. 05092008" required autocomplete="current-password">
+          <input id="pwd" type="password" placeholder="e.g. 05092018" required autocomplete="current-password">
         </div>
         <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
       </form>
@@ -333,7 +333,6 @@ function renderOverview(container){
     {icon:ICONS.cal,label:'Attendance',value:a.percentage+'%',sub:a.attended+'/'+a.total_classes,grad:'var(--grad-warm)'},
     {icon:ICONS.rupee,label:'Fees Paid',value:'₹'+(f.total_paid||0).toLocaleString(),sub:'Balance: ₹'+(f.balance||0).toLocaleString(),grad:'var(--grad-primary)'},
     {icon:ICONS.book,label:'Syllabus',value:(sy.percentage||0)+'%',sub:(sy.completed_chapters||0)+'/'+(sy.total_chapters||0)+' chapters',grad:'var(--grad-accent)'},
-    {icon:ICONS.users,label:'Total Students',value:o.total_students,grad:'var(--grad-warm)'},
   ];
   const grid=el('div',{className:'stats-grid'});
   stats.forEach(s=>{
