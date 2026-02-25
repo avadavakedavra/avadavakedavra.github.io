@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEHR Academy — Admission Portal</title>
+  <meta name="description" content="SEHR Academy Student Admission Portal. Verify your admission status online." />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --background: linear-gradient(135deg,#f6f8f6,#f2f7f3,#eef6f0);
+  --foreground: #1f2937;
+
+  --card: rgba(255,255,255,0.8);
+  --card-foreground: #1f2937;
+
+  --primary: hsl(88,56%,28%);
+  --primary-foreground: #ffffff;
+
+  --secondary: hsl(88,56%,51%);
+  --secondary-foreground: #ffffff;
+
+  --muted: #eef2f1;
+  --muted-foreground: #6b7280;
+
+  --accent: hsl(88,56%,94%);
+  --accent-foreground: #1f2937;
+
+  --destructive: hsl(0,72%,55%);
+  --border: rgba(0,0,0,0.05);
+  --input: rgba(0,0,0,0.06);
+  --ring: hsl(88,56%,51%);
+
+  --lime: hsl(88,56%,51%);
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+    body {
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 { font-family: var(--font-display); }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes goldPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .animate-scale-in { animation: scaleIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .animate-shimmer {
+      background: linear-gradient(90deg,
+    hsl(88,56%,51%,0.08),
+    hsl(88,56%,51%,0.25),
+    hsl(88,56%,51%,0.08));
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+    .animate-gold-pulse { animation: goldPulse 2.5s ease-in-out infinite; }
+    .stagger-1 { animation-delay: 0.1s; opacity: 0; }
+    .stagger-2 { animation-delay: 0.25s; opacity: 0; }
+    .stagger-3 { animation-delay: 0.4s; opacity: 0; }
+
+    .gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(88,56%,51%,0.4), transparent);
+}
+
+    .texture-overlay { position: relative; }
+    .texture-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* ---- LAYOUT ---- */
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: hsla(38,55%,52%,0.05);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .bg-orb-1 { width: 500px; height: 500px; top: -20%; right: -10%; }
+    .bg-orb-2 { width: 400px; height: 400px; bottom: -20%; left: -10%; }
+
+    .container { width: 100%; max-width: 380px; position: relative; z-index: 1; }
+    .container-card { max-width: 420px; }
+
+    /* ---- LOGIN ---- */
+    .logo-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      border: 2px solid hsl(88,56%,51%,0.4);
+      margin-bottom: 20px;
+    }
+    .logo-circle span {
+      font-size: 1.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: hsl(88,56%,51%);
+    }
+    .header-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--foreground);
+    }
+    .header-sub {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px -15px rgba(0,0,0,0.08);
+      border: 1px solid hsla(35,20%,88%,0.6);
+      padding: 2rem;
+      overflow: hidden;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--card-foreground);
+      margin-bottom: 0.25rem;
+    }
+    .card-desc {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1.75rem;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted-foreground);
+      margin-bottom: 0.375rem;
+    }
+    .form-label span {
+      text-transform: none;
+      letter-spacing: normal;
+      color: hsla(30,10%,45%,0.6);
+    }
+    .input-wrap { position: relative; }
+    .input-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      color: hsla(30,10%,45%,0.5);
+    }
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--input);
+      background: hsla(40,20%,96%,0.5);
+      color: var(--foreground);
+      font-size: 0.875rem;
+      font-family: var(--font-body);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-field::placeholder { color: hsla(30,10%,45%,0.4); }
+    .input-field:focus {
+      border-color: hsla(38,55%,52%,0.4);
+      box-shadow: 0 0 0 3px hsla(38,55%,52%,0.1);
+    }
+
+    .error-msg {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--destructive);
+      background: hsla(0,72%,51%,0.05);
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-weight: 600;
+      font-size: 0.875rem;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 8px 24px -8px hsla(30,25%,18%,0.1);
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .footer-text {
+      text-align: center;
+      font-size: 0.6rem;
+      color: hsla(30,10%,45%,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-top: 2rem;
+    }
+
+    /* ---- ADMISSION CARD ---- */
+    .admission-page { padding: 2.5rem 1rem; }
+
+    .success-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 2px solid hsla(38,55%,52%,0.4);
+      margin-bottom: 1rem;
+    }
+    .success-icon svg { width: 24px; height: 24px; color: var(--secondary); }
+
+    .admission-card {
+      background: var(--card);
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px -15px rgba(0,0,0,0.08);
+      border: 1px solid hsla(35,20%,88%,0.6);
+      overflow: hidden;
+    }
+    .shimmer-bar { height: 4px; }
+
+    .identity { display: flex; align-items: flex-start; gap: 1.25rem; padding: 1.5rem; }
+    .photo-wrap { position: relative; flex-shrink: 0; }
+    .photo-wrap img {
+      width: 88px; height: 88px;
+      border-radius: 1rem;
+      object-fit: cover;
+      border: 2px solid hsla(38,55%,52%,0.2);
+      box-shadow: 0 8px 24px -8px rgba(0,0,0,0.1);
+    }
+    .photo-badge {
+      position: absolute;
+      bottom: -6px; right: -6px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .photo-badge svg { width: 16px; height: 16px; color: var(--secondary-foreground); }
+
+    .identity-info { flex: 1; min-width: 0; padding-top: 4px; }
+    .student-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      color: var(--card-foreground);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .student-id {
+      font-size: 0.7rem;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+    .status-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+        background: hsl(88,56%,51%,0.1);
+  color: hsl(88,56%,51%);
+
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+        border: 1px solid hsl(88,56%,51%,0.2);
+    }
+
+    .details { padding: 1.5rem; }
+    .detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .detail-row:last-child { margin-bottom: 0; }
+    .detail-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: hsla(30,10%,45%,0.7);
+    }
+    .detail-label svg { width: 16px; height: 16px; }
+    .detail-label span { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .detail-value { font-size: 0.875rem; font-weight: 600; color: var(--card-foreground); }
+    .detail-value.highlight { color: var(--secondary); }
+
+    .subjects-section { padding: 0 1.5rem 1.5rem; }
+    .subjects-title {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted-foreground);
+      margin-bottom: 0.75rem;
+    }
+    .subjects-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .subject-chip {
+      padding: 6px 12px;
+      border-radius: 0.5rem;
+      background: hsl(88,56%,94%);
+  color: #1f2937;
+  
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1px solid hsl(88,56%,85%);
+    }
+
+    .card-footer {
+      background: hsla(35,15%,90%,0.3);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid hsla(35,20%,88%,0.4);
+    }
+    .card-footer-text { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-foreground); font-weight: 500; }
+    .card-footer-sub { font-size: 0.55rem; color: hsla(30,10%,45%,0.5); margin-top: 2px; }
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 0.5rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px -4px hsla(30,25%,18%,0.1);
+    }
+    .btn-print:hover { opacity: 0.9; }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: hsla(30,10%,45%,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--foreground); }
+
+    .text-center { text-align: center; }
+
+    .spinner { animation: spin 1s linear infinite; width: 16px; height: 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none; }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ LOGIN SCREEN ============ -->
+  <div id="loginScreen" class="page-wrapper">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="container animate-scale-in">
+      <div class="text-center" style="margin-bottom: 2.5rem;">
+        <div class="logo-circle animate-gold-pulse">
+          <span>S</span>
+        </div>
+        <h1 class="header-title">SEHR Academy</h1>
+        <div class="gold-divider" style="width: 64px; margin: 12px auto 8px;"></div>
+        <p class="header-sub">Admission Portal</p>
+      </div>
+
+      <div class="card texture-overlay">
+        <h2 class="card-title">Welcome Back</h2>
+        <p class="card-desc">Enter your credentials to view admission details</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label">Admission ID</label>
+            <div class="input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="inputId" class="input-field" placeholder="e.g. fidha" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password <span>(DOB: DDMMYYYY)</span></label>
+            <div class="input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="inputPassword" class="input-field" placeholder="e.g. 05092008" required />
+            </div>
+          </div>
+          <div id="errorMsg" class="error-msg hidden"></div>
+          <button type="submit" id="submitBtn" class="btn-primary">
+            <span id="btnText">View Admission Status</span>
+            <svg id="btnSpinner" class="spinner hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <p class="footer-text">© 2026 SEHR Academy — All rights reserved</p>
+    </div>
+  </div>
+
+  <!-- ============ ADMISSION CARD SCREEN ============ -->
+  <div id="admissionScreen" class="page-wrapper admission-page hidden">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="container container-card" style="position: relative; z-index: 1;">
+
+      <div class="animate-fade-in-up stagger-1 text-center" style="margin-bottom: 2rem;">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h1 class="header-title" style="font-size: 1.875rem;">Admission Confirmed</h1>
+        <div class="gold-divider" style="width: 48px; margin: 12px auto 8px;"></div>
+        <p class="header-sub">Academic Year 2026–27</p>
+      </div>
+
+      <div class="animate-fade-in-up stagger-2 admission-card texture-overlay">
+        <div class="shimmer-bar animate-shimmer"></div>
+
+        <div class="identity">
+          <div class="photo-wrap">
+            <img id="studentPhoto" src="" alt="Student Photo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2288%22 height=%2288%22 fill=%22%23ddd%22%3E%3Crect width=%2288%22 height=%2288%22/%3E%3C/svg%3E'" />
+            <div class="photo-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+          <div class="identity-info">
+            <div class="student-name" id="studentName"></div>
+            <div class="student-id" id="studentAdmNo"></div>
+            <span class="status-badge" id="studentStatus"></span>
+          </div>
+        </div>
+
+        <div class="gold-divider" style="margin: 0 1.5rem;"></div>
+
+        <div class="details" id="detailsGrid"></div>
+
+        <div id="subjectsContainer" class="hidden">
+          <div class="gold-divider" style="margin: 0 1.5rem;"></div>
+          <div class="subjects-section" style="padding-top: 1.25rem;">
+            <p class="subjects-title">Enrolled Subjects</p>
+            <div class="subjects-list" id="subjectsList"></div>
+          </div>
+        </div>
+
+        <div class="card-footer no-print">
+          <div>
+            <div class="card-footer-text">SEHR Academy</div>
+            <div class="card-footer-sub">Admission Portal</div>
+          </div>
+          <button class="btn-print" onclick="window.print()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Print
+          </button>
+        </div>
+      </div>
+
+      <div class="animate-fade-in-up stagger-3 text-center no-print">
+        <button class="back-btn" onclick="showLogin()">← Back to Login</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxspO_xdvjIj2D17BZmmy-q2Xn06ccwBxv0b05ZW8oilYj2IUDqRJ-f_Wis5WVUkQnwRQ/exec";
+
+    const loginForm = document.getElementById("loginForm");
+    const loginScreen = document.getElementById("loginScreen");
+    const admissionScreen = document.getElementById("admissionScreen");
+    const errorMsg = document.getElementById("errorMsg");
+    const submitBtn = document.getElementById("submitBtn");
+    const btnText = document.getElementById("btnText");
+    const btnSpinner = document.getElementById("btnSpinner");
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("inputId").value.trim();
+      const password = document.getElementById("inputPassword").value.trim();
+      if (!id || !password) return;
+
+      errorMsg.classList.add("hidden");
+      submitBtn.disabled = true;
+      btnText.textContent = "Verifying…";
+      btnSpinner.classList.remove("hidden");
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "login", id, password }),
+        });
+        const data = await res.json();
+
+        if (!data.success) {
+          showError(data.message || "Login failed");
+          return;
+        }
+        renderCard(data.student);
+      } catch {
+        showError("Network error. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+        btnText.textContent = "View Admission Status";
+        btnSpinner.classList.add("hidden");
+      }
+    });
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.classList.remove("hidden");
+    }
+
+    function showLogin() {
+      admissionScreen.classList.add("hidden");
+      loginScreen.classList.remove("hidden");
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "—";
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+    }
+
+    const iconSVGs = {
+      school: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-4 0v4"/><path d="M18 5v17"/><path d="M6 5v17"/></svg>',
+      book: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>',
+      calendar: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>',
+      user: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      award: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>',
+    };
+
+    function makeRow(icon, label, value, highlight) {
+      return `<div class="detail-row">
+        <div class="detail-label">${iconSVGs[icon]}<span>${label}</span></div>
+        <div class="detail-value${highlight ? ' highlight' : ''}">${value}</div>
+      </div>`;
+    }
+
+    function renderCard(s) {
+      document.getElementById("studentPhoto").src = s.photo || "";
+      document.getElementById("studentName").textContent = s.name || s.full_name || "";
+      document.getElementById("studentAdmNo").textContent = s.admission_no || s.id || "";
+      document.getElementById("studentStatus").textContent = s.admission_status || "Active";
+
+      let html = "";
+      html += makeRow("school", "Class", "Class " + (s.class || "—"));
+      html += makeRow("book", "Syllabus", s.syllabus || "—");
+      html += makeRow("school", "School", s.school_name || "—");
+      html += makeRow("calendar", "Date of Birth", formatDate(s.birthday));
+html += makeRow("calendar", "Admission Date", formatDate(s.joining_date));
+      html += makeRow("user", "Gender", s.gender || "—");
+      if (s.scholarship) {
+        html += makeRow("award", "Scholarship", s.scholarship, true);
+      }
+      document.getElementById("detailsGrid").innerHTML = html;
+
+      const subjectsContainer = document.getElementById("subjectsContainer");
+      const subjectsList = document.getElementById("subjectsList");
+      if (s.subjects) {
+        const subjects = s.subjects.split(",").map(sub => sub.trim()).filter(Boolean);
+        if (subjects.length) {
+          subjectsList.innerHTML = subjects.map(sub => `<span class="subject-chip">${sub}</span>`).join("");
+          subjectsContainer.classList.remove("hidden");
+        }
+      }
+
+      loginScreen.classList.add("hidden");
+      admissionScreen.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
