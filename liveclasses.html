@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live Learning Portal — SEHR Academy</title>
+<meta name="description" content="Join live classes at Sehr Academy. View upcoming sessions, get Zoom/Meet links, and access class recordings. Enrolled students only." />
+<meta name="theme-color" content="#8BC53F" />
+<link rel="canonical" href="https://sehracademy.com/liveclasses" />
+<link rel="icon" type="image/png" href="/logo.png" />
+<link rel="apple-touch-icon" href="/logo.png" />
+<meta property="og:title" content="Live Learning Portal — Sehr Academy" />
+<meta property="og:description" content="Upcoming live classes, Zoom/Meet links, and class recordings for enrolled Sehr Academy students." />
+<meta property="og:url" content="https://sehracademy.com/liveclasses" />
+<meta property="og:image" content="https://sehracademy.com/logo.png" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://sehracademy.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Live Classes", "item": "https://sehracademy.com/liveclasses"}
+  ]
+}
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 
@@ -631,6 +651,175 @@ fetchClasses()
     showError("Unable to load live classes. Please check your connection and try again.");
   });
 </script>
+
+<!-- ===== CLASS RECORDING ACCESS ===== -->
+<style>
+.recordings-section{
+  max-width:1100px;
+  margin:40px auto 20px;
+  padding:0 20px;
+}
+.recordings-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.section-title{
+  font-size:20px;
+  font-weight:800;
+  color:#1f2937;
+}
+.section-note{
+  font-size:13px;
+  color:#9ca3af;
+  font-weight:600;
+}
+.recordings-info-card{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:24px;
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.rec-icon{
+  font-size:36px;
+  flex-shrink:0;
+}
+.rec-content h3{
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:6px;
+  color:#1f2937;
+}
+.rec-content p{
+  font-size:13px;
+  color:#6b7280;
+  font-weight:500;
+  line-height:1.6;
+  margin-bottom:12px;
+}
+.rec-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#6BA000;
+  color:#fff;
+  border-radius:999px;
+  padding:10px 20px;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+  transition:background .18s;
+}
+.rec-cta:hover{background:#5a8800;}
+
+/* ===== JOIN INSTRUCTIONS CARD ===== */
+.join-instructions{
+  max-width:1100px;
+  margin:0 auto 40px;
+  padding:0 20px;
+}
+.join-card{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:24px;
+}
+.join-card h3{
+  font-size:16px;
+  font-weight:800;
+  color:#1f2937;
+  margin-bottom:14px;
+}
+.join-steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px;
+}
+.join-step{
+  background:#f9fafb;
+  border-radius:12px;
+  padding:16px;
+  position:relative;
+}
+.step-num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#6BA000;
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.join-step h4{
+  font-size:13px;
+  font-weight:800;
+  color:#1f2937;
+  margin-bottom:4px;
+}
+.join-step p{
+  font-size:12px;
+  color:#6b7280;
+  font-weight:500;
+  line-height:1.55;
+}
+</style>
+
+<div class="join-instructions">
+  <div class="join-card">
+    <h3>📋 How to Join a Live Class</h3>
+    <div class="join-steps">
+      <div class="join-step">
+        <div class="step-num">1</div>
+        <h4>Wait for the class card</h4>
+        <p>Class cards appear above. Cards showing <strong>SOON</strong> or <strong>LIVE</strong> have a join button active.</p>
+      </div>
+      <div class="join-step">
+        <div class="step-num">2</div>
+        <h4>Join 10 min before start</h4>
+        <p>The <strong>Join Class</strong> button becomes active 10 minutes before the scheduled start time.</p>
+      </div>
+      <div class="join-step">
+        <div class="step-num">3</div>
+        <h4>Use the Zoom/Meet link</h4>
+        <p>Click the join button — it opens Zoom or Google Meet directly. Use the same device you enrolled with.</p>
+      </div>
+      <div class="join-step">
+        <div class="step-num">4</div>
+        <h4>Can't join? Contact us</h4>
+        <p>If you have trouble, <a href="https://wa.me/919539409586" style="color:#6BA000;font-weight:700;">WhatsApp us</a> immediately and we'll help.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="recordings-section">
+  <div class="recordings-header">
+    <span class="section-title">🎬 Class Recordings</span>
+    <span class="section-note">Enrolled students only</span>
+  </div>
+  <div class="recordings-info-card">
+    <div class="rec-icon" aria-hidden="true">🔒</div>
+    <div class="rec-content">
+      <h3>Access past class recordings in your Student Portal</h3>
+      <p>Missed a class? All live sessions are recorded and available to enrolled students within 24 hours of the class ending. Recordings are accessible through your personal student portal — just log in with your credentials.</p>
+      <a class="rec-cta" href="/studentlogin">Go to Student Login →</a>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+<script src="/assets/footer.js" defer></script>
 
 </body>
 </html>
