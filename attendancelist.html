@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sehr Academy - Attendance</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body{
+font-family:'DM Sans',system-ui,sans-serif;
+background:#fdfdfd;
+color:#161b26;
+}
+
+.display{
+font-family:'Space Grotesk',system-ui,sans-serif;
+}
+
+header{
+border-bottom:1px solid #e4e7ec;
+padding:16px 24px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+header h1{
+font-family:'Space Grotesk',system-ui,sans-serif;
+font-size:20px;
+font-weight:700;
+letter-spacing:-0.5px;
+}
+
+header h1 .green{
+color:#5a9a0a;
+}
+
+header span{
+font-size:14px;
+color:#6b7280;
+font-weight:500;
+}
+
+main{
+max-width:1100px;
+margin:0 auto;
+padding:32px 24px;
+}
+
+.top-row{
+display:flex;
+align-items:flex-end;
+justify-content:space-between;
+margin-bottom:32px;
+}
+
+.top-row h2{
+font-family:'Space Grotesk',system-ui,sans-serif;
+font-size:24px;
+font-weight:700;
+}
+
+.top-row p{
+font-size:14px;
+color:#6b7280;
+margin-top:4px;
+}
+
+select{
+padding:8px 14px;
+border:1px solid #e4e7ec;
+border-radius:10px;
+font-family:'DM Sans',sans-serif;
+font-size:14px;
+background:#fff;
+cursor:pointer;
+outline:none;
+}
+
+select:focus{
+border-color:#5a9a0a;
+box-shadow:0 0 0 2px rgba(90,154,10,0.15);
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:16px;
+margin-bottom:32px;
+}
+
+.stat-card{
+background:#fff;
+border:1px solid #e4e7ec;
+border-radius:12px;
+padding:20px;
+}
+
+.stat-card .label{
+font-size:11px;
+color:#6b7280;
+text-transform:uppercase;
+letter-spacing:1px;
+font-weight:600;
+}
+
+.stat-card .value{
+font-family:'Space Grotesk',sans-serif;
+font-size:30px;
+font-weight:700;
+margin-top:4px;
+}
+
+.stat-card .sub{
+font-size:12px;
+color:#6b7280;
+margin-top:4px;
+}
+
+.val-green{ color:#5a9a0a; }
+.val-red{ color:#dc2626; }
+
+.table-wrap{
+background:#fff;
+border:1px solid #e4e7ec;
+border-radius:12px;
+overflow:hidden;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead tr{
+border-bottom:1px solid #e4e7ec;
+}
+
+th{
+text-align:left;
+font-size:11px;
+color:#6b7280;
+text-transform:uppercase;
+letter-spacing:1px;
+font-weight:600;
+padding:12px 20px;
+}
+
+th.center{ text-align:center; }
+th.right{ text-align:right; }
+
+td{
+padding:16px 20px;
+font-size:14px;
+border-bottom:1px solid #e4e7ec;
+}
+
+tr:last-child td{ border-bottom:none; }
+
+tr:hover{
+background:#f9fafb;
+}
+
+.student-cell{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.avatar{
+width:32px;
+height:32px;
+border-radius:50%;
+background:#ecfccb;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+font-weight:700;
+color:#5a9a0a;
+flex-shrink:0;
+}
+
+.student-name{ font-weight:500; }
+
+.mono{
+font-family:'DM Sans',monospace;
+color:#6b7280;
+}
+
+.center{ text-align:center; }
+.right{ text-align:right; }
+
+.badge{
+font-size:12px;
+font-weight:600;
+padding:4px 12px;
+border-radius:999px;
+display:inline-block;
+}
+
+.badge-state{
+background:#ecfccb;
+color:#5a9a0a;
+}
+
+.badge-cbse{
+background:#f3f4f6;
+color:#6b7280;
+}
+
+.att-badge{
+font-size:13px;
+padding:4px 14px;
+border-radius:999px;
+display:inline-block;
+font-weight:600;
+}
+
+.att-green{
+background:#ecfccb;
+color:#5a9a0a;
+}
+
+.att-black{
+background:#f3f4f6;
+color:#161b26;
+}
+
+.att-red{
+background:#fef2f2;
+color:#dc2626;
+}
+
+.present{
+color:#6b7280;
+text-align:center;
+}
+
+@media (max-width:768px){
+
+.stats{
+grid-template-columns:1fr;
+}
+
+.top-row{
+flex-direction:column;
+align-items:flex-start;
+gap:16px;
+}
+
+table{
+font-size:13px;
+}
+
+td,th{
+padding:10px 12px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>SEHR <span class="green">ACADEMY</span></h1>
+<span>Attendance</span>
+</header>
+
+<main>
+
+<div class="top-row">
+<div>
+<h2 class="display">Attendance Overview</h2>
+<p>Track student attendance by month</p>
+</div>
+
+<select id="monthSelect">
+
+<option>March 2026</option>
+<option>April 2026</option>
+<option>May 2026</option>
+<option>June 2026</option>
+<option>July 2026</option>
+<option>August 2026</option>
+<option>September 2026</option>
+<option>October 2026</option>
+<option>November 2026</option>
+<option>December 2026</option>
+
+</select>
+
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Student</th>
+<th>Admission</th>
+<th class="center">Class</th>
+<th class="center">Syllabus</th>
+<th class="center">Present</th>
+<th class="right">Attendance</th>
+</tr>
+</thead>
+
+<tbody id="tbody"></tbody>
+
+</table>
+
+</div>
+
+</main>
+
+<script>
+
+let students = [];
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw63e2L_GpqNj5ZdByEyTqL6XnCVxlEX3JV8CtT2pCUl0LyEmYoFxrmigh8nVVqYeOl/exec";
+
+function initials(name){
+return name.split(" ").map(n=>n[0]).join("").slice(0,2);
+}
+
+function attClass(pct){
+
+if(pct===100) return "att-green";
+if(pct>=75) return "att-black";
+return "att-red";
+
+}
+
+async function loadData(){
+
+const res = await fetch(SCRIPT_URL);
+const data = await res.json();
+
+const month = document.getElementById("monthSelect").value.split(" ")[0];
+
+students = Object.keys(data).map(id=>{
+
+const student = data[id];
+const profile = student.profile || {};
+const m = student.months[month] || {present:0,total:0};
+
+const pct = m.total ? Math.round((m.present/m.total)*100) : 0;
+
+return{
+
+name: profile.name || id,
+adm: profile.adm || "-",
+cls: profile.class || "-",
+syl: profile.syl || "-",
+photo: profile.photo || "",
+p: m.present,
+t: m.total,
+att: pct
+
+};
+
+});
+
+render();
+
+}
+
+function render(){
+
+const avg = students.length
+? Math.round(students.reduce((s,x)=>s+x.att,0)/students.length)
+: 0;
+
+const perfect = students.filter(s=>s.att===100).length;
+
+const below = students.filter(s=>s.att<75).length;
+
+const month = document.getElementById("monthSelect").value.split(" ")[0];
+
+document.getElementById("stats").innerHTML = `
+
+<div class="stat-card">
+<div class="label">Avg Attendance</div>
+<div class="value display">${avg}%</div>
+<div class="sub">${month} 2026</div>
+</div>
+
+<div class="stat-card">
+<div class="label">100% Attendance</div>
+<div class="value display val-green">${perfect}</div>
+<div class="sub">students this month</div>
+</div>
+
+<div class="stat-card">
+<div class="label">Below 75%</div>
+<div class="value display val-red">${below}</div>
+<div class="sub">needs attention</div>
+</div>
+
+`;
+
+document.getElementById("tbody").innerHTML = students.map(s=>`
+
+<tr>
+
+<td>
+<div class="student-cell">
+<div class="avatar">
+${s.photo ? `<img src="${s.photo}" style="width:32px;height:32px;border-radius:50%">` : initials(s.name)}
+</div>
+<span class="student-name">${s.name}</span>
+</div>
+</td>
+
+<td class="mono">${s.adm}</td>
+
+<td class="center">${s.cls}</td>
+
+<td class="center">
+<span class="badge badge-state">${s.syl}</span>
+</td>
+
+<td class="present">${s.p}/${s.t}</td>
+
+<td class="right">
+<span class="att-badge ${attClass(s.att)}">${s.att}%</span>
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+document.getElementById("monthSelect").addEventListener("change", loadData);
+
+loadData();
+
+</script>
+
+</body>
+</html>
