@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Disallow private/internal pages
+Disallow: /student.html
+Disallow: /studentlist.html
+Disallow: /attendancelist.html
+Disallow: /sessionanalytics.html
+Disallow: /admissionconfirm.html
+Disallow: /students/
+Disallow: /data/students.json
+
+# Sitemap location
+Sitemap: https://sehracademy.com/sitemap.xml
