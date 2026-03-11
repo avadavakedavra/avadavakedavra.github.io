@@ -11,9 +11,10 @@ header#site-header {
 }
 header#site-header .container {max-width:1180px;margin:0 auto;padding:0 20px}
 header#site-header .nav {display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-header#site-header .brand {display:flex;align-items:baseline;gap:8px;text-decoration:none}
-header#site-header .brand span:nth-child(1){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#8BC53F;letter-spacing:.4px}
-header#site-header .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
+header#site-header .brand {display:flex;align-items:center;gap:10px;text-decoration:none}
+header#site-header .brand .logo-rounded{width:36px;height:36px;border-radius:50%;object-fit:cover;display:block;flex-shrink:0}
+header#site-header .brand span:nth-child(2){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#8BC53F;letter-spacing:.4px}
+header#site-header .brand span:nth-child(3){font-family:"Montserrat",sans-serif;font-weight:800;font-size:26px;color:#0b0f10;letter-spacing:.4px}
 
 header#site-header nav[aria-label="Primary"]{display:flex;gap:4px;align-items:center}
 header#site-header .menu, header#site-header .submenu{list-style:none;margin:0;padding:0}
@@ -132,6 +133,7 @@ header#site-header .menu-toggle{
 
 <div class="container nav">
   <a class="brand" href="https://sehracademy.com/#home">
+    <img src="/logo.png" alt="Sehr Academy logo" class="logo-rounded" width="36" height="36" />
     <span>SEHR</span><span>ACADEMY</span>
   </a>
 
@@ -155,11 +157,11 @@ header#site-header .menu-toggle{
         <a class="trigger">Courses ▼</a>
         <ul class="submenu">
  
-          <li><a href="https://sehracademy.com/batchascent">Class 11</a></li>
-          <li><a href="https://sehracademy.com/batchorigin">Class 12</a></li>
-          <li><a href="https://sehracademy.com/batchcomingsoon">Class 10</a></li>
-          <li><a href="https://sehracademy.com/batchcomingsoon">NEET</a></li>
-          <li><a href="https://sehracademy.com/batchcomingsoon">JEE Mains</a></li>
+          <li><a href="https://sehracademy.com/class11">Class 11</a></li>
+          <li><a href="https://sehracademy.com/class12">Class 12</a></li>
+          <li><a href="https://sehracademy.com/class10">Class 10</a></li>
+          <li><a href="https://sehracademy.com/class12">NEET</a></li>
+          <li><a href="https://sehracademy.com/class12">JEE Mains</a></li>
         </ul>
       </li>
 
