@@ -1,333 +1,1007 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SEHR Academy – Tuition Fee Structure</title>
-<meta name="description" content="Transparent per-student, per-hour tutoring rates for Class 9-10 and Class 11-12 at SEHR Academy." />
-<meta name="theme-color" content="#8BC53F" />
-<link rel="canonical" href="https://sehracademy.com/sessionpricing" />
-<link rel="icon" type="image/png" href="/logo.png" />
-<link rel="apple-touch-icon" href="/logo.png" />
-<meta property="og:title" content="Tuition Fee Structure — Sehr Academy" />
-<meta property="og:description" content="Transparent per-student, per-hour tutoring rates for Class 9-10 and Class 11-12 at Sehr Academy, Vatanappally, Thrissur." />
-<meta property="og:url" content="https://sehracademy.com/sessionpricing" />
-<meta property="og:image" content="https://sehracademy.com/logo.png" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Tuition Fee Structure — Sehr Academy" />
-<meta name="twitter:description" content="Per-student, per-hour tutoring rates for Class 9-12 at Sehr Academy." />
-<meta name="twitter:image" content="https://sehracademy.com/logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg: #f5f7f4;
-    --card: #ffffff;
-    --fg: #1a2e1a;
-    --fg-muted: #6b7b6b;
-    --primary: #5a8a2e;
-    --primary-light: rgba(90,138,46,0.08);
-    --primary-lighter: rgba(90,138,46,0.04);
-    --border: #e4e9e0;
-    --secondary: #eef1eb;
-    --radius: 1.25rem;
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Montserrat', sans-serif;
-  }
-  body {
-    font-family: var(--font-body);
-    background: #ffffff; /* match header */
-    color: var(--fg);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1, h2, h3 { font-family: var(--font-display); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEHR Academy — Private Session Pricing</title>
+<meta name="description" content="Transparent per-student, per-hour tutoring rates for Class 9–10 and Class 11–12 at SEHR Academy.">
+<meta name="theme-color" content="#8BC53F">
+<link rel="canonical" href="https://sehracademy.com/sessionpricing">
+<link rel="icon" type="image/png" href="/logo.png">
+<meta property="og:title" content="Private Session Pricing — SEHR Academy">
+<meta property="og:description" content="Transparent per-student, per-hour tutoring rates for Class 9–12 at Sehr Academy, Vatanappally, Thrissur.">
+<meta property="og:url" content="https://sehracademy.com/sessionpricing">
+<meta property="og:image" content="https://sehracademy.com/logo.png">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 
-  /* ── Hero ── */
-  .hero {
-    position: relative; text-align: center;
-    padding: 5rem 1.5rem 3.5rem;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(90,138,46,0.1), transparent);
-    pointer-events: none;
-  }
-  .hero-content { position: relative; max-width: 42rem; margin: 0 auto; }
-  .hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 800; line-height: 1.08; letter-spacing: -0.02em;
-  }
-  .hero h1 em { font-style: normal; color: var(--primary); }
-  .hero p { margin-top: 1.25rem; font-size: 1.05rem; color: var(--fg-muted); max-width: 28rem; margin-left: auto; margin-right: auto; }
-  .hero-badges { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
-  .pill {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.85rem; font-weight: 600; padding: 0.55rem 1rem;
-    border-radius: 999px;
-  }
-  .pill--primary { background: var(--primary-light); color: var(--primary); border: 1px solid rgba(90,138,46,0.2); }
-  .pill--neutral { background: var(--card); color: var(--fg); border: 1px solid var(--border); }
-  .pill svg { width: 16px; height: 16px; }
-  /* ── Table Section ── */
-  .pricing-section { max-width: 62rem; margin: 0 auto; padding: 0 1rem 6rem; }
-  /* Desktop Table */
-  .table-wrap {
-    display: none; border-radius: var(--radius); border: 1px solid var(--border);
-    background: var(--card); box-shadow: 0 8px 40px rgba(0,0,0,0.06); overflow: hidden;
-  }
-  @media (min-width: 768px) { .table-wrap { display: block; } .mobile-cards { display: none; } }
-  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
-  .row:last-child { border-bottom: none; }
-  .row:hover .cell { background: rgba(90,138,46,0.02); }
-  .cell { padding: 1.25rem 2rem; border-left: 1px solid var(--border); display: flex; align-items: center; }
-  .cell:first-child { border-left: none; }
-  .cell--hl { background: var(--primary-lighter); }
-  .cell--header { padding: 2rem; flex-direction: column; align-items: center; text-align: center; justify-content: flex-end; }
-  .cell--header h2 { font-size: 1.5rem; font-weight: 700; }
-  .cell--header .tag { font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-top: 0.25rem; }
-  .cell--header .desc { font-size: 0.75rem; color: var(--fg-muted); margin-top: 0.5rem; max-width: 220px; }
-  .badge-rec {
-    display: inline-block; background: var(--primary); color: #fff;
-    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
-    padding: 0.3rem 0.7rem; border-radius: 999px; margin-bottom: 0.75rem;
-  }
-  .cell--label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); padding: 2rem; align-items: flex-end; }
-  /* Batch info cell */
-  .batch-info { display: flex; align-items: center; gap: 0.75rem; }
-  .batch-icon {
-    width: 2.25rem; height: 2.25rem; border-radius: 0.65rem;
-    background: var(--primary-light); color: var(--primary);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem; font-weight: 700;
-  }
-  .batch-name { font-size: 0.9rem; font-weight: 600; }
-  .batch-type { font-size: 0.75rem; color: var(--fg-muted); }
-  /* Price cell */
-  .price-cell { justify-content: center; }
-  .price-val { font-size: 1.75rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-  .price-unit { font-size: 0.85rem; color: var(--fg-muted); margin-left: 2px; }
-  /* Perks */
-  .perks-row { background: var(--secondary); border-top: 1px solid var(--border); }
-  .perks-row .cell { align-items: flex-start; flex-direction: column; gap: 0; padding: 2rem; }
-  .perks-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
-  .perks-list li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; }
-  .perk-check { width: 16px; height: 16px; color: var(--primary); flex-shrink: 0; }
-  .perk-check--muted { color: var(--fg-muted); }
-  /* CTA row */
-  .cta-row .cell { padding: 2rem; justify-content: center; }
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    width: 100%; padding: 0.85rem 2rem; border-radius: 0.75rem;
-    font-size: 0.875rem; font-weight: 700; border: none; cursor: pointer;
-    font-family: var(--font-body); transition: all 0.2s;
-  }
-  .btn--primary { background: var(--primary); color: #fff; box-shadow: 0 4px 16px rgba(90,138,46,0.25); }
-  .btn--primary:hover { filter: brightness(1.08); box-shadow: 0 6px 24px rgba(90,138,46,0.35); }
-  .btn--secondary { background: var(--secondary); color: var(--fg); }
-  .btn--secondary:hover { background: #e2e7dd; }
-  .btn svg { width: 16px; height: 16px; }
-  /* ── Mobile Cards ── */
-  .mobile-cards { display: flex; flex-direction: column; gap: 1.5rem; }
-  @media (min-width: 768px) { .mobile-cards { display: none; } }
-  .m-card {
-    border-radius: var(--radius); border: 1px solid var(--border);
-    background: var(--card); overflow: hidden;
-  }
-  .m-card--hl { border-color: var(--primary); box-shadow: 0 6px 28px rgba(90,138,46,0.12); }
-  .m-card-header { padding: 2rem 1.5rem; text-align: center; }
-  .m-card--hl .m-card-header { background: var(--primary-lighter); }
-  .m-card-header h2 { font-size: 1.5rem; font-weight: 700; }
-  .m-card-header .tag { font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-top: 0.2rem; }
-  .m-card-header .desc { font-size: 0.8rem; color: var(--fg-muted); margin-top: 0.4rem; }
-  .m-rate { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-top: 1px solid var(--border); }
-  .m-rate-left .batch-name { font-size: 0.875rem; font-weight: 600; }
-  .m-rate-left .batch-type { font-size: 0.7rem; color: var(--fg-muted); }
-  .m-rate-right { text-align: right; }
-  .m-rate-right .price-val { font-size: 1.4rem; }
-  .m-perks { border-top: 1px solid var(--border); background: var(--secondary); padding: 1.25rem 1.5rem; }
-  .m-perks ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-  .m-perks li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
-  .m-cta { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); }
-  .m-footer { display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-top: 1px solid var(--border); padding: 0.75rem; font-size: 0.7rem; color: var(--fg-muted); }
-  .m-footer strong { color: var(--fg); }
-  /* Bottom note */
-  .bottom-note { margin-top: 2.5rem; text-align: center; font-size: 0.75rem; color: var(--fg-muted); }
-  .bottom-note strong { color: var(--fg); }
-  /* SVG icons inline */
-  .icon { width: 1em; height: 1em; vertical-align: middle; display: inline-block; }
-  /* Logo styling */
-  link[rel="icon"], link[rel="apple-touch-icon"] { border-radius: 0.5rem; }
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://sehracademy.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Session Pricing", "item": "https://sehracademy.com/sessionpricing"}
-  ]
+<style>
+/* ═══════════════════════════════════════════════
+   SEHR ACADEMY — SESSION PRICING
+   Matches tuitionfees.html design system exactly
+   Cream · Charcoal · Lime #8BC53F · Open Sans
+═══════════════════════════════════════════════ */
+:root {
+  --cream:    #f5f2eb;
+  --cream-2:  #ede9e0;
+  --cream-3:  #e4dfd4;
+  --white:    #fdfcfa;
+  --ink:      #1a1a18;
+  --ink-2:    #2e2e2b;
+  --ink-3:    #4a4a46;
+  --muted:    #7a7970;
+  --pale:     #b0ada4;
+  --rule:     #d8d4cb;
+  --lime:     #8BC53F;
+  --lime-2:   #72a530;
+  --lime-3:   #5e8a24;
+  --lime-bg:  #f0f7e3;
+  --lime-mid: #c8e48e;
+  --f: 'Open Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
 }
-</script>
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+
+body {
+  font-family: var(--f);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+header#site-header { position:sticky; top:0; z-index:200; }
+
+/* ── PAGE ── */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+/* ═══════════════════════════════════════
+   MASTHEAD — identical to tuitionfees
+═══════════════════════════════════════ */
+.masthead-wrap {
+  background: var(--ink);
+  margin: 0 -40px;
+  padding: 0 40px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--lime);
+}
+
+.masthead-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.masthead-wrap::after {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.masthead-bg-text {
+  position: absolute;
+  right: -10px; bottom: -24px;
+  font-size: 200px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -8px;
+  color: rgba(255,255,255,.04);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.masthead {
+  padding: 60px 0 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.mast-left {}
+
+.mast-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mast-kicker-rule { width:28px; height:2px; background:var(--lime); flex-shrink:0; }
+
+.mast-kicker-text {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--lime); opacity: .9;
+}
+
+.mast-h1 {
+  font-size: clamp(44px, 5.5vw, 78px);
+  font-weight: 800; line-height: .97;
+  letter-spacing: -3px; color: #fff;
+  margin-bottom: 22px;
+}
+
+.mast-h1 .ital { font-style:italic; font-weight:300; color:var(--lime); }
+
+.mast-desc {
+  font-size: 14px; font-weight: 400;
+  color: rgba(255,255,255,.5);
+  line-height: 1.75; max-width: 480px;
+  margin-bottom: 28px;
+}
+
+.mast-badges { display:flex; flex-wrap:wrap; gap:8px; }
+
+.mast-badge {
+  display: inline-flex; align-items: center; gap:7px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,.65);
+  white-space: nowrap;
+}
+
+.mast-badge svg { width:12px; height:12px; color:var(--lime); flex-shrink:0; }
+
+/* right: stat column */
+.mast-stats {
+  display: flex; flex-direction: column; gap:0;
+  border-left: 1px solid rgba(255,255,255,.1);
+  padding-left: 36px;
+  position: relative; z-index:1;
+}
+
+.mast-stat { padding:16px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.mast-stat:last-child { border-bottom:none; }
+
+.mast-stat-num {
+  font-size: 38px; font-weight:800;
+  letter-spacing:-1.5px; color:#fff;
+  line-height:1; margin-bottom:3px;
+}
+
+.mast-stat-num .unit { font-size:16px; color:var(--lime); font-weight:700; }
+
+.mast-stat-lbl {
+  font-size:10px; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+}
+
+/* ═══════════════════════════════════════
+   SECTION DIVIDER
+═══════════════════════════════════════ */
+.section-hdr {
+  display: flex; align-items: center; gap:14px;
+  margin-top: 44px; margin-bottom: 0;
+}
+
+.section-hdr-rule { flex:1; height:1px; background:var(--rule); }
+
+.section-hdr-text {
+  font-size:10px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase;
+  color:var(--pale); white-space:nowrap;
+}
+
+.section-hdr-dot { width:5px; height:5px; border-radius:50%; background:var(--lime); flex-shrink:0; }
+
+/* ═══════════════════════════════════════
+   PRICING GRID
+═══════════════════════════════════════ */
+.pricing-wrap {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── PRICING CARD ── */
+.price-card {
+  background: var(--white);
+  border: 1.5px solid var(--cream-3);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+  position: relative;
+}
+
+/* lime left accent — matches calc-card */
+.price-card { border-left: 4px solid var(--rule); }
+.price-card.featured { border-left: 4px solid var(--lime); }
+
+/* card header */
+.pc-head {
+  padding: 26px 28px 22px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.pc-featured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+.pc-featured-badge svg { width:9px; height:9px; }
+
+.pc-class {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.pc-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  margin-bottom: 8px;
+}
+
+.pc-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  max-width: 280px;
+  line-height: 1.55;
+}
+
+/* rate rows */
+.rate-table { width:100%; border-collapse:collapse; }
+
+.rate-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--rule);
+  gap: 12px;
+  transition: background .15s;
+}
+
+.rate-row:last-child { border-bottom: none; }
+.rate-row:hover { background: var(--cream); }
+
+.rate-row.best-val {
+  background: var(--lime-bg);
+  border-color: #d8edb3;
+}
+
+.rate-row.best-val:hover { background: #e8f5d0; }
+
+.batch-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.batch-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--pale);
+  margin-top: 1px;
+}
+
+.rate-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.rate-badge.best {
+  background: var(--lime-bg);
+  border: 1px solid var(--lime-mid);
+  color: var(--lime-2);
+}
+
+.rate-price {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rate-amount {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.rate-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+/* per-student note */
+.rate-per {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--pale);
+  text-align: right;
+  margin-top: 1px;
+}
+
+/* perks block */
+.perks-block {
+  background: var(--cream);
+  border-top: 1px solid var(--rule);
+  padding: 20px 28px;
+}
+
+.perks-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.perks-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+
+.perks-list li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.perks-list li svg {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--lime-2);
+}
+
+.perks-list li.muted-perk { color: var(--muted); }
+.perks-list li.muted-perk svg { color: var(--pale); }
+
+/* CTA block */
+.cta-block {
+  padding: 20px 28px 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 4px;
+  border: none;
+  font-family: var(--f);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .18s;
+}
+
+.cta-btn.primary {
+  background: var(--lime);
+  color: var(--ink);
+  box-shadow: 0 4px 16px rgba(139,197,63,.3);
+}
+
+.cta-btn.primary:hover {
+  background: var(--lime-2);
+  box-shadow: 0 6px 24px rgba(139,197,63,.4);
+  transform: translateY(-1px);
+}
+
+.cta-btn.secondary {
+  background: var(--cream);
+  color: var(--ink-2);
+  border: 1.5px solid var(--rule);
+}
+
+.cta-btn.secondary:hover {
+  border-color: var(--lime-mid);
+  background: var(--lime-bg);
+  color: var(--lime-2);
+}
+
+.cta-btn svg { width:14px; height:14px; }
+
+.cta-note {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--pale);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════
+   NOTE STRIP — below pricing
+═══════════════════════════════════════ */
+.note-strip {
+  margin-top: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--white);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.note-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.note-item svg { width:13px; height:13px; color:var(--lime); flex-shrink:0; }
+
+.note-item strong { color:var(--ink-2); font-weight:700; }
+
+/* ═══════════════════════════════════════
+   HOW IT WORKS — same as tuitionfees
+═══════════════════════════════════════ */
+.how {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.how-step {
+  padding: 28px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+  transition: background .18s;
+}
+
+.how-step:last-child { border-right:none; }
+.how-step:hover { background:var(--cream); }
+
+.how-step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -13px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px; color:var(--lime); font-weight:700;
+  z-index: 2;
+  background: var(--white);
+  padding: 4px 2px; line-height: 1;
+}
+
+.how-step:hover:not(:last-child)::after { background:var(--cream); }
+
+.how-step-bg-num {
+  position: absolute;
+  top: 10px; right: 16px;
+  font-size: 72px; font-weight:800; line-height:1;
+  color: var(--cream-2);
+  pointer-events:none; user-select:none;
+  letter-spacing:-3px;
+}
+
+.how-num {
+  font-size: 10px; font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase;
+  color: var(--lime-2); margin-bottom:12px;
+  display: flex; align-items:center; gap:8px;
+}
+
+.how-num::before {
+  content: '';
+  display: inline-block;
+  width:6px; height:6px;
+  border-radius:50%; background:var(--lime);
+  flex-shrink:0;
+}
+
+.how-title {
+  font-size: 15px; font-weight:800;
+  color: var(--ink); margin-bottom:8px;
+  letter-spacing:-.3px; position:relative; z-index:1;
+}
+
+.how-desc {
+  font-size: 12px; color:var(--muted);
+  line-height:1.65; position:relative; z-index:1;
+  max-width:220px;
+}
+
+/* ═══════════════════════════════════════
+   FOOTER — same as tuitionfees
+═══════════════════════════════════════ */
+.foot {
+  margin-top: 48px; padding-top:24px;
+  border-top: 1px solid var(--rule);
+  display: flex; align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap; gap:12px;
+}
+
+.foot-brand { font-size:13px; font-weight:800; letter-spacing:.08em; color:var(--ink-2); }
+.foot-brand span { color:var(--lime); }
+
+.foot-links { display:flex; gap:20px; flex-wrap:wrap; align-items:center; font-size:11px; color:var(--pale); }
+.foot-links a { color:var(--muted); text-decoration:none; transition:color .18s; }
+.foot-links a:hover { color:var(--lime-2); }
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+:focus-visible { outline:2px solid var(--lime); outline-offset:3px; border-radius:3px; }
+
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 1060px) {
+  .pricing-wrap { grid-template-columns:1fr 1fr; gap:16px; }
+}
+
+@media (max-width: 900px) {
+  .page { padding:0 20px 64px; }
+  .masthead-wrap { margin:0 -20px; padding:0 20px; }
+  .masthead { grid-template-columns:1fr; gap:0; padding:40px 0 36px; }
+  .masthead-bg-text { font-size:130px; }
+  .mast-h1 { font-size:52px; letter-spacing:-2.5px; }
+  .mast-stats {
+    flex-direction:row; border-left:none; padding-left:0;
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:24px; margin-top:28px; gap:0;
+  }
+  .mast-stat {
+    border-bottom:none; padding:0; flex:1;
+    border-right:1px solid rgba(255,255,255,.08);
+    padding-right:20px; margin-right:20px;
+  }
+  .mast-stat:last-child { border-right:none; padding-right:0; margin-right:0; }
+  .mast-stat-num { font-size:30px; }
+  .pricing-wrap { grid-template-columns:1fr; }
+  .how { grid-template-columns:1fr; }
+  .how-step { border-right:none; border-bottom:1px solid var(--rule); padding:22px; }
+  .how-step:last-child { border-bottom:none; }
+  .how-step:not(:last-child)::after { content:'↓'; right:auto; left:22px; top:auto; bottom:-14px; transform:none; background:var(--white); }
+  .how-step:hover:not(:last-child)::after { background:var(--cream); }
+  .how-step-bg-num { font-size:56px; }
+  .note-strip { gap:16px; }
+}
+
+@media (max-width: 640px) {
+  .page { padding:0 16px 56px; }
+  .masthead-wrap { margin:0 -16px; padding:0 16px; }
+  .masthead { padding:32px 0 28px; }
+  .masthead-bg-text { display:none; }
+  .mast-h1 { font-size:38px; letter-spacing:-1.5px; margin-bottom:16px; }
+  .mast-desc { font-size:13px; margin-bottom:20px; }
+  .mast-badges { gap:6px; }
+  .mast-badge { font-size:10px; padding:6px 11px; }
+  .mast-stats { padding-top:18px; margin-top:20px; }
+  .mast-stat-num { font-size:26px; letter-spacing:-1px; }
+  .pc-head { padding:20px 18px 18px; }
+  .rate-row { padding:12px 18px; }
+  .perks-block { padding:16px 18px; }
+  .cta-block { padding:16px 18px 20px; }
+  .rate-amount { font-size:22px; }
+  .section-hdr { margin-top:32px; }
+  .how-step { padding:18px; }
+  .how-step-bg-num { font-size:44px; }
+  .how-title { font-size:14px; }
+  .note-strip { flex-direction:column; gap:12px; padding:16px 18px; }
+  .foot { flex-direction:column; align-items:flex-start; gap:10px; padding-top:20px; margin-top:36px; }
+  .foot-links { gap:12px; }
+}
+
+@media (max-width: 420px) {
+  .mast-h1 { font-size:32px; letter-spacing:-1px; }
+  .mast-stat { margin-right:14px; padding-right:14px; }
+  .mast-stat-num { font-size:22px; }
+  .mast-badges { display:none; }
+  .rate-row { grid-template-columns:1fr auto; }
+  .rate-badge { display:none; }
+}
+</style>
 </head>
 <body>
-<!-- Nav -->
-<!-- SAME NAVBAR -->
+
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-content">
-    <h1>Invest in Knowledge,<br><em>Secure the Future.</em></h1>
-    <p>Transparent per-student, per-hour pricing. Smaller batches mean more attention — pick what suits your child best.</p>
-    <div class="hero-badges">
-      <div class="pill pill--primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Rates are per student / hour
-      </div>
-      <div class="pill pill--neutral">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Minimum session: 2 hours
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Pricing -->
-<section class="pricing-section">
-  <!-- Desktop Table -->
-  <div class="table-wrap">
-    <!-- Header -->
-    <div class="row">
-      <div class="cell cell--label">Batch Size</div>
-      <div class="cell cell--header">
-        <h2>Class 9 – 10</h2>
-        <div class="tag">Foundation & Board Prep</div>
-        <div class="desc">Build unshakable fundamentals and ace your board exams with expert guidance.</div>
-      </div>
-      <div class="cell cell--header cell--hl">
-        <span class="badge-rec">Most Popular</span>
-        <h2>Class 11 – 12</h2>
-        <div class="tag">Advanced & Competitive</div>
-        <div class="desc">Master advanced concepts in Physics, Chemistry, Maths and stay ahead of the curve.</div>
-      </div>
-    </div>
-    <!-- Rows -->
-    <div class="row">
-      <div class="cell"><div class="batch-info"><div class="batch-icon">1</div><div><div class="batch-name">1 Student</div><div class="batch-type">Private</div></div></div></div>
-      <div class="cell price-cell"><span class="price-val">₹350</span><span class="price-unit">/hr</span></div>
-      <div class="cell price-cell cell--hl"><span class="price-val">₹450</span><span class="price-unit">/hr</span></div>
-    </div>
-    <div class="row">
-      <div class="cell"><div class="batch-info"><div class="batch-icon">2</div><div><div class="batch-name">2 Students</div><div class="batch-type">Duo</div></div></div></div>
-      <div class="cell price-cell"><span class="price-val">₹250</span><span class="price-unit">/hr</span></div>
-      <div class="cell price-cell cell--hl"><span class="price-val">₹300</span><span class="price-unit">/hr</span></div>
-    </div>
-    <div class="row">
-      <div class="cell"><div class="batch-info"><div class="batch-icon">3</div><div><div class="batch-name">3 Students</div><div class="batch-type">Trio</div></div></div></div>
-      <div class="cell price-cell"><span class="price-val">₹200</span><span class="price-unit">/hr</span></div>
-      <div class="cell price-cell cell--hl"><span class="price-val">₹250</span><span class="price-unit">/hr</span></div>
-    </div>
-    <div class="row">
-      <div class="cell"><div class="batch-info"><div class="batch-icon">4</div><div><div class="batch-name">4 Students</div><div class="batch-type">Group</div></div></div></div>
-      <div class="cell price-cell"><span class="price-val">₹175</span><span class="price-unit">/hr</span></div>
-      <div class="cell price-cell cell--hl"><span class="price-val">₹200</span><span class="price-unit">/hr</span></div>
-    </div>
-    <div class="row">
-      <div class="cell"><div class="batch-info"><div class="batch-icon">5</div><div><div class="batch-name">5 Students</div><div class="batch-type">Full Batch</div></div></div></div>
-      <div class="cell price-cell"><span class="price-val">₹150</span><span class="price-unit">/hr</span></div>
-      <div class="cell price-cell cell--hl"><span class="price-val">₹175</span><span class="price-unit">/hr</span></div>
-    </div>
-    <!-- Perks -->
-    <div class="row perks-row">
-      <div class="cell cell--label" style="align-items:flex-start;padding-top:2rem;">What's Included</div>
-      <div class="cell" style="flex-direction:column;align-items:flex-start;">
-        <ul class="perks-list">
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>All core subjects covered</li>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Personalised study plans</li>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Weekly progress reports</li>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Doubt-clearing sessions</li>
-        </ul>
-      </div>
-      <div class="cell cell--hl" style="flex-direction:column;align-items:flex-start;">
-        <ul class="perks-list">
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>PCM / PCB specialist tutors</li>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Board + entrance exam prep</li>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Regular mock tests & analysis</li>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Priority scheduling</li>
-        </ul>
-      </div>
-    </div>
-    <!-- CTA -->
-    <div class="row cta-row">
-      <div class="cell"></div>
-      <div class="cell"><button class="btn btn--secondary">Get Started <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>
-      <div class="cell cell--hl"><button class="btn btn--primary">Get Started <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>
-    </div>
-  </div>
-  <!-- Mobile Cards -->
-  <div class="mobile-cards">
-    <!-- Card 1: Class 9-10 -->
-    <div class="m-card">
-      <div class="m-card-header">
-        <h2>Class 9 – 10</h2>
-        <div class="tag">Foundation & Board Prep</div>
-        <div class="desc">Build unshakable fundamentals and ace your board exams.</div>
-      </div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">1 Student</div><div class="batch-type">Private</div></div><div class="m-rate-right"><span class="price-val">₹350</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">2 Students</div><div class="batch-type">Duo</div></div><div class="m-rate-right"><span class="price-val">₹250</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">3 Students</div><div class="batch-type">Trio</div></div><div class="m-rate-right"><span class="price-val">₹200</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">4 Students</div><div class="batch-type">Group</div></div><div class="m-rate-right"><span class="price-val">₹175</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">5 Students</div><div class="batch-type">Full Batch</div></div><div class="m-rate-right"><span class="price-val">₹150</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-perks">
-        <ul>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>All core subjects covered</li>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Personalised study plans</li>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Weekly progress reports</li>
-          <li><svg class="perk-check perk-check--muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Doubt-clearing sessions</li>
-        </ul>
-      </div>
-      <div class="m-cta"><button class="btn btn--secondary" style="width:100%">Get Started</button></div>
-      <div class="m-footer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Min. <strong>2-hour</strong> sessions • per student/hr
-      </div>
-    </div>
-    <!-- Card 2: Class 11-12 -->
-    <div class="m-card m-card--hl">
-      <div class="m-card-header">
-        <span class="badge-rec">Most Popular</span>
-        <h2>Class 11 – 12</h2>
-        <div class="tag">Advanced & Competitive</div>
-        <div class="desc">Master advanced concepts in Physics, Chemistry, Maths.</div>
-      </div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">1 Student</div><div class="batch-type">Private</div></div><div class="m-rate-right"><span class="price-val">₹450</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">2 Students</div><div class="batch-type">Duo</div></div><div class="m-rate-right"><span class="price-val">₹300</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">3 Students</div><div class="batch-type">Trio</div></div><div class="m-rate-right"><span class="price-val">₹250</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">4 Students</div><div class="batch-type">Group</div></div><div class="m-rate-right"><span class="price-val">₹200</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-rate"><div class="m-rate-left"><div class="batch-name">5 Students</div><div class="batch-type">Full Batch</div></div><div class="m-rate-right"><span class="price-val">₹175</span><span class="price-unit">/hr</span></div></div>
-      <div class="m-perks">
-        <ul>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>PCM / PCB specialist tutors</li>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Board + entrance exam prep</li>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Regular mock tests & analysis</li>
-          <li><svg class="perk-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Priority scheduling</li>
-        </ul>
-      </div>
-      <div class="m-cta"><button class="btn btn--primary" style="width:100%">Get Started</button></div>
-      <div class="m-footer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Min. <strong>2-hour</strong> sessions • per student/hr
-      </div>
-    </div>
-  </div>
-  <p class="bottom-note">All prices are <strong>per student per hour</strong>. Minimum session duration is <strong>2 hours</strong>. Contact us for larger batch sizes.</p>
-</section>
 
-<div id="site-footer"></div>
-<script src="/assets/footer.js" defer></script>
+<div class="page">
+
+  <!-- ── MASTHEAD ── -->
+  <div class="masthead-wrap">
+    <div class="masthead-bg-text" aria-hidden="true">SEHR</div>
+    <header class="masthead" aria-labelledby="page-h1">
+      <div class="mast-left">
+        <div class="mast-kicker" aria-hidden="true">
+          <div class="mast-kicker-rule"></div>
+          <span class="mast-kicker-text">Private Session Pricing &nbsp;&middot;&nbsp; Per Student / Per Hour</span>
+        </div>
+        <h1 class="mast-h1" id="page-h1">
+          Rates that<br>
+          <span class="ital">scale with you.</span>
+        </h1>
+        <p class="mast-desc">
+          Bring one friend or fill a batch — the more students share a session,
+          the lower the rate per head. All prices are transparent, fixed, and
+          billed per student per hour.
+        </p>
+        <div class="mast-badges">
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Per student billing
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Min. 2-hour sessions
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Class 9 – 12
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            NEET &amp; JEE prep
+          </span>
+        </div>
+      </div>
+
+      <div class="mast-stats" role="list" aria-label="Key pricing facts">
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num"><span class="unit">₹</span>150</div>
+          <div class="mast-stat-lbl">Min. rate / hr</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">5</div>
+          <div class="mast-stat-lbl">Batch options</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">2<span class="unit">hr</span></div>
+          <div class="mast-stat-lbl">Min. session</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- ── PRICING SECTION HEADER ── -->
+  <div class="section-hdr" aria-hidden="true">
+    <div class="section-hdr-rule"></div>
+    <div class="section-hdr-dot"></div>
+    <div class="section-hdr-text">Per-hour rates · per student</div>
+    <div class="section-hdr-dot"></div>
+    <div class="section-hdr-rule"></div>
+  </div>
+
+  <!-- ── PRICING CARDS ── -->
+  <div class="pricing-wrap">
+
+    <!-- CLASS 9–10 -->
+    <div class="price-card" role="region" aria-label="Class 9 to 10 pricing">
+      <div class="pc-head">
+        <div class="pc-tag">Foundation &amp; Board Prep</div>
+        <div class="pc-class">Class 9 – 10</div>
+        <p class="pc-desc">Build unshakable fundamentals and ace your board exams. All core subjects covered.</p>
+      </div>
+
+      <div role="table" aria-label="Class 9-10 session rates">
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">1 Student</div>
+            <div class="batch-label">Private</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;350</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">2 Students</div>
+            <div class="batch-label">Duo</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;250</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">3 Students</div>
+            <div class="batch-label">Trio</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;200</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">4 Students</div>
+            <div class="batch-label">Group</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;175</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row best-val" role="row">
+          <div role="cell">
+            <div class="batch-num">5 Students</div>
+            <div class="batch-label">Full Batch</div>
+          </div>
+          <div role="cell"><span class="rate-badge best">Best value</span></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;150</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="perks-block">
+        <div class="perks-title">Included in every session</div>
+        <ul class="perks-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            All core subjects covered
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Personalised study plans
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Weekly progress reports
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Doubt-clearing sessions
+          </li>
+        </ul>
+      </div>
+
+      <div class="cta-block">
+        <a class="cta-btn secondary" href="https://wa.me/919539409586?text=Hi%20SEHR%20Academy!%20I%27m%20interested%20in%20private%20sessions%20for%20Class%209%2F10.%20Please%20share%20details." target="_blank" rel="noopener noreferrer">
+          Enquire on WhatsApp
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <div class="cta-note">Min. 2-hour sessions &nbsp;&middot;&nbsp; per student/hr</div>
+      </div>
+    </div>
+
+    <!-- CLASS 11–12 -->
+    <div class="price-card featured" role="region" aria-label="Class 11 to 12 pricing">
+      <div class="pc-head">
+        <div class="pc-featured-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Most Popular
+        </div>
+        <div class="pc-tag">Advanced &amp; Competitive</div>
+        <div class="pc-class">Class 11 – 12</div>
+        <p class="pc-desc">Master Physics, Chemistry, Mathematics and Biology. Structured for boards, NEET and JEE Mains.</p>
+      </div>
+
+      <div role="table" aria-label="Class 11-12 session rates">
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">1 Student</div>
+            <div class="batch-label">Private</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;450</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">2 Students</div>
+            <div class="batch-label">Duo</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;300</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">3 Students</div>
+            <div class="batch-label">Trio</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;250</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row" role="row">
+          <div role="cell">
+            <div class="batch-num">4 Students</div>
+            <div class="batch-label">Group</div>
+          </div>
+          <div role="cell"></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;200</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+        <div class="rate-row best-val" role="row">
+          <div role="cell">
+            <div class="batch-num">5 Students</div>
+            <div class="batch-label">Full Batch</div>
+          </div>
+          <div role="cell"><span class="rate-badge best">Best value</span></div>
+          <div class="rate-price" role="cell">
+            <div><span class="rate-amount">&#8377;175</span><span class="rate-unit">/hr</span></div>
+            <div class="rate-per">per student</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="perks-block">
+        <div class="perks-title">Included in every session</div>
+        <ul class="perks-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            PCM / PCB specialist tutors
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Board + entrance exam prep
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Regular mock tests &amp; analysis
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Priority scheduling
+          </li>
+        </ul>
+      </div>
+
+      <div class="cta-block">
+        <a class="cta-btn primary" href="https://wa.me/919539409586?text=Hi%20SEHR%20Academy!%20I%27m%20interested%20in%20private%20sessions%20for%20Class%2011%2F12.%20Please%20share%20details." target="_blank" rel="noopener noreferrer">
+          Enquire on WhatsApp
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <div class="cta-note">Min. 2-hour sessions &nbsp;&middot;&nbsp; per student/hr</div>
+      </div>
+    </div>
+
+  </div><!-- /pricing-wrap -->
+
+  <!-- ── NOTE STRIP ── -->
+  <div class="note-strip" role="note">
+    <div class="note-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      All prices are <strong>per student per hour</strong>
+    </div>
+    <div class="note-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Minimum session duration: <strong>2 hours</strong>
+    </div>
+    <div class="note-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Contact us for <strong>larger batch sizes</strong>
+    </div>
+  </div>
+
+  <!-- ── HOW SECTION HEADER ── -->
+  <div class="section-hdr" aria-hidden="true" style="margin-top:44px">
+    <div class="section-hdr-rule"></div>
+    <div class="section-hdr-dot"></div>
+    <div class="section-hdr-text">How it works</div>
+    <div class="section-hdr-dot"></div>
+    <div class="section-hdr-rule"></div>
+  </div>
+
+  <!-- ── HOW IT WORKS ── -->
+  <div class="how" role="list" aria-label="How private sessions work" style="margin-top:16px">
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">01</div>
+      <div class="how-num">Step 01</div>
+      <div class="how-title">Choose your batch size</div>
+      <div class="how-desc">Bring 1 to 5 students. The more in the group, the lower the per-student rate — split costs with friends.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">02</div>
+      <div class="how-num">Step 02</div>
+      <div class="how-title">Book via WhatsApp</div>
+      <div class="how-desc">Message us with your class, subject, and preferred timing. We'll confirm a slot within 24 hours.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">03</div>
+      <div class="how-num">Step 03</div>
+      <div class="how-title">Start your session</div>
+      <div class="how-desc">Attend offline at Vatanappally, Thrissur. Minimum 2-hour sessions. Billed per student per hour.</div>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span>Vatanappally, Thrissur, Kerala</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
 </body>
 </html>
