@@ -1,383 +1,911 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SEHR ACADEMY - Students</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard — SEHR Academy</title>
+<meta name="theme-color" content="#8BC53F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
 <style>
+:root {
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18; --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --red-bg:#fef2f2; --red-mid:#fca5a5;
+  --amber:#d97706; --amber-bg:#fffbeb; --amber-mid:#fde68a;
+  --blue:#2563eb; --blue-bg:#eff6ff; --blue-mid:#bfdbfe;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-:root{
-  --bg:hsl(220 20% 97%);
-  --fg:hsl(222 47% 11%);
-  --card:#fff;
-  --muted:hsl(220 9% 46%);
-  --border:hsl(220 13% 91%);
-  --accent:#8BC53F; /* 🔥 LIGHT GREEN */
-  --success:hsl(142 71% 45%);
-  --danger:hsl(0 84% 60%);
-  --radius:14px;
-}
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:9999;transition:opacity .5s var(--ease);opacity:0;pointer-events:none}
+#loader.on{opacity:1;pointer-events:all}
+#loader::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+#loader::after{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%)}
+.ld{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.ld-brand{font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:36px;display:flex;align-items:center;gap:10px}
+.ld-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.6)}50%{box-shadow:0 0 0 8px rgba(139,197,63,0)}}
+.ld-ring{position:relative;width:64px;height:64px;margin-bottom:32px}
+.ldr-track{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.07)}
+.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(139,197,63,.3);animation:rspin .9s linear infinite}
+.ldr-inner{position:absolute;inset:11px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(139,197,63,.4);animation:rspin .9s linear infinite reverse}
+.ldr-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px rgba(139,197,63,.6)}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ld-txt{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;animation:ltxt 1.8s ease-in-out infinite}
+@keyframes ltxt{0%,100%{opacity:.3}50%{opacity:.7}}
+.ld-bar{width:150px;height:1px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--lime-3),var(--lime),#a6dc52);animation:lfill 1.4s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes lfill{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
 
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);
-  color:var(--fg);
-}
+/* ── LOGIN ── */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400}
+#loginWrap.gone{display:none}
+#loginWrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--rule)1px,transparent 1px),linear-gradient(90deg,var(--rule)1px,transparent 1px);background-size:48px 48px;opacity:.3}
+.lbox{position:relative;z-index:1;background:var(--white);border:1.5px solid var(--cream-3);border-left:4px solid var(--lime);border-radius:4px;width:100%;max-width:370px;box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 28px 22px;position:relative;overflow:hidden}
+.lbox-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.lbox-head::after{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.15),transparent 70%)}
+.lbox-logo{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px;display:flex;align-items:center;gap:7px;position:relative;z-index:1}
+.lbox-logodot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
+.lbox-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1;position:relative;z-index:1}
+.lbox-sub{font-size:11px;color:rgba(255,255,255,.3);margin-top:4px;position:relative;z-index:1}
+.lbox-body{padding:24px 28px 28px}
+.lbox-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.lbox-label svg{width:11px;height:11px;color:var(--lime)}
+.lbox-input{width:100%;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.lbox-input::placeholder{color:var(--pale);font-weight:400}
+.lbox-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.lbox-btn:hover:not(:disabled){background:var(--lime-2)}
+.lbox-btn:disabled{opacity:.6;cursor:default}
+.lbox-btn svg{width:13px;height:13px}
+.lbox-err{display:none;margin-top:12px;padding:9px 12px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:4px;font-size:12px;font-weight:600;color:var(--red)}
+.lbox-err.on{display:block}
 
-/* HEADER */
-.header{
-  position:sticky;
-  top:0;
-  background:rgba(255,255,255,.95);
-  border-bottom:1px solid var(--border);
-}
-.header-inner{
-  max-width:1400px;
-  margin:auto;
-  height:64px;
-  padding:0 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{font-weight:800;font-size:20px}
-.logo span{color:var(--accent)}
+/* ── APP ── */
+#app{display:none}
+#app.on{display:block}
+.wrap{max-width:1440px;margin:0 auto;padding:0 32px 80px}
 
-/* MAIN */
-.main{max-width:1400px;margin:auto;padding:32px 24px}
+/* ── TOPBAR ── */
+.topbar{background:var(--ink);margin:0 -32px;padding:0 32px;position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.14),transparent 65%);pointer-events:none}
+.tb-bg{position:absolute;right:0;bottom:-20px;font-size:150px;font-weight:800;letter-spacing:-6px;color:rgba(255,255,255,.04);pointer-events:none;user-select:none;white-space:nowrap}
+.tb-inner{padding:36px 0 32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;position:relative;z-index:1;flex-wrap:wrap}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.tb-kicker-rule{width:22px;height:2px;background:var(--lime)}
+.tb-kicker-txt{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.9}
+.tb-title{font-size:clamp(26px,3vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.97;margin-bottom:6px}
+.tb-title i{font-style:italic;font-weight:300;color:var(--lime)}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.4)}
+.tb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.abt{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);font-family:var(--f);font-size:12px;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;transition:all .18s;white-space:nowrap}
+.abt:hover{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.25)}
+.abt.lime{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.abt.lime:hover{background:var(--lime-2)}
+.abt svg{width:13px;height:13px}
 
-/* STATS */
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:32px;
-}
-@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.stats-grid{grid-template-columns:1fr}}
+/* ── STATS STRIP ── */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--rule);border-radius:4px;background:var(--white);overflow:hidden;margin:24px 0;box-shadow:var(--sh)}
+.sc{padding:16px 18px;border-right:1px solid var(--rule);position:relative;transition:background .15s;cursor:default}
+.sc:last-child{border-right:none}
+.sc:hover{background:var(--cream)}
+.sc.warn::before,.sc.danger::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0}
+.sc.warn::before{background:var(--amber)}
+.sc.danger::before{background:var(--red)}
+.sc-lbl{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--pale);margin-bottom:7px}
+.sc-val{font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--ink);line-height:1;margin-bottom:3px}
+.sc-val.lime{color:var(--lime-2)} .sc-val.red{color:var(--red)} .sc-val.amber{color:var(--amber)}
+.sc-sub{font-size:10px;color:var(--muted)}
 
-.stat-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:20px;
-}
-.stat-title{font-size:14px;color:var(--muted)}
-.stat-value{font-size:22px;font-weight:700;margin-top:6px}
-.stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
+/* ── INSIGHTS ── */
+.insights{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.ins{background:var(--white);border:1.5px solid var(--cream-3);border-radius:4px;padding:16px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.ins::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.ins.lime::before{background:var(--lime)}
+.ins.red::before{background:var(--red)}
+.ins.amber::before{background:var(--amber)}
+.ins.blue::before{background:var(--blue)}
+.ins-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pale);margin-bottom:8px}
+.ins-val{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--ink);line-height:1;margin-bottom:4px}
+.ins-val.lime{color:var(--lime-2)} .ins-val.red{color:var(--red)} .ins-val.amber{color:var(--amber)} .ins-val.blue{color:var(--blue)}
+.ins-sub{font-size:11px;color:var(--muted)}
 
-/* SECTION */
-.section-title{font-size:20px;font-weight:700}
-.section-desc{font-size:14px;color:var(--muted);margin-top:4px}
+/* ── OVERDUE BANNER ── */
+#banner{display:none;align-items:center;gap:12px;margin-bottom:16px;padding:12px 16px;background:var(--red-bg);border:1px solid var(--red-mid);border-left:4px solid var(--red);border-radius:0 4px 4px 0}
+#banner.on{display:flex}
+.ban-ico{width:28px;height:28px;border-radius:50%;background:rgba(220,38,38,.1);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ban-ico svg{width:13px;height:13px;color:var(--red)}
+.ban-msg{flex:1;font-size:12px;font-weight:600;color:var(--red)}
+.ban-num{font-size:16px;font-weight:800}
+.ban-btn{padding:5px 11px;border:1px solid var(--red-mid);border-radius:4px;background:#fff;color:var(--red);font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0}
+.ban-btn:hover{background:var(--red-bg)}
 
-/* TOOLBAR */
-.toolbar{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:12px;
-  margin:24px 0;
-}
-.search-input{
-  width:280px;
-  height:40px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  padding:0 12px;
-  font-size:14px;
-}
-.filter-group{
-  display:flex;
-  gap:4px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:4px;
-  background:#fff;
-}
-.filter-btn{
-  border:none;
-  background:none;
-  padding:6px 12px;
-  border-radius:8px;
-  font-size:12px;
-  cursor:pointer;
-  color:var(--muted);
-}
-.filter-btn.active{
-  background:var(--accent);
-  color:#fff;
-}
-.btn{
-  padding:8px 14px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#fff;
-  cursor:pointer;
-}
-.btn-accent{
-  background:var(--accent);
-  border:none;
-  color:#fff;
-  font-weight:600;
-}
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.srch{position:relative;flex:1;min-width:180px;max-width:300px}
+.srch svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--pale);pointer-events:none}
+#searchInput{width:100%;padding:10px 12px 10px 32px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:13px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s}
+#searchInput:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
+#searchInput::placeholder{color:var(--pale)}
+.tabs{display:flex;gap:2px;background:var(--white);border:1.5px solid var(--cream-3);border-radius:4px;padding:3px}
+.tab{padding:6px 12px;border:none;border-radius:3px;background:none;font-family:var(--f);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .14s;white-space:nowrap}
+.tab.on{background:var(--lime);color:var(--ink)}
+.tab:hover:not(.on){background:var(--cream);color:var(--ink-2)}
+/* dropdown filter */
+.fdd{position:relative}
+.fdd-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 11px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:all .14s}
+.fdd-btn:hover{border-color:var(--lime-mid)}
+.fdd-btn.on{border-color:var(--lime);background:var(--lime-bg);color:var(--lime-2)}
+.fdd-badge{background:var(--lime);color:var(--ink);font-size:9px;font-weight:800;padding:1px 5px;border-radius:999px;display:none}
+.fdd-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;min-width:160px;background:var(--white);border:1.5px solid var(--rule);border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.11);z-index:100;overflow:hidden}
+.fdd-panel.open{display:block}
+.fdd-head{padding:8px 12px 6px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule)}
+.fdd-ht{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale)}
+.fdd-clr{font-size:10px;font-weight:700;color:var(--lime-2);background:none;border:none;cursor:pointer;font-family:var(--f);padding:0}
+.fdd-clr:hover{text-decoration:underline}
+.fdd-opts{padding:4px;max-height:200px;overflow-y:auto}
+.fdd-opt{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:3px;cursor:pointer;user-select:none;transition:background .1s}
+.fdd-opt:hover{background:var(--cream)}
+.fdd-opt.on{background:var(--lime-bg)}
+.fdd-opt input{width:14px;height:14px;accent-color:var(--lime);cursor:pointer;flex-shrink:0}
+.fdd-opt label{font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer}
+.fdd-opt.on label{color:var(--lime-2)}
+.tb-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.sort-sel{padding:9px 26px 9px 10px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink-2);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;cursor:pointer;outline:none;transition:border-color .18s}
+.sort-sel:focus{border-color:var(--lime)}
+.vbtn{display:inline-flex;align-items:center;justify-content:center;padding:9px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);cursor:pointer;transition:all .14s}
+.vbtn.on{border-color:var(--lime);background:var(--lime-bg)}
+.vbtn svg{width:14px;height:14px;color:var(--muted)}
+.vbtn.on svg{color:var(--lime-2)}
+.res-lbl{font-size:11px;color:var(--pale);white-space:nowrap}
 
-/* TABLE */
-.table-wrap{
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  background:#fff;
-  overflow-x:auto;
-}
-table{width:100%;border-collapse:collapse;font-size:14px}
-thead{background:hsl(220 14% 95%)}
-th{
-  padding:14px 16px;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  color:var(--muted);
-  text-align:left;
-}
-td{padding:16px;border-top:1px solid var(--border)}
-tbody tr:hover{background:hsl(220 14% 96%);cursor:pointer}
+/* ── TABLE ── */
+.tbl-wrap{background:var(--white);border:1.5px solid var(--cream-3);border-radius:4px;overflow:hidden;box-shadow:var(--sh)}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:var(--cream);border-bottom:2px solid var(--cream-3)}
+th{padding:10px 13px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;transition:color .14s}
+th:hover{color:var(--ink-2)}
+th.sorted{color:var(--lime-2)}
+th .si{font-style:normal;margin-left:3px;opacity:.3;font-size:10px}
+th.sorted .si{opacity:1}
+td{padding:11px 13px;border-top:1px solid var(--rule);vertical-align:middle;white-space:nowrap}
+tbody tr{cursor:pointer;transition:background .12s}
+tbody tr:hover{background:var(--cream)}
+tbody tr.rev{background:var(--lime-bg)}
+.scell{display:flex;align-items:center;gap:9px}
+.av{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid var(--rule);background:var(--cream-2)}
+.av-init{width:32px;height:32px;border-radius:50%;background:var(--cream-2);border:1.5px solid var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(139,197,63,.5)}
+.slink{font-weight:700;color:var(--ink);font-size:13px;transition:color .14s}
+.slink:hover{color:var(--lime-2);text-decoration:underline}
+.sadm{font-size:10px;color:var(--pale);margin-top:1px}
+.bc{filter:blur(5px);transition:filter .25s;user-select:none}
+tr.rev .bc{filter:none}
+.pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700}
+.pill .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pCLEARED,.pPAID{background:rgba(139,197,63,.12);color:var(--lime-2)}
+.pOVERDUE{background:rgba(220,38,38,.1);color:var(--red)}
+.pPENDING,.pUPCOMING{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-mid)}
+.pACTIVE{background:rgba(139,197,63,.1);color:var(--lime-2)}
+.pINACTIVE{background:var(--cream-2);color:var(--pale)}
+.amt{font-variant-numeric:tabular-nums;font-weight:600}
+.amt.red{color:var(--red)} .amt.grn{color:var(--lime-2)}
+.days-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700}
+.days-badge.hot{background:rgba(220,38,38,.1);color:var(--red)}
+.days-badge.warm{background:var(--amber-bg);color:var(--amber)}
+.days-badge.ok{background:var(--cream-2);color:var(--pale)}
+.tbl-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tbl-foot-l{font-size:11px;color:var(--pale)}
+.tbl-foot-r{font-size:10px;color:var(--pale);font-style:italic}
 
-/* Student */
-.student-name{display:flex;align-items:center;gap:10px}
-.student-name img{
-  width:36px;height:36px;border-radius:50%;
-  object-fit:cover;background:#eee;
-}
-.student-link{
-  text-decoration:none;
-  font-weight:600;
-  color:var(--fg);
-}
-.student-link:hover{text-decoration:underline}
+/* ── CARD VIEW ── */
+#cardView{display:none}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.scard{background:var(--white);border:1.5px solid var(--cream-3);border-radius:4px;overflow:hidden;transition:transform .2s var(--ease),box-shadow .2s,border-color .18s;box-shadow:var(--sh)}
+.scard:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.09);border-color:var(--lime-mid)}
+.scard-top{display:flex;align-items:center;gap:11px;padding:14px;border-bottom:1px solid var(--rule)}
+.scard-photo{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--rule);flex-shrink:0;background:var(--cream-2)}
+.scard-init{width:42px;height:42px;border-radius:50%;background:var(--cream-2);border:2px solid var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:rgba(139,197,63,.4)}
+.scard-name{font-size:13px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.scard-cls{font-size:11px;color:var(--lime-2);font-weight:600;margin-top:2px;display:flex;align-items:center;gap:4px}
+.scard-cls::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.scard-rows{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+.srow{display:flex;align-items:center;justify-content:space-between;font-size:11px}
+.srow-k{color:var(--pale);font-weight:600}
+.srow-v{font-weight:700;color:var(--ink-2)}
+.scard-foot{padding:10px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between}
+.scard-link{font-size:11px;font-weight:700;color:var(--lime-2);display:flex;align-items:center;gap:4px;text-decoration:none}
+.scard-link:hover{text-decoration:underline}
+.scard-link svg{width:10px;height:10px}
 
-/* BLUR */
-.blur{filter:blur(6px);transition:.3s}
-tr.active .blur{filter:blur(0)}
+/* ── EMPTY ── */
+.empty{background:var(--white);border:1px dashed var(--rule);border-radius:4px;padding:52px 32px;text-align:center;grid-column:1/-1}
+.empty-ico{width:48px;height:48px;border-radius:50%;background:var(--cream);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.empty-ico svg{width:22px;height:22px;color:var(--pale)}
+.empty-h{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.empty-p{font-size:12px;color:var(--muted)}
 
-/* STATUS */
-.pill{
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:600;
-}
+/* ── SECTION HDR ── */
+.sec{display:flex;align-items:center;gap:12px;margin:28px 0 14px}
+.sec-rule{flex:1;height:1px;background:var(--rule)}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.sec-txt{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
 
-.pill.CLEARED{
-  background:hsla(142,71%,45%,.12);
-  color:var(--success);
-}
+/* ── FOOTER ── */
+.foot{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-brand{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--ink-2)}
+.foot-brand span{color:var(--lime)}
+.foot-links{display:flex;gap:16px;font-size:11px}
+.foot-links a{color:var(--muted);text-decoration:none;transition:color .18s}
+.foot-links a:hover{color:var(--lime-2)}
 
-.pill.OVERDUE{
-  background:hsla(0,84%,60%,.12);
-  color:var(--danger);
-}
-
-.pill.INACTIVE{
-  background:#f1f1f1;
-  color:#666;
-}
-
-.footer-info{
-  margin-top:16px;
-  font-size:12px;
-  color:var(--muted);
-}
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}.sc:nth-child(3){border-right:none}.sc:nth-child(n+4){border-top:1px solid var(--rule)}.sc:nth-child(4){border-right:1px solid var(--rule)}.sc:nth-child(5){border-right:1px solid var(--rule)}.insights{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.wrap{padding:0 18px 64px}.topbar{margin:0 -18px;padding:0 18px}.tb-bg{display:none}.stats{grid-template-columns:repeat(2,1fr)}.sc:nth-child(2){border-right:none}.sc:nth-child(n+3){border-top:1px solid var(--rule)}.sc:nth-child(3){border-right:1px solid var(--rule)}.insights{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.wrap{padding:0 14px 56px}.topbar{margin:0 -14px;padding:0 14px}.toolbar{flex-direction:column;align-items:stretch}.srch{max-width:none}.tb-right{margin-left:0;justify-content:space-between}.insights{grid-template-columns:1fr}.foot{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
-
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <div class="logo">SEHR <span>ACADEMY</span></div>
-    <div>Admin</div>
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld">
+    <div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div>
+    <div class="ld-ring"><div class="ldr-track"></div><div class="ldr-spin"></div><div class="ldr-inner"></div><div class="ldr-dot"></div></div>
+    <div class="ld-txt">Loading records</div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
   </div>
-</header>
+</div>
 
-<main class="main">
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-logo"><div class="lbox-logodot"></div>SEHR Academy</div>
+      <div class="lbox-title">Student Dashboard</div>
+      <div class="lbox-sub">Admin access required</div>
+    </div>
+    <div class="lbox-body">
+      <form id="loginForm">
+        <div class="lbox-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Admin Password
+        </div>
+        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" id="loginBtn" class="lbox-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Access Dashboard
+        </button>
+        <div class="lbox-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+</div>
 
-<div class="stats-grid" id="statsGrid"></div>
+<!-- APP -->
+<div id="app">
+<div class="wrap">
 
-<div class="section-title">Student Records</div>
-<div class="section-desc">Manage admissions, fees, and student details</div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-bg">DASHBOARD</div>
+    <div class="tb-inner">
+      <div>
+        <div class="tb-kicker"><div class="tb-kicker-rule"></div><span class="tb-kicker-txt">Admin &nbsp;·&nbsp; Student Records</span></div>
+        <div class="tb-title">Student <i>Dashboard</i></div>
+        <div class="tb-sub" id="pageSub">—</div>
+      </div>
+      <div class="tb-actions">
+        <button class="abt" id="btnExport">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export CSV
+        </button>
+        <button class="abt" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print
+        </button>
+        <button class="abt lime" id="btnRefresh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Refresh
+        </button>
+      </div>
+    </div>
+  </div>
 
-<div class="toolbar">
-  <input id="searchInput" class="search-input" placeholder="Search students...">
+  <!-- STATS -->
+  <div class="stats">
+    <div class="sc"><div class="sc-lbl">Total Students</div><div class="sc-val" id="stTotal">—</div><div class="sc-sub" id="stTotalSub"></div></div>
+    <div class="sc"><div class="sc-lbl">Active</div><div class="sc-val lime" id="stActive">—</div><div class="sc-sub" id="stActiveSub"></div></div>
+    <div class="sc warn"><div class="sc-lbl">Outstanding</div><div class="sc-val amber" id="stBal">—</div><div class="sc-sub" id="stBalSub"></div></div>
+    <div class="sc danger"><div class="sc-lbl">Overdue</div><div class="sc-val red" id="stOverdue">—</div><div class="sc-sub" id="stOverdueSub"></div></div>
+    <div class="sc"><div class="sc-lbl">Due This Month</div><div class="sc-val" id="stDue">—</div><div class="sc-sub" id="stDueSub"></div></div>
+    <div class="sc"><div class="sc-lbl">Scholarships</div><div class="sc-val blue" id="stSchol" style="color:var(--blue)">—</div><div class="sc-sub" id="stScholSub"></div></div>
+  </div>
 
-  <div style="display:flex;gap:8px;align-items:center;">
-    <div class="filter-group" id="filterGroup">
-      <button class="filter-btn active" data-filter="ALL">All</button>
-      <button class="filter-btn" data-filter="ACTIVE">Active</button>
-      <button class="filter-btn" data-filter="INACTIVE">Inactive</button>
+  <!-- INSIGHTS -->
+  <div class="sec" aria-hidden="true"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Insights</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="insights">
+    <div class="ins lime"><div class="ins-lbl">Collection Rate</div><div class="ins-val lime" id="iRate">—</div><div class="ins-sub">of total fees collected</div></div>
+    <div class="ins amber"><div class="ins-lbl">Avg Balance / Student</div><div class="ins-val amber" id="iAvg">—</div><div class="ins-sub">per active student</div></div>
+    <div class="ins red"><div class="ins-lbl">Worst Overdue</div><div class="ins-val red" id="iWorst">—</div><div class="ins-sub" id="iWorstName"></div></div>
+    <div class="ins blue"><div class="ins-lbl">Pending Admission Fees</div><div class="ins-val blue" id="iAdmPend" style="color:var(--blue)">—</div><div class="ins-sub" id="iAdmPendSub"></div></div>
+  </div>
+
+  <!-- OVERDUE BANNER -->
+  <div id="banner">
+    <div class="ban-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div class="ban-msg"><span class="ban-num" id="banCount">0</span> students have overdue payments.</div>
+    <button class="ban-btn" id="btnOverdue">Show Overdue</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="srch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="searchInput" placeholder="Search name, school, admission no, subjects…">
     </div>
 
-    <button class="btn">Export</button>
-    <button class="btn btn-accent">+ Add Student</button>
+    <div class="tabs" id="statusTabs">
+      <button class="tab on" data-v="ALL">All</button>
+      <button class="tab" data-v="ACTIVE">Active</button>
+      <button class="tab" data-v="INACTIVE">Inactive</button>
+    </div>
+
+    <div class="fdd" id="fddClass">
+      <button type="button" class="fdd-btn">Class <span class="fdd-badge" id="bdgClass"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="fdd-panel" id="panClass"><div class="fdd-head"><span class="fdd-ht">Class</span><button type="button" class="fdd-clr" data-k="class">Clear</button></div><div class="fdd-opts" id="optsClass"></div></div>
+    </div>
+
+    <div class="fdd" id="fddFee">
+      <button type="button" class="fdd-btn">Fee Status <span class="fdd-badge" id="bdgFee"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="fdd-panel" id="panFee"><div class="fdd-head"><span class="fdd-ht">Fee Status</span><button type="button" class="fdd-clr" data-k="fee">Clear</button></div><div class="fdd-opts" id="optsFee"></div></div>
+    </div>
+
+    <div class="fdd" id="fddSyl">
+      <button type="button" class="fdd-btn">Syllabus <span class="fdd-badge" id="bdgSyl"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="fdd-panel" id="panSyl"><div class="fdd-head"><span class="fdd-ht">Syllabus</span><button type="button" class="fdd-clr" data-k="syl">Clear</button></div><div class="fdd-opts" id="optsSyl"></div></div>
+    </div>
+
+    <div class="fdd" id="fddGender">
+      <button type="button" class="fdd-btn">Gender <span class="fdd-badge" id="bdgGender"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="fdd-panel" id="panGender"><div class="fdd-head"><span class="fdd-ht">Gender</span><button type="button" class="fdd-clr" data-k="gender">Clear</button></div><div class="fdd-opts" id="optsGender"></div></div>
+    </div>
+
+    <div class="tb-right">
+      <select class="sort-sel" id="sortSel">
+        <option value="name">Name A–Z</option>
+        <option value="name_d">Name Z–A</option>
+        <option value="class">Class</option>
+        <option value="bal">Balance ↑</option>
+        <option value="days">Days Overdue</option>
+        <option value="join">Joining Date</option>
+        <option value="due">Next Due</option>
+      </select>
+      <button class="vbtn on" id="vTable" title="Table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+      <button class="vbtn" id="vCards" title="Cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+      <span class="res-lbl" id="resLbl"></span>
+    </div>
   </div>
+
+  <!-- TABLE -->
+  <div id="tableView">
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th data-col="name">Student <i class="si">↕</i></th>
+            <th data-col="class">Class <i class="si">↕</i></th>
+            <th data-col="syl">Syllabus</th>
+            <th data-col="gender">Gender</th>
+            <th data-col="school">School</th>
+            <th data-col="subjects">Subjects</th>
+            <th data-col="join">Joining <i class="si">↕</i></th>
+            <th data-col="fee">Total Fee <i class="si">↕</i></th>
+            <th data-col="paid">Paid <i class="si">↕</i></th>
+            <th data-col="bal">Balance <i class="si">↕</i></th>
+            <th data-col="fstatus">Fee Status</th>
+            <th data-col="days">Days OD <i class="si">↕</i></th>
+            <th data-col="due">Next Due <i class="si">↕</i></th>
+            <th data-col="dueamt">Next Amt</th>
+            <th data-col="adm">Admission</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tbl-foot">
+      <span class="tbl-foot-l" id="tblLbl"></span>
+      <span class="tbl-foot-r">Click row to reveal blurred data &nbsp;·&nbsp; Click name to open profile</span>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div id="cardView">
+    <div class="card-grid" id="cardGrid"></div>
+    <div class="tbl-foot" style="margin-top:10px"><span class="tbl-foot-l" id="cardLbl"></span></div>
+  </div>
+
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span style="color:var(--pale)">Vatanappally, Thrissur</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
 </div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Admission No</th>
-<th>Class</th>
-<th>Syllabus</th>
-<th>School</th>
-<th>Joining Date</th>
-<th>Total Fee</th>
-<th>Total Paid</th>
-<th>Balance</th>
-<th>Status</th>
-<th>Next Due</th>
-<th>Next Amount</th>
-</tr>
-</thead>
-<tbody id="tableBody"></tbody>
-</table>
 </div>
-
-<div id="footerInfo" class="footer-info"></div>
-
-</main>
 
 <script>
-const BASE_URL="https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec";
+(function(){
+'use strict';
 
-let STUDENTS=[];
-let FILTER="ALL";
-let SEARCH="";
+var API = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
 
-window.onload=()=>{
-  const pass=prompt("Enter Admin Password:");
-  if(!pass)location.reload();
+// ── STATE ────────────────────────────────────────────────────────
+var S = [];
+var VIEW = 'table', SCOL = 'name', SASC = true;
+var FTAB = 'ALL', FSEARCH = '';
+var FC = { class: new Set(), fee: new Set(), syl: new Set(), gender: new Set() };
 
-  fetch(`${BASE_URL}?action=studentList&password=${encodeURIComponent(pass)}`)
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){alert("Wrong Password");location.reload();}
-    STUDENTS=data.students||[];
-    render();
-  });
-};
+// ── HELPERS ──────────────────────────────────────────────────────
+var g = function(id){ return document.getElementById(id); };
+var q = function(sel){ return document.querySelectorAll(sel); };
 
-function render(){
+function loaderOn(){ g('loader').classList.add('on'); }
+function loaderOff(){ g('loader').classList.remove('on'); }
 
-  const filtered=STUDENTS.filter(s=>{
-    const admission=(s.admission_status||"").toUpperCase();
-    const matchFilter=FILTER==="ALL"||admission===FILTER;
-    const matchSearch=(s.full_name||"").toLowerCase().includes(SEARCH);
-    return matchFilter&&matchSearch;
-  });
+function e(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function inits(n){ return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
+function fmtDate(d){ if(!d) return '—'; var dt=new Date(d); return isNaN(dt.getTime())?String(d):dt.toLocaleDateString('en-IN'); }
+function fmtN(n){ return Number(n||0).toLocaleString('en-IN'); }
 
-  document.getElementById("tableBody").innerHTML=
-  filtered.map(s=>{
-    const feeStatus=(s.status||"").toUpperCase();
-    return `
-<tr onclick="this.classList.toggle('active')">
-<td>
-<div class="student-name">
-<img src="${s.photo||''}">
-<a class="student-link"
-href="https://sehracademy.com/student?id=${encodeURIComponent(s.id)}"
-onclick="event.stopPropagation()" target="_blank">
-${s.full_name||''}
-</a>
-</div>
-</td>
-<td>${s.admission_no||'-'}</td>
-<td>${s.class||'-'}</td>
-<td>${s.syllabus||'-'}</td>
-<td>${s.school_name||'-'}</td>
-<td class="blur">${formatDate(s.joining_date)}</td>
-<td class="blur">₹${Number(s.total_fee||0).toLocaleString()}</td>
-<td class="blur">₹${Number(s.total_paid||0).toLocaleString()}</td>
-<td class="blur">₹${Number(s.balance||0).toLocaleString()}</td>
-<td class="blur"><span class="pill ${feeStatus}">${feeStatus}</span></td>
-<td class="blur">${s.next_due||'-'}</td>
-<td class="blur">₹${Number(s.next_due_amount||0).toLocaleString()}</td>
-</tr>`;
-  }).join("");
-
-  document.getElementById("footerInfo").innerText=
-  `Showing ${filtered.length} of ${STUDENTS.length} students`;
-
-  renderStats();
+// ── EXACT FIELD MAPPING (confirmed from debug output) ────────────
+// Sheet headers: id, admission_no, full_name, gender, class, syllabus,
+// admission_status, school_name, parent_name, contact, joining_date,
+// birthday, photo, scholarship, fees, subjects, monthly_fee,
+// effective_start, total_months, total_fee, admission_amount,
+// june_amount, september_amount, total_paid, balance, status,
+// next_due, next_due_amount, days_overdue, current_academic_year,
+// admission_paid, june_paid, september_paid, admission_pending,
+// june_pending, september_pending
+function norm(s){
+  return {
+    id:                 s.id                 || '',
+    admission_no:       s.admission_no       || '',
+    full_name:          s.full_name          || '',
+    gender:             s.gender             || '',
+    class:              s.class              || '',
+    syllabus:           s.syllabus           || '',
+    admission_status:   s.admission_status   || '',
+    school_name:        s.school_name        || '',
+    parent_name:        s.parent_name        || '',
+    contact:            s.contact            || '',
+    joining_date:       s.joining_date       || '',
+    birthday:           s.birthday           || '',
+    photo:              s.photo              || '',
+    scholarship:        s.scholarship        || '',
+    fees:               s.fees               || '',
+    subjects:           s.subjects           || '',
+    monthly_fee:        Number(s.monthly_fee       || 0),
+    effective_start:    s.effective_start    || '',
+    total_months:       Number(s.total_months      || 0),
+    total_fee:          Number(s.total_fee         || 0),
+    admission_amount:   Number(s.admission_amount  || 0),
+    june_amount:        Number(s.june_amount       || 0),
+    september_amount:   Number(s.september_amount  || 0),
+    total_paid:         Number(s.total_paid        || 0),
+    balance:            Number(s.balance           || 0),
+    status:             (s.status                  || '').toUpperCase(),
+    next_due:           s.next_due           || '',
+    next_due_amount:    Number(s.next_due_amount   || 0),
+    days_overdue:       Number(s.days_overdue      || 0),
+    current_academic_year: s.current_academic_year || '',
+    admission_paid:     Number(s.admission_paid    || 0),
+    june_paid:          Number(s.june_paid         || 0),
+    september_paid:     Number(s.september_paid    || 0),
+    admission_pending:  Number(s.admission_pending || 0),
+    june_pending:       Number(s.june_pending      || 0),
+    september_pending:  Number(s.september_pending || 0),
+  };
 }
 
-function renderStats(){
+// ── LOGIN ────────────────────────────────────────────────────────
+g('loginForm').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var pass = g('passInput').value.trim();
+  if (!pass) return;
+  var btn = g('loginBtn');
+  btn.disabled = true; btn.textContent = 'Authenticating…';
+  g('loginErr').className = 'lbox-err';
+  loaderOn();
 
-  const total=STUDENTS.length;
+  fetch(API + '?action=studentList&password=' + encodeURIComponent(pass))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.error){
+        loaderOff(); btn.disabled=false; btn.textContent='Access Dashboard';
+        g('loginErr').textContent='Incorrect password.'; g('loginErr').className='lbox-err on';
+        return;
+      }
+      var raw = Array.isArray(data) ? data : (Array.isArray(data.students) ? data.students : []);
+      S = raw.map(norm);
+      sessionStorage.setItem('sehr_pass', pass);
+      g('loginWrap').classList.add('gone');
+      g('app').classList.add('on');
+      loaderOff();
+      boot();
+    })
+    .catch(function(){
+      loaderOff(); btn.disabled=false; btn.textContent='Access Dashboard';
+      g('loginErr').textContent='Connection error — check your network.'; g('loginErr').className='lbox-err on';
+    });
+});
 
-  const activeStudents=STUDENTS.filter(s=>
-    (s.admission_status||"").toUpperCase()==="ACTIVE"
-  );
+// ── BOOT ─────────────────────────────────────────────────────────
+var booted = false;
+function boot(){
+  buildStats();
+  buildInsights();
+  g('pageSub').textContent = S.length + ' students · Updated ' + new Date().toLocaleTimeString('en-IN');
 
-  const activeCount=activeStudents.length;
+  // Populate dropdowns with real data
+  populateFdd('class',  'optsClass',  uniq(function(s){ return s.class; }));
+  populateFdd('fee',    'optsFee',    uniq(function(s){ return s.status; }));
+  populateFdd('syl',    'optsSyl',    uniq(function(s){ return s.syllabus; }));
+  populateFdd('gender', 'optsGender', uniq(function(s){ return s.gender; }));
 
-  const overdueCount=STUDENTS.filter(s=>
-    (s.status||"").toUpperCase()==="OVERDUE"
-  ).length;
-
-  const outstandingBalance=activeStudents.reduce((sum,s)=>
-    sum+Number(s.balance||0),0);
-
-  document.getElementById("statsGrid").innerHTML=`
-<div class="stat-card">
-<div class="stat-title">Total Students</div>
-<div class="stat-value">${total}</div>
-<div class="stat-sub">${activeCount} active</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-title">Active Students</div>
-<div class="stat-value">${activeCount}</div>
-<div class="stat-sub">${total?Math.round(activeCount/total*100):0}% of total</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-title">Outstanding Balance</div>
-<div class="stat-value">₹${outstandingBalance.toLocaleString("en-IN")}</div>
-<div class="stat-sub">${overdueCount} overdue payments</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-title">Overdue</div>
-<div class="stat-value">${overdueCount}</div>
-<div class="stat-sub">Needs attention</div>
-</div>
-`;
-}
-
-document.getElementById("searchInput").addEventListener("input",e=>{
-  SEARCH=e.target.value.toLowerCase();
+  if (!booted){ booted=true; wireAll(); }
   render();
-});
-
-document.getElementById("filterGroup").addEventListener("click",e=>{
-  if(e.target.dataset.filter){
-    FILTER=e.target.dataset.filter;
-    document.querySelectorAll(".filter-btn")
-    .forEach(b=>b.classList.toggle("active",b===e.target));
-    render();
-  }
-});
-
-function formatDate(dateStr){
-  if(!dateStr)return"-";
-  const d=new Date(dateStr);
-  return isNaN(d)?dateStr:d.toLocaleDateString("en-IN");
 }
-</script>
 
+function uniq(fn){
+  var seen={}, out=[];
+  S.forEach(function(s){ var v=fn(s); if(v && !seen[v]){ seen[v]=1; out.push(v); }});
+  return out.sort();
+}
+
+// ── WIRE ALL LISTENERS ───────────────────────────────────────────
+function wireAll(){
+  g('searchInput').addEventListener('input', function(){ FSEARCH=this.value.toLowerCase().trim(); render(); });
+  g('sortSel').addEventListener('change', function(){ SCOL=this.value; render(); });
+
+  q('#statusTabs .tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      FTAB=this.dataset.v;
+      q('#statusTabs .tab').forEach(function(b){ b.classList.remove('on'); });
+      this.classList.add('on');
+      render();
+    });
+  });
+
+  q('th[data-col]').forEach(function(th){
+    th.addEventListener('click', function(){
+      var c=this.dataset.col;
+      if(SCOL===c){ SASC=!SASC; } else { SCOL=c; SASC=true; }
+      q('th[data-col]').forEach(function(x){ x.classList.remove('sorted'); var si=x.querySelector('.si'); if(si) si.textContent='↕'; });
+      this.classList.add('sorted');
+      var si=this.querySelector('.si'); if(si) si.textContent=SASC?'↑':'↓';
+      render();
+    });
+  });
+
+  g('vTable').addEventListener('click', function(){ setView('table'); });
+  g('vCards').addEventListener('click', function(){ setView('cards'); });
+
+  g('tbody').addEventListener('click', function(ev){
+    if(ev.target.tagName==='A') return;
+    var row=ev.target.closest('tr'); if(row) row.classList.toggle('rev');
+  });
+
+  g('btnExport').addEventListener('click', exportCSV);
+  g('btnPrint').addEventListener('click', function(){ window.print(); });
+  g('btnRefresh').addEventListener('click', function(){
+    var pass=sessionStorage.getItem('sehr_pass'); if(!pass) return;
+    loaderOn();
+    fetch(API+'?action=studentList&password='+encodeURIComponent(pass))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var raw=Array.isArray(data)?data:(Array.isArray(data.students)?data.students:S);
+        S=raw.map(norm); boot();
+      })
+      .catch(function(){})
+      .finally(function(){ loaderOff(); });
+  });
+
+  g('btnOverdue').addEventListener('click', function(){
+    FC.fee=new Set(['OVERDUE']);
+    syncCbs('optsFee', FC.fee);
+    updBadge('fee','bdgFee','fddFee');
+    render();
+  });
+
+  // Dropdown toggles
+  ['Class','Fee','Syl','Gender'].forEach(function(k){
+    var wrap=g('fdd'+k), btn=wrap.querySelector('.fdd-btn'), panel=wrap.querySelector('.fdd-panel');
+    btn.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var open=panel.classList.contains('open');
+      closeAll();
+      if(!open) panel.classList.add('open');
+    });
+    panel.addEventListener('click', function(ev){ ev.stopPropagation(); });
+  });
+
+  q('.fdd-clr').forEach(function(btn){
+    btn.addEventListener('click', function(ev){
+      ev.stopPropagation(); clearFdd(this.dataset.k);
+    });
+  });
+
+  document.addEventListener('click', closeAll);
+}
+
+function closeAll(){ q('.fdd-panel').forEach(function(p){ p.classList.remove('open'); }); }
+
+// ── DROPDOWN HELPERS ─────────────────────────────────────────────
+function populateFdd(key, cid, values){
+  var c=g(cid); c.innerHTML='';
+  values.forEach(function(val){
+    var div=document.createElement('div'); div.className='fdd-opt';
+    var cb=document.createElement('input'); cb.type='checkbox'; cb.value=val;
+    cb.id='cb'+key+val.replace(/\W/g,'');
+    var lbl=document.createElement('label'); lbl.htmlFor=cb.id; lbl.textContent=val;
+    div.appendChild(cb); div.appendChild(lbl); c.appendChild(div);
+    cb.addEventListener('change', function(){
+      var set=FC[key]; if(!set) return;
+      if(this.checked){ set.add(val); div.classList.add('on'); }
+      else { set.delete(val); div.classList.remove('on'); }
+      var kc=key.charAt(0).toUpperCase()+key.slice(1);
+      updBadge(key,'bdg'+kc,'fdd'+kc);
+      render();
+    });
+  });
+}
+
+function syncCbs(cid, set){
+  q('#'+cid+' .fdd-opt').forEach(function(opt){
+    var cb=opt.querySelector('input'); if(!cb) return;
+    cb.checked=set.has(cb.value); opt.classList.toggle('on',set.has(cb.value));
+  });
+}
+
+function updBadge(key,bid,wid){
+  var set=FC[key], badge=g(bid), wrap=g(wid);
+  if(badge){ badge.textContent=set.size; badge.style.display=set.size?'inline':'none'; }
+  if(wrap){ wrap.querySelector('.fdd-btn').classList.toggle('on',set.size>0); }
+}
+
+function clearFdd(key){
+  var kc=key.charAt(0).toUpperCase()+key.slice(1);
+  FC[key]=new Set();
+  syncCbs('opts'+kc, FC[key]);
+  updBadge(key,'bdg'+kc,'fdd'+kc);
+  render();
+}
+
+// ── STATS ────────────────────────────────────────────────────────
+function buildStats(){
+  var total=S.length;
+  var active=S.filter(function(s){ return s.admission_status.toUpperCase()==='ACTIVE'; });
+  var overdue=S.filter(function(s){ return s.status==='OVERDUE'; });
+  var bal=active.reduce(function(sum,s){ return sum+s.balance; },0);
+  var schol=S.filter(function(s){ return s.scholarship && String(s.scholarship).trim()!=='' && String(s.scholarship).trim()!=='0'; });
+
+  var now=new Date();
+  var thisMonth=S.filter(function(s){
+    if(!s.next_due) return false;
+    var d=new Date(s.next_due);
+    return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+  });
+  var dueAmt=thisMonth.reduce(function(sum,s){ return sum+s.next_due_amount; },0);
+
+  g('stTotal').textContent=total;
+  g('stTotalSub').textContent=active.length+' active · '+(total-active.length)+' inactive';
+  g('stActive').textContent=active.length;
+  g('stActiveSub').textContent=(total?Math.round(active.length/total*100):0)+'% of total';
+  g('stBal').textContent='₹'+fmtN(bal);
+  g('stBalSub').textContent='from '+active.length+' active';
+  g('stOverdue').textContent=overdue.length;
+  g('stOverdueSub').textContent=overdue.length?'Needs attention':'All clear';
+  g('stDue').textContent='₹'+fmtN(dueAmt);
+  g('stDueSub').textContent=thisMonth.length+' payments this month';
+  g('stSchol').textContent=schol.length;
+  g('stScholSub').textContent='students with scholarship';
+  g('banCount').textContent=overdue.length;
+  if(overdue.length>0) g('banner').classList.add('on');
+  else g('banner').classList.remove('on');
+}
+
+// ── INSIGHTS ─────────────────────────────────────────────────────
+function buildInsights(){
+  var active=S.filter(function(s){ return s.admission_status.toUpperCase()==='ACTIVE'; });
+  var overdue=S.filter(function(s){ return s.status==='OVERDUE'; });
+  var totalFee=active.reduce(function(sum,s){ return sum+s.total_fee; },0);
+  var totalPaid=active.reduce(function(sum,s){ return sum+s.total_paid; },0);
+  var bal=active.reduce(function(sum,s){ return sum+s.balance; },0);
+  var rate=totalFee>0?Math.round(totalPaid/totalFee*100):0;
+  var avg=active.length>0?Math.round(bal/active.length):0;
+
+  g('iRate').textContent=rate+'%';
+  g('iAvg').textContent='₹'+fmtN(avg);
+
+  // Worst overdue student
+  var worst=overdue.slice().sort(function(a,b){ return b.days_overdue-a.days_overdue; })[0];
+  if(worst){ g('iWorst').textContent=worst.days_overdue+' days'; g('iWorstName').textContent=worst.full_name||''; }
+  else { g('iWorst').textContent='None'; g('iWorstName').textContent='No overdue payments'; }
+
+  // Admission pending
+  var admPend=S.reduce(function(sum,s){ return sum+s.admission_pending; },0);
+  var admPendCount=S.filter(function(s){ return s.admission_pending>0; }).length;
+  g('iAdmPend').textContent='₹'+fmtN(admPend);
+  g('iAdmPendSub').textContent=admPendCount+' students pending';
+}
+
+// ── FILTER + SORT ────────────────────────────────────────────────
+function filtered(){
+  return S.filter(function(s){
+    var st=s.admission_status.toUpperCase();
+    var fs=s.status;
+    if(FTAB!=='ALL'&&st!==FTAB) return false;
+    if(FSEARCH){
+      var hay=(s.full_name+' '+s.school_name+' '+s.admission_no+' '+s.subjects+' '+s.parent_name).toLowerCase();
+      if(hay.indexOf(FSEARCH)<0) return false;
+    }
+    if(FC.class.size  && !FC.class.has(s.class))    return false;
+    if(FC.fee.size    && !FC.fee.has(fs))            return false;
+    if(FC.syl.size    && !FC.syl.has(s.syllabus))   return false;
+    if(FC.gender.size && !FC.gender.has(s.gender))  return false;
+    return true;
+  });
+}
+
+function sorted(arr){
+  return arr.slice().sort(function(a,b){
+    var r=0;
+    switch(SCOL){
+      case 'name':   r=(a.full_name||'').localeCompare(b.full_name||''); break;
+      case 'name_d': r=(b.full_name||'').localeCompare(a.full_name||''); break;
+      case 'class':  r=(a.class||'').localeCompare(b.class||''); break;
+      case 'syl':    r=(a.syllabus||'').localeCompare(b.syllabus||''); break;
+      case 'school': r=(a.school_name||'').localeCompare(b.school_name||''); break;
+      case 'join':   r=new Date(a.joining_date||0)-new Date(b.joining_date||0); break;
+      case 'fee':    r=b.total_fee-a.total_fee; break;
+      case 'paid':   r=b.total_paid-a.total_paid; break;
+      case 'bal':    r=b.balance-a.balance; break;
+      case 'days':   r=b.days_overdue-a.days_overdue; break;
+      case 'due':    r=(a.next_due||'9999').localeCompare(b.next_due||'9999'); break;
+      case 'dueamt': r=b.next_due_amount-a.next_due_amount; break;
+      default:       r=(a.full_name||'').localeCompare(b.full_name||'');
+    }
+    return SASC?r:-r;
+  });
+}
+
+// ── RENDER ───────────────────────────────────────────────────────
+function render(){
+  var list=sorted(filtered());
+  var lbl='Showing '+list.length+' of '+S.length+' students';
+  g('resLbl').textContent=lbl; g('tblLbl').textContent=lbl; g('cardLbl').textContent=lbl;
+  if(VIEW==='table') renderTable(list); else renderCards(list);
+}
+
+function pill(val){ return '<span class="pill p'+e(val)+'"><span class="dot"></span>'+e(val||'—')+'</span>'; }
+
+function daysBadge(n){
+  n=Number(n||0);
+  if(n<=0) return '<span class="days-badge ok">—</span>';
+  var cls=n>60?'hot':n>14?'warm':'ok';
+  return '<span class="days-badge '+cls+'">'+n+'d</span>';
+}
+
+function avatarHtml(photo,name,imgCls,initCls){
+  var init=inits(name);
+  var img=photo?'<img class="'+imgCls+'" src="'+e(photo)+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">':'';
+  var iv='<div class="'+initCls+'" '+(photo?'style="display:none"':'')+'">'+init+'</div>';
+  return img+iv;
+}
+
+// TABLE
+function renderTable(list){
+  if(!list.length){
+    g('tbody').innerHTML='<tr><td colspan="15"><div class="empty"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div><p class="empty-p">Adjust search or filters.</p></div></td></tr>';
+    return;
+  }
+  g('tbody').innerHTML=list.map(function(s){
+    var ast=s.admission_status.toUpperCase();
+    return '<tr tabindex="0">'
+      +'<td><div class="scell">'+avatarHtml(s.photo,s.full_name,'av','av-init')
+      +'<div><a class="slink" href="https://sehracademy.com/student?id='+encodeURIComponent(s.id)+'" target="_blank">'+e(s.full_name||'—')+'</a>'
+      +'<div class="sadm">#'+e(s.admission_no||'—')+'</div></div></div></td>'
+      +'<td>'+e(s.class||'—')+'</td>'
+      +'<td>'+e(s.syllabus||'—')+'</td>'
+      +'<td>'+e(s.gender||'—')+'</td>'
+      +'<td>'+e(s.school_name||'—')+'</td>'
+      +'<td class="bc">'+e(s.subjects||'—')+'</td>'
+      +'<td class="bc">'+fmtDate(s.joining_date)+'</td>'
+      +'<td class="bc amt">₹'+fmtN(s.total_fee)+'</td>'
+      +'<td class="bc amt grn">₹'+fmtN(s.total_paid)+'</td>'
+      +'<td class="bc amt'+(s.balance>0?' red':'')+'">₹'+fmtN(s.balance)+'</td>'
+      +'<td class="bc">'+pill(s.status)+'</td>'
+      +'<td class="bc">'+daysBadge(s.days_overdue)+'</td>'
+      +'<td class="bc">'+e(s.next_due||'—')+'</td>'
+      +'<td class="bc amt">₹'+fmtN(s.next_due_amount)+'</td>'
+      +'<td>'+pill(ast)+'</td>'
+      +'</tr>';
+  }).join('');
+}
+
+// CARDS
+function renderCards(list){
+  var grid=g('cardGrid');
+  if(!list.length){
+    grid.innerHTML='<div class="empty"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div><p class="empty-p">Adjust filters.</p></div>';
+    return;
+  }
+  grid.innerHTML=list.map(function(s){
+    var ast=s.admission_status.toUpperCase();
+    var av=avatarHtml(s.photo,s.full_name,'scard-photo','scard-init');
+    return '<div class="scard">'
+      +'<div class="scard-top">'+av
+      +'<div><div class="scard-name">'+e(s.full_name||'—')+'</div>'
+      +'<div class="scard-cls">'+e(s.class||'—')+(s.syllabus?' · '+e(s.syllabus):'')+'</div></div></div>'
+      +'<div class="scard-rows">'
+      +srow('School', e(s.school_name||'—'))
+      +srow('Adm No', '#'+e(s.admission_no||'—'))
+      +srow('Subjects', e(s.subjects||'—'))
+      +srow('Balance', '<span style="font-weight:700;color:'+(s.balance>0?'var(--red)':'var(--lime-2)')+'">₹'+fmtN(s.balance)+'</span>')
+      +srow('Fee', pill(s.status))
+      +srow('Days OD', daysBadge(s.days_overdue))
+      +srow('Next Due', e(s.next_due||'—'))
+      +srow('Adm Status', pill(ast))
+      +'</div>'
+      +'<div class="scard-foot"><a class="scard-link" href="https://sehracademy.com/student?id='+encodeURIComponent(s.id)+'" target="_blank">View Profile <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>'
+      +pill(ast)+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function srow(k,v){ return '<div class="srow"><span class="srow-k">'+k+'</span><span class="srow-v">'+v+'</span></div>'; }
+
+// VIEW
+function setView(v){
+  VIEW=v;
+  g('tableView').style.display=v==='table'?'block':'none';
+  g('cardView').style.display=v==='cards'?'block':'none';
+  g('vTable').classList.toggle('on',v==='table');
+  g('vCards').classList.toggle('on',v==='cards');
+  render();
+}
+
+// EXPORT CSV
+function exportCSV(){
+  var list=sorted(filtered());
+  var hdr=['Name','Adm No','Gender','Class','Syllabus','School','Subjects','Joining','Monthly Fee','Total Fee','Paid','Balance','Fee Status','Days Overdue','Next Due','Next Amt','Admission Status','Parent','Contact','Scholarship','June Pending','Sep Pending','Adm Pending'];
+  var rows=list.map(function(s){
+    return [s.full_name,s.admission_no,s.gender,s.class,s.syllabus,s.school_name,s.subjects,fmtDate(s.joining_date),s.monthly_fee,s.total_fee,s.total_paid,s.balance,s.status,s.days_overdue,s.next_due,s.next_due_amount,s.admission_status,s.parent_name,s.contact,s.scholarship,s.june_pending,s.september_pending,s.admission_pending]
+    .map(function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; }).join(',');
+  });
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([[hdr.join(',')].concat(rows).join('\n')],{type:'text/csv'}));
+  a.download='sehr_students_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+}
+
+})();
+</script>
 </body>
 </html>
