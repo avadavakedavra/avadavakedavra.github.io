@@ -449,463 +449,587 @@ tr.rev .bc{filter:none}
 </div>
 
 <script>
-(function(){
-'use strict';
 
 var API = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
 
-// ── STATE ────────────────────────────────────────────────────────
+/* ── STATE ── */
 var S = [];
-var VIEW = 'table', SCOL = 'name', SASC = true;
-var FTAB = 'ALL', FSEARCH = '';
-var FC = { class: new Set(), fee: new Set(), syl: new Set(), gender: new Set() };
+var VIEW = 'table';
+var SCOL = 'name';
+var SASC = true;
+var FTAB = 'ALL';
+var FSEARCH = '';
+/* filter sets — never reassigned, only .clear()/.add()/.delete() */
+var F_CLASS  = new Set();
+var F_FEE    = new Set();
+var F_SYL    = new Set();
+var F_GENDER = new Set();
 
-// ── HELPERS ──────────────────────────────────────────────────────
-var g = function(id){ return document.getElementById(id); };
-var q = function(sel){ return document.querySelectorAll(sel); };
+/* ── DOM ── */
+function g(id) { return document.getElementById(id); }
+function qa(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
 
-function loaderOn(){ g('loader').classList.add('on'); }
-function loaderOff(){ g('loader').classList.remove('on'); }
+/* ── LOADER ── */
+function loaderOn()  { g('loader').classList.add('on'); }
+function loaderOff() { g('loader').classList.remove('on'); }
 
-function e(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function inits(n){ return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
-function fmtDate(d){ if(!d) return '—'; var dt=new Date(d); return isNaN(dt.getTime())?String(d):dt.toLocaleDateString('en-IN'); }
-function fmtN(n){ return Number(n||0).toLocaleString('en-IN'); }
+/* ── ESCAPE ── */
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function inits(n) {
+  return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  var dt = new Date(d);
+  return isNaN(dt.getTime()) ? String(d) : dt.toLocaleDateString('en-IN');
+}
+function fmtN(n) { return Number(n||0).toLocaleString('en-IN'); }
 
-// ── EXACT FIELD MAPPING (confirmed from debug output) ────────────
-// Sheet headers: id, admission_no, full_name, gender, class, syllabus,
-// admission_status, school_name, parent_name, contact, joining_date,
-// birthday, photo, scholarship, fees, subjects, monthly_fee,
-// effective_start, total_months, total_fee, admission_amount,
-// june_amount, september_amount, total_paid, balance, status,
-// next_due, next_due_amount, days_overdue, current_academic_year,
-// admission_paid, june_paid, september_paid, admission_pending,
-// june_pending, september_pending
-function norm(s){
+/* ── NORM — maps raw sheet keys to fixed names ── */
+function norm(s) {
   return {
-    id:                 s.id                 || '',
-    admission_no:       s.admission_no       || '',
-    full_name:          s.full_name          || '',
-    gender:             s.gender             || '',
-    class:              s.class              || '',
-    syllabus:           s.syllabus           || '',
-    admission_status:   s.admission_status   || '',
-    school_name:        s.school_name        || '',
-    parent_name:        s.parent_name        || '',
-    contact:            s.contact            || '',
-    joining_date:       s.joining_date       || '',
-    birthday:           s.birthday           || '',
-    photo:              s.photo              || '',
-    scholarship:        s.scholarship        || '',
-    fees:               s.fees               || '',
-    subjects:           s.subjects           || '',
-    monthly_fee:        Number(s.monthly_fee       || 0),
-    effective_start:    s.effective_start    || '',
-    total_months:       Number(s.total_months      || 0),
-    total_fee:          Number(s.total_fee         || 0),
-    admission_amount:   Number(s.admission_amount  || 0),
-    june_amount:        Number(s.june_amount       || 0),
-    september_amount:   Number(s.september_amount  || 0),
-    total_paid:         Number(s.total_paid        || 0),
-    balance:            Number(s.balance           || 0),
-    status:             (s.status                  || '').toUpperCase(),
-    next_due:           s.next_due           || '',
-    next_due_amount:    Number(s.next_due_amount   || 0),
-    days_overdue:       Number(s.days_overdue      || 0),
-    current_academic_year: s.current_academic_year || '',
-    admission_paid:     Number(s.admission_paid    || 0),
-    june_paid:          Number(s.june_paid         || 0),
-    september_paid:     Number(s.september_paid    || 0),
-    admission_pending:  Number(s.admission_pending || 0),
-    june_pending:       Number(s.june_pending      || 0),
-    september_pending:  Number(s.september_pending || 0),
+    id:               String(s.id                || ''),
+    admission_no:     String(s.admission_no      || ''),
+    full_name:        String(s.full_name         || ''),
+    gender:           String(s.gender            || ''),
+    class:            String(s.class             || ''),
+    syllabus:         String(s.syllabus          || ''),
+    admission_status: String(s.admission_status  || '').toUpperCase().trim(),
+    school_name:      String(s.school_name       || ''),
+    parent_name:      String(s.parent_name       || ''),
+    contact:          String(s.contact           || ''),
+    joining_date:     s.joining_date             || '',
+    birthday:         s.birthday                 || '',
+    photo:            String(s.photo             || ''),
+    scholarship:      String(s.scholarship       || ''),
+    subjects:         String(s.subjects          || ''),
+    monthly_fee:      Number(s.monthly_fee       || 0),
+    total_months:     Number(s.total_months      || 0),
+    total_fee:        Number(s.total_fee         || 0),
+    admission_amount: Number(s.admission_amount  || 0),
+    june_amount:      Number(s.june_amount       || 0),
+    september_amount: Number(s.september_amount  || 0),
+    total_paid:       Number(s.total_paid        || 0),
+    balance:          Number(s.balance           || 0),
+    status:           String(s.status            || '').toUpperCase().trim(),
+    next_due:         String(s.next_due          || ''),
+    next_due_amount:  Number(s.next_due_amount   || 0),
+    days_overdue:     Math.abs(Number(s.days_overdue || 0)),
+    current_academic_year: String(s.current_academic_year || ''),
+    admission_paid:   Number(s.admission_paid    || 0),
+    june_paid:        Number(s.june_paid         || 0),
+    september_paid:   Number(s.september_paid    || 0),
+    admission_pending:Number(s.admission_pending || 0),
+    june_pending:     Number(s.june_pending      || 0),
+    september_pending:Number(s.september_pending || 0),
   };
 }
 
-// ── LOGIN ────────────────────────────────────────────────────────
-g('loginForm').addEventListener('submit', function(ev){
+/* ── LOGIN ── */
+g('loginForm').addEventListener('submit', function(ev) {
   ev.preventDefault();
   var pass = g('passInput').value.trim();
   if (!pass) return;
   var btn = g('loginBtn');
-  btn.disabled = true; btn.textContent = 'Authenticating…';
+  btn.disabled = true;
+  btn.textContent = 'Authenticating…';
   g('loginErr').className = 'lbox-err';
   loaderOn();
 
   fetch(API + '?action=studentList&password=' + encodeURIComponent(pass))
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (data && data.error){
-        loaderOff(); btn.disabled=false; btn.textContent='Access Dashboard';
-        g('loginErr').textContent='Incorrect password.'; g('loginErr').className='lbox-err on';
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && data.error) {
+        loaderOff();
+        btn.disabled = false;
+        btn.textContent = 'Access Dashboard';
+        g('loginErr').textContent = 'Incorrect password.';
+        g('loginErr').className = 'lbox-err on';
         return;
       }
-      var raw = Array.isArray(data) ? data : (Array.isArray(data.students) ? data.students : []);
+      var raw = Array.isArray(data) ? data
+              : Array.isArray(data.students) ? data.students
+              : [];
       S = raw.map(norm);
       sessionStorage.setItem('sehr_pass', pass);
       g('loginWrap').classList.add('gone');
       g('app').classList.add('on');
       loaderOff();
-      boot();
+      init();
     })
-    .catch(function(){
-      loaderOff(); btn.disabled=false; btn.textContent='Access Dashboard';
-      g('loginErr').textContent='Connection error — check your network.'; g('loginErr').className='lbox-err on';
+    .catch(function(err) {
+      console.error('Login failed:', err);
+      loaderOff();
+      btn.disabled = false;
+      btn.textContent = 'Access Dashboard';
+      g('loginErr').textContent = 'Connection error — check your network.';
+      g('loginErr').className = 'lbox-err on';
     });
 });
 
-// ── BOOT ─────────────────────────────────────────────────────────
-var booted = false;
-function boot(){
+/* ── INIT — runs once after login ── */
+var inited = false;
+function init() {
   buildStats();
   buildInsights();
+  buildDropdown('optsClass',  F_CLASS,  'bdgClass',  'fddClass',  uniq(function(s){return s.class;}));
+  buildDropdown('optsFee',    F_FEE,    'bdgFee',    'fddFee',    uniq(function(s){return s.status;}));
+  buildDropdown('optsSyl',    F_SYL,    'bdgSyl',    'fddSyl',    uniq(function(s){return s.syllabus;}));
+  buildDropdown('optsGender', F_GENDER, 'bdgGender', 'fddGender', uniq(function(s){return s.gender;}));
   g('pageSub').textContent = S.length + ' students · Updated ' + new Date().toLocaleTimeString('en-IN');
 
-  // Populate dropdowns with real data
-  populateFdd('class',  'optsClass',  uniq(function(s){ return s.class; }));
-  populateFdd('fee',    'optsFee',    uniq(function(s){ return s.status; }));
-  populateFdd('syl',    'optsSyl',    uniq(function(s){ return s.syllabus; }));
-  populateFdd('gender', 'optsGender', uniq(function(s){ return s.gender; }));
-
-  if (!booted){ booted=true; wireAll(); }
+  if (!inited) {
+    inited = true;
+    wireListeners();
+  }
   render();
 }
 
-function uniq(fn){
-  var seen={}, out=[];
-  S.forEach(function(s){ var v=fn(s); if(v && !seen[v]){ seen[v]=1; out.push(v); }});
+function uniq(fn) {
+  var seen = {}, out = [];
+  S.forEach(function(s) { var v = fn(s); if (v && !seen[v]) { seen[v]=1; out.push(v); }});
   return out.sort();
 }
 
-// ── WIRE ALL LISTENERS ───────────────────────────────────────────
-function wireAll(){
-  g('searchInput').addEventListener('input', function(){ FSEARCH=this.value.toLowerCase().trim(); render(); });
-  g('sortSel').addEventListener('change', function(){ SCOL=this.value; render(); });
+/* ── DROPDOWN BUILDER ── */
+function buildDropdown(optsId, filterSet, badgeId, wrapId, values) {
+  var container = g(optsId);
+  container.innerHTML = '';
+  values.forEach(function(val) {
+    var div = document.createElement('div');
+    div.className = 'fdd-opt' + (filterSet.has(val) ? ' on' : '');
 
-  q('#statusTabs .tab').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      FTAB=this.dataset.v;
-      q('#statusTabs .tab').forEach(function(b){ b.classList.remove('on'); });
+    var cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = val;
+    cb.checked = filterSet.has(val);
+    cb.id = 'cb_' + optsId + '_' + val.replace(/\W/g, '_');
+
+    var lbl = document.createElement('label');
+    lbl.htmlFor = cb.id;
+    lbl.textContent = val;
+
+    div.appendChild(cb);
+    div.appendChild(lbl);
+    container.appendChild(div);
+
+    /* checkbox change handler — explicitly add/remove from the specific set */
+    cb.addEventListener('change', function() {
+      if (this.checked) {
+        filterSet.add(val);
+        div.classList.add('on');
+      } else {
+        filterSet.delete(val);
+        div.classList.remove('on');
+      }
+      refreshBadge(filterSet, badgeId, wrapId);
+      render();
+    });
+  });
+}
+
+function refreshBadge(filterSet, badgeId, wrapId) {
+  var badge = g(badgeId);
+  var wrap  = g(wrapId);
+  if (badge) {
+    badge.textContent = filterSet.size;
+    badge.style.display = filterSet.size > 0 ? 'inline' : 'none';
+  }
+  if (wrap) {
+    wrap.querySelector('.fdd-btn').classList.toggle('on', filterSet.size > 0);
+  }
+}
+
+function clearDropdown(optsId, filterSet, badgeId, wrapId) {
+  filterSet.clear();
+  qa('#' + optsId + ' .fdd-opt').forEach(function(opt) {
+    var cb = opt.querySelector('input');
+    if (cb) cb.checked = false;
+    opt.classList.remove('on');
+  });
+  refreshBadge(filterSet, badgeId, wrapId);
+  render();
+}
+
+/* ── WIRE ALL LISTENERS ── */
+function wireListeners() {
+  /* search */
+  g('searchInput').addEventListener('input', function() {
+    FSEARCH = this.value.toLowerCase().trim();
+    render();
+  });
+
+  /* sort select */
+  g('sortSel').addEventListener('change', function() {
+    SCOL = this.value;
+    render();
+  });
+
+  /* status tabs */
+  qa('#statusTabs .tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      FTAB = this.dataset.v;
+      qa('#statusTabs .tab').forEach(function(b){ b.classList.remove('on'); });
       this.classList.add('on');
       render();
     });
   });
 
-  q('th[data-col]').forEach(function(th){
-    th.addEventListener('click', function(){
-      var c=this.dataset.col;
-      if(SCOL===c){ SASC=!SASC; } else { SCOL=c; SASC=true; }
-      q('th[data-col]').forEach(function(x){ x.classList.remove('sorted'); var si=x.querySelector('.si'); if(si) si.textContent='↕'; });
+  /* column header sort */
+  qa('th[data-col]').forEach(function(th) {
+    th.addEventListener('click', function() {
+      var c = this.dataset.col;
+      if (SCOL === c) { SASC = !SASC; } else { SCOL = c; SASC = true; }
+      qa('th[data-col]').forEach(function(x) {
+        x.classList.remove('sorted');
+        var si = x.querySelector('.si'); if (si) si.textContent = '↕';
+      });
       this.classList.add('sorted');
-      var si=this.querySelector('.si'); if(si) si.textContent=SASC?'↑':'↓';
+      var si = this.querySelector('.si'); if (si) si.textContent = SASC ? '↑' : '↓';
       render();
     });
   });
 
-  g('vTable').addEventListener('click', function(){ setView('table'); });
-  g('vCards').addEventListener('click', function(){ setView('cards'); });
+  /* view toggle */
+  g('vTable').addEventListener('click', function() { setView('table'); });
+  g('vCards').addEventListener('click', function() { setView('cards'); });
 
-  g('tbody').addEventListener('click', function(ev){
-    if(ev.target.tagName==='A') return;
-    var row=ev.target.closest('tr'); if(row) row.classList.toggle('rev');
+  /* row blur reveal */
+  g('tbody').addEventListener('click', function(ev) {
+    if (ev.target.tagName === 'A') return;
+    var row = ev.target.closest('tr');
+    if (row) row.classList.toggle('rev');
   });
 
+  /* clear buttons — each wired to its specific set */
+  g('panClass').querySelector('.fdd-clr').addEventListener('click', function(ev) {
+    ev.stopPropagation(); clearDropdown('optsClass', F_CLASS, 'bdgClass', 'fddClass');
+  });
+  g('panFee').querySelector('.fdd-clr').addEventListener('click', function(ev) {
+    ev.stopPropagation(); clearDropdown('optsFee', F_FEE, 'bdgFee', 'fddFee');
+  });
+  g('panSyl').querySelector('.fdd-clr').addEventListener('click', function(ev) {
+    ev.stopPropagation(); clearDropdown('optsSyl', F_SYL, 'bdgSyl', 'fddSyl');
+  });
+  g('panGender').querySelector('.fdd-clr').addEventListener('click', function(ev) {
+    ev.stopPropagation(); clearDropdown('optsGender', F_GENDER, 'bdgGender', 'fddGender');
+  });
+
+  /* show overdue shortcut */
+  g('btnOverdue').addEventListener('click', function() {
+    F_FEE.clear();
+    F_FEE.add('OVERDUE');
+    /* sync checkboxes */
+    qa('#optsFee .fdd-opt').forEach(function(opt) {
+      var cb = opt.querySelector('input');
+      if (!cb) return;
+      var sel = cb.value === 'OVERDUE';
+      cb.checked = sel;
+      opt.classList.toggle('on', sel);
+    });
+    refreshBadge(F_FEE, 'bdgFee', 'fddFee');
+    render();
+  });
+
+  /* dropdown open/close */
+  ['fddClass','fddFee','fddSyl','fddGender'].forEach(function(wrapId) {
+    var wrap  = g(wrapId);
+    var btn   = wrap.querySelector('.fdd-btn');
+    var panel = wrap.querySelector('.fdd-panel');
+    btn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      var wasOpen = panel.classList.contains('open');
+      closePanels();
+      if (!wasOpen) panel.classList.add('open');
+    });
+    panel.addEventListener('click', function(ev) { ev.stopPropagation(); });
+  });
+  document.addEventListener('click', closePanels);
+
+  /* export / print / refresh */
   g('btnExport').addEventListener('click', exportCSV);
-  g('btnPrint').addEventListener('click', function(){ window.print(); });
-  g('btnRefresh').addEventListener('click', function(){
-    var pass=sessionStorage.getItem('sehr_pass'); if(!pass) return;
+  g('btnPrint').addEventListener('click', function() { window.print(); });
+  g('btnRefresh').addEventListener('click', function() {
+    var pass = sessionStorage.getItem('sehr_pass');
+    if (!pass) return;
     loaderOn();
-    fetch(API+'?action=studentList&password='+encodeURIComponent(pass))
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        var raw=Array.isArray(data)?data:(Array.isArray(data.students)?data.students:S);
-        S=raw.map(norm); boot();
+    fetch(API + '?action=studentList&password=' + encodeURIComponent(pass))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var raw = Array.isArray(data) ? data : Array.isArray(data.students) ? data.students : S;
+        S = raw.map(norm);
+        init();
       })
       .catch(function(){})
       .finally(function(){ loaderOff(); });
   });
-
-  g('btnOverdue').addEventListener('click', function(){
-    FC.fee=new Set(['OVERDUE']);
-    syncCbs('optsFee', FC.fee);
-    updBadge('fee','bdgFee','fddFee');
-    render();
-  });
-
-  // Dropdown toggles
-  ['Class','Fee','Syl','Gender'].forEach(function(k){
-    var wrap=g('fdd'+k), btn=wrap.querySelector('.fdd-btn'), panel=wrap.querySelector('.fdd-panel');
-    btn.addEventListener('click', function(ev){
-      ev.stopPropagation();
-      var open=panel.classList.contains('open');
-      closeAll();
-      if(!open) panel.classList.add('open');
-    });
-    panel.addEventListener('click', function(ev){ ev.stopPropagation(); });
-  });
-
-  q('.fdd-clr').forEach(function(btn){
-    btn.addEventListener('click', function(ev){
-      ev.stopPropagation(); clearFdd(this.dataset.k);
-    });
-  });
-
-  document.addEventListener('click', closeAll);
 }
 
-function closeAll(){ q('.fdd-panel').forEach(function(p){ p.classList.remove('open'); }); }
+function closePanels() {
+  qa('.fdd-panel').forEach(function(p){ p.classList.remove('open'); });
+}
 
-// ── DROPDOWN HELPERS ─────────────────────────────────────────────
-function populateFdd(key, cid, values){
-  var c=g(cid); c.innerHTML='';
-  values.forEach(function(val){
-    var div=document.createElement('div'); div.className='fdd-opt';
-    var cb=document.createElement('input'); cb.type='checkbox'; cb.value=val;
-    cb.id='cb'+key+val.replace(/\W/g,'');
-    var lbl=document.createElement('label'); lbl.htmlFor=cb.id; lbl.textContent=val;
-    div.appendChild(cb); div.appendChild(lbl); c.appendChild(div);
-    cb.addEventListener('change', function(){
-      var set=FC[key]; if(!set) return;
-      if(this.checked){ set.add(val); div.classList.add('on'); }
-      else { set.delete(val); div.classList.remove('on'); }
-      var kc=key.charAt(0).toUpperCase()+key.slice(1);
-      updBadge(key,'bdg'+kc,'fdd'+kc);
-      render();
-    });
+/* ── STATS ── */
+function buildStats() {
+  var total   = S.length;
+  var active  = S.filter(function(s){ return s.admission_status === 'ACTIVE'; });
+  var overdue = S.filter(function(s){ return s.status === 'OVERDUE'; });
+  var bal     = active.reduce(function(sum,s){ return sum + s.balance; }, 0);
+  var schol   = S.filter(function(s){ return s.scholarship && s.scholarship !== '0'; });
+  var now     = new Date();
+  var thisMonth = S.filter(function(s) {
+    if (!s.next_due) return false;
+    var d = new Date(s.next_due);
+    return !isNaN(d) && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
   });
-}
+  var dueAmt = thisMonth.reduce(function(sum,s){ return sum + s.next_due_amount; }, 0);
 
-function syncCbs(cid, set){
-  q('#'+cid+' .fdd-opt').forEach(function(opt){
-    var cb=opt.querySelector('input'); if(!cb) return;
-    cb.checked=set.has(cb.value); opt.classList.toggle('on',set.has(cb.value));
-  });
-}
-
-function updBadge(key,bid,wid){
-  var set=FC[key], badge=g(bid), wrap=g(wid);
-  if(badge){ badge.textContent=set.size; badge.style.display=set.size?'inline':'none'; }
-  if(wrap){ wrap.querySelector('.fdd-btn').classList.toggle('on',set.size>0); }
-}
-
-function clearFdd(key){
-  var kc=key.charAt(0).toUpperCase()+key.slice(1);
-  FC[key]=new Set();
-  syncCbs('opts'+kc, FC[key]);
-  updBadge(key,'bdg'+kc,'fdd'+kc);
-  render();
-}
-
-// ── STATS ────────────────────────────────────────────────────────
-function buildStats(){
-  var total=S.length;
-  var active=S.filter(function(s){ return s.admission_status.toUpperCase()==='ACTIVE'; });
-  var overdue=S.filter(function(s){ return s.status==='OVERDUE'; });
-  var bal=active.reduce(function(sum,s){ return sum+s.balance; },0);
-  var schol=S.filter(function(s){ return s.scholarship && String(s.scholarship).trim()!=='' && String(s.scholarship).trim()!=='0'; });
-
-  var now=new Date();
-  var thisMonth=S.filter(function(s){
-    if(!s.next_due) return false;
-    var d=new Date(s.next_due);
-    return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
-  });
-  var dueAmt=thisMonth.reduce(function(sum,s){ return sum+s.next_due_amount; },0);
-
-  g('stTotal').textContent=total;
-  g('stTotalSub').textContent=active.length+' active · '+(total-active.length)+' inactive';
-  g('stActive').textContent=active.length;
-  g('stActiveSub').textContent=(total?Math.round(active.length/total*100):0)+'% of total';
-  g('stBal').textContent='₹'+fmtN(bal);
-  g('stBalSub').textContent='from '+active.length+' active';
-  g('stOverdue').textContent=overdue.length;
-  g('stOverdueSub').textContent=overdue.length?'Needs attention':'All clear';
-  g('stDue').textContent='₹'+fmtN(dueAmt);
-  g('stDueSub').textContent=thisMonth.length+' payments this month';
-  g('stSchol').textContent=schol.length;
-  g('stScholSub').textContent='students with scholarship';
-  g('banCount').textContent=overdue.length;
-  if(overdue.length>0) g('banner').classList.add('on');
+  g('stTotal').textContent    = total;
+  g('stTotalSub').textContent = active.length + ' active · ' + (total - active.length) + ' inactive';
+  g('stActive').textContent   = active.length;
+  g('stActiveSub').textContent = (total ? Math.round(active.length/total*100) : 0) + '% of total';
+  g('stBal').textContent      = '₹' + fmtN(bal);
+  g('stBalSub').textContent   = 'from ' + active.length + ' active';
+  g('stOverdue').textContent  = overdue.length;
+  g('stOverdueSub').textContent = overdue.length ? 'Needs attention' : 'All clear';
+  g('stDue').textContent      = '₹' + fmtN(dueAmt);
+  g('stDueSub').textContent   = thisMonth.length + ' payments this month';
+  g('stSchol').textContent    = schol.length;
+  g('stScholSub').textContent = 'students with scholarship';
+  g('banCount').textContent   = overdue.length;
+  if (overdue.length > 0) g('banner').classList.add('on');
   else g('banner').classList.remove('on');
 }
 
-// ── INSIGHTS ─────────────────────────────────────────────────────
-function buildInsights(){
-  var active=S.filter(function(s){ return s.admission_status.toUpperCase()==='ACTIVE'; });
-  var overdue=S.filter(function(s){ return s.status==='OVERDUE'; });
-  var totalFee=active.reduce(function(sum,s){ return sum+s.total_fee; },0);
-  var totalPaid=active.reduce(function(sum,s){ return sum+s.total_paid; },0);
-  var bal=active.reduce(function(sum,s){ return sum+s.balance; },0);
-  var rate=totalFee>0?Math.round(totalPaid/totalFee*100):0;
-  var avg=active.length>0?Math.round(bal/active.length):0;
+/* ── INSIGHTS ── */
+function buildInsights() {
+  var active   = S.filter(function(s){ return s.admission_status === 'ACTIVE'; });
+  var overdue  = S.filter(function(s){ return s.status === 'OVERDUE'; });
+  var totalFee = active.reduce(function(sum,s){ return sum + s.total_fee; }, 0);
+  var totalPaid= active.reduce(function(sum,s){ return sum + s.total_paid; }, 0);
+  var bal      = active.reduce(function(sum,s){ return sum + s.balance; }, 0);
+  var rate     = totalFee > 0 ? Math.round(totalPaid / totalFee * 100) : 0;
+  var avg      = active.length > 0 ? Math.round(bal / active.length) : 0;
 
-  g('iRate').textContent=rate+'%';
-  g('iAvg').textContent='₹'+fmtN(avg);
+  g('iRate').textContent = rate + '%';
+  g('iAvg').textContent  = '₹' + fmtN(avg);
 
-  // Worst overdue student
-  var worst=overdue.slice().sort(function(a,b){ return b.days_overdue-a.days_overdue; })[0];
-  if(worst){ g('iWorst').textContent=worst.days_overdue+' days'; g('iWorstName').textContent=worst.full_name||''; }
-  else { g('iWorst').textContent='None'; g('iWorstName').textContent='No overdue payments'; }
+  var worst = overdue.slice().sort(function(a,b){ return b.days_overdue - a.days_overdue; })[0];
+  if (worst) {
+    g('iWorst').textContent    = worst.days_overdue + ' days';
+    g('iWorstName').textContent = worst.full_name || '';
+  } else {
+    g('iWorst').textContent    = 'None';
+    g('iWorstName').textContent = 'No overdue payments';
+  }
 
-  // Admission pending
-  var admPend=S.reduce(function(sum,s){ return sum+s.admission_pending; },0);
-  var admPendCount=S.filter(function(s){ return s.admission_pending>0; }).length;
-  g('iAdmPend').textContent='₹'+fmtN(admPend);
-  g('iAdmPendSub').textContent=admPendCount+' students pending';
+  var admPend      = S.reduce(function(sum,s){ return sum + s.admission_pending; }, 0);
+  var admPendCount = S.filter(function(s){ return s.admission_pending > 0; }).length;
+  g('iAdmPend').textContent    = '₹' + fmtN(admPend);
+  g('iAdmPendSub').textContent = admPendCount + ' students pending';
 }
 
-// ── FILTER + SORT ────────────────────────────────────────────────
-function filtered(){
-  return S.filter(function(s){
-    var st=s.admission_status.toUpperCase();
-    var fs=s.status;
-    if(FTAB!=='ALL'&&st!==FTAB) return false;
-    if(FSEARCH){
-      var hay=(s.full_name+' '+s.school_name+' '+s.admission_no+' '+s.subjects+' '+s.parent_name).toLowerCase();
-      if(hay.indexOf(FSEARCH)<0) return false;
+/* ── FILTER ── */
+function filtered() {
+  return S.filter(function(s) {
+    /* status tab */
+    if (FTAB !== 'ALL' && s.admission_status !== FTAB) return false;
+
+    /* search */
+    if (FSEARCH) {
+      var hay = (s.full_name + ' ' + s.school_name + ' ' + s.admission_no + ' ' + s.subjects + ' ' + s.parent_name).toLowerCase();
+      if (hay.indexOf(FSEARCH) === -1) return false;
     }
-    if(FC.class.size  && !FC.class.has(s.class))    return false;
-    if(FC.fee.size    && !FC.fee.has(fs))            return false;
-    if(FC.syl.size    && !FC.syl.has(s.syllabus))   return false;
-    if(FC.gender.size && !FC.gender.has(s.gender))  return false;
+
+    /* dropdown filters */
+    if (F_CLASS.size  > 0 && !F_CLASS.has(s.class))    return false;
+    if (F_FEE.size    > 0 && !F_FEE.has(s.status))     return false;
+    if (F_SYL.size    > 0 && !F_SYL.has(s.syllabus))   return false;
+    if (F_GENDER.size > 0 && !F_GENDER.has(s.gender))  return false;
+
     return true;
   });
 }
 
-function sorted(arr){
-  return arr.slice().sort(function(a,b){
-    var r=0;
-    switch(SCOL){
-      case 'name':   r=(a.full_name||'').localeCompare(b.full_name||''); break;
-      case 'name_d': r=(b.full_name||'').localeCompare(a.full_name||''); break;
-      case 'class':  r=(a.class||'').localeCompare(b.class||''); break;
-      case 'syl':    r=(a.syllabus||'').localeCompare(b.syllabus||''); break;
-      case 'school': r=(a.school_name||'').localeCompare(b.school_name||''); break;
-      case 'join':   r=new Date(a.joining_date||0)-new Date(b.joining_date||0); break;
-      case 'fee':    r=b.total_fee-a.total_fee; break;
-      case 'paid':   r=b.total_paid-a.total_paid; break;
-      case 'bal':    r=b.balance-a.balance; break;
-      case 'days':   r=b.days_overdue-a.days_overdue; break;
-      case 'due':    r=(a.next_due||'9999').localeCompare(b.next_due||'9999'); break;
-      case 'dueamt': r=b.next_due_amount-a.next_due_amount; break;
-      default:       r=(a.full_name||'').localeCompare(b.full_name||'');
+/* ── SORT ── */
+function sortList(arr) {
+  return arr.slice().sort(function(a, b) {
+    var r = 0;
+    switch (SCOL) {
+      case 'name':   r = a.full_name.localeCompare(b.full_name); break;
+      case 'name_d': r = b.full_name.localeCompare(a.full_name); break;
+      case 'class':  r = a.class.localeCompare(b.class); break;
+      case 'syl':    r = a.syllabus.localeCompare(b.syllabus); break;
+      case 'school': r = a.school_name.localeCompare(b.school_name); break;
+      case 'gender': r = a.gender.localeCompare(b.gender); break;
+      case 'join':   r = new Date(a.joining_date||0) - new Date(b.joining_date||0); break;
+      case 'fee':    r = b.total_fee - a.total_fee; break;
+      case 'paid':   r = b.total_paid - a.total_paid; break;
+      case 'bal':    r = b.balance - a.balance; break;
+      case 'days':   r = b.days_overdue - a.days_overdue; break;
+      case 'due':    r = (a.next_due||'9999').localeCompare(b.next_due||'9999'); break;
+      case 'dueamt': r = b.next_due_amount - a.next_due_amount; break;
+      default:       r = a.full_name.localeCompare(b.full_name);
     }
-    return SASC?r:-r;
+    return SASC ? r : -r;
   });
 }
 
-// ── RENDER ───────────────────────────────────────────────────────
-function render(){
-  var list=sorted(filtered());
-  var lbl='Showing '+list.length+' of '+S.length+' students';
-  g('resLbl').textContent=lbl; g('tblLbl').textContent=lbl; g('cardLbl').textContent=lbl;
-  if(VIEW==='table') renderTable(list); else renderCards(list);
+/* ── RENDER ── */
+function render() {
+  var list = sortList(filtered());
+  var lbl  = 'Showing ' + list.length + ' of ' + S.length + ' students';
+  g('resLbl').textContent  = lbl;
+  g('tblLbl').textContent  = lbl;
+  g('cardLbl').textContent = lbl;
+  if (VIEW === 'table') renderTable(list);
+  else                  renderCards(list);
 }
 
-function pill(val){ return '<span class="pill p'+e(val)+'"><span class="dot"></span>'+e(val||'—')+'</span>'; }
-
-function daysBadge(n){
-  n=Number(n||0);
-  if(n<=0) return '<span class="days-badge ok">—</span>';
-  var cls=n>60?'hot':n>14?'warm':'ok';
-  return '<span class="days-badge '+cls+'">'+n+'d</span>';
+function pill(val) {
+  return '<span class="pill p' + esc(val) + '"><span class="dot"></span>' + esc(val || '—') + '</span>';
 }
 
-function avatarHtml(photo,name,imgCls,initCls){
-  var init=inits(name);
-  var img=photo?'<img class="'+imgCls+'" src="'+e(photo)+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">':'';
-  var iv='<div class="'+initCls+'" '+(photo?'style="display:none"':'')+'">'+init+'</div>';
-  return img+iv;
+function daysBadge(n) {
+  n = Number(n || 0);
+  if (n <= 0) return '<span class="days-badge ok">—</span>';
+  var cls = n > 60 ? 'hot' : n > 14 ? 'warm' : 'ok';
+  return '<span class="days-badge ' + cls + '">' + n + 'd</span>';
 }
 
-// TABLE
-function renderTable(list){
-  if(!list.length){
-    g('tbody').innerHTML='<tr><td colspan="15"><div class="empty"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div><p class="empty-p">Adjust search or filters.</p></div></td></tr>';
+function makeAvatar(photo, name, imgCls, initCls) {
+  var init = inits(name);
+  var html = '';
+  if (photo) {
+    html += '<img class="' + imgCls + '" src="' + esc(photo) + '" alt="" loading="lazy"'
+          + ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">';
+  }
+  html += '<div class="' + initCls + '"' + (photo ? ' style="display:none"' : '') + '>' + init + '</div>';
+  return html;
+}
+
+/* TABLE */
+function renderTable(list) {
+  var body = g('tbody');
+  if (!list.length) {
+    body.innerHTML = '<tr><td colspan="15"><div class="empty">'
+      + '<div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">'
+      + '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>'
+      + '<div class="empty-h">No students found</div>'
+      + '<p class="empty-p">Adjust search or filters.</p></div></td></tr>';
     return;
   }
-  g('tbody').innerHTML=list.map(function(s){
-    var ast=s.admission_status.toUpperCase();
-    return '<tr tabindex="0">'
-      +'<td><div class="scell">'+avatarHtml(s.photo,s.full_name,'av','av-init')
-      +'<div><a class="slink" href="https://sehracademy.com/student?id='+encodeURIComponent(s.id)+'" target="_blank">'+e(s.full_name||'—')+'</a>'
-      +'<div class="sadm">#'+e(s.admission_no||'—')+'</div></div></div></td>'
-      +'<td>'+e(s.class||'—')+'</td>'
-      +'<td>'+e(s.syllabus||'—')+'</td>'
-      +'<td>'+e(s.gender||'—')+'</td>'
-      +'<td>'+e(s.school_name||'—')+'</td>'
-      +'<td class="bc">'+e(s.subjects||'—')+'</td>'
-      +'<td class="bc">'+fmtDate(s.joining_date)+'</td>'
-      +'<td class="bc amt">₹'+fmtN(s.total_fee)+'</td>'
-      +'<td class="bc amt grn">₹'+fmtN(s.total_paid)+'</td>'
-      +'<td class="bc amt'+(s.balance>0?' red':'')+'">₹'+fmtN(s.balance)+'</td>'
-      +'<td class="bc">'+pill(s.status)+'</td>'
-      +'<td class="bc">'+daysBadge(s.days_overdue)+'</td>'
-      +'<td class="bc">'+e(s.next_due||'—')+'</td>'
-      +'<td class="bc amt">₹'+fmtN(s.next_due_amount)+'</td>'
-      +'<td>'+pill(ast)+'</td>'
-      +'</tr>';
-  }).join('');
+
+  var rows = [];
+  for (var i = 0; i < list.length; i++) {
+    var s   = list[i];
+    var ast = s.admission_status;
+    var av  = makeAvatar(s.photo, s.full_name, 'av', 'av-init');
+    rows.push(
+      '<tr tabindex="0">'
+      + '<td><div class="scell">' + av
+      + '<div><a class="slink" href="https://sehracademy.com/student?id='
+      + encodeURIComponent(s.id) + '" target="_blank">' + esc(s.full_name || '—') + '</a>'
+      + '<div class="sadm">#' + esc(s.admission_no || '—') + '</div></div></div></td>'
+      + '<td>' + esc(s.class    || '—') + '</td>'
+      + '<td>' + esc(s.syllabus || '—') + '</td>'
+      + '<td>' + esc(s.gender   || '—') + '</td>'
+      + '<td>' + esc(s.school_name || '—') + '</td>'
+      + '<td class="bc">' + esc(s.subjects || '—') + '</td>'
+      + '<td class="bc">' + fmtDate(s.joining_date) + '</td>'
+      + '<td class="bc amt">₹' + fmtN(s.total_fee) + '</td>'
+      + '<td class="bc amt grn">₹' + fmtN(s.total_paid) + '</td>'
+      + '<td class="bc amt' + (s.balance > 0 ? ' red' : '') + '">₹' + fmtN(s.balance) + '</td>'
+      + '<td class="bc">' + pill(s.status) + '</td>'
+      + '<td class="bc">' + daysBadge(s.days_overdue) + '</td>'
+      + '<td class="bc">' + esc(s.next_due || '—') + '</td>'
+      + '<td class="bc amt">₹' + fmtN(s.next_due_amount) + '</td>'
+      + '<td>' + pill(ast) + '</td>'
+      + '</tr>'
+    );
+  }
+  body.innerHTML = rows.join('');
 }
 
-// CARDS
-function renderCards(list){
-  var grid=g('cardGrid');
-  if(!list.length){
-    grid.innerHTML='<div class="empty"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div><p class="empty-p">Adjust filters.</p></div>';
+/* CARDS */
+function renderCards(list) {
+  var grid = g('cardGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div><p class="empty-p">Adjust filters.</p></div>';
     return;
   }
-  grid.innerHTML=list.map(function(s){
-    var ast=s.admission_status.toUpperCase();
-    var av=avatarHtml(s.photo,s.full_name,'scard-photo','scard-init');
-    return '<div class="scard">'
-      +'<div class="scard-top">'+av
-      +'<div><div class="scard-name">'+e(s.full_name||'—')+'</div>'
-      +'<div class="scard-cls">'+e(s.class||'—')+(s.syllabus?' · '+e(s.syllabus):'')+'</div></div></div>'
-      +'<div class="scard-rows">'
-      +srow('School', e(s.school_name||'—'))
-      +srow('Adm No', '#'+e(s.admission_no||'—'))
-      +srow('Subjects', e(s.subjects||'—'))
-      +srow('Balance', '<span style="font-weight:700;color:'+(s.balance>0?'var(--red)':'var(--lime-2)')+'">₹'+fmtN(s.balance)+'</span>')
-      +srow('Fee', pill(s.status))
-      +srow('Days OD', daysBadge(s.days_overdue))
-      +srow('Next Due', e(s.next_due||'—'))
-      +srow('Adm Status', pill(ast))
-      +'</div>'
-      +'<div class="scard-foot"><a class="scard-link" href="https://sehracademy.com/student?id='+encodeURIComponent(s.id)+'" target="_blank">View Profile <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>'
-      +pill(ast)+'</div>'
-      +'</div>';
-  }).join('');
+  var cards = [];
+  for (var i = 0; i < list.length; i++) {
+    var s   = list[i];
+    var ast = s.admission_status;
+    var av  = makeAvatar(s.photo, s.full_name, 'scard-photo', 'scard-init');
+    cards.push(
+      '<div class="scard">'
+      + '<div class="scard-top">' + av
+      + '<div><div class="scard-name">' + esc(s.full_name || '—') + '</div>'
+      + '<div class="scard-cls">' + esc(s.class || '—') + (s.syllabus ? ' · ' + esc(s.syllabus) : '') + '</div></div></div>'
+      + '<div class="scard-rows">'
+      + srow('School',   esc(s.school_name || '—'))
+      + srow('Adm No',   '#' + esc(s.admission_no || '—'))
+      + srow('Subjects', esc(s.subjects || '—'))
+      + srow('Balance',  '<span style="font-weight:700;color:' + (s.balance > 0 ? 'var(--red)' : 'var(--lime-2)') + '">₹' + fmtN(s.balance) + '</span>')
+      + srow('Fee',      pill(s.status))
+      + srow('Days OD',  daysBadge(s.days_overdue))
+      + srow('Next Due', esc(s.next_due || '—'))
+      + srow('Status',   pill(ast))
+      + '</div>'
+      + '<div class="scard-foot">'
+      + '<a class="scard-link" href="https://sehracademy.com/student?id=' + encodeURIComponent(s.id) + '" target="_blank">View Profile '
+      + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>'
+      + pill(ast)
+      + '</div></div>'
+    );
+  }
+  grid.innerHTML = cards.join('');
 }
 
-function srow(k,v){ return '<div class="srow"><span class="srow-k">'+k+'</span><span class="srow-v">'+v+'</span></div>'; }
+function srow(k, v) {
+  return '<div class="srow"><span class="srow-k">' + k + '</span><span class="srow-v">' + v + '</span></div>';
+}
 
-// VIEW
-function setView(v){
-  VIEW=v;
-  g('tableView').style.display=v==='table'?'block':'none';
-  g('cardView').style.display=v==='cards'?'block':'none';
-  g('vTable').classList.toggle('on',v==='table');
-  g('vCards').classList.toggle('on',v==='cards');
+/* VIEW */
+function setView(v) {
+  VIEW = v;
+  g('tableView').style.display = v === 'table' ? 'block' : 'none';
+  g('cardView').style.display  = v === 'cards' ? 'block' : 'none';
+  g('vTable').classList.toggle('on', v === 'table');
+  g('vCards').classList.toggle('on', v === 'cards');
   render();
 }
 
-// EXPORT CSV
-function exportCSV(){
-  var list=sorted(filtered());
-  var hdr=['Name','Adm No','Gender','Class','Syllabus','School','Subjects','Joining','Monthly Fee','Total Fee','Paid','Balance','Fee Status','Days Overdue','Next Due','Next Amt','Admission Status','Parent','Contact','Scholarship','June Pending','Sep Pending','Adm Pending'];
-  var rows=list.map(function(s){
-    return [s.full_name,s.admission_no,s.gender,s.class,s.syllabus,s.school_name,s.subjects,fmtDate(s.joining_date),s.monthly_fee,s.total_fee,s.total_paid,s.balance,s.status,s.days_overdue,s.next_due,s.next_due_amount,s.admission_status,s.parent_name,s.contact,s.scholarship,s.june_pending,s.september_pending,s.admission_pending]
-    .map(function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; }).join(',');
+/* EXPORT CSV */
+function exportCSV() {
+  var list = sortList(filtered());
+  var hdr  = ['Name','Adm No','Gender','Class','Syllabus','School','Subjects',
+              'Joining','Monthly Fee','Total Fee','Paid','Balance','Fee Status',
+              'Days Overdue','Next Due','Next Amt','Admission Status',
+              'Parent','Contact','Scholarship','Adm Pending','June Pending','Sep Pending'];
+  var rows = list.map(function(s) {
+    return [s.full_name, s.admission_no, s.gender, s.class, s.syllabus, s.school_name, s.subjects,
+            fmtDate(s.joining_date), s.monthly_fee, s.total_fee, s.total_paid, s.balance, s.status,
+            s.days_overdue, s.next_due, s.next_due_amount, s.admission_status,
+            s.parent_name, s.contact, s.scholarship,
+            s.admission_pending, s.june_pending, s.september_pending]
+    .map(function(v){ return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; })
+    .join(',');
   });
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([[hdr.join(',')].concat(rows).join('\n')],{type:'text/csv'}));
-  a.download='sehr_students_'+new Date().toISOString().slice(0,10)+'.csv';
+  var csv = [hdr.join(',')].concat(rows).join('\n');
+  var a   = document.createElement('a');
+  a.href  = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'sehr_students_' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
-  setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
 }
 
-})();
 </script>
 </body>
 </html>
