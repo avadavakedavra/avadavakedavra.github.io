@@ -2,395 +2,822 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy — Syllabus Tracker</title>
-<meta name="description" content="Sehr Academy Syllabus Tracker — view chapter-wise progress for Class 10, 11, and 12." />
-<meta name="theme-color" content="#8BC53F" />
-
+<title>Syllabus Tracker — SEHR Academy</title>
+<meta name="description" content="Chapter-wise syllabus progress tracker for Class 10, 11 and 12 at SEHR Academy.">
+<meta name="theme-color" content="#8BC53F">
+<link rel="canonical" href="https://sehracademy.com/syllabus">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --lime:#8BC53F;
-  --lime-dark:#6fb22c;
-  --text:#111827;
-  --muted:#6b7280;
-  --border:#e5e7eb;
+/* ═══════════════════════════════════════════════
+   SEHR ACADEMY · SYLLABUS TRACKER
+   Design: Cream · Charcoal · Lime  (studentlist system)
+═══════════════════════════════════════════════ */
+:root {
+  --cream:   #f5f2eb; --cream-2: #ede9e0; --cream-3: #e4dfd4;
+  --white:   #fdfcfa;
+  --ink:     #1a1a18; --ink-2:   #2e2e2b; --ink-3:   #4a4a46;
+  --muted:   #7a7970; --pale:    #b0ada4; --rule:    #d8d4cb;
+  --lime:    #8BC53F; --lime-2:  #72a530; --lime-3:  #5e8a24;
+  --lime-bg: #f0f7e3; --lime-mid:#c8e48e;
+  --green:   #16a34a; --green-bg:rgba(22,163,74,.08);  --green-brd:rgba(22,163,74,.18);
+  --amber:   #d97706; --amber-bg:rgba(217,119,6,.08);  --amber-brd:rgba(217,119,6,.18);
+  --red:     #dc2626; --red-bg:  rgba(220,38,38,.08);  --red-brd:  rgba(220,38,38,.18);
+  --blue:    #2563eb; --blue-bg: rgba(37,99,235,.08);  --blue-brd: rgba(37,99,235,.18);
+  --purple:  #7c3aed; --purp-bg: rgba(124,58,237,.08); --purp-brd: rgba(124,58,237,.18);
+  --pink:    #db2777; --pink-bg: rgba(219,39,119,.08); --pink-brd: rgba(219,39,119,.18);
+  --f: 'Open Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --sh: 0 2px 8px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.04);
+  --sh-2: 0 6px 20px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
 }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+body { font-family:var(--f); background:var(--cream); color:var(--ink); font-size:14px; line-height:1.5; overflow-x:hidden; min-height:100vh; }
+a { text-decoration:none; color:inherit; }
+header#site-header { position:sticky; top:0; z-index:300; }
+:focus-visible { outline:2px solid var(--lime); outline-offset:3px; border-radius:3px; }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* ===== GLOBAL ===== */
+/* ── LOADER ── */
+#loader { position:fixed; inset:0; background:var(--ink); display:flex; align-items:center; justify-content:center; flex-direction:column; z-index:9999; opacity:0; pointer-events:none; transition:opacity .5s var(--ease); }
+#loader.on { opacity:1; pointer-events:all; }
+#loader::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px); background-size:48px 48px; }
+#loader::after  { content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%); width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%); }
+.ld { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; }
+.ld-brand { font-size:13px; font-weight:800; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.9); margin-bottom:36px; display:flex; align-items:center; gap:10px; }
+.ld-dot { width:6px; height:6px; border-radius:50%; background:var(--lime); animation:ldot 2s ease-in-out infinite; }
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.6)}50%{box-shadow:0 0 0 8px rgba(139,197,63,0)}}
+.ld-ring { position:relative; width:60px; height:60px; margin-bottom:30px; }
+.ldr-t { position:absolute; inset:0; border-radius:50%; border:1.5px solid rgba(255,255,255,.07); }
+.ldr-s { position:absolute; inset:0; border-radius:50%; border:2px solid transparent; border-top-color:var(--lime); border-right-color:rgba(139,197,63,.3); animation:rspin .9s linear infinite; }
+.ldr-i { position:absolute; inset:10px; border-radius:50%; border:1.5px solid transparent; border-bottom-color:rgba(139,197,63,.4); animation:rspin .9s linear infinite reverse; }
+.ldr-c { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:7px; height:7px; border-radius:50%; background:var(--lime); box-shadow:0 0 10px rgba(139,197,63,.6); }
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ld-txt { font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:28px; animation:ltxt 1.8s ease-in-out infinite; }
+@keyframes ltxt{0%,100%{opacity:.3}50%{opacity:.7}}
+.ld-bar { width:150px; height:1px; background:rgba(255,255,255,.08); border-radius:1px; overflow:hidden; }
+.ld-fill { height:100%; background:linear-gradient(90deg,var(--lime-3),var(--lime),#a6dc52); animation:lfill 1.4s cubic-bezier(.4,0,.2,1) infinite; }
+@keyframes lfill{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
 
-*{box-sizing:border-box}
+/* ═══════════════════════════
+   SELECTION SCREEN
+═══════════════════════════ */
+#selectorScreen { display:block; }
+#selectorScreen.gone { display:none; }
 
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:#ffffff; /* same as navbar */
-  color:var(--text);
+/* masthead (same pattern as every SEHR page) */
+.sel-masthead {
+  background: var(--ink);
+  margin: 0;
+  position: relative; overflow: hidden;
+  border-bottom: 3px solid var(--lime);
 }
+.sel-masthead::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px); background-size:48px 48px; pointer-events:none; }
+.sel-masthead::after  { content:''; position:absolute; top:-100px; right:-100px; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle,rgba(139,197,63,.16),transparent 65%); pointer-events:none; }
+.sel-mast-bg { position:absolute; right:-10px; bottom:-20px; font-size:180px; font-weight:800; letter-spacing:-6px; color:rgba(255,255,255,.04); pointer-events:none; user-select:none; white-space:nowrap; line-height:1; z-index:0; }
+.sel-mast-inner { max-width:1280px; margin:0 auto; padding:52px 40px 48px; position:relative; z-index:1; }
+.mast-kicker { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.mast-kicker-rule { width:24px; height:2px; background:var(--lime); flex-shrink:0; }
+.mast-kicker-text { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); opacity:.9; }
+.mast-h1 { font-size:clamp(36px,5vw,64px); font-weight:800; letter-spacing:-2px; color:white; line-height:.95; margin-bottom:14px; }
+.mast-h1 i { font-style:italic; font-weight:300; color:var(--lime); }
+.mast-desc { font-size:14px; color:rgba(255,255,255,.45); max-width:500px; line-height:1.75; }
 
-/* ===== SELECTION SCREEN ===== */
+/* stats bar inside masthead */
+.mast-stats { display:flex; gap:0; margin-top:32px; border-top:1px solid rgba(255,255,255,.08); padding-top:24px; }
+.mast-stat { padding-right:28px; margin-right:28px; border-right:1px solid rgba(255,255,255,.08); }
+.mast-stat:last-child { border-right:none; }
+.mast-stat-val { font-size:28px; font-weight:800; letter-spacing:-1px; color:white; line-height:1; margin-bottom:3px; }
+.mast-stat-val .unit { font-size:14px; color:var(--lime); font-weight:700; }
+.mast-stat-lbl { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.3); }
 
-.selector{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(135deg,#ffffff,#f8fafc);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
+/* class selection grid */
+.sel-body { max-width:1280px; margin:0 auto; padding:32px 40px 80px; }
+.sel-section-label { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--pale); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.sel-section-label::after { content:''; flex:1; height:1px; background:var(--rule); }
+.sel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+
+.class-card {
+  background: var(--white);
+  border: 1.5px solid var(--cream-3);
+  border-left: 4px solid var(--rule);
+  border-radius: 4px;
+  padding: 22px 20px 18px;
+  cursor: pointer;
+  transition: all .2s var(--ease);
+  box-shadow: var(--sh);
+  text-align: left;
+  font-family: var(--f);
+  position: relative;
+  overflow: hidden;
 }
+.class-card:hover { transform:translateY(-4px); box-shadow:var(--sh-2); border-color:var(--cream-3); }
+.class-card.c11 { border-left-color:var(--blue); }   .class-card.c11:hover { border-color:var(--blue-brd); }
+.class-card.c12 { border-left-color:var(--red);  }   .class-card.c12:hover { border-color:var(--red-brd);  }
+.class-card.c10s{ border-left-color:var(--amber);} .class-card.c10s:hover { border-color:var(--amber-brd);}
+.class-card.c10c{ border-left-color:var(--purple);}  .class-card.c10c:hover { border-color:var(--purp-brd); }
 
-.selector-card{
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(0,0,0,0.05);
-  padding:50px;
-  border-radius:28px;
-  box-shadow:0 40px 80px rgba(0,0,0,0.08);
-  width:90%;
-  max-width:520px;
-  text-align:center;
+/* subtle diagonal crosshatch on card */
+.class-card::after { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; opacity:0; transition:opacity .2s; }
+.class-card.c11::after  { background:radial-gradient(circle,var(--blue-bg),transparent 70%); }
+.class-card.c12::after  { background:radial-gradient(circle,var(--red-bg),transparent 70%); }
+.class-card.c10s::after { background:radial-gradient(circle,var(--amber-bg),transparent 70%); }
+.class-card.c10c::after { background:radial-gradient(circle,var(--purp-bg),transparent 70%); }
+.class-card:hover::after { opacity:1; }
+
+.cc-tag  { font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--pale); margin-bottom:10px; }
+.cc-num  { font-size:38px; font-weight:800; letter-spacing:-2px; color:var(--ink); line-height:1; margin-bottom:4px; }
+.cc-desc { font-size:12px; color:var(--muted); font-weight:500; margin-bottom:14px; }
+.cc-subjects { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:14px; }
+.cc-subj { font-size:9px; font-weight:700; padding:2px 7px; border-radius:3px; background:var(--cream-2); color:var(--muted); border:1px solid var(--rule); }
+.cc-cta { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:var(--pale); transition:color .15s; }
+.class-card:hover .cc-cta { color:var(--lime-2); }
+.cc-cta svg { width:12px; height:12px; }
+
+/* ═══════════════════════════
+   APP SCREEN
+═══════════════════════════ */
+#appScreen { display:none; }
+#appScreen.on { display:block; }
+
+/* ── PAGE MASTHEAD ── */
+.page-masthead {
+  background: var(--ink);
+  position: relative; overflow: hidden;
+  border-bottom: 3px solid var(--lime);
 }
+.page-masthead::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px); background-size:48px 48px; pointer-events:none; }
+.page-masthead::after  { content:''; position:absolute; top:-100px; right:-100px; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle,rgba(139,197,63,.16),transparent 65%); pointer-events:none; }
+.pm-bg { position:absolute; right:-10px; bottom:-20px; font-size:160px; font-weight:800; letter-spacing:-5px; color:rgba(255,255,255,.04); pointer-events:none; user-select:none; white-space:nowrap; line-height:1; z-index:0; }
+.pm-inner { max-width:1280px; margin:0 auto; padding:36px 40px 32px; position:relative; z-index:1; display:grid; grid-template-columns:1fr auto; align-items:center; gap:32px; }
+.pm-left {}
+.pm-kicker { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.pm-kicker-rule { width:22px; height:2px; background:var(--lime); flex-shrink:0; }
+.pm-kicker-text { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); opacity:.9; }
+.pm-title { font-size:clamp(28px,4vw,52px); font-weight:800; letter-spacing:-1.5px; color:white; line-height:.95; margin-bottom:10px; }
+.pm-title i { font-style:italic; font-weight:300; color:var(--lime); }
+.pm-sub { font-size:13px; color:rgba(255,255,255,.4); }
+.pm-prog { margin-top:16px; display:flex; align-items:center; gap:12px; }
+.pm-prog-track { width:240px; height:6px; background:rgba(255,255,255,.1); border-radius:999px; overflow:hidden; }
+.pm-prog-fill  { height:100%; background:linear-gradient(90deg,var(--lime-3),var(--lime)); border-radius:999px; transition:width .7s var(--ease); }
+.pm-prog-label { font-size:12px; font-weight:800; color:var(--lime); }
 
-.selector-card h1{
-  font-family:'Montserrat',sans-serif;
-  font-weight:800;
-  font-size:26px;
-  margin-bottom:30px;
+.pm-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.pm-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:4px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); font-family:var(--f); font-size:12px; font-weight:700; color:rgba(255,255,255,.7); cursor:pointer; transition:all .18s; white-space:nowrap; }
+.pm-btn:hover { background:rgba(255,255,255,.14); color:white; border-color:rgba(255,255,255,.25); }
+.pm-btn.lime  { background:var(--lime); border-color:var(--lime); color:var(--ink); }
+.pm-btn.lime:hover { background:var(--lime-2); }
+.pm-btn svg { width:13px; height:13px; }
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--white);
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: var(--sh);
 }
+.ss { padding:16px 18px; border-right:1px solid var(--rule); position:relative; transition:background .15s; cursor:default; }
+.ss:last-child { border-right:none; }
+.ss:hover { background:var(--cream); }
+.ss.warn::before { content:''; position:absolute; left:0; top:10px; bottom:10px; width:3px; border-radius:0 2px 2px 0; background:var(--amber); }
+.ss.done::before { content:''; position:absolute; left:0; top:10px; bottom:10px; width:3px; border-radius:0 2px 2px 0; background:var(--lime); }
+.ss-lbl { font-size:9px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--pale); margin-bottom:8px; }
+.ss-val { font-size:26px; font-weight:800; letter-spacing:-1px; color:var(--ink); line-height:1; margin-bottom:3px; }
+.ss-val.lime  { color:var(--lime-2); }
+.ss-val.amber { color:var(--amber); }
+.ss-val.red   { color:var(--red); }
+.ss-sub { font-size:10px; color:var(--muted); }
 
-.class-btn{
-  display:block;
-  width:100%;
-  padding:16px;
-  margin:12px 0;
-  border-radius:16px;
-  border:1px solid var(--border);
-  background:#ffffff;
-  font-weight:600;
-  cursor:pointer;
-  transition:.25s;
-  font-family:'Poppins';
+/* ── TOOLBAR ── */
+.toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.srch { position:relative; flex:1; min-width:180px; max-width:300px; }
+.srch svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); width:13px; height:13px; color:var(--pale); pointer-events:none; }
+.srch input { width:100%; padding:9px 12px 9px 30px; border:1.5px solid var(--cream-3); border-radius:4px; background:var(--white); font-family:var(--f); font-size:13px; color:var(--ink); outline:none; transition:border-color .18s,box-shadow .18s; box-shadow:var(--sh); }
+.srch input:focus { border-color:var(--lime); box-shadow:0 0 0 3px rgba(139,197,63,.1); }
+.srch input::placeholder { color:var(--pale); }
+
+.tabs { display:flex; gap:2px; background:var(--white); border:1.5px solid var(--cream-3); border-radius:4px; padding:3px; box-shadow:var(--sh); }
+.tab  { padding:5px 12px; border:none; border-radius:3px; background:none; font-family:var(--f); font-size:11px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .14s; white-space:nowrap; }
+.tab.on  { background:var(--lime); color:white; }
+.tab:hover:not(.on) { background:var(--cream-2); color:var(--ink-2); }
+
+.sort-sel { padding:9px 26px 9px 11px; border:1.5px solid var(--cream-3); border-radius:4px; background:var(--white); font-family:var(--f); font-size:12px; font-weight:600; color:var(--ink-2); appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center; cursor:pointer; outline:none; box-shadow:var(--sh); }
+.sort-sel:focus { border-color:var(--lime); }
+
+/* section divider */
+.sec-div { display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+.sec-div-rule { flex:1; height:1px; background:var(--rule); }
+.sec-div-dot  { width:5px; height:5px; border-radius:50%; background:var(--lime); flex-shrink:0; }
+.sec-div-text { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--pale); white-space:nowrap; }
+
+/* ── SUBJECT BLOCK ── */
+.subject-block {
+  background: var(--white);
+  border: 1.5px solid var(--cream-3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: var(--sh);
+  animation: fadeUp .3s var(--ease) both;
 }
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-.class-btn:hover{
-  background:linear-gradient(135deg,var(--lime),var(--lime-dark));
-  color:#fff;
-  transform:translateY(-2px);
-  box-shadow:0 15px 30px rgba(139,197,63,0.25);
+.subj-head {
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  cursor: pointer;
+  transition: background .14s;
+  background: var(--white);
+  border-left: 4px solid var(--rule);
+  position: relative;
 }
+.subj-head:hover { background:var(--cream); }
+.subject-block.open .subj-head { background:var(--cream); }
 
-/* ===== HEADER ===== */
+/* per-subject accent borders */
+.subj-physics     { border-left-color:var(--blue);   }
+.subj-chemistry   { border-left-color:var(--purple); }
+.subj-mathematics,.subj-maths { border-left-color:var(--lime-2); }
+.subj-biology     { border-left-color:var(--green);  }
+.subj-english     { border-left-color:var(--pink);   }
+.subj-social-science,.subj-social { border-left-color:var(--amber); }
 
-.page-header{
-  padding:40px 20px 20px;
-  text-align:center;
+.subj-left  { display:flex; align-items:center; gap:12px; }
+.subj-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+
+/* subject icon */
+.subj-icon {
+  width:36px; height:36px; border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:800; flex-shrink:0;
+  background:var(--cream-2); color:var(--muted); border:1px solid var(--rule);
+  transition:all .15s;
 }
+.subj-physics     .subj-icon { background:var(--blue-bg);  color:var(--blue);   border-color:var(--blue-brd); }
+.subj-chemistry   .subj-icon { background:var(--purp-bg);  color:var(--purple); border-color:var(--purp-brd); }
+.subj-mathematics .subj-icon,
+.subj-maths       .subj-icon { background:var(--lime-bg);  color:var(--lime-2); border-color:rgba(139,197,63,.2); }
+.subj-biology     .subj-icon { background:var(--green-bg); color:var(--green);  border-color:var(--green-brd); }
+.subj-english     .subj-icon { background:var(--pink-bg);  color:var(--pink);   border-color:var(--pink-brd); }
+.subj-social-science .subj-icon,
+.subj-social      .subj-icon { background:var(--amber-bg); color:var(--amber);  border-color:var(--amber-brd); }
 
-.page-title{
-  font-family:'Montserrat';
-  font-size:28px;
-  font-weight:800;
+.subj-name  { font-size:13px; font-weight:800; color:var(--ink); letter-spacing:.02em; text-transform:uppercase; }
+.subj-count { font-size:10px; color:var(--muted); margin-top:1px; }
+
+/* mini progress bar */
+.subj-prog { display:flex; align-items:center; gap:8px; }
+.subj-prog-track { width:80px; height:5px; background:var(--cream-3); border-radius:999px; overflow:hidden; }
+.subj-prog-fill  { height:100%; border-radius:999px; transition:width .5s var(--ease); }
+.subj-prog-pct   { font-size:11px; font-weight:800; color:var(--muted); min-width:28px; text-align:right; }
+
+/* collapse chevron */
+.subj-chev { width:22px; height:22px; border-radius:50%; border:1.5px solid var(--rule); display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+.subj-chev svg { width:11px; height:11px; color:var(--pale); transition:transform .25s; }
+.subject-block.open .subj-chev { border-color:var(--lime-mid); background:var(--lime-bg); }
+.subject-block.open .subj-chev svg { transform:rotate(180deg); color:var(--lime-2); }
+
+/* chapters list */
+.chapters-list { display:none; }
+.subject-block.open .chapters-list { display:block; }
+
+/* ── CHAPTER ROW ── */
+.chapter {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 20px;
+  border-top: 1px solid var(--rule);
+  transition: background .12s;
+  animation: slideIn .2s var(--ease) both;
+  position: relative;
 }
+@keyframes slideIn{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:translateX(0)}}
+.chapter:hover { background:var(--cream); }
 
-.back-btn{
-  margin-top:15px;
-  display:inline-block;
-  padding:10px 18px;
-  border-radius:40px;
-  border:1px solid var(--border);
-  background:#fff;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:600;
-  font-family:'Poppins',sans-serif;
-  transition:.2s;
+/* status left marker */
+.chapter.st-completed { border-left:3px solid var(--green); padding-left:17px; }
+.chapter.st-ongoing   { border-left:3px solid var(--amber); padding-left:17px; }
+.chapter.st-pending   { border-left:3px solid var(--rule);  padding-left:17px; }
+
+.ch-num {
+  width:36px; height:36px; border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:800; color:var(--pale);
+  background:var(--cream-2); flex-shrink:0;
+  border:1px solid var(--rule);
 }
+.chapter.st-completed .ch-num { background:var(--green-bg); color:var(--green); border-color:var(--green-brd); }
+.chapter.st-ongoing   .ch-num { background:var(--amber-bg); color:var(--amber); border-color:var(--amber-brd); }
 
-.back-btn:hover{
-  background:#f3f4f6;
+.ch-body {}
+.ch-title { font-size:13px; font-weight:700; color:var(--ink); letter-spacing:-.1px; line-height:1.35; }
+.chapter.st-completed .ch-title { color:var(--muted); }
+.ch-meta { display:flex; align-items:center; gap:8px; margin-top:4px; flex-wrap:wrap; }
+.ch-meta-item { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; color:var(--pale); }
+.ch-meta-item svg { width:10px; height:10px; flex-shrink:0; }
+
+.ch-pills { display:flex; align-items:center; gap:5px; flex-wrap:wrap; flex-shrink:0; }
+
+/* pills */
+.pill { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:3px; font-size:10px; font-weight:800; white-space:nowrap; border:1px solid transparent; }
+.pill .pd { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+.pill svg  { width:10px; height:10px; flex-shrink:0; }
+.p-completed { background:var(--green-bg);  color:var(--green);  border-color:var(--green-brd); }
+.p-ongoing   { background:var(--amber-bg);  color:var(--amber);  border-color:var(--amber-brd); }
+.p-pending   { background:var(--cream-2);   color:var(--pale);   border-color:var(--rule); }
+.p-teacher   { background:rgba(202,138,4,.08); color:#92400e; border-color:rgba(202,138,4,.2); }
+.p-date      { background:var(--blue-bg);    color:var(--blue);   border-color:var(--blue-brd); }
+
+/* ── EMPTY ── */
+.empty-row { padding:40px 24px; text-align:center; }
+.empty-ico { width:44px; height:44px; border-radius:50%; background:var(--cream-2); border:1px solid var(--rule); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; }
+.empty-ico svg { width:20px; height:20px; color:var(--pale); }
+.empty-h { font-size:14px; font-weight:700; color:var(--ink); margin-bottom:4px; }
+.empty-p { font-size:12px; color:var(--muted); }
+
+/* ── ERROR ── */
+.err-box { background:var(--white); border:1.5px solid rgba(220,38,38,.2); border-left:4px solid var(--red); border-radius:4px; padding:20px 24px; margin:24px 0; }
+.err-box h3 { font-size:14px; font-weight:800; color:var(--red); margin-bottom:4px; }
+.err-box p  { font-size:12px; color:var(--muted); }
+
+/* ── LEGEND ── */
+.legend-bar { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:24px; padding-top:18px; border-top:1px solid var(--rule); }
+.leg-item { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--muted); }
+.leg-dot  { width:9px; height:9px; border-radius:3px; flex-shrink:0; }
+
+/* ── WRAP ── */
+.page-wrap { max-width:1280px; margin:0 auto; padding:0 40px 80px; }
+
+/* ═══════════════════════════
+   RESPONSIVE
+═══════════════════════════ */
+@media(max-width:1100px){.stats-strip{grid-template-columns:repeat(3,1fr)}.ss:nth-child(3){border-right:none}.ss:nth-child(n+4){border-top:1px solid var(--rule)}.ss:nth-child(4){border-right:1px solid var(--rule)}}
+@media(max-width:900px){
+  .sel-mast-inner{padding:36px 24px 32px}
+  .sel-mast-bg{font-size:120px}
+  .sel-body{padding:24px 24px 60px}
+  .pm-inner{grid-template-columns:1fr;gap:0;padding:28px 24px 24px}
+  .pm-bg{font-size:110px}
+  .pm-actions{margin-top:20px}
+  .page-wrap{padding:0 20px 60px}
+  .chapter{grid-template-columns:36px 1fr;gap:10px;padding:12px 16px}
+  .ch-pills{grid-column:2}
 }
-
-/* ===== SUBJECT CARD ===== */
-
-.subject{
-  max-width:1100px;
-  margin:30px auto;
-  background:#ffffff;
-  border-radius:24px;
-  border:1px solid var(--border);
-  box-shadow:0 20px 40px rgba(0,0,0,.04);
-  overflow:hidden;
-  transition:.2s;
-}
-
-.subject:hover{
-  transform:translateY(-2px);
-}
-
-.subject h2{
-  margin:0;
-  padding:18px 28px;
-  font-family:'Montserrat';
-  font-weight:700;
-  font-size:15px;
-  letter-spacing:1px;
-  background:linear-gradient(90deg,var(--lime),var(--lime-dark));
-  color:#fff;
-}
-
-/* ===== CHAPTER ===== */
-
-.chapter{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 28px;
-  border-top:1px solid var(--border);
-  flex-wrap:wrap;
-}
-
-.left{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  font-weight:600;
-}
-
-.index{
-  background:var(--lime);
-  color:#fff;
-  padding:6px 12px;
-  border-radius:10px;
-  font-size:13px;
-  font-family:'Montserrat';
-}
-
-.right{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-/* ===== PILLS ===== */
-
-.pill{
-  padding:6px 12px;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:700;
-  font-family:'Montserrat';
-}
-
-.status.pending{background:#f3f4f6;color:#6b7280;}
-.status.ongoing{background:#fff3cd;color:#8a6d3b;}
-.status.completed{background:#dcfce7;color:#166534;}
-
-.teacher{
-  background:linear-gradient(180deg,#fceabb,#f8b500);
-  color:#5a4300;
-}
-
-.date{
-  background:#eef2ff;
-  color:#1e3a8a;
-}
-
-/* ===== LOADER ===== */
-
-.loader{
-  position:fixed;
-  inset:0;
-  background:rgba(255,255,255,0.7);
-  backdrop-filter:blur(8px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:2000;
-}
-
-.spinner{
-  width:40px;
-  height:40px;
-  border:4px solid #e5e7eb;
-  border-top:4px solid var(--lime);
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-  100%{transform:rotate(360deg)}
-}
-
-.error{
-  text-align:center;
-  color:red;
-  font-weight:600;
-  margin-top:20px;
-}
-
-/* ===== RESPONSIVE ===== */
 @media(max-width:640px){
-  .selector-card{
-    padding:30px 20px;
-    width:95%;
-  }
-  .selector-card h1{
-    font-size:20px;
-  }
-  .class-btn{
-    padding:14px;
-    min-height:44px;
-  }
-  .page-title{
-    font-size:22px;
-  }
-  .subject{
-    margin:20px 12px;
-  }
-  .subject h2{
-    padding:14px 16px;
-  }
-  .chapter{
-    padding:14px 16px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-  }
-  .right{
-    width:100%;
-  }
-  .back-btn{
-    min-height:44px;
-    padding:12px 18px;
-  }
+  .sel-mast-inner{padding:28px 18px 24px}
+  .sel-body{padding:20px 18px 56px}
+  .sel-grid{grid-template-columns:1fr 1fr}
+  .pm-inner{padding:24px 18px 20px}
+  .pm-title{font-size:32px}
+  .pm-bg{display:none}
+  .page-wrap{padding:0 16px 56px}
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
+  .ss:nth-child(2){border-right:none}.ss:nth-child(n+3){border-top:1px solid var(--rule)}.ss:nth-child(3){border-right:1px solid var(--rule)}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .srch{max-width:none}
+  .tabs{justify-content:flex-start}
+  .mast-stats{flex-wrap:wrap;gap:16px}
+  .mast-stat{border-right:none;padding-right:0;margin-right:0}
 }
+@media(max-width:400px){.sel-grid{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 
-<!-- SAME NAVBAR -->
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld">
+    <div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div>
+    <div class="ld-ring"><div class="ldr-t"></div><div class="ldr-s"></div><div class="ldr-i"></div><div class="ldr-c"></div></div>
+    <div class="ld-txt">Loading syllabus</div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
+  </div>
+</div>
+
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
 
-<!-- SELECTION SCREEN -->
-<div class="selector" id="selector">
-  <div class="selector-card">
-    <h1>Select Academic Program</h1>
-    <button class="class-btn" onclick="loadClass('Class 11')">Class 11</button>
-    <button class="class-btn" onclick="loadClass('Class 12')">Class 12</button>
-    <button class="class-btn" onclick="loadClass('10 STATE')">Class 10 – STATE</button>
-    <button class="class-btn" onclick="loadClass('10 CBSE')">Class 10 – CBSE</button>
+<!-- ══════════════════════════
+     SELECTION SCREEN
+══════════════════════════ -->
+<div id="selectorScreen">
+
+  <div class="sel-masthead">
+    <div class="sel-mast-bg" aria-hidden="true">SYLLABUS</div>
+    <div class="sel-mast-inner">
+      <div class="mast-kicker" aria-hidden="true">
+        <div class="mast-kicker-rule"></div>
+        <span class="mast-kicker-text">SEHR Academy &nbsp;·&nbsp; 2026–27</span>
+      </div>
+      <h1 class="mast-h1">Syllabus <i>Tracker</i></h1>
+      <p class="mast-desc">Chapter-by-chapter progress across every subject. Select your class to view completion status, expected dates, and faculty assignments.</p>
+      <div class="mast-stats">
+        <div class="mast-stat">
+          <div class="mast-stat-val">4<span class="unit">+</span></div>
+          <div class="mast-stat-lbl">Classes</div>
+        </div>
+        <div class="mast-stat">
+          <div class="mast-stat-val">6</div>
+          <div class="mast-stat-lbl">Subjects</div>
+        </div>
+        <div class="mast-stat">
+          <div class="mast-stat-val">Live</div>
+          <div class="mast-stat-lbl">From Google Sheets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sel-body">
+    <div class="sel-section-label">Select your class</div>
+    <div class="sel-grid">
+
+      <button class="class-card c11" onclick="loadClass('Class 11')">
+        <div class="cc-tag">Higher Secondary</div>
+        <div class="cc-num">11</div>
+        <div class="cc-desc">Science stream</div>
+        <div class="cc-subjects">
+          <span class="cc-subj">Physics</span>
+          <span class="cc-subj">Chemistry</span>
+          <span class="cc-subj">Maths</span>
+          <span class="cc-subj">Bio</span>
+        </div>
+        <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </button>
+
+      <button class="class-card c12" onclick="loadClass('Class 12')">
+        <div class="cc-tag">Higher Secondary</div>
+        <div class="cc-num">12</div>
+        <div class="cc-desc">Science stream</div>
+        <div class="cc-subjects">
+          <span class="cc-subj">Physics</span>
+          <span class="cc-subj">Chemistry</span>
+          <span class="cc-subj">Maths</span>
+          <span class="cc-subj">Bio</span>
+        </div>
+        <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </button>
+
+      <button class="class-card c10s" onclick="loadClass('10 STATE')">
+        <div class="cc-tag">Secondary · State Board</div>
+        <div class="cc-num">10</div>
+        <div class="cc-desc">State curriculum</div>
+        <div class="cc-subjects">
+          <span class="cc-subj">Maths</span>
+          <span class="cc-subj">Science</span>
+          <span class="cc-subj">English</span>
+          <span class="cc-subj">Social</span>
+        </div>
+        <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </button>
+
+      <button class="class-card c10c" onclick="loadClass('10 CBSE')">
+        <div class="cc-tag">Secondary · CBSE Board</div>
+        <div class="cc-num">10</div>
+        <div class="cc-desc">CBSE curriculum</div>
+        <div class="cc-subjects">
+          <span class="cc-subj">Maths</span>
+          <span class="cc-subj">Science</span>
+          <span class="cc-subj">English</span>
+          <span class="cc-subj">Social</span>
+        </div>
+        <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </button>
+
+    </div>
   </div>
 </div>
 
-<!-- LOADER -->
-<div class="loader" id="loader">
-  <div class="spinner"></div>
-  <div style="margin-top:15px;font-weight:600;">Loading...</div>
-</div>
+<!-- ══════════════════════════
+     APP SCREEN
+══════════════════════════ -->
+<div id="appScreen">
 
-<!-- SYLLABUS -->
-<div id="syllabus"></div>
+  <!-- PAGE MASTHEAD -->
+  <div class="page-masthead">
+    <div class="pm-bg" id="pmBg" aria-hidden="true">TRACKER</div>
+    <div class="pm-inner">
+      <div class="pm-left">
+        <div class="pm-kicker" aria-hidden="true">
+          <div class="pm-kicker-rule"></div>
+          <span class="pm-kicker-text" id="pmKicker">Syllabus Tracker</span>
+        </div>
+        <div class="pm-title" id="pmTitle">Class <i>11</i></div>
+        <div class="pm-sub"  id="pmSub">Loading…</div>
+        <div class="pm-prog">
+          <div class="pm-prog-track"><div class="pm-prog-fill" id="pmProgFill" style="width:0%"></div></div>
+          <span class="pm-prog-label" id="pmProgLabel">0% complete</span>
+        </div>
+      </div>
+      <div class="pm-actions">
+        <button class="pm-btn" id="backBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          All Classes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+      <div class="ss"><div class="ss-lbl">Total Chapters</div><div class="ss-val" id="stTotal">—</div><div class="ss-sub" id="stTotalSub"></div></div>
+      <div class="ss done"><div class="ss-lbl">Completed</div><div class="ss-val lime" id="stDone">—</div><div class="ss-sub" id="stDoneSub"></div></div>
+      <div class="ss warn"><div class="ss-lbl">Ongoing</div><div class="ss-val amber" id="stOngoing">—</div><div class="ss-sub" id="stOngoingSub"></div></div>
+      <div class="ss"><div class="ss-lbl">Pending</div><div class="ss-val" id="stPending">—</div><div class="ss-sub" id="stPendingSub"></div></div>
+      <div class="ss"><div class="ss-lbl">Subjects</div><div class="ss-val" id="stSubjects">—</div><div class="ss-sub" id="stSubjectsSub"></div></div>
+    </div>
+
+    <!-- SECTION DIVIDER -->
+    <div class="sec-div" aria-hidden="true">
+      <div class="sec-div-rule"></div><div class="sec-div-dot"></div>
+      <div class="sec-div-text">Chapters</div>
+      <div class="sec-div-dot"></div><div class="sec-div-rule"></div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="srch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="searchInput" placeholder="Search chapters, teachers…" aria-label="Search chapters">
+      </div>
+      <div class="tabs" role="group" aria-label="Filter by status">
+        <button class="tab on" data-s="">All</button>
+        <button class="tab" data-s="completed">Completed</button>
+        <button class="tab" data-s="ongoing">Ongoing</button>
+        <button class="tab" data-s="pending">Pending</button>
+      </div>
+      <select class="sort-sel" id="sortSel" aria-label="Sort">
+        <option value="index">Chapter order</option>
+        <option value="status">By status</option>
+        <option value="date">By expected date</option>
+        <option value="alpha">Alphabetical</option>
+      </select>
+    </div>
+
+    <!-- SUBJECTS CONTENT -->
+    <div id="contentWrap"></div>
+
+    <!-- LEGEND -->
+    <div class="legend-bar">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pale);margin-right:4px">Legend:</span>
+      <span class="leg-item"><span class="leg-dot" style="background:var(--green)"></span>Completed</span>
+      <span class="leg-item"><span class="leg-dot" style="background:var(--amber)"></span>Ongoing</span>
+      <span class="leg-item"><span class="leg-dot" style="background:var(--rule)"></span>Pending</span>
+      <span style="margin-left:auto;font-size:10px;color:var(--pale);font-style:italic">Click subject header to collapse · All data live from Google Sheets</span>
+    </div>
+
+  </div><!-- /page-wrap -->
+</div><!-- /appScreen -->
 
 <script>
+(function(){
+'use strict';
 
-const SHEET_ID = "1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo";
-const API_KEY = "AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo";
+var SHEET_ID = '1JZ2b4tFp9xqHsauaqti2GtoiWaSLkERPIorJ2n7yAjo';
+var API_KEY  = 'AIzaSyBwUJ420X5QdIfPBJ_BM-ZoFiu2gWxPsjo';
 
-const SUBJECTS = {
-  "Class 11": ["physics","chemistry","mathematics","biology"],
-  "Class 12": ["physics","chemistry","mathematics","biology"],
-  "10 STATE": ["mathematics","physics","chemistry","biology","english","social science"],
-  "10 CBSE": ["mathematics","physics","chemistry","biology","english","social science"]
+var SUBJECTS = {
+  'Class 11':  ['physics','chemistry','mathematics','biology'],
+  'Class 12':  ['physics','chemistry','mathematics','biology'],
+  '10 STATE':  ['mathematics','physics','chemistry','biology','english','social science'],
+  '10 CBSE':   ['mathematics','physics','chemistry','biology','english','social science']
 };
 
-function formatDate(dateStr){
-  if(!dateStr) return "";
-  const d = new Date(dateStr);
-  if(isNaN(d)) return dateStr;
-  return d.toLocaleDateString("en-GB",{day:'2-digit',month:'short'});
+var ICONS = { physics:'φ', chemistry:'χ', mathematics:'π', maths:'π', biology:'β', english:'E', 'social science':'S' };
+
+var ALL_ROWS   = [];
+var CURRENT    = '';
+var FILTER_S   = '';
+var SEARCH_VAL = '';
+var SORT_VAL   = 'index';
+
+/* ── DOM ── */
+function g(id){ return document.getElementById(id); }
+function q(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+function loaderOn()  { g('loader').classList.add('on'); }
+function loaderOff() { g('loader').classList.remove('on'); }
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function fmtDate(d){
+  if(!d) return '';
+  var dt = new Date(d);
+  if(isNaN(dt)) return d;
+  return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
 }
 
-async function loadClass(sheetName){
+/* ── LOAD ── */
+function loadClass(name){
+  CURRENT = name;
+  loaderOn();
+  var range = encodeURIComponent(name + '!A1:F');
+  var url   = 'https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+'/values/'+range+'?key='+API_KEY;
 
-  document.getElementById("selector").style.display="none";
-  document.getElementById("loader").style.display="flex";
-
-  const range = `${sheetName}!A1:F`;
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?key=${API_KEY}`;
-
-  try{
-    const res = await fetch(url);
-    const data = await res.json();
-    const rows = data.values;
-    renderSheet(sheetName, rows);
-  }catch(err){
-    document.getElementById("syllabus").innerHTML='<div class="error">Error loading sheet. Check API key or sharing settings.</div>';
-  }
-
-  document.getElementById("loader").style.display="none";
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data.error || !data.values){
+        var msg = data.error ? data.error.message : 'No data found.';
+        g('contentWrap').innerHTML = '<div class="err-box"><h3>Could not load data</h3><p>'+msg+'</p></div>';
+        showApp(name); loaderOff(); return;
+      }
+      var hdr = data.values[0];
+      ALL_ROWS = data.values.slice(1).map(function(r){
+        var o={}; hdr.forEach(function(h,i){ o[h]=r[i]||''; }); return o;
+      });
+      showApp(name);
+      buildStats();
+      renderSubjects();
+      loaderOff();
+    })
+    .catch(function(err){
+      console.error(err);
+      g('contentWrap').innerHTML = '<div class="err-box"><h3>Connection Error</h3><p>Check your network or API settings.</p></div>';
+      showApp(name); loaderOff();
+    });
 }
 
-function renderSheet(sheetName, values){
+function showApp(name){
+  g('selectorScreen').classList.add('gone');
+  g('appScreen').classList.add('on');
 
-  if(!values || values.length===0) return;
+  /* title */
+  var classLabel = name === '10 STATE' ? 'Class <i>10</i> — State'
+                 : name === '10 CBSE'  ? 'Class <i>10</i> — CBSE'
+                 : 'Class <i>' + name.replace('Class ','') + '</i>';
+  g('pmTitle').innerHTML    = classLabel;
+  g('pmKicker').textContent = 'Syllabus Tracker · SEHR Academy';
+  g('pmBg').textContent     = name.replace('Class ','').replace(' ','');
+  window.scrollTo(0,0);
+}
 
-  const headers = values[0];
-  const rows = values.slice(1).map(row=>{
-    let obj={};
-    headers.forEach((h,i)=>obj[h]=row[i]||"");
-    return obj;
-  });
+/* ── STATS ── */
+function buildStats(){
+  var total   = ALL_ROWS.length;
+  var done    = ALL_ROWS.filter(function(r){ return (r.Status||'').toLowerCase()==='completed'; }).length;
+  var ongoing = ALL_ROWS.filter(function(r){ return (r.Status||'').toLowerCase()==='ongoing'; }).length;
+  var pending = total - done - ongoing;
+  var pct     = total > 0 ? Math.round(done/total*100) : 0;
+  var subjects = (SUBJECTS[CURRENT]||[]).length;
 
-  let html=`
-  <div class="page-header">
-    <div class="page-title">${sheetName.toUpperCase()} SYLLABUS TRACKER</div>
-    <button class="back-btn" onclick="goBack()">← Back to Selection</button>
-  </div>
-  `;
+  g('pmSub').textContent       = total+' chapters across '+subjects+' subjects';
+  g('pmProgFill').style.width  = pct + '%';
+  g('pmProgLabel').textContent = pct + '% complete';
 
-  SUBJECTS[sheetName].forEach(subject=>{
-    const subjectRows = rows.filter(r=> (r.Subject||"").toLowerCase()===subject);
-    if(subjectRows.length===0) return;
+  g('stTotal').textContent      = total;
+  g('stTotalSub').textContent   = subjects + ' subjects';
+  g('stDone').textContent       = done;
+  g('stDoneSub').textContent    = pct + '% of total';
+  g('stOngoing').textContent    = ongoing;
+  g('stOngoingSub').textContent = 'in progress';
+  g('stPending').textContent    = pending;
+  g('stPendingSub').textContent = 'not started';
+  g('stSubjects').textContent   = subjects;
+  g('stSubjectsSub').textContent = CURRENT;
+}
 
-    html+=`<div class="subject"><h2>${subject.toUpperCase()}</h2>`;
+/* ── RENDER SUBJECTS ── */
+function renderSubjects(){
+  var wrap     = g('contentWrap');
+  var subjects = SUBJECTS[CURRENT] || [];
+  var html     = '';
+  var anyVis   = false;
 
-    subjectRows.sort((a,b)=>(+a.Index||999)-(+b.Index||999));
+  subjects.forEach(function(subj, si){
+    /* all rows for this subject */
+    var rows = ALL_ROWS.filter(function(r){ return (r.Subject||'').toLowerCase() === subj; });
 
-    subjectRows.forEach(r=>{
-      html+=`
-      <div class="chapter">
-        <div class="left">
-          <div class="index">${r.Index}</div>
-          <div>${r.Title}</div>
-        </div>
-        <div class="right">
-          ${r.Teacher?`<div class="pill teacher">${r.Teacher}</div>`:''}
-          ${r.ExpectedDate?`<div class="pill date">${formatDate(r.ExpectedDate)}</div>`:''}
-          <div class="pill status ${(r.Status||"pending").toLowerCase()}">${(r.Status||"pending").toUpperCase()}</div>
-        </div>
-      </div>`;
+    /* filtered rows (search + status) */
+    var filtered = rows.filter(function(r){
+      var st = (r.Status||'pending').toLowerCase();
+      if(FILTER_S && st !== FILTER_S) return false;
+      if(SEARCH_VAL){
+        var hay = ((r.Title||'')+' '+(r.Teacher||'')).toLowerCase();
+        if(hay.indexOf(SEARCH_VAL)===-1) return false;
+      }
+      return true;
     });
 
-    html+=`</div>`;
+    if(filtered.length === 0) return;
+    anyVis = true;
+
+    /* sort */
+    filtered = filtered.slice().sort(function(a,b){
+      if(SORT_VAL==='index')  return (Number(a.Index)||999)-(Number(b.Index)||999);
+      if(SORT_VAL==='status'){ var ord={completed:0,ongoing:1,pending:2}; return (ord[(a.Status||'pending').toLowerCase()]||2)-(ord[(b.Status||'pending').toLowerCase()]||2); }
+      if(SORT_VAL==='date')   return new Date(a.ExpectedDate||0)-new Date(b.ExpectedDate||0);
+      if(SORT_VAL==='alpha')  return (a.Title||'').localeCompare(b.Title||'');
+      return 0;
+    });
+
+    /* per-subject stats */
+    var tot  = rows.length;
+    var done = rows.filter(function(r){ return (r.Status||'').toLowerCase()==='completed'; }).length;
+    var pct  = tot > 0 ? Math.round(done/tot*100) : 0;
+    var barClr = pct===100?'var(--green)':pct>50?'var(--lime-2)':'var(--amber)';
+
+    var slug = subj.replace(/\s+/g,'-');
+    var icon = ICONS[subj] || subj[0].toUpperCase();
+
+    html += '<div class="subject-block subj-'+slug+' open" id="sb-'+slug+'" style="animation-delay:'+(si*35)+'ms">'
+      +'<div class="subj-head" onclick="toggleSubj(\'sb-'+slug+'\')">'
+      +'<div class="subj-left">'
+      +'<div class="subj-icon">'+icon+'</div>'
+      +'<div><div class="subj-name">'+subj+'</div>'
+      +'<div class="subj-count">'+filtered.length+' of '+tot+' chapter'+(tot!==1?'s':'')+'</div></div>'
+      +'</div>'
+      +'<div class="subj-right">'
+      +'<div class="subj-prog">'
+      +'<div class="subj-prog-track"><div class="subj-prog-fill" style="width:'+pct+'%;background:'+barClr+'"></div></div>'
+      +'<span class="subj-prog-pct">'+pct+'%</span>'
+      +'</div>'
+      +'<div class="subj-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>'
+      +'</div></div>'
+      +'<div class="chapters-list">';
+
+    if(!filtered.length){
+      html += '<div class="empty-row"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No chapters match</div><p class="empty-p">Try adjusting the search or filter.</p></div>';
+    } else {
+      filtered.forEach(function(r, ri){
+        var st    = (r.Status||'pending').toLowerCase();
+        var stLbl = st.charAt(0).toUpperCase()+st.slice(1);
+        var dotC  = st==='completed'?'var(--green)':st==='ongoing'?'var(--amber)':'var(--pale)';
+
+        html += '<div class="chapter st-'+st+'" style="animation-delay:'+(ri*12)+'ms">'
+          +'<div class="ch-num">'+esc(r.Index)+'</div>'
+          +'<div class="ch-body">'
+          +'<div class="ch-title">'+esc(r.Title||'—')+'</div>'
+          +'<div class="ch-meta">'
+          +(r.Teacher?'<span class="ch-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'+esc(r.Teacher)+'</span>':'')
+          +(r.ExpectedDate?'<span class="ch-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'+fmtDate(r.ExpectedDate)+'</span>':'')
+          +'</div></div>'
+          +'<div class="ch-pills">'
+          +'<span class="pill p-'+st+'"><span class="pd" style="background:'+dotC+'"></span>'+stLbl+'</span>'
+          +(r.Teacher?'<span class="pill p-teacher">'+esc(r.Teacher)+'</span>':'')
+          +(r.ExpectedDate?'<span class="pill p-date">'+fmtDate(r.ExpectedDate)+'</span>':'')
+          +'</div></div>';
+      });
+    }
+
+    html += '</div></div>';
   });
 
-  document.getElementById("syllabus").innerHTML=html;
+  if(!anyVis){
+    html = '<div class="empty-row">'
+      +'<div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>'
+      +'<div class="empty-h">No chapters found</div>'
+      +'<p class="empty-p">Try a different search or reset the filter.</p></div>';
+  }
+
+  wrap.innerHTML = html;
 }
 
+/* ── COLLAPSE ── */
+window.toggleSubj = function(id){
+  var el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+};
+
+/* ── BACK ── */
 function goBack(){
-  document.getElementById("syllabus").innerHTML="";
-  document.getElementById("selector").style.display="flex";
+  ALL_ROWS=[]; CURRENT=''; FILTER_S=''; SEARCH_VAL=''; SORT_VAL='index';
+  g('searchInput').value=''; g('sortSel').value='index';
+  q('.tab').forEach(function(b){ b.classList.toggle('on', b.dataset.s===''); });
+  g('contentWrap').innerHTML='';
+  g('appScreen').classList.remove('on');
+  g('selectorScreen').classList.remove('gone');
+  window.scrollTo(0,0);
 }
 
-</script>
+g('backBtn').addEventListener('click', goBack);
 
+/* ── FILTERS ── */
+g('searchInput').addEventListener('input', function(){ SEARCH_VAL=this.value.toLowerCase().trim(); renderSubjects(); });
+g('sortSel').addEventListener('change', function(){ SORT_VAL=this.value; renderSubjects(); });
+q('.tab').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    FILTER_S=this.dataset.s;
+    q('.tab').forEach(function(b){ b.classList.remove('on'); });
+    this.classList.add('on');
+    renderSubjects();
+  });
+});
+
+/* ── EXPOSE ── */
+window.loadClass = loadClass;
+
+})();
+</script>
 </body>
 </html>
