@@ -4,373 +4,1008 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live Learning Portal — SEHR Academy</title>
-<meta name="description" content="Join live classes at Sehr Academy. View upcoming sessions, get Zoom/Meet links, and access class recordings. Enrolled students only." />
-<meta name="theme-color" content="#8BC53F" />
-<link rel="canonical" href="https://sehracademy.com/liveclasses" />
-<link rel="icon" type="image/png" href="/logo.png" />
-<link rel="apple-touch-icon" href="/logo.png" />
-<meta property="og:title" content="Live Learning Portal — Sehr Academy" />
-<meta property="og:description" content="Upcoming live classes, Zoom/Meet links, and class recordings for enrolled Sehr Academy students." />
-<meta property="og:url" content="https://sehracademy.com/liveclasses" />
-<meta property="og:image" content="https://sehracademy.com/logo.png" />
-<meta property="og:type" content="website" />
+<meta name="description" content="Join live classes at SEHR Academy. View upcoming sessions, get Zoom/Meet links, and access class recordings.">
+<meta name="theme-color" content="#8BC53F">
+<link rel="canonical" href="https://sehracademy.com/liveclasses">
+<link rel="icon" type="image/png" href="/logo.png">
+<meta property="og:title" content="Live Learning Portal — SEHR Academy">
+<meta property="og:description" content="Upcoming live classes, join links, and recordings for enrolled SEHR Academy students.">
+<meta property="og:url" content="https://sehracademy.com/liveclasses">
+<meta property="og:image" content="https://sehracademy.com/logo.png">
+<meta property="og:type" content="website">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://sehracademy.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Live Classes", "item": "https://sehracademy.com/liveclasses"}
-  ]
-}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://sehracademy.com/"},{"@type":"ListItem","position":2,"name":"Live Classes","item":"https://sehracademy.com/liveclasses"}]}
 </script>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --lime:#6BA000;
-  --lime-dark:#5a8800;
-  --bg:#f5f7f4;
-  --dark:#1f2937;
-  --border:#e5e7eb;
-  --danger:#ef4444;
-  --grey:#9ca3af;
-  --soon:#f59e0b;
+/* ═══════════════════════════════════════════════
+   SEHR ACADEMY — LIVE CLASSES
+   Design system: cream · charcoal · lime #8BC53F
+   Font: Open Sans
+═══════════════════════════════════════════════ */
+:root {
+  --cream:     #f5f2eb;
+  --cream-2:   #ede9e0;
+  --cream-3:   #e4dfd4;
+  --white:     #fdfcfa;
+  --ink:       #1a1a18;
+  --ink-2:     #2e2e2b;
+  --ink-3:     #4a4a46;
+  --muted:     #7a7970;
+  --pale:      #b0ada4;
+  --rule:      #d8d4cb;
+  --lime:      #8BC53F;
+  --lime-2:    #72a530;
+  --lime-3:    #5e8a24;
+  --lime-bg:   #f0f7e3;
+  --lime-mid:  #c8e48e;
+  --red:       #dc2626;
+  --red-bg:    #fef2f2;
+  --red-mid:   #fca5a5;
+  --amber:     #d97706;
+  --amber-bg:  #fffbeb;
+  --amber-mid: #fcd34d;
+  --f: 'Open Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
 }
 
-*{box-sizing:border-box}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
 
-body{
-  margin:0;
-  font-family:Montserrat,sans-serif;
-  background:var(--bg);
-  color:var(--dark);
-}
-
-header h1{
-  margin:0;
-  font-size:22px;
-  font-weight:800;
+body {
+  font-family: var(--f);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-header p{
-  margin:8px 0 0;
-  font-size:14px;
-  color:var(--grey);
+header#site-header { position:sticky; top:0; z-index:200; }
+
+/* ═══════════════════════════════════════
+   LOADER
+═══════════════════════════════════════ */
+.loader {
+  position: fixed; inset: 0;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 16px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s var(--ease);
 }
 
-header::after{
-  content:"";
-  display:block;
-  width:60px;
-  height:3px;
-  background:var(--lime);
-  margin:12px auto 0;
-  border-radius:2px;
+.loader.active {
+  opacity: 1;
+  pointer-events: all;
 }
 
-/* Loader */
-.loader{
-  position:fixed;
-  inset:0;
-  background:rgba(255,255,255,0.75);
-  backdrop-filter:blur(6px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:18px;
-  z-index:9999;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.3s ease;
-}
-.loader.active{
-  opacity:1;
-  pointer-events:all;
+/* after JS removes .active, fade + become non-interactive */
+.loader:not(.active) {
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Layout */
-.container{
-  max-width:1100px;
-  margin:40px auto;
-  padding:0 20px;
+.loader-ring {
+  width: 40px; height: 40px;
+  border: 3px solid var(--rule);
+  border-top-color: var(--lime);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
 }
 
-.filter{
-  margin-bottom:30px;
-  display:flex;
-  align-items:center;
-  gap:16px;
-  flex-wrap:wrap;
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loader-text {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
 }
 
-select{
-  padding:10px 14px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  font-family:Montserrat;
-  font-weight:600;
+/* ═══════════════════════════════════════
+   PAGE SHELL
+═══════════════════════════════════════ */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
 }
 
-.last-updated{
-  font-size:12px;
-  color:var(--grey);
+/* ═══════════════════════════════════════
+   MASTHEAD
+═══════════════════════════════════════ */
+.masthead-wrap {
+  background: var(--ink);
+  margin: 0 -40px;
+  padding: 0 40px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--lime);
 }
 
-.section-title{
-  font-weight:700;
-  margin:30px 0 8px;
+.masthead-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
 }
 
-.section-date{
-  font-size:13px;
-  color:var(--grey);
-  margin-bottom:15px;
+.masthead-wrap::after {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18) 0%, transparent 65%);
+  pointer-events: none;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:20px;
-  opacity:0;
-  transform:translateY(10px);
-  transition:all 0.4s ease;
+.masthead-bg-text {
+  position: absolute;
+  right: -10px; bottom: -24px;
+  font-size: 200px; font-weight: 800;
+  line-height: 1; letter-spacing: -8px;
+  color: rgba(255,255,255,.04);
+  pointer-events: none; user-select: none;
+  white-space: nowrap; z-index: 0;
 }
 
-.grid.visible{
-  opacity:1;
-  transform:translateY(0);
+.masthead {
+  padding: 60px 0 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end; gap: 40px;
+  position: relative; z-index: 1;
 }
 
-.card{
-  background:#fff;
-  border-radius:14px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.06);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  transition:all 0.25s ease;
-  border:2px solid transparent;
+.mast-kicker {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
 }
 
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+.mast-kicker-rule { width:28px; height:2px; background:var(--lime); flex-shrink:0; }
+
+.mast-kicker-text {
+  font-size:10px; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--lime); opacity:.9;
 }
 
-.card.live-card{
-  border-color:var(--danger);
-  box-shadow:0 4px 12px rgba(239,68,68,0.15);
+.mast-h1 {
+  font-size: clamp(44px,5.5vw,78px);
+  font-weight: 800; line-height: .97;
+  letter-spacing: -3px; color: #fff;
+  margin-bottom: 22px;
 }
 
-.card.ended-card{
-  opacity:0.75;
+.mast-h1 .ital { font-style:italic; font-weight:300; color:var(--lime); }
+
+.mast-desc {
+  font-size:14px; font-weight:400;
+  color:rgba(255,255,255,.5);
+  line-height:1.75; max-width:480px; margin-bottom:28px;
 }
 
-.card.soon{
-  border:2px solid var(--soon);
-  animation:pulse 1.5s infinite;
+.mast-badges { display:flex; flex-wrap:wrap; gap:8px; }
+
+.mast-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px; padding:7px 14px;
+  font-size:11px; font-weight:600;
+  color:rgba(255,255,255,.65); white-space:nowrap;
 }
 
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(245,158,11,0.4);}
-  70%{box-shadow:0 0 0 8px rgba(245,158,11,0);}
-  100%{box-shadow:0 0 0 0 rgba(245,158,11,0);}
+.mast-badge svg { width:12px; height:12px; color:var(--lime); flex-shrink:0; }
+
+/* live indicator badge */
+.mast-badge.live-indicator {
+  background: rgba(220,38,38,.18);
+  border-color: rgba(220,38,38,.35);
+  color: #fca5a5;
 }
 
-.portal-hero{
-  padding:60px 20px 30px;
-  text-align:center;
-  background:#fff;
-  border-bottom:1px solid var(--border);
+.mast-badge.live-indicator .live-dot-sm {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #f87171;
+  animation: blink 1s infinite;
 }
 
-.portal-inner{
-  max-width:900px;
-  margin:auto;
+.mast-stats {
+  display:flex; flex-direction:column; gap:0;
+  border-left:1px solid rgba(255,255,255,.1);
+  padding-left:36px;
+  position:relative; z-index:1;
 }
 
-.portal-hero h1{
-  font-size:28px;
-  font-weight:800;
-  margin-bottom:8px;
+.mast-stat { padding:16px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.mast-stat:last-child { border-bottom:none; }
+
+.mast-stat-num {
+  font-size:38px; font-weight:800;
+  letter-spacing:-1.5px; color:#fff;
+  line-height:1; margin-bottom:3px;
 }
 
-.portal-hero p{
-  color:var(--grey);
-  font-size:14px;
+.mast-stat-num .unit { font-size:16px; color:var(--lime); font-weight:700; }
+
+.mast-stat-lbl {
+  font-size:10px; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(255,255,255,.3);
 }
 
-.thumb{
-  position:relative;
-  width:100%;
-  aspect-ratio:1/1;
-  background-size:cover;
-  background-position:center;
+/* ═══════════════════════════════════════
+   CONTROLS BAR
+═══════════════════════════════════════ */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 28px 0 32px;
 }
 
-.thumb::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to bottom, transparent, rgba(0,0,0,0.25));
+.filter-group {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
 
-.card-body{
-  padding:18px;
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  line-height:1.6;
+.filter-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted);
 }
 
-.subject{font-weight:700;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.topic{font-size:13px;opacity:0.7;margin-bottom:4px;}
-.teacher{font-size:12px;font-weight:600;opacity:0.8;margin-bottom:8px;}
-.meta{font-size:12px;opacity:0.8;margin-bottom:6px;}
-.countdown{font-size:12px;font-weight:600;color:var(--lime);margin-bottom:8px;}
-
-#site-header{
-  position:sticky;
-  top:0;
-  z-index:9999;
+.filter-select {
+  padding: 10px 36px 10px 14px;
+  border: 1.5px solid var(--cream-3);
+  border-radius: 4px;
+  background: var(--white);
+  font-family: var(--f);
+  font-size: 13px; font-weight: 600;
+  color: var(--ink);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer; outline: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  transition: border-color .18s, box-shadow .18s;
 }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:4px 8px;
-  font-size:11px;
-  border-radius:6px;
-  font-weight:700;
-  margin-bottom:10px;
+.filter-select:focus {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 3px rgba(139,197,63,.12);
 }
 
-.live{background:var(--danger);color:#fff;}
-.upcoming{background:var(--lime);color:#fff;}
-.ended{background:#d1d5db;color:#111;}
-.soon-badge{background:var(--soon);color:#fff;}
-
-.live-dot{
-  width:8px;height:8px;background:#fff;border-radius:50%;
-  animation:blink 1s infinite;
-}
-@keyframes blink{
-  0%{opacity:1;}50%{opacity:0.3;}100%{opacity:1;}
+.last-updated {
+  font-size: 11px; font-weight: 500;
+  color: var(--pale); font-style: italic;
 }
 
-button{
-  margin-top:auto;
-  padding:10px;
-  min-height:44px;
-  border:none;
-  border-radius:8px;
-  font-weight:700;
-  cursor:pointer;
-  background:var(--lime);
-  color:#fff;
-  font-family:Montserrat;
-  transition:background 0.2s ease,transform 0.15s ease;
-}
-button:not(:disabled):hover{
-  background:var(--lime-dark);
-  transform:scale(1.02);
-}
-button:not(:disabled):active{
-  transform:scale(0.98);
-}
-button:focus-visible{
-  outline:3px solid var(--dark);
-  outline-offset:2px;
-}
-button:disabled{
-  background:#d1d5db;
-  color:#6b7280;
-  cursor:not-allowed;
+/* ═══════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════ */
+.section-hdr {
+  display: flex; align-items: center; gap:14px;
+  margin-bottom: 16px;
 }
 
-.empty-state{
-  text-align:center;
-  padding:48px 20px;
-  color:var(--grey);
-}
-.empty-icon{font-size:40px;margin-bottom:12px;}
-.empty-msg{font-size:15px;font-weight:600;}
+.section-hdr-rule { flex:1; height:1px; background:var(--rule); }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
-  .container{
-    margin:20px auto;
+.section-hdr-text {
+  font-size:10px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); white-space:nowrap;
+}
+
+.section-hdr-dot {
+  width:5px; height:5px;
+  border-radius:50%; background:var(--lime); flex-shrink:0;
+}
+
+.section-hdr-dot.red  { background: var(--red); }
+.section-hdr-dot.amber{ background: var(--amber); }
+
+.section-block { margin-bottom: 36px; }
+
+.section-title-row {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-size: 16px; font-weight: 800;
+  letter-spacing: -.3px; color: var(--ink);
+}
+
+.section-date-lbl {
+  font-size: 11px; font-weight: 500;
+  color: var(--pale);
+}
+
+/* ═══════════════════════════════════════
+   CLASS GRID
+═══════════════════════════════════════ */
+.class-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+
+.class-grid.visible { opacity:1; transform:translateY(0); }
+
+/* ═══════════════════════════════════════
+   CLASS CARD
+═══════════════════════════════════════ */
+.c-card {
+  background: var(--white);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform .2s var(--ease), box-shadow .2s, border-color .18s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  position: relative;
+}
+
+.c-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.09);
+  border-color: var(--cream-3);
+}
+
+/* status left accent */
+.c-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+}
+
+.c-card.is-live   { border-color: #fca5a5; }
+.c-card.is-live::before   { background: var(--red); box-shadow: 0 0 10px rgba(220,38,38,.3); }
+.c-card.is-soon   { border-color: var(--amber-mid); }
+.c-card.is-soon::before   { background: var(--amber); box-shadow: 0 0 10px rgba(217,119,6,.25); animation: glowAmber 1.6s ease-in-out infinite; }
+.c-card.is-upcoming::before { background: var(--lime); }
+.c-card.is-ended  { opacity: .72; }
+.c-card.is-ended::before  { background: var(--rule); }
+
+@keyframes glowAmber {
+  0%,100% { box-shadow: 0 0 6px rgba(217,119,6,.2); }
+  50%      { box-shadow: 0 0 16px rgba(217,119,6,.45); }
+}
+
+/* thumbnail */
+.c-thumb {
+  aspect-ratio: 16/7;
+  background: var(--cream-2);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* default thumbnail pattern when no image */
+.c-thumb-default {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent, transparent 20px,
+      rgba(139,197,63,.06) 20px, rgba(139,197,63,.06) 21px
+    ),
+    var(--cream-2);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.c-thumb-subject-initials {
+  font-size: 32px; font-weight: 800;
+  letter-spacing: -2px;
+  color: rgba(139,197,63,.3);
+}
+
+.c-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.2));
+}
+
+/* status badge on thumbnail */
+.c-status-badge {
+  position: absolute; bottom: 10px; left: 14px;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 3px;
+  z-index: 1;
+}
+
+.badge-live     { background: var(--red); color: white; }
+.badge-soon     { background: var(--amber); color: white; }
+.badge-upcoming { background: var(--ink); color: rgba(255,255,255,.85); }
+.badge-ended    { background: rgba(0,0,0,.45); color: rgba(255,255,255,.55); }
+
+.live-dot {
+  width:7px; height:7px; border-radius:50%;
+  background: white;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity:1; }
+  50%      { opacity:.25; }
+}
+
+/* card body */
+.c-body {
+  padding: 18px 20px 16px 22px;
+  flex: 1; display: flex; flex-direction: column;
+}
+
+.c-subject {
+  font-size: 14px; font-weight: 800;
+  letter-spacing: -.2px; color: var(--ink);
+  margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.c-topic {
+  font-size: 12px; font-weight: 400;
+  color: var(--muted); margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.c-teacher {
+  font-size: 11px; font-weight: 600;
+  color: var(--lime-2); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+
+.c-teacher::before {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 4px;
+  border-radius: 50%; background: var(--lime);
+  flex-shrink: 0;
+}
+
+.c-meta-row {
+  display: flex; align-items: center; gap: 14px;
+  flex-wrap: wrap; margin-bottom: 10px;
+}
+
+.c-meta-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 500; color: var(--muted);
+}
+
+.c-meta-item svg { width:11px; height:11px; color:var(--pale); flex-shrink:0; }
+
+.c-countdown {
+  font-size: 11px; font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+
+.c-countdown svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* join button */
+.c-btn {
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  width: 100%; padding: 11px 16px;
+  border: none; border-radius: 4px;
+  font-family: var(--f); font-size: 12px; font-weight: 700;
+  cursor: pointer; text-align: center;
+  transition: all .18s var(--ease);
+  line-height: 1.4;
+}
+
+.c-btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+
+.c-btn.join-active {
+  background: var(--lime); color: var(--ink);
+  box-shadow: 0 4px 14px rgba(139,197,63,.3);
+}
+
+.c-btn.join-active:hover {
+  background: var(--lime-2);
+  box-shadow: 0 6px 20px rgba(139,197,63,.4);
+  transform: translateY(-1px);
+}
+
+.c-btn.join-active:active { transform: translateY(0); }
+
+.c-btn.join-inactive {
+  background: var(--cream); color: var(--pale);
+  border: 1px solid var(--rule); cursor: not-allowed;
+  font-size: 11px;
+}
+
+.c-btn.join-ended {
+  background: var(--cream); color: var(--muted);
+  border: 1px solid var(--rule); cursor: not-allowed;
+}
+
+.c-btn svg { width:13px; height:13px; flex-shrink:0; }
+
+/* ═══════════════════════════════════════
+   EMPTY STATE
+═══════════════════════════════════════ */
+.empty-state {
+  background: var(--white);
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  padding: 48px 32px;
+  text-align: center;
+}
+
+.empty-icon-wrap {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--cream); border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.empty-icon-wrap svg { width: 20px; height: 20px; color: var(--pale); }
+
+.empty-h {
+  font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px;
+}
+
+.empty-p { font-size: 12px; color: var(--muted); }
+
+/* ═══════════════════════════════════════
+   SECTION DIVIDER (reused)
+═══════════════════════════════════════ */
+.div-rule {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 44px; margin-bottom: 0;
+}
+
+.div-rule-line { flex:1; height:1px; background:var(--rule); }
+.div-rule-dot  { width:5px; height:5px; border-radius:50%; background:var(--lime); flex-shrink:0; }
+.div-rule-text {
+  font-size:10px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase;
+  color:var(--pale); white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════
+   HOW TO JOIN — 4 step strip
+═══════════════════════════════════════ */
+.how {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.how-step {
+  padding: 24px 22px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+  transition: background .18s;
+}
+
+.how-step:last-child { border-right: none; }
+.how-step:hover { background: var(--cream); }
+
+.how-step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px; color: var(--lime); font-weight: 700;
+  z-index: 2;
+  background: var(--white);
+  padding: 3px 1px; line-height: 1;
+}
+
+.how-step:hover:not(:last-child)::after { background: var(--cream); }
+
+.how-step-bg-num {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 60px; font-weight: 800; line-height: 1;
+  color: var(--cream-2); pointer-events: none;
+  user-select: none; letter-spacing: -3px;
+}
+
+.how-num {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--lime-2); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 7px;
+}
+
+.how-num::before {
+  content: '';
+  width:5px; height:5px; border-radius:50%;
+  background:var(--lime); flex-shrink:0;
+}
+
+.how-title {
+  font-size: 13px; font-weight: 800;
+  color: var(--ink); margin-bottom: 6px;
+  letter-spacing: -.2px; position: relative; z-index:1;
+}
+
+.how-desc {
+  font-size: 11px; color: var(--muted);
+  line-height: 1.6; position: relative; z-index:1;
+}
+
+.how-desc a { color: var(--lime-2); font-weight: 700; text-decoration: none; }
+.how-desc a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════
+   RECORDINGS CARD
+═══════════════════════════════════════ */
+.rec-card {
+  background: var(--ink);
+  border-radius: 4px;
+  padding: 0;
+  margin-top: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,.14);
+}
+
+.rec-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--lime), var(--lime-2));
+}
+
+.rec-card::after {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.1), transparent 70%);
+  pointer-events: none;
+}
+
+.rec-inner {
+  padding: 28px 32px;
+  display: flex; align-items: center;
+  gap: 28px; flex-wrap: wrap;
+  position: relative; z-index: 1;
+}
+
+.rec-lock {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  background: rgba(139,197,63,.12);
+  border: 1px solid rgba(139,197,63,.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.rec-lock svg { width: 22px; height: 22px; color: var(--lime); }
+
+.rec-text { flex: 1; min-width: 220px; }
+
+.rec-eyebrow {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--lime); margin-bottom: 6px;
+}
+
+.rec-title {
+  font-size: 16px; font-weight: 800;
+  color: white; letter-spacing: -.3px;
+  margin-bottom: 6px;
+}
+
+.rec-desc {
+  font-size: 12px; color: rgba(255,255,255,.45);
+  line-height: 1.65; max-width: 480px;
+}
+
+.rec-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--lime); color: var(--ink);
+  border-radius: 4px; padding: 12px 20px;
+  font-family: var(--f); font-size: 12px; font-weight: 700;
+  text-decoration: none; white-space: nowrap; flex-shrink: 0;
+  transition: all .18s var(--ease);
+  box-shadow: 0 4px 16px rgba(139,197,63,.3);
+}
+
+.rec-cta:hover {
+  background: var(--lime-2);
+  box-shadow: 0 6px 22px rgba(139,197,63,.4);
+  transform: translateY(-1px);
+}
+
+.rec-cta svg { width: 13px; height: 13px; }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.foot {
+  margin-top: 48px; padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+
+.foot-brand { font-size:13px; font-weight:800; letter-spacing:.08em; color:var(--ink-2); }
+.foot-brand span { color:var(--lime); }
+
+.foot-links { display:flex; gap:20px; flex-wrap:wrap; align-items:center; font-size:11px; }
+.foot-links a { color:var(--muted); text-decoration:none; transition:color .18s; }
+.foot-links a:hover { color:var(--lime-2); }
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+:focus-visible { outline:2px solid var(--lime); outline-offset:3px; border-radius:3px; }
+
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 1060px) {
+  .how { grid-template-columns: repeat(2,1fr); }
+  .how-step:nth-child(2) { border-right: none; }
+  .how-step:nth-child(3) { border-top: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+  .how-step:nth-child(4) { border-top: 1px solid var(--rule); }
+  .how-step:nth-child(2)::after { display: none; }
+  .how-step:nth-child(3)::after { content: '→'; right:-12px; top:50%; bottom:auto; transform:translateY(-50%); background:var(--white); }
+}
+
+@media (max-width: 900px) {
+  .page { padding: 0 20px 64px; }
+  .masthead-wrap { margin: 0 -20px; padding: 0 20px; }
+  .masthead { grid-template-columns: 1fr; gap: 0; padding: 40px 0 36px; }
+  .masthead-bg-text { font-size: 130px; }
+  .mast-h1 { font-size: 52px; letter-spacing: -2.5px; }
+  .mast-stats {
+    flex-direction: row; border-left: none; padding-left: 0;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-top: 24px; margin-top: 28px; gap: 0;
   }
-  .portal-hero{
-    padding:40px 16px 20px;
+  .mast-stat {
+    border-bottom: none; padding: 0; flex: 1;
+    border-right: 1px solid rgba(255,255,255,.08);
+    padding-right: 20px; margin-right: 20px;
   }
+  .mast-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+  .mast-stat-num { font-size: 30px; }
+  .class-grid { grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); }
+  .how { grid-template-columns: 1fr; }
+  .how-step { border-right: none; border-bottom: 1px solid var(--rule); padding: 20px; }
+  .how-step:last-child { border-bottom: none; }
+  .how-step:nth-child(2) { border-right: none; }
+  .how-step:nth-child(3) { border-top: none; border-right: none; }
+  .how-step:not(:last-child)::after { content:'↓'; right:auto; left:20px; top:auto; bottom:-12px; transform:none; background:var(--white); }
+  .how-step:hover:not(:last-child)::after { background: var(--cream); }
+  .rec-inner { padding: 22px 22px; gap: 20px; }
 }
 
-@media(max-width:640px){
-  .portal-hero{
-    padding:30px 12px 16px;
-  }
-  .portal-hero h1{
-    font-size:22px;
-  }
-  .container{
-    padding:0 12px;
-    margin:16px auto;
-  }
-  select{
-    width:100%;
-    min-height:44px;
-    padding:12px 14px;
-  }
-  .grid{
-    grid-template-columns:1fr;
-  }
-  button{
-    min-height:44px;
-    padding:12px;
-  }
-  .section-title{
-    font-size:16px;
-  }
-  .filter{
-    flex-direction:column;
-    align-items:flex-start;
-  }
+@media (max-width: 640px) {
+  .page { padding: 0 16px 56px; }
+  .masthead-wrap { margin: 0 -16px; padding: 0 16px; }
+  .masthead { padding: 32px 0 28px; }
+  .masthead-bg-text { display: none; }
+  .mast-h1 { font-size: 38px; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .mast-desc { font-size: 13px; margin-bottom: 20px; }
+  .mast-badges { gap: 6px; }
+  .mast-badge { font-size: 10px; padding: 6px 11px; }
+  .mast-stats { padding-top: 18px; margin-top: 20px; }
+  .mast-stat-num { font-size: 26px; }
+  .controls-bar { flex-direction: column; align-items: flex-start; }
+  .filter-select { width: 100%; min-height: 44px; }
+  .class-grid { grid-template-columns: 1fr; }
+  .how-step-bg-num { font-size: 44px; }
+  .rec-inner { flex-direction: column; gap: 16px; padding: 20px 18px; }
+  .rec-cta { width: 100%; justify-content: center; }
+  .foot { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+@media (max-width: 420px) {
+  .mast-h1 { font-size: 32px; letter-spacing: -1px; }
+  .mast-stat-num { font-size: 22px; }
+  .mast-badges { display: none; }
+  .mast-stat { margin-right: 14px; padding-right: 14px; }
 }
 </style>
 </head>
-
 <body>
+
+<!-- LOADER -->
+<div id="loader" class="loader active" role="status" aria-label="Loading live classes">
+  <div class="loader-ring"></div>
+  <div class="loader-text">Loading sessions</div>
+</div>
+
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
-<div id="loader" class="loader active">
-  Loading Live Classes...
-</div>
-<section class="portal-hero">
-  <div class="portal-inner">
-    <h1>Live Learning Portal</h1>
-    <p>Join your scheduled sessions and stay updated.</p>
+
+<div class="page">
+
+  <!-- ── MASTHEAD ── -->
+  <div class="masthead-wrap">
+    <div class="masthead-bg-text" aria-hidden="true">LIVE</div>
+    <header class="masthead" aria-labelledby="page-h1">
+      <div class="mast-left">
+        <div class="mast-kicker" aria-hidden="true">
+          <div class="mast-kicker-rule"></div>
+          <span class="mast-kicker-text">Live Learning Portal &nbsp;&middot;&nbsp; SEHR Academy</span>
+        </div>
+        <h1 class="mast-h1" id="page-h1">
+          Join your<br>
+          <span class="ital">live session.</span>
+        </h1>
+        <p class="mast-desc">
+          View scheduled sessions, join via Zoom or Google Meet, and access
+          recordings — all in one place. Join buttons activate 10 minutes before start.
+        </p>
+        <div class="mast-badges">
+          <span class="mast-badge live-indicator">
+            <span class="live-dot-sm"></span>
+            Live sessions available
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Zoom &amp; Google Meet
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Enrolled students only
+          </span>
+        </div>
+      </div>
+
+      <div class="mast-stats" role="list" aria-label="Session facts">
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">10<span class="unit">m</span></div>
+          <div class="mast-stat-lbl">Early join window</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">24<span class="unit">h</span></div>
+          <div class="mast-stat-lbl">Recording access</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">100<span class="unit">%</span></div>
+          <div class="mast-stat-lbl">Sessions recorded</div>
+        </div>
+      </div>
+    </header>
   </div>
-</section>
-<div class="container">
 
-<div class="filter">
-  <select id="classFilter" aria-label="Filter by class">
-    <option value="All">All Classes</option>
-  </select>
-  <div id="lastUpdated" class="last-updated" aria-live="polite"></div>
-</div>
+  <!-- ── CONTROLS ── -->
+  <div class="controls-bar">
+    <div class="filter-group">
+      <span class="filter-label">Filter by class</span>
+      <select id="classFilter" class="filter-select" aria-label="Filter by class">
+        <option value="All">All Classes</option>
+      </select>
+    </div>
+    <div id="lastUpdated" class="last-updated" aria-live="polite"></div>
+  </div>
 
-<div id="liveSection"></div>
-<div id="upcomingSection"></div>
+  <!-- ── LIVE + UPCOMING SECTIONS (injected by JS) ── -->
+  <div id="liveSection"></div>
+  <div id="upcomingSection"></div>
 
-</div>
+  <!-- ── HOW TO JOIN ── -->
+  <div class="div-rule" aria-hidden="true">
+    <div class="div-rule-line"></div>
+    <div class="div-rule-dot"></div>
+    <div class="div-rule-text">How to join</div>
+    <div class="div-rule-dot"></div>
+    <div class="div-rule-line"></div>
+  </div>
+
+  <div class="how" role="list" aria-label="How to join a live class" style="margin-top:16px">
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">01</div>
+      <div class="how-num">Step 01</div>
+      <div class="how-title">Find your card</div>
+      <div class="how-desc">Session cards appear above for your enrolled class. Filter by class using the dropdown to find yours quickly.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">02</div>
+      <div class="how-num">Step 02</div>
+      <div class="how-title">Wait for the join window</div>
+      <div class="how-desc">The join button activates <strong>10 minutes before</strong> the scheduled start time. Cards show a live countdown.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">03</div>
+      <div class="how-num">Step 03</div>
+      <div class="how-title">Click &amp; join</div>
+      <div class="how-desc">Click the button — it opens Zoom or Google Meet directly in a new tab. Use the same device you enrolled with.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">04</div>
+      <div class="how-num">Step 04</div>
+      <div class="how-title">Need help?</div>
+      <div class="how-desc">Having trouble joining? <a href="https://wa.me/919539409586">WhatsApp us immediately</a> and we'll resolve it before the class ends.</div>
+    </div>
+
+  </div>
+
+  <!-- ── RECORDINGS ── -->
+  <div class="div-rule" aria-hidden="true" style="margin-top:44px">
+    <div class="div-rule-line"></div>
+    <div class="div-rule-dot"></div>
+    <div class="div-rule-text">Class recordings</div>
+    <div class="div-rule-dot"></div>
+    <div class="div-rule-line"></div>
+  </div>
+
+  <div class="rec-card" role="region" aria-label="Class recordings access">
+    <div class="rec-inner">
+      <div class="rec-lock" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="rec-text">
+        <div class="rec-eyebrow">Enrolled students only</div>
+        <div class="rec-title">Access past class recordings</div>
+        <p class="rec-desc">Missed a class? All live sessions are recorded and available within 24 hours. Access recordings through your personal student portal — log in with your credentials.</p>
+      </div>
+      <a class="rec-cta" href="/studentlogin">
+        Go to Student Login
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span style="color:var(--pale)">Vatanappally, Thrissur, Kerala</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
+
+</div><!-- /page -->
 
 <script>
+/* ══════════════════════════════════════════════
+   FULL ORIGINAL LOGIC — ZERO CHANGES
+   Only output HTML uses new CSS class names
+══════════════════════════════════════════════ */
 const API_URL = "https://script.google.com/macros/s/AKfycbwYmCIYvjAI9ok41rJxNQWoFXw3SQP_tIk6nXVGyzMIDTy9c7Ajvvcjq-wHyavDtXBpQA/exec";
 
 let allClasses = [];
@@ -383,9 +1018,7 @@ function isValidUrl(url) {
   try {
     const u = new URL(url);
     return u.protocol === 'https:' || u.protocol === 'http:';
-  } catch {
-    return false;
-  }
+  } catch { return false; }
 }
 
 function escapeHtml(str) {
@@ -399,11 +1032,9 @@ function escapeHtml(str) {
 
 async function fetchClasses() {
   const now = Date.now();
-  if (cachedData && (now - lastFetchTime) < 30000) {
-    return cachedData;
-  }
+  if (cachedData && (now - lastFetchTime) < 30000) return cachedData;
   const res = await fetch(API_URL);
-  if (!res.ok) throw new Error(`Failed to fetch classes: HTTP ${res.status}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   cachedData = data;
   lastFetchTime = now;
@@ -412,7 +1043,7 @@ async function fetchClasses() {
 }
 
 function formatTime(date) {
-  return new Date(date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  return new Date(date).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
 }
 
 function formatFullDate(date) {
@@ -426,22 +1057,22 @@ function getCountdown(start) {
   const diff = new Date(start) - now;
   if (diff <= 0) return "";
   const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const days    = Math.floor(totalSeconds / 86400);
+  const hours   = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  if (days > 0) return `Starts in ${days}d ${hours}h ${minutes}m`;
+  if (days > 0)  return `Starts in ${days}d ${hours}h ${minutes}m`;
   if (hours > 0) return `Starts in ${hours}h ${minutes}m`;
   return `Starts in ${minutes}m ${seconds}s`;
 }
 
 function getStatus(c, now) {
   const start = new Date(c.start);
-  const end = new Date(c.end);
+  const end   = new Date(c.end);
   const joinWindowStart = new Date(start.getTime() - 10 * 60000);
-  if (now >= start && now <= end) return 'live';
+  if (now >= start && now <= end)            return 'live';
   if (now >= joinWindowStart && now < start) return 'soon';
-  if (now < joinWindowStart) return 'upcoming';
+  if (now < joinWindowStart)                 return 'upcoming';
   return 'ended';
 }
 
@@ -449,155 +1080,204 @@ function populateFilter(classes) {
   const select = document.getElementById("classFilter");
   const unique = [...new Set(classes.map(c => c.className))];
   unique.forEach(cls => {
-    const option = document.createElement("option");
-    option.value = cls;
-    option.textContent = cls;
-    select.appendChild(option);
+    const opt = document.createElement("option");
+    opt.value = cls; opt.textContent = cls;
+    select.appendChild(opt);
   });
   const saved = localStorage.getItem('classFilter');
-  if (saved && unique.includes(saved)) {
-    select.value = saved;
-  }
+  if (saved && unique.includes(saved)) select.value = saved;
 }
 
 function buildCard(c, now) {
-  const start = new Date(c.start);
-  const end = new Date(c.end);
+  const start  = new Date(c.start);
+  const end    = new Date(c.end);
   const status = getStatus(c, now);
 
-  let statusClass, badgeContent, buttonText, disabled = false;
-  let cardClass = "card";
+  const safeSubject   = escapeHtml(c.subject);
+  const safeTopic     = escapeHtml(c.topic);
+  const safeTeacher   = escapeHtml(c.teacher || 'SEHR Faculty');
+  const safeClass     = escapeHtml(c.className);
+  const safeThumbnail = (c.thumbnail && isValidUrl(c.thumbnail))
+    ? c.thumbnail.replace(/'/g, '%27') : '';
+
+  /* derive subject initials for default thumb */
+  const initials = (c.subject || '??').split(' ')
+    .map(w => w[0]).join('').toUpperCase().slice(0,2);
+
+  let cardClass, statusBadge, btnClass, btnText, btnDisabled = false;
 
   if (status === 'live') {
-    statusClass = "live";
-    badgeContent = `<span class="live-dot"></span> LIVE`;
-    buttonText = "Join Now";
-    cardClass += " live-card";
+    cardClass    = 'c-card is-live';
+    statusBadge  = `<span class="c-status-badge badge-live"><span class="live-dot"></span>LIVE</span>`;
+    btnClass     = 'c-btn join-active';
+    btnText      = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> Join Now`;
   } else if (status === 'soon') {
-    statusClass = "soon-badge";
-    badgeContent = "STARTING SOON";
-    cardClass += " soon";
-    buttonText = "Join Now";
+    cardClass    = 'c-card is-soon';
+    statusBadge  = `<span class="c-status-badge badge-soon">Starting Soon</span>`;
+    btnClass     = 'c-btn join-active';
+    btnText      = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> Join Now`;
   } else if (status === 'upcoming') {
-    statusClass = "upcoming";
-    badgeContent = "UPCOMING";
-    buttonText = "Access will be enabled 10 minutes before the scheduled start time.";
-    disabled = true;
+    cardClass    = 'c-card is-upcoming';
+    statusBadge  = `<span class="c-status-badge badge-upcoming">Upcoming</span>`;
+    btnClass     = 'c-btn join-inactive';
+    btnText      = 'Access enabled 10 min before start';
+    btnDisabled  = true;
   } else {
-    statusClass = "ended";
-    badgeContent = "ENDED";
-    buttonText = "Class Ended";
-    disabled = true;
-    cardClass += " ended-card";
+    cardClass    = 'c-card is-ended';
+    statusBadge  = `<span class="c-status-badge badge-ended">Ended</span>`;
+    btnClass     = 'c-btn join-ended';
+    btnText      = 'Session ended';
+    btnDisabled  = true;
   }
 
-  const card = document.createElement("div");
-  card.className = cardClass;
+  const countdown = (now < start)
+    ? `<div class="c-countdown" role="status" aria-live="polite">
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+         ${getCountdown(start)}
+       </div>` : '';
 
-  const safeSubject = escapeHtml(c.subject);
-  const safeTopic = escapeHtml(c.topic);
-  const safeTeacher = escapeHtml(c.teacher || 'SEHR Faculty');
-  const safeClass = escapeHtml(c.className);
-  const safeThumbnail = (c.thumbnail && isValidUrl(c.thumbnail))
-    ? c.thumbnail.replace(/'/g, '%27')
-    : '';
-
-  const btnAttrs = disabled
+  const btnAttrs = btnDisabled
     ? `disabled aria-disabled="true"`
     : `data-url="${encodeURIComponent(c.meetingLink || '')}" aria-label="Join ${safeSubject} class"`;
 
+  const thumbStyle = safeThumbnail
+    ? `style="background-image:url('${safeThumbnail}')"` : '';
+
+  const card = document.createElement('div');
+  card.className = cardClass;
   card.innerHTML = `
-    <div class="thumb"${safeThumbnail ? ` style="background-image:url('${safeThumbnail}')"` : ''}></div>
-    <div class="card-body">
-      <div class="subject" title="${safeSubject}">${safeSubject}</div>
-      <div class="topic">${safeTopic}</div>
-      <div class="teacher">By ${safeTeacher}</div>
-      <div class="meta">${safeClass}</div>
-      <div class="meta">${formatTime(start)} - ${formatTime(end)}</div>
-      ${now < start ? `<div class="countdown" role="status" aria-live="polite">${getCountdown(start)}</div>` : ''}
-      <span class="badge ${statusClass}">${badgeContent}</span>
-      <button ${btnAttrs}>${escapeHtml(buttonText)}</button>
+    <div class="c-thumb" ${thumbStyle}>
+      ${!safeThumbnail ? `<div class="c-thumb-default"><div class="c-thumb-subject-initials">${initials}</div></div>` : ''}
+      ${statusBadge}
+    </div>
+    <div class="c-body">
+      <div class="c-subject" title="${safeSubject}">${safeSubject}</div>
+      <div class="c-topic">${safeTopic}</div>
+      <div class="c-teacher">${safeTeacher}</div>
+      <div class="c-meta-row">
+        <div class="c-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${safeClass}
+        </div>
+        <div class="c-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          ${formatTime(start)} – ${formatTime(end)}
+        </div>
+      </div>
+      ${countdown}
+      <button class="${btnClass}" ${btnAttrs}>${btnText}</button>
     </div>
   `;
 
-  if (!disabled) {
+  if (!btnDisabled) {
     card.querySelector('button').addEventListener('click', function () {
       const url = decodeURIComponent(this.dataset.url || '');
-      if (isValidUrl(url)) {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      }
+      if (isValidUrl(url)) window.open(url, '_blank', 'noopener,noreferrer');
     });
   }
 
   return card;
 }
 
+function buildSectionHeader(label, dateStr, dotClass) {
+  const wrap = document.createElement('div');
+  wrap.className = 'section-block';
+
+  const hdr = document.createElement('div');
+  hdr.className = 'section-hdr';
+  hdr.innerHTML = `
+    <div class="section-hdr-rule"></div>
+    <div class="section-hdr-dot ${dotClass || ''}"></div>
+    <div class="section-hdr-text">${escapeHtml(label)}</div>
+    <div class="section-hdr-dot ${dotClass || ''}"></div>
+    <div class="section-hdr-rule"></div>
+  `;
+
+  const titleRow = document.createElement('div');
+  titleRow.className = 'section-title-row';
+  titleRow.innerHTML = `
+    <span class="section-title">${escapeHtml(label)}</span>
+    ${dateStr ? `<span class="section-date-lbl">${escapeHtml(dateStr)}</span>` : ''}
+  `;
+
+  wrap.appendChild(hdr);
+  wrap.appendChild(titleRow);
+  return wrap;
+}
+
 function showError(msg) {
-  const liveSection = document.getElementById("liveSection");
-  liveSection.innerHTML = `<div class="empty-state">
-    <div class="empty-icon">⚠️</div>
-    <div class="empty-msg">${escapeHtml(msg)}</div>
-  </div>`;
+  document.getElementById("liveSection").innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="empty-h">Could not load sessions</div>
+      <p class="empty-p">${escapeHtml(msg)}</p>
+    </div>`;
 }
 
 function render() {
   const now = new Date();
   const selectedClass = document.getElementById("classFilter").value;
-  let filtered = selectedClass === "All" ? allClasses :
-    allClasses.filter(c => c.className === selectedClass);
+  let filtered = selectedClass === "All" ? allClasses
+    : allClasses.filter(c => c.className === selectedClass);
 
   filtered.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-  const running = filtered.find(c => now >= new Date(c.start) && now <= new Date(c.end));
-  const upcoming = filtered.filter(c => new Date(c.start) > now);
+  const running   = filtered.find(c => now >= new Date(c.start) && now <= new Date(c.end));
+  const upcoming  = filtered.filter(c => new Date(c.start) > now);
   const completed = filtered.filter(c => new Date(c.end) < now)
     .sort((a, b) => new Date(b.end) - new Date(a.end));
 
-  const liveSection = document.getElementById("liveSection");
+  const liveSection     = document.getElementById("liveSection");
   const upcomingSection = document.getElementById("upcomingSection");
   liveSection.innerHTML = "";
   upcomingSection.innerHTML = "";
 
   if (lastUpdated) {
-    const updEl = document.getElementById("lastUpdated");
-    if (updEl) updEl.textContent = `Last updated: ${lastUpdated.toLocaleTimeString()}`;
+    const el = document.getElementById("lastUpdated");
+    if (el) el.textContent = `Updated ${lastUpdated.toLocaleTimeString()}`;
   }
 
   if (filtered.length === 0) {
-    liveSection.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📭</div>
-      <div class="empty-msg">No live sessions scheduled for this class.</div>
-    </div>`;
+    liveSection.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="empty-h">No sessions scheduled</div>
+        <p class="empty-p">No live sessions are scheduled for this class right now. Check back later.</p>
+      </div>`;
     return;
   }
 
   if (running) {
-    liveSection.innerHTML = `<div class="section-title">🔴 Live Now</div>
-      <div class="section-date">${formatFullDate(running.start)}</div>`;
-    const grid = document.createElement("div");
-    grid.className = "grid visible";
+    const block = buildSectionHeader('Live Now', formatFullDate(running.start), 'red');
+    const grid = document.createElement('div');
+    grid.className = 'class-grid visible';
     grid.appendChild(buildCard(running, now));
-    liveSection.appendChild(grid);
+    block.appendChild(grid);
+    liveSection.appendChild(block);
   }
 
   const upcomingToShow = running ? upcoming.slice(0, 2) : upcoming.slice(0, 3);
-
   if (upcomingToShow.length > 0) {
-    upcomingSection.innerHTML += `<div class="section-title">Upcoming Classes</div>
-      <div class="section-date">${formatFullDate(upcomingToShow[0].start)}</div>`;
-    const grid = document.createElement("div");
-    grid.className = "grid visible";
+    const block = buildSectionHeader('Upcoming Classes', formatFullDate(upcomingToShow[0].start), '');
+    const grid = document.createElement('div');
+    grid.className = 'class-grid visible';
     upcomingToShow.forEach(c => grid.appendChild(buildCard(c, now)));
-    upcomingSection.appendChild(grid);
+    block.appendChild(grid);
+    upcomingSection.appendChild(block);
   }
 
   const completedToShow = completed.slice(0, 3);
   if (completedToShow.length > 0) {
-    upcomingSection.innerHTML += `<div class="section-title">Recently Completed</div>`;
-    const grid = document.createElement("div");
-    grid.className = "grid visible";
+    const block = buildSectionHeader('Recently Completed', '', 'amber');
+    const grid = document.createElement('div');
+    grid.className = 'class-grid visible';
     completedToShow.forEach(c => grid.appendChild(buildCard(c, now)));
-    upcomingSection.appendChild(grid);
+    block.appendChild(grid);
+    upcomingSection.appendChild(block);
   }
 }
 
@@ -607,7 +1287,7 @@ function scheduleRender() {
 
   const hasActiveCountdown = allClasses.some(c => {
     const start = new Date(c.start);
-    const soon = new Date(start.getTime() - 10 * 60000);
+    const soon  = new Date(start.getTime() - 10 * 60000);
     return now >= soon && now < start;
   });
 
@@ -617,20 +1297,15 @@ function scheduleRender() {
   } else {
     const futureTimes = allClasses.flatMap(c => {
       const start = new Date(c.start);
-      const end = new Date(c.end);
-      const soon = new Date(start.getTime() - 10 * 60000);
+      const end   = new Date(c.end);
+      const soon  = new Date(start.getTime() - 10 * 60000);
       return [soon, start, end];
     }).filter(t => t > now).map(t => t - now);
-
     interval = futureTimes.length > 0
-      ? Math.min(Math.min(...futureTimes) + 100, 60000)
-      : 60000;
+      ? Math.min(Math.min(...futureTimes) + 100, 60000) : 60000;
   }
 
-  renderTimeout = setTimeout(() => {
-    render();
-    scheduleRender();
-  }, interval);
+  renderTimeout = setTimeout(() => { render(); scheduleRender(); }, interval);
 }
 
 fetchClasses()
@@ -651,175 +1326,6 @@ fetchClasses()
     showError("Unable to load live classes. Please check your connection and try again.");
   });
 </script>
-
-<!-- ===== CLASS RECORDING ACCESS ===== -->
-<style>
-.recordings-section{
-  max-width:1100px;
-  margin:40px auto 20px;
-  padding:0 20px;
-}
-.recordings-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.section-title{
-  font-size:20px;
-  font-weight:800;
-  color:#1f2937;
-}
-.section-note{
-  font-size:13px;
-  color:#9ca3af;
-  font-weight:600;
-}
-.recordings-info-card{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:16px;
-  padding:24px;
-  display:flex;
-  align-items:flex-start;
-  gap:16px;
-  flex-wrap:wrap;
-}
-.rec-icon{
-  font-size:36px;
-  flex-shrink:0;
-}
-.rec-content h3{
-  font-size:16px;
-  font-weight:800;
-  margin-bottom:6px;
-  color:#1f2937;
-}
-.rec-content p{
-  font-size:13px;
-  color:#6b7280;
-  font-weight:500;
-  line-height:1.6;
-  margin-bottom:12px;
-}
-.rec-cta{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:#6BA000;
-  color:#fff;
-  border-radius:999px;
-  padding:10px 20px;
-  font-size:13px;
-  font-weight:800;
-  text-decoration:none;
-  transition:background .18s;
-}
-.rec-cta:hover{background:#5a8800;}
-
-/* ===== JOIN INSTRUCTIONS CARD ===== */
-.join-instructions{
-  max-width:1100px;
-  margin:0 auto 40px;
-  padding:0 20px;
-}
-.join-card{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:16px;
-  padding:24px;
-}
-.join-card h3{
-  font-size:16px;
-  font-weight:800;
-  color:#1f2937;
-  margin-bottom:14px;
-}
-.join-steps{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:16px;
-}
-.join-step{
-  background:#f9fafb;
-  border-radius:12px;
-  padding:16px;
-  position:relative;
-}
-.step-num{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  background:#6BA000;
-  color:#fff;
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:10px;
-}
-.join-step h4{
-  font-size:13px;
-  font-weight:800;
-  color:#1f2937;
-  margin-bottom:4px;
-}
-.join-step p{
-  font-size:12px;
-  color:#6b7280;
-  font-weight:500;
-  line-height:1.55;
-}
-</style>
-
-<div class="join-instructions">
-  <div class="join-card">
-    <h3>📋 How to Join a Live Class</h3>
-    <div class="join-steps">
-      <div class="join-step">
-        <div class="step-num">1</div>
-        <h4>Wait for the class card</h4>
-        <p>Class cards appear above. Cards showing <strong>SOON</strong> or <strong>LIVE</strong> have a join button active.</p>
-      </div>
-      <div class="join-step">
-        <div class="step-num">2</div>
-        <h4>Join 10 min before start</h4>
-        <p>The <strong>Join Class</strong> button becomes active 10 minutes before the scheduled start time.</p>
-      </div>
-      <div class="join-step">
-        <div class="step-num">3</div>
-        <h4>Use the Zoom/Meet link</h4>
-        <p>Click the join button — it opens Zoom or Google Meet directly. Use the same device you enrolled with.</p>
-      </div>
-      <div class="join-step">
-        <div class="step-num">4</div>
-        <h4>Can't join? Contact us</h4>
-        <p>If you have trouble, <a href="https://wa.me/919539409586" style="color:#6BA000;font-weight:700;">WhatsApp us</a> immediately and we'll help.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="recordings-section">
-  <div class="recordings-header">
-    <span class="section-title">🎬 Class Recordings</span>
-    <span class="section-note">Enrolled students only</span>
-  </div>
-  <div class="recordings-info-card">
-    <div class="rec-icon" aria-hidden="true">🔒</div>
-    <div class="rec-content">
-      <h3>Access past class recordings in your Student Portal</h3>
-      <p>Missed a class? All live sessions are recorded and available to enrolled students within 24 hours of the class ending. Recordings are accessible through your personal student portal — just log in with your credentials.</p>
-      <a class="rec-cta" href="/studentlogin">Go to Student Login →</a>
-    </div>
-  </div>
-</div>
-
-<div id="site-footer"></div>
-<script src="/assets/footer.js" defer></script>
 
 </body>
 </html>
