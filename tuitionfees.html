@@ -3,431 +3,1598 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEHR Academy – Premium Billing Portal</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<title>SEHR Academy — Fee Structure 2026–27</title>
+<meta name="description" content="Transparent fee structure and instant payment calculator for Class 9, 10, 11 & 12.">
+<meta name="theme-color" content="#8BC53F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --lime:#8BC53F;
-  --lime-dark:#6fb22c;
-  --glass:rgba(255,255,255,0.65);
-  --glass-strong:rgba(255,255,255,0.85);
-  --border:rgba(255,255,255,0.35);
-  --text:#111827;
-  --muted:#6b7280;
+/* ═══════════════════════════════════════════════════
+   SEHR ACADEMY — FEE STRUCTURE
+   Aesthetic: Luxury editorial · Cream & charcoal
+   Accent: #8BC53F lime
+   Font: Open Sans
+═══════════════════════════════════════════════════ */
+
+:root {
+  --cream:    #f5f2eb;
+  --cream-2:  #ede9e0;
+  --cream-3:  #e4dfd4;
+  --white:    #fdfcfa;
+  --ink:      #1a1a18;
+  --ink-2:    #2e2e2b;
+  --ink-3:    #4a4a46;
+  --muted:    #7a7970;
+  --pale:     #b0ada4;
+  --rule:     #d8d4cb;
+  --lime:     #8BC53F;
+  --lime-2:   #72a530;
+  --lime-3:   #5e8a24;
+  --lime-bg:  #f0f7e3;
+  --lime-mid: #c8e48e;
+  --f: 'Open Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
 }
 
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#e8f0ff,#f3f8ff,#eef7f2);
-  color:var(--text);
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--f);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* Space below navbar */
-.main-content{
-  padding:120px 40px 40px;
-}
-.institutional{
-  margin-top:8px;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.4;
-}
+/* ── NAV PLACEHOLDER ── */
+header#site-header { position: sticky; top: 0; z-index: 200; }
 
-.institutional span{
-  font-weight:600;
-  color:#374151;
+/* ═══════════════════════════════════════
+   TOP BAND — full-width lime stripe
+═══════════════════════════════════════ */
+.top-band {
+  background: var(--lime);
+  height: 3px;
+  width: 100%;
 }
 
-.wrapper{
-  max-width:1250px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:30px;
+/* ═══════════════════════════════════════
+   PAGE SHELL
+═══════════════════════════════════════ */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
 }
 
-.card{
-  background:var(--glass);
-  backdrop-filter:blur(20px);
-  border-radius:28px;
-  padding:35px;
-  border:1px solid var(--border);
-  box-shadow:
-  0 35px 90px rgba(0,0,0,0.12),
-  inset 0 1px 0 rgba(255,255,255,0.6);
-}
-.premium-panel{
-  border-top:4px solid;
-  border-image: linear-gradient(90deg,#8BC53F,#6fb22c) 1;
-}
+/* ═══════════════════════════════════════
+   MASTHEAD — full width editorial header
+═══════════════════════════════════════ */
 
-.header{
-  font-family:'Montserrat',sans-serif;
-  font-size:26px;
-  font-weight:800;
+/* hero banner behind masthead */
+.masthead-wrap {
+  background: var(--ink);
+  margin: 0 -40px;
+  padding: 0 40px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--lime);
 }
 
-.session-info{
-  font-size:14px;
-  color:var(--muted);
-  margin:8px 0 18px;
+/* grid lines */
+.masthead-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
 }
 
-.month-pill-container{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:20px;
+/* lime radial glow top-right */
+.masthead-wrap::after {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18) 0%, transparent 65%);
+  pointer-events: none;
 }
 
-.month-pill{
-  padding:8px 16px;
-  border-radius:40px;
-  font-size:12px;
-  font-weight:600;
-  background:rgba(255,255,255,0.7);
-  color:#9ca3af;
+.masthead {
+  padding: 60px 0 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
 }
 
-.month-pill.active{
-  background:linear-gradient(135deg,#8BC53F,#6fb22c);
-  color:white;
-  box-shadow:0 10px 25px rgba(139,197,63,0.35);
+/* large decorative background text */
+.masthead-bg-text {
+  position: absolute;
+  right: -10px; bottom: -24px;
+  font-size: 200px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -8px;
+  color: rgba(255,255,255,.04);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
 }
 
-label{
-  font-weight:600;
-  margin-top:20px;
-  display:block;
+.mast-left { position: relative; z-index: 1; }
+
+.mast-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-select{
-  width:100%;
-  padding:15px;
-  border-radius:16px;
-  border:1px solid rgba(0,0,0,0.05);
-  margin-top:8px;
-  background:rgba(255,255,255,0.9);
+.mast-kicker-rule {
+  width: 28px;
+  height: 2px;
+  background: var(--lime);
+  flex-shrink: 0;
 }
 
-.subjects label{
-  display:block;
-  margin-top:6px;
+.mast-kicker-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  opacity: .9;
 }
 
-.plan-box{
-  margin-top:24px;
-  padding:24px;
-  border-radius:22px;
-  background:linear-gradient(135deg,#8BC53F,#6fb22c);
-  color:white;
-  font-weight:700;
-  text-align:center;
-  font-size:20px;
+.mast-h1 {
+  font-size: clamp(44px, 5.5vw, 78px);
+  font-weight: 800;
+  line-height: .97;
+  letter-spacing: -3px;
+  color: #ffffff;
+  margin-bottom: 22px;
 }
 
-.advance-box{
-  margin-top:28px;
-  padding:26px;
-  border-radius:24px;
-
-  background:linear-gradient(
-    135deg,
-    rgba(15,23,42,0.85),
-    rgba(30,41,59,0.75)
-  );
-
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-
-  border:1px solid rgba(255,255,255,0.15);
-
-  color:white;
-  font-weight:700;
-  text-align:center;
-  font-size:20px;
-
-  box-shadow:
-    0 20px 50px rgba(15,23,42,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.25);
+.mast-h1 .ital {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--lime);
 }
 
-.summary-title{
-  font-weight:700;
-  font-size:20px;
-  margin-bottom:15px;
+.mast-desc {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,.5);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 28px;
 }
 
-.summary-card{
-  background:var(--glass-strong);
-  border-radius:22px;
-  padding:20px;
-  margin-bottom:16px;
-  border:1px solid var(--border);
+/* trust badges row */
+.mast-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.due-date{
-  color:var(--lime-dark);
-  font-weight:700;
+.mast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .02em;
+  white-space: nowrap;
 }
 
-.note{
-  margin-top:20px;
-  font-size:13px;
-  color:var(--muted);
+.mast-badge svg {
+  width: 12px; height: 12px;
+  color: var(--lime);
+  flex-shrink: 0;
 }
 
-@media(max-width:900px){
-.wrapper{grid-template-columns:1fr;}
+/* right: stats column */
+.mast-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid rgba(255,255,255,.1);
+  padding-left: 36px;
+  position: relative;
+  z-index: 1;
 }
 
-@media(max-width:640px){
-  .main-content{padding:90px 12px 40px;}
-  .card{padding:18px 14px;border-radius:18px;}
-  .header{font-size:20px;}
-  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  table{min-width:380px;}
-  th,td{padding:10px 8px;font-size:13px;}
-  select,button,.btn{min-height:44px;}
+.mast-stat {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.mast-stat:last-child { border-bottom: none; }
+
+.mast-stat-num {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.mast-stat-num .unit { font-size: 16px; color: var(--lime); font-weight: 700; }
+
+.mast-stat-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+
+/* ═══════════════════════════════════════
+   BENTO GRID
+   Left: tall calculator card + bottom hint
+   Right: narrow sticky summary
+═══════════════════════════════════════ */
+.bento {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 16px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+/* ─── CARD BASE ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════
+   CALCULATOR CARD
+═══════════════════════════════════════ */
+.calc-card {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1.5px solid var(--cream-3);
+  box-shadow: 0 2px 12px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+  /* left lime accent bar */
+  border-left: 4px solid var(--lime);
+}
+
+/* decorative large number watermark */
+.calc-card::before {
+  content: '₹';
+  position: absolute;
+  right: -20px;
+  top: -30px;
+  font-size: 280px;
+  font-weight: 800;
+  color: var(--cream-2);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+.calc-card-head {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.calc-card-sub {
+  font-size: 11px;
+  color: var(--pale);
+  margin-top: 3px;
+}
+
+.calc-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--lime-bg);
+  border: 1px solid var(--lime-mid);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.calc-tag svg { width: 11px; height: 11px; }
+
+.calc-body {
+  padding: 28px 32px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── FIELD ── */
+.f-group { margin-bottom: 22px; }
+
+.f-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--pale);
+  margin-bottom: 8px;
+}
+
+.f-label svg { width: 11px; height: 11px; color: var(--lime); flex-shrink: 0; }
+
+.f-group select {
+  width: 100%;
+  padding: 13px 40px 13px 14px;
+  border: 1.5px solid var(--cream-3);
+  border-radius: 4px;
+  background: var(--cream);
+  font-family: var(--f);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.f-group select:hover  { border-color: var(--ink-3); background: var(--white); }
+.f-group select:focus  { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(139,197,63,.15); background: var(--white); }
+
+/* ── SESSION BADGE ── */
+.session-badge {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: var(--lime-bg);
+  border: 1px solid var(--lime-mid);
+  border-left: 3px solid var(--lime);
+  border-radius: 0 4px 4px 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lime-2);
+  margin-bottom: 22px;
+  animation: slideDown .22s var(--ease) both;
+}
+
+.session-badge.visible { display: flex; }
+.session-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* ── SUBJECTS ── */
+.subjects-section.subjects { display: none; }
+.subjects-section.subjects.visible {
+  display: block;
+  animation: slideDown .22s var(--ease) both;
+}
+
+.subj-hint {
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--pale);
+  margin-bottom: 10px;
+}
+
+.subj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.subj-chip { position: relative; }
+.subj-chip input { position: absolute; opacity: 0; width: 0; height: 0; }
+.subj-chip input:focus-visible + label { outline: 2px solid var(--lime); outline-offset: 2px; }
+
+.subj-chip label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  user-select: none;
+  transition: all .18s;
+}
+
+.subj-chip label:hover {
+  border-color: var(--lime-mid);
+  background: var(--lime-bg);
+}
+
+.subj-chip input:checked + label {
+  border-color: var(--lime);
+  background: var(--lime-bg);
+  color: var(--lime-2);
+}
+
+.chk {
+  width: 16px; height: 16px;
+  border-radius: 3px;
+  border: 1.5px solid var(--rule);
+  background: var(--white);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s;
+}
+
+.subj-chip input:checked + label .chk {
+  background: var(--lime);
+  border-color: var(--lime);
+}
+
+.subj-chip input:checked + label .chk::after {
+  content: '';
+  width: 4px; height: 7px;
+  border: 2px solid var(--white);
+  border-top: none; border-left: none;
+  transform: rotate(45deg) translate(-.5px, -1px);
+  display: block;
+}
+
+.subj-ico {
+  width: 26px; height: 26px;
+  border-radius: 5px;
+  background: var(--cream-2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.subj-ico svg { width: 13px; height: 13px; color: var(--ink-3); }
+.subj-chip input:checked + label .subj-ico { background: rgba(139,197,63,.2); }
+.subj-chip input:checked + label .subj-ico svg { color: var(--lime-2); }
+
+/* ── PLAN BOX ── */
+.plan-box {
+  display: none;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--ink);
+  padding: 22px 26px;
+  margin-bottom: 22px;
+  animation: slideDown .22s var(--ease) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-box.visible { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+/* subtle green reflection */
+.plan-box::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: -40px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18), transparent 70%);
+  pointer-events: none;
+}
+
+.pb-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 6px;
+}
+
+.pb-amount {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: var(--white);
+  line-height: 1;
+}
+
+.pb-unit {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,.3);
+  margin-left: 4px;
+}
+
+.pb-badge {
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── DATE ROW ── */
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr .9fr;
+  gap: 8px;
+}
+
+/* ── ADMISSION BOX ── */
+.adm-box {
+  border: 1px solid var(--lime-mid);
+  border-radius: 4px;
+  background: var(--lime-bg);
+  padding: 28px 24px;
+  margin-top: 6px;
+  text-align: center;
+  animation: slideDown .22s var(--ease) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.adm-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--lime);
+}
+
+.adm-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  margin-bottom: 10px;
+}
+
+.adm-amount {
+  font-size: 60px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.adm-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── MONTH PILLS ── */
+.month-section { margin-top: 24px; }
+
+.month-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.month-hdr-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--pale);
+  white-space: nowrap;
+}
+
+.month-hdr-rule { flex: 1; height: 1px; background: var(--rule); }
+
+.month-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.month-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--cream);
+  color: var(--pale);
+}
+
+.month-pill.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--ink);
+  font-weight: 700;
+  animation: pillIn .2s var(--ease) both;
+}
+
+/* ═══════════════════════════════════════
+   SUMMARY COLUMN (sticky)
+═══════════════════════════════════════ */
+.sum-col {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── EMPTY STATE ── */
+.empty-card {
+  background: var(--white);
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  padding: 56px 32px;
+  text-align: center;
+}
+
+.empty-emblem {
+  width: 56px; height: 56px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  background: var(--cream);
+  animation: rotateSlow 14s linear infinite;
+}
+
+.empty-emblem svg { width: 22px; height: 22px; color: var(--pale); }
+
+.empty-h {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -.3px;
+  margin-bottom: 8px;
+}
+
+.empty-p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+/* ── SUMMARY CARD ── */
+.sum-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  display: none;
+  animation: slideDown .3s var(--ease) both;
+}
+
+.sum-card.visible { display: block; }
+
+.sum-card-topline {
+  height: 3px;
+  background: var(--lime);
+}
+
+.sum-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sum-head-left {}
+
+.sum-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  margin-bottom: 3px;
+}
+
+.sum-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  color: var(--ink);
+}
+
+.sum-sub {
+  font-size: 11px;
+  color: var(--pale);
+  margin-top: 2px;
+}
+
+.sum-head-badge {
+  background: var(--ink);
+  color: var(--white);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* pay cards */
+#summaryContent { padding: 16px 20px 4px; }
+
+.pay-card {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 15px 16px 15px 20px;
+  margin-bottom: 8px;
+  background: var(--cream);
+  position: relative;
+  transition: border-color .18s, background .18s;
+  animation: slideDown .22s var(--ease) both;
+}
+
+.pay-card:hover { border-color: var(--cream-3); background: var(--white); }
+
+.pay-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 3px;
+  background: var(--rule);
+  border-radius: 0 2px 2px 0;
+}
+
+.pay-card.total-card {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.pay-card.total-card:hover { background: var(--ink-2); border-color: var(--ink-2); }
+
+.pay-card.first::before  { background: var(--lime); }
+.pay-card.second::before { background: #5ba3f5; }
+.pay-card.third::before  { background: #f0b429; }
+.pay-card.total-card::before { background: var(--lime); }
+
+.pc-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--pale);
+  margin-bottom: 2px;
+}
+
+.total-card .pc-label { color: rgba(255,255,255,.3); }
+
+.pc-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 3px;
+}
+
+.total-card .pc-title { color: rgba(255,255,255,.45); }
+
+.pc-months {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+.total-card .pc-months { color: rgba(255,255,255,.3); }
+
+.pc-amount {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.total-card .pc-amount { color: var(--white); }
+
+.due-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: #fef9e7;
+  color: #8a6508;
+  border: 1px solid #f5d96e;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-bottom: 4px;
+}
+
+.due-tag svg { width: 9px; height: 9px; }
+
+/* notes */
+.sum-notes {
+  margin: 4px 20px 18px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+.note-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 5px;
+  font-style: italic;
+}
+
+.note-row:last-child { margin-bottom: 0; }
+
+.note-dash {
+  color: var(--lime);
+  font-style: normal;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* WhatsApp */
+.wa-wrap { padding: 0 20px 20px; }
+
+.wa-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: #0a2e29;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.wa-cta:hover { background: #0d3a34; }
+
+.wa-cta:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+
+/* green sweep behind */
+.wa-cta::before {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,209,102,.12), transparent 70%);
+  pointer-events: none;
+}
+
+.wa-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #25d166;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+
+.wa-icon svg { width: 20px; height: 20px; fill: white; }
+
+.wa-body { flex: 1; position: relative; z-index: 1; }
+.wa-title { font-size: 13px; font-weight: 700; color: white; margin-bottom: 2px; }
+.wa-sub   { font-size: 11px; color: rgba(255,255,255,.4); }
+
+.wa-arr {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+
+.wa-arr svg { width: 12px; height: 12px; color: rgba(255,255,255,.45); }
+
+/* ═══════════════════════════════════════
+   BOTTOM FACTS STRIP
+═══════════════════════════════════════ */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.fact-item {
+  padding: 20px 22px;
+  border-right: 1px solid var(--rule);
+}
+
+.fact-item:last-child { border-right: none; }
+
+.fact-num {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.fact-num .fact-unit { font-size: 14px; color: var(--lime); }
+
+.fact-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--pale);
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.foot {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.foot-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--ink-2);
+}
+
+.foot-brand span { color: var(--lime); }
+
+.foot-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 11px;
+  color: var(--pale);
+}
+
+.foot-links a { color: var(--muted); text-decoration: none; transition: color .18s; }
+.foot-links a:hover { color: var(--lime-2); }
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pillIn {
+  from { opacity: 0; transform: scale(.75); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rotateSlow {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════
+   ACCESSIBILITY
+═══════════════════════════════════════ */
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 1060px) {
+  .bento { grid-template-columns: 1fr 360px; }
+  .facts { grid-template-columns: repeat(2,1fr); }
+  .fact-item:nth-child(2) { border-right: none; }
+  .fact-item:nth-child(3) { border-right: 1px solid var(--rule); border-top: 1px solid var(--rule); }
+  .fact-item:nth-child(4) { border-top: 1px solid var(--rule); }
+}
+
+@media (max-width: 900px) {
+  .bento { grid-template-columns: 1fr; }
+  .sum-col { position: static; }
+  .masthead-wrap { margin: 0 -20px; padding: 0 20px; }
+  .masthead { grid-template-columns: 1fr; gap: 28px; padding: 48px 0 40px; }
+  .mast-stats { flex-direction: row; border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,.08); padding-top: 20px; gap: 0; }
+  .mast-stat { border-bottom: none; padding: 0; border-right: 1px solid rgba(255,255,255,.08); padding-right: 24px; margin-right: 24px; }
+  .mast-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+  .page { padding: 0 20px 64px; }
+  .facts { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width: 640px) {
+  .masthead-wrap { margin: 0 -18px; padding: 0 18px; }
+  .mast-h1 { font-size: 42px; letter-spacing: -2px; }
+  .mast-stats { flex-wrap: wrap; gap: 12px; }
+  .mast-stat { border-right: none; padding-right: 0; margin-right: 0; }
+  .mast-badges { gap: 6px; }
+  .calc-card-head, .calc-body { padding: 20px 18px; }
+  .calc-card::before { display: none; }
+  .date-row { grid-template-columns: 1fr 1fr; }
+  .date-row select:last-child { grid-column: 1 / -1; }
+  .subj-grid { grid-template-columns: 1fr; }
+  #summaryContent { padding: 12px 16px 4px; }
+  .sum-notes { margin: 4px 16px 16px; }
+  .wa-wrap { padding: 0 16px 16px; }
+  .sum-head { padding: 18px 18px 14px; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .foot { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
 <body>
+
+<div class="top-band" aria-hidden="true" style="display:none"></div>
+
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
 
-<div class="main-content">
-  <div class="wrapper">
+<div class="page">
 
-<div class="card">
-<div class="header">Billing Details</div>
-<div class="institutional">
-  SEHR Academy<br>
-  <span>Fee Structure – Academic Year 2026–2027</span>
-</div>
-<div id="sessionInfo" class="session-info"></div>
-<div id="monthPills" class="month-pill-container"></div>
+  <!-- ── MASTHEAD ── -->
+  <div class="masthead-wrap">
+    <div class="masthead-bg-text" aria-hidden="true">SEHR</div>
+    <header class="masthead" aria-labelledby="page-h1">
+      <div class="mast-left">
+        <div class="mast-kicker" aria-hidden="true">
+          <div class="mast-kicker-rule"></div>
+          <span class="mast-kicker-text">Fee Structure &nbsp;&middot;&nbsp; Academic Year 2026–27</span>
+        </div>
+        <h1 class="mast-h1" id="page-h1">
+          Honest fees.<br>
+          <span class="ital">No hidden costs.</span>
+        </h1>
+        <p class="mast-desc">
+          SEHR Academy provides focused, small-batch coaching for Class 9, 10, 11 &amp; 12 at
+          Vatanappally, Thrissur. Use the calculator below to generate your exact payment
+          schedule in seconds — no surprises, no registration charges.
+        </p>
+        <div class="mast-badges" aria-label="Academy highlights">
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Zero registration fee
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            3 easy instalments
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Small batches · Class 9–12
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            NEET &amp; JEE Mains prep
+          </span>
+        </div>
+      </div>
 
-<label>Select Class</label>
-<select id="classSelect">
-<option value="">-- Select Class --</option>
-<option value="10">Class 10</option>
-<option value="11">Class 11</option>
-<option value="12">Class 12</option>
-</select>
+      <div class="mast-stats" role="list" aria-label="Key figures">
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num"><span class="unit">&#8377;</span>0</div>
+          <div class="mast-stat-lbl">Registration fee</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">3<span class="unit">x</span></div>
+          <div class="mast-stat-lbl">Instalments</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">100<span class="unit">%</span></div>
+          <div class="mast-stat-lbl">Transparent</div>
+        </div>
+      </div>
+    </header>
+  </div>
 
-<div id="subjectSection" style="display:none;">
-<label>Select Subjects (₹500 per subject)</label>
-<div class="subjects">
-<label><input type="checkbox" value="Physics"> Physics</label>
-<label><input type="checkbox" value="Chemistry"> Chemistry</label>
-<label><input type="checkbox" value="Mathematics"> Mathematics</label>
-<label><input type="checkbox" value="Biology"> Biology</label>
-</div>
-</div>
+  <!-- ── BENTO GRID ── -->
+  <div class="bento">
 
-<div id="monthlyBox" class="plan-box" style="display:none;"></div>
+    <!-- LEFT: CALCULATOR -->
+    <div class="card calc-card" role="region" aria-label="Fee calculator">
 
-<label>Date of Admission</label>
-<div style="display:flex;gap:10px;">
-<select id="day"></select>
-<select id="month"></select>
-<select id="year"></select>
-</div>
+      <div class="calc-card-head">
+        <div>
+          <div class="calc-card-title">Fee Calculator</div>
+          <div class="calc-card-sub">SEHR Academy &nbsp;&middot;&nbsp; 2026–2027</div>
+        </div>
+        <div class="calc-tag" aria-label="May holiday month is not billed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          May excluded
+        </div>
+      </div>
 
-<div id="advanceBox"></div>
-</div>
+      <div class="calc-body">
 
-<div class="card premium-panel" id="summaryPanel">
-<div class="summary-title">Payment Information</div>
-<div id="summaryContent"></div>
-</div>
+        <!-- session banner -->
+        <div class="session-badge" id="sessionInfo" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="sessionText"></span>
+        </div>
 
-</div>
-</div>   <!-- this closes main-content -->
+        <!-- class -->
+        <div class="f-group">
+          <label class="f-label" for="classSelect">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+            Class
+          </label>
+          <select id="classSelect" aria-required="true">
+            <option value="">Select your class</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
+          </select>
+        </div>
 
+        <!-- subjects -->
+        <div class="subjects-section subjects" id="subjectSection" aria-hidden="true">
+          <fieldset style="border:none;padding:0">
+            <legend class="f-label" style="float:left;width:100%;display:flex;align-items:center;gap:7px;margin-bottom:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="width:11px;height:11px;color:var(--lime)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Subjects
+            </legend>
+            <p class="subj-hint" style="clear:both;margin-top:7px">&#8377;500 per subject &mdash; PCM bundle &#8377;1,000 &nbsp;&bull;&nbsp; PCM + Biology &#8377;1,500</p>
+            <div class="subj-grid" role="group" aria-label="Select subjects">
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-phy" value="Physics">
+                <label for="sub-phy">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                  </span>
+                  Physics
+                </label>
+              </div>
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-che" value="Chemistry">
+                <label for="sub-che">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6v11l3.5 6.5a1 1 0 0 1-.87 1.5H6.37a1 1 0 0 1-.87-1.5L9 14V3z"/><line x1="6" y1="8" x2="18" y2="8"/></svg>
+                  </span>
+                  Chemistry
+                </label>
+              </div>
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-mat" value="Mathematics">
+                <label for="sub-mat">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </span>
+                  Mathematics
+                </label>
+              </div>
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-bio" value="Biology">
+                <label for="sub-bio">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </span>
+                  Biology
+                </label>
+              </div>
+
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- plan box -->
+        <div class="plan-box" id="monthlyBox" role="status" aria-live="polite">
+          <div>
+            <div class="pb-label">Monthly plan rate</div>
+            <span class="pb-amount" id="planAmount">&#8377;0</span>
+            <span class="pb-unit">/ month</span>
+          </div>
+          <div class="pb-badge" aria-hidden="true">Active plan</div>
+        </div>
+
+        <!-- date -->
+        <div class="f-group">
+          <span class="f-label" id="date-lbl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Date of Admission
+          </span>
+          <div class="date-row" role="group" aria-labelledby="date-lbl">
+            <select id="day"   aria-label="Day"></select>
+            <select id="month" aria-label="Month"></select>
+            <select id="year"  aria-label="Year"></select>
+          </div>
+        </div>
+
+        <!-- advance box -->
+        <div id="advanceBox" aria-live="polite"></div>
+
+        <!-- month pills -->
+        <div class="month-section" id="monthSection" style="display:none" aria-live="polite">
+          <div class="month-hdr" aria-hidden="true">
+            <span class="month-hdr-lbl">Months covered</span>
+            <div class="month-hdr-rule"></div>
+          </div>
+          <div class="month-pills" id="monthPills" role="list" aria-label="Covered months"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <div class="sum-col">
+
+      <!-- empty state -->
+      <div class="empty-card" id="emptyState">
+        <div class="empty-emblem" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="empty-h">Payment schedule</div>
+        <p class="empty-p">Select a class and subjects to generate your personalised fee breakdown.</p>
+      </div>
+
+      <!-- summary -->
+      <div class="sum-card" id="summaryPanel" role="region" aria-label="Payment schedule" aria-live="polite">
+
+        <div class="sum-card-topline" aria-hidden="true"></div>
+
+        <div class="sum-head">
+          <div class="sum-head-left">
+            <div class="sum-eyebrow">Payment Breakdown</div>
+            <div class="sum-title">Your Schedule</div>
+            <div class="sum-sub">Academic Year 2026–27</div>
+          </div>
+          <div class="sum-head-badge" aria-hidden="true">2026–27</div>
+        </div>
+
+        <div id="summaryContent"></div>
+
+        <div class="sum-notes" role="note">
+          <div class="note-row"><span class="note-dash" aria-hidden="true">&mdash;</span>No admission or registration fee charged.</div>
+          <div class="note-row"><span class="note-dash" aria-hidden="true">&mdash;</span>May is a holiday month — not included in billing.</div>
+          <div class="note-row"><span class="note-dash" aria-hidden="true">&mdash;</span>Fees once paid are non-refundable.</div>
+        </div>
+
+        <div class="wa-wrap">
+          <a class="wa-cta" id="whatsappCTA" href="#" target="_blank" rel="noopener noreferrer" aria-label="Enquire about admission on WhatsApp">
+            <div class="wa-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div class="wa-body">
+              <div class="wa-title">Enquire about admission</div>
+              <div class="wa-sub" id="waSub">Chat with us on WhatsApp</div>
+            </div>
+            <div class="wa-arr" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div><!-- /bento -->
+
+  <!-- ── BOTTOM FACTS ── -->
+  <div class="facts" role="list" aria-label="Academy highlights">
+    <div class="fact-item" role="listitem">
+      <div class="fact-num"><span class="fact-unit">&#8377;</span>0</div>
+      <div class="fact-lbl">Registration fee</div>
+    </div>
+    <div class="fact-item" role="listitem">
+      <div class="fact-num">3<span class="fact-unit">x</span></div>
+      <div class="fact-lbl">Easy instalments</div>
+    </div>
+    <div class="fact-item" role="listitem">
+      <div class="fact-num">9–12</div>
+      <div class="fact-lbl">Classes offered</div>
+    </div>
+    <div class="fact-item" role="listitem">
+      <div class="fact-num">100<span class="fact-unit">%</span></div>
+      <div class="fact-lbl">Transparent pricing</div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span>Vatanappally, Thrissur, Kerala</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<!-- ═══════════════════════════════════════════
+     FEE LOGIC — ZERO CHANGES FROM ORIGINAL
+═══════════════════════════════════════════ -->
 <script>
+let monthlyFee = 0;
 
-let monthlyFee=0;
+const classSelectEl    = document.getElementById("classSelect");
+const dayEl            = document.getElementById("day");
+const monthEl          = document.getElementById("month");
+const yearEl           = document.getElementById("year");
+const sessionInfoEl    = document.getElementById("sessionInfo");
+const sessionTextEl    = document.getElementById("sessionText");
+const subjectSectionEl = document.getElementById("subjectSection");
+const monthlyBoxEl     = document.getElementById("monthlyBox");
+const planAmountEl     = document.getElementById("planAmount");
+const advanceBoxEl     = document.getElementById("advanceBox");
+const monthPillsEl     = document.getElementById("monthPills");
+const monthSectionEl   = document.getElementById("monthSection");
+const summaryPanelEl   = document.getElementById("summaryPanel");
+const summaryContentEl = document.getElementById("summaryContent");
+const emptyStateEl     = document.getElementById("emptyState");
+
 populateDates();
 setTodayDefault();
 calculate();
 
+classSelectEl.addEventListener("change", updateClass);
+document.querySelectorAll("#subjectSection input[type='checkbox']").forEach(cb => cb.addEventListener("change", calculate));
+[dayEl, monthEl, yearEl].forEach(el => el.addEventListener("change", calculate));
 
-document.getElementById("classSelect").addEventListener("change",updateClass);
-document.querySelectorAll(".subjects input").forEach(cb=>cb.addEventListener("change",calculate));
-["day","month","year"].forEach(id=>{
-document.getElementById(id).addEventListener("change",calculate);
-});
-
-function populateDates(){
-for(let i=1;i<=31;i++) day.innerHTML+=`<option value="${i}">${i}</option>`;
-const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-months.forEach((m,i)=>month.innerHTML+=`<option value="${i}">${m}</option>`);
-year.innerHTML=`<option value="2026">2026</option>`;
+function populateDates() {
+  for (let i = 1; i <= 31; i++) dayEl.innerHTML += `<option value="${i}">${i}</option>`;
+  ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    .forEach((m, i) => monthEl.innerHTML += `<option value="${i}">${m}</option>`);
+  yearEl.innerHTML = `<option value="2026">2026</option>`;
 }
-function setTodayDefault(){
 
+function setTodayDefault() {
   const today = new Date();
+  if (today.getFullYear() === 2026) {
+    dayEl.value   = today.getDate();
+    monthEl.value = today.getMonth();
+    yearEl.value  = 2026;
+  }
+}
 
-  // Only auto-set if year is 2026 (since calculator is locked to 2026)
-  if(today.getFullYear() === 2026){
+function updateClass() {
+  summaryPanelEl.classList.remove("visible");
+  emptyStateEl.style.display = "block";
+  advanceBoxEl.innerHTML = "";
+  monthlyBoxEl.classList.remove("visible");
+  monthSectionEl.style.display = "none";
 
-    day.value = today.getDate();
-    month.value = today.getMonth(); 
-    year.value = 2026;
+  if (classSelectEl.value === "12") {
+    sessionTextEl.textContent = "Academic Session: 1 March 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.add("visible");
+    subjectSectionEl.setAttribute("aria-hidden","false");
+  } else if (classSelectEl.value === "11") {
+    sessionTextEl.textContent = "Academic Session: 1 June 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.add("visible");
+    subjectSectionEl.setAttribute("aria-hidden","false");
+  } else if (classSelectEl.value === "10") {
+    sessionTextEl.textContent = "Academic Session: 1 April 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.remove("visible");
+    subjectSectionEl.setAttribute("aria-hidden","true");
+    monthlyFee = 1000;
+    planAmountEl.textContent = "₹1,000";
+    monthlyBoxEl.classList.add("visible");
+    calculate();
+  } else if (classSelectEl.value === "9") {
+    sessionTextEl.textContent = "Academic Session: 1 April 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.remove("visible");
+    subjectSectionEl.setAttribute("aria-hidden","true");
+    monthlyFee = 1000;
+    planAmountEl.textContent = "₹1,000";
+    monthlyBoxEl.classList.add("visible");
+    calculate();
+  } else {
+    sessionInfoEl.classList.remove("visible");
+    subjectSectionEl.classList.remove("visible");
+    subjectSectionEl.setAttribute("aria-hidden","true");
+  }
+}
 
+function renderMonthPills(months) {
+  monthPillsEl.innerHTML = "";
+  months.forEach((m, i) => {
+    const pill = document.createElement("div");
+    pill.className = "month-pill active";
+    pill.style.animationDelay = (i * 0.03) + "s";
+    pill.innerText = m;
+    pill.setAttribute("role","listitem");
+    monthPillsEl.appendChild(pill);
+  });
+  monthSectionEl.style.display = months.length ? "block" : "none";
+}
+
+function calculate() {
+  if (!classSelectEl.value) return;
+
+  if (classSelectEl.value === "11" || classSelectEl.value === "12") {
+    const selected = [...document.querySelectorAll("#subjectSection input:checked")].map(x => x.value);
+    if (selected.length === 0) return;
+    const pcm = ["Physics","Chemistry","Mathematics"];
+    const hasPCM = pcm.every(s => selected.includes(s));
+    if (hasPCM && selected.length === 3)             monthlyFee = 1000;
+    else if (hasPCM && selected.includes("Biology")) monthlyFee = 1500;
+    else                                             monthlyFee = selected.length * 500;
+    planAmountEl.textContent = "₹" + monthlyFee.toLocaleString("en-IN");
+    monthlyBoxEl.classList.add("visible");
   }
 
+  const m = +monthEl.value;
+  let startMonth;
+  if (classSelectEl.value === "12") startMonth = 2;
+  if (classSelectEl.value === "11") startMonth = 5;
+  if (classSelectEl.value === "10") startMonth = 3;
+  if (classSelectEl.value === "9")  startMonth = 3;
+
+  let effectiveMonth = Math.max(m, startMonth);
+  let end = new Date(2027, 2, 31);
+  let months = [], temp = new Date(2026, effectiveMonth, 1);
+  while (temp <= end) {
+    if (temp.getMonth() !== 4) months.push(temp.toLocaleString('default', { month: 'long' }));
+    temp.setMonth(temp.getMonth() + 1);
+  }
+
+  renderMonthPills(months);
+
+  const totalMonths = months.length;
+  const totalFee    = totalMonths * monthlyFee;
+
+  if (totalMonths <= 4) {
+    advanceBoxEl.innerHTML = `
+      <div class="adm-box">
+        <div class="adm-label">Admission Payment &middot; Full Amount</div>
+        <div class="adm-amount">&#8377;${totalFee.toLocaleString("en-IN")}</div>
+        <div class="adm-sub">Full amount due on admission date</div>
+      </div>`;
+    summaryPanelEl.classList.remove("visible");
+    emptyStateEl.style.display = "block";
+    updateWhatsApp(totalFee, classSelectEl.value);
+    return;
+  }
+
+  const admissionMonths = months.slice(0, 4);
+  const admissionAmount = admissionMonths.length * monthlyFee;
+  const remainingMonths = months.slice(4);
+
+  advanceBoxEl.innerHTML = `
+    <div class="adm-box">
+      <div class="adm-label">Admission Payment &middot; 4 Month Fee Advance</div>
+      <div class="adm-amount">&#8377;${admissionAmount.toLocaleString("en-IN")}</div>
+      <div class="adm-sub">${admissionMonths.join(", ")}</div>
+    </div>`;
+
+  const calSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:9px;height:9px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+
+  let html = `
+    <div class="pay-card total-card">
+      <div class="pc-label">Total Academic Fee</div>
+      <div class="pc-months">${totalMonths} months covered</div>
+      <div class="pc-amount">&#8377;${totalFee.toLocaleString("en-IN")}</div>
+    </div>
+    <div class="pay-card first">
+      <div class="pc-label">Instalment 1</div>
+      <div class="pc-title">Due on Admission Date</div>
+      <div class="pc-months">${admissionMonths.join(", ")}</div>
+      <div class="pc-amount">&#8377;${admissionAmount.toLocaleString("en-IN")}</div>
+    </div>`;
+
+  if (effectiveMonth < 5) {
+    if (remainingMonths.length <= 4) {
+      html += `
+        <div class="pay-card second">
+          <div class="due-tag">${calSVG} Due 1 June 2026</div>
+          <div class="pc-label">Instalment 2</div>
+          <div class="pc-months">${remainingMonths.join(", ")}</div>
+          <div class="pc-amount">&#8377;${(remainingMonths.length * monthlyFee).toLocaleString("en-IN")}</div>
+        </div>`;
+    } else {
+      const juneBatch = remainingMonths.slice(0, 4);
+      const sepBatch  = remainingMonths.slice(4);
+      html += `
+        <div class="pay-card second">
+          <div class="due-tag">${calSVG} Due 1 June 2026</div>
+          <div class="pc-label">Instalment 2</div>
+          <div class="pc-months">${juneBatch.join(", ")}</div>
+          <div class="pc-amount">&#8377;${(juneBatch.length * monthlyFee).toLocaleString("en-IN")}</div>
+        </div>
+        <div class="pay-card third">
+          <div class="due-tag">${calSVG} Due 1 September 2026</div>
+          <div class="pc-label">Instalment 3</div>
+          <div class="pc-months">${sepBatch.join(", ")}</div>
+          <div class="pc-amount">&#8377;${(sepBatch.length * monthlyFee).toLocaleString("en-IN")}</div>
+        </div>`;
+    }
+  } else {
+    html += `
+      <div class="pay-card second">
+        <div class="due-tag">${calSVG} Due 1 September 2026</div>
+        <div class="pc-label">Instalment 2</div>
+        <div class="pc-months">${remainingMonths.join(", ")}</div>
+        <div class="pc-amount">&#8377;${(remainingMonths.length * monthlyFee).toLocaleString("en-IN")}</div>
+      </div>`;
+  }
+
+  summaryContentEl.innerHTML = html;
+  summaryPanelEl.classList.add("visible");
+  emptyStateEl.style.display = "none";
+
+  updateWhatsApp(totalFee, classSelectEl.value);
 }
 
-function updateClass(){
-summaryPanel.style.display="none";
-advanceBox.innerHTML="";
-
-if(classSelect.value==="12"){
-sessionInfo.innerHTML=`Academic Session: 1 March 2026 – 31 March 2027`;
-subjectSection.style.display="block";
-}
-if(classSelect.value==="11"){
-sessionInfo.innerHTML=`Academic Session: 1 June 2026 – 31 March 2027`;
-subjectSection.style.display="block";
-}
-if(classSelect.value==="10"){
-sessionInfo.innerHTML=`Academic Session: 1 April 2026 – 31 March 2027`;
-subjectSection.style.display="none";
-monthlyFee=1000;
-monthlyBox.style.display="block";
-monthlyBox.innerHTML="Monthly Plan – ₹1000 / month";
-calculate();
-}
-}
-
-function renderMonthPills(months){
-const container=document.getElementById("monthPills");
-container.innerHTML="";
-months.forEach(m=>{
-const pill=document.createElement("div");
-pill.className="month-pill active";
-pill.innerText=m;
-container.appendChild(pill);
-});
-}
-
-function calculate(){
-
-if(!classSelect.value) return;
-
-if(classSelect.value==="11"||classSelect.value==="12"){
-const selected=[...document.querySelectorAll(".subjects input:checked")].map(x=>x.value);
-if(selected.length===0) return;
-const pcm=["Physics","Chemistry","Mathematics"];
-const hasPCM=pcm.every(s=>selected.includes(s));
-if(hasPCM && selected.length===3) monthlyFee=1000;
-else if(hasPCM && selected.includes("Biology")) monthlyFee=1500;
-else monthlyFee=selected.length*500;
-monthlyBox.style.display="block";
-monthlyBox.innerHTML="Monthly Plan – ₹"+monthlyFee+" / month";
-}
-
-const m=+month.value;
-
-let startMonth;
-if(classSelect.value==="12") startMonth=2;
-if(classSelect.value==="11") startMonth=5;
-if(classSelect.value==="10") startMonth=3;
-
-let effectiveMonth=Math.max(m,startMonth);
-let startDate=new Date(2026,effectiveMonth,1);
-let end=new Date(2027,2,31);
-
-let months=[];
-let temp=new Date(startDate);
-
-while(temp<=end){
-if(temp.getMonth()!==4)
-months.push(temp.toLocaleString('default',{month:'long'}));
-temp.setMonth(temp.getMonth()+1);
-}
-
-renderMonthPills(months);
-
-const totalMonths=months.length;
-const totalFee=totalMonths*monthlyFee;
-
-if(totalMonths<=4){
-advanceBox.innerHTML=`<div class="advance-box">Admission Payment (Full Amount)<br>₹${totalFee}</div>`;
-summaryPanel.style.display="none";
-return;
-}
-
-const admissionMonths=months.slice(0,4);
-const admissionAmount=admissionMonths.length*monthlyFee;
-const remainingMonths=months.slice(4);
-
-advanceBox.innerHTML=`<div class="advance-box">Admission Payment (4 Month Fee Advance)<br>₹${admissionAmount}</div>`;
-
-let html=`
-<div class="summary-card">
-<strong>Total Academic Fee</strong>
-₹${totalFee}<br>
-Total Months Covered: ${totalMonths}
-</div>
-
-<div class="summary-card">
-<strong>Due on Admission Date</strong><br>
-Months Covered: ${admissionMonths.join(", ")}<br>
-Amount Payable: ₹${admissionAmount}
-</div>
-`;
-
-if(effectiveMonth < 5){
-if(remainingMonths.length<=4){
-html+=`
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 June 2026</span></strong>
-Months Covered: ${remainingMonths.join(", ")}<br>
-Amount Payable: ₹${remainingMonths.length*monthlyFee}
-</div>`;
-}else{
-const juneBatch=remainingMonths.slice(0,4);
-const sepBatch=remainingMonths.slice(4);
-
-html+=`
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 June 2026</span></strong><br>
-Months Covered: ${juneBatch.join(", ")}<br>
-Amount Payable: ₹${juneBatch.length*monthlyFee}
-</div>
-
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 September 2026</span></strong><br>
-Months Covered: ${sepBatch.join(", ")}<br>
-Amount Payable: ₹${sepBatch.length*monthlyFee}
-</div>`;
-}
-}else{
-html+=`
-<div class="summary-card">
-<strong>Due on <span class="due-date">1 September 2026</span></strong><br>
-Months Covered: ${remainingMonths.join(", ")}<br>
-Amount Payable: ₹${remainingMonths.length*monthlyFee}
-</div>`;
-}
-
-html+=`
-<div class="note">
-• Admission Fee: ₹0<br>
-• The month of May are holidays and not charged.<br>
-• Fees once paid are non-refundable.<br>
-</div>
-`;
-
-summaryContent.innerHTML=html;
-summaryPanel.style.display="block";
+function updateWhatsApp(totalFee, cls) {
+  const subjects = [...document.querySelectorAll("#subjectSection input:checked")].map(x => x.value);
+  const subText  = subjects.length ? subjects.join(", ") : "all subjects";
+  const msg = `Hi SEHR Academy! I'd like to enquire about admission to Class ${cls}. I checked the fee calculator — total fee is ₹${totalFee.toLocaleString("en-IN")} for ${subText}. Please guide me on the next steps.`;
+  document.getElementById("whatsappCTA").href = "https://wa.me/919539409586?text=" + encodeURIComponent(msg);
+  document.getElementById("waSub").textContent = `Class ${cls} · ₹${monthlyFee.toLocaleString("en-IN")}/month`;
 }
 </script>
 
