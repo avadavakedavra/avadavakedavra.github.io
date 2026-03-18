@@ -1,299 +1,923 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Sehr Academy</title>
-  <meta name="description" content="Sehr Academy offers focused tuition and exam preparation with small batches, strong fundamentals, and consistent mentoring. Offline classes at Vatanappally, Thrissur." />
-  <meta name="theme-color" content="#8BC53F" />
-  <link rel="canonical" href="https://sehracademy.com/" />
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="apple-touch-icon" href="/logo.png">
-  <meta property="og:title" content="Sehr Academy" />
-  <meta property="og:description" content="Personalised coaching for Class 10, 11, 12 — NEET &amp; JEE Mains. Small batches, offline classes at Vatanappally, Thrissur." />
-  <meta property="og:url" content="https://sehracademy.com/" />
-  <meta property="og:image" content="https://sehracademy.com/logo.png" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sehr Academy" />
-  <meta name="twitter:description" content="Personalised coaching for Class 10, 11, 12 — NEET &amp; JEE Mains." />
-  <meta name="twitter:image" content="https://sehracademy.com/logo.png" />
-
-  <!-- Fonts (same family, minimal weights) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --green:#8BC53F;
-      --black:#0b0f10;
-      --gray:#6b7280;
-      --border:#e5e7eb;
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-
-    body{
-      font-family:"Montserrat",sans-serif;
-      background:#ffffff;
-      color:var(--black);
-      line-height:1.6;
-    }
-
-    /* ===== HERO / INDEX ===== */
-    main{
-      min-height:calc(100vh - 72px);
-      display:flex;
-      align-items:center;
-    }
-
-    .hero{
-      max-width:1100px;
-      margin:auto;
-      padding:80px 20px;
-      text-align:center;
-    }
-
-    .hero h1{
-      font-size:44px;
-      font-weight:800;
-      line-height:1.15;
-      margin-bottom:18px;
-    }
-
-    .hero h1 span{
-      color:var(--green);
-    }
-
-    .hero p{
-      max-width:720px;
-      margin:0 auto 28px;
-      color:var(--gray);
-      font-size:16px;
-      font-weight:500;
-    }
-
-    .hero .location{
-      font-size:14px;
-      font-weight:600;
-      margin-bottom:34px;
-      color:#111827;
-    }
-
-    .cta{
-      display:inline-flex;
-      gap:12px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-
-    .btn{
-      padding:14px 26px;
-      border-radius:999px;
-      font-weight:800;
-      text-decoration:none;
-      transition:all .2s ease;
-    }
-
-    .btn-primary{
-      background:var(--green);
-      color:#000;
-      box-shadow:0 10px 26px rgba(139,197,63,.35);
-    }
-
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 14px 32px rgba(139,197,63,.45);
-    }
-
-    .btn-ghost{
-      border:1px solid var(--border);
-      color:var(--black);
-      background:#fff;
-    }
-
-    .btn-ghost:hover{
-      border-color:var(--green);
-      color:var(--green);
-    }
-
-    /* ===== FOOTER ===== */
-    footer{
-      border-top:1px solid var(--border);
-      padding:16px 20px;
-      text-align:center;
-      font-size:13px;
-      color:var(--gray);
-    }
-
-    /* ===== ABOUT SECTION ===== */
-    #about{
-      max-width:1100px;
-      margin:0 auto;
-      padding:60px 20px 80px;
-    }
-
-    #about h2{
-      font-size:30px;
-      font-weight:800;
-      text-align:center;
-      margin-bottom:10px;
-    }
-
-    #about .section-sub{
-      text-align:center;
-      color:var(--gray);
-      font-size:15px;
-      font-weight:500;
-      margin-bottom:44px;
-    }
-
-    .features{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:24px;
-    }
-
-    .feature{
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:28px 24px;
-      text-align:center;
-      background:#fafafa;
-      transition:box-shadow .2s ease;
-    }
-
-    .feature:hover{
-      box-shadow:0 8px 24px rgba(0,0,0,.07);
-    }
-
-    .feature-icon{
-      font-size:32px;
-      margin-bottom:14px;
-    }
-
-    .feature h3{
-      font-size:16px;
-      font-weight:800;
-      margin-bottom:8px;
-    }
-
-    .feature p{
-      font-size:14px;
-      color:var(--gray);
-      font-weight:500;
-    }
-
-    @media(max-width:640px){
-      .hero h1{font-size:32px}
-      .hero{padding:60px 16px}
-      #about{padding:40px 16px 60px}
-      #about h2{font-size:24px}
-    }
-  </style>
-  <script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "EducationalOrganization",
- "name": "Sehr Academy",
- "url": "https://sehracademy.com",
- "logo": "https://sehracademy.com/logo.png",
- "address": {
-   "@type": "PostalAddress",
-   "addressLocality": "Vatanappally",
-   "addressRegion": "Kerala",
-   "addressCountry": "India"
- },
- "contactPoint": {
-   "@type": "ContactPoint",
-   "telephone": "+91 95394 09586",
-   "contactType": "customer service"
- }
-}
-</script>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEHR Academy — Coaching for Class 10, 11, 12 · NEET · JEE · Vatanappally, Thrissur</title>
+<meta name="description" content="SEHR Academy offers focused tuition and exam preparation with small batches, strong fundamentals, and consistent mentoring. Offline classes at Vatanappally, Thrissur, Kerala.">
+<meta name="theme-color" content="#8BC53F">
+<link rel="canonical" href="https://sehracademy.com/">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="SEHR Academy — Coaching at Vatanappally, Thrissur">
+<meta property="og:description" content="Personalised coaching for Class 10, 11, 12 — NEET & JEE Mains. Small batches, offline classes at Vatanappally, Thrissur.">
+<meta property="og:url" content="https://sehracademy.com/">
+<meta property="og:image" content="https://sehracademy.com/logo.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://sehracademy.com/"}
-  ]
-}
+{"@context":"https://schema.org","@type":"EducationalOrganization","name":"SEHR Academy","url":"https://sehracademy.com","logo":"https://sehracademy.com/logo.png","address":{"@type":"PostalAddress","addressLocality":"Vatanappally","addressRegion":"Kerala","addressCountry":"India"},"contactPoint":[{"@type":"ContactPoint","telephone":"+919539409586","contactType":"customer service"},{"@type":"ContactPoint","telephone":"+919037789586","contactType":"customer service"}]}
 </script>
-</head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   SEHR ACADEMY · HOME PAGE
+   Cream · Charcoal · Lime · Editorial
+═══════════════════════════════════════════ */
+:root{
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18;   --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4;  --rule:#d8d4cb;
+  --lime:#8BC53F;  --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --amb:#d97706; --blue:#2563eb; --grn:#16a34a;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 8px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 6px 24px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --sh3:0 20px 60px rgba(0,0,0,.1),0 4px 14px rgba(0,0,0,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ═══════════════════════════
+   HERO
+═══════════════════════════ */
+.hero{
+  background:var(--ink);
+  position:relative;
+  overflow:hidden;
+  border-bottom:3px solid var(--lime);
+  min-height:calc(100vh - 64px);
+  display:flex;
+  align-items:center;
+}
+
+/* grid texture */
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+
+/* lime glow */
+.hero::after{
+  content:'';
+  position:absolute;
+  top:-160px;right:-160px;
+  width:700px;height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.18),transparent 65%);
+  pointer-events:none;
+}
+
+/* second glow bottom-left */
+.hero-glow2{
+  position:absolute;
+  bottom:-200px;left:-200px;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.07),transparent 65%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* giant watermark */
+.hero-wm{
+  position:absolute;
+  right:-20px;bottom:-30px;
+  font-size:clamp(120px,18vw,260px);
+  font-weight:800;
+  letter-spacing:-10px;
+  color:rgba(255,255,255,.04);
+  pointer-events:none;
+  user-select:none;
+  line-height:1;
+  z-index:0;
+  white-space:nowrap;
+}
+
+.hero-in{
+  max-width:1280px;
+  margin:0 auto;
+  padding:100px 40px 80px;
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:60px;
+  align-items:center;
+  width:100%;
+}
+
+/* kicker */
+.hero-kicker{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:20px;
+}
+.hero-kicker-rule{width:28px;height:2px;background:var(--lime);flex-shrink:0}
+.hero-kicker-text{
+  font-size:10px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--lime);opacity:.9;
+}
+
+/* heading */
+.hero-h1{
+  font-size:clamp(38px,5.5vw,76px);
+  font-weight:800;
+  letter-spacing:-2.5px;
+  color:#fff;
+  line-height:.92;
+  margin-bottom:20px;
+}
+.hero-h1 i{font-style:italic;font-weight:300;color:var(--lime)}
+
+.hero-desc{
+  font-size:16px;
+  color:rgba(255,255,255,.45);
+  max-width:520px;
+  line-height:1.8;
+  margin-bottom:32px;
+}
+
+/* location pill */
+.hero-loc{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 14px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:4px;
+  background:rgba(255,255,255,.06);
+  font-size:12px;font-weight:700;
+  color:rgba(255,255,255,.55);
+  margin-bottom:36px;
+}
+.hero-loc-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--lime);
+  box-shadow:0 0 6px rgba(139,197,63,.6);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.5)}50%{box-shadow:0 0 0 6px rgba(139,197,63,0)}}
+
+/* CTA buttons */
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-lime{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 26px;border-radius:4px;
+  background:var(--lime);color:var(--ink);
+  font-family:var(--f);font-size:14px;font-weight:800;
+  border:none;cursor:pointer;
+  transition:all .2s var(--ease);
+  box-shadow:0 4px 18px rgba(139,197,63,.35);
+  text-decoration:none;white-space:nowrap;
+}
+.btn-lime:hover{background:var(--lime-2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,197,63,.45)}
+.btn-lime svg{width:15px;height:15px;flex-shrink:0}
+.btn-ghost-ink{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 26px;border-radius:4px;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.15);
+  font-family:var(--f);font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .2s var(--ease);
+  text-decoration:none;white-space:nowrap;
+}
+.btn-ghost-ink:hover{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.3)}
+.btn-ghost-ink svg{width:15px;height:15px;flex-shrink:0}
+
+/* hero right: stat card */
+.hero-card{
+  background:var(--white);
+  border:1.5px solid var(--cream-3);
+  border-left:4px solid var(--lime);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:var(--sh3);
+  flex-shrink:0;
+}
+.hc-head{
+  background:rgba(139,197,63,.07);
+  padding:14px 20px;
+  border-bottom:1px solid var(--cream-3);
+  font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--lime-2);
+  display:flex;align-items:center;gap:8px;
+}
+.hc-head::before{content:'';width:14px;height:1.5px;background:var(--lime);flex-shrink:0}
+.hc-stat-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.hc-stat{padding:18px 20px;border-right:1px solid var(--rule)}
+.hc-stat:nth-child(2n){border-right:none}
+.hc-stat:nth-child(n+3){border-top:1px solid var(--rule)}
+.hc-stat-val{font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--ink);line-height:1;margin-bottom:4px}
+.hc-stat-val .u{font-size:14px;color:var(--lime-2);font-weight:700}
+.hc-stat-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pale)}
+.hc-links{padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+.hc-link{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:4px;
+  font-size:12px;font-weight:700;color:var(--ink-2);
+  transition:all .16s;text-decoration:none;
+  border:1px solid transparent;
+}
+.hc-link:hover{background:var(--lime-bg);border-color:var(--lime-mid);color:var(--lime-2)}
+.hc-link svg{width:13px;height:13px;color:var(--lime-2);flex-shrink:0}
+.hc-link-arr{margin-left:auto;opacity:0;transition:opacity .14s}
+.hc-link:hover .hc-link-arr{opacity:1}
+
+/* ═══════════════════════════
+   SUBJECTS STRIP
+═══════════════════════════ */
+.subj-strip{
+  background:var(--white);
+  border-bottom:1.5px solid var(--cream-3);
+  box-shadow:var(--sh);
+}
+.subj-strip-in{
+  max-width:1280px;margin:0 auto;padding:0 40px;
+  display:flex;align-items:stretch;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.subj-strip-in::-webkit-scrollbar{display:none}
+.subj-item{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 20px;
+  border-right:1px solid var(--rule);
+  flex-shrink:0;white-space:nowrap;
+  font-size:12px;font-weight:700;color:var(--muted);
+  transition:all .16s;cursor:default;
+}
+.subj-item:last-child{border-right:none}
+.subj-item:hover{background:var(--cream);color:var(--ink-2)}
+.subj-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ═══════════════════════════
+   SECTION DIVIDER
+═══════════════════════════ */
+.sdiv{display:flex;align-items:center;gap:14px;margin:0 0 28px}
+.sdiv-r{flex:1;height:1px;background:var(--rule)}
+.sdiv-d{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.sdiv-t{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
+
+/* ═══════════════════════════
+   WHY SEHR — FEATURES
+═══════════════════════════ */
+.section{max-width:1280px;margin:0 auto;padding:72px 40px}
+
+.section-kicker{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-kicker-rule{width:22px;height:2px;background:var(--lime);flex-shrink:0}
+.section-kicker-text{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-2)}
+.section-h2{
+  font-size:clamp(28px,4vw,52px);font-weight:800;
+  letter-spacing:-1.5px;color:var(--ink);
+  line-height:.95;margin-bottom:12px;
+}
+.section-h2 i{font-style:italic;font-weight:300;color:var(--lime)}
+.section-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.75;margin-bottom:48px}
+
+/* feature grid */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.feat{
+  background:var(--white);
+  border:1.5px solid var(--cream-3);
+  border-left:4px solid var(--rule);
+  border-radius:4px;
+  padding:24px 22px;
+  box-shadow:var(--sh);
+  transition:all .22s var(--ease);
+  position:relative;overflow:hidden;
+}
+.feat:hover{transform:translateY(-4px);box-shadow:var(--sh2);border-color:var(--cream-3)}
+.feat:nth-child(1){border-left-color:var(--lime-2)}
+.feat:nth-child(2){border-left-color:var(--blue)}
+.feat:nth-child(3){border-left-color:var(--amb)}
+.feat:nth-child(4){border-left-color:var(--grn)}
+.feat:nth-child(5){border-left-color:var(--red)}
+.feat:nth-child(6){border-left-color:var(--lime-3)}
+.feat::after{
+  content:'';position:absolute;top:-30px;right:-30px;
+  width:100px;height:100px;border-radius:50%;
+  opacity:0;transition:opacity .22s;
+}
+.feat:nth-child(1):hover::after{background:radial-gradient(circle,var(--lime-bg),transparent);opacity:1}
+.feat:nth-child(2):hover::after{background:radial-gradient(circle,rgba(37,99,235,.06),transparent);opacity:1}
+.feat:nth-child(3):hover::after{background:radial-gradient(circle,rgba(217,119,6,.06),transparent);opacity:1}
+.feat:nth-child(4):hover::after{background:radial-gradient(circle,rgba(22,163,74,.06),transparent);opacity:1}
+.feat:nth-child(5):hover::after{background:radial-gradient(circle,rgba(220,38,38,.05),transparent);opacity:1}
+.feat:nth-child(6):hover::after{background:radial-gradient(circle,var(--lime-bg),transparent);opacity:1}
+
+.feat-icon{
+  width:40px;height:40px;border-radius:4px;
+  background:var(--cream-2);border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:16px;
+  transition:transform .2s var(--ease);
+}
+.feat:hover .feat-icon{transform:scale(1.08)}
+.feat h3{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:7px}
+.feat p{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ═══════════════════════════
+   CLASSES SECTION
+═══════════════════════════ */
+.classes-sec{background:var(--white);border-top:1.5px solid var(--cream-3);border-bottom:1.5px solid var(--cream-3)}
+.classes-sec .section{padding:72px 40px}
+
+.class-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.ccard{
+  background:var(--cream);
+  border:1.5px solid var(--cream-3);
+  border-radius:4px;
+  padding:24px 20px 20px;
+  position:relative;overflow:hidden;
+  transition:all .22s var(--ease);
+  cursor:default;
+}
+.ccard:hover{transform:translateY(-4px);box-shadow:var(--sh2);background:var(--white)}
+.ccard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.ccard.c10::before{background:var(--amb)}
+.ccard.c11::before{background:var(--blue)}
+.ccard.c12::before{background:var(--red)}
+.ccard.ex::before{background:linear-gradient(90deg,var(--grn),var(--lime))}
+.ccard-tag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);margin-bottom:10px}
+.ccard-num{font-size:44px;font-weight:800;letter-spacing:-2px;color:var(--ink);line-height:1;margin-bottom:6px;font-style:italic}
+.ccard.ex .ccard-num{font-size:28px;letter-spacing:-1px}
+.ccard-desc{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:14px}
+.ccard-pills{display:flex;flex-wrap:wrap;gap:4px}
+.ccard-pill{
+  font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;
+  background:var(--white);border:1px solid var(--rule);color:var(--muted);
+}
+
+/* ═══════════════════════════
+   STATS ROW
+═══════════════════════════ */
+.stats-row{background:var(--ink);border-top:3px solid var(--lime);position:relative;overflow:hidden}
+.stats-row::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px}
+.stats-row::after{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%)}
+.stats-row-in{
+  max-width:1280px;margin:0 auto;padding:56px 40px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  position:relative;z-index:1;
+}
+.stat-item{
+  padding:0 32px;border-right:1px solid rgba(255,255,255,.08);
+  text-align:center;
+}
+.stat-item:first-child{padding-left:0;text-align:left}
+.stat-item:last-child{border-right:none;text-align:right}
+.stat-val{font-size:clamp(36px,4vw,56px);font-weight:800;letter-spacing:-2px;color:#fff;line-height:1;margin-bottom:6px}
+.stat-val .u{font-size:20px;color:var(--lime);font-weight:700}
+.stat-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+/* ═══════════════════════════
+   HOW IT WORKS
+═══════════════════════════ */
+.steps-wrap{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;
+  background:var(--white);
+  border:1.5px solid var(--cream-3);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:var(--sh);
+}
+.step{
+  padding:28px 24px;
+  border-right:1px solid var(--rule);
+  position:relative;
+}
+.step:last-child{border-right:none}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--rule)}
+.step:nth-child(1)::before{background:var(--lime)}
+.step:nth-child(2)::before{background:var(--lime-2)}
+.step:nth-child(3)::before{background:var(--lime-3)}
+.step:nth-child(4)::before{background:var(--ink)}
+.step-num{font-size:52px;font-weight:800;letter-spacing:-3px;color:var(--cream-3);line-height:1;margin-bottom:14px;font-style:italic}
+.step h3{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.step p{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ═══════════════════════════
+   TESTIMONIALS
+═══════════════════════════ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.testi{
+  background:var(--white);
+  border:1.5px solid var(--cream-3);
+  border-radius:4px;
+  padding:24px;
+  box-shadow:var(--sh);
+  position:relative;overflow:hidden;
+  transition:all .2s var(--ease);
+}
+.testi:hover{box-shadow:var(--sh2);border-color:var(--lime-mid)}
+.testi::before{
+  content:'\201C';
+  position:absolute;top:-12px;left:14px;
+  font-size:90px;font-style:italic;
+  color:var(--lime);opacity:.12;
+  font-family:Georgia,serif;line-height:1;
+  pointer-events:none;
+}
+.testi-text{font-size:14px;color:var(--muted);line-height:1.8;font-style:italic;margin-bottom:18px;position:relative;z-index:1}
+.testi-author{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--rule)}
+.testi-av{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--ink);display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.testi-name{font-size:13px;font-weight:800;color:var(--ink)}
+.testi-role{font-size:11px;color:var(--pale);margin-top:1px}
+
+/* stars */
+.stars{display:flex;gap:2px;margin-bottom:14px}
+.star{color:var(--lime);font-size:12px}
+
+/* ═══════════════════════════
+   CTA BAND
+═══════════════════════════ */
+.cta-band{background:var(--ink);border-top:3px solid var(--lime);position:relative;overflow:hidden}
+.cta-band::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px}
+.cta-band::after{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.13),transparent 65%)}
+.cta-band-in{
+  max-width:1280px;margin:0 auto;padding:72px 40px;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:48px;position:relative;z-index:1;
+}
+.cta-band-title{font-size:clamp(28px,3.5vw,48px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.95;margin-bottom:10px}
+.cta-band-title i{font-style:italic;font-weight:300;color:var(--lime)}
+.cta-band-sub{font-size:14px;color:rgba(255,255,255,.45);max-width:420px;line-height:1.75}
+.cta-band-btns{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.btn-lime-lg{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:15px 28px;border-radius:4px;
+  background:var(--lime);color:var(--ink);
+  font-family:var(--f);font-size:14px;font-weight:800;
+  text-decoration:none;transition:all .18s;
+  box-shadow:0 4px 18px rgba(139,197,63,.3);white-space:nowrap;
+}
+.btn-lime-lg:hover{background:var(--lime-2);transform:translateY(-2px)}
+.btn-lime-lg svg{width:15px;height:15px;flex-shrink:0}
+.btn-ghost-lg{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 26px;border-radius:4px;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.14);
+  font-family:var(--f);font-size:13px;font-weight:700;
+  text-decoration:none;transition:all .18s;white-space:nowrap;
+}
+.btn-ghost-lg:hover{background:rgba(255,255,255,.14);color:#fff}
+.btn-ghost-lg svg{width:14px;height:14px;flex-shrink:0}
+
+/* ═══════════════════════════
+   FOOTER
+═══════════════════════════ */
+.foot{max-width:1280px;margin:0 auto;padding:24px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid var(--rule)}
+.foot-brand{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--ink-2)}
+.foot-brand span{color:var(--lime)}
+.foot-links{display:flex;gap:20px;font-size:11px;flex-wrap:wrap}
+.foot-links a{color:var(--muted);transition:color .18s}
+.foot-links a:hover{color:var(--lime-2)}
+
+/* ═══════════════════════════
+   RESPONSIVE
+═══════════════════════════ */
+@media(max-width:1100px){
+  .hero-in{grid-template-columns:1fr;gap:48px;padding:80px 40px 60px}
+  .hero-card{max-width:480px}
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .class-cards{grid-template-columns:repeat(2,1fr)}
+  .stats-row-in{grid-template-columns:repeat(2,1fr);gap:0}
+  .stat-item{padding:28px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
+  .stat-item:nth-child(2n){border-right:none}
+  .stat-item:nth-child(n+3){border-top:none}
+  .stat-item:last-child{text-align:left}
+  .stat-item:first-child{padding-left:28px}
+  .steps-wrap{grid-template-columns:repeat(2,1fr)}
+  .step:nth-child(2){border-right:none}
+  .step:nth-child(n+3){border-top:1px solid var(--rule)}
+  .step:nth-child(3){border-right:1px solid var(--rule)}
+  .testi-grid{grid-template-columns:repeat(2,1fr)}
+  .cta-band-in{grid-template-columns:1fr;gap:28px}
+  .cta-band-btns{flex-direction:row;flex-wrap:wrap}
+}
+@media(max-width:800px){
+  .hero-in{padding:64px 24px 48px}
+  .hero-wm{font-size:100px;bottom:-10px}
+  .subj-strip-in{padding:0 20px}
+  .section{padding:56px 24px}
+  .classes-sec .section{padding:56px 24px}
+  .stats-row-in{padding:40px 24px}
+  .cta-band-in{padding:52px 24px}
+  .foot{padding:20px 24px}
+}
+@media(max-width:640px){
+  .hero-in{padding:48px 16px 40px}
+  .hero-wm{display:none}
+  .feat-grid{grid-template-columns:1fr}
+  .class-cards{grid-template-columns:1fr 1fr}
+  .steps-wrap{grid-template-columns:1fr}
+  .step{border-right:none;border-top:1px solid var(--rule)}
+  .step:first-child{border-top:none}
+  .stats-row-in{grid-template-columns:1fr}
+  .stat-item{border-right:none;padding:20px 16px}
+  .testi-grid{grid-template-columns:1fr}
+  .section{padding:48px 16px}
+  .classes-sec .section{padding:48px 16px}
+  .cta-band-in{padding:44px 16px}
+  .foot{padding:18px 16px;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
 <body>
 
-  <!-- EXISTING NAV BAR (UNCHANGED) -->
-  <header id="site-header"></header>
-  <script src="/assets/nav.js" defer></script>
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
 
-  <!-- INDEX / HERO -->
-  <main>
-    <section class="hero">
-      <h1>
-        Personalized coaching that helps students <span>excel</span>
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" aria-label="SEHR Academy — Hero">
+  <div class="hero-glow2" aria-hidden="true"></div>
+  <div class="hero-wm" aria-hidden="true">SEHR</div>
+  <div class="hero-in">
+
+    <!-- Left: Copy -->
+    <div>
+      <div class="hero-kicker" aria-hidden="true">
+        <div class="hero-kicker-rule"></div>
+        <span class="hero-kicker-text">Vatanappally, Thrissur · Est. 2024</span>
+      </div>
+
+      <h1 class="hero-h1">
+        Coaching that builds<br><i>real understanding</i>
       </h1>
 
-      <p>
-        Sehr Academy offers focused tuition and exam preparation with
-        small batches, strong fundamentals, and consistent mentoring.
+      <p class="hero-desc">
+        Small batches. Concept-first teaching. Consistent mentoring.
+        SEHR Academy prepares Class 10, 11 and 12 students for boards,
+        NEET, and JEE — not just the exam, but the subject itself.
       </p>
 
-      <div class="location">
-        📍 Offline classes at <b>Vatanappally, Thrissur</b>
+      <div class="hero-loc" aria-label="Location">
+        <div class="hero-loc-dot" aria-hidden="true"></div>
+        Offline classes · Vatanappally, Thrissur, Kerala
       </div>
 
-      <div class="cta">
-        <a class="btn btn-primary"
-           href="https://wa.me/919539409586"
-           target="_blank" rel="noopener noreferrer">
-          Contact on WhatsApp
+      <div class="hero-btns">
+        <a class="btn-lime" href="https://wa.me/919539409586" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+          Enquire on WhatsApp
         </a>
-
-        <a class="btn btn-ghost" href="#about">
-          Learn More
+        <a class="btn-ghost-ink" href="#about">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          See How We Teach
         </a>
-      </div>
-    </section>
-  </main>
-
-  <!-- ABOUT SECTION -->
-  <section id="about" aria-labelledby="about-heading">
-    <h2 id="about-heading">Why Sehr Academy?</h2>
-    <p class="section-sub">A focused learning environment built around every student's success.</p>
-
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">👥</div>
-        <h3>Small Batches</h3>
-        <p>Limited seats per batch so every student gets individual attention and personalised feedback.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📚</div>
-        <h3>Strong Fundamentals</h3>
-        <p>Concept-first teaching for Physics, Chemistry, Mathematics and Biology — from Class 10 to Class 12.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📅</div>
-        <h3>Structured Schedule</h3>
-        <p>A clear academic calendar, live-class portal, and syllabus tracker keep students on track all year.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🏆</div>
-        <h3>Exam Preparation</h3>
-        <p>Targeted preparation for board exams, NEET, and JEE Mains with regular tests and PYQ practice.</p>
       </div>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <div id="site-footer"></div>
-  <script src="/assets/footer.js" defer></script>
+    <!-- Right: Quick nav card -->
+    <div class="hero-card" role="navigation" aria-label="Quick links">
+      <div class="hc-head">Student &amp; Parent Quick Links</div>
+      <div class="hc-stat-grid">
+        <div class="hc-stat">
+          <div class="hc-stat-val">5–6<span class="u">×</span></div>
+          <div class="hc-stat-lbl">Classes / Week</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-stat-val">2<span class="u">hr</span></div>
+          <div class="hc-stat-lbl">Per Session</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-stat-val">4</div>
+          <div class="hc-stat-lbl">Class Levels</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-stat-val">0<span class="u">₹</span></div>
+          <div class="hc-stat-lbl">Joining Fee</div>
+        </div>
+      </div>
+      <div class="hc-links">
+        <a class="hc-link" href="/student">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Student Portal
+          <svg class="hc-link-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="hc-link" href="/academiccalendar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Academic Calendar
+          <svg class="hc-link-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="hc-link" href="/syllabus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Syllabus Tracker
+          <svg class="hc-link-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="hc-link" href="/downloads">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Free Downloads
+          <svg class="hc-link-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="hc-link" href="/tuitionfees">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Fee Structure
+          <svg class="hc-link-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
 
+  </div>
+</section>
+
+<!-- ═══════════ SUBJECTS STRIP ═══════════ -->
+<div class="subj-strip" aria-hidden="true">
+  <div class="subj-strip-in">
+    <div class="subj-item"><div class="subj-dot" style="background:var(--blue)"></div>Physics</div>
+    <div class="subj-item"><div class="subj-dot" style="background:#7c3aed"></div>Chemistry</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--lime-2)"></div>Mathematics</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--grn)"></div>Biology</div>
+    <div class="subj-item"><div class="subj-dot" style="background:#db2777"></div>English</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--amb)"></div>Social Science</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--grn)"></div>NEET Prep</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--blue)"></div>JEE Mains</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--lime-2)"></div>State Board</div>
+    <div class="subj-item"><div class="subj-dot" style="background:var(--red)"></div>CBSE Board</div>
+  </div>
+</div>
+
+<!-- ═══════════ WHY SEHR ═══════════ -->
+<section class="section" id="about" aria-labelledby="about-h2">
+  <div class="section-kicker" aria-hidden="true">
+    <div class="section-kicker-rule"></div>
+    <span class="section-kicker-text">Why SEHR Academy</span>
+  </div>
+  <h2 class="section-h2" id="about-h2">Teaching that actually <i>sticks</i></h2>
+  <p class="section-sub">A focused learning environment built around every student's success — not just their exam score.</p>
+
+  <div class="feat-grid">
+    <div class="feat reveal">
+      <div class="feat-icon">👥</div>
+      <h3>Small Batches by Design</h3>
+      <p>We cap every batch deliberately. When a class is small enough that the tutor knows each student's weak points, teaching becomes a conversation — not a lecture.</p>
+    </div>
+    <div class="feat reveal" style="animation-delay:.05s">
+      <div class="feat-icon">🧠</div>
+      <h3>Concept-First Teaching</h3>
+      <p>We teach the subject before the syllabus. Students who understand the why behind Physics or Chemistry don't just pass — they remember it for life.</p>
+    </div>
+    <div class="feat reveal" style="animation-delay:.1s">
+      <div class="feat-icon">📅</div>
+      <h3>Structured All Year</h3>
+      <p>Live academic calendar, chapter-level syllabus tracker, class recordings, and monthly mock tests — everything is organised so students never lose track.</p>
+    </div>
+    <div class="feat reveal" style="animation-delay:.15s">
+      <div class="feat-icon">🏆</div>
+      <h3>NEET &amp; JEE Ready</h3>
+      <p>Targeted exam preparation with PYQ packs, full-length mocks, and focused doubt-clearing sessions for NEET and JEE Mains alongside board prep.</p>
+    </div>
+    <div class="feat reveal" style="animation-delay:.2s">
+      <div class="feat-icon">📊</div>
+      <h3>Progress You Can See</h3>
+      <p>Students and parents access real-time attendance, chapter completion, test results, and fee records through the student portal — no guesswork.</p>
+    </div>
+    <div class="feat reveal" style="animation-delay:.25s">
+      <div class="feat-icon">📍</div>
+      <h3>Local &amp; Accessible</h3>
+      <p>Located in Vatanappally, Thrissur. Offline classes in a comfortable, distraction-free environment. No registration fee. No hidden charges.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CLASSES ═══════════ -->
+<div class="classes-sec">
+  <div class="section" aria-labelledby="classes-h2">
+    <div class="section-kicker" aria-hidden="true">
+      <div class="section-kicker-rule"></div>
+      <span class="section-kicker-text">What We Teach</span>
+    </div>
+    <h2 class="section-h2" id="classes-h2">Classes &amp; <i>programmes</i></h2>
+    <p class="section-sub">Focused coaching from foundation to entrance — one subject, one student at a time.</p>
+
+    <div class="class-cards">
+      <div class="ccard c10 reveal">
+        <div class="ccard-tag">Secondary · State &amp; CBSE</div>
+        <div class="ccard-num">10</div>
+        <div class="ccard-desc">Foundation in Maths and Science — building the conceptual base for higher secondary success.</div>
+        <div class="ccard-pills">
+          <span class="ccard-pill">Mathematics</span>
+          <span class="ccard-pill">Science</span>
+          <span class="ccard-pill">English</span>
+          <span class="ccard-pill">Social</span>
+        </div>
+      </div>
+      <div class="ccard c11 reveal" style="animation-delay:.06s">
+        <div class="ccard-tag">Higher Secondary</div>
+        <div class="ccard-num">11</div>
+        <div class="ccard-desc">Concept-first teaching for the crucial first year of higher secondary — PCM and PCB streams.</div>
+        <div class="ccard-pills">
+          <span class="ccard-pill">Physics</span>
+          <span class="ccard-pill">Chemistry</span>
+          <span class="ccard-pill">Maths</span>
+          <span class="ccard-pill">Biology</span>
+        </div>
+      </div>
+      <div class="ccard c12 reveal" style="animation-delay:.12s">
+        <div class="ccard-tag">Higher Secondary</div>
+        <div class="ccard-num">12</div>
+        <div class="ccard-desc">Board exam mastery with revision strategy, PYQ practice, and consistent mock testing.</div>
+        <div class="ccard-pills">
+          <span class="ccard-pill">Physics</span>
+          <span class="ccard-pill">Chemistry</span>
+          <span class="ccard-pill">Maths</span>
+          <span class="ccard-pill">Biology</span>
+        </div>
+      </div>
+      <div class="ccard ex reveal" style="animation-delay:.18s">
+        <div class="ccard-tag">Entrance Exam Prep</div>
+        <div class="ccard-num">NEET<br>&amp; JEE</div>
+        <div class="ccard-desc">Parallel preparation for national entrance exams alongside board studies — integrated, not separate.</div>
+        <div class="ccard-pills">
+          <span class="ccard-pill">NEET</span>
+          <span class="ccard-pill">JEE Mains</span>
+          <span class="ccard-pill">PYQ Packs</span>
+          <span class="ccard-pill">Mock Tests</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ STATS ROW ═══════════ -->
+<div class="stats-row" aria-label="Key facts about SEHR Academy">
+  <div class="stats-row-in">
+    <div class="stat-item reveal">
+      <div class="stat-val">5–6<span class="u">×</span></div>
+      <div class="stat-lbl">Classes Per Week</div>
+    </div>
+    <div class="stat-item reveal" style="animation-delay:.08s">
+      <div class="stat-val">2<span class="u">hr</span></div>
+      <div class="stat-lbl">Minimum Per Session</div>
+    </div>
+    <div class="stat-item reveal" style="animation-delay:.16s">
+      <div class="stat-val">4<span class="u">+</span></div>
+      <div class="stat-lbl">Subjects Taught</div>
+    </div>
+    <div class="stat-item reveal" style="animation-delay:.24s">
+      <div class="stat-val">0<span class="u">₹</span></div>
+      <div class="stat-lbl">Registration Fee</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section class="section" aria-labelledby="how-h2">
+  <div class="section-kicker" aria-hidden="true">
+    <div class="section-kicker-rule"></div>
+    <span class="section-kicker-text">How to Join</span>
+  </div>
+  <h2 class="section-h2" id="how-h2">Enrolling is <i>simple</i></h2>
+  <p class="section-sub" style="margin-bottom:32px">No forms, no waiting lists, no stress. One WhatsApp message is all it takes to get started.</p>
+
+  <div class="steps-wrap reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Message Us on WhatsApp</h3>
+      <p>Send a message to +91 95394 09586 or +91 90377 89586. Tell us your class and which subjects you need coaching for.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>We Discuss Your Needs</h3>
+      <p>We'll ask a few questions about your board, exam goals, and schedule to make sure we're the right fit — and which batch suits you best.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Confirm Your Seat</h3>
+      <p>We check seat availability in the right batch and confirm your place. No registration fee — just the monthly fee from day one.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Start Learning</h3>
+      <p>Walk in on your start date. You'll get access to the student portal, study materials, and the academic calendar immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section class="section" style="background:var(--white);border-top:1.5px solid var(--cream-3);border-bottom:1.5px solid var(--cream-3);padding:72px 40px" aria-labelledby="testi-h2">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="section-kicker" aria-hidden="true">
+      <div class="section-kicker-rule"></div>
+      <span class="section-kicker-text">What Students Say</span>
+    </div>
+    <h2 class="section-h2" id="testi-h2">Results that <i>speak</i></h2>
+    <p class="section-sub" style="margin-bottom:40px">From students and parents at Vatanappally and nearby areas.</p>
+
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">The way concepts are explained here is genuinely different. I struggled with Physical Chemistry for a full year at school — after a month here I actually understand why reactions happen, not just how to balance them.</p>
+        <div class="testi-author">
+          <div class="testi-av">👩‍🎓</div>
+          <div>
+            <div class="testi-name">Class 12 Student</div>
+            <div class="testi-role">PCB · NEET Preparation</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi reveal" style="animation-delay:.07s">
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">As a parent, the transparency is what I appreciate most. The student portal shows exactly what chapters have been covered, attendance, and test results — I'm never left guessing about my child's progress.</p>
+        <div class="testi-author">
+          <div class="testi-av">👨‍👧</div>
+          <div>
+            <div class="testi-name">Parent of Class 11 Student</div>
+            <div class="testi-role">PCM · JEE Preparation</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi reveal" style="animation-delay:.14s">
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">Small batch size makes a real difference. My questions don't go unanswered. By the end of each session every student's doubt is cleared — you can't get that in a 30-person coaching class.</p>
+        <div class="testi-author">
+          <div class="testi-av">👨‍🎓</div>
+          <div>
+            <div class="testi-name">Class 11 Student</div>
+            <div class="testi-role">PCM · Board + JEE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA BAND ═══════════ -->
+<div class="cta-band">
+  <div class="cta-band-in">
+    <div>
+      <div class="cta-band-title">Ready to <i>get started?</i></div>
+      <p class="cta-band-sub">Send us a WhatsApp message — we'll discuss your class, check batch availability, and confirm your seat. No forms, no waiting.</p>
+    </div>
+    <div class="cta-band-btns">
+      <a class="btn-lime-lg" href="https://wa.me/919539409586?text=Hi%2C+I%27m+interested+in+enrolling+at+SEHR+Academy." target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        WhatsApp: +91 95394 09586
+      </a>
+      <a class="btn-ghost-lg" href="https://wa.me/919037789586?text=Hi%2C+I%27m+interested+in+enrolling+at+SEHR+Academy." target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        WhatsApp: +91 90377 89586
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div id="site-footer"></div>
+<script src="/assets/footer.js" defer></script>
+
+<footer class="foot">
+  <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+  <div class="foot-links">
+    <span style="color:var(--pale)">Vatanappally, Thrissur, Kerala</span>
+    <a href="/about">About</a>
+    <a href="/faq">FAQ</a>
+    <a href="/careers">Careers</a>
+    <a href="/downloads">Downloads</a>
+    <a href="https://wa.me/919539409586">+91 95394 09586</a>
+    <a href="https://wa.me/919037789586">+91 90377 89586</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+/* ── SCROLL REVEAL ── */
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll('.reveal').forEach(function(el){
+  observer.observe(el);
+});
+})();
+</script>
 </body>
 </html>
-
