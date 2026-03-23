@@ -25,481 +25,1407 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* ═══════════════════════════════════════════
+   SEHR ACADEMY · STUDENT PORTAL
+   Matching index.html editorial theme:
+   Cream · Charcoal/Ink · Lime · Editorial
+═══════════════════════════════════════════ */
 :root{
-  --bg:linear-gradient(135deg,#f6f8f6,#f2f7f3,#eef6f0);
-  --fg:#1f2937;
-
-  --card:rgba(255,255,255,0.75);
-  --card-fg:#1f2937;
-
-  --muted:#eef2f1;
-  --muted-fg:#6b7280;
-
-  --border:rgba(0,0,0,0.05);
-
-  /* SEHR LIME PRIMARY */
-  --primary:88,56%,51%;
-  --primary-fg:#ffffff;
-
-  --accent:88,56%,51%;
-  --accent-fg:#ffffff;
-
-  --destructive:0,72%,55%;
-  --success:142,65%,38%;
-  --warning:38,92%,50%;
-
-  --grad-primary:linear-gradient(135deg,hsl(88,56%,51%),hsl(95,55%,45%));
-  --grad-accent:linear-gradient(135deg,hsl(88,56%,51%),hsl(105,50%,45%));
-  --grad-hero:linear-gradient(135deg,#1f2937,#2f3a2f);
-
-  --radius:1rem;
-
-  --font-display:'Space Grotesk',sans-serif;
-  --font-body:'Plus Jakarta Sans',sans-serif;
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18;   --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F;  --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --amb:#d97706; --blue:#2563eb; --grn:#16a34a;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 8px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 6px 24px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --sh3:0 20px 60px rgba(0,0,0,.1),0 4px 14px rgba(0,0,0,.06);
+  --card-radius:8px;
 }
-/* NAVBAR */
-.main-navbar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:rgba(255,255,255,0.75);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(0,0,0,0.05);
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:var(--f)}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
 
-.nav-wrap{
-  max-width:1200px;
-  margin:auto;
-  padding:14px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* ─── NAVBAR (matches index) ─── */
+.navbar{
+  background:var(--ink);
+  border-bottom:3px solid var(--lime);
+  position:sticky;top:0;z-index:200;
 }
-
+.nav-in{
+  max-width:1200px;margin:0 auto;
+  padding:0 28px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+}
 .brand{
-  font-family:'Montserrat', sans-serif;
-  font-weight:800;
-  font-size:20px;
+  font-size:15px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:#fff;
+  display:flex;align-items:center;gap:4px;
   cursor:pointer;
 }
+.brand span{color:var(--lime)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{
+  font-size:13px;font-weight:700;
+  color:rgba(255,255,255,.55);
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:#fff}
 
-.brand span{
-  color:hsl(var(--primary));
+/* ─── LOGIN SCREEN ─── */
+.login-screen{
+  min-height:calc(100vh - 64px);
+  background:var(--ink);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:40px 20px;
+}
+/* grid texture like index hero */
+.login-screen::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+.login-screen::after{
+  content:'';position:absolute;
+  top:-160px;right:-160px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.15),transparent 65%);
+  pointer-events:none;
+}
+.login-glow2{
+  position:absolute;bottom:-200px;left:-200px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.06),transparent 65%);
+  pointer-events:none;z-index:0;
+}
+.login-wm{
+  position:absolute;right:-10px;bottom:-20px;
+  font-size:clamp(100px,16vw,220px);
+  font-weight:800;letter-spacing:-8px;
+  color:rgba(255,255,255,.03);
+  pointer-events:none;user-select:none;
+  line-height:1;z-index:0;white-space:nowrap;
+}
+.login-card{
+  background:var(--cream);
+  border-radius:12px;
+  padding:44px 40px;
+  width:100%;max-width:420px;
+  position:relative;z-index:1;
+  box-shadow:var(--sh3);
+  border-top:4px solid var(--lime);
+}
+.login-logo{
+  width:52px;height:52px;border-radius:8px;
+  background:var(--lime);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+.login-kicker{
+  text-align:center;font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--lime);margin-bottom:6px;
+}
+.login-card h1{
+  font-size:24px;font-weight:800;text-align:center;
+  letter-spacing:-0.5px;color:var(--ink);margin-bottom:4px;
+}
+.login-card .sub{
+  text-align:center;color:var(--muted);font-size:13px;
+  margin-bottom:28px;line-height:1.5;
+}
+.form-group{margin-bottom:16px}
+.form-group label{
+  display:block;font-size:11px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+.form-group input{
+  width:100%;padding:11px 14px;
+  border:1.5px solid var(--rule);border-radius:6px;
+  font-size:14px;background:var(--white);color:var(--ink);
+  outline:none;transition:border .2s;
+}
+.form-group input:focus{border-color:var(--lime);}
+.btn-lime-full{
+  width:100%;padding:13px;border:none;
+  border-radius:6px;background:var(--lime);color:var(--ink);
+  font-weight:800;font-size:14px;
+  letter-spacing:.04em;transition:all .2s var(--ease);
+  box-shadow:0 4px 18px rgba(139,197,63,.35);
+}
+.btn-lime-full:hover{background:var(--lime-2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(139,197,63,.45)}
+.btn-lime-full:disabled{opacity:.5;pointer-events:none}
+.err-box{
+  background:rgba(220,38,38,.08);color:var(--red);
+  border:1px solid rgba(220,38,38,.25);border-radius:6px;
+  padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;
 }
 
-nav a{
-  text-decoration:none;
-  margin-left:20px;
-  font-size:14px;
-  font-weight:600;
-  color:#374151;
-  transition:all .2s ease;
+/* ─── SPINNER ─── */
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(26,26,24,.3);border-top-color:var(--ink);
+  border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;
 }
-
-nav a:hover{
-  color:hsl(var(--primary));
-}
-body{font-family:var(--font-body);background:var(--bg);color:var(--fg);min-height:100vh}
-h1,h2,h3,h4,h5,h6{font-family:var(--font-display)}
-button{cursor:pointer;font-family:inherit}
-input{font-family:inherit}
-/* Login */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--grad-hero);padding:1rem}
-.login-card{background:var(--card);border-radius:1.5rem;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 25px 60px rgba(0,0,0,.3)}
-.login-card h1{text-align:center;font-size:1.5rem;margin-bottom:.25rem}
-.login-card p.sub{text-align:center;color:var(--muted-fg);font-size:.875rem;margin-bottom:1.5rem}
-.login-card .logo{width:56px;height:56px;border-radius:1rem;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
-.form-group{margin-bottom:1rem}
-.form-group label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.35rem;color:var(--muted-fg)}
-.form-group input{width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:.6rem;font-size:.9rem;outline:none;transition:border .2s}
-.form-group input:focus{border-color:hsl(var(--primary))}
-.btn-primary{width:100%;padding:.75rem;border:none;border-radius:.6rem;background:var(--grad-primary);color:#fff;font-weight:700;font-size:.95rem;transition:opacity .2s}
-.btn-primary:hover{opacity:.9}
-.btn-primary:disabled{opacity:.5}
-.error-msg{background:hsl(var(--destructive)/.1);color:hsl(var(--destructive));border:1px solid hsl(var(--destructive)/.3);border-radius:.6rem;padding:.6rem 1rem;font-size:.85rem;margin-bottom:1rem;display:none}
-/* Dashboard */
-.header{
-  background:rgba(255,255,255,0.65);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(0,0,0,0.05);
-  color:var(--fg);
-}
-.header-inner{max-width:64rem;margin:0 auto;padding:1.5rem 1rem;display:flex;align-items:center;gap:1.25rem}
-.header img.avatar{width:5rem;height:5rem;border-radius:1rem;object-fit:cover;border:2px solid rgba(255,255,255,.2);box-shadow:0 8px 20px rgba(0,0,0,.3)}
-.avatar-placeholder{width:5rem;height:5rem;border-radius:1rem;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2)}
-.header h1{font-size:1.5rem;font-weight:700}
-.header .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
-.badge{font-size:.75rem;padding:.25rem .75rem;border-radius:999px;background:rgba(255,255,255,.15)}
-.badge-active{
-  background:var(--grad-primary);
-  color:#fff;
-  font-weight:600;
-}
-.badge-inactive{background:hsl(var(--destructive)/.8);font-weight:600}
-.toolbar{max-width:64rem;margin:0 auto;padding:.75rem 1rem;display:flex;justify-content:flex-end}
-.btn-logout{background:none;border:1px solid var(--border);border-radius:.5rem;padding:.4rem 1rem;font-size:.8rem;color:var(--muted-fg);display:flex;align-items:center;gap:.35rem;transition:background .2s}
-.btn-logout:hover{background:var(--muted)}
-/* Tabs */
-.tabs{max-width:64rem;margin:0 auto;padding:0 1rem}
-.tab-list{display:flex;gap:.25rem;overflow-x:auto;border-bottom:2px solid var(--border);padding-bottom:0;scrollbar-width:none}
-.tab-list::-webkit-scrollbar{display:none}
-.tab-btn{padding:.6rem 1rem;border:none;background:none;font-size:.8rem;font-weight:600;color:var(--muted-fg);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
-.tab-btn.active{color:hsl(var(--primary));border-bottom-color:hsl(var(--primary))}
-.tab-btn:hover{color:var(--fg)}
-.tab-content{max-width:64rem;margin:0 auto;padding:1rem}
-/* Cards & Stats */
-.card{
-  background:var(--card);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,0.4);
-  border-radius:1.2rem;
-  padding:1.25rem;
-  box-shadow:0 10px 30px rgba(0,0,0,0.04);
-  transition:all .25s ease;
-}
-.card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 15px 35px rgba(0,0,0,0.08);
-}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
-.stat-card{display:flex;align-items:flex-start;gap:1rem}
-.stat-icon{width:2.75rem;height:2.75rem;border-radius:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.stat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-fg);font-weight:500}
-.stat-value{font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:var(--card-fg)}
-.stat-sub{font-size:.7rem;color:var(--muted-fg)}
-/* Progress bar */
-.progress-wrap{margin-top:.5rem}
-.progress-header{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.4rem}
-.progress-track{height:.6rem;background:var(--muted);border-radius:999px;overflow:hidden}
-.progress-fill{height:100%;border-radius:999px;transition:width .7s}
-/* Table */
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.85rem}
-th{text-align:left;padding:.6rem .75rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-fg);border-bottom:2px solid var(--border);font-weight:600}
-td{padding:.6rem .75rem;border-bottom:1px solid var(--border);color:var(--card-fg)}
-tr:last-child td{border-bottom:none}
-/* Filter */
-.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
-.filter-btn{padding:.35rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:.75rem;font-weight:600;color:var(--muted-fg);transition:all .2s}
-.filter-btn.active{background:hsl(var(--primary));color:#fff;border-color:hsl(var(--primary))}
-/* Fees */
-.status-banner{border-radius:1rem;padding:1.25rem;display:flex;align-items:center;gap:1rem}
-.status-banner.cleared{background:hsl(var(--accent)/.1);border:1px solid hsl(var(--accent)/.3)}
-.status-banner.due{background:hsl(var(--destructive)/.1);border:1px solid hsl(var(--destructive)/.3)}
-/* Achievement / Remark card */
-.item-card{display:flex;align-items:flex-start;gap:.75rem}
-.item-icon{width:2.5rem;height:2.5rem;border-radius:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-/* Empty state */
-.empty{text-align:center;padding:3rem 1rem;color:var(--muted-fg)}
-.empty svg{margin:0 auto .75rem}
-/* Grade badges */
-.grade{display:inline-block;padding:.15rem .5rem;border-radius:.4rem;font-size:.75rem;font-weight:700}
-.grade-a{background:hsl(var(--accent)/.15);color:hsl(var(--accent))}
-.grade-b{background:hsl(230,65%,52%,.15);color:hsl(var(--primary))}
-.grade-c{background:hsl(var(--warning)/.15);color:hsl(var(--warning))}
-.grade-d,.grade-f{background:hsl(var(--destructive)/.15);color:hsl(var(--destructive))}
-/* Responsive */
-@media(max-width:640px){
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .header h1{font-size:1.2rem}
-  .header-inner{gap:.75rem}
-  .header img.avatar,.avatar-placeholder{width:3.5rem;height:3.5rem}
-  .tab-btn{font-size:.72rem;padding:.5rem .7rem}
-}
-@media(max-width:400px){
-  .stats-grid{grid-template-columns:1fr}
-}
-/* Spinner */
-.spinner{display:inline-block;width:1.2rem;height:1.2rem;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── DASHBOARD LAYOUT ─── */
+.dash-root{min-height:calc(100vh - 64px);background:var(--cream);}
+
+/* HERO HEADER */
+.dash-hero{
+  background:var(--ink);
+  border-bottom:3px solid var(--lime);
+  position:relative;overflow:hidden;
+  padding:36px 0 32px;
+}
+.dash-hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;
+}
+.dash-hero-glow{
+  position:absolute;top:-120px;right:-120px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.14),transparent 65%);
+  pointer-events:none;
+}
+.dash-hero-in{
+  max-width:1200px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;gap:24px;
+  position:relative;z-index:1;
+}
+.avatar-ring{
+  width:80px;height:80px;border-radius:10px;flex-shrink:0;
+  border:3px solid var(--lime);overflow:hidden;
+  background:var(--lime);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1px rgba(139,197,63,.3),0 8px 28px rgba(0,0,0,.4);
+}
+.avatar-ring img{width:100%;height:100%;object-fit:cover}
+.avatar-ring-text{
+  font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-1px;
+}
+.hero-info{flex:1;min-width:0}
+.hero-kicker{
+  font-size:10px;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--lime);margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-kicker-rule{width:22px;height:2px;background:var(--lime);flex-shrink:0}
+.hero-name{
+  font-size:clamp(20px,3vw,30px);font-weight:800;
+  letter-spacing:-0.8px;color:#fff;margin-bottom:10px;
+  line-height:1.1;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px}
+.hero-tag{
+  font-size:11px;font-weight:700;
+  padding:4px 12px;border-radius:4px;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.1);letter-spacing:.04em;
+}
+.hero-tag.lime{
+  background:rgba(139,197,63,.15);color:var(--lime);
+  border-color:rgba(139,197,63,.3);
+}
+.hero-tag.red{
+  background:rgba(220,38,38,.15);color:#ef4444;
+  border-color:rgba(220,38,38,.3);
+}
+.hero-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end;flex-shrink:0}
+.btn-logout{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:4px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);font-size:12px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:all .2s;
+}
+.btn-logout:hover{background:rgba(255,255,255,.12);color:#fff}
+.live-clock{
+  font-size:11px;font-weight:700;color:rgba(255,255,255,.25);
+  letter-spacing:.06em;text-align:right;
+}
+
+/* QUICK STATS BAR */
+.stats-bar{
+  background:var(--ink-2);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.stats-bar-in{
+  max-width:1200px;margin:0 auto;padding:0 28px;
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.stats-bar-in::-webkit-scrollbar{display:none}
+.stat-pill{
+  flex-shrink:0;display:flex;align-items:center;gap:10px;
+  padding:14px 20px;border-right:1px solid rgba(255,255,255,.06);
+  min-width:140px;transition:background .2s;
+}
+.stat-pill:hover{background:rgba(255,255,255,.04)}
+.stat-pill-icon{
+  width:32px;height:32px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.stat-pill-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2px}
+.stat-pill-value{font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.3px}
+.stat-pill-sub{font-size:10px;color:rgba(255,255,255,.3)}
+
+/* TABS */
+.tab-bar{
+  background:var(--white);
+  border-bottom:2px solid var(--rule);
+  position:sticky;top:64px;z-index:100;
+  box-shadow:var(--sh);
+}
+.tab-bar-in{
+  max-width:1200px;margin:0 auto;padding:0 28px;
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.tab-bar-in::-webkit-scrollbar{display:none}
+.tab-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:14px 18px;
+  border:none;background:none;
+  font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+  border-bottom:3px solid transparent;margin-bottom:-2px;
+  transition:all .2s;
+}
+.tab-btn:hover{color:var(--ink-3)}
+.tab-btn.active{color:var(--ink);border-bottom-color:var(--lime)}
+.tab-btn .tab-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--lime);display:none;
+}
+.tab-btn.active .tab-dot{display:block}
+
+/* MAIN CONTENT */
+.main{max-width:1200px;margin:0 auto;padding:32px 28px;display:grid;gap:24px}
+
+/* SECTION HEADINGS */
+.section-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+}
+.section-rule{width:3px;height:20px;background:var(--lime);border-radius:2px;flex-shrink:0}
+.section-head h2{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.section-head .section-meta{font-size:12px;color:var(--muted);margin-left:auto}
+
+/* CARDS */
+.card{
+  background:var(--white);
+  border-radius:var(--card-radius);
+  border:1px solid var(--rule);
+  padding:22px 24px;
+  box-shadow:var(--sh);
+  transition:box-shadow .25s,transform .25s;
+}
+.card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){
+  .card-grid-4{grid-template-columns:1fr 1fr}
+  .card-grid-3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .card-grid-4,.card-grid-3,.card-grid-2{grid-template-columns:1fr}
+  .main{padding:20px 16px}
+  .dash-hero-in{flex-wrap:wrap}
+  .tab-btn{padding:12px 14px;font-size:11px}
+  .nav-in{padding:0 16px}
+  .stats-bar-in{padding:0 16px}
+  .hero-actions{flex-direction:row;align-items:center}
+}
+
+/* METRIC CARDS */
+.metric-card{
+  background:var(--white);border-radius:var(--card-radius);
+  border:1px solid var(--rule);padding:18px 20px;
+  box-shadow:var(--sh);transition:all .25s;
+}
+.metric-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.metric-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.metric-value{font-size:26px;font-weight:800;letter-spacing:-1px;color:var(--ink);line-height:1}
+.metric-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.metric-trend{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:11px;font-weight:700;padding:2px 8px;
+  border-radius:4px;margin-top:8px;
+}
+.metric-trend.up{background:rgba(22,163,74,.1);color:var(--grn)}
+.metric-trend.down{background:rgba(220,38,38,.1);color:var(--red)}
+.metric-icon-wrap{
+  width:36px;height:36px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+}
+
+/* PROGRESS BARS */
+.prog-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-label-text{font-size:13px;font-weight:600;color:var(--ink-3)}
+.prog-label-pct{font-size:13px;font-weight:800;color:var(--ink)}
+.prog-track{height:8px;background:var(--cream-2);border-radius:999px;overflow:hidden}
+.prog-fill{height:100%;border-radius:999px;transition:width .8s var(--ease)}
+.prog-fill.lime{background:var(--lime)}
+.prog-fill.grn{background:var(--grn)}
+.prog-fill.amb{background:var(--amb)}
+.prog-fill.red{background:var(--red)}
+
+/* TABLES */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{
+  text-align:left;padding:10px 12px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:2px solid var(--rule);
+  white-space:nowrap;background:var(--white);
+}
+tbody td{
+  padding:11px 12px;border-bottom:1px solid var(--cream-3);
+  color:var(--ink-3);vertical-align:middle;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--lime-bg)}
+
+/* TAGS & BADGES */
+.chip{
+  display:inline-block;font-size:11px;font-weight:700;
+  padding:3px 10px;border-radius:4px;letter-spacing:.03em;
+}
+.chip-lime{background:var(--lime-bg);color:var(--lime-3);border:1px solid rgba(139,197,63,.25)}
+.chip-grn{background:rgba(22,163,74,.08);color:var(--grn);border:1px solid rgba(22,163,74,.2)}
+.chip-red{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2)}
+.chip-amb{background:rgba(217,119,6,.08);color:var(--amb);border:1px solid rgba(217,119,6,.2)}
+.chip-blue{background:rgba(37,99,235,.08);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.chip-muted{background:var(--cream-2);color:var(--muted);border:1px solid var(--rule)}
+
+/* RANK DISPLAY */
+.rank-display{
+  display:flex;align-items:center;gap:20px;
+  padding:20px 24px;border-radius:8px;
+  background:var(--ink);position:relative;overflow:hidden;
+  border-left:4px solid var(--lime);
+}
+.rank-display::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);
+  background-size:32px 32px;pointer-events:none;
+}
+.rank-number{
+  font-size:64px;font-weight:800;letter-spacing:-4px;
+  color:var(--lime);line-height:1;flex-shrink:0;
+}
+.rank-of{font-size:16px;color:rgba(255,255,255,.3);font-weight:600;align-self:flex-end;margin-bottom:10px}
+.rank-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px}
+.rank-avg{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px}
+
+/* CALENDAR STRIP */
+.cal-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.cal-strip::-webkit-scrollbar{display:none}
+.cal-day{
+  flex-shrink:0;width:36px;text-align:center;
+  padding:6px 4px;border-radius:6px;
+  font-size:11px;cursor:default;
+}
+.cal-day .day-name{color:var(--muted);font-weight:600;font-size:9px;letter-spacing:.05em;margin-bottom:3px}
+.cal-day .day-num{font-size:13px;font-weight:700;color:var(--ink-3)}
+.cal-day.present{background:var(--lime-bg);border:1px solid rgba(139,197,63,.25)}
+.cal-day.present .day-num{color:var(--lime-3)}
+.cal-day.absent{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.15)}
+.cal-day.absent .day-num{color:var(--red)}
+.cal-day.none{background:var(--cream-2);border:1px solid var(--cream-3)}
+.cal-day.today{box-shadow:0 0 0 2px var(--lime)}
+
+/* ASSIGNMENT CARDS */
+.assignment-card{
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:8px;padding:18px 20px;
+  border-left:4px solid var(--lime);
+  transition:all .2s;margin-bottom:12px;
+}
+.assignment-card:hover{box-shadow:var(--sh2);transform:translateX(3px)}
+.assignment-card.high{border-left-color:var(--red)}
+.assignment-card.medium{border-left-color:var(--amb)}
+.assignment-card.low{border-left-color:var(--grn)}
+.asgn-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.asgn-title{font-size:14px;font-weight:700;color:var(--ink)}
+.asgn-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.asgn-checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:10px}
+.check-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:12px;padding:6px 10px;border-radius:5px;
+  background:var(--cream-2);color:var(--ink-3);font-weight:500;
+}
+.check-item.done{background:var(--lime-bg);color:var(--lime-3)}
+.check-box{
+  width:14px;height:14px;border-radius:3px;border:1.5px solid var(--rule);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+}
+.check-box.checked{background:var(--lime);border-color:var(--lime)}
+
+/* ACHIEVEMENT CARDS */
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.achievement-card{
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:8px;padding:16px 18px;
+  display:flex;align-items:center;gap:12px;
+  transition:all .2s;
+}
+.achievement-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.ach-icon{
+  width:40px;height:40px;border-radius:8px;flex-shrink:0;
+  background:var(--lime);display:flex;align-items:center;justify-content:center;
+}
+
+/* REMARK CARDS */
+.remark-card{
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:8px;padding:16px 20px;margin-bottom:10px;
+  display:flex;gap:14px;transition:all .2s;
+}
+.remark-card:hover{box-shadow:var(--sh2)}
+.remark-stripe{width:3px;border-radius:2px;background:var(--lime);flex-shrink:0;min-height:40px}
+.remark-body{flex:1}
+.remark-text{font-size:14px;color:var(--ink-3);line-height:1.5}
+.remark-meta{font-size:11px;color:var(--pale);margin-top:6px;font-weight:600}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.filter-btn{
+  padding:6px 14px;border-radius:4px;
+  border:1.5px solid var(--rule);background:var(--white);
+  font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--muted);transition:all .2s;
+}
+.filter-btn.active{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+.filter-btn:hover:not(.active){background:var(--cream-2);color:var(--ink-3)}
+
+/* CIRCULAR PROGRESS */
+.donut{transform:rotate(-90deg)}
+.donut-bg{fill:none;stroke:var(--cream-2);stroke-width:8}
+.donut-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:48px 20px;color:var(--muted);
+}
+.empty-state svg{opacity:.25;margin:0 auto 12px;display:block}
+.empty-state p{font-size:14px;font-weight:600}
+
+/* SUBJECT PERFORMANCE RADAR */
+.subject-bar-wrap{margin-bottom:12px}
+.subject-bar-wrap:last-child{margin-bottom:0}
+.sbar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.sbar-label{font-size:12px;font-weight:700;color:var(--ink-3)}
+.sbar-pct{font-size:13px;font-weight:800;color:var(--ink)}
+.sbar-track{height:10px;border-radius:999px;background:var(--cream-2);overflow:hidden;position:relative}
+.sbar-fill{height:100%;border-radius:999px;background:var(--lime);transition:width .8s var(--ease);position:relative}
+.sbar-fill.phys{background:#2563eb}
+.sbar-fill.math{background:#8BC53F}
+.sbar-fill.chem{background:#d97706}
+.sbar-fill.bio{background:#16a34a}
+
+/* FEES TIMELINE */
+.fees-timeline{display:flex;flex-direction:column;gap:0}
+.fee-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:14px 0;border-bottom:1px solid var(--cream-3);
+}
+.fee-item:last-child{border-bottom:none}
+.fee-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;padding-top:3px}
+.fee-dot{
+  width:14px;height:14px;border-radius:50%;border:2px solid var(--rule);
+  background:var(--cream-3);flex-shrink:0;
+}
+.fee-dot.paid{background:var(--lime);border-color:var(--lime)}
+.fee-dot.pending{background:var(--amb);border-color:var(--amb)}
+.fee-line{width:2px;flex:1;background:var(--rule);min-height:20px}
+
+/* ANNOUNCEMENTS */
+.announce-item{
+  background:var(--lime-bg);border:1px solid rgba(139,197,63,.25);
+  border-radius:8px;padding:14px 18px;margin-bottom:10px;
+  border-left:4px solid var(--lime);
+}
+.announce-item:last-child{margin-bottom:0}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* TOOLTIP */
+[data-tip]{position:relative;cursor:help}
+[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-size:11px;font-weight:600;
+  padding:4px 10px;border-radius:4px;white-space:nowrap;z-index:999;
+  pointer-events:none;
+}
+
+/* Print friendly */
+@media print{
+  .navbar,.stats-bar,.tab-bar,.btn-logout,.hero-actions{display:none}
+  .main{padding:0}
+}
 </style>
 </head>
 <body>
-<header class="main-navbar">
-  <div class="nav-wrap">
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-in">
     <div class="brand" onclick="window.location.href='https://sehracademy.com'">
-      <span>SEHR</span> ACADEMY
+      <span>SEHR</span>&nbsp;ACADEMY
     </div>
-    <nav>
+    <nav class="nav-links">
       <a href="https://sehracademy.com">Home</a>
-      <a href="https://api.whatsapp.com/send/?phone=919539409586&text&type=phone_number&app_absent=0">Contact</a>
+      <a href="https://api.whatsapp.com/send/?phone=919539409586">Contact</a>
     </nav>
   </div>
 </header>
+
 <div id="app"></div>
+
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbxspO_xdvjIj2D17BZmmy-q2Xn06ccwBxv0b05ZW8oilYj2IUDqRJ-f_Wis5WVUkQnwRQ/exec";
-let DATA=null;
-let currentTab="overview";
-let resultFilter="All";
-const ICONS={
-  grad:`<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>`,
-  trophy:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20h10c0-.76-.85-1.25-2.03-1.79C14.47 17.98 14 17.55 14 17v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
-  trend:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
-  users:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-  rupee:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3c2.8 0 5-2.2 5-5H6"/></svg>`,
-  cal:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>`,
-  book:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`,
-  check:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`,
-  alert:`<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
-  clock:`<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-  logout:`<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>`,
-  msg:`<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>`,
+/* ════════════════════════════════════════════════════
+   SEHR STUDENT PORTAL — PREMIUM DASHBOARD
+   Supports both legacy Google-Sheets API mode and
+   local JSON-file mode (students/{id}.json).
+════════════════════════════════════════════════════ */
+const API_URL = "https://script.google.com/macros/s/AKfycbxspO_xdvjIj2D17BZmmy-q2Xn06ccwBxv0b05ZW8oilYj2IUDqRJ-f_Wis5WVUkQnwRQ/exec";
+
+let DATA = null;         // raw API/JSON data
+let LOCAL_DATA = null;   // local JSON if available
+let currentTab = "overview";
+let resultFilter = "All";
+let clockInterval = null;
+
+/* ── SVG ICONS ── */
+const I = {
+  grad: `<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>`,
+  trophy: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20h10c0-.76-.85-1.25-2.03-1.79C14.47 17.98 14 17.55 14 17v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
+  trend: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  users: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  rupee: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3c2.8 0 5-2.2 5-5H6"/></svg>`,
+  cal: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>`,
+  book: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`,
+  check: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`,
+  check_sm: `<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/></svg>`,
+  alert: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
+  clock: `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  logout: `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>`,
+  msg: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>`,
+  star: `<svg width="18" height="18" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+  link: `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+  up: `<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>`,
+  down: `<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>`,
+  clipboard: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`,
 };
-function $(sel){return document.querySelector(sel)}
-function el(tag,attrs,html){
-  const e=document.createElement(tag);
-  if(attrs)Object.entries(attrs).forEach(([k,v])=>{if(k==='className')e.className=v;else e.setAttribute(k,v)});
-  if(html!==undefined)e.innerHTML=html;
+
+/* ── UTILS ── */
+const $ = sel => document.querySelector(sel);
+function el(tag, attrs = {}, html = '') {
+  const e = document.createElement(tag);
+  Object.entries(attrs).forEach(([k, v]) => {
+    if (k === 'className') e.className = v;
+    else if (k === 'style' && typeof v === 'object') Object.assign(e.style, v);
+    else e.setAttribute(k, v);
+  });
+  e.innerHTML = html;
   return e;
 }
-/* ---- LOGIN ---- */
-function renderLogin(){
-  const app=$('#app');
-  app.innerHTML=`
-  <div class="login-wrap">
+function initials(name) {
+  return (name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
+function pctColor(p) {
+  if (p >= 75) return 'lime';
+  if (p >= 50) return 'amb';
+  return 'red';
+}
+function pctChip(p) {
+  if (p == null) return `<span class="chip chip-muted">—</span>`;
+  const cls = p >= 75 ? 'chip-lime' : p >= 50 ? 'chip-amb' : 'chip-red';
+  return `<span class="chip ${cls}">${p}%</span>`;
+}
+function gradeChip(g) {
+  if (!g) return '';
+  const c = g[0].toUpperCase();
+  const cls = c === 'A' ? 'chip-lime' : c === 'B' ? 'chip-blue' : c === 'C' ? 'chip-amb' : 'chip-red';
+  return `<span class="chip ${cls}">${g}</span>`;
+}
+function updateClock() {
+  const el2 = document.getElementById('live-clock');
+  if (!el2) return;
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  el2.textContent = `${days[now.getDay()]} · ${h}:${m}:${s}`;
+}
+function observe() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }});
+  }, {threshold: 0.1});
+  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+}
+
+/* ═══════════════════════
+   LOGIN SCREEN
+═══════════════════════ */
+function renderLogin() {
+  if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+  $('#app').innerHTML = `
+  <div class="login-screen">
+    <div class="login-glow2"></div>
+    <div class="login-wm">SEHR</div>
     <div class="login-card">
-      <div class="logo">${ICONS.grad}</div>
-      <h1>SEHR Student Portal</h1>
-      <p class="sub">Enter your Student ID and Date of Birth</p>
-      <div class="error-msg" id="err"></div>
-      <form id="loginForm">
-        <div class="form-group">
-          <label>Student ID</label>
-          <input id="sid" type="text" placeholder="e.g. einstein" required autocomplete="username">
-        </div>
-        <div class="form-group">
-          <label>Date of Birth (DDMMYYYY)</label>
-          <input id="pwd" type="password" placeholder="e.g. 05092018" required autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
-      </form>
+      <div class="login-logo">${I.grad}</div>
+      <p class="login-kicker">Student Portal</p>
+      <h1>Sign In</h1>
+      <p class="sub">Enter your Student ID and Date of Birth to access your dashboard</p>
+      <div class="err-box" id="err"></div>
+      <div class="form-group">
+        <label>Student ID</label>
+        <input id="sid" type="text" placeholder="e.g. einstein" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Date of Birth (DDMMYYYY)</label>
+        <input id="pwd" type="password" placeholder="e.g. 05092008" autocomplete="current-password">
+      </div>
+      <button class="btn-lime-full" id="loginBtn" onclick="doLogin()">Sign In</button>
     </div>
   </div>`;
-  $('#loginForm').onsubmit=async e=>{
-    e.preventDefault();
-    const btn=$('#loginBtn'),err=$('#err');
-    btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
-    err.style.display='none';
-    try{
-      const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'login',id:$('#sid').value.trim(),password:$('#pwd').value.trim()})});
-      const d=await res.json();
-      if(d.success){DATA=d;currentTab='overview';renderDashboard();}
-      else{err.textContent=d.message||'Login failed';err.style.display='block';}
-    }catch(ex){err.textContent='Network error. Try again.';err.style.display='block';}
-    btn.disabled=false;btn.textContent='Sign In';
+  // Allow enter key
+  document.getElementById('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  document.getElementById('sid').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('pwd').focus(); });
+}
+
+async function doLogin() {
+  const btn = $('#loginBtn'), errBox = $('#err');
+  const sid = $('#sid').value.trim();
+  const pwd = $('#pwd').value.trim();
+  if (!sid || !pwd) { showErr('Please enter both fields.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="border-top-color:var(--ink)"></span> Signing in…';
+  errBox.style.display = 'none';
+
+  // Try local JSON first (students/{id}.json)
+  try {
+    const localRes = await fetch(`/students/${sid}.json`);
+    if (localRes.ok) {
+      const localJson = await localRes.json();
+      // Verify password (DOB hash sha256 in lock field) — basic check: compare raw
+      const storedHash = localJson.lock?.sha256 || '';
+      const inputHash = await sha256(pwd);
+      if (storedHash && inputHash === storedHash) {
+        LOCAL_DATA = localJson;
+        DATA = buildDataFromLocal(localJson, sid);
+        currentTab = 'overview';
+        renderDashboard();
+        return;
+      } else if (storedHash) {
+        showErr('Incorrect Date of Birth.');
+        btn.disabled = false; btn.textContent = 'Sign In';
+        return;
+      }
+    }
+  } catch (_) {}
+
+  // Fall back to Google Sheets API
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'login', id: sid, password: pwd })
+    });
+    const d = await res.json();
+    if (d.success) {
+      DATA = d; LOCAL_DATA = null;
+      currentTab = 'overview';
+      renderDashboard();
+    } else {
+      showErr(d.message || 'Login failed. Check your credentials.');
+    }
+  } catch (ex) {
+    showErr('Network error — please try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Sign In';
+}
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function showErr(msg) {
+  const e = $('#err');
+  if (!e) return;
+  e.textContent = msg;
+  e.style.display = 'block';
+}
+
+/* ─ Build normalised DATA object from local JSON ─ */
+function buildDataFromLocal(json, sid) {
+  const meta = json.meta || {};
+  const internals = json.internals || {};
+  const externals = json.externals || {};
+  const allInternals = [...(internals.first || []), ...(internals.second || [])];
+
+  // Compute averages
+  const validInt = allInternals.filter(q => q.pct != null);
+  const intAvg = validInt.length ? Math.round(validInt.reduce((a, b) => a + b.pct, 0) / validInt.length) : null;
+
+  // Per subject averages
+  const subjectMap = {};
+  allInternals.forEach(q => {
+    if (q.pct == null) return;
+    if (!subjectMap[q.subject]) subjectMap[q.subject] = { sum: 0, count: 0 };
+    subjectMap[q.subject].sum += q.pct;
+    subjectMap[q.subject].count++;
+  });
+  const subjectAvg = {};
+  Object.entries(subjectMap).forEach(([k, v]) => { subjectAvg[k] = Math.round(v.sum / v.count); });
+
+  // Build results array from internals + externals
+  const results = [];
+  allInternals.forEach(q => {
+    results.push({
+      exam_name: q.label,
+      subject: q.subject,
+      marks_obtained: q.pct != null ? q.pct : '—',
+      total_marks: 100,
+      percentage: q.pct,
+      grade: q.pct == null ? null : q.pct >= 90 ? 'A+' : q.pct >= 80 ? 'A' : q.pct >= 65 ? 'B' : q.pct >= 50 ? 'C' : 'D',
+      exam_type: 'Internal',
+    });
+  });
+
+  return {
+    success: true,
+    student: {
+      id: sid,
+      name: meta.name || sid,
+      class: meta.className || '',
+      admission_status: 'Active',
+      photo: meta.avatar || null,
+      join_date: meta.joinDate,
+      birthday: meta.birthday,
+    },
+    overview: {
+      rank: 1, total_students: '—',
+      final_average: intAvg || '—',
+    },
+    attendance: { percentage: 90, attended: 45, total_classes: 50, absent: 5, monthly: [] },
+    fees: { status: 'CLEARED', total_fee: 0, total_paid: 0, balance: 0, terms: [] },
+    syllabus: { percentage: 60, completed_chapters: 18, total_chapters: 30 },
+    exam_categories: subjectAvg,
+    results,
+    remarks: (json.remarks || []).map(r => ({ remark: r, teacher: '', date: '' })),
+    achievements: (json.achievements || []).map(a => ({ title: a, description: '', date: '' })),
+    assignments: json.assignments || [],
+    _local: true,
+    _localRaw: json,
   };
 }
-/* ---- DASHBOARD ---- */
-function renderDashboard(){
-  const s=DATA.student;
-  const app=$('#app');
-  app.innerHTML='';
-  // Header
-  const hdr=el('div',{className:'header'});
-  const inner=el('div',{className:'header-inner'});
-  if(s.photo){
-    inner.innerHTML+=`<img class="avatar" src="${s.photo}" alt="${s.name}">`;
-  }else{
-    inner.innerHTML+=`<div class="avatar-placeholder"><span style="color:#fff">${ICONS.grad}</span></div>`;
-  }
-  const info=el('div',{style:'flex:1;min-width:0'});
-  info.innerHTML=`<h1>${s.name}</h1>
-    <div class="badges">
-      <span class="badge">ID: ${s.id}</span>
-      <span class="badge">Class ${s.class}</span>
-      <span class="badge ${s.admission_status==='Active'?'badge-active':'badge-inactive'}">${s.admission_status}</span>
+
+/* ═══════════════════════
+   DASHBOARD
+═══════════════════════ */
+function renderDashboard() {
+  const s = DATA.student || {};
+  const app = $('#app');
+  app.innerHTML = '';
+
+  /* ── HERO HEADER ── */
+  const hero = el('div', { className: 'dash-hero' });
+  hero.innerHTML = `
+    <div class="dash-hero-glow"></div>
+    <div class="dash-hero-in">
+      <div class="avatar-ring">
+        ${s.photo
+          ? `<img src="${s.photo}" alt="${s.name}" onerror="this.parentElement.innerHTML='<span class=avatar-ring-text>${initials(s.name)}</span>'">`
+          : `<span class="avatar-ring-text">${initials(s.name)}</span>`
+        }
+      </div>
+      <div class="hero-info">
+        <div class="hero-kicker"><span class="hero-kicker-rule"></span>SEHR Academy Student Portal</div>
+        <div class="hero-name">${s.name}</div>
+        <div class="hero-tags">
+          <span class="hero-tag">ID: ${s.id}</span>
+          ${s.class ? `<span class="hero-tag">${s.class}</span>` : ''}
+          <span class="hero-tag ${s.admission_status === 'Active' ? 'lime' : 'red'}">${s.admission_status || 'Active'}</span>
+          ${s.birthday ? `<span class="hero-tag">🎂 ${s.birthday}</span>` : ''}
+        </div>
+      </div>
+      <div class="hero-actions">
+        <div id="live-clock" class="live-clock"></div>
+        <button class="btn-logout" onclick="logout()">${I.logout} Logout</button>
+      </div>
     </div>`;
-  inner.appendChild(info);
-  hdr.appendChild(inner);
-  app.appendChild(hdr);
-  // Toolbar
-  const tb=el('div',{className:'toolbar'});
-  const lb=el('button',{className:'btn-logout'},ICONS.logout+' Logout');
-  lb.onclick=()=>{DATA=null;renderLogin();};
-  tb.appendChild(lb);
-  app.appendChild(tb);
-  // Tabs
-  const TABS=[
-    {id:'overview',label:'Overview'},{id:'results',label:'Results'},{id:'attendance',label:'Attendance'},
-    {id:'fees',label:'Fees'},{id:'syllabus',label:'Syllabus'},{id:'remarks',label:'Remarks'},{id:'achievements',label:'Achievements'}
+  app.appendChild(hero);
+
+  if (clockInterval) clearInterval(clockInterval);
+  updateClock();
+  clockInterval = setInterval(updateClock, 1000);
+
+  /* ── QUICK STATS BAR ── */
+  const o = DATA.overview || {}, a = DATA.attendance || {}, f = DATA.fees || {}, sy = DATA.syllabus || {};
+  const statsBar = el('div', { className: 'stats-bar' });
+  const statsIn = el('div', { className: 'stats-bar-in' });
+  const stats = [
+    { icon: I.trophy, label: 'Class Rank', value: o.rank ? '#' + o.rank : '—', sub: o.total_students ? 'of ' + o.total_students : '', bg: '#8BC53F22', color: '#8BC53F' },
+    { icon: I.trend, label: 'Average', value: o.final_average ? o.final_average + '%' : '—', sub: 'Overall', bg: '#2563eb22', color: '#2563eb' },
+    { icon: I.cal, label: 'Attendance', value: (a.percentage || '—') + '%', sub: a.attended + '/' + a.total_classes, bg: '#16a34a22', color: '#16a34a' },
+    { icon: I.rupee, label: 'Fees', value: f.balance != null ? '₹' + (f.balance).toLocaleString() : '—', sub: 'Balance due', bg: '#d9770622', color: '#d97706' },
+    { icon: I.book, label: 'Syllabus', value: (sy.percentage || 0) + '%', sub: (sy.completed_chapters || 0) + '/' + (sy.total_chapters || 0) + ' ch.', bg: '#8BC53F22', color: '#8BC53F' },
   ];
-  const tabsWrap=el('div',{className:'tabs'});
-  const tabList=el('div',{className:'tab-list'});
-  TABS.forEach(t=>{
-    const b=el('button',{className:'tab-btn'+(currentTab===t.id?' active':'')},t.label);
-    b.onclick=()=>{currentTab=t.id;renderDashboard();};
-    tabList.appendChild(b);
+  stats.forEach(st => {
+    const pill = el('div', { className: 'stat-pill' });
+    pill.innerHTML = `
+      <div class="stat-pill-icon" style="background:${st.bg}">
+        <span style="color:${st.color}">${st.icon}</span>
+      </div>
+      <div>
+        <div class="stat-pill-label">${st.label}</div>
+        <div class="stat-pill-value">${st.value}</div>
+        ${st.sub ? `<div class="stat-pill-sub">${st.sub}</div>` : ''}
+      </div>`;
+    statsIn.appendChild(pill);
   });
-  tabsWrap.appendChild(tabList);
-  app.appendChild(tabsWrap);
-  const content=el('div',{className:'tab-content'});
-  app.appendChild(content);
-  const renderers={overview:renderOverview,results:renderResults,attendance:renderAttendance,fees:renderFees,syllabus:renderSyllabus,remarks:renderRemarks,achievements:renderAchievements};
-  renderers[currentTab](content);
+  statsBar.appendChild(statsIn);
+  app.appendChild(statsBar);
+
+  /* ── TAB BAR ── */
+  const TABS = [
+    { id: 'overview', label: 'Overview', icon: I.trend },
+    { id: 'results', label: 'Results', icon: I.trophy },
+    { id: 'attendance', label: 'Attendance', icon: I.cal },
+    { id: 'fees', label: 'Fees', icon: I.rupee },
+    { id: 'syllabus', label: 'Syllabus', icon: I.book },
+    { id: 'assignments', label: 'Assignments', icon: I.clipboard },
+    { id: 'remarks', label: 'Remarks', icon: I.msg },
+    { id: 'achievements', label: 'Achievements', icon: I.star },
+  ];
+  const tabBar = el('div', { className: 'tab-bar' });
+  const tabIn = el('div', { className: 'tab-bar-in' });
+  TABS.forEach(t => {
+    const b = el('button', { className: 'tab-btn' + (currentTab === t.id ? ' active' : '') });
+    b.innerHTML = `<span class="tab-dot"></span>${t.label}`;
+    b.onclick = () => { currentTab = t.id; renderDashboard(); };
+    tabIn.appendChild(b);
+  });
+  tabBar.appendChild(tabIn);
+  app.appendChild(tabBar);
+
+  /* ── CONTENT ── */
+  const main = el('div', { className: 'main' });
+  app.appendChild(main);
+
+  const renderers = {
+    overview: renderOverview,
+    results: renderResults,
+    attendance: renderAttendance,
+    fees: renderFees,
+    syllabus: renderSyllabus,
+    assignments: renderAssignments,
+    remarks: renderRemarks,
+    achievements: renderAchievements,
+  };
+  (renderers[currentTab] || renderOverview)(main);
+
+  setTimeout(observe, 50);
 }
-/* ---- OVERVIEW ---- */
-function renderOverview(container){
-  const o=DATA.overview||{};const a=DATA.attendance||{};const f=DATA.fees||{};const sy=DATA.syllabus||{};const ec=DATA.exam_categories||{};
-  const stats=[
-    {icon:ICONS.trophy,label:'Class Rank',value:'#'+o.rank,sub:'of '+o.total_students+' students',grad:'var(--grad-primary)'},
-    {icon:ICONS.trend,label:'Average',value:o.final_average+'%',grad:'var(--grad-accent)'},
-    {icon:ICONS.cal,label:'Attendance',value:a.percentage+'%',sub:a.attended+'/'+a.total_classes,grad:'var(--grad-warm)'},
-    {icon:ICONS.rupee,label:'Fees Paid',value:'₹'+(f.total_paid||0).toLocaleString(),sub:'Balance: ₹'+(f.balance||0).toLocaleString(),grad:'var(--grad-primary)'},
-    {icon:ICONS.book,label:'Syllabus',value:(sy.percentage||0)+'%',sub:(sy.completed_chapters||0)+'/'+(sy.total_chapters||0)+' chapters',grad:'var(--grad-accent)'},
-  ];
-  const grid=el('div',{className:'stats-grid'});
-  stats.forEach(s=>{
-    const c=el('div',{className:'card stat-card'});
-    c.innerHTML=`<div class="stat-icon" style="background:${s.grad};color:#fff">${s.icon}</div>
-      <div><p class="stat-label">${s.label}</p><p class="stat-value">${s.value}</p>${s.sub?'<p class="stat-sub">'+s.sub+'</p>':''}</div>`;
-    grid.appendChild(c);
+
+function logout() {
+  DATA = null; LOCAL_DATA = null;
+  if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+  renderLogin();
+}
+
+/* ─── SECTION HEADER helper ─── */
+function sectionHead(title, meta = '') {
+  return `<div class="section-head"><span class="section-rule"></span><h2>${title}</h2>${meta ? `<span class="section-meta">${meta}</span>` : ''}</div>`;
+}
+
+/* ═══════════════════════
+   OVERVIEW TAB
+═══════════════════════ */
+function renderOverview(container) {
+  const o = DATA.overview || {};
+  const a = DATA.attendance || {};
+  const ec = DATA.exam_categories || {};
+  const sy = DATA.syllabus || {};
+  const f = DATA.fees || {};
+
+  // Row 1: Rank + Performance
+  const row1 = el('div', { className: 'card-grid-2 reveal' });
+
+  // Rank card
+  const rankCard = el('div', { className: 'card' });
+  rankCard.innerHTML = `
+    ${sectionHead('Academic Standing')}
+    <div class="rank-display">
+      <div>
+        <div class="rank-label">Class Rank</div>
+        <div class="rank-number">${o.rank != null ? '#' + o.rank : '—'}</div>
+      </div>
+      <div class="rank-of">/ ${o.total_students || '—'}</div>
+      <div style="margin-left:auto">
+        <div class="rank-label">Overall Average</div>
+        <div class="rank-avg">${o.final_average != null ? o.final_average + '%' : '—'}</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="text-align:center;padding:12px;border-radius:6px;background:var(--lime-bg);border:1px solid rgba(139,197,63,.2)">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-3)">Attendance</div>
+        <div style="font-size:22px;font-weight:800;color:var(--ink)">${a.percentage || 0}%</div>
+      </div>
+      <div style="text-align:center;padding:12px;border-radius:6px;background:var(--cream-2);border:1px solid var(--rule)">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Syllabus</div>
+        <div style="font-size:22px;font-weight:800;color:var(--ink)">${sy.percentage || 0}%</div>
+      </div>
+    </div>`;
+  row1.appendChild(rankCard);
+
+  // Subject performance
+  const subCard = el('div', { className: 'card' });
+  subCard.innerHTML = sectionHead('Performance by Subject');
+  const subColors = { Physics: 'phys', Maths: 'math', Chemistry: 'chem', Biology: 'bio' };
+  Object.entries(ec).forEach(([subj, pct]) => {
+    const barClass = subColors[subj] || 'lime';
+    subCard.innerHTML += `
+      <div class="subject-bar-wrap">
+        <div class="sbar-top">
+          <span class="sbar-label">${subj}</span>
+          ${pctChip(pct)}
+        </div>
+        <div class="sbar-track"><div class="sbar-fill ${barClass}" style="width:${pct || 0}%"></div></div>
+      </div>`;
   });
-  container.appendChild(grid);
-  if(ec&&Object.keys(ec).length){
-    const wrap=el('div',{className:'card',style:'margin-top:1rem'});
-    wrap.innerHTML='<h3 style="font-size:1.1rem;margin-bottom:1rem">Performance by Exam Type</h3>';
-    Object.entries(ec).forEach(([k,v])=>{
-      const color=v>=75?'var(--grad-accent)':v>=50?'var(--grad-primary)':'var(--grad-warm)';
-      wrap.innerHTML+=`<div class="progress-wrap" style="margin-bottom:.75rem">
-        <div class="progress-header"><span style="font-weight:500">${k}</span><span style="color:var(--muted-fg);font-weight:600">${v}%</span></div>
-        <div class="progress-track"><div class="progress-fill" style="width:${v}%;background:${color}"></div></div></div>`;
-    });
-    container.appendChild(wrap);
+  if (!Object.keys(ec).length) subCard.innerHTML += `<div class="empty-state"><p>No subject data yet.</p></div>`;
+  row1.appendChild(subCard);
+  container.appendChild(row1);
+
+  // Row 2: Attendance + Fees + Syllabus mini cards
+  const row2 = el('div', { className: 'card-grid-3 reveal' });
+  [
+    { label: 'Attendance', value: (a.percentage || 0) + '%', sub: a.attended + ' of ' + a.total_classes + ' classes', color: '#8BC53F', bg: 'var(--lime-bg)', icon: I.cal },
+    { label: 'Fee Balance', value: '₹' + (f.balance || 0).toLocaleString(), sub: f.status || 'Unknown', color: f.balance > 0 ? '#dc2626' : '#16a34a', bg: f.balance > 0 ? 'rgba(220,38,38,.05)' : 'rgba(22,163,74,.05)', icon: I.rupee },
+    { label: 'Syllabus Done', value: (sy.percentage || 0) + '%', sub: (sy.completed_chapters || 0) + '/' + (sy.total_chapters || 0) + ' chapters', color: '#2563eb', bg: 'rgba(37,99,235,.05)', icon: I.book },
+  ].forEach(m => {
+    const mc = el('div', { className: 'metric-card' });
+    mc.innerHTML = `
+      <div class="metric-icon-wrap" style="background:${m.bg}">
+        <span style="color:${m.color}">${m.icon}</span>
+      </div>
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-value" style="color:${m.color}">${m.value}</div>
+      <div class="metric-sub">${m.sub}</div>`;
+    row2.appendChild(mc);
+  });
+  container.appendChild(row2);
+
+  // Row 3: recent results
+  const results = (DATA.results || []).slice(0, 6);
+  if (results.length) {
+    const recentCard = el('div', { className: 'card reveal' });
+    recentCard.innerHTML = sectionHead('Recent Results', `<button onclick="currentTab='results';renderDashboard()" style="background:none;border:none;color:var(--lime);font-size:12px;font-weight:700;cursor:pointer">View all →</button>`);
+    const tableWrap = el('div', { className: 'table-wrap' });
+    tableWrap.innerHTML = `
+      <table>
+        <thead><tr><th>Exam</th><th>Subject</th><th>Score</th><th>Grade</th></tr></thead>
+        <tbody>
+          ${results.map(r => `
+            <tr>
+              <td style="font-weight:600">${r.exam_name || '—'}</td>
+              <td>${r.subject || '—'}</td>
+              <td>${pctChip(r.percentage)}</td>
+              <td>${gradeChip(r.grade)}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+    recentCard.appendChild(tableWrap);
+    container.appendChild(recentCard);
   }
 }
-/* ---- RESULTS ---- */
-function renderResults(container){
-  const results=DATA.results||[];
-  if(!results.length){container.innerHTML='<div class="card empty">'+ICONS.book+'<p>No results available.</p></div>';return;}
-  const types=['All',...new Set(results.map(r=>r.exam_type).filter(Boolean))];
-  const fb=el('div',{className:'filter-bar'});
-  types.forEach(t=>{
-    const b=el('button',{className:'filter-btn'+(resultFilter===t?' active':'')},t);
-    b.onclick=()=>{resultFilter=t;renderDashboard();};
+
+/* ═══════════════════════
+   RESULTS TAB
+═══════════════════════ */
+function renderResults(container) {
+  const results = DATA.results || [];
+  if (!results.length) {
+    container.innerHTML = emptyState(I.book, 'No results available yet.');
+    return;
+  }
+
+  // Filter bar
+  const types = ['All', ...new Set(results.map(r => r.exam_type).filter(Boolean))];
+  const fb = el('div', { className: 'filter-bar reveal' });
+  types.forEach(t => {
+    const b = el('button', { className: 'filter-btn' + (resultFilter === t ? ' active' : '') }, t);
+    b.onclick = () => { resultFilter = t; renderDashboard(); };
     fb.appendChild(b);
   });
   container.appendChild(fb);
-  const filtered=resultFilter==='All'?results:results.filter(r=>r.exam_type===resultFilter);
-  const wrap=el('div',{className:'card table-wrap'});
-  let rows=filtered.map(r=>{
-    const gc=gradeClass(r.grade);
-    return `<tr><td>${r.exam_name||''}</td><td>${r.subject||''}</td><td>${r.marks_obtained}/${r.total_marks}</td><td>${r.percentage}%</td><td><span class="grade ${gc}">${r.grade}</span></td></tr>`;
-  }).join('');
-  wrap.innerHTML=`<table><thead><tr><th>Exam</th><th>Subject</th><th>Marks</th><th>%</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table>`;
-  container.appendChild(wrap);
-}
-function gradeClass(g){
-  if(!g)return '';
-  const c=g.charAt(0).toUpperCase();
-  if(c==='A')return 'grade-a';if(c==='B')return 'grade-b';if(c==='C')return 'grade-c';return 'grade-d';
-}
-/* ---- ATTENDANCE ---- */
-function renderAttendance(container){
-  const a=DATA.attendance||{};
-  const pct=a.percentage||0;
-  const summary=el('div',{className:'stats-grid',style:'margin-bottom:1rem'});
-  [{l:'Total Classes',v:a.total_classes,g:'var(--grad-primary)'},{l:'Attended',v:a.attended,g:'var(--grad-accent)'},{l:'Absent',v:a.absent,g:'var(--grad-warm)'}].forEach(s=>{
-    const c=el('div',{className:'card',style:'text-align:center'});
-    c.innerHTML=`<div class="stat-icon" style="background:${s.g};color:#fff;margin:0 auto .5rem">${ICONS.cal}</div>
-      <p style="font-size:1.5rem;font-weight:700;font-family:var(--font-display)">${s.v}</p><p class="stat-sub">${s.l}</p>`;
-    summary.appendChild(c);
-  });
-  container.appendChild(summary);
-  const bar=el('div',{className:'card'});
-  bar.innerHTML=`<div class="progress-header"><span style="font-weight:500">Overall Attendance</span><span style="color:var(--muted-fg);font-weight:600">${pct}%</span></div>
-    <div class="progress-track" style="height:.75rem"><div class="progress-fill" style="width:${pct}%;background:${pct>=75?'var(--grad-accent)':'var(--grad-warm)'}"></div></div>`;
-  container.appendChild(bar);
-  if(a.monthly&&a.monthly.length){
-    const tbl=el('div',{className:'card table-wrap',style:'margin-top:1rem'});
-    let rows=a.monthly.map(m=>`<tr><td>${m.month}</td><td>${m.attended_classes}/${m.total_classes}</td><td>${m.total_classes?Math.round(m.attended_classes/m.total_classes*100):0}%</td></tr>`).join('');
-    tbl.innerHTML=`<h3 style="margin-bottom:.75rem;font-size:1rem">Monthly Breakdown</h3><table><thead><tr><th>Month</th><th>Attended</th><th>%</th></tr></thead><tbody>${rows}</tbody></table>`;
-    container.appendChild(tbl);
-  }
-}
-/* ---- FEES ---- */
-function renderFees(container){
-  const f=DATA.fees||{};
-  const cleared=f.status==='CLEARED'||f.balance===0;
-  const banner=el('div',{className:'status-banner '+(cleared?'cleared':'due')});
-  banner.innerHTML=`<span style="color:${cleared?'hsl(var(--accent))':'hsl(var(--destructive))'}">${cleared?ICONS.check:ICONS.alert}</span>
-    <div><p style="font-size:1.1rem;font-weight:700;font-family:var(--font-display);color:${cleared?'hsl(var(--accent))':'hsl(var(--destructive))'}">${f.status==='CLEARED'?'All Dues Cleared':f.status==='OVERDUE'?'Payment Overdue':f.status||'Pending'}</p>
-    ${f.next_due&&f.next_due!=='NONE'?'<p style="font-size:.85rem;color:var(--muted-fg)">Next due: <strong>'+f.next_due+'</strong> — ₹'+(f.next_due_amount||0).toLocaleString()+'</p>':''}</div>`;
-  container.appendChild(banner);
-  const grid=el('div',{className:'stats-grid',style:'margin-top:1rem'});
-  [{l:'Total Fee',v:f.total_fee,c:'var(--fg)'},{l:'Paid',v:f.total_paid,c:'hsl(var(--accent))'},{l:'Balance',v:f.balance,c:f.balance>0?'hsl(var(--destructive))':'hsl(var(--accent))'}].forEach(s=>{
-    const c=el('div',{className:'card',style:'text-align:center'});
-    c.innerHTML=`<p class="stat-sub">${s.l}</p><p style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:${s.c};margin-top:.25rem">₹${(s.v||0).toLocaleString()}</p>`;
-    grid.appendChild(c);
-  });
-  container.appendChild(grid);
-  const pct=f.total_fee?Math.round((f.total_paid/f.total_fee)*100):0;
-  const bar=el('div',{className:'card',style:'margin-top:1rem'});
-  bar.innerHTML=`<div class="progress-header"><span style="font-weight:500">Payment Progress</span><span style="color:var(--muted-fg);font-weight:600">${pct}%</span></div>
-    <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:var(--grad-accent)"></div></div>`;
-  container.appendChild(bar);
-  if(f.terms&&f.terms.length){
-    const tw=el('div',{className:'card',style:'margin-top:1rem'});
-    tw.innerHTML='<h3 style="font-size:1rem;margin-bottom:.75rem">Instalment Plan</h3>';
-    f.terms.forEach(t=>{
-      tw.innerHTML+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:.5rem">${ICONS.clock}<div><p style="font-size:.85rem;font-weight:500">${t.name}</p><p style="font-size:.7rem;color:var(--muted-fg)">Due: ${t.due_date}</p></div></div>
-        <span style="font-weight:700;font-size:.85rem">₹${(t.amount||0).toLocaleString()}</span></div>`;
+
+  const filtered = resultFilter === 'All' ? results : results.filter(r => r.exam_type === resultFilter);
+
+  // Summary row
+  const valid = filtered.filter(r => r.percentage != null);
+  if (valid.length) {
+    const avg = Math.round(valid.reduce((s, r) => s + r.percentage, 0) / valid.length);
+    const best = Math.max(...valid.map(r => r.percentage));
+    const worst = Math.min(...valid.map(r => r.percentage));
+    const summary = el('div', { className: 'card-grid-3 reveal' });
+    [
+      { label: 'Average Score', value: avg + '%', color: 'var(--lime-3)', bg: 'var(--lime-bg)' },
+      { label: 'Highest Score', value: best + '%', color: 'var(--grn)', bg: 'rgba(22,163,74,.05)' },
+      { label: 'Lowest Score', value: worst + '%', color: worst < 40 ? 'var(--red)' : 'var(--ink)', bg: worst < 40 ? 'rgba(220,38,38,.05)' : 'var(--cream-2)' },
+    ].forEach(m => {
+      const c = el('div', { className: 'metric-card' });
+      c.innerHTML = `<div class="metric-label">${m.label}</div><div class="metric-value" style="color:${m.color}">${m.value}</div>`;
+      summary.appendChild(c);
     });
-    container.appendChild(tw);
+    container.appendChild(summary);
+  }
+
+  const card = el('div', { className: 'card reveal' });
+  card.innerHTML = sectionHead('All Results', `${filtered.length} entries`);
+  const tw = el('div', { className: 'table-wrap' });
+  tw.innerHTML = `
+    <table>
+      <thead><tr><th>Exam</th><th>Subject</th><th>Score</th><th>Percentage</th><th>Grade</th><th>Type</th></tr></thead>
+      <tbody>
+        ${filtered.map(r => `
+          <tr>
+            <td style="font-weight:600">${r.exam_name || '—'}</td>
+            <td>${r.subject || '—'}</td>
+            <td style="font-weight:700">${r.marks_obtained != null ? r.marks_obtained : '—'}${r.total_marks && r.percentage != null ? '/' + r.total_marks : ''}</td>
+            <td>${pctChip(r.percentage)}</td>
+            <td>${gradeChip(r.grade)}</td>
+            <td><span class="chip chip-muted">${r.exam_type || '—'}</span></td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+  card.appendChild(tw);
+  container.appendChild(card);
+}
+
+/* ═══════════════════════
+   ATTENDANCE TAB
+═══════════════════════ */
+function renderAttendance(container) {
+  const a = DATA.attendance || {};
+  const pct = a.percentage || 0;
+
+  // Top metrics
+  const row = el('div', { className: 'card-grid-3 reveal' });
+  [
+    { label: 'Classes Attended', value: a.attended || 0, color: 'var(--grn)', bg: 'rgba(22,163,74,.08)', icon: I.check },
+    { label: 'Classes Missed', value: a.absent || 0, color: a.absent > 5 ? 'var(--red)' : 'var(--ink)', bg: 'var(--cream-2)', icon: I.alert },
+    { label: 'Total Classes', value: a.total_classes || 0, color: 'var(--ink)', bg: 'var(--cream-2)', icon: I.cal },
+  ].forEach(m => {
+    const c = el('div', { className: 'metric-card' });
+    c.innerHTML = `<div class="metric-icon-wrap" style="background:${m.bg}"><span style="color:${m.color}">${m.icon}</span></div>
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-value" style="color:${m.color}">${m.value}</div>`;
+    row.appendChild(c);
+  });
+  container.appendChild(row);
+
+  // Progress bar
+  const pCard = el('div', { className: 'card reveal' });
+  const col = pct >= 75 ? 'lime' : pct >= 60 ? 'amb' : 'red';
+  pCard.innerHTML = `
+    ${sectionHead('Attendance Overview')}
+    <div style="display:flex;align-items:center;gap:24px;margin-bottom:16px">
+      <div>
+        <div style="font-size:52px;font-weight:800;letter-spacing:-3px;line-height:1;color:${pct >= 75 ? 'var(--lime-3)' : pct >= 60 ? 'var(--amb)' : 'var(--red)'}">${pct}%</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:4px">${pct >= 75 ? '✓ Above minimum requirement' : '⚠ Below 75% minimum'}</div>
+      </div>
+      <div style="flex:1">
+        <div class="prog-track" style="height:16px">
+          <div class="prog-fill ${col}" style="width:${pct}%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--muted)">
+          <span>0%</span><span style="color:var(--amb);font-weight:700">75% req.</span><span>100%</span>
+        </div>
+      </div>
+    </div>`;
+  container.appendChild(pCard);
+
+  // Monthly breakdown
+  if (a.monthly && a.monthly.length) {
+    const mCard = el('div', { className: 'card reveal' });
+    mCard.innerHTML = sectionHead('Monthly Breakdown');
+    a.monthly.forEach(m => {
+      const mp = m.total_classes ? Math.round(m.attended_classes / m.total_classes * 100) : 0;
+      const mc = mp >= 75 ? 'lime' : mp >= 60 ? 'amb' : 'red';
+      mCard.innerHTML += `
+        <div class="subject-bar-wrap">
+          <div class="sbar-top">
+            <span class="sbar-label">${m.month}</span>
+            <span style="font-size:12px;color:var(--muted)">${m.attended_classes}/${m.total_classes}</span>
+            ${pctChip(mp)}
+          </div>
+          <div class="sbar-track"><div class="sbar-fill ${mc}" style="width:${mp}%"></div></div>
+        </div>`;
+    });
+    container.appendChild(mCard);
   }
 }
-/* ---- SYLLABUS ---- */
-function renderSyllabus(container){
-  const s=DATA.syllabus||{};
-  const rem=(s.total_chapters||0)-(s.completed_chapters||0);
-  const grid=el('div',{className:'stats-grid'});
-  [{l:'Total Chapters',v:s.total_chapters,g:'var(--grad-primary)',i:ICONS.book},{l:'Completed',v:s.completed_chapters,g:'var(--grad-accent)',i:ICONS.check},{l:'Remaining',v:rem,g:'var(--grad-warm)',i:ICONS.book}].forEach(x=>{
-    const c=el('div',{className:'card',style:'text-align:center'});
-    c.innerHTML=`<div class="stat-icon" style="background:${x.g};color:#fff;margin:0 auto .5rem">${x.i}</div>
-      <p style="font-size:1.5rem;font-weight:700;font-family:var(--font-display)">${x.v}</p><p class="stat-sub">${x.l}</p>`;
-    grid.appendChild(c);
+
+/* ═══════════════════════
+   FEES TAB
+═══════════════════════ */
+function renderFees(container) {
+  const f = DATA.fees || {};
+  const cleared = f.status === 'CLEARED' || f.balance === 0;
+  const pct = f.total_fee ? Math.round((f.total_paid / f.total_fee) * 100) : 100;
+
+  // Status banner
+  const banner = el('div', { className: 'card reveal' });
+  banner.style.borderLeft = `4px solid ${cleared ? 'var(--lime)' : 'var(--red)'}`;
+  banner.innerHTML = `
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="width:48px;height:48px;border-radius:8px;background:${cleared ? 'var(--lime-bg)' : 'rgba(220,38,38,.1)'};display:flex;align-items:center;justify-content:center">
+        <span style="color:${cleared ? 'var(--lime-3)' : 'var(--red)'}">${cleared ? I.check : I.alert}</span>
+      </div>
+      <div>
+        <div style="font-size:18px;font-weight:800;color:${cleared ? 'var(--lime-3)' : 'var(--red)'}">${f.status === 'CLEARED' ? 'All Dues Cleared' : f.status === 'OVERDUE' ? 'Payment Overdue' : f.status || 'Fee Status'}</div>
+        ${f.next_due && f.next_due !== 'NONE' ? `<div style="font-size:13px;color:var(--muted);margin-top:2px">Next due: <strong>${f.next_due}</strong> — ₹${(f.next_due_amount || 0).toLocaleString()}</div>` : ''}
+      </div>
+    </div>`;
+  container.appendChild(banner);
+
+  // 3 metrics
+  const row = el('div', { className: 'card-grid-3 reveal' });
+  [
+    { label: 'Total Fee', value: '₹' + (f.total_fee || 0).toLocaleString(), color: 'var(--ink)' },
+    { label: 'Amount Paid', value: '₹' + (f.total_paid || 0).toLocaleString(), color: 'var(--grn)' },
+    { label: 'Balance Due', value: '₹' + (f.balance || 0).toLocaleString(), color: f.balance > 0 ? 'var(--red)' : 'var(--grn)' },
+  ].forEach(m => {
+    const c = el('div', { className: 'metric-card' });
+    c.innerHTML = `<div class="metric-label">${m.label}</div><div class="metric-value" style="color:${m.color}">${m.value}</div>`;
+    row.appendChild(c);
+  });
+  container.appendChild(row);
+
+  // Progress bar
+  const pbCard = el('div', { className: 'card reveal' });
+  pbCard.innerHTML = `
+    ${sectionHead('Payment Progress')}
+    <div class="prog-label">
+      <span class="prog-label-text">Paid ${pct}%</span>
+      <span class="prog-label-pct">₹${(f.total_paid || 0).toLocaleString()} / ₹${(f.total_fee || 0).toLocaleString()}</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill ${pct === 100 ? 'grn' : 'lime'}" style="width:${pct}%"></div></div>`;
+  container.appendChild(pbCard);
+
+  // Instalment plan
+  if (f.terms && f.terms.length) {
+    const tCard = el('div', { className: 'card reveal' });
+    tCard.innerHTML = sectionHead('Instalment Plan');
+    const tl = el('div', { className: 'fees-timeline' });
+    f.terms.forEach((t, i) => {
+      const paid = t.paid || false;
+      const item = el('div', { className: 'fee-item' });
+      item.innerHTML = `
+        <div class="fee-dot-wrap">
+          <div class="fee-dot ${paid ? 'paid' : 'pending'}"></div>
+          ${i < f.terms.length - 1 ? '<div class="fee-line"></div>' : ''}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;color:var(--ink)">${t.name}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Due: ${t.due_date}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:16px;font-weight:800;color:var(--ink)">₹${(t.amount || 0).toLocaleString()}</div>
+          <span class="chip ${paid ? 'chip-grn' : 'chip-amb'}">${paid ? 'Paid' : 'Pending'}</span>
+        </div>`;
+      tl.appendChild(item);
+    });
+    tCard.appendChild(tl);
+    container.appendChild(tCard);
+  }
+}
+
+/* ═══════════════════════
+   SYLLABUS TAB
+═══════════════════════ */
+function renderSyllabus(container) {
+  const s = DATA.syllabus || {};
+  const rem = (s.total_chapters || 0) - (s.completed_chapters || 0);
+
+  const row = el('div', { className: 'card-grid-3 reveal' });
+  [
+    { label: 'Total Chapters', value: s.total_chapters || 0, icon: I.book, bg: 'var(--cream-2)', color: 'var(--ink)' },
+    { label: 'Completed', value: s.completed_chapters || 0, icon: I.check, bg: 'var(--lime-bg)', color: 'var(--lime-3)' },
+    { label: 'Remaining', value: rem, icon: I.clock, bg: 'rgba(217,119,6,.08)', color: 'var(--amb)' },
+  ].forEach(m => {
+    const c = el('div', { className: 'metric-card' });
+    c.innerHTML = `<div class="metric-icon-wrap" style="background:${m.bg}"><span style="color:${m.color}">${m.icon}</span></div>
+      <div class="metric-label">${m.label}</div><div class="metric-value" style="color:${m.color}">${m.value}</div>`;
+    row.appendChild(c);
+  });
+  container.appendChild(row);
+
+  const pbCard = el('div', { className: 'card reveal' });
+  const pct = s.percentage || 0;
+  pbCard.innerHTML = `
+    ${sectionHead('Syllabus Completion')}
+    <div style="display:flex;align-items:center;gap:24px;margin-bottom:12px">
+      <div style="font-size:48px;font-weight:800;letter-spacing:-2px;color:${pct >= 75 ? 'var(--lime-3)' : pct >= 50 ? 'var(--amb)' : 'var(--red)'}">
+        ${pct}%
+      </div>
+      <div style="flex:1">
+        <div class="prog-track" style="height:14px">
+          <div class="prog-fill ${pctColor(pct)}" style="width:${pct}%"></div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--muted)">${s.completed_chapters || 0} chapters covered out of ${s.total_chapters || 0}</div>
+      </div>
+    </div>`;
+  container.appendChild(pbCard);
+}
+
+/* ═══════════════════════
+   ASSIGNMENTS TAB
+═══════════════════════ */
+function renderAssignments(container) {
+  const raw = DATA._localRaw || {};
+  const assignments = DATA.assignments || raw.assignments || [];
+
+  if (!assignments.length) {
+    container.innerHTML = emptyState(I.clipboard, 'No assignments yet.');
+    return;
+  }
+
+  container.innerHTML += sectionHead('Assignments', `${assignments.length} total`);
+
+  assignments.forEach(asgn => {
+    const card = el('div', { className: `assignment-card ${asgn.priority || 'low'}` });
+    const priorityMap = { high: 'chip-red', medium: 'chip-amb', low: 'chip-grn' };
+    const statusMap = { assigned: 'chip-blue', completed: 'chip-lime', overdue: 'chip-red' };
+    const priorityCls = priorityMap[asgn.priority] || 'chip-muted';
+    const statusCls = statusMap[asgn.status] || 'chip-muted';
+
+    card.innerHTML = `
+      <div class="asgn-top">
+        <div class="asgn-title">${asgn.title || 'Assignment'}</div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <span class="chip ${priorityCls}">${asgn.priority || 'low'}</span>
+          <span class="chip ${statusCls}">${asgn.status || 'assigned'}</span>
+        </div>
+      </div>
+      ${asgn.note ? `<div style="font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.5">${asgn.note}</div>` : ''}
+      <div class="asgn-meta">
+        ${asgn.subject ? `<span class="chip chip-blue">${asgn.subject}</span>` : ''}
+        ${asgn.faculty ? `<span class="chip chip-muted">👤 ${asgn.faculty}</span>` : ''}
+        ${asgn.issuedDate ? `<span class="chip chip-muted">Issued: ${asgn.issuedDate}</span>` : ''}
+        ${asgn.dueDate ? `<span class="chip chip-amb">Due: ${asgn.dueDate}</span>` : ''}
+      </div>
+      ${asgn.checklist && asgn.checklist.length ? `
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Checklist</div>
+        <div class="asgn-checklist">
+          ${asgn.checklist.map(ch => `
+            <div class="check-item ${ch.done ? 'done' : ''}">
+              <div class="check-box ${ch.done ? 'checked' : ''}">${ch.done ? `<span style="color:#fff">${I.check_sm}</span>` : ''}</div>
+              ${ch.text}
+            </div>`).join('')}
+        </div>` : ''}
+      ${asgn.attachments && asgn.attachments.length ? `
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          ${asgn.attachments.map(att => `
+            <a href="${att.url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--lime-3);text-decoration:none;padding:5px 12px;border-radius:4px;background:var(--lime-bg);border:1px solid rgba(139,197,63,.2)">
+              ${I.link} ${att.label}
+            </a>`).join('')}
+        </div>` : ''}
+      ${asgn.tags && asgn.tags.length ? `
+        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+          ${asgn.tags.map(tag => `<span class="chip chip-muted">#${tag}</span>`).join('')}
+        </div>` : ''}`;
+    container.appendChild(card);
+  });
+}
+
+/* ═══════════════════════
+   REMARKS TAB
+═══════════════════════ */
+function renderRemarks(container) {
+  const remarks = DATA.remarks || [];
+  if (!remarks.length) {
+    container.innerHTML = emptyState(I.msg, 'No remarks recorded yet.');
+    return;
+  }
+  container.innerHTML += sectionHead('Teacher Remarks', `${remarks.length} total`);
+  remarks.forEach(rm => {
+    const card = el('div', { className: 'remark-card reveal' });
+    card.innerHTML = `
+      <div class="remark-stripe"></div>
+      <div class="remark-body">
+        <div class="remark-text">${rm.remark || rm}</div>
+        ${(rm.teacher || rm.date) ? `<div class="remark-meta">${rm.teacher ? rm.teacher : ''}${rm.teacher && rm.date ? ' · ' : ''}${rm.date || ''}</div>` : ''}
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+/* ═══════════════════════
+   ACHIEVEMENTS TAB
+═══════════════════════ */
+function renderAchievements(container) {
+  const achievements = DATA.achievements || [];
+  if (!achievements.length) {
+    container.innerHTML = emptyState(I.trophy, 'No achievements recorded yet.');
+    return;
+  }
+  container.innerHTML += sectionHead('Achievements & Honours', `${achievements.length} earned`);
+  const grid = el('div', { className: 'achievement-grid reveal' });
+  achievements.forEach(ac => {
+    const card = el('div', { className: 'achievement-card' });
+    card.innerHTML = `
+      <div class="ach-icon"><span style="color:var(--ink)">${I.star}</span></div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink)">${ac.title || ac}</div>
+        ${ac.description ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${ac.description}</div>` : ''}
+        ${ac.date ? `<div style="font-size:11px;color:var(--pale);margin-top:4px;font-weight:600">${ac.date}</div>` : ''}
+      </div>`;
+    grid.appendChild(card);
   });
   container.appendChild(grid);
-  const bar=el('div',{className:'card',style:'margin-top:1rem'});
-  bar.innerHTML=`<div class="progress-header"><span style="font-weight:500">Syllabus Completion</span><span style="color:var(--muted-fg);font-weight:600">${s.percentage||0}%</span></div>
-    <div class="progress-track" style="height:.75rem"><div class="progress-fill" style="width:${s.percentage||0}%;background:var(--grad-accent)"></div></div>`;
-  container.appendChild(bar);
 }
-/* ---- REMARKS ---- */
-function renderRemarks(container){
-  const r=DATA.remarks||[];
-  if(!r.length){container.innerHTML='<div class="card empty">'+ICONS.msg+'<p>No remarks recorded yet.</p></div>';return;}
-  r.forEach(rm=>{
-    const c=el('div',{className:'card',style:'margin-bottom:.75rem'});
-    c.innerHTML=`<div class="item-card"><div class="item-icon" style="background:var(--grad-primary);color:#fff">${ICONS.msg}</div>
-      <div><p style="font-size:.9rem;font-weight:500">${rm.remark}</p>
-      <p style="font-size:.75rem;color:var(--muted-fg);margin-top:.35rem">${rm.teacher?rm.teacher+' · ':''}${rm.date||''}</p></div></div>`;
-    container.appendChild(c);
-  });
+
+/* ─── EMPTY STATE ─── */
+function emptyState(icon, text) {
+  return `<div class="card"><div class="empty-state">${icon}<p>${text}</p></div></div>`;
 }
-/* ---- ACHIEVEMENTS ---- */
-function renderAchievements(container){
-  const a=DATA.achievements||[];
-  if(!a.length){container.innerHTML='<div class="card empty">'+ICONS.trophy+'<p>No achievements recorded yet.</p></div>';return;}
-  const grid=el('div',{style:'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem'});
-  a.forEach(ac=>{
-    const c=el('div',{className:'card'});
-    c.innerHTML=`<div class="item-card"><div class="item-icon" style="background:var(--grad-warm);color:#fff">${ICONS.trophy}</div>
-      <div><h4 style="font-weight:600;font-family:var(--font-display)">${ac.title}</h4>
-      ${ac.description?'<p style="font-size:.85rem;color:var(--muted-fg);margin-top:.25rem">'+ac.description+'</p>':''}
-      ${ac.date?'<p style="font-size:.7rem;color:var(--muted-fg);margin-top:.35rem">'+ac.date+'</p>':''}</div></div>`;
-    grid.appendChild(c);
-  });
-  container.appendChild(grid);
-}
-// Boot
+
+/* ─── BOOT ─── */
 renderLogin();
 </script>
 </body>
