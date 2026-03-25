@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enquire About Admission — SEHR Academy | Vatanappally, Thrissur</title>
+<meta name="description" content="Enquire about admission at SEHR Academy. Small-batch tuition for Class 10, 11, 12 — NEET & JEE Mains. Vatanappally, Thrissur, Kerala.">
+<meta property="og:title" content="Enquire About Admission — SEHR Academy">
+<meta property="og:description" content="Fill in this quick form — we'll get back to you on WhatsApp within a few hours.">
+<meta property="og:url" content="https://sehracademy.com/enquire">
+<meta property="og:image" content="https://sehracademy.com/logo.png">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://sehracademy.com/enquire">
+<meta name="theme-color" content="#8BC53F">
+<link rel="icon" type="image/png" href="/logo.png">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://sehracademy.com/"},{"@type":"ListItem","position":2,"name":"Enquire","item":"https://sehracademy.com/enquire"}]}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+
+<script src="/nav.js" defer></script>
+<script src="/footer.js" defer></script>
+
+<style>
+/* ═══════════════════════════════════════════════
+   SEHR ACADEMY — ENQUIRY PAGE
+   Design system: cream · charcoal · lime #8BC53F
+   Font: Open Sans  |  Mobile-first
+═══════════════════════════════════════════════ */
+:root {
+  --cream:      #f5f2eb;
+  --cream-2:    #ede9e0;
+  --cream-3:    #e4dfd4;
+  --white:      #fdfcfa;
+  --ink:        #1a1a18;
+  --ink-2:      #2e2e2b;
+  --ink-3:      #4a4a46;
+  --muted:      #7a7970;
+  --pale:       #b0ada4;
+  --rule:       #d8d4cb;
+  --lime:       #8BC53F;
+  --lime-2:     #72a530;
+  --lime-3:     #5e8a24;
+  --lime-bg:    #f0f7e3;
+  --lime-mid:   #c8e48e;
+  --red:        #dc2626;
+  --red-bg:     #fef2f2;
+  --f: 'Open Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+
+body {
+  font-family: var(--f);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+header#site-header { position: sticky; top: 0; z-index: 200; }
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px; }
+
+/* ═══════════ BREADCRUMB ═══════════ */
+.bc { background: var(--white); border-bottom: 1px solid var(--cream-3); }
+.bc-in {
+  max-width: 1120px; margin: 0 auto; padding: 9px 20px;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; color: var(--pale); font-weight: 600;
+}
+.bc-in a { color: var(--lime-2); }
+.bc-sep { color: var(--rule); }
+
+/* ═══════════ MASTHEAD (matches liveclasses) ═══════════ */
+.masthead-wrap {
+  background: var(--ink);
+  position: relative; overflow: hidden;
+  border-bottom: 3px solid var(--lime);
+}
+.masthead-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+.masthead-wrap::after {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.masthead-bg-text {
+  position: absolute;
+  right: -10px; bottom: -24px;
+  font-size: 160px; font-weight: 800;
+  line-height: 1; letter-spacing: -8px;
+  color: rgba(255,255,255,.04);
+  pointer-events: none; user-select: none;
+  white-space: nowrap; z-index: 0;
+}
+.masthead {
+  max-width: 1120px; margin: 0 auto;
+  padding: 48px 20px 44px;
+  position: relative; z-index: 1;
+}
+.mast-kicker {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+}
+.mast-kicker-rule { width: 28px; height: 2px; background: var(--lime); flex-shrink: 0; }
+.mast-kicker-text {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--lime); opacity: .9;
+}
+.mast-h1 {
+  font-size: clamp(34px, 6vw, 68px);
+  font-weight: 800; line-height: .97;
+  letter-spacing: -2px; color: #fff;
+  margin-bottom: 18px;
+}
+.mast-h1 .ital { font-style: italic; font-weight: 300; color: var(--lime); }
+.mast-desc {
+  font-size: 14px; color: rgba(255,255,255,.5);
+  line-height: 1.75; max-width: 460px; margin-bottom: 24px;
+}
+.mast-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.mast-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px; padding: 7px 14px;
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,.65);
+}
+.mast-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--lime); flex-shrink: 0;
+}
+
+/* ═══════════ PAGE SHELL ═══════════ */
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 36px 20px 80px;
+}
+
+/* ═══════════ LAYOUT ═══════════ */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { order: -1; }           /* sidebar above form on mobile */
+}
+
+/* ═══════════ FORM CARD ═══════════ */
+.form-card {
+  background: var(--white);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+.form-card-header {
+  background: var(--lime-bg);
+  border-bottom: 1px solid #d6eeb2;
+  padding: 16px 22px;
+  display: flex; align-items: center; gap: 12px;
+}
+.form-card-header-icon {
+  width: 34px; height: 34px; border-radius: 6px;
+  background: var(--lime);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.form-card-header-icon svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.form-card-header-title { font-size: 13px; font-weight: 800; color: var(--ink); }
+.form-card-header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+.form-body { padding: 24px 22px; }
+
+/* Section divider inside form */
+.form-sec {
+  display: flex; align-items: center; gap: 10px;
+  margin: 24px 0 18px;
+}
+.form-sec-rule { flex: 1; height: 1px; background: var(--cream-3); }
+.form-sec-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
+.form-sec-lbl {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted); white-space: nowrap;
+}
+
+/* Fields */
+.field { margin-bottom: 16px; }
+.field-label {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 5px;
+}
+.field-label-txt {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3);
+}
+.req { color: var(--red); margin-left: 2px; }
+.opt { font-size: 10px; font-weight: 600; color: var(--pale); text-transform: none; letter-spacing: 0; }
+
+.input, .sel, .ta {
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 13px;
+  font-family: var(--f);
+  font-size: 14px; color: var(--ink);
+  outline: none;
+  transition: border-color .16s, box-shadow .16s, background .16s;
+  -webkit-appearance: none;
+}
+.input::placeholder, .ta::placeholder { color: var(--pale); }
+.input:focus, .sel:focus, .ta:focus {
+  border-color: var(--lime);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(139,197,63,.13);
+}
+.input.err, .sel.err, .ta.err {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(220,38,38,.09);
+}
+
+.sel {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 13px;
+  padding-right: 34px; cursor: pointer;
+}
+
+.ta { resize: vertical; min-height: 84px; line-height: 1.55; }
+
+.ferr { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 4px; display: none; }
+.ferr.show { display: block; }
+
+/* Two-col row */
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
+
+/* Subject checkboxes */
+.subj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 7px;
+}
+.subj-chk { display: none; }
+.subj-lbl {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--cream); border: 1.5px solid var(--rule);
+  border-radius: 4px; padding: 8px 10px;
+  font-size: 12px; font-weight: 600; color: var(--ink-3);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+  user-select: none;
+}
+.subj-lbl:hover { border-color: var(--lime-mid); background: var(--lime-bg); }
+.subj-chk:checked + .subj-lbl {
+  border-color: var(--lime); background: var(--lime-bg); color: var(--lime-3);
+}
+.subj-tick {
+  width: 15px; height: 15px; border-radius: 3px;
+  border: 1.5px solid var(--rule); background: var(--white);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background .14s, border-color .14s;
+}
+.subj-chk:checked + .subj-lbl .subj-tick { background: var(--lime); border-color: var(--lime); }
+.subj-tick svg { width: 9px; height: 9px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .12s; }
+.subj-chk:checked + .subj-lbl .subj-tick svg { opacity: 1; }
+.subj-hint { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 6px; display: none; }
+.subj-hint.show { display: block; }
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  background: var(--lime); border: none; border-radius: 4px;
+  padding: 13px 20px; margin-top: 20px;
+  font-family: var(--f); font-size: 13px; font-weight: 800;
+  color: var(--ink); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 14px rgba(139,197,63,.3);
+  transition: background .16s, box-shadow .16s, transform .12s;
+  letter-spacing: .2px;
+}
+.btn-submit:hover { background: var(--lime-2); box-shadow: 0 6px 20px rgba(139,197,63,.38); transform: translateY(-1px); }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.btn-submit svg { width: 16px; height: 16px; flex-shrink: 0; }
+.spin { animation: spinAnim .75s linear infinite; }
+@keyframes spinAnim { to { transform: rotate(360deg); } }
+
+.form-note { text-align: center; font-size: 11px; color: var(--pale); font-weight: 600; margin-top: 10px; }
+
+/* ═══════════ SUCCESS STATE ═══════════ */
+.success-state { display: none; text-align: center; padding: 40px 20px; }
+.success-state.show { display: block; animation: fadeUp .45s var(--ease); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+.success-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--lime-bg); border: 2px solid var(--lime-mid);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
+}
+.success-icon svg { width: 26px; height: 26px; stroke: var(--lime-2); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.success-title { font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 10px; }
+.success-body { font-size: 13px; color: var(--ink-3); line-height: 1.65; margin-bottom: 22px; }
+.wa-btn-green {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #25D366; color: #fff; border-radius: 4px;
+  padding: 11px 20px; font-size: 13px; font-weight: 800;
+  transition: opacity .16s;
+}
+.wa-btn-green:hover { opacity: .88; color: #fff; }
+.wa-btn-green svg { width: 17px; height: 17px; fill: #fff; }
+
+/* ═══════════ SIDEBAR ═══════════ */
+.sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+/* On mobile show as horizontal scroll row */
+@media (max-width: 760px) {
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+  .side-card { min-width: 240px; flex-shrink: 0; }
+}
+
+.side-card {
+  background: var(--white);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.side-card-title {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-2); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 7px;
+}
+.side-card-title svg { width: 14px; height: 14px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Contact rows */
+.c-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 11px; }
+.c-row:last-child { margin-bottom: 0; }
+.c-ico {
+  width: 30px; height: 30px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.c-ico.wa { background: #e8f9ee; }
+.c-ico.ph { background: #e8f0fb; }
+.c-ico.lo { background: var(--lime-bg); }
+.c-ico svg { width: 14px; height: 14px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.c-ico.wa svg { stroke: #25D366; }
+.c-ico.ph svg { stroke: #4285F4; }
+.c-ico.lo svg { stroke: var(--lime-2); }
+.c-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.c-val { font-size: 12px; font-weight: 700; color: var(--ink); margin-top: 1px; }
+.c-val a { color: var(--ink); transition: color .14s; }
+.c-val a:hover { color: var(--lime-2); }
+
+/* Feature list */
+.feat-list { list-style: none; }
+.feat-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: var(--ink-3); font-weight: 500;
+  padding: 5px 0; border-bottom: 1px solid var(--cream-2);
+}
+.feat-list li:last-child { border-bottom: none; }
+.feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); flex-shrink: 0; margin-top: 5px; }
+
+/* Timing rows */
+.t-row {
+  font-size: 12px; color: var(--ink-3); font-weight: 600;
+  padding: 5px 0; display: flex; align-items: center; gap: 7px;
+  border-bottom: 1px solid var(--cream-2);
+}
+.t-row:last-child { border-bottom: none; }
+.t-row svg { width: 12px; height: 12px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+/* ═══════════ BOTTOM WA STRIP ═══════════ */
+.wa-strip {
+  background: var(--ink);
+  border-radius: 4px;
+  padding: 20px 22px;
+  display: flex; align-items: center; gap: 16px;
+  margin-top: 28px; flex-wrap: wrap;
+  position: relative; overflow: hidden;
+}
+.wa-strip::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 36px 36px; pointer-events: none;
+}
+.wa-strip-body { flex: 1; min-width: 160px; position: relative; z-index: 1; }
+.wa-strip-title { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+.wa-strip-sub { font-size: 11px; color: rgba(255,255,255,.5); }
+.wa-strip-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #25D366; color: #fff; border-radius: 4px;
+  padding: 10px 18px; font-size: 12px; font-weight: 800;
+  white-space: nowrap; position: relative; z-index: 1;
+  transition: opacity .16s;
+}
+.wa-strip-btn:hover { opacity: .88; color: #fff; }
+.wa-strip-btn svg { width: 15px; height: 15px; fill: #fff; }
+
+/* ═══════════ SECTION HEADER ═══════════ */
+.sec-hdr {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.sec-hdr-rule { flex: 1; height: 1px; background: var(--rule); }
+.sec-hdr-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
+.sec-hdr-txt {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted); white-space: nowrap;
+}
+
+/* ═══════════ REVEAL ═══════════ */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- BREADCRUMB -->
+<div class="bc">
+  <div class="bc-in">
+    <a href="/">Home</a><span class="bc-sep"> › </span>
+    <span>Enquire</span>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<div class="masthead-wrap">
+  <div class="masthead-bg-text" aria-hidden="true">ENQUIRE</div>
+  <div class="masthead">
+    <div class="mast-kicker">
+      <div class="mast-kicker-rule"></div>
+      <span class="mast-kicker-text">Admission Enquiry</span>
+    </div>
+    <h1 class="mast-h1">Find the <span class="ital">right batch</span><br>for you</h1>
+    <p class="mast-desc">Fill in the form below and we'll get back on WhatsApp — usually within a few hours. No registration fee. No commitment yet.</p>
+    <div class="mast-badges">
+      <span class="mast-badge"><span class="mast-badge-dot"></span>No registration fee</span>
+      <span class="mast-badge"><span class="mast-badge-dot"></span>Small batches</span>
+      <span class="mast-badge"><span class="mast-badge-dot"></span>CBSE &amp; State Board</span>
+      <span class="mast-badge"><span class="mast-badge-dot"></span>Offline + Online</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <div class="sec-hdr reveal">
+    <div class="sec-hdr-rule"></div>
+    <div class="sec-hdr-dot"></div>
+    <div class="sec-hdr-txt">Fill the form</div>
+    <div class="sec-hdr-dot"></div>
+    <div class="sec-hdr-rule"></div>
+  </div>
+
+  <div class="layout">
+
+    <!-- ═══ FORM CARD ═══ -->
+    <div class="form-card reveal" style="transition-delay:.05s">
+
+      <div class="form-card-header">
+        <div class="form-card-header-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="form-card-header-title">Admission Enquiry Form</div>
+          <div class="form-card-header-sub">Takes less than 2 minutes</div>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <div id="enquiryForm">
+
+          <!-- Student info -->
+          <div class="field">
+            <div class="field-label">
+              <span class="field-label-txt">Student's full name <span class="req">*</span></span>
+            </div>
+            <input type="text" class="input" id="f_name" placeholder="e.g. Ayesha Rauf" autocomplete="name">
+            <div class="ferr" id="e_name">Please enter the student's name.</div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Class <span class="req">*</span></span></div>
+              <select class="sel" id="f_class">
+                <option value="">Select class</option>
+                <option>Class 9</option><option>Class 10</option>
+                <option>Class 11</option><option>Class 12</option>
+                <option>NEET Repeater</option>
+              </select>
+              <div class="ferr" id="e_class">Please select a class.</div>
+            </div>
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Syllabus <span class="req">*</span></span></div>
+              <select class="sel" id="f_syllabus">
+                <option value="">Select syllabus</option>
+                <option>CBSE</option>
+                <option>Kerala State Board</option>
+                <option>ICSE</option>
+              </select>
+              <div class="ferr" id="e_syllabus">Please select a syllabus.</div>
+            </div>
+          </div>
+
+          <!-- Subjects (dynamic) -->
+          <div class="field" id="f_subjectWrap" style="display:none">
+            <div class="field-label"><span class="field-label-txt">Subjects needed <span class="req">*</span></span></div>
+            <div class="subj-grid" id="f_subjectGrid"></div>
+            <div class="subj-hint" id="e_subjects">Please select at least one subject.</div>
+          </div>
+
+          <!-- Divider -->
+          <div class="form-sec">
+            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
+            <span class="form-sec-lbl">Contact details</span>
+            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Parent / Guardian name <span class="req">*</span></span></div>
+              <input type="text" class="input" id="f_parent" placeholder="e.g. Mohammed Rauf">
+              <div class="ferr" id="e_parent">Please enter a parent name.</div>
+            </div>
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">WhatsApp number <span class="req">*</span></span></div>
+              <input type="tel" class="input" id="f_wa" placeholder="10-digit number" maxlength="15" inputmode="numeric">
+              <div class="ferr" id="e_wa">Please enter a valid 10-digit number.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span class="field-label-txt">School name <span class="req">*</span></span></div>
+            <input type="text" class="input" id="f_school" placeholder="e.g. Govt. HSS Vatanappally">
+            <div class="ferr" id="e_school">Please enter the school name.</div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <span class="field-label-txt">How did you hear about us?</span>
+              <span class="opt">Optional</span>
+            </div>
+            <select class="sel" id="f_source">
+              <option value="">Select one</option>
+              <option>Word of mouth / friend</option>
+              <option>Google Search</option>
+              <option>Instagram / Facebook</option>
+              <option>Flyer / notice board</option>
+              <option>Existing student referral</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <span class="field-label-txt">Anything else you'd like us to know?</span>
+              <span class="opt">Optional</span>
+            </div>
+            <textarea class="ta" id="f_msg" placeholder="e.g. Looking for weekend batches, questions about NEET prep…"></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button class="btn-submit" id="submitBtn" type="button">
+            <svg id="btn_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/>
+            </svg>
+            <span id="btn_text">Submit Enquiry</span>
+          </button>
+          <p class="form-note">We reply on WhatsApp — usually within a few hours on school days.</p>
+
+        </div><!-- /enquiryForm -->
+
+        <!-- SUCCESS -->
+        <div class="success-state" id="successState">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="success-title">Enquiry received!</div>
+          <p class="success-body">We've got your details and will reach out on WhatsApp to confirm the batch, timing, and next steps.<br><br>Or tap below to chat right now.</p>
+          <a class="wa-btn-green" href="#" id="successWaLink" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat on WhatsApp now
+          </a>
+        </div>
+
+      </div><!-- /form-body -->
+    </div><!-- /form-card -->
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <div class="sidebar">
+
+      <div class="side-card reveal" style="transition-delay:.1s">
+        <div class="side-card-title">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 10.5 19.79 19.79 0 0 1 1.67 1.87 2 2 0 0 1 3.66 0h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 7.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 15.5c.013.47.012.94 0 1.41v.01z"/></svg>
+          Contact us
+        </div>
+        <div class="c-row">
+          <div class="c-ico wa"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="c-lbl">WhatsApp</div><div class="c-val"><a href="https://wa.me/919539409586" target="_blank" rel="noopener noreferrer">+91 95394 09586</a></div></div>
+        </div>
+        <div class="c-row">
+          <div class="c-ico ph"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 10.5 19.79 19.79 0 0 1 1.67 1.87 2 2 0 0 1 3.66 0h3a2 2 0 0 1 2 1.72"/></svg></div>
+          <div><div class="c-lbl">Phone</div><div class="c-val"><a href="tel:+919037789586">+91 90377 89586</a></div></div>
+        </div>
+        <div class="c-row">
+          <div class="c-ico lo"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="c-lbl">Address</div><div class="c-val" style="font-weight:600;color:var(--ink-3);line-height:1.5">447A, Priyadarshini Road<br>Vatanappally, Thrissur 680614</div></div>
+        </div>
+      </div>
+
+      <div class="side-card reveal" style="transition-delay:.15s">
+        <div class="side-card-title">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Why SEHR Academy
+        </div>
+        <ul class="feat-list">
+          <li><span class="feat-dot"></span>Small batches — tutors know every student</li>
+          <li><span class="feat-dot"></span>Concept-first, not rote learning</li>
+          <li><span class="feat-dot"></span>CBSE &amp; Kerala State Board</li>
+          <li><span class="feat-dot"></span>NEET &amp; JEE Mains prep</li>
+          <li><span class="feat-dot"></span>Offline + live online classes</li>
+          <li><span class="feat-dot"></span>No registration fee charged</li>
+        </ul>
+      </div>
+
+      <div class="side-card reveal" style="transition-delay:.2s">
+        <div class="side-card-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Class timings
+        </div>
+        <div class="t-row"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>5–6 days a week, 1 rest day</div>
+        <div class="t-row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Min. 2 hours per session</div>
+        <div class="t-row"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Timings confirmed on WhatsApp</div>
+      </div>
+
+    </div><!-- /sidebar -->
+
+  </div><!-- /layout -->
+
+  <!-- WA STRIP -->
+  <div class="wa-strip reveal" style="transition-delay:.22s">
+    <div class="wa-strip-body">
+      <div class="wa-strip-title">Prefer to just message us?</div>
+      <div class="wa-strip-sub">Chat on WhatsApp — we'll sort out the batch in a few messages.</div>
+    </div>
+    <a class="wa-strip-btn" href="https://wa.me/919539409586?text=Hi%2C+I%27m+interested+in+admission+at+Sehr+Academy." target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp us now
+    </a>
+  </div>
+
+</div><!-- /page -->
+
+<div id="footer-placeholder"></div>
+
+<script>
+/* ══════════════════════════════
+   CONFIG — paste your Apps Script URL here after setup
+══════════════════════════════ */
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby-e5-57UCSlzOgoLOPMPe-3G0FIdL1Yf-MZgrO_rEqN_Yy8CogB2EbHFogY8UozRE0/exec';
+
+/* ══════════════════════════════
+   SUBJECT MAP
+══════════════════════════════ */
+const SUBJ_MAP = {
+  'Class 9':       ['Mathematics','Science','English','Social Science','Hindi / Malayalam'],
+  'Class 10':      ['Mathematics','Science','English','Social Science','Hindi / Malayalam'],
+  'Class 11':      ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
+  'Class 12':      ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
+  'NEET Repeater': ['Physics','Chemistry','Biology'],
+};
+
+const $ = id => document.getElementById(id);
+
+/* ── Subjects appear when class is selected ── */
+$('f_class').addEventListener('change', function() {
+  const cls = this.value;
+  const wrap = $('f_subjectWrap');
+  const grid = $('f_subjectGrid');
+  clearErr('f_class');
+  if (SUBJ_MAP[cls]) {
+    grid.innerHTML = SUBJ_MAP[cls].map(s => {
+      const id = 'sc_' + s.replace(/\W/g,'_');
+      return `<div>
+        <input type="checkbox" class="subj-chk" id="${id}" value="${s}">
+        <label class="subj-lbl" for="${id}">
+          <span class="subj-tick"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
+          ${s}
+        </label>
+      </div>`;
+    }).join('');
+    wrap.style.display = 'block';
+  } else {
+    wrap.style.display = 'none';
+  }
+});
+
+/* ── Validation helpers ── */
+function showErr(fieldId, errId) {
+  const f = $(fieldId), e = $(errId);
+  if (f) f.classList.add('err');
+  if (e) e.classList.add('show');
+}
+function clearErr(fieldId) {
+  const f = $(fieldId);
+  const e = document.getElementById('e_' + fieldId.replace('f_',''));
+  if (f) f.classList.remove('err');
+  if (e) e.classList.remove('show');
+}
+['f_name','f_class','f_syllabus','f_parent','f_wa','f_school'].forEach(id => {
+  const el = $(id);
+  if (el) el.addEventListener('input', () => clearErr(id));
+  if (el) el.addEventListener('change', () => clearErr(id));
+});
+
+/* ── Submit ── */
+$('submitBtn').addEventListener('click', async function() {
+  let ok = true;
+
+  const name    = $('f_name').value.trim();
+  const cls     = $('f_class').value;
+  const syl     = $('f_syllabus').value;
+  const parent  = $('f_parent').value.trim();
+  const wa      = $('f_wa').value.trim().replace(/\D/g,'');
+  const school  = $('f_school').value.trim();
+  const source  = $('f_source').value;
+  const msg     = $('f_msg').value.trim();
+  const subjEls = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
+  const subjects = Array.from(subjEls).map(c => c.value).join(', ');
+
+  if (!name)           { showErr('f_name','e_name');       ok = false; }
+  if (!cls)            { showErr('f_class','e_class');     ok = false; }
+  if (!syl)            { showErr('f_syllabus','e_syllabus'); ok = false; }
+  if (!parent)         { showErr('f_parent','e_parent');   ok = false; }
+  if (!wa || wa.length < 10) { showErr('f_wa','e_wa');     ok = false; }
+  if (!school)         { showErr('f_school','e_school');   ok = false; }
+  if (SUBJ_MAP[cls] && subjEls.length === 0) {
+    $('e_subjects').classList.add('show'); ok = false;
+  } else {
+    $('e_subjects').classList.remove('show');
+  }
+  if (!ok) return;
+
+  /* Loading state */
+  const btn = $('submitBtn');
+  btn.disabled = true;
+  $('btn_text').textContent = 'Sending…';
+  $('btn_icon').style.animation = 'spinAnim .75s linear infinite';
+
+  /* Build WA prefill message */
+  let waMsg = '*New Admission Enquiry — SEHR Academy*\n\n';
+  waMsg += '👤 *Student:* ' + name + '\n';
+  waMsg += '📚 *Class:* ' + cls + ' (' + syl + ')\n';
+  if (subjects) waMsg += '📖 *Subjects:* ' + subjects + '\n';
+  waMsg += '👨‍👩‍👧 *Parent:* ' + parent + '\n';
+  waMsg += '📞 *WhatsApp:* ' + wa + '\n';
+  waMsg += '🏫 *School:* ' + school + '\n';
+  if (source) waMsg += '🔍 *Source:* ' + source + '\n';
+  if (msg)    waMsg += '💬 *Message:* ' + msg + '\n';
+  waMsg += '\n_Submitted via sehracademy.com/enquire_';
+
+  /* ── Send to Google Sheets ── */
+  const payload = {
+    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    student_name: name,
+    class: cls,
+    syllabus: syl,
+    subjects: subjects,
+    parent_name: parent,
+    whatsapp: wa,
+    school: school,
+    source: source,
+    message: msg,
+  };
+
+  if (SHEETS_URL && SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch(e) {
+      /* Silent fail — WA still opens */
+    }
+  }
+
+  /* Update success WA link & show success */
+  $('successWaLink').href = 'https://wa.me/919539409586?text=' + encodeURIComponent(waMsg);
+
+  setTimeout(() => {
+    $('enquiryForm').style.display = 'none';
+    $('successState').classList.add('show');
+    window.open('https://wa.me/919539409586?text=' + encodeURIComponent(waMsg), '_blank');
+  }, 600);
+});
+
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
