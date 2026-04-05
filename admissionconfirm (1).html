@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admission Confirmation — SEHR Academy</title>
+<meta name="description" content="SEHR Academy Admission Portal — Verify and print your official admission confirmation." />
+<meta name="theme-color" content="#8BC53F" />
+<link rel="icon" type="image/png" href="/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   SEHR ACADEMY · ADMISSION CONFIRMATION  v3
+   Cream · Charcoal · Lime · Editorial
+   Full feature build: skeleton, session cache,
+   show/hide pwd, copy ID, collapsible, share,
+   sticky mobile bar, animated entry, print-perfect
+═══════════════════════════════════════════════════ */
+:root{
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18; --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --amb:#d97706; --blue:#2563eb; --grn:#16a34a;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 8px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 6px 24px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --sh3:0 24px 64px rgba(0,0,0,.12),0 4px 14px rgba(0,0,0,.06);
+  --r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:var(--f);cursor:pointer}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.hidden{display:none!important}
+
+/* ── Animations ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes checkPop{0%{transform:scale(0) rotate(-20deg);opacity:0}70%{transform:scale(1.15) rotate(3deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.5)}50%{box-shadow:0 0 0 7px rgba(139,197,63,0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(12px) scale(.95)}}
+
+.anim-fade-up{animation:fadeUp .6s var(--ease) both}
+.anim-scale-in{animation:scaleIn .5s var(--ease) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.26s}.d4{animation-delay:.36s}.d5{animation-delay:.46s}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ══════════════════════════
+   NAVBAR
+══════════════════════════ */
+.navbar{background:var(--ink);border-bottom:3px solid var(--lime);position:sticky;top:0;z-index:300}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-logo{width:36px;height:36px;border-radius:50%;object-fit:cover;display:block;flex-shrink:0}
+.brand-text{display:flex;align-items:center;gap:3px}
+.brand-text .lime{color:var(--lime)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:12px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:#fff}
+
+/* ══════════════════════════
+   LOGIN SCREEN
+══════════════════════════ */
+.login-screen{
+  min-height:calc(100vh - 64px);background:var(--ink);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;padding:60px 20px;
+}
+.login-screen::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035)1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;
+}
+.lg-glow-tr{position:absolute;top:-160px;right:-160px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.16),transparent 65%);pointer-events:none}
+.lg-glow-bl{position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.07),transparent 65%);pointer-events:none}
+.lg-wm{position:absolute;right:-10px;bottom:-20px;font-size:clamp(100px,18vw,240px);font-weight:800;letter-spacing:-8px;color:rgba(255,255,255,.028);pointer-events:none;user-select:none;line-height:1;white-space:nowrap}
+
+.login-inner{position:relative;z-index:1;width:100%;max-width:440px}
+.kicker-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.kicker-rule{width:28px;height:2px;background:var(--lime);flex-shrink:0}
+.kicker-txt{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime)}
+.login-h1{font-size:clamp(32px,5.5vw,54px);font-weight:800;letter-spacing:-2px;color:#fff;line-height:.93;margin-bottom:8px}
+.login-h1 i{font-style:italic;font-weight:300;color:var(--lime)}
+.login-sub{font-size:14px;color:rgba(255,255,255,.38);margin-bottom:36px;line-height:1.75}
+
+.login-card{background:var(--cream);border-radius:14px;padding:36px 36px 32px;width:100%;box-shadow:var(--sh3);border-top:4px solid var(--lime);position:relative}
+
+/* cached notice */
+.cached-notice{
+  display:flex;align-items:center;gap:8px;
+  background:var(--lime-bg);border:1px solid rgba(139,197,63,.3);
+  border-radius:6px;padding:9px 13px;margin-bottom:18px;font-size:13px;font-weight:600;color:var(--lime-3)
+}
+.cached-notice svg{width:14px;height:14px;flex-shrink:0}
+
+.flabel{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.flabel em{font-style:normal;font-weight:400;letter-spacing:0;text-transform:none;font-size:12px;color:var(--pale)}
+.fgroup{margin-bottom:18px;position:relative}
+.finput{
+  width:100%;padding:11px 42px 11px 14px;
+  border:1.5px solid var(--rule);border-radius:7px;
+  font-size:14px;background:var(--white);color:var(--ink);
+  outline:none;transition:border .2s,box-shadow .2s;
+}
+.finput:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.15)}
+.finput.has-error{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field-hint{font-size:11px;margin-top:5px;display:none}
+.field-hint.show{display:block}
+.field-hint.err{color:var(--red)}
+
+/* password toggle */
+.pw-wrap{position:relative}
+.pw-toggle{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  background:none;border:none;padding:0;color:var(--pale);
+  display:flex;align-items:center;justify-content:center;
+  transition:color .15s;
+}
+.pw-toggle:hover{color:var(--ink)}
+.pw-toggle svg{width:16px;height:16px;pointer-events:none}
+
+.err-box{
+  background:rgba(220,38,38,.07);color:var(--red);
+  border:1px solid rgba(220,38,38,.2);border-radius:7px;
+  padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;line-height:1.5;
+  display:flex;align-items:flex-start;gap:8px;
+}
+.err-box svg{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+.err-box-txt{flex:1}
+
+.btn-lime-full{
+  width:100%;padding:13px;border:none;border-radius:7px;
+  background:var(--lime);color:var(--ink);
+  font-weight:800;font-size:14px;letter-spacing:.04em;
+  transition:all .2s var(--ease);box-shadow:0 4px 18px rgba(139,197,63,.35);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-lime-full:hover{background:var(--lime-2);transform:translateY(-1px);box-shadow:0 8px 28px rgba(139,197,63,.45)}
+.btn-lime-full:active{transform:translateY(0)}
+.btn-lime-full:disabled{opacity:.5;pointer-events:none;transform:none}
+
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(26,26,24,.2);border-top-color:var(--ink);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+
+.login-footer-note{text-align:center;margin-top:18px;font-size:12px;color:rgba(255,255,255,.28);letter-spacing:.04em}
+
+/* ══════════════════════════
+   SKELETON LOADER
+══════════════════════════ */
+.skeleton-screen{background:var(--cream);min-height:calc(100vh - 64px)}
+.skel-hero{background:var(--ink);height:130px;border-bottom:3px solid var(--lime)}
+.skel-body{max-width:1120px;margin:0 auto;padding:32px 28px;display:grid;grid-template-columns:280px 1fr;gap:24px}
+.skel-pulse{
+  background:linear-gradient(90deg,var(--cream-2) 0%,var(--cream-3) 50%,var(--cream-2) 100%);
+  background-size:600px 100%;animation:shimmer 1.5s infinite linear;border-radius:6px;
+}
+.skel-sidebar{display:flex;flex-direction:column;gap:12px}
+.skel-card{background:var(--white);border-radius:var(--r);border:1px solid var(--rule);padding:20px;display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+
+/* ══════════════════════════
+   ADMISSION SCREEN
+══════════════════════════ */
+#admScreen{background:var(--cream);min-height:calc(100vh - 64px)}
+
+/* hero */
+.adm-hero{
+  background:var(--ink);border-bottom:3px solid var(--lime);
+  position:relative;overflow:hidden;padding:44px 0 38px;
+}
+.adm-hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035)1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;
+}
+.adm-hero-glow{position:absolute;top:-120px;right:-120px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.14),transparent 65%);pointer-events:none}
+.adm-hero-wm{position:absolute;right:-10px;bottom:-14px;font-size:clamp(80px,14vw,200px);font-weight:800;letter-spacing:-6px;color:rgba(255,255,255,.025);pointer-events:none;user-select:none;line-height:1;white-space:nowrap}
+.adm-hero-in{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.adm-kicker{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.adm-kicker-rule{width:24px;height:2px;background:var(--lime);flex-shrink:0}
+.adm-kicker-txt{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime)}
+
+/* hero left: check + title */
+.adm-hero-title-wrap{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.hero-check{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--lime);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  animation:checkPop .5s var(--ease) both, pulse 2.5s ease 1s infinite;
+  box-shadow:0 4px 18px rgba(139,197,63,.4);
+}
+.hero-check svg{width:20px;height:20px}
+.adm-hero-title{font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:1}
+.adm-hero-title i{font-style:italic;font-weight:300;color:var(--lime)}
+.adm-hero-sub{font-size:13px;color:rgba(255,255,255,.38);margin-top:4px}
+.adm-hero-meta{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;border-radius:20px;
+  font-size:11px;font-weight:700;letter-spacing:.04em;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.1);
+}
+.hero-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s ease infinite}
+
+/* hero right buttons */
+.hero-btns{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn-hero{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 18px;border-radius:7px;
+  font-weight:700;font-size:12px;border:none;
+  letter-spacing:.04em;transition:all .2s var(--ease);
+  white-space:nowrap;
+}
+.btn-hero-lime{background:var(--lime);color:var(--ink);box-shadow:0 4px 16px rgba(139,197,63,.35)}
+.btn-hero-lime:hover{background:var(--lime-2);transform:translateY(-1px)}
+.btn-hero-ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.12)}
+.btn-hero-ghost:hover{background:rgba(255,255,255,.14);color:#fff}
+.btn-hero svg{width:13px;height:13px;flex-shrink:0}
+
+/* body */
+.adm-body{max-width:1120px;margin:0 auto;padding:32px 28px 100px}
+.adm-layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+
+/* ── SIDEBAR ── */
+.identity-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh2);overflow:hidden;border:1px solid var(--rule);
+  position:sticky;top:84px;
+}
+.id-accent-bar{
+  height:5px;
+  background:linear-gradient(90deg,var(--lime-3),var(--lime),var(--lime-mid),var(--lime),var(--lime-3));
+  background-size:200% 100%;animation:shimmer 3s linear infinite;
+}
+.id-body{padding:22px 20px 20px}
+
+/* photo */
+.id-photo-wrap{display:flex;justify-content:center;margin-bottom:16px;position:relative}
+.id-photo{
+  width:96px;height:96px;border-radius:12px;object-fit:cover;
+  border:3px solid var(--lime);box-shadow:var(--sh2);display:block;
+  transition:transform .3s var(--ease);
+}
+.id-photo:hover{transform:scale(1.04)}
+.id-check-badge{
+  position:absolute;bottom:-5px;right:calc(50% - 53px);
+  width:22px;height:22px;border-radius:50%;
+  background:var(--lime);border:2.5px solid var(--white);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+.id-check-badge svg{width:11px;height:11px}
+.id-name{font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--ink);text-align:center;line-height:1.2;margin-bottom:3px}
+.id-admno-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:10px}
+.id-admno{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.copy-btn{
+  background:none;border:none;padding:2px 4px;border-radius:3px;color:var(--pale);
+  display:flex;align-items:center;transition:color .15s,background .15s;
+}
+.copy-btn:hover{color:var(--lime-3);background:var(--lime-bg)}
+.copy-btn svg{width:12px;height:12px}
+.id-badge-wrap{display:flex;justify-content:center;margin-bottom:18px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 13px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.badge-lime{background:var(--lime-bg);color:var(--lime-3);border:1px solid rgba(139,197,63,.25)}
+.badge-amb{background:rgba(217,119,6,.08);color:var(--amb);border:1px solid rgba(217,119,6,.2)}
+.badge-red{background:rgba(220,38,38,.07);color:var(--red);border:1px solid rgba(220,38,38,.18)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;animation:pulse 2s ease infinite}
+
+.id-rows{}
+.id-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--cream-2);gap:8px}
+.id-row:last-child{border-bottom:none}
+.id-rlbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);flex-shrink:0;padding-top:1px}
+.id-rval{font-size:13px;font-weight:700;color:var(--ink);text-align:right;line-height:1.3}
+
+/* quick actions in sidebar */
+.id-actions{margin-top:16px;padding-top:16px;border-top:1px dashed var(--rule);display:flex;flex-direction:column;gap:8px}
+.action-btn{
+  width:100%;padding:9px 14px;border-radius:7px;border:none;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  font-size:12px;font-weight:700;letter-spacing:.04em;
+  transition:all .18s var(--ease);
+}
+.action-btn-print{background:var(--lime);color:var(--ink);box-shadow:0 3px 12px rgba(139,197,63,.3)}
+.action-btn-print:hover{background:var(--lime-2);transform:translateY(-1px)}
+.action-btn-wa{background:rgba(37,211,102,.1);color:#128c3e;border:1px solid rgba(37,211,102,.25)}
+.action-btn-wa:hover{background:rgba(37,211,102,.18)}
+.action-btn-back{background:var(--cream-2);color:var(--ink-3);border:1px solid var(--rule)}
+.action-btn-back:hover{background:var(--cream-3)}
+.action-btn svg{width:13px;height:13px;flex-shrink:0}
+
+/* QR placeholder */
+.id-qr{margin-top:14px;padding-top:14px;border-top:1px dashed var(--rule);display:flex;flex-direction:column;align-items:center;gap:5px}
+.id-qr-box{width:64px;height:64px;background:var(--cream-2);border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px solid var(--rule)}
+.id-qr-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale)}
+
+/* ── SECTION CARDS ── */
+.sec-card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh2);border:1px solid var(--rule);
+  margin-bottom:18px;overflow:hidden;
+}
+.sec-head{
+  padding:13px 20px;border-bottom:1px solid var(--cream-2);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  cursor:pointer;user-select:none;transition:background .15s;
+}
+.sec-head:hover{background:var(--cream)}
+.sec-head-l{display:flex;align-items:center;gap:10px}
+.sec-icon{width:30px;height:30px;border-radius:6px;background:var(--lime-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-icon svg{width:14px;height:14px;color:var(--lime-3)}
+.sec-title{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-.1px}
+.sec-head-r{display:flex;align-items:center;gap:8px}
+.sec-count{font-size:11px;font-weight:700;color:var(--muted);background:var(--cream-2);padding:3px 10px;border-radius:20px}
+.sec-chevron{color:var(--pale);transition:transform .25s var(--ease);flex-shrink:0}
+.sec-chevron svg{width:14px;height:14px;display:block}
+.sec-card.collapsed .sec-chevron{transform:rotate(-90deg)}
+.sec-body{padding:18px 20px;transition:none}
+.sec-card.collapsed .sec-body{display:none}
+
+/* info grid */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.icell-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.icell-val{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}
+.icell-val.lime{color:var(--lime-3)}
+.icell-val.amb{color:var(--amb)}
+.icell-val.grn{color:var(--grn)}
+.icell-val.sm{font-size:12px;font-weight:400;line-height:1.55;color:var(--ink-3)}
+.idivider{height:1px;background:var(--cream-2);margin:16px 0}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:12px;font-weight:700;letter-spacing:.03em}
+.chip-lime{background:var(--lime-bg);color:var(--lime-3);border:1px solid rgba(139,197,63,.22)}
+.chip-ink{background:var(--cream-2);color:var(--ink-3);border:1px solid var(--rule)}
+.chip-blue{background:rgba(37,99,235,.07);color:var(--blue);border:1px solid rgba(37,99,235,.15)}
+.chip-amb{background:rgba(217,119,6,.08);color:var(--amb);border:1px solid rgba(217,119,6,.2)}
+.chip-grn{background:rgba(22,163,74,.07);color:var(--grn);border:1px solid rgba(22,163,74,.18)}
+.chip-red{background:rgba(220,38,38,.07);color:var(--red);border:1px solid rgba(220,38,38,.18)}
+.chips-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+
+/* subjects */
+.sub-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--cream-2);gap:12px}
+.sub-row:last-child{border-bottom:none}
+.sub-name{font-size:14px;font-weight:700;color:var(--ink)}
+.sub-teacher{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* schedule */
+.sched-table{width:100%;border-collapse:collapse}
+.sched-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 0 10px;text-align:left;border-bottom:1px solid var(--rule)}
+.sched-table td{font-size:13px;font-weight:600;color:var(--ink);padding:9px 0;border-bottom:1px solid var(--cream-2);vertical-align:middle}
+.sched-table tr:last-child td{border-bottom:none}
+.day-tag{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:22px;padding:0 6px;border-radius:3px;background:var(--lime-bg);color:var(--lime-3);font-size:11px;font-weight:800;margin-right:6px}
+
+/* fee */
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.prog-lbl{font-size:13px;font-weight:700;color:var(--ink)}
+.prog-pct{font-size:13px;font-weight:800;color:var(--lime-3)}
+.prog-track{height:10px;background:var(--cream-2);border-radius:20px;overflow:hidden}
+.prog-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--lime-2),var(--lime));transition:width 1.2s var(--ease)}
+.prog-fill.full{background:linear-gradient(90deg,var(--grn),#22c55e)}
+.prog-fill.warn{background:linear-gradient(90deg,#f59e0b,var(--amb))}
+.fee-list{margin-top:14px}
+.fee-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--cream-2)}
+.fee-item:last-child{border-bottom:none}
+.fee-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.fee-dot.paid{background:var(--grn)}.fee-dot.pend{background:var(--rule)}
+.fee-info{flex:1}
+.fee-name{font-size:13px;font-weight:700;color:var(--ink)}
+.fee-date{font-size:11px;color:var(--muted);margin-top:1px}
+.fee-amt{font-size:15px;font-weight:800;color:var(--ink);margin-right:6px}
+
+/* remarks */
+.remark-card{display:flex;border-radius:7px;overflow:hidden;border:1px solid var(--rule);margin-bottom:10px;background:var(--white);transition:box-shadow .2s}
+.remark-card:hover{box-shadow:var(--sh)}
+.remark-stripe{width:4px;background:var(--lime);flex-shrink:0}
+.remark-inner{padding:11px 14px;flex:1}
+.remark-text{font-size:14px;color:var(--ink-3);line-height:1.6}
+.remark-meta{font-size:11px;color:var(--pale);margin-top:4px;font-weight:600}
+
+/* ── TOAST notification ── */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;
+  padding:10px 20px;border-radius:7px;
+  font-size:13px;font-weight:700;letter-spacing:.02em;
+  box-shadow:var(--sh3);z-index:999;
+  animation:toastIn .25s var(--ease) both;
+  white-space:nowrap;pointer-events:none;
+  border-left:3px solid var(--lime);
+}
+.toast.out{animation:toastOut .25s var(--ease) forwards}
+
+/* ── STICKY MOBILE BAR ── */
+.mobile-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:400;
+  background:var(--white);border-top:1.5px solid var(--rule);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  display:flex;gap:8px;
+  box-shadow:0 -4px 20px rgba(0,0,0,.08);
+  display:none;
+}
+.mobile-bar .mb-btn{
+  flex:1;padding:11px 8px;border-radius:7px;border:none;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:12px;font-weight:800;letter-spacing:.03em;
+  transition:all .18s;
+}
+.mb-print{background:var(--lime);color:var(--ink);box-shadow:0 3px 12px rgba(139,197,63,.3)}
+.mb-print:hover{background:var(--lime-2)}
+.mb-share{background:rgba(37,211,102,.1);color:#128c3e;border:1px solid rgba(37,211,102,.25)}
+.mb-share:hover{background:rgba(37,211,102,.18)}
+.mb-back{background:var(--cream-2);color:var(--ink-3);border:1px solid var(--rule)}
+.mb-back:hover{background:var(--cream-3)}
+.mobile-bar svg{width:13px;height:13px;flex-shrink:0}
+
+/* ── PRINT STYLES ── */
+@media print{
+  .no-print{display:none!important}
+  .navbar,.mobile-bar,.id-actions,.hero-btns{display:none!important}
+  body,html{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #admScreen{background:#fff!important}
+
+  .adm-hero{padding:22px 0 18px!important}
+  .adm-hero-title{font-size:26px!important}
+  .adm-body{padding:16px 22px 24px!important}
+  .adm-layout{grid-template-columns:220px 1fr!important;gap:14px!important}
+
+  .identity-card{position:static!important;box-shadow:none!important;border:1px solid #ccc!important}
+  .sec-card{box-shadow:none!important;border:1px solid #ccc!important;break-inside:avoid;margin-bottom:12px!important}
+  .sec-card.collapsed .sec-body{display:block!important}
+  .sec-chevron,.sec-head{cursor:default}
+
+  .prog-fill,.chip,.badge,.day-tag,.id-accent-bar,.remark-stripe{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .reveal{opacity:1!important;transform:none!important}
+  .id-accent-bar{animation:none!important}
+  .hero-check{animation:none!important;box-shadow:none!important}
+
+  .print-header{display:block!important}
+  .print-stamp{display:block!important}
+
+  @page{margin:1.2cm 1.5cm;size:A4 portrait}
+}
+.print-header,.print-stamp{display:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .adm-layout{grid-template-columns:1fr}
+  .identity-card{position:static}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+  .adm-hero-in{flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-btns{display:none}
+  .mobile-bar{display:flex}
+  .adm-body{padding-bottom:90px}
+}
+@media(max-width:520px){
+  .info-grid{grid-template-columns:1fr 1fr}
+  .adm-body{padding:18px 14px 90px}
+  .login-card{padding:28px 20px 24px}
+  .skel-body{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<div class="navbar no-print">
+  <div class="nav-in">
+    <a class="brand" href="https://sehracademy.com">
+      <img src="/logo.png" alt="SEHR Academy" class="brand-logo" width="36" height="36"
+        onerror="this.style.display='none'">
+      <div class="brand-text"><span class="lime">SEHR</span><span>ACADEMY</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="https://sehracademy.com">Home</a>
+      <a href="https://sehracademy.com/student">Student Portal</a>
+      <a href="https://sehracademy.com/tuitionfees">Fees</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ LOGIN SCREEN ══════════ -->
+<div id="loginScreen">
+  <div class="login-screen">
+    <div class="lg-glow-tr"></div>
+    <div class="lg-glow-bl"></div>
+    <div class="lg-wm">SEHR</div>
+    <div class="login-inner anim-scale-in">
+
+      <div class="kicker-row">
+        <div class="kicker-rule"></div>
+        <span class="kicker-txt">Admission Portal · 2026</span>
+      </div>
+      <h1 class="login-h1">Confirm your<br><i>admission</i></h1>
+      <p class="login-sub">Enter your student ID and date of birth<br>to view your official admission record.</p>
+
+      <div class="login-card">
+        <!-- cached session notice (shown if session exists) -->
+        <div class="cached-notice hidden" id="cachedNotice">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Session saved — click below to reload your last record.
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel" for="inputId">Admission ID</label>
+          <input type="text" id="inputId" class="finput" placeholder="e.g. fidha" autocomplete="username" spellcheck="false" />
+          <div class="field-hint err" id="hintId">Please enter your admission ID</div>
+        </div>
+
+        <div class="fgroup" style="margin-bottom:20px">
+          <label class="flabel" for="inputPwd">Password <em>— Date of Birth (DDMMYYYY)</em></label>
+          <div class="pw-wrap">
+            <input type="password" id="inputPwd" class="finput" placeholder="e.g. 05092008" autocomplete="current-password" />
+            <button class="pw-toggle" id="pwToggle" type="button" aria-label="Show password" tabindex="-1">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eyeOffIcon" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <div class="field-hint err" id="hintPwd">Please enter your password (DDMMYYYY)</div>
+        </div>
+
+        <div class="err-box hidden" id="errBox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span class="err-box-txt" id="errTxt"></span>
+        </div>
+
+        <button class="btn-lime-full" id="loginBtn" type="button">
+          <span id="btnLbl">View Admission Status</span>
+          <span class="spinner hidden" id="btnSpin"></span>
+        </button>
+      </div>
+      <p class="login-footer-note">© 2026 SEHR Academy · Vatanappally, Thrissur</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SKELETON LOADER ══════════ -->
+<div id="skeletonScreen" class="skeleton-screen hidden">
+  <div class="skel-hero"></div>
+  <div class="skel-body">
+    <div class="skel-sidebar">
+      <div style="height:220px;border-radius:10px" class="skel-pulse"></div>
+      <div style="height:140px;border-radius:10px" class="skel-pulse"></div>
+    </div>
+    <div>
+      <div class="skel-card">
+        <div style="height:12px;width:40%;border-radius:4px" class="skel-pulse"></div>
+        <div style="height:16px;width:70%;border-radius:4px" class="skel-pulse"></div>
+        <div style="height:16px;width:55%;border-radius:4px" class="skel-pulse"></div>
+        <div style="height:16px;width:80%;border-radius:4px" class="skel-pulse"></div>
+      </div>
+      <div class="skel-card">
+        <div style="height:12px;width:40%;border-radius:4px" class="skel-pulse"></div>
+        <div style="height:16px;width:65%;border-radius:4px" class="skel-pulse"></div>
+        <div style="height:16px;width:50%;border-radius:4px" class="skel-pulse"></div>
+      </div>
+      <div class="skel-card">
+        <div style="height:12px;width:35%;border-radius:4px" class="skel-pulse"></div>
+        <div style="height:60px;border-radius:4px" class="skel-pulse"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMISSION SCREEN ══════════ -->
+<div id="admScreen" class="hidden">
+
+  <!-- Print-only header -->
+  <div class="print-header" style="padding:0 24px 12px;border-bottom:2px solid #ccc;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.5px;color:#1a1a18">SEHR ACADEMY</div>
+      <div style="font-size:11px;color:#888;letter-spacing:.15em;text-transform:uppercase;margin-top:2px">Vatanappally, Thrissur, Kerala · sehracademy.com</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:13px;font-weight:700;color:#1a1a18">Admission Confirmation</div>
+      <div style="font-size:11px;color:#888" id="printDate"></div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="adm-hero">
+    <div class="adm-hero-glow"></div>
+    <div class="adm-hero-wm">SEHR</div>
+    <div class="adm-hero-in">
+      <div class="anim-fade-up">
+        <div class="adm-kicker">
+          <div class="adm-kicker-rule"></div>
+          <span class="adm-kicker-txt">Official Admission Confirmation</span>
+        </div>
+        <div class="adm-hero-title-wrap">
+          <div class="hero-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h1 class="adm-hero-title">Welcome to<br><i>SEHR Academy</i></h1>
+        </div>
+        <p class="adm-hero-sub" id="heroSub">Academic Year 2026–27</p>
+        <div class="adm-hero-meta">
+          <span class="hero-pill"><span class="dot"></span><span id="heroStatus">Active</span></span>
+          <span class="hero-pill" id="heroClass">—</span>
+          <span class="hero-pill" id="heroSyllabus">—</span>
+        </div>
+      </div>
+      <div class="hero-btns no-print anim-fade-up d2">
+        <button class="btn-hero btn-hero-ghost" onclick="doBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn-hero btn-hero-ghost" onclick="doShare()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          Share
+        </button>
+        <button class="btn-hero btn-hero-lime" onclick="window.print()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print / PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="adm-body">
+    <div class="adm-layout">
+
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="identity-card reveal">
+          <div class="id-accent-bar"></div>
+          <div class="id-body">
+            <div class="id-photo-wrap">
+              <img id="sPhoto" class="id-photo" src="" alt="Student Photo"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22%3E%3Crect width=%2296%22 height=%2296%22 fill=%22%23e4dfd4%22 rx=%226%22/%3E%3Ctext x=%2248%22 y=%2260%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22%23b0ada4%22%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E'">
+              <div class="id-check-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+            <div class="id-name" id="sName">—</div>
+            <div class="id-admno-row">
+              <span class="id-admno" id="sAdmNo">—</span>
+              <button class="copy-btn no-print" onclick="copyAdmNo()" title="Copy admission number">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+            <div class="id-badge-wrap">
+              <span class="badge badge-lime" id="sBadge">
+                <span class="badge-dot"></span>
+                <span id="sStatusTxt">Active</span>
+              </span>
+            </div>
+            <div class="id-rows" id="sidebarRows"></div>
+            <div class="id-qr">
+              <div class="id-qr-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#b0ada4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><path d="M21 16h-3v3h3z"/><path d="M16 21v-2M16 16h2M12 21v-6h3M12 3v6M12 12v1M3 12h6"/></svg>
+              </div>
+              <span class="id-qr-lbl">Admission QR</span>
+            </div>
+            <!-- Sidebar actions (desktop) -->
+            <div class="id-actions no-print">
+              <button class="action-btn action-btn-print" onclick="window.print()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Print / Save PDF
+              </button>
+              <button class="action-btn action-btn-wa" id="waBtn" onclick="doWhatsApp()">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+                Share on WhatsApp
+              </button>
+              <button class="action-btn action-btn-back" onclick="doBack()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main id="mainContent"></main>
+
+    </div>
+  </div>
+
+  <!-- Print stamp -->
+  <div class="print-stamp" style="text-align:center;padding:12px 0 4px;font-size:10px;color:#aaa;letter-spacing:.18em;text-transform:uppercase">
+    Generated · SEHR Academy Admission Portal · sehracademy.com
+  </div>
+
+  <!-- Footer bar -->
+  <div style="border-top:1px solid var(--rule);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--white)" class="no-print">
+    <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale)">SEHR Academy · Admission Portal · 2026</span>
+    <a href="https://sehracademy.com" style="font-size:12px;font-weight:700;color:var(--lime-3)">sehracademy.com ↗</a>
+  </div>
+
+</div>
+
+<!-- ══════════ MOBILE STICKY BAR ══════════ -->
+<div class="mobile-bar no-print" id="mobileBar">
+  <button class="mb-btn mb-back" onclick="doBack()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </button>
+  <button class="mb-btn mb-share" onclick="doShare()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+    Share
+  </button>
+  <button class="mb-btn mb-print" onclick="window.print()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Print
+  </button>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   SEHR ACADEMY · ADMISSION CONFIRM  v3
+   Features: session cache, skeleton, show/hide
+   pwd, copy ID, collapsible sections, WhatsApp,
+   share API, toast, sticky mobile bar, print
+══════════════════════════════════════════════ */
+const API = "https://script.google.com/macros/s/AKfycbxspO_xdvjIj2D17BZmmy-q2Xn06ccwBxv0b05ZW8oilYj2IUDqRJ-f_Wis5WVUkQnwRQ/exec";
+const SESSION_KEY = "sehr_adm_v3";
+const $ = id => document.getElementById(id);
+
+let STUDENT_DATA = null;
+
+/* ── session cache ── */
+(function initSession(){
+  const raw = sessionStorage.getItem(SESSION_KEY);
+  if(!raw) return;
+  try{
+    const d = JSON.parse(raw);
+    if(d && d.student){
+      $('cachedNotice').classList.remove('hidden');
+      $('inputId').value = d.id || '';
+    }
+  }catch{}
+})();
+
+/* ── password show/hide ── */
+$('pwToggle').addEventListener('click', ()=>{
+  const inp = $('inputPwd');
+  const showing = inp.type === 'text';
+  inp.type = showing ? 'password' : 'text';
+  $('eyeIcon').classList.toggle('hidden', !showing);
+  $('eyeOffIcon').classList.toggle('hidden', showing);
+});
+
+/* ── login ── */
+$('loginBtn').addEventListener('click', doLogin);
+['inputId','inputPwd'].forEach(id => {
+  $(id).addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  $(id).addEventListener('input', () => $(id).classList.remove('has-error'));
+});
+
+async function doLogin(){
+  const id  = $('inputId').value.trim();
+  const pwd = $('inputPwd').value.trim();
+
+  /* inline validation */
+  let valid = true;
+  if(!id){$('inputId').classList.add('has-error');$('hintId').classList.add('show');valid=false;}else{$('hintId').classList.remove('show')}
+  if(!pwd){$('inputPwd').classList.add('has-error');$('hintPwd').classList.add('show');valid=false;}else{$('hintPwd').classList.remove('show')}
+  if(!valid) return;
+
+  /* check session cache */
+  try{
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if(raw){
+      const cached = JSON.parse(raw);
+      if(cached && cached.id === id && cached.student){
+        render(cached.student);
+        return;
+      }
+    }
+  }catch{}
+
+  showErr(false);
+  $('loginBtn').disabled=true;
+  $('btnLbl').textContent='Verifying…';
+  $('btnSpin').classList.remove('hidden');
+
+  /* show skeleton */
+  $('loginScreen').classList.add('hidden');
+  $('skeletonScreen').classList.remove('hidden');
+
+  try{
+    const res  = await Promise.race([
+      fetch(API,{method:'POST',body:JSON.stringify({action:'login',id,password:pwd})}),
+      new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),12000))
+    ]);
+    const data = await res.json();
+    if(!data.success){
+      $('skeletonScreen').classList.add('hidden');
+      $('loginScreen').classList.remove('hidden');
+      showErr(data.message || 'Login failed. Check your credentials.');
+      return;
+    }
+    /* cache */
+    try{ sessionStorage.setItem(SESSION_KEY, JSON.stringify({id, student:data.student})); }catch{}
+    render(data.student);
+  }catch(e){
+    $('skeletonScreen').classList.add('hidden');
+    $('loginScreen').classList.remove('hidden');
+    showErr(e.message==='timeout'
+      ? 'Request timed out. Please check your connection and try again.'
+      : 'Network error. Please check your connection.');
+  }finally{
+    $('loginBtn').disabled=false;
+    $('btnLbl').textContent='View Admission Status';
+    $('btnSpin').classList.add('hidden');
+  }
+}
+
+function showErr(msg){
+  if(!msg){$('errBox').classList.add('hidden');return;}
+  $('errTxt').textContent=msg;
+  $('errBox').classList.remove('hidden');
+}
+
+function doBack(){
+  $('admScreen').classList.add('hidden');
+  $('loginScreen').classList.remove('hidden');
+  $('skeletonScreen').classList.add('hidden');
+  window.scrollTo(0,0);
+}
+
+/* ── copy admission number ── */
+function copyAdmNo(){
+  const txt = $('sAdmNo').textContent.replace('ID: ','');
+  navigator.clipboard.writeText(txt).then(()=>{
+    showToast('Admission ID copied!');
+  }).catch(()=>{
+    showToast('Copy: '+txt);
+  });
+}
+
+/* ── WhatsApp share ── */
+function doWhatsApp(){
+  if(!STUDENT_DATA) return;
+  const s = STUDENT_DATA;
+  const name = s.name || s.full_name || 'Student';
+  const cls  = s.class ? 'Class '+s.class : '';
+  const msg  = `🎓 *SEHR Academy — Admission Confirmed*\n\nStudent: *${name}*\nClass: ${cls}\nSyllabus: ${s.syllabus||'—'}\nAcademic Year: ${s.academic_year||'2026–27'}\n\nVerify at: https://sehracademy.com/admissionconfirm`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ── Web Share API ── */
+function doShare(){
+  if(!STUDENT_DATA) return;
+  const s = STUDENT_DATA;
+  const name = s.name || s.full_name || 'Student';
+  if(navigator.share){
+    navigator.share({
+      title:'SEHR Academy — Admission Confirmed',
+      text:`${name}'s admission to SEHR Academy has been confirmed for ${s.academic_year||'2026–27'}.`,
+      url: window.location.href
+    }).catch(()=>{});
+  } else {
+    doWhatsApp();
+  }
+}
+
+/* ── Toast ── */
+function showToast(msg, dur=2200){
+  const old = document.querySelector('.toast');
+  if(old) old.remove();
+  const t = document.createElement('div');
+  t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300);},dur);
+}
+
+/* ── Collapsible sections ── */
+function initCollapsible(){
+  document.querySelectorAll('.sec-head').forEach(head=>{
+    head.addEventListener('click',()=>{
+      const card = head.closest('.sec-card');
+      card.classList.toggle('collapsed');
+    });
+  });
+}
+
+/* ── Helpers ── */
+function fmtDate(s){
+  if(!s) return'—';
+  const d=new Date(s);
+  return isNaN(d)?s:d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+}
+function fmtMon(s){
+  if(!s) return'—';
+  const d=new Date(s);
+  return isNaN(d)?s:d.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+}
+function v(x){return(x!==undefined&&x!==null&&x!=='')? String(x):'—';}
+
+const I={
+  user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  school:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-4 0v4"/></svg>`,
+  book:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`,
+  cal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>`,
+  rupee:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 8h12M9 13l3 8 3-8M6 8a6 6 0 0 0 6 6 6 6 0 0 0 6-6"/></svg>`,
+  msg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  award:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+  phone:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.84h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 5.99 5.99l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+  info:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>`,
+  chevron:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
+};
+
+function ic(l,vl,cls=''){
+  return`<div><div class="icell-lbl">${l}</div><div class="icell-val ${cls}">${vl}</div></div>`;
+}
+
+function sec(title, iconKey, count, body, startCollapsed=false){
+  return`<div class="sec-card reveal${startCollapsed?' collapsed':''}">
+    <div class="sec-head">
+      <div class="sec-head-l">
+        <div class="sec-icon">${I[iconKey]}</div>
+        <span class="sec-title">${title}</span>
+      </div>
+      <div class="sec-head-r">
+        ${count?`<span class="sec-count">${count}</span>`:''}
+        <span class="sec-chevron">${I.chevron}</span>
+      </div>
+    </div>
+    <div class="sec-body">${body}</div>
+  </div>`;
+}
+
+/* ══════════════════════════
+   RENDER
+══════════════════════════ */
+function render(s){
+  STUDENT_DATA = s;
+
+  /* sidebar */
+  $('sPhoto').src = s.photo||'';
+  $('sName').textContent = s.name||s.full_name||'—';
+  $('sAdmNo').textContent = 'ID: '+(s.admission_no||s.id||'—');
+  $('sStatusTxt').textContent = s.admission_status||'Active';
+  const stMap={'active':'badge-lime','pending':'badge-amb','inactive':'badge-red'};
+  $('sBadge').className='badge '+(stMap[(s.admission_status||'active').toLowerCase()]||'badge-lime');
+
+  /* hero pills */
+  $('heroSub').textContent = s.academic_year?'Academic Year '+s.academic_year:'Academic Year 2026–27';
+  $('heroStatus').textContent = s.admission_status||'Active';
+  $('heroClass').textContent = s.class ? 'Class '+s.class : 'Student';
+  $('heroSyllabus').textContent = s.syllabus||'SEHR Academy';
+
+  /* print date */
+  $('printDate').textContent = 'Printed: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+
+  const sbRows=[
+    ['Class','Class '+v(s.class)],
+    ['Syllabus',v(s.syllabus)],
+    ['Section',v(s.section||s.batch)],
+    ['Roll No.',v(s.roll_no)],
+    ['Gender',v(s.gender)],
+  ].filter(r=>r[1]!=='—');
+  $('sidebarRows').innerHTML=sbRows.map(([l,vl])=>`<div class="id-row"><span class="id-rlbl">${l}</span><span class="id-rval">${vl}</span></div>`).join('');
+
+  /* build main sections */
+  let html='';
+
+  /* ① Personal */
+  const per=[
+    ['Full Name',v(s.name||s.full_name)],
+    ['Date of Birth',fmtDate(s.birthday||s.dob)],
+    ['Age',v(s.age)],
+    ['Gender',v(s.gender)],
+    ['Blood Group',v(s.blood_group)],
+    ['Nationality',(v(s.nationality)!=='—'?v(s.nationality):'Indian')],
+    ['Mother Tongue',v(s.mother_tongue)],
+    ['Religion',v(s.religion)],
+    ['Category',v(s.category)],
+    ['Aadhaar',s.aadhaar_no?maskAadhaar(s.aadhaar_no):'—'],
+  ].filter(([,vl])=>vl!=='—');
+  html+=sec('Personal Details','user',null,`<div class="info-grid">${per.map(([l,vl])=>ic(l,vl)).join('')}</div>`);
+
+  /* ② Academic */
+  const ac=[
+    ['Class','Class '+v(s.class)],
+    ['Syllabus / Board',v(s.syllabus)],
+    ['Section / Batch',v(s.section||s.batch)],
+    ['Roll No.',v(s.roll_no)],
+    ['Academic Year',v(s.academic_year)||'2026–27'],
+    ['School / College',v(s.school_name)],
+    ['Faculty / Tutor',v(s.tutor||s.faculty||s.teacher)],
+    ['Exam Target',v(s.exam_target||s.target)],
+    ['Medium',v(s.medium)],
+    ['Prev. Grade',v(s.previous_grade||s.last_grade)],
+    ['Admission Type',v(s.admission_type)],
+  ].filter(([,vl])=>vl!=='—');
+  html+=sec('Academic Information','school',null,`<div class="info-grid">${ac.map(([l,vl])=>ic(l,vl)).join('')}</div>`);
+
+  /* ③ Subjects */
+  if(s.subjects){
+    const subs=s.subjects.split(',').map(x=>x.trim()).filter(Boolean);
+    if(subs.length){
+      const rows=subs.map(sub=>{
+        const t=s['teacher_'+sub.toLowerCase().replace(/\s/g,'_')]||'';
+        return`<div class="sub-row">
+          <div><div class="sub-name">${sub}</div>${t?`<div class="sub-teacher">${t}</div>`:''}</div>
+          <span class="chip chip-lime">Enrolled</span>
+        </div>`;
+      }).join('');
+      html+=sec('Enrolled Subjects','book',subs.length+' subjects',`<div>${rows}</div>`);
+    }
+  }
+
+  /* ④ Schedule */
+  if(s.schedule||s.batch_days||s.class_timing){
+    let sb='';
+    if(s.schedule&&Array.isArray(s.schedule)&&s.schedule.length){
+      sb=`<table class="sched-table"><thead><tr><th>Day</th><th>Time</th><th>Subject</th><th>Venue</th></tr></thead><tbody>`;
+      s.schedule.forEach(d=>{sb+=`<tr><td><span class="day-tag">${d.day.slice(0,2).toUpperCase()}</span>${d.day}</td><td>${d.time||'—'}</td><td>${d.subject||'—'}</td><td><span class="chip chip-ink">${d.room||'Main Hall'}</span></td></tr>`;});
+      sb+=`</tbody></table>`;
+    } else {
+      const sc=[['Batch Days',v(s.batch_days)],['Class Timing',v(s.class_timing)],['Batch',v(s.batch)],['Sessions / Week',v(s.sessions_per_week)],['Duration',v(s.session_duration)],['Mode',(v(s.mode)!=='—'?v(s.mode):'Offline')]].filter(([,vl])=>vl!=='—');
+      sb=`<div class="info-grid">${sc.map(([l,vl])=>ic(l,vl)).join('')}</div>`;
+    }
+    html+=sec('Class Schedule','cal',null,sb);
+  }
+
+  /* ⑤ Fee */
+  if(s.total_fee||s.total_paid!==undefined||s.fee_terms){
+    const tot=s.total_fee||0, paid=s.total_paid||0;
+    const pct=tot>0?Math.round((paid/tot)*100):0;
+    const fillCls=pct===100?'full':pct<40?'warn':'';
+    let fb=`<div class="info-grid" style="margin-bottom:16px">`;
+    if(tot) fb+=ic('Total Fee','₹'+tot.toLocaleString('en-IN'));
+    if(s.total_paid!==undefined) fb+=ic('Amount Paid','₹'+paid.toLocaleString('en-IN'));
+    const due=tot-paid;if(due>0) fb+=ic('Balance Due','₹'+due.toLocaleString('en-IN'),'amb');
+    if(s.fee_frequency) fb+=ic('Payment Plan',v(s.fee_frequency));
+    if(s.discount) fb+=ic('Discount',v(s.discount));
+    if(s.concession) fb+=ic('Concession',v(s.concession));
+    fb+=`</div>`;
+    if(tot>0) fb+=`<div><div class="prog-row"><span class="prog-lbl">Payment Progress</span><span class="prog-pct">${pct}%</span></div><div class="prog-track"><div class="prog-fill ${fillCls}" style="width:0%" data-w="${pct}%"></div></div></div>`;
+    if(s.fee_terms&&s.fee_terms.length){
+      fb+=`<div class="idivider"></div><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Instalment Plan</div><div class="fee-list">`;
+      s.fee_terms.forEach(t=>{const pd=t.paid||false;fb+=`<div class="fee-item"><div class="fee-dot ${pd?'paid':'pend'}"></div><div class="fee-info"><div class="fee-name">${t.name||'Term'}</div>${t.due_date?`<div class="fee-date">Due: ${t.due_date}</div>`:''}</div><span class="fee-amt">₹${(t.amount||0).toLocaleString('en-IN')}</span><span class="chip ${pd?'chip-grn':'chip-amb'}">${pd?'Paid':'Pending'}</span></div>`;});
+      fb+=`</div>`;
+    }
+    html+=sec('Fee & Payment','rupee',null,fb);
+  }
+
+  /* ⑥ Remarks */
+  if(s.remarks&&s.remarks.length){
+    const rb=s.remarks.map(r=>{
+      const txt=typeof r==='string'?r:(r.remark||r.text||'');
+      const tch=typeof r==='object'?(r.teacher||''):'';
+
+      const dt=typeof r==='object'?(r.date||''):'';
+      return`<div class="remark-card"><div class="remark-stripe"></div><div class="remark-inner"><div class="remark-text">${txt}</div>${(tch||dt)?`<div class="remark-meta">${tch}${tch&&dt?' · ':''}${dt}</div>`:''}</div></div>`;
+    }).join('');
+    html+=sec('Teacher Remarks','msg',s.remarks.length+' remarks',rb,true);
+  }
+
+  /* ⑦ Scholarship */
+  if(s.scholarship||s.achievements){
+    let ab=`<div class="info-grid">`;
+    if(s.scholarship) ab+=ic('Scholarship',v(s.scholarship),'lime');
+    if(s.discount_reason) ab+=ic('Discount Reason',v(s.discount_reason));
+    ab+=`</div>`;
+    if(s.achievements&&s.achievements.length){
+      ab+=`<div class="idivider"></div><div class="chips-wrap">`;
+      s.achievements.forEach(a=>{const t=typeof a==='string'?a:(a.title||'');ab+=`<span class="chip chip-lime">${t}</span>`;});
+      ab+=`</div>`;
+    }
+    html+=sec('Scholarship & Awards','award',null,ab);
+  }
+
+  /* ⑧ Contact */
+  const ct=[
+    ['Parent / Guardian',v(s.parent_name||s.guardian_name)],
+    ['Relationship',v(s.guardian_relation)],
+    ['Phone',v(s.phone||s.contact)],
+    ['Alt. Phone',v(s.phone_alt||s.alt_contact)],
+    ['Email',v(s.email)],
+    ['Address',v(s.address)],
+    ['City / Town',v(s.city||s.town)],
+    ['District',(v(s.district)!=='—'?v(s.district):'Thrissur')],
+    ['State',(v(s.state)!=='—'?v(s.state):'Kerala')],
+    ['PIN Code',v(s.pincode)],
+    ['Emergency Contact',v(s.emergency_contact)],
+  ].filter(([,vl])=>vl!=='—');
+  html+=sec('Contact & Emergency','phone',null,`<div class="info-grid">${ct.map(([l,vl])=>ic(l,vl)).join('')}</div>`,true);
+
+  /* ⑨ Key Dates */
+  const ds=[
+    ['Date of Birth',fmtDate(s.birthday||s.dob)],
+    ['Admission Date',fmtDate(s.joining_date||s.admission_date)],
+    ['Class Start',fmtDate(s.class_start_date||s.start_date)],
+    ['Year Start',fmtMon(s.academic_year_start)],
+    ['Year End',fmtMon(s.academic_year_end)],
+    ['Exam Date',fmtDate(s.exam_date)],
+    ['Next Fee Due',fmtDate(s.next_fee_date)],
+    ['Last Updated',fmtDate(s.updated_at||s.last_updated)],
+  ].filter(([,vl])=>vl!=='—'&&vl!=='Invalid Date');
+  html+=sec('Key Dates','cal',null,`<div class="info-grid">${ds.map(([l,vl])=>ic(l,vl)).join('')}</div>`);
+
+  /* ⑩ Institution */
+  const inst=[
+    ['Institution','SEHR Academy'],
+    ['Address','447A, Priyadarshini Road, Vadanapally, Thrissur – 680 614'],
+    ['Phone 1','+91 95394 09586'],
+    ['Phone 2','+91 90377 89586'],
+    ['Website','sehracademy.com'],
+    ['Reg. No.',v(s.registration_no)],
+    ['Document Ref.',v(s.admission_no||s.id)],
+    ['Issued On',fmtDate(new Date().toISOString())],
+  ].filter(([,vl])=>vl!=='—');
+  html+=sec('Institution Details','info',null,`<div class="info-grid">${inst.map(([l,vl])=>ic(l,vl)).join('')}</div>
+    <div class="idivider"></div>
+    <div><div class="icell-lbl">Official Statement</div>
+    <div class="icell-val sm">This document confirms the admission of the above-named student to SEHR Academy for the stated academic year. This is a computer-generated record and is valid without a physical signature.</div></div>`);
+
+  $('mainContent').innerHTML=html;
+
+  /* animate progress bars */
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.prog-fill[data-w]').forEach(el=>{
+      setTimeout(()=>{ el.style.width=el.dataset.w; },300);
+    });
+  });
+
+  /* scroll reveal */
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  initCollapsible();
+
+  $('skeletonScreen').classList.add('hidden');
+  $('loginScreen').classList.add('hidden');
+  $('admScreen').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+function maskAadhaar(a){
+  const s=String(a).replace(/\s/g,'');
+  return s.length>=4?'XXXX-XXXX-'+s.slice(-4):s;
+}
+</script>
+</body>
+</html>
