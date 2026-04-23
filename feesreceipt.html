@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fee Receipt — SEHR Academy</title>
+<meta name="theme-color" content="#8BC53F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18; --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --red-bg:#fef2f2; --red-mid:#fca5a5;
+  --amber:#d97706; --amber-bg:#fffbeb; --amber-mid:#fde68a;
+  --blue:#2563eb; --blue-bg:#eff6ff; --blue-mid:#bfdbfe;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+  --sh-lg:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden;min-height:100vh}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s var(--ease);opacity:0;pointer-events:none}
+#loader.on{opacity:1;pointer-events:all}
+#loader::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+.ld{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.ld-brand{font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:36px;display:flex;align-items:center;gap:10px}
+.ld-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.6)}50%{box-shadow:0 0 0 8px rgba(139,197,63,0)}}
+.ld-ring{position:relative;width:64px;height:64px;margin-bottom:32px}
+.ldr-track{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.07)}
+.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(139,197,63,.3);animation:rspin .9s linear infinite}
+.ldr-inner{position:absolute;inset:11px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(139,197,63,.4);animation:rspin .9s linear infinite reverse}
+.ldr-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px rgba(139,197,63,.6)}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ld-txt{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;animation:ltxt 1.8s ease-in-out infinite}
+@keyframes ltxt{0%,100%{opacity:.3}50%{opacity:.7}}
+.ld-bar{width:150px;height:1px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--lime-3),var(--lime),#a6dc52);animation:lfill 1.4s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes lfill{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
+
+/* ── LOGIN ── */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400}
+#loginWrap.gone{display:none}
+#loginWrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--rule)1px,transparent 1px),linear-gradient(90deg,var(--rule)1px,transparent 1px);background-size:48px 48px;opacity:.3}
+.lbox{position:relative;z-index:1;background:var(--white);border:1.5px solid var(--cream-3);border-left:4px solid var(--lime);border-radius:6px;width:100%;max-width:370px;box-shadow:var(--sh-lg);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 28px 22px;position:relative;overflow:hidden}
+.lbox-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.lbox-head::after{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.15),transparent 70%)}
+.lbox-logo{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px;display:flex;align-items:center;gap:7px;position:relative;z-index:1}
+.lbox-logodot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
+.lbox-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1;position:relative;z-index:1}
+.lbox-sub{font-size:11px;color:rgba(255,255,255,.3);margin-top:4px;position:relative;z-index:1}
+.lbox-body{padding:24px 28px 28px}
+.lbox-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.lbox-label svg{width:11px;height:11px;color:var(--lime)}
+.lbox-input{width:100%;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.lbox-input::placeholder{color:var(--pale);font-weight:400}
+.lbox-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.lbox-btn:hover:not(:disabled){background:var(--lime-2)}
+.lbox-btn:disabled{opacity:.6;cursor:default}
+.lbox-btn svg{width:13px;height:13px}
+.lbox-err{display:none;margin-top:12px;padding:9px 12px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:4px;font-size:12px;font-weight:600;color:var(--red)}
+.lbox-err.on{display:block}
+
+/* ── APP ── */
+#app{display:none}
+#app.on{display:block}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--ink);position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 65%);pointer-events:none}
+.topbar-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px;position:relative;z-index:1}
+.topbar-brand{display:flex;align-items:center;gap:12px}
+.topbar-logo{font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.topbar-logo span{color:var(--lime)}
+.topbar-divider{width:1px;height:22px;background:rgba(255,255,255,.15)}
+.topbar-page{font-size:12px;color:rgba(255,255,255,.45);font-weight:500}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+.logout-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);font-family:var(--f);font-size:11px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .18s}
+.logout-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+.logout-btn svg{width:12px;height:12px}
+
+/* ── MAIN ── */
+.main{max-width:1100px;margin:0 auto;padding:32px 32px 80px;display:grid;grid-template-columns:380px 1fr;gap:28px;align-items:start}
+
+/* ── FORM PANEL ── */
+.form-panel{background:var(--white);border:1.5px solid var(--cream-3);border-radius:10px;box-shadow:var(--sh-md);overflow:hidden;position:sticky;top:24px}
+.form-panel-head{background:var(--ink);padding:20px 24px;position:relative;overflow:hidden}
+.form-panel-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.form-panel-head::after{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 70%)}
+.fph-kicker{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;position:relative;z-index:1;display:flex;align-items:center;gap:7px}
+.fph-kicker::before{content:'';width:14px;height:2px;background:var(--lime)}
+.fph-title{font-size:17px;font-weight:800;color:#fff;position:relative;z-index:1;letter-spacing:-.3px}
+.fph-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;position:relative;z-index:1}
+.form-body{padding:22px 24px}
+.fgrp{margin-bottom:18px}
+.fgrp:last-child{margin-bottom:0}
+.flabel{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:7px}
+.flabel svg{width:11px;height:11px;color:var(--lime)}
+.fselect,.finput{width:100%;padding:11px 14px;border:1.5px solid var(--cream-3);border-radius:6px;background:var(--cream);font-family:var(--f);font-size:13px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s;appearance:none}
+.fselect{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238BC53F' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;background-color:var(--cream)}
+.fselect:focus,.finput:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.fselect:disabled{color:var(--pale);cursor:default;opacity:.6}
+.finput::placeholder{color:var(--pale);font-weight:400}
+.finput.amount{font-size:18px;font-weight:800;letter-spacing:-.3px;color:var(--lime-2)}
+.finput.amount::placeholder{font-size:14px;font-weight:400;color:var(--pale)}
+.amount-wrap{position:relative}
+.amount-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:800;color:var(--lime-2);pointer-events:none}
+.finput.amount{padding-left:28px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fdivider{height:1px;background:var(--rule);margin:20px 0}
+.fsection-lbl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pale);margin-bottom:14px}
+.fdate-note{font-size:10px;color:var(--muted);margin-top:5px;font-weight:500}
+.fsubmit{width:100%;padding:13px;border:none;border-radius:6px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s,transform .12s;box-shadow:0 4px 14px rgba(139,197,63,.3);margin-top:6px}
+.fsubmit:hover:not(:disabled){background:var(--lime-2);transform:translateY(-1px)}
+.fsubmit:disabled{opacity:.5;cursor:default;transform:none}
+.fsubmit svg{width:14px;height:14px}
+.fprint{width:100%;padding:10px;border:1.5px solid var(--cream-3);border-radius:6px;background:var(--white);color:var(--muted);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .18s;margin-top:8px}
+.fprint:hover{border-color:var(--lime);color:var(--lime-2);background:var(--lime-bg)}
+.fprint svg{width:13px;height:13px}
+.receipt-no-wrap{display:flex;align-items:center;gap:8px}
+.receipt-no-wrap .finput{flex:1}
+.gen-btn{padding:10px 12px;border:1.5px solid var(--lime-mid);border-radius:6px;background:var(--lime-bg);color:var(--lime-2);font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s}
+.gen-btn:hover{background:var(--lime);color:var(--ink)}
+
+/* ── RECEIPT PREVIEW ── */
+.receipt-preview-wrap{position:relative}
+.preview-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pale);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.preview-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+/* ── THE ACTUAL RECEIPT ── */
+.receipt{background:var(--white);border:1px solid var(--cream-3);border-radius:10px;box-shadow:var(--sh-lg);overflow:hidden;position:relative}
+
+/* Receipt header */
+.receipt-header{background:var(--ink);padding:28px 36px 24px;position:relative;overflow:hidden}
+.receipt-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:32px 32px}
+.receipt-header::after{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.14),transparent 65%);pointer-events:none}
+.rh-top-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--lime),var(--lime-2),rgba(139,197,63,.2))}
+.rh-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.rh-brand{display:flex;align-items:center;gap:16px}
+.rh-brand-info{}
+.rh-academy-name{font-size:19px;font-weight:800;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:3px}
+.rh-academy-name span{color:var(--lime)}
+.rh-academy-sub{font-size:10px;color:rgba(255,255,255,.4);font-weight:500;letter-spacing:.04em}
+.rh-right{text-align:right}
+.rh-receipt-label{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px}
+.rh-receipt-num{font-size:22px;font-weight:800;color:var(--lime);letter-spacing:-.5px;line-height:1}
+.rh-receipt-date{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;font-weight:500}
+
+/* Receipt body */
+.receipt-body{padding:28px 36px}
+
+/* Student info strip */
+.stu-strip{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--cream);border-radius:8px;margin-bottom:24px;border:1px solid var(--cream-3)}
+.stu-avatar{width:46px;height:46px;border-radius:50%;background:var(--cream-2);border:2px solid var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--lime-2);overflow:hidden}
+.stu-avatar img{width:100%;height:100%;object-fit:cover}
+.stu-info{flex:1}
+.stu-name{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.2px;margin-bottom:3px}
+.stu-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stu-tag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;border:1px solid}
+.stu-tag.cls{background:var(--lime-bg);border-color:rgba(139,197,63,.3);color:var(--lime-2)}
+.stu-tag.syl{background:var(--blue-bg);border-color:var(--blue-mid);color:var(--blue)}
+.stu-tag.sch{background:var(--cream-2);border-color:var(--rule);color:var(--muted)}
+.stu-adm{font-size:11px;font-weight:700;color:var(--pale)}
+
+/* Fee details table */
+.fee-table{width:100%;border-collapse:collapse;margin-bottom:20px}
+.fee-table th{padding:9px 14px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--pale);text-align:left;background:var(--cream);border-bottom:2px solid var(--cream-3)}
+.fee-table th:last-child{text-align:right}
+.fee-table td{padding:12px 14px;border-bottom:1px solid var(--rule);font-size:13px;vertical-align:middle}
+.fee-table td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.fee-table tr:last-child td{border-bottom:none}
+.fee-table .fee-desc{font-weight:600;color:var(--ink)}
+.fee-table .fee-note{font-size:10px;color:var(--muted);margin-top:2px;font-weight:400}
+.fee-table .fee-grn{color:var(--lime-2)}
+
+/* Amount paid row — big highlight */
+.amount-row{background:var(--ink);border-radius:8px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;overflow:hidden}
+.amount-row::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:24px 24px}
+.amount-row::after{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.15),transparent 70%)}
+.ar-left{position:relative;z-index:1}
+.ar-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px}
+.ar-mode{font-size:11px;color:rgba(255,255,255,.5);font-weight:500;margin-top:3px}
+.ar-amount{font-size:32px;font-weight:800;color:var(--lime);letter-spacing:-1px;line-height:1;position:relative;z-index:1;font-variant-numeric:tabular-nums}
+.ar-words{font-size:11px;color:rgba(255,255,255,.35);margin-top:6px;font-style:italic;position:relative;z-index:1}
+
+/* Balance section */
+.balance-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.bal-cell{background:var(--cream);border-radius:7px;padding:14px 16px;text-align:center;border:1px solid var(--cream-3)}
+.bal-val{font-size:17px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:4px}
+.bal-val.grn{color:var(--lime-2)}
+.bal-val.red{color:var(--red)}
+.bal-val.ink{color:var(--ink)}
+.bal-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale)}
+
+/* Paid stamp */
+.stamp-area{display:flex;align-items:flex-end;justify-content:space-between;padding-top:20px;border-top:1px dashed var(--rule);gap:16px}
+.stamp-sig{flex:1}
+.stamp-sig-line{border-top:1.5px solid var(--rule);margin-top:40px;margin-bottom:6px}
+.stamp-sig-lbl{font-size:10px;font-weight:600;color:var(--pale);letter-spacing:.06em}
+.stamp-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+.paid-stamp{width:110px;height:110px;border-radius:50%;border:3px solid var(--lime-2);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;transform:rotate(-12deg)}
+.paid-stamp::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1.5px dashed rgba(139,197,63,.4)}
+.paid-stamp-top{font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--lime-3);margin-bottom:2px}
+.paid-stamp-main{font-size:22px;font-weight:800;color:var(--lime-2);letter-spacing:.04em;line-height:1}
+.paid-stamp-date{font-size:8px;font-weight:700;color:var(--lime-3);margin-top:3px;letter-spacing:.06em}
+.unpaid-stamp{width:110px;height:110px;border-radius:50%;border:3px solid var(--pale);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;transform:rotate(-12deg);opacity:.35}
+.unpaid-stamp::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1.5px dashed var(--rule)}
+.unpaid-stamp-main{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:.04em;line-height:1;text-align:center;padding:0 8px}
+
+/* Receipt footer */
+.receipt-footer{background:var(--cream);border-top:1px solid var(--cream-3);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.rf-brand{font-size:11px;font-weight:800;color:var(--ink-2);letter-spacing:.06em}
+.rf-brand span{color:var(--lime)}
+.rf-contact{display:flex;gap:16px;font-size:10px;color:var(--muted)}
+.rf-note{font-size:9px;color:var(--pale);font-style:italic;text-align:center;width:100%;padding-top:6px;border-top:1px solid var(--rule);margin-top:6px}
+
+/* Empty state */
+.receipt-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;padding:48px 32px;text-align:center;color:var(--muted)}
+.re-icon{width:72px;height:72px;border-radius:50%;background:var(--cream);border:1.5px solid var(--cream-3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.re-icon svg{width:30px;height:30px;color:var(--lime-mid)}
+.re-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.re-sub{font-size:12px;color:var(--muted)}
+
+/* ── PRINT STYLES ── */
+@media print {
+  body{background:#fff!important}
+  .topbar,.form-panel,.preview-label,.fprint,.fsubmit{display:none!important}
+  .main{display:block;padding:0;max-width:none}
+  .receipt-preview-wrap{padding:0}
+  .receipt{box-shadow:none;border-radius:0;border:none}
+  .receipt-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .amount-row{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .paid-stamp{border-color:var(--lime-2)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .main{grid-template-columns:1fr;gap:20px;padding:20px 18px 60px}
+  .form-panel{position:static}
+}
+@media(max-width:640px){
+  .main{padding:16px 14px 56px}
+  .topbar-inner{padding:0 16px}
+  .receipt-header,.receipt-body{padding-left:20px;padding-right:20px}
+  .receipt-footer{padding:12px 20px}
+  .balance-grid{grid-template-columns:1fr 1fr}
+  .rh-inner{flex-direction:column;align-items:flex-start;gap:12px}
+  .stamp-area{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld">
+    <div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div>
+    <div class="ld-ring"><div class="ldr-track"></div><div class="ldr-spin"></div><div class="ldr-inner"></div><div class="ldr-dot"></div></div>
+    <div class="ld-txt">Loading student data</div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-logo"><div class="lbox-logodot"></div>SEHR Academy</div>
+      <div class="lbox-title">Fee Receipt</div>
+      <div class="lbox-sub">Admin access required</div>
+    </div>
+    <div class="lbox-body">
+      <form id="loginForm">
+        <div class="lbox-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Admin Password
+        </div>
+        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" id="loginBtn" class="lbox-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Access Receipt Maker
+        </button>
+        <div class="lbox-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <div class="topbar-logo">SEHR <span>ACADEMY</span></div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-page">Fee Receipt Generator</div>
+      </div>
+      <div class="topbar-actions">
+        <span class="tb-pill">Live Data</span>
+        <button class="logout-btn" id="btnLogout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- LEFT: FORM -->
+    <div class="form-panel">
+      <div class="form-panel-head">
+        <div class="fph-kicker">Generate Receipt</div>
+        <div class="fph-title">Fill in details below</div>
+        <div class="fph-sub">Receipt auto-previews on the right</div>
+      </div>
+      <div class="form-body">
+
+        <!-- Student Selection -->
+        <div class="fsection-lbl">Student Details</div>
+
+        <div class="fgrp">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Class
+          </div>
+          <select class="fselect" id="classSelect">
+            <option value="">— Select class —</option>
+          </select>
+        </div>
+
+        <div class="fgrp">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Syllabus
+          </div>
+          <select class="fselect" id="sylSelect" disabled>
+            <option value="">— Select class first —</option>
+          </select>
+        </div>
+
+        <div class="fgrp">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Student Name
+          </div>
+          <select class="fselect" id="studentSelect" disabled>
+            <option value="">— Select syllabus first —</option>
+          </select>
+        </div>
+
+        <div class="fdivider"></div>
+
+        <!-- Payment Details -->
+        <div class="fsection-lbl">Payment Details</div>
+
+        <div class="fgrp">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Amount Received (₹)
+          </div>
+          <div class="amount-wrap">
+            <span class="amount-prefix">₹</span>
+            <input type="number" class="finput amount" id="amountInput" placeholder="0" min="0" step="1">
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fgrp" style="margin-bottom:0">
+            <div class="flabel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Payment Mode
+            </div>
+            <select class="fselect" id="modeSelect">
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Cheque">Cheque</option>
+              <option value="DD">Demand Draft</option>
+            </select>
+          </div>
+          <div class="fgrp" style="margin-bottom:0">
+            <div class="flabel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Date of Payment
+            </div>
+            <input type="date" class="finput" id="dateInput">
+          </div>
+        </div>
+
+        <div class="fgrp" style="margin-top:18px">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Payment For (Description)
+          </div>
+          <select class="fselect" id="purposeSelect">
+            <option value="Tuition Fee">Tuition Fee</option>
+            <option value="Admission Fee">Admission Fee</option>
+            <option value="June Instalment">June Instalment</option>
+            <option value="September Instalment">September Instalment</option>
+            <option value="Monthly Fee">Monthly Fee</option>
+            <option value="Exam Fee">Exam Fee</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="fgrp" id="otherPurposeGrp" style="display:none">
+          <div class="flabel">Specify Purpose</div>
+          <input type="text" class="finput" id="otherPurposeInput" placeholder="Enter description…">
+        </div>
+
+        <div class="fdivider"></div>
+
+        <!-- Receipt Number -->
+        <div class="fsection-lbl">Receipt Info</div>
+
+        <div class="fgrp">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Receipt Number
+          </div>
+          <div class="receipt-no-wrap">
+            <input type="text" class="finput" id="receiptNo" placeholder="e.g. SEHR-2025-001">
+            <button class="gen-btn" id="genReceiptNo" type="button">Auto</button>
+          </div>
+        </div>
+
+        <div class="fgrp">
+          <div class="flabel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Remarks (optional)
+          </div>
+          <input type="text" class="finput" id="remarksInput" placeholder="Any notes for this receipt…">
+        </div>
+
+        <div class="fdivider"></div>
+
+        <button class="fprint" id="btnPrint" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print Receipt
+        </button>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: RECEIPT PREVIEW -->
+    <div class="receipt-preview-wrap">
+      <div class="preview-label">Live Receipt Preview</div>
+
+      <div class="receipt" id="receiptDoc">
+
+        <!-- Empty state -->
+        <div class="receipt-empty" id="receiptEmpty">
+          <div class="re-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="re-title">Receipt preview will appear here</div>
+          <div class="re-sub">Select a student and enter payment amount to begin</div>
+        </div>
+
+        <!-- Filled receipt (hidden until student + amount selected) -->
+        <div id="receiptFilled" style="display:none">
+
+          <!-- Header -->
+          <div class="receipt-header">
+            <div class="rh-top-bar"></div>
+            <div class="rh-inner">
+              <div class="rh-brand">
+                <div class="rh-brand-info">
+                  <div class="rh-academy-name">SEHR <span>ACADEMY</span></div>
+                  <div class="rh-academy-sub">Vatanappally, Thrissur, Kerala</div>
+                  <div class="rh-academy-sub" style="margin-top:1px">+91 95394 09586 · sehracademy.com</div>
+                </div>
+              </div>
+              <div class="rh-right">
+                <div class="rh-receipt-label">Fee Receipt</div>
+                <div class="rh-receipt-num" id="rReceiptNo">SEHR-001</div>
+                <div class="rh-receipt-date" id="rDate">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="receipt-body">
+
+            <!-- Student strip -->
+            <div class="stu-strip">
+              <div class="stu-avatar" id="rAvatar">—</div>
+              <div class="stu-info">
+                <div class="stu-name" id="rName">—</div>
+                <div class="stu-meta" id="rMeta"></div>
+              </div>
+              <div class="stu-adm" id="rAdmNo"></div>
+            </div>
+
+            <!-- Fee table -->
+            <table class="fee-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Description</th>
+                  <th>Subjects</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="rFeeBody"></tbody>
+            </table>
+
+            <!-- Amount paid big row -->
+            <div class="amount-row">
+              <div class="ar-left">
+                <div class="ar-label">Amount Received</div>
+                <div class="ar-amount" id="rAmount">₹0</div>
+                <div class="ar-words" id="rAmountWords">—</div>
+                <div class="ar-mode" id="rMode">—</div>
+              </div>
+            </div>
+
+            <!-- Balance grid -->
+            <div class="balance-grid">
+              <div class="bal-cell">
+                <div class="bal-val ink" id="rTotalFee">—</div>
+                <div class="bal-lbl">Total Fee</div>
+              </div>
+              <div class="bal-cell">
+                <div class="bal-val grn" id="rTotalPaid">—</div>
+                <div class="bal-lbl">Total Paid</div>
+              </div>
+              <div class="bal-cell">
+                <div class="bal-val red" id="rBalance">—</div>
+                <div class="bal-lbl">Balance Due</div>
+              </div>
+            </div>
+
+            <!-- Remarks -->
+            <div id="rRemarksRow" style="margin-bottom:16px;display:none">
+              <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-bottom:4px">Remarks</div>
+              <div style="font-size:12px;color:var(--muted);font-style:italic" id="rRemarks"></div>
+            </div>
+
+            <!-- Stamp + signature -->
+            <div class="stamp-area">
+              <div class="stamp-sig">
+                <div class="stamp-sig-line"></div>
+                <div class="stamp-sig-lbl">Authorised Signatory — SEHR Academy</div>
+              </div>
+              <div class="stamp-wrap" id="stampWrap">
+                <!-- JS renders stamp here -->
+              </div>
+            </div>
+
+          </div><!-- /receipt-body -->
+
+          <!-- Footer -->
+          <div class="receipt-footer">
+            <div class="rf-brand">SEHR <span>ACADEMY</span></div>
+            <div class="rf-contact">
+              <span>Vatanappally, Thrissur</span>
+              <span>+91 95394 09586</span>
+              <span>sehracademy.com</span>
+            </div>
+            <div class="rf-note">This is a computer-generated receipt and is valid without signature. Please retain for your records.</div>
+          </div>
+
+        </div><!-- /receiptFilled -->
+      </div><!-- /receipt -->
+    </div><!-- /receipt-preview-wrap -->
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
+var S = [];
+var receiptCounter = parseInt(localStorage.getItem('sehr_receipt_counter') || '1');
+
+/* ── UTILS ── */
+function g(id){ return document.getElementById(id); }
+function fmtN(n){ return Number(n||0).toLocaleString('en-IN'); }
+function fmtRs(n){ return '₹' + fmtN(n); }
+function fmtDate(d){
+  if (!d) return '—';
+  var dt = new Date(d);
+  return isNaN(dt.getTime()) ? String(d) : dt.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+}
+function inits(n){ return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
+function loaderOn(){ g('loader').classList.add('on'); }
+function loaderOff(){ g('loader').classList.remove('on'); }
+
+function norm(s){
+  return {
+    id:               String(s.id||''),
+    admission_no:     String(s.admission_no||''),
+    full_name:        String(s.full_name||''),
+    class:            String(s.class||''),
+    syllabus:         String(s.syllabus||''),
+    school_name:      String(s.school_name||''),
+    parent_name:      String(s.parent_name||''),
+    contact:          String(s.contact||''),
+    photo:            String(s.photo||''),
+    subjects:         String(s.subjects||''),
+    monthly_fee:      Number(s.monthly_fee||0),
+    total_months:     Number(s.total_months||0),
+    total_fee:        Number(s.total_fee||0),
+    admission_amount: Number(s.admission_amount||0),
+    june_amount:      Number(s.june_amount||0),
+    september_amount: Number(s.september_amount||0),
+    total_paid:       Number(s.total_paid||0),
+    balance:          Number(s.balance||0),
+    status:           String(s.status||'').toUpperCase().trim(),
+    next_due:         String(s.next_due||''),
+    next_due_amount:  Number(s.next_due_amount||0),
+    current_academic_year: String(s.current_academic_year||''),
+    admission_paid:   Number(s.admission_paid||0),
+    june_paid:        Number(s.june_paid||0),
+    september_paid:   Number(s.september_paid||0),
+    admission_pending:Number(s.admission_pending||0),
+    june_pending:     Number(s.june_pending||0),
+    september_pending:Number(s.september_pending||0),
+  };
+}
+
+/* ── LOGIN ── */
+g('loginForm').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var pass = g('passInput').value.trim();
+  if (!pass) return;
+  var btn = g('loginBtn');
+  btn.disabled = true; btn.textContent = 'Authenticating…';
+  g('loginErr').className = 'lbox-err';
+  loaderOn();
+  fetch(API + '?action=studentList&password=' + encodeURIComponent(pass))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.error){
+        loaderOff(); btn.disabled=false; btn.textContent='Access Receipt Maker';
+        g('loginErr').textContent='Incorrect password.';
+        g('loginErr').className='lbox-err on';
+        return;
+      }
+      var raw = Array.isArray(data)?data:Array.isArray(data.students)?data.students:[];
+      S = raw.map(norm);
+      sessionStorage.setItem('sehr_pass', pass);
+      g('loginWrap').classList.add('gone');
+      g('app').classList.add('on');
+      loaderOff();
+      initApp();
+    })
+    .catch(function(){
+      loaderOff(); btn.disabled=false; btn.textContent='Access Receipt Maker';
+      g('loginErr').textContent='Connection error — check your network.';
+      g('loginErr').className='lbox-err on';
+    });
+});
+
+/* ── INIT ── */
+function initApp(){
+  // Set today's date
+  var today = new Date();
+  g('dateInput').value = today.toISOString().slice(0,10);
+
+  // Generate first receipt number
+  g('receiptNo').value = genReceiptNum();
+
+  buildClassDropdown();
+  wireFormListeners();
+}
+
+/* ── RECEIPT NUMBER ── */
+function genReceiptNum(){
+  var yr = new Date().getFullYear();
+  var num = String(receiptCounter).padStart(3,'0');
+  return 'SEHR-' + yr + '-' + num;
+}
+
+g('genReceiptNo').addEventListener('click', function(){
+  receiptCounter++;
+  localStorage.setItem('sehr_receipt_counter', receiptCounter);
+  g('receiptNo').value = genReceiptNum();
+  updatePreview();
+});
+
+/* ── DROPDOWNS ── */
+function buildClassDropdown(){
+  var classes = [];
+  var seen = {};
+  S.forEach(function(s){
+    if (s.class && !seen[s.class]){ seen[s.class]=true; classes.push(s.class); }
+  });
+  classes.sort(function(a,b){
+    var na=parseInt(a)||0, nb=parseInt(b)||0;
+    return na!==nb ? na-nb : a.localeCompare(b);
+  });
+  var sel = g('classSelect');
+  sel.innerHTML = '<option value="">— Select class —</option>';
+  classes.forEach(function(c){
+    var opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = 'Class ' + c;
+    sel.appendChild(opt);
+  });
+}
+
+function buildSylDropdown(cls){
+  var syls = [];
+  var seen = {};
+  S.filter(function(s){ return s.class===cls; }).forEach(function(s){
+    if (s.syllabus && !seen[s.syllabus]){ seen[s.syllabus]=true; syls.push(s.syllabus); }
+  });
+  syls.sort();
+  var sel = g('sylSelect');
+  sel.innerHTML = '<option value="">— Select syllabus —</option>';
+  syls.forEach(function(sy){
+    var opt = document.createElement('option');
+    opt.value = sy; opt.textContent = sy;
+    sel.appendChild(opt);
+  });
+  sel.disabled = syls.length === 0;
+  // If only one syllabus, auto-select
+  if (syls.length === 1){
+    sel.value = syls[0];
+    buildStudentDropdown(cls, syls[0]);
+  }
+}
+
+function buildStudentDropdown(cls, syl){
+  var students = S.filter(function(s){ return s.class===cls && s.syllabus===syl; })
+    .sort(function(a,b){ return a.full_name.localeCompare(b.full_name); });
+  var sel = g('studentSelect');
+  sel.innerHTML = '<option value="">— Select student —</option>';
+  students.forEach(function(s){
+    var opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.full_name + (s.admission_no ? ' (#'+s.admission_no+')' : '');
+    sel.appendChild(opt);
+  });
+  sel.disabled = false;
+}
+
+/* ── WIRE LISTENERS ── */
+function wireFormListeners(){
+  g('classSelect').addEventListener('change', function(){
+    var cls = this.value;
+    g('sylSelect').innerHTML='<option value="">— Select syllabus —</option>';
+    g('sylSelect').disabled = true;
+    g('studentSelect').innerHTML='<option value="">— Select syllabus first —</option>';
+    g('studentSelect').disabled = true;
+    if (cls) buildSylDropdown(cls);
+    updatePreview();
+  });
+
+  g('sylSelect').addEventListener('change', function(){
+    var cls = g('classSelect').value;
+    var syl = this.value;
+    g('studentSelect').innerHTML='<option value="">— Select student —</option>';
+    g('studentSelect').disabled = true;
+    if (cls && syl) buildStudentDropdown(cls, syl);
+    updatePreview();
+  });
+
+  g('studentSelect').addEventListener('change', function(){ updatePreview(); });
+  g('amountInput').addEventListener('input', function(){ updatePreview(); });
+  g('modeSelect').addEventListener('change', function(){ updatePreview(); });
+  g('dateInput').addEventListener('change', function(){ updatePreview(); });
+  g('purposeSelect').addEventListener('change', function(){
+    g('otherPurposeGrp').style.display = this.value==='Other' ? 'block' : 'none';
+    updatePreview();
+  });
+  g('otherPurposeInput').addEventListener('input', function(){ updatePreview(); });
+  g('receiptNo').addEventListener('input', function(){ updatePreview(); });
+  g('remarksInput').addEventListener('input', function(){ updatePreview(); });
+
+  g('btnPrint').addEventListener('click', function(){ window.print(); });
+  g('btnLogout').addEventListener('click', function(){
+    sessionStorage.removeItem('sehr_pass');
+    location.reload();
+  });
+}
+
+/* ── AMOUNT IN WORDS ── */
+function amountToWords(n){
+  n = Math.floor(Number(n)||0);
+  if (n === 0) return 'Zero Rupees Only';
+  var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function words(num){
+    if (num === 0) return '';
+    if (num < 20) return ones[num] + ' ';
+    if (num < 100) return tens[Math.floor(num/10)] + (num%10 ? ' ' + ones[num%10] : '') + ' ';
+    if (num < 1000) return ones[Math.floor(num/100)] + ' Hundred ' + words(num%100);
+    if (num < 100000) return words(Math.floor(num/1000)) + 'Thousand ' + words(num%1000);
+    if (num < 10000000) return words(Math.floor(num/100000)) + 'Lakh ' + words(num%100000);
+    return words(Math.floor(num/10000000)) + 'Crore ' + words(num%10000000);
+  }
+  return words(n).trim() + ' Rupees Only';
+}
+
+/* ── UPDATE PREVIEW ── */
+function updatePreview(){
+  var studentId = g('studentSelect').value;
+  var amount    = parseFloat(g('amountInput').value) || 0;
+  var student   = studentId ? S.find(function(s){ return s.id===studentId; }) : null;
+
+  // Show empty or filled state
+  var hasStudent = !!student;
+  g('receiptEmpty').style.display   = hasStudent ? 'none' : 'flex';
+  g('receiptFilled').style.display  = hasStudent ? 'block' : 'none';
+
+  if (!hasStudent) return;
+
+  var s = student;
+  var dateVal  = g('dateInput').value;
+  var dateDisp = dateVal ? fmtDate(dateVal) : fmtDate(new Date().toISOString().slice(0,10));
+  var mode     = g('modeSelect').value;
+  var purpose  = g('purposeSelect').value === 'Other' ? (g('otherPurposeInput').value || 'Other') : g('purposeSelect').value;
+  var receiptN = g('receiptNo').value || genReceiptNum();
+  var remarks  = g('remarksInput').value.trim();
+
+  // Compute new totals after this payment
+  var newTotalPaid = s.total_paid + amount;
+  var newBalance   = Math.max(0, s.total_fee - newTotalPaid);
+
+  /* ── Receipt number + date ── */
+  g('rReceiptNo').textContent = receiptN;
+  g('rDate').textContent = dateDisp;
+
+  /* ── Student strip ── */
+  var av = g('rAvatar');
+  if (s.photo){
+    av.innerHTML = '<img src="'+s.photo+'" alt="" onerror="this.style.display=\'none\'">';
+  } else {
+    av.textContent = inits(s.full_name);
+  }
+  g('rName').textContent = s.full_name || '—';
+  var metaHTML = '';
+  if (s.class)       metaHTML += '<span class="stu-tag cls">Class ' + s.class + '</span>';
+  if (s.syllabus)    metaHTML += '<span class="stu-tag syl">' + s.syllabus + '</span>';
+  if (s.school_name) metaHTML += '<span class="stu-tag sch">' + s.school_name + '</span>';
+  g('rMeta').innerHTML = metaHTML;
+  g('rAdmNo').textContent = s.admission_no ? '#' + s.admission_no : '';
+
+  /* ── Fee table ── */
+  var subjectList = s.subjects ? s.subjects.split(/[,;|\/\n]+/).map(function(x){return x.trim();}).filter(Boolean) : [];
+  var subjDisp = subjectList.length ? subjectList.join(', ') : '—';
+
+  var tbody = '';
+  tbody += '<tr>'
+    + '<td class="fee-desc" style="color:var(--pale);font-size:12px">1</td>'
+    + '<td><div class="fee-desc">' + purpose + '</div>'
+    + (s.current_academic_year ? '<div class="fee-note">Academic Year ' + s.current_academic_year + '</div>' : '')
+    + '</td>'
+    + '<td style="font-size:11px;color:var(--muted)">' + subjDisp + '</td>'
+    + '<td class="fee-grn">' + fmtRs(amount) + '</td>'
+    + '</tr>';
+
+  g('rFeeBody').innerHTML = tbody;
+
+  /* ── Amount row ── */
+  g('rAmount').textContent     = fmtRs(amount);
+  g('rAmountWords').textContent = amountToWords(amount);
+  g('rMode').textContent       = 'via ' + mode;
+
+  /* ── Balance grid ── */
+  g('rTotalFee').textContent  = fmtRs(s.total_fee);
+  g('rTotalPaid').textContent = fmtRs(newTotalPaid);
+  g('rBalance').textContent   = fmtRs(newBalance);
+
+  /* ── Remarks ── */
+  if (remarks){
+    g('rRemarksRow').style.display = 'block';
+    g('rRemarks').textContent = remarks;
+  } else {
+    g('rRemarksRow').style.display = 'none';
+  }
+
+  /* ── Stamp ── */
+  var stampHTML;
+  if (amount > 0){
+    stampHTML = '<div class="paid-stamp">'
+      + '<div class="paid-stamp-top">Received</div>'
+      + '<div class="paid-stamp-main">PAID</div>'
+      + '<div class="paid-stamp-date">' + (dateVal ? new Date(dateVal).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '') + '</div>'
+      + '</div>';
+  } else {
+    stampHTML = '<div class="unpaid-stamp"><div class="unpaid-stamp-main">PENDING PAYMENT</div></div>';
+  }
+  g('stampWrap').innerHTML = stampHTML;
+}
+</script>
+</body>
+</html>
