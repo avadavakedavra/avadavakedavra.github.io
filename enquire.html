@@ -79,7 +79,7 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 .bc-in a { color: var(--lime-2); }
 .bc-sep { color: var(--rule); }
 
-/* ═══════════ MASTHEAD (matches liveclasses) ═══════════ */
+/* ═══════════ MASTHEAD ═══════════ */
 .masthead-wrap {
   background: var(--ink);
   position: relative; overflow: hidden;
@@ -167,7 +167,7 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 }
 @media (max-width: 760px) {
   .layout { grid-template-columns: 1fr; }
-  .sidebar { order: -1; }           /* sidebar above form on mobile */
+  .sidebar { order: -1; }
 }
 
 /* ═══════════ FORM CARD ═══════════ */
@@ -258,14 +258,77 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 .ferr { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 4px; display: none; }
 .ferr.show { display: block; }
 
+/* Three-col row for DOB */
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+@media (max-width: 420px) { .row3 { grid-template-columns: 1fr; } }
+
 /* Two-col row */
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
 
-/* Subject checkboxes */
+/* ═══════════ SESSION TYPE TOGGLE ═══════════ */
+.session-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+.sess-radio { display: none; }
+.sess-lbl {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  background: var(--cream); border: 1.5px solid var(--rule);
+  border-radius: 6px; padding: 14px 12px;
+  font-size: 12px; font-weight: 700; color: var(--ink-3);
+  cursor: pointer; text-align: center;
+  transition: border-color .15s, background .15s, color .15s;
+  user-select: none; position: relative;
+}
+.sess-lbl:hover { border-color: var(--lime-mid); background: var(--lime-bg); }
+.sess-radio:checked + .sess-lbl {
+  border-color: var(--lime); background: var(--lime-bg); color: var(--lime-3);
+  box-shadow: 0 0 0 3px rgba(139,197,63,.13);
+}
+.sess-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(139,197,63,.12);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.sess-radio:checked + .sess-lbl .sess-icon { background: rgba(139,197,63,.25); }
+.sess-icon svg { width: 18px; height: 18px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sess-sub { font-size: 10px; font-weight: 500; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+.sess-radio:checked + .sess-lbl .sess-sub { color: var(--lime-3); opacity: .8; }
+.sess-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--rule); background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .14s, border-color .14s;
+}
+.sess-radio:checked + .sess-lbl .sess-check {
+  background: var(--lime); border-color: var(--lime);
+}
+.sess-check svg { width: 8px; height: 8px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .12s; }
+.sess-radio:checked + .sess-lbl .sess-check svg { opacity: 1; }
+
+/* ═══════════ SUBJECT CHECKBOXES ═══════════ */
+.subj-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.subj-select-all {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; color: var(--lime-2);
+  cursor: pointer; user-select: none;
+  background: none; border: none; padding: 0;
+  font-family: var(--f);
+}
+.subj-select-all:hover { color: var(--lime-3); }
+.subj-select-all svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
 .subj-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 7px;
 }
 .subj-chk { display: none; }
@@ -293,6 +356,15 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 .subj-chk:checked + .subj-lbl .subj-tick svg { opacity: 1; }
 .subj-hint { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 6px; display: none; }
 .subj-hint.show { display: block; }
+
+/* Note pill for subject section */
+.subj-note {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--lime-bg); border: 1px solid var(--lime-mid);
+  border-radius: 3px; padding: 4px 8px; margin-bottom: 10px;
+  font-size: 10px; font-weight: 700; color: var(--lime-3);
+}
+.subj-note svg { width: 10px; height: 10px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Submit button */
 .btn-submit {
@@ -339,7 +411,6 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 /* ═══════════ SIDEBAR ═══════════ */
 .sidebar { display: flex; flex-direction: column; gap: 14px; }
 
-/* On mobile show as horizontal scroll row */
 @media (max-width: 760px) {
   .sidebar {
     flex-direction: row;
@@ -506,14 +577,14 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
         </div>
         <div>
           <div class="form-card-header-title">Admission Enquiry Form</div>
-          <div class="form-card-header-sub">Takes less than 2 minutes</div>
+          <div class="form-card-header-sub">Takes less than 3 minutes</div>
         </div>
       </div>
 
       <div class="form-body">
         <div id="enquiryForm">
 
-          <!-- Student info -->
+          <!-- ── SECTION: Student Info ── -->
           <div class="field">
             <div class="field-label">
               <span class="field-label-txt">Student's full name <span class="req">*</span></span>
@@ -522,13 +593,52 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
             <div class="ferr" id="e_name">Please enter the student's name.</div>
           </div>
 
+          <!-- Date of Birth -->
+          <div class="field">
+            <div class="field-label">
+              <span class="field-label-txt">Date of birth <span class="req">*</span></span>
+            </div>
+            <div class="row3">
+              <div>
+                <select class="sel" id="f_dob_day">
+                  <option value="">Day</option>
+                </select>
+              </div>
+              <div>
+                <select class="sel" id="f_dob_month">
+                  <option value="">Month</option>
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <div>
+                <select class="sel" id="f_dob_year">
+                  <option value="">Year</option>
+                </select>
+              </div>
+            </div>
+            <div class="ferr" id="e_dob">Please select a complete date of birth.</div>
+          </div>
+
           <div class="row2">
             <div class="field">
               <div class="field-label"><span class="field-label-txt">Class <span class="req">*</span></span></div>
               <select class="sel" id="f_class">
                 <option value="">Select class</option>
-                <option>Class 9</option><option>Class 10</option>
-                <option>Class 11</option><option>Class 12</option>
+                <option>Class 9</option>
+                <option>Class 10</option>
+                <option>Class 11</option>
+                <option>Class 12</option>
                 <option>NEET Repeater</option>
               </select>
               <div class="ferr" id="e_class">Please select a class.</div>
@@ -545,14 +655,59 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
             </div>
           </div>
 
-          <!-- Subjects (dynamic) -->
+          <!-- ── Subjects (dynamic, shown after class+syllabus) ── -->
           <div class="field" id="f_subjectWrap" style="display:none">
-            <div class="field-label"><span class="field-label-txt">Subjects needed <span class="req">*</span></span></div>
+            <div class="field-label">
+              <span class="field-label-txt">Subjects needed <span class="req">*</span></span>
+            </div>
+            <div class="subj-note">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              All subjects pre-selected — uncheck any you don't need
+            </div>
+            <div class="subj-header">
+              <span></span>
+              <button type="button" class="subj-select-all" id="btn_selAll">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Select all
+              </button>
+            </div>
             <div class="subj-grid" id="f_subjectGrid"></div>
             <div class="subj-hint" id="e_subjects">Please select at least one subject.</div>
           </div>
 
-          <!-- Divider -->
+          <!-- ── Session Type ── -->
+          <div class="field" id="f_sessionWrap">
+            <div class="field-label">
+              <span class="field-label-txt">Session type <span class="req">*</span></span>
+            </div>
+            <div class="session-toggle">
+              <div>
+                <input type="radio" class="sess-radio" name="session_type" id="sess_group" value="Group Session">
+                <label class="sess-lbl" for="sess_group">
+                  <span class="sess-check"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
+                  <span class="sess-icon">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </span>
+                  Group Session
+                  <span class="sess-sub">Shared batch · More affordable</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio" class="sess-radio" name="session_type" id="sess_individual" value="Individual Session">
+                <label class="sess-lbl" for="sess_individual">
+                  <span class="sess-check"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
+                  <span class="sess-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </span>
+                  Individual Session
+                  <span class="sess-sub">1-on-1 · Personalised pace</span>
+                </label>
+              </div>
+            </div>
+            <div class="ferr" id="e_session">Please select a session type.</div>
+          </div>
+
+          <!-- ── SECTION: Contact Details ── -->
           <div class="form-sec">
             <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
             <span class="form-sec-lbl">Contact details</span>
@@ -576,6 +731,62 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
             <div class="field-label"><span class="field-label-txt">School name <span class="req">*</span></span></div>
             <input type="text" class="input" id="f_school" placeholder="e.g. Govt. HSS Vatanappally">
             <div class="ferr" id="e_school">Please enter the school name.</div>
+          </div>
+
+          <!-- ── SECTION: Location ── -->
+          <div class="form-sec">
+            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
+            <span class="form-sec-lbl">Location</span>
+            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span class="field-label-txt">House / Building name <span class="req">*</span></span></div>
+            <input type="text" class="input" id="f_house" placeholder="e.g. Salman Manzil, Rauf Bhavan">
+            <div class="ferr" id="e_house">Please enter your house / building name.</div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Street / Area <span class="req">*</span></span></div>
+              <input type="text" class="input" id="f_street" placeholder="e.g. Vatanappally, Chavakkad">
+              <div class="ferr" id="e_street">Please enter your street or area.</div>
+            </div>
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">PIN code <span class="req">*</span></span></div>
+              <input type="text" class="input" id="f_pin" placeholder="e.g. 680614" maxlength="6" inputmode="numeric">
+              <div class="ferr" id="e_pin">Please enter a valid 6-digit PIN code.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span class="field-label-txt">District <span class="req">*</span></span></div>
+            <select class="sel" id="f_district">
+              <option value="">Select district</option>
+              <option>Thrissur</option>
+              <option>Ernakulam</option>
+              <option>Malappuram</option>
+              <option>Palakkad</option>
+              <option>Kozhikode</option>
+              <option>Kannur</option>
+              <option>Kasaragod</option>
+              <option>Wayanad</option>
+              <option>Idukki</option>
+              <option>Pathanamthitta</option>
+              <option>Alappuzha</option>
+              <option>Kottayam</option>
+              <option>Kollam</option>
+              <option>Thiruvananthapuram</option>
+              <option>Other (outside Kerala)</option>
+            </select>
+            <div class="ferr" id="e_district">Please select a district.</div>
+          </div>
+
+          <!-- ── SECTION: Additional Info ── -->
+          <div class="form-sec">
+            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
+            <span class="form-sec-lbl">Additional info</span>
+            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
           </div>
 
           <div class="field">
@@ -698,49 +909,131 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 
 <script>
 /* ══════════════════════════════
-   CONFIG — paste your Apps Script URL here after setup
+   CONFIG
 ══════════════════════════════ */
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby-e5-57UCSlzOgoLOPMPe-3G0FIdL1Yf-MZgrO_rEqN_Yy8CogB2EbHFogY8UozRE0/exec';
 
 /* ══════════════════════════════
-   SUBJECT MAP
+   SUBJECT MAP — keyed by "Class|Syllabus"
+   NEET Repeater is syllabus-agnostic
 ══════════════════════════════ */
 const SUBJ_MAP = {
-  'Class 9':       ['Mathematics','Science','English','Social Science','Hindi / Malayalam'],
-  'Class 10':      ['Mathematics','Science','English','Social Science','Hindi / Malayalam'],
-  'Class 11':      ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
-  'Class 12':      ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
-  'NEET Repeater': ['Physics','Chemistry','Biology'],
+  // ── Class 9 ──
+  'Class 9|CBSE':              ['Mathematics','Science','English','Social Science','Hindi','Sanskrit / French (optional)'],
+  'Class 9|Kerala State Board':['Mathematics','Science','English','Social Science','Malayalam / Hindi','IT (optional)'],
+  'Class 9|ICSE':              ['Mathematics','Science','English','History & Civics','Geography','Hindi / Malayalam'],
+
+  // ── Class 10 ──
+  'Class 10|CBSE':              ['Mathematics','Science','English','Social Science','Hindi','Information Technology (optional)'],
+  'Class 10|Kerala State Board':['Mathematics','Science','English','Social Science','Malayalam / Hindi','IT (optional)'],
+  'Class 10|ICSE':              ['Mathematics','Science','English','History & Civics','Geography','Hindi / Malayalam'],
+
+  // ── Class 11 ──
+  'Class 11|CBSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Accountancy'],
+  'Class 11|Kerala State Board':['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Commerce'],
+  'Class 11|ICSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
+
+  // ── Class 12 ──
+  'Class 12|CBSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Accountancy'],
+  'Class 12|Kerala State Board':['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Commerce'],
+  'Class 12|ICSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
+
+  // ── NEET Repeater (syllabus-independent) ──
+  'NEET Repeater|CBSE':              ['Physics','Chemistry','Biology'],
+  'NEET Repeater|Kerala State Board':['Physics','Chemistry','Biology'],
+  'NEET Repeater|ICSE':              ['Physics','Chemistry','Biology'],
 };
+
+/* ── DOB dropdowns setup ── */
+(function setupDOB() {
+  const dayEl = document.getElementById('f_dob_day');
+  const yearEl = document.getElementById('f_dob_year');
+  for (let d = 1; d <= 31; d++) {
+    const o = document.createElement('option');
+    o.value = String(d).padStart(2,'0');
+    o.textContent = d;
+    dayEl.appendChild(o);
+  }
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear - 4; y >= currentYear - 25; y--) {
+    const o = document.createElement('option');
+    o.value = y;
+    o.textContent = y;
+    yearEl.appendChild(o);
+  }
+})();
 
 const $ = id => document.getElementById(id);
 
-/* ── Subjects appear when class is selected ── */
-$('f_class').addEventListener('change', function() {
-  const cls = this.value;
+/* ── Rebuild subjects when class OR syllabus changes ── */
+function rebuildSubjects() {
+  const cls = $('f_class').value;
+  const syl = $('f_syllabus').value;
   const wrap = $('f_subjectWrap');
   const grid = $('f_subjectGrid');
-  clearErr('f_class');
-  if (SUBJ_MAP[cls]) {
-    grid.innerHTML = SUBJ_MAP[cls].map(s => {
-      const id = 'sc_' + s.replace(/\W/g,'_');
-      return `<div>
-        <input type="checkbox" class="subj-chk" id="${id}" value="${s}">
-        <label class="subj-lbl" for="${id}">
-          <span class="subj-tick"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
-          ${s}
-        </label>
-      </div>`;
-    }).join('');
-    wrap.style.display = 'block';
+
+  if (!cls || !syl) { wrap.style.display = 'none'; return; }
+
+  // NEET Repeater always same subjects regardless of syllabus
+  const key = SUBJ_MAP[cls + '|' + syl]
+    ? cls + '|' + syl
+    : null;
+
+  if (!key) { wrap.style.display = 'none'; return; }
+
+  const subjects = SUBJ_MAP[key];
+  grid.innerHTML = subjects.map(s => {
+    const id = 'sc_' + s.replace(/\W/g,'_');
+    return `<div>
+      <input type="checkbox" class="subj-chk" id="${id}" value="${s}" checked>
+      <label class="subj-lbl" for="${id}">
+        <span class="subj-tick"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
+        ${s}
+      </label>
+    </div>`;
+  }).join('');
+
+  wrap.style.display = 'block';
+  updateSelectAllBtn();
+
+  // Wire up "select all" button reactivity
+  grid.querySelectorAll('.subj-chk').forEach(chk => {
+    chk.addEventListener('change', updateSelectAllBtn);
+  });
+}
+
+function updateSelectAllBtn() {
+  const all = document.querySelectorAll('#f_subjectGrid .subj-chk');
+  const checked = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
+  const btn = $('btn_selAll');
+  if (all.length === checked.length) {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> All selected`;
   } else {
-    wrap.style.display = 'none';
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Select all`;
   }
+}
+
+$('btn_selAll').addEventListener('click', function() {
+  const all = document.querySelectorAll('#f_subjectGrid .subj-chk');
+  const checked = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
+  const shouldCheck = all.length !== checked.length;
+  all.forEach(c => { c.checked = shouldCheck; });
+  updateSelectAllBtn();
+  $('e_subjects').classList.remove('show');
+});
+
+$('f_class').addEventListener('change', function() {
+  clearErr('f_class');
+  rebuildSubjects();
+});
+$('f_syllabus').addEventListener('change', function() {
+  clearErr('f_syllabus');
+  rebuildSubjects();
 });
 
 /* ── Validation helpers ── */
 function showErr(fieldId, errId) {
-  const f = $(fieldId), e = $(errId);
+  const f = $(fieldId), e = $(errId || 'e_' + fieldId.replace('f_',''));
   if (f) f.classList.add('err');
   if (e) e.classList.add('show');
 }
@@ -750,7 +1043,10 @@ function clearErr(fieldId) {
   if (f) f.classList.remove('err');
   if (e) e.classList.remove('show');
 }
-['f_name','f_class','f_syllabus','f_parent','f_wa','f_school'].forEach(id => {
+
+['f_name','f_class','f_syllabus','f_parent','f_wa','f_school',
+ 'f_house','f_street','f_pin','f_district',
+ 'f_dob_day','f_dob_month','f_dob_year'].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('input', () => clearErr(id));
   if (el) el.addEventListener('change', () => clearErr(id));
@@ -760,29 +1056,57 @@ function clearErr(fieldId) {
 $('submitBtn').addEventListener('click', async function() {
   let ok = true;
 
-  const name    = $('f_name').value.trim();
-  const cls     = $('f_class').value;
-  const syl     = $('f_syllabus').value;
-  const parent  = $('f_parent').value.trim();
-  const wa      = $('f_wa').value.trim().replace(/\D/g,'');
-  const school  = $('f_school').value.trim();
-  const source  = $('f_source').value;
-  const msg     = $('f_msg').value.trim();
-  const subjEls = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
-  const subjects = Array.from(subjEls).map(c => c.value).join(', ');
+  const name      = $('f_name').value.trim();
+  const dobDay    = $('f_dob_day').value;
+  const dobMonth  = $('f_dob_month').value;
+  const dobYear   = $('f_dob_year').value;
+  const cls       = $('f_class').value;
+  const syl       = $('f_syllabus').value;
+  const parent    = $('f_parent').value.trim();
+  const wa        = $('f_wa').value.trim().replace(/\D/g,'');
+  const school    = $('f_school').value.trim();
+  const house     = $('f_house').value.trim();
+  const street    = $('f_street').value.trim();
+  const pin       = $('f_pin').value.trim().replace(/\D/g,'');
+  const district  = $('f_district').value;
+  const source    = $('f_source').value;
+  const msg       = $('f_msg').value.trim();
+  const sessionEl = document.querySelector('input[name="session_type"]:checked');
+  const session   = sessionEl ? sessionEl.value : '';
+  const subjEls   = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
+  const subjects  = Array.from(subjEls).map(c => c.value).join(', ');
 
-  if (!name)           { showErr('f_name','e_name');       ok = false; }
-  if (!cls)            { showErr('f_class','e_class');     ok = false; }
-  if (!syl)            { showErr('f_syllabus','e_syllabus'); ok = false; }
-  if (!parent)         { showErr('f_parent','e_parent');   ok = false; }
-  if (!wa || wa.length < 10) { showErr('f_wa','e_wa');     ok = false; }
-  if (!school)         { showErr('f_school','e_school');   ok = false; }
-  if (SUBJ_MAP[cls] && subjEls.length === 0) {
+  if (!name)                             { showErr('f_name','e_name');       ok = false; }
+  if (!dobDay || !dobMonth || !dobYear)  { showErr('f_dob_day','e_dob'); showErr('f_dob_month','e_dob'); showErr('f_dob_year','e_dob'); $('e_dob').classList.add('show'); ok = false; }
+  if (!cls)                              { showErr('f_class','e_class');      ok = false; }
+  if (!syl)                              { showErr('f_syllabus','e_syllabus');ok = false; }
+  if (!parent)                           { showErr('f_parent','e_parent');    ok = false; }
+  if (!wa || wa.length < 10)             { showErr('f_wa','e_wa');            ok = false; }
+  if (!school)                           { showErr('f_school','e_school');    ok = false; }
+  if (!house)                            { showErr('f_house','e_house');      ok = false; }
+  if (!street)                           { showErr('f_street','e_street');    ok = false; }
+  if (!pin || pin.length !== 6)          { showErr('f_pin','e_pin');          ok = false; }
+  if (!district)                         { showErr('f_district','e_district');ok = false; }
+  if (!session)                          { $('e_session').classList.add('show'); ok = false; }
+  else                                   { $('e_session').classList.remove('show'); }
+
+  // Subjects: only required if class+syllabus combo exists
+  const subjectKey = cls + '|' + syl;
+  if (SUBJ_MAP[subjectKey] && subjEls.length === 0) {
     $('e_subjects').classList.add('show'); ok = false;
   } else {
     $('e_subjects').classList.remove('show');
   }
-  if (!ok) return;
+
+  if (!ok) {
+    // Scroll to first error
+    const firstErr = document.querySelector('.input.err, .sel.err, .ferr.show, .subj-hint.show');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const dob = dobYear + '-' + dobMonth + '-' + dobDay;
+  const address = [house, street, district, pin].filter(Boolean).join(', ');
 
   /* Loading state */
   const btn = $('submitBtn');
@@ -793,27 +1117,37 @@ $('submitBtn').addEventListener('click', async function() {
   /* Build WA prefill message */
   let waMsg = '*New Admission Enquiry — SEHR Academy*\n\n';
   waMsg += '👤 *Student:* ' + name + '\n';
+  waMsg += '🎂 *Date of Birth:* ' + dobDay + '/' + dobMonth + '/' + dobYear + '\n';
   waMsg += '📚 *Class:* ' + cls + ' (' + syl + ')\n';
   if (subjects) waMsg += '📖 *Subjects:* ' + subjects + '\n';
+  waMsg += '🎓 *Session Type:* ' + session + '\n';
   waMsg += '👨‍👩‍👧 *Parent:* ' + parent + '\n';
   waMsg += '📞 *WhatsApp:* ' + wa + '\n';
   waMsg += '🏫 *School:* ' + school + '\n';
+  waMsg += '📍 *Address:* ' + address + '\n';
   if (source) waMsg += '🔍 *Source:* ' + source + '\n';
   if (msg)    waMsg += '💬 *Message:* ' + msg + '\n';
   waMsg += '\n_Submitted via sehracademy.com/enquire_';
 
-  /* ── Send to Google Sheets ── */
+  /* Send to Google Sheets */
   const payload = {
-    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    timestamp:    new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     student_name: name,
-    class: cls,
-    syllabus: syl,
-    subjects: subjects,
-    parent_name: parent,
-    whatsapp: wa,
-    school: school,
-    source: source,
-    message: msg,
+    dob:          dob,
+    class:        cls,
+    syllabus:     syl,
+    subjects:     subjects,
+    session_type: session,
+    parent_name:  parent,
+    whatsapp:     wa,
+    school:       school,
+    address:      address,
+    house:        house,
+    street:       street,
+    district:     district,
+    pin:          pin,
+    source:       source,
+    message:      msg,
   };
 
   if (SHEETS_URL && SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
@@ -824,12 +1158,9 @@ $('submitBtn').addEventListener('click', async function() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-    } catch(e) {
-      /* Silent fail — WA still opens */
-    }
+    } catch(e) { /* Silent fail */ }
   }
 
-  /* Update success WA link & show success */
   $('successWaLink').href = 'https://wa.me/919539409586?text=' + encodeURIComponent(waMsg);
 
   setTimeout(() => {
