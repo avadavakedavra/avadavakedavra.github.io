@@ -954,8 +954,7 @@ const SUBJ_MAP = {
     o.textContent = d;
     dayEl.appendChild(o);
   }
-  const currentYear = new Date().getFullYear();
-  for (let y = currentYear - 4; y >= currentYear - 25; y--) {
+  for (let y = 2030; y >= 1990; y--) {
     const o = document.createElement('option');
     o.value = y;
     o.textContent = y;
