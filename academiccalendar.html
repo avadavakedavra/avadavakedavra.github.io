@@ -305,7 +305,7 @@ a{text-decoration:none;color:inherit}
 .ev-title{font-size:11px;font-weight:700;color:var(--ink-2);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev-sub{font-size:9px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
 /* One-One student chip */
-.ev-student{font-size:8px;font-weight:800;padding:1px 5px;border-radius:2px;background:var(--c1obg);color:var(--c1o);border:1px solid var(--c1obd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px}
+.ev-student{font-size:8px;font-weight:800;padding:1px 6px;border-radius:2px;background:var(--c1obg);color:var(--c1o);border:1px solid var(--c1obd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px;letter-spacing:.02em}
 
 /* class colour strips */
 .ev-strip.c9  {border-left-color:var(--c9);  background:var(--c9bg)}
@@ -332,20 +332,22 @@ a{text-decoration:none;color:inherit}
 .today-tag{background:var(--lime);color:white;font-size:9px;padding:1px 6px;border-radius:3px;font-weight:800}
 .list-cards{display:flex;flex-direction:column;gap:6px}
 .list-card{
-  background:var(--white);border:1.5px solid var(--cream-3);border-left:4px solid var(--rule);border-radius:4px;
-  padding:12px 18px;box-shadow:var(--sh);
-  display:grid;grid-template-columns:100px 1fr auto;align-items:start;gap:14px;
-  cursor:pointer;transition:all .16s
+  background:var(--white);border:1.5px solid var(--cream-3);border-radius:4px;
+  overflow:hidden;
+  box-shadow:var(--sh);
+  cursor:pointer;transition:all .16s;
+  position:relative;
 }
 .list-card:hover{box-shadow:var(--sh2);transform:translateX(2px)}
-.list-card.c9  {border-left-color:var(--c9)}
-.list-card.c10 {border-left-color:var(--c10)}
-.list-card.c11 {border-left-color:var(--c11)}
-.list-card.c12 {border-left-color:var(--c12)}
-.list-card.neet{border-left-color:var(--cn)}
-.list-card.jee {border-left-color:var(--cj)}
-.list-card.c1o {border-left-color:var(--c1o)}
-.list-card.holiday{border-left-color:var(--hol)}
+/* class top stripe */
+.lc-stripe{
+  height:3px;width:100%;
+}
+.lc-inner{
+  padding:11px 16px 12px;
+  display:grid;grid-template-columns:96px 1fr auto;align-items:start;gap:12px;
+}
+
 .list-card.past{opacity:.55}
 
 .lc-time{display:flex;flex-direction:column;gap:3px}
@@ -368,7 +370,7 @@ a{text-decoration:none;color:inherit}
 .lc-pill.jee {background:var(--cjbg);color:var(--cj);border-color:var(--cjbd)}
 .lc-pill.c1o {background:var(--c1obg);color:var(--c1o);border-color:var(--c1obd)}
 
-.lc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.lc-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:44px}
 .lc-class-badge{font-size:10px;font-weight:800;padding:3px 8px;border-radius:3px}
 .lc-class-badge.c9  {background:var(--c9bg);color:var(--c9)}
 .lc-class-badge.c10 {background:var(--c10bg);color:var(--c10)}
@@ -689,8 +691,8 @@ a{text-decoration:none;color:inherit}
     <select class="fsel" id="teacherSel" aria-label="Filter by teacher"><option value="">All Teachers</option></select>
     <select class="fsel" id="modeSel" aria-label="Filter by mode">
       <option value="">All Modes</option>
-      <option value="Online">🖥 Online</option>
-      <option value="Offline">🏫 Offline</option>
+      <option value="Online">Online</option>
+      <option value="Offline">Offline</option>
     </select>
     <div class="srch">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -745,8 +747,8 @@ a{text-decoration:none;color:inherit}
       <span class="leg"><span class="leg-dot" style="background:var(--cn)"></span>NEET</span>
       <span class="leg"><span class="leg-dot" style="background:var(--cj)"></span>JEE</span>
       <span class="leg"><span class="leg-dot" style="background:var(--c1o)"></span>One-One</span>
-      <span class="leg"><span style="font-size:11px">🖥</span>Online</span>
-      <span class="leg"><span style="font-size:11px">🏫</span>Offline</span>
+      <span class="leg"><span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:2px;background:#16a34a;flex-shrink:0"></span>Online</span>
+      <span class="leg"><span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:2px;background:var(--pale);flex-shrink:0"></span>Offline</span>
     </div>
     <div class="view-count" id="viewCount"></div>
   </div>
@@ -901,14 +903,17 @@ g('acbClear').addEventListener('click',function(){
 /* ── CLASS DETECTION ── */
 function clsKey(cls){
   if(!cls) return '';
-  var c = cls.toLowerCase();
-  if(c.includes('one-one')||c.includes('1-1')||c.includes('1on1')||c.includes('one on one')||c.includes('1:1')) return 'c1o';
-  if(c.includes('neet')) return 'neet';
-  if(c.includes('jee'))  return 'jee';
-  if(c.includes('12'))   return 'c12';
-  if(c.includes('11'))   return 'c11';
-  if(c.includes('10'))   return 'c10';
-  if(c.includes('9'))    return 'c9';
+  var c = cls.toLowerCase().trim();
+  /* One-One first — most specific */
+  if(/one.?one|1[-:]1|1on1/.test(c)) return 'c1o';
+  /* Exact programme names */
+  if(/\bneet\b/.test(c)) return 'neet';
+  if(/\bjee\b/.test(c))  return 'jee';
+  /* Class numbers — match digit exactly, not as substring of another number */
+  if(/\b12\b/.test(c)) return 'c12';
+  if(/\b11\b/.test(c)) return 'c11';
+  if(/\b10\b/.test(c)) return 'c10';
+  if(/\b9\b/.test(c))  return 'c9';
   return '';
 }
 function isHoliday(ev){ return (ev.subject||'').toLowerCase().includes('holiday'); }
@@ -1050,14 +1055,16 @@ function monthData(ym){
     var d=new Date(e.date); if(isNaN(d)) return false;
     if(d.getFullYear()!==y||d.getMonth()!==m-1) return false;
     if(F_CLS){
-      if(F_CLS==='holiday') return isHoliday(e);
-      if(F_CLS==='1o')      return clsKey(e.cls)==='c1o';
-      if(F_CLS==='9')       return clsKey(e.cls)==='c9';
-      if(F_CLS==='10')      return clsKey(e.cls)==='c10';
-      if(F_CLS==='11')      return clsKey(e.cls)==='c11';
-      if(F_CLS==='12')      return clsKey(e.cls)==='c12';
-      if(F_CLS==='neet')    return clsKey(e.cls)==='neet';
-      if(F_CLS==='jee')     return clsKey(e.cls)==='jee';
+      /* holiday filter: match on subject field */
+      if(F_CLS==='holiday' && !isHoliday(e)) return false;
+      /* class filters: use clsKey which now uses word-boundary regex */
+      if(F_CLS==='1o'   && clsKey(e.cls)!=='c1o')  return false;
+      if(F_CLS==='9'    && clsKey(e.cls)!=='c9')   return false;
+      if(F_CLS==='10'   && clsKey(e.cls)!=='c10')  return false;
+      if(F_CLS==='11'   && clsKey(e.cls)!=='c11')  return false;
+      if(F_CLS==='12'   && clsKey(e.cls)!=='c12')  return false;
+      if(F_CLS==='neet' && clsKey(e.cls)!=='neet') return false;
+      if(F_CLS==='jee'  && clsKey(e.cls)!=='jee')  return false;
     }
     if(F_SUBJ  && e.subject.toLowerCase()!==F_SUBJ.toLowerCase())  return false;
     if(F_TEACH && e.teacher.toLowerCase()!==F_TEACH.toLowerCase()) return false;
@@ -1139,8 +1146,18 @@ function renderCal(events){
     var dayEvs=byDate[ds]||[];
     var hasHol=dayEvs.some(isHoliday);
 
+    /* day meta */
+    var isPastDay = cellDate < today;
+    var isSunday  = cellDate.getDay() === 0;
+    var busyCls   = dayEvs.length>=4?'busy-4':dayEvs.length===3?'busy-3':dayEvs.length===2?'busy-2':'';
+
     var div=document.createElement('div');
-    div.className='day'+(isToday?' today':'')+(hasHol?' has-holiday':'');
+    div.className='day'
+      +(isToday?' today':'')
+      +(hasHol?' has-holiday':'')
+      +(isPastDay&&!isToday?' past-day':'')
+      +(isSunday&&!isToday?' is-sunday':'')
+      +(busyCls?' '+busyCls:'');
 
     /* day number row */
     var numDiv=document.createElement('div'); numDiv.className='day-num';
@@ -1151,26 +1168,40 @@ function renderCal(events){
     if(dayEvs.length) inner+='<span class="day-count">'+dayEvs.length+'</span>';
     numDiv.innerHTML=inner; div.appendChild(numDiv);
 
-    /* event strips */
-    var shown=dayEvs.slice(0,MAX_EV);
-    shown.forEach(function(ev){
+    /* event strips — sorted by start time */
+    var sortedEvs = dayEvs.slice().sort(function(a,b){
+      var ta=parseFloat(String(a.start||'0').replace(':','.'));
+      var tb=parseFloat(String(b.start||'0').replace(':','.'));
+      return ta-tb;
+    });
+    var shown=sortedEvs.slice(0,MAX_EV);
+    shown.forEach(function(ev, si){
       var ck=isHoliday(ev)?'holiday':clsKey(ev.cls);
       var past=new Date(ev.date)<today;
       var online=isOnline(ev);
       var oneone=isOneOne(ev);
       var parsed=oneone?parseOneOneTopic(ev):{student:'',topic:ev.topic};
+      var wmLabel=clsWmLabel(ck, ev.cls);
+
+      /* is this the next upcoming session today? */
+      var isNextUp=false;
+      if(isToday&&!past){
+        var nowH=new Date().getHours()+(new Date().getMinutes()/60);
+        var evH=parseFloat(String(ev.start||'0').replace(':','.'));
+        if(si===0||evH<=nowH+0.5) isNextUp=true;
+      }
 
       var strip=document.createElement('div');
-      strip.className='ev-strip '+(ck||'')+(past?' past':'');
+      strip.className='ev-strip '+(ck||'')+(past?' past':'')+(isNextUp?' next-up':'');
 
       /* time row with mode icon */
       var timeHtml='<div class="ev-time-row">';
       if(ev.start) timeHtml+='<span class="ev-time">'+fmtRange(ev.start,ev.end)+'</span>';
       else timeHtml+='<span></span>';
       if(online){
-        timeHtml+='<span class="ev-mode-icon online" title="Online class">'+COMPUTER_SVG+'</span>';
+        timeHtml+='<span class="ev-mode-icon online" title="Online">'+COMPUTER_SVG+'</span>';
       } else if(ev.mode){
-        timeHtml+='<span class="ev-mode-icon offline" title="Offline class">'+SCHOOL_SVG+'</span>';
+        timeHtml+='<span class="ev-mode-icon offline" title="Offline">'+SCHOOL_SVG+'</span>';
       }
       timeHtml+='</div>';
 
@@ -1178,15 +1209,20 @@ function renderCal(events){
       var titleText=oneone?(parsed.topic||ev.subject||'One-One'):(ev.topic||ev.subject||'Session');
       var titleHtml='<div class="ev-title">'+esc(titleText)+'</div>';
 
-      /* sub row */
+      /* sub row: subject tag + student/teacher */
       var subHtml='<div class="ev-sub">';
       if(oneone&&parsed.student){
-        subHtml+='<span class="ev-student">👤 '+esc(parsed.student)+'</span>';
+        subHtml+='<span class="ev-student">'+esc(parsed.student)+'</span>';
+      } else {
+        if(ev.subject) subHtml+='<span class="ev-subj-tag">'+esc(ev.subject)+'</span>';
+        if(ev.teacher) subHtml+=(ev.subject?' · ':'')+esc(ev.teacher);
       }
-      if(ev.teacher&&!oneone) subHtml+=esc(ev.teacher);
       subHtml+='</div>';
 
-      strip.innerHTML=timeHtml+titleHtml+subHtml;
+      /* class watermark */
+      var wmHtml=wmLabel?'<span class="ev-wm" aria-hidden="true">'+wmLabel+'</span>':'';
+
+      strip.innerHTML=timeHtml+titleHtml+subHtml+wmHtml;
       strip.addEventListener('click',function(){openModal(ev);});
       div.appendChild(strip);
     });
@@ -1228,6 +1264,7 @@ function renderList(events){
     var grp=document.createElement('div'); grp.className='list-group';
     var dayEvs=byDate[ds];
 
+    grp.className='list-group'+(isTod?' today-group':'');
     grp.innerHTML='<div class="list-date-hdr">'
       +'<div class="list-date-txt">'+d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})
       +(isTod?' <span class="today-tag">Today</span>':'')+'</div>'
@@ -1246,6 +1283,16 @@ function renderList(events){
       var card=document.createElement('div');
       card.className='list-card '+(ck||'')+(isPast?' past':'');
 
+      /* class stripe colours */
+      var stripeColors={c9:'var(--c9)',c10:'var(--c10)',c11:'var(--c11)',c12:'var(--c12)',
+        neet:'var(--cn)',jee:'var(--cj)',c1o:'var(--c1o)',holiday:'var(--hol)'};
+      var stripeCol=stripeColors[ck]||'var(--lime)';
+
+      /* class short label for badge */
+      var clsShort=clsWmLabel(ck,ev.cls)||esc(ev.cls||'—');
+
+      var titleText=oneone?(parsed.topic||ev.subject||'One-One'):(ev.topic||ev.subject||'Session');
+
       /* time column */
       var timeCol='<div class="lc-time">'
         +'<div class="lc-time-main">'+(ev.start?fmtTime(ev.start):'All day')+'</div>'
@@ -1255,24 +1302,34 @@ function renderList(events){
         +'</div>';
 
       /* body */
-      var titleText=oneone?(parsed.topic||ev.subject||'One-One'):(ev.topic||ev.subject||'Session');
-      var bodyCol='<div class="lc-body"><div class="lc-title">'+esc(titleText)
-        +(oneone&&parsed.student?'<span class="lc-student-pill">👤 '+esc(parsed.student)+'</span>':'')
-        +'</div><div class="lc-pills">';
+      var bodyCol='<div class="lc-body">'
+        +'<div class="lc-title">'+esc(titleText)
+        +(oneone&&parsed.student?'<span class="lc-student-pill">1:1 · '+esc(parsed.student)+'</span>':'')
+        +'</div>'
+        +'<div class="lc-pills">'
+        +(ev.subject&&!isHoliday(ev)?'<span class="lc-pill">'+esc(ev.subject)+'</span>':'')
+        +(ev.teacher?'<span class="lc-pill">'+esc(ev.teacher)+'</span>':'')
+        +'</div></div>';
 
-      if(ev.cls) bodyCol+='<span class="lc-pill '+(ck||'')+'">'+esc(ev.cls)+'</span>';
-      if(ev.subject&&!isHoliday(ev)) bodyCol+='<span class="lc-pill">'+esc(ev.subject)+'</span>';
-      if(ev.teacher) bodyCol+='<span class="lc-pill">'+esc(ev.teacher)+'</span>';
-      bodyCol+='</div></div>';
+      /* right col: big class badge */
+      var rightCol='<div class="lc-right">'
+        +'<span class="lc-class-badge '+(ck||'')+'" style="font-size:13px;font-weight:900;letter-spacing:-.5px;padding:5px 10px">'+clsShort+'</span>'
+        +(ev.cls&&clsShort!==esc(ev.cls)?'<span style="font-size:9px;font-weight:600;color:var(--pale);margin-top:2px;text-align:right">'+esc(ev.cls)+'</span>':'')
+        +'</div>';
 
-      /* right badge */
-      var rightCol='<div class="lc-right"><span class="lc-class-badge '+(ck||'')+'">'+esc(ev.cls||'—')+'</span></div>';
-
-      card.innerHTML=timeCol+bodyCol+rightCol;
+      /* stripe + inner wrapper */
+      card.innerHTML='<div class="lc-stripe" style="background:'+stripeCol+'"></div>'
+        +'<div class="lc-inner">'+timeCol+bodyCol+rightCol+'</div>';
       card.addEventListener('click',function(){openModal(ev);});
       cardsDiv.appendChild(card);
     });
   });
+
+  /* auto-scroll to today's group */
+  setTimeout(function(){
+    var todayGrp=lv.querySelector('.today-group');
+    if(todayGrp) todayGrp.scrollIntoView({behavior:'smooth',block:'start'});
+  }, 80);
 }
 
 /* ════════════════════════════
@@ -1310,10 +1367,29 @@ function buildWeekGrid(container,weekDays){
   var byDate={};
   DATA.forEach(function(e){if(!byDate[e.date])byDate[e.date]=[];byDate[e.date].push(e);});
 
-  // Apply current filters for week view
-  var filtered=monthData(CUR_YM);
+  /* Filter all DATA by active filters (not month-locked — week may span months) */
   byDate={};
-  filtered.forEach(function(e){if(!byDate[e.date])byDate[e.date]=[];byDate[e.date].push(e);});
+  DATA.filter(function(e){
+    var d=new Date(e.date); if(isNaN(d)) return false;
+    if(F_CLS){
+      if(F_CLS==='holiday' && !isHoliday(e)) return false;
+      if(F_CLS==='1o'   && clsKey(e.cls)!=='c1o')  return false;
+      if(F_CLS==='9'    && clsKey(e.cls)!=='c9')   return false;
+      if(F_CLS==='10'   && clsKey(e.cls)!=='c10')  return false;
+      if(F_CLS==='11'   && clsKey(e.cls)!=='c11')  return false;
+      if(F_CLS==='12'   && clsKey(e.cls)!=='c12')  return false;
+      if(F_CLS==='neet' && clsKey(e.cls)!=='neet') return false;
+      if(F_CLS==='jee'  && clsKey(e.cls)!=='jee')  return false;
+    }
+    if(F_SUBJ  && e.subject.toLowerCase()!==F_SUBJ.toLowerCase())  return false;
+    if(F_TEACH && e.teacher.toLowerCase()!==F_TEACH.toLowerCase()) return false;
+    if(F_MODE  && e.mode.toLowerCase()!==F_MODE.toLowerCase())     return false;
+    if(F_SRCH){
+      var q=F_SRCH, tp=isOneOne(e)?parseOneOneTopic(e):{student:'',topic:e.topic};
+      if(!(e.topic.toLowerCase().includes(q)||e.subject.toLowerCase().includes(q)||(tp.student&&tp.student.toLowerCase().includes(q)))) return false;
+    }
+    return true;
+  }).forEach(function(e){if(!byDate[e.date])byDate[e.date]=[];byDate[e.date].push(e);});
 
   var grid=document.createElement('div'); grid.className='week-grid';
   var corner=document.createElement('div'); corner.className='week-col-hdr'; corner.style.cssText='font-size:9px'; corner.textContent='Time';
@@ -1478,7 +1554,7 @@ function openModal(ev){
   var mainTitle=oneone?(parsed.topic||ev.subject||'One-One Session'):(ev.topic||ev.subject||'Session');
   g('modalTitle').textContent=mainTitle;
   var sub='';
-  if(oneone&&parsed.student) sub='👤 Private session with '+parsed.student;
+  if(oneone&&parsed.student) sub='1:1 · '+parsed.student;
   else if(ev.cls) sub=ev.cls;
   g('modalTitleSub').textContent=sub;
 
@@ -1528,10 +1604,10 @@ function showDayModal(ds,evs){
     var parsed=oneone?parseOneOneTopic(ev):{student:'',topic:ev.topic};
     return '<div style="padding:10px 12px;border-left:3px solid '+col+';background:var(--cream);border-radius:0 4px 4px 0;cursor:pointer;margin-bottom:4px" onclick="void(0)">'
       +'<div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ink)">'
-      +(online?'<span style="color:#16a34a">🖥</span>':'')+esc(oneone?(parsed.topic||'One-One'):(ev.topic||ev.subject||'Session'))+'</div>'
+      +(online?'<span style="font-size:9px;font-weight:800;color:#16a34a;background:rgba(22,163,74,.1);padding:1px 5px;border-radius:2px">Online</span> ':'')+esc(oneone?(parsed.topic||'One-One'):(ev.topic||ev.subject||'Session'))+'</div>'
       +'<div style="font-size:10px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:8px">'
       +(ev.start?'<b>'+fmtRange(ev.start,ev.end)+'</b>':'')+' '+esc(ev.cls||'')
-      +(oneone&&parsed.student?' · 👤 '+esc(parsed.student):'')
+      +(oneone&&parsed.student?' · '+esc(parsed.student):'')
       +(ev.teacher&&!oneone?' · '+esc(ev.teacher):'')+'</div>'
       +'</div>';
   }).join('');
