@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Feedback — Sehr Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0e0e0b;
+  --surface:#161612;
+  --surface2:#1e1e19;
+  --card:#1a1a15;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.13);
+  --lime:#d4f040;
+  --lime2:#b8d42e;
+  --lime-dim:rgba(212,240,64,0.08);
+  --text:#e8e4d8;
+  --text2:#9c9982;
+  --text3:#5c5c4e;
+  --star-empty:#2e2e26;
+  --star-fill:#f0c840;
+  --err:#e05555;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── Header ── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 40px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+  background:rgba(14,14,11,0.92);
+  backdrop-filter:blur(12px);
+}
+.logo{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:17px;letter-spacing:.04em;color:var(--text);
+}
+.logo span{color:var(--lime)}
+.header-right{display:flex;align-items:center;gap:14px}
+.progress-text{font-size:12px;color:var(--text2);font-weight:300}
+.progress-ring-wrap{position:relative;width:32px;height:32px}
+.progress-ring{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--surface2);stroke-width:3}
+.ring-fg{fill:none;stroke:var(--lime);stroke-width:3;stroke-linecap:round;
+  transition:stroke-dashoffset .5s ease;
+  stroke-dasharray:82;stroke-dashoffset:82}
+
+/* ── Hero ── */
+.hero{
+  padding:80px 40px 72px;
+  max-width:860px;
+  position:relative;
+}
+.hero-eyebrow{
+  font-family:'Syne',sans-serif;font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--lime);font-weight:600;margin-bottom:22px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--lime);display:block}
+.hero h1{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(36px,7vw,68px);
+  line-height:1.08;
+  color:var(--text);
+  font-weight:400;
+  max-width:680px;
+}
+.hero h1 i{color:var(--lime)}
+.hero-sub{
+  margin-top:20px;font-size:15px;color:var(--text2);
+  font-weight:300;line-height:1.75;max-width:460px;
+  border-left:2px solid var(--lime);padding-left:16px;
+}
+
+.hero-divider{height:1px;background:var(--border);margin:0 40px;}
+
+/* ── Main ── */
+.main{max-width:760px;margin:0 auto;padding:56px 24px 120px}
+
+/* ── Section ── */
+.section{margin-bottom:56px}
+.section-label{
+  font-family:'Syne',sans-serif;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--lime);font-weight:600;
+  display:flex;align-items:center;gap:10px;margin-bottom:24px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+.section-num{
+  font-family:'Libre Baskerville',serif;font-size:13px;
+  color:var(--text3);font-weight:400;font-style:italic;
+}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.subj-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+
+.subj-head{
+  padding:14px 22px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.subj-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-physics{background:#4a9eff}
+.dot-chemistry{background:#ff6b6b}
+.dot-maths{background:#a78bfa}
+.dot-biology{background:#34d399}
+.subj-name-txt{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;letter-spacing:.03em;color:var(--text)}
+
+.subj-mode-rows{padding:0 22px}
+.mode-row{display:flex;align-items:center;padding:14px 0;gap:16px}
+.mode-row:not(:last-child){border-bottom:1px solid var(--border)}
+.mode-lbl{font-size:12px;color:var(--text2);font-weight:300;min-width:64px;display:flex;align-items:center;gap:6px;letter-spacing:.02em}
+.mode-dot{width:5px;height:5px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.stars-row{display:flex;gap:4px;flex:1}
+.star-val{font-size:11px;color:var(--text3);min-width:28px;text-align:right;font-weight:300}
+
+/* ── Stars ── */
+.star{
+  font-size:22px;cursor:pointer;color:var(--star-empty);
+  transition:color .1s,transform .1s;
+  user-select:none;-webkit-tap-highlight-color:transparent;line-height:1;
+}
+.star.h,.star.s{color:var(--star-fill)}
+.star.s{transform:scale(1.1)}
+
+/* ── Gen rows ── */
+.gen-row{display:flex;align-items:center;gap:14px;padding:16px 22px}
+.gen-row:not(:last-child){border-bottom:1px solid var(--border)}
+.gen-lbl{font-size:13px;color:var(--text);flex:1;line-height:1.4;font-weight:400}
+.gen-lbl small{display:block;font-size:11px;color:var(--text2);font-weight:300;margin-top:2px}
+
+/* ── Fields ── */
+.field{padding:20px 22px}
+.field+.field{border-top:1px solid var(--border)}
+.field-lbl{font-size:12px;font-weight:500;color:var(--text);letter-spacing:.03em;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.req{color:var(--lime);font-size:14px;line-height:1}
+.field-hint{font-size:12px;color:var(--text2);margin-bottom:12px;font-weight:300;line-height:1.55}
+
+/* ── Select ── */
+select{
+  width:100%;appearance:none;
+  background:var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235c5c4e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+  border:1px solid var(--border2);border-radius:8px;
+  padding:11px 36px 11px 14px;
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);
+  cursor:pointer;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+select option{background:var(--surface2);color:var(--text)}
+select:focus{border-color:var(--lime2);box-shadow:0 0 0 3px rgba(212,240,64,0.1)}
+
+/* ── Textarea ── */
+textarea{
+  width:100%;background:var(--surface2);
+  border:1px solid var(--border2);border-radius:8px;
+  padding:11px 14px;
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);
+  resize:vertical;min-height:82px;outline:none;line-height:1.65;
+  transition:border-color .2s,box-shadow .2s;
+}
+textarea::placeholder{color:var(--text3)}
+textarea:focus{border-color:var(--lime2);box-shadow:0 0 0 3px rgba(212,240,64,0.1)}
+
+/* ── Pills ── */
+.pill-group{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px}
+.pill-inp{display:none}
+.pill-lbl{
+  padding:7px 16px;border-radius:6px;
+  border:1px solid var(--border2);
+  font-size:12px;font-weight:400;color:var(--text2);
+  background:var(--surface2);cursor:pointer;
+  transition:all .15s;user-select:none;letter-spacing:.01em;
+}
+.pill-inp:checked+.pill-lbl{
+  background:var(--lime-dim);color:var(--lime);
+  border-color:rgba(212,240,64,0.3);font-weight:500;
+}
+
+/* ── Error ── */
+.err{font-size:11px;color:var(--err);margin-top:7px;display:none;letter-spacing:.01em}
+.show-err{display:block!important}
+
+/* ── Submit ── */
+.submit-sec{text-align:center;padding-top:8px}
+.btn{
+  background:var(--lime);color:var(--bg);
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border:none;border-radius:8px;
+  padding:16px 52px;cursor:pointer;
+  transition:background .2s,transform .15s,box-shadow .2s;
+  box-shadow:0 0 40px rgba(212,240,64,0.15);
+}
+.btn:hover{background:#e0f84a;transform:translateY(-1px);box-shadow:0 4px 28px rgba(212,240,64,0.25)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-note{font-size:11px;color:var(--text3);margin-top:12px;letter-spacing:.01em}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--surface2);color:var(--text);
+  font-size:13px;padding:12px 24px;border-radius:8px;
+  border:1px solid var(--border2);
+  opacity:0;pointer-events:none;
+  transition:opacity .25s,transform .25s;
+  z-index:999;white-space:nowrap;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-lime{color:var(--lime);margin-right:6px}
+
+/* ── Success ── */
+.success{
+  display:none;text-align:center;
+  padding:100px 24px;max-width:500px;margin:0 auto;
+}
+.success.on{display:block}
+.success-glyph{
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:72px;color:var(--lime);margin-bottom:24px;display:block;line-height:1;
+}
+.success h2{
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:700;
+  color:var(--text);margin-bottom:14px;letter-spacing:.02em;
+}
+.success p{font-size:14px;color:var(--text2);line-height:1.8}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.section{animation:fadeUp .5s ease both}
+.section:nth-child(1){animation-delay:.05s}
+.section:nth-child(2){animation-delay:.12s}
+.section:nth-child(3){animation-delay:.19s}
+.section:nth-child(4){animation-delay:.26s}
+.section:nth-child(5){animation-delay:.33s}
+.section:nth-child(6){animation-delay:.40s}
+
+@media(max-width:500px){
+  header{padding:14px 20px}
+  .hero{padding:48px 20px 52px}
+  .hero-divider{margin:0 20px}
+  .main{padding:40px 14px 100px}
+  .subj-head,.gen-row,.field{padding-left:16px;padding-right:16px}
+  .subj-mode-rows{padding:0 16px}
+  .star{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Sehr<span> Academy</span></div>
+  <div class="header-right">
+    <span class="progress-text" id="pctText">0% done</span>
+    <div class="progress-ring-wrap">
+      <svg class="progress-ring" width="32" height="32" viewBox="0 0 32 32">
+        <circle class="ring-bg" cx="16" cy="16" r="13"/>
+        <circle class="ring-fg" id="ringFg" cx="16" cy="16" r="13"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Student Feedback</div>
+  <h1>Two months in.<br><i>How are we doing?</i></h1>
+  <p class="hero-sub">Every response is read by the team. Your honesty makes the next batch better.</p>
+</div>
+<div class="hero-divider"></div>
+
+<div id="formWrap">
+<div class="main">
+
+  <!-- 1. Subject Ratings -->
+  <div class="section">
+    <div class="section-label"><span class="section-num">01</span> Rate each subject</div>
+
+    <div class="subj-card">
+      <div class="subj-head"><div class="subj-dot dot-physics"></div><div class="subj-name-txt">Physics</div></div>
+      <div class="subj-mode-rows">
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Online</div><div class="stars-row" data-field="physics-online"></div><div class="star-val" id="sv-physics-online"></div></div>
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Offline</div><div class="stars-row" data-field="physics-offline"></div><div class="star-val" id="sv-physics-offline"></div></div>
+      </div>
+    </div>
+
+    <div class="subj-card">
+      <div class="subj-head"><div class="subj-dot dot-chemistry"></div><div class="subj-name-txt">Chemistry</div></div>
+      <div class="subj-mode-rows">
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Online</div><div class="stars-row" data-field="chemistry-online"></div><div class="star-val" id="sv-chemistry-online"></div></div>
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Offline</div><div class="stars-row" data-field="chemistry-offline"></div><div class="star-val" id="sv-chemistry-offline"></div></div>
+      </div>
+    </div>
+
+    <div class="subj-card">
+      <div class="subj-head"><div class="subj-dot dot-maths"></div><div class="subj-name-txt">Mathematics</div></div>
+      <div class="subj-mode-rows">
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Online</div><div class="stars-row" data-field="mathematics-online"></div><div class="star-val" id="sv-mathematics-online"></div></div>
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Offline</div><div class="stars-row" data-field="mathematics-offline"></div><div class="star-val" id="sv-mathematics-offline"></div></div>
+      </div>
+    </div>
+
+    <div class="subj-card">
+      <div class="subj-head"><div class="subj-dot dot-biology"></div><div class="subj-name-txt">Biology</div></div>
+      <div class="subj-mode-rows">
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Online</div><div class="stars-row" data-field="biology-online"></div><div class="star-val" id="sv-biology-online"></div></div>
+        <div class="mode-row"><div class="mode-lbl"><div class="mode-dot"></div>Offline</div><div class="stars-row" data-field="biology-offline"></div><div class="star-val" id="sv-biology-offline"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Overall -->
+  <div class="section">
+    <div class="section-label"><span class="section-num">02</span> Overall experience</div>
+    <div class="card">
+      <div class="gen-row">
+        <div class="gen-lbl">Overall experience at Sehr Academy<small>Required</small></div>
+        <div class="stars-row" data-field="overall-exp"></div>
+        <div class="star-val" id="sv-overall-exp"></div>
+      </div>
+      <div class="gen-row">
+        <div class="gen-lbl">Classroom environment &amp; facilities</div>
+        <div class="stars-row" data-field="classroom"></div>
+        <div class="star-val" id="sv-classroom"></div>
+      </div>
+      <div class="gen-row">
+        <div class="gen-lbl">Study materials &amp; notes quality</div>
+        <div class="stars-row" data-field="materials"></div>
+        <div class="star-val" id="sv-materials"></div>
+      </div>
+    </div>
+    <div class="err" id="err-overall">Please rate your overall experience to continue.</div>
+  </div>
+
+  <!-- 3. Teachers -->
+  <div class="section">
+    <div class="section-label"><span class="section-num">03</span> Your teachers</div>
+    <div class="card">
+      <div class="field">
+        <div class="field-lbl">Favourite teacher <span class="req">✦</span></div>
+        <div class="field-hint">The one whose class you look forward to the most.</div>
+        <select id="fav-teacher" onchange="updateProgress()">
+          <option value="" disabled selected>Select a teacher</option>
+          <option>Ms Hana</option>
+          <option>Ms Hiba</option>
+          <option>Ms Nikitha</option>
+          <option>Mr Shan</option>
+          <option>Ms Unnimaya</option>
+        </select>
+        <div class="err" id="err-fav">Please select your favourite teacher.</div>
+      </div>
+      <div class="field">
+        <div class="field-lbl">Whose class do you find hardest to follow?</div>
+        <div class="field-hint">Honest answers help us improve — no wrong choice here.</div>
+        <select id="hard-teacher">
+          <option value="">— Prefer not to say —</option>
+          <option>Ms Hana</option>
+          <option>Ms Hiba</option>
+          <option>Ms Nikitha</option>
+          <option>Mr Shan</option>
+          <option>Ms Unnimaya</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Teaching improvement -->
+  <div class="section">
+    <div class="section-label"><span class="section-num">04</span> Teaching improvement</div>
+    <div class="card">
+      <div class="field">
+        <div class="field-lbl">Which subject's teaching needs improvement? <span class="req">✦</span></div>
+        <div class="field-hint">Pick the subject where teaching could be better.</div>
+        <select id="improve-subj" onchange="updateProgress()">
+          <option value="" disabled selected>Select a subject</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Mathematics</option>
+          <option>Biology</option>
+          <option value="All">All subjects equally</option>
+        </select>
+        <div class="err" id="err-improve">Please select a subject.</div>
+      </div>
+      <div class="field">
+        <div class="field-lbl">What specifically should change?</div>
+        <div class="field-hint">Pace, examples, board work, explanation depth — anything helps.</div>
+        <textarea id="improve-text" placeholder="e.g. More solved examples in Chemistry, slower pace for integration in Maths…" maxlength="600"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. General -->
+  <div class="section">
+    <div class="section-label"><span class="section-num">05</span> Your experience</div>
+    <div class="card">
+      <div class="field">
+        <div class="field-lbl">What do you enjoy most about Sehr Academy?</div>
+        <div class="field-hint">Teachers, atmosphere, schedule, progress — anything goes.</div>
+        <textarea id="enjoy" placeholder="What makes you glad you joined…" maxlength="400"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-lbl">The one thing you would change</div>
+        <div class="field-hint">If you could change just one thing about how we run things.</div>
+        <textarea id="change" placeholder="Your honest suggestion…" maxlength="400"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-lbl">How has your confidence changed since joining? <span class="req">✦</span></div>
+        <div class="field-hint">Compared to when you first joined Sehr Academy.</div>
+        <div class="pill-group">
+          <input class="pill-inp" type="radio" name="conf" id="c1" value="Much more confident"><label class="pill-lbl" for="c1">Much more confident</label>
+          <input class="pill-inp" type="radio" name="conf" id="c2" value="Somewhat more confident"><label class="pill-lbl" for="c2">Somewhat more confident</label>
+          <input class="pill-inp" type="radio" name="conf" id="c3" value="About the same"><label class="pill-lbl" for="c3">About the same</label>
+          <input class="pill-inp" type="radio" name="conf" id="c4" value="Less confident"><label class="pill-lbl" for="c4">Less confident</label>
+        </div>
+        <div class="err" id="err-conf">Please select an option.</div>
+      </div>
+      <div class="field">
+        <div class="field-lbl">Do the class timings work for you? <span class="req">✦</span></div>
+        <div class="pill-group">
+          <input class="pill-inp" type="radio" name="timing" id="t1" value="Works perfectly"><label class="pill-lbl" for="t1">Works perfectly</label>
+          <input class="pill-inp" type="radio" name="timing" id="t2" value="Mostly fine"><label class="pill-lbl" for="t2">Mostly fine</label>
+          <input class="pill-inp" type="radio" name="timing" id="t3" value="Sometimes clashes"><label class="pill-lbl" for="t3">Sometimes clashes</label>
+          <input class="pill-inp" type="radio" name="timing" id="t4" value="Difficult for me"><label class="pill-lbl" for="t4">Difficult for me</label>
+        </div>
+        <div class="err" id="err-timing">Please select an option.</div>
+      </div>
+      <div class="field">
+        <div class="field-lbl">Topics being rushed or skipped?</div>
+        <div class="field-hint">Be specific — chapter names, subjects, concepts.</div>
+        <textarea id="rushed" placeholder="e.g. Thermodynamics felt rushed, Integration needs more time…" maxlength="400"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="section submit-sec">
+    <button class="btn" id="submitBtn" onclick="handleSubmit()">Submit Feedback</button>
+    <p class="submit-note">Anonymous · Read by the Sehr Academy team</p>
+  </div>
+
+</div>
+</div>
+
+<div class="success" id="successScreen">
+  <span class="success-glyph">✦</span>
+  <h2>Thank you.</h2>
+  <p>Your feedback has been recorded and will be reviewed by the Sehr Academy team.<br><br>See you in the next class.</p>
+</div>
+
+<div class="toast" id="toast"><span class="toast-lime">✓</span><span id="toastMsg"></span></div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHVdnxVooq-PCettTkdaX-9varDpb-DXe0xFhF-z91L7TgfOfK_p_YfJAJtfZFnwIfvQ/exec';
+const ratings = {};
+
+// Build stars
+document.querySelectorAll('.stars-row').forEach(row => {
+  const field = row.dataset.field;
+  ratings[field] = 0;
+  for(let i = 1; i <= 5; i++){
+    const s = document.createElement('span');
+    s.className = 'star';
+    s.dataset.v = i;
+    s.textContent = '★';
+    s.setAttribute('tabindex','0');
+    s.addEventListener('mouseenter', () => paint(row, field, i, true));
+    s.addEventListener('mouseleave', () => paint(row, field, 0, false));
+    s.addEventListener('click',      () => pick(row, field, i));
+    s.addEventListener('keydown',    e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(row,field,i); }});
+    row.appendChild(s);
+  }
+});
+
+function paint(row, field, hover, isHover){
+  const val = ratings[field];
+  row.querySelectorAll('.star').forEach((s,i) => {
+    s.classList.toggle('h', isHover && i < hover);
+    s.classList.toggle('s', !isHover && i < val);
+  });
+  const sv = document.getElementById('sv-' + field);
+  if(sv) sv.textContent = (isHover ? hover : val) ? (isHover ? hover : val) + '/5' : '';
+}
+
+function pick(row, field, val){
+  ratings[field] = val;
+  row.querySelectorAll('.star').forEach((s,i) => {
+    s.classList.toggle('s', i < val);
+    s.classList.remove('h');
+  });
+  const sv = document.getElementById('sv-' + field);
+  if(sv) sv.textContent = val + '/5';
+  if(field === 'overall-exp') document.getElementById('err-overall').classList.remove('show-err');
+  updateProgress();
+}
+
+// Progress
+const REQ_STARS = ['physics-online','physics-offline','chemistry-online','chemistry-offline',
+  'mathematics-online','mathematics-offline','biology-online','biology-offline','overall-exp'];
+const TOTAL = REQ_STARS.length + 4;
+
+function updateProgress(){
+  let done = REQ_STARS.filter(f => ratings[f] > 0).length;
+  if(document.getElementById('fav-teacher').value) done++;
+  if(document.getElementById('improve-subj').value) done++;
+  if(document.querySelector('input[name="conf"]:checked')) done++;
+  if(document.querySelector('input[name="timing"]:checked')) done++;
+  const pct = Math.round((done / TOTAL) * 100);
+  const circ = 2 * Math.PI * 13;
+  document.getElementById('ringFg').style.strokeDashoffset = circ - (circ * pct / 100);
+  document.getElementById('pctText').textContent = pct + '% done';
+}
+
+document.querySelectorAll('input[name="conf"], input[name="timing"]').forEach(r => {
+  r.addEventListener('change', updateProgress);
+});
+
+// Validate
+function validate(){
+  let ok = true;
+  const toggle = (id, v) => document.getElementById(id).classList.toggle('show-err', v);
+
+  if(!ratings['overall-exp']){ toggle('err-overall',true); ok=false; } else toggle('err-overall',false);
+  if(!document.getElementById('fav-teacher').value){ toggle('err-fav',true); ok=false; } else toggle('err-fav',false);
+  if(!document.getElementById('improve-subj').value){ toggle('err-improve',true); ok=false; } else toggle('err-improve',false);
+  if(!document.querySelector('input[name="conf"]:checked')){ toggle('err-conf',true); ok=false; } else toggle('err-conf',false);
+  if(!document.querySelector('input[name="timing"]:checked')){ toggle('err-timing',true); ok=false; } else toggle('err-timing',false);
+  return ok;
+}
+
+// Submit
+async function handleSubmit(){
+  if(!validate()){
+    document.querySelector('.show-err')?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+
+  const d = {
+    timestamp: new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}),
+    physics_online:      ratings['physics-online'],
+    physics_offline:     ratings['physics-offline'],
+    chemistry_online:    ratings['chemistry-online'],
+    chemistry_offline:   ratings['chemistry-offline'],
+    mathematics_online:  ratings['mathematics-online'],
+    mathematics_offline: ratings['mathematics-offline'],
+    biology_online:      ratings['biology-online'],
+    biology_offline:     ratings['biology-offline'],
+    overall_exp:         ratings['overall-exp'],
+    classroom:           ratings['classroom'] || '',
+    materials:           ratings['materials'] || '',
+    fav_teacher:         document.getElementById('fav-teacher').value,
+    hard_teacher:        document.getElementById('hard-teacher').value,
+    improve_subj:        document.getElementById('improve-subj').value,
+    improve_text:        document.getElementById('improve-text').value.trim(),
+    enjoy:               document.getElementById('enjoy').value.trim(),
+    change:              document.getElementById('change').value.trim(),
+    confidence:          document.querySelector('input[name="conf"]:checked')?.value || '',
+    timing:              document.querySelector('input[name="timing"]:checked')?.value || '',
+    rushed:              document.getElementById('rushed').value.trim(),
+  };
+
+  try {
+    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+    document.getElementById('formWrap').style.display='none';
+    const s = document.getElementById('successScreen');
+    s.style.display='block';
+    setTimeout(()=>s.classList.add('on'),30);
+    window.scrollTo({top:0,behavior:'smooth'});
+    toast('Feedback submitted — thank you!');
+  } catch(e){
+    btn.disabled=false; btn.textContent='Submit Feedback';
+    toast('Something went wrong. Please try again.');
+  }
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),3200);
+}
+</script>
+</body>
+</html>
