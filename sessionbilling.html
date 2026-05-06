@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fee Statement Generator — SEHR Academy</title>
+<meta name="theme-color" content="#8BC53F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18; --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --red-bg:#fef2f2; --red-mid:#fca5a5;
+  --amber:#d97706; --amber-bg:#fffbeb; --amber-mid:#fde68a;
+  --blue:#2563eb; --blue-bg:#eff6ff; --blue-mid:#bfdbfe;
+  --f-head:'Montserrat',sans-serif;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+
+  /* Day colours */
+  --mon-bg:#d8f3dc; --mon-fg:#1b5e3b;
+  --tue-bg:#dbeafe; --tue-fg:#1e3a8a;
+  --wed-bg:#fef3c7; --wed-fg:#78350f;
+  --thu-bg:#f3e8ff; --thu-fg:#4c1d95;
+  --fri-bg:#fee2e2; --fri-fg:#7f1d1d;
+  --sat-bg:#ede9fe; --sat-fg:#3730a3;
+  --sun-bg:#fce7f3; --sun-fg:#831843;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+
+/* ══ TOPBAR ══ */
+.topbar{background:var(--ink);padding:0 40px;position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%);pointer-events:none}
+.tb-bg{position:absolute;right:0;bottom:-20px;font-family:var(--f-head);font-size:160px;font-weight:900;letter-spacing:-6px;color:rgba(255,255,255,.03);pointer-events:none;user-select:none;white-space:nowrap;line-height:1}
+.tb-inner{padding:38px 0 30px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;position:relative;z-index:1;flex-wrap:wrap}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tb-kicker-rule{width:22px;height:2px;background:var(--lime)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.9;font-family:var(--f)}
+.tb-title{font-family:var(--f-head);font-size:clamp(26px,3vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.95;margin-bottom:8px}
+.tb-title i{font-style:italic;font-weight:400;color:var(--lime)}
+.tb-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.38);font-family:var(--f)}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime);font-family:var(--f)}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime)}
+
+/* ══ WRAP ══ */
+.wrap{max-width:1100px;margin:0 auto;padding:32px 40px 80px}
+
+/* ══ SECTION DIVIDER ══ */
+.sec{display:flex;align-items:center;gap:12px;margin:32px 0 16px}
+.sec-rule{flex:1;height:1px;background:var(--rule)}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.sec-txt{font-family:var(--f);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
+
+/* ══ CONTROL CARD ══ */
+.ctrl-card{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+.ctrl-card-head{background:var(--ink-2);padding:16px 24px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--lime)}
+.ctrl-card-head-title{font-family:var(--f-head);font-size:13px;font-weight:700;letter-spacing:.04em;color:#fff;text-transform:uppercase}
+.ctrl-card-body{padding:24px}
+
+/* ══ FORM GRID ══ */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:20px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-family:var(--f);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fi{padding:9px 12px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:13px;font-weight:500;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s;width:100%}
+.fi:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.fi::placeholder{color:var(--pale);font-weight:400}
+.fi option{background:#fff;color:var(--ink)}
+
+/* ══ DAYS GRID ══ */
+.days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:768px){.days-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){.days-grid{grid-template-columns:repeat(2,1fr)}}
+
+.day-card{border:1.5px solid var(--cream-3);border-radius:6px;background:var(--cream);overflow:hidden;transition:border-color .18s,box-shadow .18s}
+.day-card.active{border-color:var(--lime);box-shadow:0 0 0 2px rgba(139,197,63,.15)}
+
+.day-card-top{padding:10px 12px 8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.day-label{font-family:var(--f-head);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);transition:color .18s}
+.day-card.active .day-label{color:var(--lime-3)}
+
+.day-dot{width:7px;height:7px;border-radius:50%;background:var(--cream-3);transition:background .18s,box-shadow .18s;flex-shrink:0}
+.day-card.active .day-dot{background:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.2)}
+
+.day-short{font-family:var(--f);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-top:1px}
+.day-card.active .day-short{color:var(--lime-2)}
+
+.day-time-wrap{padding:0 10px 10px;display:none}
+.day-card.active .day-time-wrap{display:block}
+.day-time{width:100%;padding:7px 8px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s}
+.day-time:focus{border-color:var(--lime);box-shadow:0 0 0 2px rgba(139,197,63,.12)}
+.day-time::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer}
+
+/* Toggle switch */
+.tog{position:relative;width:32px;height:18px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0;position:absolute}
+.tog-slider{position:absolute;inset:0;background:var(--cream-3);border-radius:18px;transition:.2s;cursor:pointer}
+.tog-slider::before{content:'';position:absolute;width:12px;height:12px;left:3px;top:3px;background:var(--pale);border-radius:50%;transition:.2s}
+.tog input:checked+.tog-slider{background:var(--lime)}
+.tog input:checked+.tog-slider::before{transform:translateX(14px);background:#fff}
+
+/* ══ BOTTOM ROW ══ */
+.ctrl-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:4px;border-top:1px solid var(--cream-3)}
+.month-nav{display:flex;align-items:center;gap:8px}
+.mnav-btn{width:30px;height:30px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:all .15s;line-height:1}
+.mnav-btn:hover{border-color:var(--lime);color:var(--lime-3)}
+.mnav-display{font-family:var(--f-head);font-size:13px;font-weight:700;color:var(--ink);min-width:136px;text-align:center;letter-spacing:.02em}
+.gen-btn{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:11px 28px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f-head);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .18s,box-shadow .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.gen-btn:hover{background:var(--lime-2);box-shadow:0 6px 20px rgba(139,197,63,.4)}
+.gen-btn:active{transform:scale(.98)}
+.gen-btn svg{width:14px;height:14px}
+
+/* ══ INVOICE CARD ══ */
+.invoice-outer{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+
+/* ══ INVOICE CONTENT ══ */
+#invoice-content{padding:48px 52px}
+
+.empty-state{text-align:center;padding:72px 20px;color:var(--pale)}
+.empty-ico{font-size:40px;opacity:.25;margin-bottom:16px}
+.empty-txt{font-family:var(--f-head);font-size:16px;font-weight:600;color:var(--pale);letter-spacing:-.3px}
+.empty-sub{font-size:12px;color:var(--pale);margin-top:6px;font-weight:400}
+
+/* Invoice header */
+.inv-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
+.inv-academy{font-family:var(--f-head);font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
+.inv-academy span{color:var(--lime)}
+.inv-tagline{font-family:var(--f);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+.inv-meta{text-align:right}
+.inv-type{font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-3);margin-bottom:8px}
+.inv-num{font-family:var(--f);font-size:12px;font-weight:600;color:var(--muted)}
+.inv-month{font-family:var(--f-head);font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.8px;margin-top:4px}
+.inv-issued{font-size:11px;color:var(--pale);margin-top:4px;font-family:var(--f)}
+
+/* Student row */
+.inv-student-row{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px;padding:18px 20px;background:var(--cream);border-radius:5px;border:1px solid var(--cream-3)}
+.inf-title{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.inf-val{font-family:var(--f-head);font-size:15px;font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.2px}
+.inf-sub{font-family:var(--f);font-size:12px;font-weight:400;color:var(--muted);margin-top:2px}
+
+/* Calendar */
+.cal-title{font-family:var(--f-head);font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-bottom:12px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:18px}
+.cal-dh{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:5px 0 7px}
+.cal-cell{min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:4px 2px;position:relative}
+.cal-cell.empty{background:transparent}
+.cal-cell.regular{background:var(--cream)}
+.cal-cell.wknd{background:var(--cream-2)}
+.cal-date{font-family:var(--f-head);font-size:12px;font-weight:700;line-height:1;letter-spacing:-.2px}
+.cal-cell.regular .cal-date{color:var(--pale)}
+.cal-cell.wknd .cal-date{color:var(--cream-3)}
+.cal-time{font-family:var(--f);font-size:7.5px;font-weight:600;text-align:center;line-height:1.3;margin-top:3px;letter-spacing:.02em}
+.cal-badge{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%}
+
+/* Day colour classes */
+.day-mon{background:var(--mon-bg)} .day-mon .cal-date{color:var(--mon-fg)} .day-mon .cal-time{color:var(--mon-fg);opacity:.75} .day-mon .cal-badge{background:var(--mon-fg)}
+.day-tue{background:var(--tue-bg)} .day-tue .cal-date{color:var(--tue-fg)} .day-tue .cal-time{color:var(--tue-fg);opacity:.75} .day-tue .cal-badge{background:var(--tue-fg)}
+.day-wed{background:var(--wed-bg)} .day-wed .cal-date{color:var(--wed-fg)} .day-wed .cal-time{color:var(--wed-fg);opacity:.75} .day-wed .cal-badge{background:var(--wed-fg)}
+.day-thu{background:var(--thu-bg)} .day-thu .cal-date{color:var(--thu-fg)} .day-thu .cal-time{color:var(--thu-fg);opacity:.75} .day-thu .cal-badge{background:var(--thu-fg)}
+.day-fri{background:var(--fri-bg)} .day-fri .cal-date{color:var(--fri-fg)} .day-fri .cal-time{color:var(--fri-fg);opacity:.75} .day-fri .cal-badge{background:var(--fri-fg)}
+.day-sat{background:var(--sat-bg)} .day-sat .cal-date{color:var(--sat-fg)} .day-sat .cal-time{color:var(--sat-fg);opacity:.75} .day-sat .cal-badge{background:var(--sat-fg)}
+.day-sun{background:var(--sun-bg)} .day-sun .cal-date{color:var(--sun-fg)} .day-sun .cal-time{color:var(--sun-fg);opacity:.75} .day-sun .cal-badge{background:var(--sun-fg)}
+
+/* Legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--rule)}
+.leg-item{display:flex;align-items:center;gap:6px;font-family:var(--f);font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
+.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;border:1px solid transparent}
+
+/* Summary table */
+.sum-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.sum-table th{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding:8px 12px;text-align:left}
+.sum-table td{font-size:13px;padding:11px 12px;border-bottom:1px solid var(--cream-2);color:var(--ink);font-family:var(--f)}
+.sum-table tr:last-child td{border-bottom:none}
+.sum-table .mono{font-family:var(--f-head);font-size:12px;font-weight:600}
+.total-row td{background:var(--ink);color:#fff;border:none;font-weight:600}
+.total-row .tot-label{font-family:var(--f);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.5}
+.total-row .tot-amt{font-family:var(--f-head);font-size:26px;font-weight:900;color:var(--lime);text-align:right;letter-spacing:-1px}
+
+/* Footer */
+.inv-footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.inv-footer-note{font-family:var(--f);font-size:12px;color:var(--muted);max-width:340px;line-height:1.6;font-style:italic}
+.inv-footer-brand{font-family:var(--f-head);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rule);text-align:right;line-height:2}
+
+/* ══ ACTION BAR ══ */
+.action-bar{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.act-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:4px;font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s;border:1.5px solid var(--cream-3)}
+.act-btn.print{background:var(--white);color:var(--ink)}
+.act-btn.print:hover{background:var(--cream);border-color:var(--rule)}
+.act-btn svg{width:13px;height:13px}
+
+/* ══ PRINT ══ */
+@media print {
+  .topbar,.ctrl-card,.sec,.action-bar{display:none!important}
+  body{background:#fff}
+  .wrap{padding:0;max-width:100%}
+  .invoice-outer{border:none;box-shadow:none;border-radius:0}
+  #invoice-content{padding:28px 36px}
+  .cal-cell,.total-row td,.leg-dot{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-bg">SEHR</div>
+  <div class="tb-inner">
+    <div>
+      <div class="tb-kicker">
+        <div class="tb-kicker-rule"></div>
+        <div class="tb-kicker-txt">Sehr Academy · Internal Tools</div>
+      </div>
+      <div class="tb-title">Fee Statement <i>Generator</i></div>
+      <div class="tb-meta">
+        <span class="tb-sub">Individual Session Billing</span>
+        <span class="tb-pill">Private Tuition</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION: STUDENT DETAILS -->
+  <div class="sec">
+    <div class="sec-dot"></div>
+    <div class="sec-txt">Student Details</div>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="ctrl-card">
+    <div class="ctrl-card-head">
+      <div class="ctrl-card-head-title">Session Configuration</div>
+    </div>
+    <div class="ctrl-card-body">
+
+      <!-- Student fields -->
+      <div class="form-grid">
+        <div class="fg">
+          <label class="fl">Student Name</label>
+          <input class="fi" id="studentName" type="text" placeholder="Leave blank to omit">
+        </div>
+        <div class="fg">
+          <label class="fl">Class / Grade</label>
+          <select class="fi" id="studentClass">
+            <option>Class 9</option>
+            <option>Class 10</option>
+            <option>Class 11</option>
+            <option>Class 12</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Board</label>
+          <select class="fi" id="studentBoard">
+            <option>CBSE</option>
+            <option>Kerala State Board</option>
+            <option>ICSE</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Subject</label>
+          <input class="fi" id="studentSubject" type="text" placeholder="e.g. Mathematics">
+        </div>
+        <div class="fg">
+          <label class="fl">Rate / Hour (₹)</label>
+          <input class="fi" id="ratePerHour" type="number" value="250" min="0">
+        </div>
+        <div class="fg">
+          <label class="fl">Hours / Session</label>
+          <input class="fi" id="hoursPerSession" type="number" value="2" step="0.5" min="0.5">
+        </div>
+      </div>
+
+      <!-- SECTION: SCHEDULE -->
+      <div class="sec" style="margin-top:8px;margin-bottom:14px">
+        <div class="sec-dot"></div>
+        <div class="sec-txt">Weekly Schedule — Toggle Days On / Off</div>
+        <div class="sec-rule"></div>
+      </div>
+
+      <!-- 7-day cards -->
+      <div class="days-grid">
+        <!-- SUN -->
+        <div class="day-card" id="card-sun">
+          <div class="day-card-top" onclick="toggleDay('sun')">
+            <div>
+              <div class="day-label">Sunday</div>
+              <div class="day-short">SUN</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-sun" onchange="syncCard('sun')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-sun" type="time" value="10:00">
+          </div>
+        </div>
+        <!-- MON -->
+        <div class="day-card active" id="card-mon">
+          <div class="day-card-top" onclick="toggleDay('mon')">
+            <div>
+              <div class="day-label">Monday</div>
+              <div class="day-short">MON</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-mon" checked onchange="syncCard('mon')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-mon" type="time" value="10:00">
+          </div>
+        </div>
+        <!-- TUE -->
+        <div class="day-card" id="card-tue">
+          <div class="day-card-top" onclick="toggleDay('tue')">
+            <div>
+              <div class="day-label">Tuesday</div>
+              <div class="day-short">TUE</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-tue" onchange="syncCard('tue')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-tue" type="time" value="10:00">
+          </div>
+        </div>
+        <!-- WED -->
+        <div class="day-card" id="card-wed">
+          <div class="day-card-top" onclick="toggleDay('wed')">
+            <div>
+              <div class="day-label">Wednesday</div>
+              <div class="day-short">WED</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-wed" onchange="syncCard('wed')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-wed" type="time" value="10:00">
+          </div>
+        </div>
+        <!-- THU -->
+        <div class="day-card" id="card-thu">
+          <div class="day-card-top" onclick="toggleDay('thu')">
+            <div>
+              <div class="day-label">Thursday</div>
+              <div class="day-short">THU</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-thu" onchange="syncCard('thu')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-thu" type="time" value="10:00">
+          </div>
+        </div>
+        <!-- FRI -->
+        <div class="day-card active" id="card-fri">
+          <div class="day-card-top" onclick="toggleDay('fri')">
+            <div>
+              <div class="day-label">Friday</div>
+              <div class="day-short">FRI</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-fri" checked onchange="syncCard('fri')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-fri" type="time" value="10:00">
+          </div>
+        </div>
+        <!-- SAT -->
+        <div class="day-card" id="card-sat">
+          <div class="day-card-top" onclick="toggleDay('sat')">
+            <div>
+              <div class="day-label">Saturday</div>
+              <div class="day-short">SAT</div>
+            </div>
+            <label class="tog" onclick="event.stopPropagation()">
+              <input type="checkbox" id="tog-sat" onchange="syncCard('sat')">
+              <span class="tog-slider"></span>
+            </label>
+          </div>
+          <div class="day-time-wrap">
+            <input class="day-time" id="time-sat" type="time" value="10:00">
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom: month + generate -->
+      <div class="ctrl-bottom">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div class="fl">Billing Month</div>
+          <div class="month-nav">
+            <button class="mnav-btn" onclick="changeMonth(-1)">‹</button>
+            <div class="mnav-display" id="monthDisplay">—</div>
+            <button class="mnav-btn" onclick="changeMonth(1)">›</button>
+          </div>
+        </div>
+        <button class="gen-btn" onclick="generate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg>
+          Generate Invoice
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION: INVOICE PREVIEW -->
+  <div class="sec" style="margin-top:36px">
+    <div class="sec-dot"></div>
+    <div class="sec-txt">Invoice Preview</div>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="invoice-outer">
+    <div id="invoice-content">
+      <div class="empty-state">
+        <div class="empty-ico">📋</div>
+        <div class="empty-txt">No invoice generated yet</div>
+        <div class="empty-sub">Configure the schedule above and click Generate Invoice</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-bar" id="action-bar" style="display:none">
+    <button class="act-btn print" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Export PDF
+    </button>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DAY_KEYS = ['sun','mon','tue','wed','thu','fri','sat'];
+  // DOW index: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+  const DAY_CSS = ['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
+  const DAY_FG  = ['var(--sun-fg)','var(--mon-fg)','var(--tue-fg)','var(--wed-fg)','var(--thu-fg)','var(--fri-fg)','var(--sat-fg)'];
+  const DAY_BG  = ['var(--sun-bg)','var(--mon-bg)','var(--tue-bg)','var(--wed-bg)','var(--thu-bg)','var(--fri-bg)','var(--sat-bg)'];
+  const DAY_FULL= ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  let billingYear, billingMonth;
+  const now = new Date();
+  billingYear  = now.getFullYear();
+  billingMonth = now.getMonth();
+  updateMonthDisplay();
+
+  function updateMonthDisplay(){
+    document.getElementById('monthDisplay').textContent = MONTHS[billingMonth]+' '+billingYear;
+  }
+
+  function changeMonth(d){
+    billingMonth += d;
+    if(billingMonth>11){billingMonth=0;billingYear++;}
+    if(billingMonth<0) {billingMonth=11;billingYear--;}
+    updateMonthDisplay();
+  }
+
+  function toggleDay(key){
+    var cb = document.getElementById('tog-'+key);
+    cb.checked = !cb.checked;
+    syncCard(key);
+  }
+
+  function syncCard(key){
+    var cb   = document.getElementById('tog-'+key);
+    var card = document.getElementById('card-'+key);
+    if(cb.checked){ card.classList.add('active'); }
+    else           { card.classList.remove('active'); }
+  }
+
+  function fmt12(t){
+    if(!t) return '';
+    var p=t.split(':'), h=parseInt(p[0]), m=p[1];
+    return (h%12||12)+':'+m+' '+(h>=12?'PM':'AM');
+  }
+
+  function fmtRange(t,hrs){
+    if(!t) return '';
+    var p=t.split(':'), h=parseInt(p[0]), m=parseInt(p[1]);
+    var sm=h*60+m, em=sm+Math.round(hrs*60);
+    var eh=Math.floor(em/60)%24, em2=em%60;
+    var pad=n=>String(n).padStart(2,'0');
+    return fmt12(t)+'–'+fmt12(pad(eh)+':'+pad(em2));
+  }
+
+  function generate(){
+    var name    = document.getElementById('studentName').value.trim();
+    var cls     = document.getElementById('studentClass').value;
+    var board   = document.getElementById('studentBoard').value;
+    var subj    = document.getElementById('studentSubject').value.trim();
+    var rate    = parseFloat(document.getElementById('ratePerHour').value)||250;
+    var hrs     = parseFloat(document.getElementById('hoursPerSession').value)||2;
+
+    // Collect active days (indexed by DOW 0-6)
+    var activeDays = {}; // dow -> time
+    DAY_KEYS.forEach(function(key,i){
+      var cb = document.getElementById('tog-'+key);
+      if(cb.checked){
+        activeDays[i] = document.getElementById('time-'+key).value || '10:00';
+      }
+    });
+
+    var totalDays  = new Date(billingYear,billingMonth+1,0).getDate();
+    var firstDOW   = new Date(billingYear,billingMonth,1).getDay();
+
+    // Build calendar cells
+    var cells = [];
+    for(var i=0;i<firstDOW;i++) cells.push({type:'empty'});
+
+    var countByDow = {}; // dow -> count
+    for(var d=1;d<=totalDays;d++){
+      var dow = new Date(billingYear,billingMonth,d).getDay();
+      if(activeDays[dow]!==undefined){
+        countByDow[dow] = (countByDow[dow]||0)+1;
+        cells.push({day:d, dow:dow, time:activeDays[dow], active:true});
+      } else {
+        cells.push({day:d, dow:dow, active:false});
+      }
+    }
+
+    // Totals
+    var totalSessions=0;
+    Object.values(countByDow).forEach(function(c){totalSessions+=c;});
+    var ratePerSession = rate*hrs;
+    var totalAmount    = totalSessions*ratePerSession;
+
+    var invNum  = 'SA-'+billingYear+String(billingMonth+1).padStart(2,'0')+'-'+Math.floor(Math.random()*900+100);
+    var issued  = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+
+    // ── Calendar HTML ──
+    var calHTML = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(function(d){
+      return '<div class="cal-dh">'+d+'</div>';
+    }).join('');
+
+    cells.forEach(function(c){
+      if(c.type==='empty'){ calHTML+='<div class="cal-cell empty"></div>'; return; }
+      if(c.active){
+        calHTML += '<div class="cal-cell '+DAY_CSS[c.dow]+'">'
+          +'<span class="cal-badge"></span>'
+          +'<div class="cal-date">'+c.day+'</div>'
+          +'<div class="cal-time">'+fmtRange(c.time,hrs)+'</div>'
+          +'</div>';
+      } else {
+        var wknd = (c.dow===0||c.dow===6);
+        calHTML += '<div class="cal-cell '+(wknd?'wknd':'regular')+'"><div class="cal-date">'+c.day+'</div></div>';
+      }
+    });
+
+    // ── Legend ──
+    var legendHTML = '';
+    DAY_KEYS.forEach(function(key,i){
+      var cb=document.getElementById('tog-'+key);
+      if(cb.checked){
+        legendHTML += '<div class="leg-item">'
+          +'<div class="leg-dot" style="background:'+DAY_BG[i]+';border-color:'+DAY_FG[i]+'"></div>'
+          +DAY_FULL[i]+'</div>';
+      }
+    });
+
+    // ── Student block ──
+    var studentHTML = name
+      ? '<div class="inf-val">'+name+'</div><div class="inf-sub">'+cls+' · '+board+(subj?' · '+subj:'')+'</div>'
+      : '<div class="inf-val">'+cls+'</div><div class="inf-sub">'+board+(subj?' · '+subj:'')+'</div>';
+
+    // ── Summary rows ──
+    var rows = '';
+    DAY_KEYS.forEach(function(key,i){
+      var dow=i, cnt=countByDow[dow];
+      if(!cnt) return;
+      var t=document.getElementById('time-'+key).value;
+      rows += '<tr>'
+        +'<td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+DAY_BG[i]+';border:1px solid '+DAY_FG[i]+';margin-right:8px;vertical-align:middle"></span>'+DAY_FULL[i]+' Sessions</td>'
+        +'<td class="mono">'+fmt12(t)+'</td>'
+        +'<td class="mono" style="text-align:center">'+hrs+' hrs</td>'
+        +'<td class="mono" style="text-align:center">'+cnt+'</td>'
+        +'<td class="mono" style="text-align:right">₹'+((cnt*ratePerSession).toLocaleString('en-IN'))+'</td>'
+        +'</tr>';
+    });
+
+    var html = `
+      <div class="inv-hdr">
+        <div>
+          <div class="inv-academy">Sehr<span>.</span></div>
+          <div class="inv-tagline">Individual Tutoring · Private Sessions</div>
+        </div>
+        <div class="inv-meta">
+          <div class="inv-type">Fee Statement</div>
+          <div class="inv-num">${invNum}</div>
+          <div class="inv-month">${MONTHS[billingMonth]} ${billingYear}</div>
+          <div class="inv-issued">Issued: ${issued}</div>
+        </div>
+      </div>
+
+      <div class="inv-student-row">
+        <div>
+          <div class="inf-title">Student</div>
+          ${studentHTML}
+        </div>
+        <div>
+          <div class="inf-title">Session Rate</div>
+          <div class="inf-val">₹${rate.toLocaleString('en-IN')}<span style="font-size:12px;font-weight:400;color:var(--muted)"> / hour</span></div>
+          <div class="inf-sub">${hrs} hrs per session · ₹${ratePerSession.toLocaleString('en-IN')} per session</div>
+        </div>
+      </div>
+
+      <div class="cal-title">${MONTHS[billingMonth]} ${billingYear}</div>
+      <div class="cal-grid">${calHTML}</div>
+
+      <div class="legend">${legendHTML}</div>
+
+      <table class="sum-table">
+        <thead>
+          <tr>
+            <th>Session Type</th>
+            <th>Timing</th>
+            <th style="text-align:center">Duration</th>
+            <th style="text-align:center">Sessions</th>
+            <th style="text-align:right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+          <tr class="total-row">
+            <td class="tot-label" colspan="3">${totalSessions} sessions · ${totalSessions*hrs} total hours</td>
+            <td class="mono" style="text-align:center">${totalSessions}</td>
+            <td class="tot-amt">₹${totalAmount.toLocaleString('en-IN')}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="inv-footer">
+        <div class="inv-footer-note">Session fees are payable in full at the beginning of the month before classes commence. Thank you for choosing Sehr Academy.</div>
+        <div class="inv-footer-brand">Sehr Academy<br>Thrissur, Kerala<br>sehracademy.com</div>
+      </div>
+    `;
+
+    document.getElementById('invoice-content').innerHTML = html;
+    document.getElementById('action-bar').style.display = 'flex';
+    document.querySelector('.invoice-outer').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+</script>
+</body>
+</html>
