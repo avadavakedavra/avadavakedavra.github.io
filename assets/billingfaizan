@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEHR Academy · Fizan · Class 12 CBSE · May 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lime:    #8BC53F;
+  --lime2:   #72a530;
+  --ink:     #1a1a18;
+  --ink2:    #2e2e2b;
+  --white:   #ffffff;
+  --cream:   #f5f2eb;
+  --cream2:  #ede9e0;
+  --rule:    #d8d4cb;
+  --muted:   #7a7970;
+  --pale:    #b0ada4;
+
+  /* Physics = Blue */
+  --blue:    #2563EB;
+  --blue-bg: rgba(37,99,235,.09);
+  --blue-bd: rgba(37,99,235,.22);
+  --blue-dark: #1d4ed8;
+
+  /* Chemistry = Teal/Green */
+  --chem:    #0891B2;
+  --chem-bg: rgba(8,145,178,.09);
+  --chem-bd: rgba(8,145,178,.22);
+
+  /* Online = lime-tinted */
+  --online-bg: rgba(139,197,63,.08);
+  --online-bd: rgba(139,197,63,.3);
+
+  /* Offline = amber */
+  --off:     #D97706;
+  --off-bg:  rgba(217,119,6,.09);
+  --off-bd:  rgba(217,119,6,.24);
+
+  --f: 'Montserrat', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body { font-family: var(--f); background: #e0dbd2; color: var(--ink); font-size: 13px; line-height: 1.5; }
+
+/* ── PAGE ── */
+.page { width: 794px; margin: 32px auto; background: var(--white); box-shadow: 0 4px 40px rgba(0,0,0,.14); }
+.top-bar { background: var(--lime); height: 6px; }
+
+/* ── HEADER ── */
+.hdr { display: flex; align-items: flex-start; justify-content: space-between; padding: 22px 36px 18px; border-bottom: 1px solid var(--rule); }
+.logo-text { font-size: 20px; font-weight: 900; letter-spacing: -.3px; line-height: 1; color: var(--ink); }
+.logo-text .gr { color: var(--lime); }
+.logo-sub { font-size: 10px; font-weight: 400; color: var(--muted); margin-top: 4px; }
+.hdr-right { text-align: right; }
+.hdr-ref { font-size: 10px; font-weight: 600; color: var(--muted); }
+.hdr-period { font-size: 13px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+
+/* ── STUDENT BAND ── */
+.student-band { display: flex; align-items: center; justify-content: space-between; padding: 14px 36px; background: var(--cream); border-bottom: 1px solid var(--rule); }
+.student-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.student-name-val { font-size: 16px; font-weight: 900; color: var(--ink); letter-spacing: -.3px; margin-top: 2px; }
+.demo-badge { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 4px; padding: 9px 18px; }
+.demo-badge-text .db-label { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.demo-badge-text .db-val { font-size: 14px; font-weight: 900; color: var(--lime); letter-spacing: -.3px; }
+
+/* ── TITLE ── */
+.title-area { padding: 20px 36px 0; }
+.prog-title { font-size: 30px; font-weight: 900; color: var(--ink); letter-spacing: -1.2px; line-height: 1; margin-bottom: 4px; }
+.prog-sub { font-size: 12px; font-weight: 300; color: var(--muted); margin-bottom: 14px; }
+.subj-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.pill { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 3px; font-size: 11px; font-weight: 700; }
+.pill.blue  { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-bd); }
+.pill.chem  { background: var(--chem-bg); color: var(--chem); border: 1px solid var(--chem-bd); }
+.pill.mode-on  { background: var(--online-bg); color: var(--lime2); border: 1px solid var(--online-bd); }
+.pill.mode-off { background: var(--off-bg);    color: var(--off);   border: 1px solid var(--off-bd);   }
+
+/* ── DEMO NOTICE ── */
+.demo-notice { margin: 0 36px 20px; background: rgba(139,197,63,.06); border: 1px solid rgba(139,197,63,.3); border-left: 4px solid var(--lime); border-radius: 4px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; }
+.demo-notice-title { font-size: 12px; font-weight: 800; color: var(--lime2); margin-bottom: 3px; }
+.demo-notice-body { font-size: 11px; color: var(--muted); line-height: 1.65; }
+.demo-notice-body strong { color: var(--ink2); }
+
+/* ── SUMMARY ROW ── */
+.summary-row { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; margin: 0 36px 22px; }
+.sr-cell { padding: 10px 14px; border-right: 1px solid var(--rule); }
+.sr-cell:last-child { border-right: none; }
+.sr-label { font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--pale); margin-bottom: 4px; }
+.sr-val { font-size: 13px; font-weight: 800; color: var(--ink); letter-spacing: -.2px; }
+.sr-val.lime { color: var(--lime2); } .sr-val.blue { color: var(--blue); } .sr-val.chem { color: var(--chem); }
+
+/* ── SEC HEADING ── */
+.sec-head { display: flex; align-items: center; gap: 8px; padding: 0 36px; margin-bottom: 10px; margin-top: 4px; }
+.sec-head-rule { width: 16px; height: 2px; background: var(--lime); flex-shrink: 0; }
+.sec-head-text { font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lime2); }
+
+/* ── MODE BANNER ── */
+.mode-banner { margin: 0 36px 12px; border-radius: 4px; overflow: hidden; }
+.mode-banner-inner { display: flex; align-items: center; gap: 12px; padding: 10px 16px; }
+.mode-banner.online { background: rgba(139,197,63,.07); border: 1px solid rgba(139,197,63,.28); }
+.mode-banner.offline { background: var(--off-bg); border: 1px solid var(--off-bd); }
+.mode-tag { padding: 3px 10px; border-radius: 3px; font-size: 10px; font-weight: 800; }
+.mode-tag.on { background: var(--lime); color: var(--ink); }
+.mode-tag.off { background: var(--off); color: white; }
+.mode-banner-text { font-size: 11.5px; font-weight: 700; color: var(--ink2); }
+.mode-banner-sub { font-size: 10px; color: var(--muted); margin-left: auto; }
+
+/* ── TIMETABLE ── */
+.timetable { margin: 0 36px 8px; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.tt-head { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr; background: var(--cream2); border-bottom: 1px solid var(--rule); }
+.tt-head div { padding: 8px 14px; font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--pale); border-right: 1px solid var(--rule); }
+.tt-head div:last-child { border-right: none; }
+.tt-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr; border-bottom: 1px solid var(--rule); }
+.tt-row:last-child { border-bottom: none; }
+.tt-cell { padding: 10px 14px; border-right: 1px solid var(--rule); font-size: 12px; color: var(--ink2); font-weight: 600; vertical-align: middle; }
+.tt-cell:last-child { border-right: none; }
+.subj-tag { display: inline-flex; padding: 3px 10px; border-radius: 3px; font-size: 10px; font-weight: 800; }
+.subj-tag.blue  { background: var(--blue-bg); color: var(--blue); }
+.subj-tag.chem  { background: var(--chem-bg); color: var(--chem); }
+.mode-dot { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; }
+.mode-dot.on::before  { content:''; width:7px; height:7px; border-radius:50%; background:var(--lime); flex-shrink:0; }
+.mode-dot.off::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--off);  flex-shrink:0; }
+
+/* ── CALENDAR ── */
+.cal-wrap { margin: 0 36px 22px; }
+.cal-grid { border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.cal-head-row { display: grid; grid-template-columns: repeat(7, 1fr); background: var(--ink); }
+.cal-head-row div { padding: 8px 4px; text-align: center; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); border-right: 1px solid rgba(255,255,255,.07); }
+.cal-head-row div:last-child { border-right: none; }
+.cal-head-row div.hl-chem  { color: #67e8f9; }
+.cal-head-row div.hl-phys  { color: #93c5fd; }
+.cal-head-row div.hl-sun   { color: var(--lime); }
+.cal-week { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--rule); }
+.cal-week:first-of-type { border-top: none; }
+.cal-day { min-height: 62px; padding: 6px 7px; border-right: 1px solid var(--rule); background: var(--white); }
+.cal-day:last-child { border-right: none; }
+.cal-day.empty  { background: var(--cream); }
+.cal-day.before { background: var(--cream); opacity: .55; }
+.day-num { font-size: 12px; font-weight: 700; color: var(--muted); line-height: 1; margin-bottom: 5px; }
+.cal-day.session .day-num { color: var(--ink); font-weight: 900; }
+.cal-day.before .day-num  { color: var(--pale); }
+.cal-event { border-radius: 3px; padding: 2px 5px; font-size: 8px; font-weight: 700; line-height: 1.4; margin-bottom: 2px; }
+.cal-event.chem-on  { background: var(--chem-bg);    color: var(--chem); }
+.cal-event.phys-on  { background: var(--blue-bg);    color: var(--blue); }
+.cal-event.chem-off { background: var(--off-bg);     color: var(--off);  }
+.cal-event.phys-off { background: rgba(37,99,235,.18); color: var(--blue-dark); }
+.ev-time { font-weight: 400; opacity: .7; font-size: 7.5px; display: block; }
+
+/* ── SESSION LIST SPLIT ── */
+.sess-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 36px 22px; }
+.sess-group { border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.sess-group-head { padding: 9px 14px; font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 8px; }
+.sess-group-head.online  { background: rgba(139,197,63,.06); color: var(--lime2); }
+.sess-group-head.offline { background: var(--off-bg); color: var(--off); }
+.sess-item { display: flex; align-items: center; gap: 9px; padding: 8px 12px; border-bottom: 1px solid var(--rule); background: var(--cream); }
+.sess-item:last-child { border-bottom: none; }
+.sess-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.sess-subj { font-size: 11px; font-weight: 700; color: var(--ink); }
+.sess-date { font-size: 10px; color: var(--muted); }
+.sess-dur  { margin-left: auto; font-size: 9.5px; font-weight: 700; color: var(--pale); flex-shrink: 0; }
+
+/* ── ADDONS ── */
+.addons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 36px 22px; }
+.addon-card { border: 1px solid var(--rule); border-radius: 4px; padding: 13px 14px; background: var(--cream); display: flex; gap: 10px; align-items: flex-start; }
+.addon-icon { width: 28px; height: 28px; border-radius: 4px; background: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.addon-title { font-size: 11px; font-weight: 800; color: var(--ink); margin-bottom: 3px; }
+.addon-desc { font-size: 10px; color: var(--muted); line-height: 1.55; }
+.addon-badge { display: inline-flex; margin-top: 5px; padding: 1px 7px; border-radius: 3px; font-size: 8.5px; font-weight: 800; background: rgba(139,197,63,.15); color: var(--lime2); border: 1px solid rgba(139,197,63,.3); }
+
+/* ── FEE TABLE ── */
+.fee-table-wrap { margin: 0 36px 14px; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.fee-table { width: 100%; border-collapse: collapse; }
+.fee-table thead th { background: var(--cream2); border-bottom: 1px solid var(--rule); padding: 9px 14px; font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--pale); text-align: left; }
+.fee-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
+.fee-table thead th:last-child { text-align: right; }
+.fee-table tbody td { padding: 10px 14px; border-bottom: 1px solid var(--rule); font-size: 12px; color: var(--ink2); vertical-align: top; }
+.fee-table tbody tr:last-child td { border-bottom: none; }
+.fee-table tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
+.fee-table tbody td:last-child { text-align: right; font-weight: 700; }
+.fee-table .row-num { color: var(--pale); font-size: 10px; }
+.fee-table .row-subj { font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 2px; }
+.fee-table .row-dates { font-size: 10.5px; color: var(--muted); }
+.mode-badge { padding: 2px 7px; border-radius: 3px; font-size: 9px; font-weight: 800; }
+.mode-badge.on  { background: var(--online-bg); color: var(--lime2); border: 1px solid var(--online-bd); }
+.mode-badge.off { background: var(--off-bg);    color: var(--off);   border: 1px solid var(--off-bd);   }
+
+/* ── FEE TOTALS ── */
+.fee-totals { margin: 0 36px 22px; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.ft-section-head { padding: 8px 16px; background: var(--cream2); border-bottom: 1px solid var(--rule); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--pale); }
+.ft-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 16px; border-bottom: 1px solid var(--rule); font-size: 12.5px; }
+.ft-row:last-child { border-bottom: none; }
+.ft-row.subtotal { background: var(--cream); font-weight: 700; font-size: 13px; }
+.ft-row.grand { background: var(--ink); font-size: 15px; font-weight: 900; }
+.ft-row.grand .ft-label { color: rgba(255,255,255,.7); }
+.ft-row.grand .ft-val { color: var(--lime); font-size: 20px; font-weight: 900; letter-spacing: -.5px; }
+.ft-label { color: var(--muted); font-weight: 600; }
+.ft-val { font-weight: 700; color: var(--ink); }
+
+/* ── PAYMENT ── */
+.payment-section { margin: 0 36px 22px; display: grid; grid-template-columns: 1fr 150px 1fr; gap: 10px; }
+.pay-card { border: 1px solid var(--rule); border-radius: 4px; padding: 13px 15px; background: var(--cream); display: flex; align-items: flex-start; gap: 10px; }
+.pay-title { font-size: 12px; font-weight: 800; color: var(--ink); margin-bottom: 2px; }
+.pay-detail { font-size: 11px; font-weight: 700; color: var(--lime2); font-family: monospace; margin-bottom: 1px; }
+.pay-note { font-size: 9.5px; color: var(--muted); }
+.due-card { border: 2px solid var(--lime); border-radius: 4px; background: rgba(139,197,63,.06); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; text-align: center; }
+.due-label { font-size: 8.5px; font-weight: 700; letter-spacing: .14em; color: var(--lime2); text-transform: uppercase; margin-bottom: 4px; }
+.due-date { font-size: 14px; font-weight: 900; color: var(--ink); letter-spacing: -.3px; }
+.due-sub { font-size: 9px; color: var(--muted); margin-top: 3px; }
+
+/* ── FOOTER ── */
+.footer-notes { margin: 0 36px 20px; padding: 12px 16px; border: 1px solid var(--rule); border-radius: 4px; background: var(--cream); font-size: 10px; color: var(--muted); line-height: 1.85; }
+.footer-notes strong { color: var(--ink2); }
+.bottom-bar { border-top: 1px solid var(--rule); padding: 12px 36px; display: flex; align-items: center; justify-content: space-between; }
+.bb-brand { font-size: 13px; font-weight: 900; color: var(--ink); }
+.bb-brand span { color: var(--lime); }
+.bb-contact { font-size: 10px; color: var(--muted); text-align: right; line-height: 1.7; }
+.bottom-lime { background: var(--lime); height: 5px; }
+
+@media print { body { background: white; } .page { box-shadow: none; margin: 0; width: 100%; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-bar"></div>
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div>
+      <div class="logo-text"><span class="gr">SEHR</span> ACADEMY</div>
+      <div class="logo-sub">Vatanappally, Thrissur, Kerala · sehracademy.com</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-ref">Ref: SA-2026-MAY-C12-002 · 7 May 2026</div>
+      <div class="hdr-period">May 2026</div>
+    </div>
+  </div>
+
+  <!-- STUDENT BAND -->
+  <div class="student-band">
+    <div>
+      <div class="student-label">Student · Class 12 CBSE</div>
+      <div class="student-name-val">Fizan</div>
+    </div>
+    <div class="demo-badge">
+      <div>🎁</div>
+      <div class="demo-badge-text">
+        <div class="db-label">Included</div>
+        <div class="db-val">1 Free Demo Session</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="title-area">
+    <div class="prog-title">Individual Sessions</div>
+    <div class="prog-sub">May 2026 · Class 12 CBSE · Physics &amp; Chemistry · Starting 11 May · Online &amp; Offline</div>
+    <div class="subj-pills">
+      <span class="pill chem">● Chemistry</span>
+      <span class="pill blue">● Physics</span>
+      <span class="pill mode-on">⬤ Online · Mon &amp; Wed · 7–8 PM</span>
+      <span class="pill mode-off">⬤ Offline · Sunday · 10 AM–2 PM</span>
+    </div>
+  </div>
+
+  <!-- DEMO NOTICE -->
+  <div class="demo-notice">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px">🎯</div>
+    <div>
+      <div class="demo-notice-title">1 Free Demo Session — No Commitment</div>
+      <div class="demo-notice-body">Fizan is entitled to <strong>one free demo session</strong> before paid classes begin. The demo gives a feel for the teaching style and faculty — at no cost. Classes start <strong>Monday 11 May 2026</strong>. Full payment is due before the first paid session.</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY ROW -->
+  <div class="summary-row">
+    <div class="sr-cell"><div class="sr-label">Start Date</div><div class="sr-val" style="font-size:11px">11 May 2026</div></div>
+    <div class="sr-cell"><div class="sr-label">Online Sessions</div><div class="sr-val blue">6</div></div>
+    <div class="sr-cell"><div class="sr-label">Offline Sundays</div><div class="sr-val" style="color:var(--off)">3</div></div>
+    <div class="sr-cell"><div class="sr-label">Offline Hours</div><div class="sr-val" style="color:var(--off)">12 hrs</div></div>
+    <div class="sr-cell"><div class="sr-label">Total Due</div><div class="sr-val lime">Rs. 7,200</div></div>
+  </div>
+
+  <!-- TIMETABLE -->
+  <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-text">Weekly Timetable</div></div>
+
+  <!-- Online mode banner -->
+  <div class="mode-banner online" style="margin-bottom:6px">
+    <div class="mode-banner-inner">
+      <span class="mode-tag on">ONLINE</span>
+      <span class="mode-banner-text">Google Meet · 1 hour per session</span>
+      <span class="mode-banner-sub">Monday &amp; Wednesday · 7:00 – 8:00 PM IST</span>
+    </div>
+  </div>
+
+  <div class="timetable" style="margin-bottom:10px">
+    <div class="tt-head"><div>Subject</div><div>Day</div><div>Time</div><div>Duration</div><div>Mode</div></div>
+    <div class="tt-row">
+      <div class="tt-cell"><span class="subj-tag chem">Chemistry</span></div>
+      <div class="tt-cell" style="font-weight:700;color:var(--ink)">Monday</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">7:00 – 8:00 PM IST</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">1 hour</div>
+      <div class="tt-cell"><span class="mode-dot on">Online · Google Meet</span></div>
+    </div>
+    <div class="tt-row">
+      <div class="tt-cell"><span class="subj-tag blue">Physics</span></div>
+      <div class="tt-cell" style="font-weight:700;color:var(--ink)">Wednesday</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">7:00 – 8:00 PM IST</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">1 hour</div>
+      <div class="tt-cell"><span class="mode-dot on">Online · Google Meet</span></div>
+    </div>
+  </div>
+
+  <!-- Offline mode banner -->
+  <div class="mode-banner offline" style="margin-bottom:6px">
+    <div class="mode-banner-inner">
+      <span class="mode-tag off">OFFLINE</span>
+      <span class="mode-banner-text">SEHR Centre, Vatanappally · 2 hours per subject</span>
+      <span class="mode-banner-sub">Sunday · 10:00 AM – 2:00 PM</span>
+    </div>
+  </div>
+
+  <div class="timetable">
+    <div class="tt-head"><div>Subject</div><div>Day</div><div>Time</div><div>Duration</div><div>Mode</div></div>
+    <div class="tt-row">
+      <div class="tt-cell"><span class="subj-tag chem">Chemistry</span></div>
+      <div class="tt-cell" style="font-weight:700;color:var(--ink)">Sunday</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">10:00 AM – 12:00 PM</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">2 hours</div>
+      <div class="tt-cell"><span class="mode-dot off">Offline · SEHR Centre</span></div>
+    </div>
+    <div class="tt-row">
+      <div class="tt-cell"><span class="subj-tag blue">Physics</span></div>
+      <div class="tt-cell" style="font-weight:700;color:var(--ink)">Sunday</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">12:00 PM – 2:00 PM</div>
+      <div class="tt-cell" style="font-size:11px;color:var(--muted)">2 hours</div>
+      <div class="tt-cell"><span class="mode-dot off">Offline · SEHR Centre</span></div>
+    </div>
+  </div>
+  <div style="margin:0 36px 22px;font-size:10px;color:var(--muted);padding:6px 2px;">
+    Online sessions are 1 hour each at Rs. 300/hr &nbsp;·&nbsp; Offline Sunday sessions are 2 hours each at Rs. 450/hr
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-text">May 2026 · From 11 May</div></div>
+  <div class="cal-wrap">
+    <div class="cal-grid">
+      <div class="cal-head-row">
+        <div class="hl-chem">Mon</div>
+        <div>Tue</div>
+        <div class="hl-phys">Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+        <div class="hl-sun">Sun</div>
+      </div>
+
+      <!-- Week 1: May 1 = Fri -->
+      <div class="cal-week">
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day before"><div class="day-num">1</div></div>
+        <div class="cal-day before"><div class="day-num">2</div></div>
+        <div class="cal-day before"><div class="day-num">3</div></div>
+      </div>
+
+      <!-- Week 2: 4-10, all before start -->
+      <div class="cal-week">
+        <div class="cal-day before"><div class="day-num">4</div></div>
+        <div class="cal-day before"><div class="day-num">5</div></div>
+        <div class="cal-day before"><div class="day-num">6</div></div>
+        <div class="cal-day before"><div class="day-num">7</div></div>
+        <div class="cal-day before"><div class="day-num">8</div></div>
+        <div class="cal-day before"><div class="day-num">9</div></div>
+        <div class="cal-day before"><div class="day-num">10</div></div>
+      </div>
+
+      <!-- Week 3: 11-17 — SESSIONS START -->
+      <div class="cal-week">
+        <div class="cal-day session">
+          <div class="day-num">11</div>
+          <div class="cal-event chem-on">Chemistry<span class="ev-time">7 PM · Online</span></div>
+        </div>
+        <div class="cal-day empty"><div class="day-num">12</div></div>
+        <div class="cal-day session">
+          <div class="day-num">13</div>
+          <div class="cal-event phys-on">Physics<span class="ev-time">7 PM · Online</span></div>
+        </div>
+        <div class="cal-day empty"><div class="day-num">14</div></div>
+        <div class="cal-day empty"><div class="day-num">15</div></div>
+        <div class="cal-day empty"><div class="day-num">16</div></div>
+        <div class="cal-day session">
+          <div class="day-num">17</div>
+          <div class="cal-event chem-off">Chemistry<span class="ev-time">10 AM · Offline</span></div>
+          <div class="cal-event phys-off">Physics<span class="ev-time">12 PM · Offline</span></div>
+        </div>
+      </div>
+
+      <!-- Week 4: 18-24 -->
+      <div class="cal-week">
+        <div class="cal-day session">
+          <div class="day-num">18</div>
+          <div class="cal-event chem-on">Chemistry<span class="ev-time">7 PM · Online</span></div>
+        </div>
+        <div class="cal-day empty"><div class="day-num">19</div></div>
+        <div class="cal-day session">
+          <div class="day-num">20</div>
+          <div class="cal-event phys-on">Physics<span class="ev-time">7 PM · Online</span></div>
+        </div>
+        <div class="cal-day empty"><div class="day-num">21</div></div>
+        <div class="cal-day empty"><div class="day-num">22</div></div>
+        <div class="cal-day empty"><div class="day-num">23</div></div>
+        <div class="cal-day session">
+          <div class="day-num">24</div>
+          <div class="cal-event chem-off">Chemistry<span class="ev-time">10 AM · Offline</span></div>
+          <div class="cal-event phys-off">Physics<span class="ev-time">12 PM · Offline</span></div>
+        </div>
+      </div>
+
+      <!-- Week 5: 25-31 -->
+      <div class="cal-week">
+        <div class="cal-day session">
+          <div class="day-num">25</div>
+          <div class="cal-event chem-on">Chemistry<span class="ev-time">7 PM · Online</span></div>
+        </div>
+        <div class="cal-day empty"><div class="day-num">26</div></div>
+        <div class="cal-day session">
+          <div class="day-num">27</div>
+          <div class="cal-event phys-on">Physics<span class="ev-time">7 PM · Online</span></div>
+        </div>
+        <div class="cal-day empty"><div class="day-num">28</div></div>
+        <div class="cal-day empty"><div class="day-num">29</div></div>
+        <div class="cal-day empty"><div class="day-num">30</div></div>
+        <div class="cal-day session">
+          <div class="day-num">31</div>
+          <div class="cal-event chem-off">Chemistry<span class="ev-time">10 AM · Offline</span></div>
+          <div class="cal-event phys-off">Physics<span class="ev-time">12 PM · Offline</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSION DATES -->
+  <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-text">Session Dates</div></div>
+  <div class="sess-cols">
+    <!-- Online -->
+    <div class="sess-group">
+      <div class="sess-group-head online">🟢 &nbsp;Online Sessions · Google Meet</div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--chem)"></div>
+        <div><div class="sess-subj">Chemistry</div><div class="sess-date">Monday 11 May · 7:00 PM IST</div></div>
+        <div class="sess-dur">1 hr</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--blue)"></div>
+        <div><div class="sess-subj">Physics</div><div class="sess-date">Wednesday 13 May · 7:00 PM IST</div></div>
+        <div class="sess-dur">1 hr</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--chem)"></div>
+        <div><div class="sess-subj">Chemistry</div><div class="sess-date">Monday 18 May · 7:00 PM IST</div></div>
+        <div class="sess-dur">1 hr</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--blue)"></div>
+        <div><div class="sess-subj">Physics</div><div class="sess-date">Wednesday 20 May · 7:00 PM IST</div></div>
+        <div class="sess-dur">1 hr</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--chem)"></div>
+        <div><div class="sess-subj">Chemistry</div><div class="sess-date">Monday 25 May · 7:00 PM IST</div></div>
+        <div class="sess-dur">1 hr</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--blue)"></div>
+        <div><div class="sess-subj">Physics</div><div class="sess-date">Wednesday 27 May · 7:00 PM IST</div></div>
+        <div class="sess-dur">1 hr</div>
+      </div>
+    </div>
+    <!-- Offline -->
+    <div class="sess-group">
+      <div class="sess-group-head offline">🟠 &nbsp;Offline Sessions · SEHR Centre</div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--chem)"></div>
+        <div><div class="sess-subj">Chemistry</div><div class="sess-date">Sunday 17 May · 10:00 AM – 12:00 PM</div></div>
+        <div class="sess-dur">2 hrs</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--blue)"></div>
+        <div><div class="sess-subj">Physics</div><div class="sess-date">Sunday 17 May · 12:00 PM – 2:00 PM</div></div>
+        <div class="sess-dur">2 hrs</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--chem)"></div>
+        <div><div class="sess-subj">Chemistry</div><div class="sess-date">Sunday 24 May · 10:00 AM – 12:00 PM</div></div>
+        <div class="sess-dur">2 hrs</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--blue)"></div>
+        <div><div class="sess-subj">Physics</div><div class="sess-date">Sunday 24 May · 12:00 PM – 2:00 PM</div></div>
+        <div class="sess-dur">2 hrs</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--chem)"></div>
+        <div><div class="sess-subj">Chemistry</div><div class="sess-date">Sunday 31 May · 10:00 AM – 12:00 PM</div></div>
+        <div class="sess-dur">2 hrs</div>
+      </div>
+      <div class="sess-item">
+        <div class="sess-dot" style="background:var(--blue)"></div>
+        <div><div class="sess-subj">Physics</div><div class="sess-date">Sunday 31 May · 12:00 PM – 2:00 PM</div></div>
+        <div class="sess-dur">2 hrs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDONS -->
+  <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-text">What's Included</div></div>
+  <div class="addons-grid">
+    <div class="addon-card">
+      <div class="addon-icon">🎯</div>
+      <div>
+        <div class="addon-title">Personalised Attention</div>
+        <div class="addon-desc">One-on-one sessions built around Fizan's pace, chapter progress and CBSE board exam gaps.</div>
+        <div class="addon-badge">INCLUDED</div>
+      </div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-icon">⏺</div>
+      <div>
+        <div class="addon-title">Automatic Recordings</div>
+        <div class="addon-desc">Every online session recorded automatically and shared within 24 hours. Rewatch anytime.</div>
+        <div class="addon-badge">INCLUDED</div>
+      </div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-icon">💬</div>
+      <div>
+        <div class="addon-title">Mentor Support</div>
+        <div class="addon-desc">Dedicated mentor present during classes and available on WhatsApp between sessions for doubt clearance.</div>
+        <div class="addon-badge">INCLUDED</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEE BREAKDOWN -->
+  <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-text">Fee Breakdown</div></div>
+  <div class="fee-table-wrap">
+    <table class="fee-table">
+      <thead>
+        <tr>
+          <th style="width:28px">#</th>
+          <th>Subject &amp; Mode</th>
+          <th>Session Dates</th>
+          <th>Hrs</th>
+          <th>Rate</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-num">01</td>
+          <td>
+            <div class="row-subj">Chemistry <span class="mode-badge on">Online</span></div>
+            <div class="row-dates">Mon 11 · Mon 18 · Mon 25 &nbsp;·&nbsp; 7:00 PM IST</div>
+          </td>
+          <td style="font-size:10.5px;color:var(--muted)">3 × 1 hr</td>
+          <td>3</td>
+          <td>Rs. 300</td>
+          <td>Rs. 900</td>
+        </tr>
+        <tr>
+          <td class="row-num">02</td>
+          <td>
+            <div class="row-subj">Physics <span class="mode-badge on">Online</span></div>
+            <div class="row-dates">Wed 13 · Wed 20 · Wed 27 &nbsp;·&nbsp; 7:00 PM IST</div>
+          </td>
+          <td style="font-size:10.5px;color:var(--muted)">3 × 1 hr</td>
+          <td>3</td>
+          <td>Rs. 300</td>
+          <td>Rs. 900</td>
+        </tr>
+        <tr>
+          <td class="row-num">03</td>
+          <td>
+            <div class="row-subj">Chemistry <span class="mode-badge off">Offline</span></div>
+            <div class="row-dates">Sun 17 · Sun 24 · Sun 31 &nbsp;·&nbsp; 10:00 AM – 12:00 PM</div>
+          </td>
+          <td style="font-size:10.5px;color:var(--muted)">3 × 2 hrs</td>
+          <td>6</td>
+          <td>Rs. 450</td>
+          <td>Rs. 2,700</td>
+        </tr>
+        <tr>
+          <td class="row-num">04</td>
+          <td>
+            <div class="row-subj">Physics <span class="mode-badge off">Offline</span></div>
+            <div class="row-dates">Sun 17 · Sun 24 · Sun 31 &nbsp;·&nbsp; 12:00 PM – 2:00 PM</div>
+          </td>
+          <td style="font-size:10.5px;color:var(--muted)">3 × 2 hrs</td>
+          <td>6</td>
+          <td>Rs. 450</td>
+          <td>Rs. 2,700</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TOTALS -->
+  <div class="fee-totals">
+    <div class="ft-section-head">Online Sessions (Google Meet · Rs. 300/hr)</div>
+    <div class="ft-row">
+      <span class="ft-label">Chemistry — 3 sessions × 1 hr × Rs. 300</span>
+      <span class="ft-val">Rs. 900</span>
+    </div>
+    <div class="ft-row">
+      <span class="ft-label">Physics — 3 sessions × 1 hr × Rs. 300</span>
+      <span class="ft-val">Rs. 900</span>
+    </div>
+    <div class="ft-row subtotal">
+      <span class="ft-label">Online Sub-total</span>
+      <span class="ft-val">Rs. 1,800</span>
+    </div>
+    <div class="ft-section-head">Offline Sessions (SEHR Centre · Rs. 450/hr)</div>
+    <div class="ft-row">
+      <span class="ft-label">Chemistry — 3 Sundays × 2 hrs × Rs. 450</span>
+      <span class="ft-val">Rs. 2,700</span>
+    </div>
+    <div class="ft-row">
+      <span class="ft-label">Physics — 3 Sundays × 2 hrs × Rs. 450</span>
+      <span class="ft-val">Rs. 2,700</span>
+    </div>
+    <div class="ft-row subtotal">
+      <span class="ft-label">Offline Sub-total</span>
+      <span class="ft-val">Rs. 5,400</span>
+    </div>
+    <div class="ft-row grand">
+      <span class="ft-label">Grand Total · May 2026</span>
+      <span class="ft-val">Rs. 7,200</span>
+    </div>
+  </div>
+
+  <!-- PAYMENT OPTIONS -->
+  <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-text">Payment Options</div></div>
+  <div class="payment-section">
+    <div class="pay-card">
+      <div style="font-size:22px">💳</div>
+      <div>
+        <div class="pay-title">GPay / PhonePe / UPI</div>
+        <div class="pay-detail">avadavakedavra@okicici</div>
+        <div class="pay-note">Pay to UPI ID · Any app</div>
+      </div>
+    </div>
+    <div class="due-card">
+      <div class="due-label">Full Amount Due</div>
+      <div class="due-date">Before Start of Class</div>
+      <div class="due-sub">i.e. before 11 May 2026</div>
+    </div>
+    <div class="pay-card">
+      <div style="font-size:22px">💬</div>
+      <div>
+        <div class="pay-title">WhatsApp Pay</div>
+        <div class="pay-detail">+91 95394 09586</div>
+        <div class="pay-note">Send to number · WhatsApp or GPay</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTES -->
+  <div class="footer-notes">
+    <strong>Demo session</strong> is free — no payment required for the demo. &nbsp;·&nbsp;
+    <strong>Full amount (Rs. 7,200)</strong> payable before the first session on 11 May 2026. &nbsp;·&nbsp;
+    <strong>Online sessions recorded</strong> and shared within 24 hrs. &nbsp;·&nbsp;
+    <strong>Additional sessions</strong> at Rs. 300/hr (online) or Rs. 450/hr (offline). &nbsp;·&nbsp;
+    Progress at <strong>sehracademy.com/student</strong>.
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bb-brand"><span>SEHR</span> ACADEMY</div>
+    <div class="bb-contact">
+      sehracademy.com &nbsp;·&nbsp; +91 95394 09586 &nbsp;·&nbsp; +91 90377 89586<br>
+      Priyadarshini Road, Ganeshamangalam, Vatanappally, Thrissur 680614
+    </div>
+  </div>
+  <div class="bottom-lime"></div>
+</div>
+</body>
+</html>
