@@ -281,6 +281,10 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
           <label class="fl">Hours / Session</label>
           <input class="fi" id="hoursPerSession" type="number" value="2" step="0.5" min="0.5">
         </div>
+        <div class="fg">
+          <label class="fl">Start Date <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--pale)">(classes begin from)</span></label>
+          <input class="fi" id="startDate" type="date">
+        </div>
       </div>
 
       <!-- SECTION: SCHEDULE -->
@@ -512,6 +516,17 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
     var subj    = document.getElementById('studentSubject').value.trim();
     var rate    = parseFloat(document.getElementById('ratePerHour').value)||250;
     var hrs     = parseFloat(document.getElementById('hoursPerSession').value)||2;
+    var startDateVal = document.getElementById('startDate').value; // 'YYYY-MM-DD' or ''
+    var startDay = 1; // default: entire month
+    if(startDateVal){
+      var sd = new Date(startDateVal);
+      // Only apply if start date is within the billing month
+      if(sd.getFullYear()===billingYear && sd.getMonth()===billingMonth){
+        startDay = sd.getDate();
+      } else if(sd.getFullYear()>billingYear || (sd.getFullYear()===billingYear && sd.getMonth()>billingMonth)){
+        startDay = 999; // entire month is before start, nothing counts
+      }
+    }
 
     // Collect active days (indexed by DOW 0-6)
     var activeDays = {}; // dow -> time
@@ -532,11 +547,13 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
     var countByDow = {}; // dow -> count
     for(var d=1;d<=totalDays;d++){
       var dow = new Date(billingYear,billingMonth,d).getDay();
-      if(activeDays[dow]!==undefined){
+      var beforeStart = d < startDay;
+      if(!beforeStart && activeDays[dow]!==undefined){
         countByDow[dow] = (countByDow[dow]||0)+1;
         cells.push({day:d, dow:dow, time:activeDays[dow], active:true});
       } else {
-        cells.push({day:d, dow:dow, active:false});
+        // beforeStart days shown greyed even if they would be a class day
+        cells.push({day:d, dow:dow, active:false, skipped: beforeStart && activeDays[dow]!==undefined});
       }
     }
 
@@ -561,6 +578,11 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
           +'<span class="cal-badge"></span>'
           +'<div class="cal-date">'+c.day+'</div>'
           +'<div class="cal-time">'+fmtRange(c.time,hrs)+'</div>'
+          +'</div>';
+      } else if(c.skipped){
+        // Would-be class day but before start date — show muted with slash
+        calHTML += '<div class="cal-cell regular" style="opacity:0.38">'
+          +'<div class="cal-date" style="color:var(--pale);text-decoration:line-through">'+c.day+'</div>'
           +'</div>';
       } else {
         var wknd = (c.dow===0||c.dow===6);
@@ -622,6 +644,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
           <div class="inf-title">Session Rate</div>
           <div class="inf-val">₹${rate.toLocaleString('en-IN')}<span style="font-size:12px;font-weight:400;color:var(--muted)"> / hour</span></div>
           <div class="inf-sub">${hrs} hrs per session · ₹${ratePerSession.toLocaleString('en-IN')} per session</div>
+          ${startDateVal ? '<div class="inf-sub" style="margin-top:4px">Classes from: <strong>'+new Date(startDateVal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</strong></div>' : ''}
         </div>
       </div>
 
