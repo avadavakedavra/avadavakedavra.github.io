@@ -9,37 +9,31 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+:root{
+  --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
   --white:#fdfcfa;
-  --ink:#1a1a18; --ink-2:#2e2e2b; --ink-3:#4a4a46;
-  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
-  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
-  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
-  --red:#dc2626; --red-bg:#fef2f2; --red-mid:#fca5a5;
-  --amber:#d97706; --amber-bg:#fffbeb; --amber-mid:#fde68a;
-  --blue:#2563eb; --blue-bg:#eff6ff; --blue-mid:#bfdbfe;
+  --ink:#1a1a18;--ink-2:#2e2e2b;--ink-3:#4a4a46;
+  --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+  --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
+  --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+  --red:#dc2626;
   --f-head:'Montserrat',sans-serif;
   --f:'Open Sans',sans-serif;
-  --ease:cubic-bezier(.22,1,.36,1);
-  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
   --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
-
-  /* Day colours */
-  --mon-bg:#d8f3dc; --mon-fg:#1b5e3b;
-  --tue-bg:#dbeafe; --tue-fg:#1e3a8a;
-  --wed-bg:#fef3c7; --wed-fg:#78350f;
-  --thu-bg:#f3e8ff; --thu-fg:#4c1d95;
-  --fri-bg:#fee2e2; --fri-fg:#7f1d1d;
-  --sat-bg:#ede9fe; --sat-fg:#3730a3;
-  --sun-bg:#fce7f3; --sun-fg:#831843;
+  --mon-bg:#d8f3dc;--mon-fg:#1b5e3b;
+  --tue-bg:#dbeafe;--tue-fg:#1e3a8a;
+  --wed-bg:#fef3c7;--wed-fg:#78350f;
+  --thu-bg:#f3e8ff;--thu-fg:#4c1d95;
+  --fri-bg:#fee2e2;--fri-fg:#7f1d1d;
+  --sat-bg:#ede9fe;--sat-fg:#3730a3;
+  --sun-bg:#fce7f3;--sun-fg:#831843;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden}
 :focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
 
-/* ══ TOPBAR ══ */
+/* TOPBAR */
 .topbar{background:var(--ink);padding:0 40px;position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
 .topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
 .topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%);pointer-events:none}
@@ -47,63 +41,58 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .tb-inner{padding:38px 0 30px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;position:relative;z-index:1;flex-wrap:wrap}
 .tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .tb-kicker-rule{width:22px;height:2px;background:var(--lime)}
-.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.9;font-family:var(--f)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.9}
 .tb-title{font-family:var(--f-head);font-size:clamp(26px,3vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.95;margin-bottom:8px}
 .tb-title i{font-style:italic;font-weight:400;color:var(--lime)}
 .tb-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.tb-sub{font-size:12px;color:rgba(255,255,255,.38);font-family:var(--f)}
-.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime);font-family:var(--f)}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.38)}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
 .tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime)}
 
-/* ══ WRAP ══ */
+/* LAYOUT */
 .wrap{max-width:1100px;margin:0 auto;padding:32px 40px 80px}
-
-/* ══ SECTION DIVIDER ══ */
 .sec{display:flex;align-items:center;gap:12px;margin:32px 0 16px}
 .sec-rule{flex:1;height:1px;background:var(--rule)}
 .sec-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
 .sec-txt{font-family:var(--f);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
 
-/* ══ CONTROL CARD ══ */
+/* CONTROL CARD */
 .ctrl-card{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
-.ctrl-card-head{background:var(--ink-2);padding:16px 24px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--lime)}
+.ctrl-card-head{background:var(--ink-2);padding:16px 24px;border-bottom:2px solid var(--lime)}
 .ctrl-card-head-title{font-family:var(--f-head);font-size:13px;font-weight:700;letter-spacing:.04em;color:#fff;text-transform:uppercase}
 .ctrl-card-body{padding:24px}
 
-/* ══ FORM GRID ══ */
-.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:20px}
+/* FORM */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:16px;margin-bottom:20px}
 .fg{display:flex;flex-direction:column;gap:5px}
 .fl{font-family:var(--f);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fl small{font-weight:400;letter-spacing:0;text-transform:none;color:var(--pale);font-size:9px}
 .fi{padding:9px 12px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:13px;font-weight:500;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s;width:100%}
 .fi:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
 .fi::placeholder{color:var(--pale);font-weight:400}
 .fi option{background:#fff;color:var(--ink)}
 
-/* ══ DAYS GRID ══ */
+/* DATE RANGE ROW */
+.date-range-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.date-range-row .fg{flex:1;min-width:160px}
+.dr-arrow{color:var(--lime);font-size:20px;font-weight:900;padding-top:18px;flex-shrink:0}
+.dr-info{font-family:var(--f-head);font-size:12px;font-weight:700;color:var(--lime-3);padding-top:18px;white-space:nowrap;flex-shrink:0}
+
+/* DAYS GRID */
 .days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px}
 @media(max-width:768px){.days-grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:480px){.days-grid{grid-template-columns:repeat(2,1fr)}}
-
 .day-card{border:1.5px solid var(--cream-3);border-radius:6px;background:var(--cream);overflow:hidden;transition:border-color .18s,box-shadow .18s}
 .day-card.active{border-color:var(--lime);box-shadow:0 0 0 2px rgba(139,197,63,.15)}
-
 .day-card-top{padding:10px 12px 8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
 .day-label{font-family:var(--f-head);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);transition:color .18s}
 .day-card.active .day-label{color:var(--lime-3)}
-
-.day-dot{width:7px;height:7px;border-radius:50%;background:var(--cream-3);transition:background .18s,box-shadow .18s;flex-shrink:0}
-.day-card.active .day-dot{background:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.2)}
-
 .day-short{font-family:var(--f);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-top:1px}
 .day-card.active .day-short{color:var(--lime-2)}
-
 .day-time-wrap{padding:0 10px 10px;display:none}
 .day-card.active .day-time-wrap{display:block}
 .day-time{width:100%;padding:7px 8px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s}
 .day-time:focus{border-color:var(--lime);box-shadow:0 0 0 2px rgba(139,197,63,.12)}
-.day-time::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer}
-
-/* Toggle switch */
 .tog{position:relative;width:32px;height:18px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0;position:absolute}
 .tog-slider{position:absolute;inset:0;background:var(--cream-3);border-radius:18px;transition:.2s;cursor:pointer}
@@ -111,120 +100,159 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .tog input:checked+.tog-slider{background:var(--lime)}
 .tog input:checked+.tog-slider::before{transform:translateX(14px);background:#fff}
 
-/* ══ BOTTOM ROW ══ */
-.ctrl-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:4px;border-top:1px solid var(--cream-3)}
-.month-nav{display:flex;align-items:center;gap:8px}
-.mnav-btn{width:30px;height:30px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:all .15s;line-height:1}
-.mnav-btn:hover{border-color:var(--lime);color:var(--lime-3)}
-.mnav-display{font-family:var(--f-head);font-size:13px;font-weight:700;color:var(--ink);min-width:136px;text-align:center;letter-spacing:.02em}
+/* BOTTOM ROW */
+.ctrl-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--cream-3)}
 .gen-btn{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:11px 28px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f-head);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .18s,box-shadow .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
 .gen-btn:hover{background:var(--lime-2);box-shadow:0 6px 20px rgba(139,197,63,.4)}
 .gen-btn:active{transform:scale(.98)}
 .gen-btn svg{width:14px;height:14px}
 
-/* ══ INVOICE CARD ══ */
+/* INVOICE WRAPPER */
 .invoice-outer{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+#invoice-content{padding:52px 56px}
 
-/* ══ INVOICE CONTENT ══ */
-#invoice-content{padding:48px 52px}
-
-.empty-state{text-align:center;padding:72px 20px;color:var(--pale)}
+.empty-state{text-align:center;padding:72px 20px}
 .empty-ico{font-size:40px;opacity:.25;margin-bottom:16px}
 .empty-txt{font-family:var(--f-head);font-size:16px;font-weight:600;color:var(--pale);letter-spacing:-.3px}
 .empty-sub{font-size:12px;color:var(--pale);margin-top:6px;font-weight:400}
 
-/* Invoice header */
-.inv-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
-.inv-academy{font-family:var(--f-head);font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
+/* ── INVOICE INNER STYLES ── */
+.inv-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:24px;border-bottom:3px solid var(--ink)}
+.inv-academy{font-family:var(--f-head);font-size:34px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
 .inv-academy span{color:var(--lime)}
 .inv-tagline{font-family:var(--f);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+.inv-addr{font-family:var(--f);font-size:11px;color:var(--pale);margin-top:6px;line-height:1.7}
 .inv-meta{text-align:right}
 .inv-type{font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-3);margin-bottom:8px}
 .inv-num{font-family:var(--f);font-size:12px;font-weight:600;color:var(--muted)}
-.inv-month{font-family:var(--f-head);font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.8px;margin-top:4px}
-.inv-issued{font-size:11px;color:var(--pale);margin-top:4px;font-family:var(--f)}
+.inv-period-label{font-family:var(--f-head);font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-top:6px}
+.inv-issued{font-size:11px;color:var(--pale);margin-top:4px}
+.inv-due{font-size:11px;color:var(--red);margin-top:3px;font-weight:700}
 
-/* Student row */
-.inv-student-row{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px;padding:18px 20px;background:var(--cream);border-radius:5px;border:1px solid var(--cream-3)}
-.inf-title{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.inf-val{font-family:var(--f-head);font-size:15px;font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.2px}
-.inf-sub{font-family:var(--f);font-size:12px;font-weight:400;color:var(--muted);margin-top:2px}
+/* Info row */
+.inv-info-row{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:24px;border:1px solid var(--cream-3);border-radius:5px;overflow:hidden}
+.inv-info-cell{padding:18px 22px;background:var(--cream)}
+.inv-info-cell:first-child{border-right:1px solid var(--cream-3)}
+.inf-title{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.inf-val{font-family:var(--f-head);font-size:16px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.3px}
+.inf-row{display:flex;justify-content:space-between;align-items:baseline;margin-top:5px}
+.inf-row-label{font-size:11px;color:var(--muted)}
+.inf-row-val{font-size:11px;font-weight:600;color:var(--ink-3)}
+
+/* Period banner */
+.period-banner{background:var(--ink);border-radius:5px;padding:12px 20px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.pb-label{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.pb-val{font-family:var(--f-head);font-size:13px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.pb-arrow{color:var(--lime);font-size:18px;font-weight:900;line-height:1}
+
+/* Month section (repeating block) */
+.month-section{margin-bottom:36px}
+.month-section+.month-section{padding-top:28px;border-top:2px dashed var(--cream-3)}
+.month-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.month-head-title{font-family:var(--f-head);font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
+.month-head-sub{font-size:11px;color:var(--muted)}
+.month-head-right{display:flex;align-items:center;gap:10px}
+.month-sessions-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--lime-bg);border:1px solid var(--lime-mid);font-size:10px;font-weight:700;color:var(--lime-3)}
+.month-total-badge{font-family:var(--f-head);font-size:14px;font-weight:800;color:var(--lime-3)}
 
 /* Calendar */
-.cal-title{font-family:var(--f-head);font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-bottom:12px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:18px}
+.cal-legend-inline{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.cal-li{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--muted)}
+.cal-li-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;border:1px solid transparent}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px}
 .cal-dh{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:5px 0 7px}
-.cal-cell{min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:4px 2px;position:relative}
+.cal-cell{min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:4px 2px;position:relative}
 .cal-cell.empty{background:transparent}
 .cal-cell.regular{background:var(--cream)}
 .cal-cell.wknd{background:var(--cream-2)}
-.cal-date{font-family:var(--f-head);font-size:12px;font-weight:700;line-height:1;letter-spacing:-.2px}
+.cal-date{font-family:var(--f-head);font-size:11px;font-weight:700;line-height:1;letter-spacing:-.2px}
 .cal-cell.regular .cal-date{color:var(--pale)}
 .cal-cell.wknd .cal-date{color:var(--cream-3)}
-.cal-time{font-family:var(--f);font-size:7.5px;font-weight:600;text-align:center;line-height:1.3;margin-top:3px;letter-spacing:.02em}
+.cal-time{font-family:var(--f);font-size:7px;font-weight:600;text-align:center;line-height:1.3;margin-top:3px;letter-spacing:.02em}
 .cal-badge{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%}
+.day-mon{background:var(--mon-bg)}.day-mon .cal-date{color:var(--mon-fg)}.day-mon .cal-time{color:var(--mon-fg);opacity:.75}.day-mon .cal-badge{background:var(--mon-fg)}
+.day-tue{background:var(--tue-bg)}.day-tue .cal-date{color:var(--tue-fg)}.day-tue .cal-time{color:var(--tue-fg);opacity:.75}.day-tue .cal-badge{background:var(--tue-fg)}
+.day-wed{background:var(--wed-bg)}.day-wed .cal-date{color:var(--wed-fg)}.day-wed .cal-time{color:var(--wed-fg);opacity:.75}.day-wed .cal-badge{background:var(--wed-fg)}
+.day-thu{background:var(--thu-bg)}.day-thu .cal-date{color:var(--thu-fg)}.day-thu .cal-time{color:var(--thu-fg);opacity:.75}.day-thu .cal-badge{background:var(--thu-fg)}
+.day-fri{background:var(--fri-bg)}.day-fri .cal-date{color:var(--fri-fg)}.day-fri .cal-time{color:var(--fri-fg);opacity:.75}.day-fri .cal-badge{background:var(--fri-fg)}
+.day-sat{background:var(--sat-bg)}.day-sat .cal-date{color:var(--sat-fg)}.day-sat .cal-time{color:var(--sat-fg);opacity:.75}.day-sat .cal-badge{background:var(--sat-fg)}
+.day-sun{background:var(--sun-bg)}.day-sun .cal-date{color:var(--sun-fg)}.day-sun .cal-time{color:var(--sun-fg);opacity:.75}.day-sun .cal-badge{background:var(--sun-fg)}
 
-/* Day colour classes */
-.day-mon{background:var(--mon-bg)} .day-mon .cal-date{color:var(--mon-fg)} .day-mon .cal-time{color:var(--mon-fg);opacity:.75} .day-mon .cal-badge{background:var(--mon-fg)}
-.day-tue{background:var(--tue-bg)} .day-tue .cal-date{color:var(--tue-fg)} .day-tue .cal-time{color:var(--tue-fg);opacity:.75} .day-tue .cal-badge{background:var(--tue-fg)}
-.day-wed{background:var(--wed-bg)} .day-wed .cal-date{color:var(--wed-fg)} .day-wed .cal-time{color:var(--wed-fg);opacity:.75} .day-wed .cal-badge{background:var(--wed-fg)}
-.day-thu{background:var(--thu-bg)} .day-thu .cal-date{color:var(--thu-fg)} .day-thu .cal-time{color:var(--thu-fg);opacity:.75} .day-thu .cal-badge{background:var(--thu-fg)}
-.day-fri{background:var(--fri-bg)} .day-fri .cal-date{color:var(--fri-fg)} .day-fri .cal-time{color:var(--fri-fg);opacity:.75} .day-fri .cal-badge{background:var(--fri-fg)}
-.day-sat{background:var(--sat-bg)} .day-sat .cal-date{color:var(--sat-fg)} .day-sat .cal-time{color:var(--sat-fg);opacity:.75} .day-sat .cal-badge{background:var(--sat-fg)}
-.day-sun{background:var(--sun-bg)} .day-sun .cal-date{color:var(--sun-fg)} .day-sun .cal-time{color:var(--sun-fg);opacity:.75} .day-sun .cal-badge{background:var(--sun-fg)}
+/* Month summary mini-table */
+.month-sum{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0}
+.month-sum th{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);border-bottom:1px solid var(--rule);padding:6px 10px;text-align:left}
+.month-sum td{padding:8px 10px;border-bottom:1px solid var(--cream-2);color:var(--ink);font-family:var(--f)}
+.month-sum tr:last-child td{border-bottom:none}
+.month-sum .mono{font-family:var(--f-head);font-size:11px;font-weight:600}
+.month-sum .sub-row td{background:var(--lime-bg);font-weight:600;border-bottom:none}
 
-/* Legend */
-.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.leg-item{display:flex;align-items:center;gap:6px;font-family:var(--f);font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
-.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;border:1px solid transparent}
+/* Grand total table */
+.grand-table{width:100%;border-collapse:collapse;margin-bottom:0}
+.grand-table th{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding:8px 14px;text-align:left}
+.grand-table td{font-size:13px;padding:11px 14px;border-bottom:1px solid var(--cream-2);color:var(--ink);font-family:var(--f)}
+.grand-table tr:last-child td{border-bottom:none}
+.grand-table .mono{font-family:var(--f-head);font-size:12px;font-weight:600}
+.grand-total-row td{background:var(--ink);color:#fff;border:none;font-weight:600}
+.grand-total-row .tot-label{font-family:var(--f);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.45}
+.grand-total-row .tot-amt{font-family:var(--f-head);font-size:30px;font-weight:900;color:var(--lime);text-align:right;letter-spacing:-1px;padding-right:14px}
 
-/* Summary table */
-.sum-table{width:100%;border-collapse:collapse;margin-bottom:24px}
-.sum-table th{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding:8px 12px;text-align:left}
-.sum-table td{font-size:13px;padding:11px 12px;border-bottom:1px solid var(--cream-2);color:var(--ink);font-family:var(--f)}
-.sum-table tr:last-child td{border-bottom:none}
-.sum-table .mono{font-family:var(--f-head);font-size:12px;font-weight:600}
-.total-row td{background:var(--ink);color:#fff;border:none;font-weight:600}
-.total-row .tot-label{font-family:var(--f);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.5}
-.total-row .tot-amt{font-family:var(--f-head);font-size:26px;font-weight:900;color:var(--lime);text-align:right;letter-spacing:-1px}
+/* Payment box */
+.payment-box{background:var(--lime-bg);border:1px solid var(--lime-mid);border-radius:5px;padding:20px 24px;margin:24px 0}
+.pb-box-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.pb-box-icon{width:18px;height:18px;background:var(--lime-3);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;line-height:1;flex-shrink:0}
+.pb-box-title{font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--lime-3)}
+.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.pb-item-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--lime-2);opacity:.8;margin-bottom:3px}
+.pb-item-val{font-family:var(--f-head);font-size:13px;font-weight:700;color:var(--lime-3)}
+.pb-note{font-family:var(--f);font-size:11px;color:var(--lime-3);margin-top:12px;padding-top:12px;border-top:1px solid var(--lime-mid);line-height:1.7;font-style:italic}
+
+/* Sig strip */
+.sig-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:32px;padding-top:24px;border-top:1px solid var(--rule)}
+.sig-line{height:1px;background:var(--rule);width:100%;margin-bottom:6px}
+.sig-label{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pale)}
+.sig-name{font-family:var(--f-head);font-size:12px;font-weight:600;color:var(--ink-3);margin-top:3px}
 
 /* Footer */
-.inv-footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
-.inv-footer-note{font-family:var(--f);font-size:12px;color:var(--muted);max-width:340px;line-height:1.6;font-style:italic}
-.inv-footer-brand{font-family:var(--f-head);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rule);text-align:right;line-height:2}
+.inv-footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:20px}
+.inv-footer-tagline{font-family:var(--f);font-size:11px;color:var(--pale);font-style:italic}
+.inv-footer-brand{font-family:var(--f-head);font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rule);text-align:right}
 
-/* ══ ACTION BAR ══ */
+/* Section divider inside invoice */
+.inv-sec{display:flex;align-items:center;gap:10px;margin:28px 0 18px}
+.inv-sec-rule{flex:1;height:1px;background:var(--rule)}
+.inv-sec-dot{width:4px;height:4px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.inv-sec-txt{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
+
+/* Action bar */
 .action-bar{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
-.act-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:4px;font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s;border:1.5px solid var(--cream-3)}
-.act-btn.print{background:var(--white);color:var(--ink)}
-.act-btn.print:hover{background:var(--cream);border-color:var(--rule)}
+.act-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:4px;font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s;border:1.5px solid var(--cream-3);background:var(--white);color:var(--ink)}
+.act-btn:hover{background:var(--cream);border-color:var(--rule)}
 .act-btn svg{width:13px;height:13px}
 
-/* ══ PRINT ══ */
-@media print {
+/* Error */
+.err-banner{background:var(--red);color:#fff;padding:12px 20px;border-radius:5px;font-family:var(--f-head);font-size:12px;font-weight:700;margin-bottom:16px;display:none}
+
+@media print{
   .topbar,.ctrl-card,.sec,.action-bar{display:none!important}
   body{background:#fff}
   .wrap{padding:0;max-width:100%}
   .invoice-outer{border:none;box-shadow:none;border-radius:0}
   #invoice-content{padding:28px 36px}
-  .cal-cell,.total-row td,.leg-dot{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .month-section+.month-section{page-break-before:always;border-top:none;padding-top:0}
+  .cal-cell,.grand-total-row td,.payment-box,.period-banner,.day-mon,.day-tue,.day-wed,.day-thu,.day-fri,.day-sat,.day-sun{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-bg">SEHR</div>
   <div class="tb-inner">
     <div>
-      <div class="tb-kicker">
-        <div class="tb-kicker-rule"></div>
-        <div class="tb-kicker-txt">Sehr Academy · Internal Tools</div>
-      </div>
+      <div class="tb-kicker"><div class="tb-kicker-rule"></div><div class="tb-kicker-txt">SEHR Academy · Internal Tools</div></div>
       <div class="tb-title">Fee Statement <i>Generator</i></div>
       <div class="tb-meta">
-        <span class="tb-sub">Individual Session Billing</span>
+        <span class="tb-sub">Multi-Month Billing · v3</span>
         <span class="tb-pill">Private Tuition</span>
       </div>
     </div>
@@ -233,456 +261,424 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 
 <div class="wrap">
 
-  <!-- SECTION: STUDENT DETAILS -->
-  <div class="sec">
-    <div class="sec-dot"></div>
-    <div class="sec-txt">Student Details</div>
-    <div class="sec-rule"></div>
-  </div>
+  <div class="sec"><div class="sec-dot"></div><div class="sec-txt">Student &amp; Parent Details</div><div class="sec-rule"></div></div>
 
   <div class="ctrl-card">
-    <div class="ctrl-card-head">
-      <div class="ctrl-card-head-title">Session Configuration</div>
-    </div>
+    <div class="ctrl-card-head"><div class="ctrl-card-head-title">Session Configuration</div></div>
     <div class="ctrl-card-body">
 
-      <!-- Student fields -->
+      <!-- Student info -->
       <div class="form-grid">
-        <div class="fg">
-          <label class="fl">Student Name</label>
-          <input class="fi" id="studentName" type="text" placeholder="Leave blank to omit">
+        <div class="fg"><label class="fl">Student Name</label><input class="fi" id="studentName" type="text" placeholder="e.g. Arjun Nair"></div>
+        <div class="fg"><label class="fl">Parent / Guardian</label><input class="fi" id="parentName" type="text" placeholder="e.g. Mr. Nair"></div>
+        <div class="fg"><label class="fl">Class / Grade</label>
+          <select class="fi" id="studentClass"><option>Class 9</option><option>Class 10</option><option>Class 11</option><option selected>Class 12</option></select>
         </div>
-        <div class="fg">
-          <label class="fl">Class / Grade</label>
-          <select class="fi" id="studentClass">
-            <option>Class 9</option>
-            <option>Class 10</option>
-            <option>Class 11</option>
-            <option>Class 12</option>
-          </select>
+        <div class="fg"><label class="fl">Board</label>
+          <select class="fi" id="studentBoard"><option>CBSE</option><option>Kerala State Board</option><option>ICSE</option></select>
         </div>
-        <div class="fg">
-          <label class="fl">Board</label>
-          <select class="fi" id="studentBoard">
-            <option>CBSE</option>
-            <option>Kerala State Board</option>
-            <option>ICSE</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label class="fl">Subject</label>
-          <input class="fi" id="studentSubject" type="text" placeholder="e.g. Mathematics">
-        </div>
-        <div class="fg">
-          <label class="fl">Rate / Hour (₹)</label>
-          <input class="fi" id="ratePerHour" type="number" value="250" min="0">
-        </div>
-        <div class="fg">
-          <label class="fl">Hours / Session</label>
-          <input class="fi" id="hoursPerSession" type="number" value="2" step="0.5" min="0.5">
-        </div>
-        <div class="fg">
-          <label class="fl">Start Date <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--pale)">(classes begin from)</span></label>
-          <input class="fi" id="startDate" type="date">
-        </div>
+        <div class="fg"><label class="fl">Subject</label><input class="fi" id="studentSubject" type="text" placeholder="e.g. Physics"></div>
+        <div class="fg"><label class="fl">Contact <small>(optional)</small></label><input class="fi" id="parentContact" type="text" placeholder="+91 98765 43210"></div>
       </div>
 
-      <!-- SECTION: SCHEDULE -->
-      <div class="sec" style="margin-top:8px;margin-bottom:14px">
-        <div class="sec-dot"></div>
-        <div class="sec-txt">Weekly Schedule — Toggle Days On / Off</div>
-        <div class="sec-rule"></div>
+      <!-- Rates -->
+      <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Rate</div><div class="sec-rule"></div></div>
+      <div class="form-grid" style="margin-bottom:0">
+        <div class="fg"><label class="fl">Rate / Hour (₹)</label><input class="fi" id="ratePerHour" type="number" value="500" min="0" step="50"></div>
+        <div class="fg"><label class="fl">Hours / Session</label><input class="fi" id="hoursPerSession" type="number" value="1.5" step="0.5" min="0.5"></div>
+        <div class="fg"><label class="fl">Payment Due Date</label><input class="fi" id="dueDate" type="date"></div>
       </div>
 
-      <!-- 7-day cards -->
+      <!-- Billing Period -->
+      <div class="sec" style="margin-top:20px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Billing Period — Start &amp; End Date</div><div class="sec-rule"></div></div>
+
+      <div class="date-range-row">
+        <div class="fg">
+          <label class="fl">Classes Start</label>
+          <input class="fi" id="rangeStart" type="date" onchange="updateRangeInfo()">
+        </div>
+        <div class="dr-arrow">→</div>
+        <div class="fg">
+          <label class="fl">Classes End</label>
+          <input class="fi" id="rangeEnd" type="date" onchange="updateRangeInfo()">
+        </div>
+        <div class="dr-info" id="rangeInfo" style="color:var(--pale);font-size:11px;font-weight:400;padding-top:20px"></div>
+      </div>
+
+      <!-- Schedule -->
+      <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Weekly Schedule</div><div class="sec-rule"></div></div>
+
       <div class="days-grid">
-        <!-- SUN -->
-        <div class="day-card" id="card-sun">
-          <div class="day-card-top" onclick="toggleDay('sun')">
-            <div>
-              <div class="day-label">Sunday</div>
-              <div class="day-short">SUN</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-sun" onchange="syncCard('sun')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-sun" type="time" value="10:00">
-          </div>
-        </div>
-        <!-- MON -->
-        <div class="day-card active" id="card-mon">
-          <div class="day-card-top" onclick="toggleDay('mon')">
-            <div>
-              <div class="day-label">Monday</div>
-              <div class="day-short">MON</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-mon" checked onchange="syncCard('mon')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-mon" type="time" value="10:00">
-          </div>
-        </div>
-        <!-- TUE -->
-        <div class="day-card" id="card-tue">
-          <div class="day-card-top" onclick="toggleDay('tue')">
-            <div>
-              <div class="day-label">Tuesday</div>
-              <div class="day-short">TUE</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-tue" onchange="syncCard('tue')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-tue" type="time" value="10:00">
-          </div>
-        </div>
-        <!-- WED -->
-        <div class="day-card" id="card-wed">
-          <div class="day-card-top" onclick="toggleDay('wed')">
-            <div>
-              <div class="day-label">Wednesday</div>
-              <div class="day-short">WED</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-wed" onchange="syncCard('wed')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-wed" type="time" value="10:00">
-          </div>
-        </div>
-        <!-- THU -->
-        <div class="day-card" id="card-thu">
-          <div class="day-card-top" onclick="toggleDay('thu')">
-            <div>
-              <div class="day-label">Thursday</div>
-              <div class="day-short">THU</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-thu" onchange="syncCard('thu')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-thu" type="time" value="10:00">
-          </div>
-        </div>
-        <!-- FRI -->
-        <div class="day-card active" id="card-fri">
-          <div class="day-card-top" onclick="toggleDay('fri')">
-            <div>
-              <div class="day-label">Friday</div>
-              <div class="day-short">FRI</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-fri" checked onchange="syncCard('fri')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-fri" type="time" value="10:00">
-          </div>
-        </div>
-        <!-- SAT -->
-        <div class="day-card" id="card-sat">
-          <div class="day-card-top" onclick="toggleDay('sat')">
-            <div>
-              <div class="day-label">Saturday</div>
-              <div class="day-short">SAT</div>
-            </div>
-            <label class="tog" onclick="event.stopPropagation()">
-              <input type="checkbox" id="tog-sat" onchange="syncCard('sat')">
-              <span class="tog-slider"></span>
-            </label>
-          </div>
-          <div class="day-time-wrap">
-            <input class="day-time" id="time-sat" type="time" value="10:00">
-          </div>
-        </div>
+        <div class="day-card" id="card-sun"><div class="day-card-top" onclick="toggleDay('sun')"><div><div class="day-label">Sunday</div><div class="day-short">SUN</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sun" onchange="syncCard('sun')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sun" type="time" value="10:00"></div></div>
+        <div class="day-card active" id="card-mon"><div class="day-card-top" onclick="toggleDay('mon')"><div><div class="day-label">Monday</div><div class="day-short">MON</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-mon" checked onchange="syncCard('mon')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-mon" type="time" value="17:00"></div></div>
+        <div class="day-card" id="card-tue"><div class="day-card-top" onclick="toggleDay('tue')"><div><div class="day-label">Tuesday</div><div class="day-short">TUE</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-tue" onchange="syncCard('tue')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-tue" type="time" value="17:00"></div></div>
+        <div class="day-card" id="card-wed"><div class="day-card-top" onclick="toggleDay('wed')"><div><div class="day-label">Wednesday</div><div class="day-short">WED</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-wed" onchange="syncCard('wed')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-wed" type="time" value="17:00"></div></div>
+        <div class="day-card" id="card-thu"><div class="day-card-top" onclick="toggleDay('thu')"><div><div class="day-label">Thursday</div><div class="day-short">THU</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-thu" onchange="syncCard('thu')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-thu" type="time" value="17:00"></div></div>
+        <div class="day-card active" id="card-fri"><div class="day-card-top" onclick="toggleDay('fri')"><div><div class="day-label">Friday</div><div class="day-short">FRI</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-fri" checked onchange="syncCard('fri')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-fri" type="time" value="17:00"></div></div>
+        <div class="day-card" id="card-sat"><div class="day-card-top" onclick="toggleDay('sat')"><div><div class="day-label">Saturday</div><div class="day-short">SAT</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sat" onchange="syncCard('sat')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sat" type="time" value="10:00"></div></div>
       </div>
 
-      <!-- Bottom: month + generate -->
+      <div id="errBanner" class="err-banner"></div>
+
       <div class="ctrl-bottom">
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <div class="fl">Billing Month</div>
-          <div class="month-nav">
-            <button class="mnav-btn" onclick="changeMonth(-1)">‹</button>
-            <div class="mnav-display" id="monthDisplay">—</div>
-            <button class="mnav-btn" onclick="changeMonth(1)">›</button>
-          </div>
-        </div>
+        <div style="font-family:var(--f);font-size:11px;color:var(--muted)">Set start &amp; end dates above — spans any number of months automatically.</div>
         <button class="gen-btn" onclick="generate()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg>
-          Generate Invoice
+          Generate Statement
         </button>
       </div>
 
     </div>
   </div>
 
-  <!-- SECTION: INVOICE PREVIEW -->
-  <div class="sec" style="margin-top:36px">
-    <div class="sec-dot"></div>
-    <div class="sec-txt">Invoice Preview</div>
-    <div class="sec-rule"></div>
-  </div>
+  <div class="sec" style="margin-top:36px"><div class="sec-dot"></div><div class="sec-txt">Fee Statement Preview</div><div class="sec-rule"></div></div>
 
   <div class="invoice-outer">
     <div id="invoice-content">
       <div class="empty-state">
         <div class="empty-ico">📋</div>
-        <div class="empty-txt">No invoice generated yet</div>
-        <div class="empty-sub">Configure the schedule above and click Generate Invoice</div>
+        <div class="empty-txt">No statement generated yet</div>
+        <div class="empty-sub">Set a date range and schedule above, then click Generate Statement</div>
       </div>
     </div>
   </div>
 
   <div class="action-bar" id="action-bar" style="display:none">
-    <button class="act-btn print" onclick="window.print()">
+    <button class="act-btn" onclick="window.print()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
       Print / Export PDF
     </button>
   </div>
 
-</div><!-- /wrap -->
+</div>
 
 <script>
-  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const DAY_KEYS = ['sun','mon','tue','wed','thu','fri','sat'];
-  // DOW index: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
-  const DAY_CSS = ['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
-  const DAY_FG  = ['var(--sun-fg)','var(--mon-fg)','var(--tue-fg)','var(--wed-fg)','var(--thu-fg)','var(--fri-fg)','var(--sat-fg)'];
-  const DAY_BG  = ['var(--sun-bg)','var(--mon-bg)','var(--tue-bg)','var(--wed-bg)','var(--thu-bg)','var(--fri-bg)','var(--sat-bg)'];
-  const DAY_FULL= ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAY_KEYS=['sun','mon','tue','wed','thu','fri','sat'];
+const DAY_CSS=['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
+const DAY_FG=['var(--sun-fg)','var(--mon-fg)','var(--tue-fg)','var(--wed-fg)','var(--thu-fg)','var(--fri-fg)','var(--sat-fg)'];
+const DAY_BG=['var(--sun-bg)','var(--mon-bg)','var(--tue-bg)','var(--wed-bg)','var(--thu-bg)','var(--fri-bg)','var(--sat-bg)'];
+const DAY_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  let billingYear, billingMonth;
-  const now = new Date();
-  billingYear  = now.getFullYear();
-  billingMonth = now.getMonth();
-  updateMonthDisplay();
+// Default: current month
+(function(){
+  var now=new Date();
+  var y=now.getFullYear(),m=now.getMonth();
+  var s=y+'-'+String(m+1).padStart(2,'0')+'-01';
+  var lastDay=new Date(y,m+1,0).getDate();
+  var e=y+'-'+String(m+1).padStart(2,'0')+'-'+lastDay;
+  document.getElementById('rangeStart').value=s;
+  document.getElementById('rangeEnd').value=e;
+  // due date default: 5th of next month
+  var nd=new Date(y,m+1,5);
+  document.getElementById('dueDate').value=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-05';
+  updateRangeInfo();
+})();
 
-  function updateMonthDisplay(){
-    document.getElementById('monthDisplay').textContent = MONTHS[billingMonth]+' '+billingYear;
+function updateRangeInfo(){
+  var s=document.getElementById('rangeStart').value;
+  var e=document.getElementById('rangeEnd').value;
+  var el=document.getElementById('rangeInfo');
+  if(!s||!e){el.textContent='';return;}
+  var sd=parseLocalDate(s),ed=parseLocalDate(e);
+  if(ed<sd){el.textContent='End before start';el.style.color='var(--red)';return;}
+  var months=getMonthsInRange(sd,ed).length;
+  el.textContent=months===1?'1 month':months+' months';
+  el.style.color='var(--lime-3)';
+  el.style.fontWeight='700';
+  el.style.fontFamily='var(--f-head)';
+}
+
+function parseLocalDate(str){
+  var p=str.split('-');
+  return new Date(+p[0],+p[1]-1,+p[2]);
+}
+
+function getMonthsInRange(start,end){
+  var months=[];
+  var y=start.getFullYear(),m=start.getMonth();
+  var ey=end.getFullYear(),em=end.getMonth();
+  while(y<ey||(y===ey&&m<=em)){
+    months.push({year:y,month:m});
+    m++;if(m>11){m=0;y++;}
   }
+  return months;
+}
 
-  function changeMonth(d){
-    billingMonth += d;
-    if(billingMonth>11){billingMonth=0;billingYear++;}
-    if(billingMonth<0) {billingMonth=11;billingYear--;}
-    updateMonthDisplay();
-  }
+function toggleDay(key){var cb=document.getElementById('tog-'+key);cb.checked=!cb.checked;syncCard(key);}
+function syncCard(key){var cb=document.getElementById('tog-'+key);var card=document.getElementById('card-'+key);cb.checked?card.classList.add('active'):card.classList.remove('active');}
 
-  function toggleDay(key){
-    var cb = document.getElementById('tog-'+key);
-    cb.checked = !cb.checked;
-    syncCard(key);
-  }
+function fmt12(t){if(!t)return'';var p=t.split(':'),h=parseInt(p[0]),m=p[1];return(h%12||12)+':'+m+' '+(h>=12?'PM':'AM');}
+function fmtRange(t,hrs){if(!t)return'';var p=t.split(':'),h=parseInt(p[0]),m=parseInt(p[1]);var sm=h*60+m,em=sm+Math.round(hrs*60);var eh=Math.floor(em/60)%24,em2=em%60;var pad=n=>String(n).padStart(2,'0');return fmt12(t)+'–'+fmt12(pad(eh)+':'+pad(em2));}
+function fmtDate(d){return d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});}
 
-  function syncCard(key){
-    var cb   = document.getElementById('tog-'+key);
-    var card = document.getElementById('card-'+key);
-    if(cb.checked){ card.classList.add('active'); }
-    else           { card.classList.remove('active'); }
-  }
+function showErr(msg){var el=document.getElementById('errBanner');el.textContent=msg;el.style.display='block';}
+function hideErr(){document.getElementById('errBanner').style.display='none';}
 
-  function fmt12(t){
-    if(!t) return '';
-    var p=t.split(':'), h=parseInt(p[0]), m=p[1];
-    return (h%12||12)+':'+m+' '+(h>=12?'PM':'AM');
-  }
+function buildMonthBlock(year,month,rangeStart,rangeEnd,activeDays,hrs,ratePerSession){
+  var totalDays=new Date(year,month+1,0).getDate();
+  var firstDOW=new Date(year,month,1).getDay();
 
-  function fmtRange(t,hrs){
-    if(!t) return '';
-    var p=t.split(':'), h=parseInt(p[0]), m=parseInt(p[1]);
-    var sm=h*60+m, em=sm+Math.round(hrs*60);
-    var eh=Math.floor(em/60)%24, em2=em%60;
-    var pad=n=>String(n).padStart(2,'0');
-    return fmt12(t)+'–'+fmt12(pad(eh)+':'+pad(em2));
-  }
+  // Effective start/end within this month
+  var effStart=1,effEnd=totalDays;
+  if(rangeStart.getFullYear()===year&&rangeStart.getMonth()===month) effStart=rangeStart.getDate();
+  if(rangeEnd.getFullYear()===year&&rangeEnd.getMonth()===month) effEnd=rangeEnd.getDate();
 
-  function generate(){
-    var name    = document.getElementById('studentName').value.trim();
-    var cls     = document.getElementById('studentClass').value;
-    var board   = document.getElementById('studentBoard').value;
-    var subj    = document.getElementById('studentSubject').value.trim();
-    var rate    = parseFloat(document.getElementById('ratePerHour').value)||250;
-    var hrs     = parseFloat(document.getElementById('hoursPerSession').value)||2;
-    var startDateVal = document.getElementById('startDate').value; // 'YYYY-MM-DD' or ''
-    var startDay = 1; // default: entire month
-    if(startDateVal){
-      var sd = new Date(startDateVal);
-      // Only apply if start date is within the billing month
-      if(sd.getFullYear()===billingYear && sd.getMonth()===billingMonth){
-        startDay = sd.getDate();
-      } else if(sd.getFullYear()>billingYear || (sd.getFullYear()===billingYear && sd.getMonth()>billingMonth)){
-        startDay = 999; // entire month is before start, nothing counts
-      }
+  var cells=[];
+  for(var i=0;i<firstDOW;i++) cells.push({type:'empty'});
+  var countByDow={};
+
+  for(var d=1;d<=totalDays;d++){
+    var dow=new Date(year,month,d).getDay();
+    var inRange=(d>=effStart&&d<=effEnd);
+    var isClassDay=activeDays[dow]!==undefined;
+    if(inRange&&isClassDay){
+      countByDow[dow]=(countByDow[dow]||0)+1;
+      cells.push({day:d,dow:dow,time:activeDays[dow],active:true});
+    } else {
+      cells.push({day:d,dow:dow,active:false,skipped:isClassDay&&!inRange});
     }
+  }
 
-    // Collect active days (indexed by DOW 0-6)
-    var activeDays = {}; // dow -> time
-    DAY_KEYS.forEach(function(key,i){
-      var cb = document.getElementById('tog-'+key);
-      if(cb.checked){
-        activeDays[i] = document.getElementById('time-'+key).value || '10:00';
-      }
-    });
+  var totalSessions=0;
+  Object.values(countByDow).forEach(function(c){totalSessions+=c;});
+  var monthTotal=totalSessions*ratePerSession;
 
-    var totalDays  = new Date(billingYear,billingMonth+1,0).getDate();
-    var firstDOW   = new Date(billingYear,billingMonth,1).getDay();
-
-    // Build calendar cells
-    var cells = [];
-    for(var i=0;i<firstDOW;i++) cells.push({type:'empty'});
-
-    var countByDow = {}; // dow -> count
-    for(var d=1;d<=totalDays;d++){
-      var dow = new Date(billingYear,billingMonth,d).getDay();
-      var beforeStart = d < startDay;
-      if(!beforeStart && activeDays[dow]!==undefined){
-        countByDow[dow] = (countByDow[dow]||0)+1;
-        cells.push({day:d, dow:dow, time:activeDays[dow], active:true});
-      } else {
-        // beforeStart days shown greyed even if they would be a class day
-        cells.push({day:d, dow:dow, active:false, skipped: beforeStart && activeDays[dow]!==undefined});
-      }
+  // Calendar HTML
+  var calHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(function(d){return'<div class="cal-dh">'+d+'</div>';}).join('');
+  cells.forEach(function(c){
+    if(c.type==='empty'){calHTML+='<div class="cal-cell empty"></div>';return;}
+    if(c.active){
+      calHTML+='<div class="cal-cell '+DAY_CSS[c.dow]+'">'
+        +'<span class="cal-badge"></span>'
+        +'<div class="cal-date">'+c.day+'</div>'
+        +'<div class="cal-time">'+fmtRange(c.time,hrs)+'</div>'
+        +'</div>';
+    } else if(c.skipped){
+      calHTML+='<div class="cal-cell regular" style="opacity:0.3"><div class="cal-date" style="color:var(--pale);text-decoration:line-through">'+c.day+'</div></div>';
+    } else {
+      var wknd=(c.dow===0||c.dow===6);
+      calHTML+='<div class="cal-cell '+(wknd?'wknd':'regular')+'"><div class="cal-date">'+c.day+'</div></div>';
     }
+  });
 
-    // Totals
-    var totalSessions=0;
-    Object.values(countByDow).forEach(function(c){totalSessions+=c;});
-    var ratePerSession = rate*hrs;
-    var totalAmount    = totalSessions*ratePerSession;
+  // Legend
+  var legendHTML='';
+  DAY_KEYS.forEach(function(key,i){
+    if(document.getElementById('tog-'+key).checked){
+      legendHTML+='<div class="cal-li"><div class="cal-li-dot" style="background:'+DAY_BG[i]+';border-color:'+DAY_FG[i]+'"></div>'+DAY_FULL[i]+'</div>';
+    }
+  });
 
-    var invNum  = 'SA-'+billingYear+String(billingMonth+1).padStart(2,'0')+'-'+Math.floor(Math.random()*900+100);
-    var issued  = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  // Mini summary rows
+  var sumRows='';
+  DAY_KEYS.forEach(function(key,i){
+    var cnt=countByDow[i];
+    if(!cnt)return;
+    var t=document.getElementById('time-'+key).value;
+    sumRows+='<tr>'
+      +'<td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+DAY_BG[i]+';border:1px solid '+DAY_FG[i]+';margin-right:7px;vertical-align:middle"></span>'+DAY_FULL[i]+'</td>'
+      +'<td class="mono">'+fmtRange(t,hrs)+'</td>'
+      +'<td class="mono" style="text-align:center">'+cnt+'</td>'
+      +'<td class="mono" style="text-align:right">₹'+(cnt*ratePerSession).toLocaleString('en-IN')+'</td>'
+      +'</tr>';
+  });
+  // month subtotal row
+  sumRows+='<tr class="sub-row">'
+    +'<td colspan="2" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-3)">'+MONTHS[month]+' Total</td>'
+    +'<td class="mono" style="text-align:center;color:var(--lime-3)">'+totalSessions+'</td>'
+    +'<td class="mono" style="text-align:right;color:var(--lime-3)">₹'+monthTotal.toLocaleString('en-IN')+'</td>'
+    +'</tr>';
 
-    // ── Calendar HTML ──
-    var calHTML = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(function(d){
-      return '<div class="cal-dh">'+d+'</div>';
-    }).join('');
+  var periodStr='';
+  if(effStart>1||effEnd<totalDays){
+    periodStr='<span style="font-size:10px;color:var(--muted);margin-left:8px">'+effStart+' – '+effEnd+' '+MONTHS_SHORT[month]+'</span>';
+  }
 
-    cells.forEach(function(c){
-      if(c.type==='empty'){ calHTML+='<div class="cal-cell empty"></div>'; return; }
-      if(c.active){
-        calHTML += '<div class="cal-cell '+DAY_CSS[c.dow]+'">'
-          +'<span class="cal-badge"></span>'
-          +'<div class="cal-date">'+c.day+'</div>'
-          +'<div class="cal-time">'+fmtRange(c.time,hrs)+'</div>'
-          +'</div>';
-      } else if(c.skipped){
-        // Would-be class day but before start date — show muted with slash
-        calHTML += '<div class="cal-cell regular" style="opacity:0.38">'
-          +'<div class="cal-date" style="color:var(--pale);text-decoration:line-through">'+c.day+'</div>'
-          +'</div>';
-      } else {
-        var wknd = (c.dow===0||c.dow===6);
-        calHTML += '<div class="cal-cell '+(wknd?'wknd':'regular')+'"><div class="cal-date">'+c.day+'</div></div>';
-      }
-    });
-
-    // ── Legend ──
-    var legendHTML = '';
-    DAY_KEYS.forEach(function(key,i){
-      var cb=document.getElementById('tog-'+key);
-      if(cb.checked){
-        legendHTML += '<div class="leg-item">'
-          +'<div class="leg-dot" style="background:'+DAY_BG[i]+';border-color:'+DAY_FG[i]+'"></div>'
-          +DAY_FULL[i]+'</div>';
-      }
-    });
-
-    // ── Student block ──
-    var studentHTML = name
-      ? '<div class="inf-val">'+name+'</div><div class="inf-sub">'+cls+' · '+board+(subj?' · '+subj:'')+'</div>'
-      : '<div class="inf-val">'+cls+'</div><div class="inf-sub">'+board+(subj?' · '+subj:'')+'</div>';
-
-    // ── Summary rows ──
-    var rows = '';
-    DAY_KEYS.forEach(function(key,i){
-      var dow=i, cnt=countByDow[dow];
-      if(!cnt) return;
-      var t=document.getElementById('time-'+key).value;
-      rows += '<tr>'
-        +'<td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+DAY_BG[i]+';border:1px solid '+DAY_FG[i]+';margin-right:8px;vertical-align:middle"></span>'+DAY_FULL[i]+' Sessions</td>'
-        +'<td class="mono">'+fmt12(t)+'</td>'
-        +'<td class="mono" style="text-align:center">'+hrs+' hrs</td>'
-        +'<td class="mono" style="text-align:center">'+cnt+'</td>'
-        +'<td class="mono" style="text-align:right">₹'+((cnt*ratePerSession).toLocaleString('en-IN'))+'</td>'
-        +'</tr>';
-    });
-
-    var html = `
-      <div class="inv-hdr">
+  return {
+    html:`<div class="month-section">
+      <div class="month-head">
         <div>
-          <div class="inv-academy">Sehr<span>.</span></div>
-          <div class="inv-tagline">Individual Tutoring · Private Sessions</div>
+          <div class="month-head-title">${MONTHS[month]} ${year}${periodStr}</div>
+          <div class="month-head-sub">${totalSessions} session${totalSessions!==1?'s':''} · ${totalSessions*hrs} hours</div>
         </div>
-        <div class="inv-meta">
-          <div class="inv-type">Fee Statement</div>
-          <div class="inv-num">${invNum}</div>
-          <div class="inv-month">${MONTHS[billingMonth]} ${billingYear}</div>
-          <div class="inv-issued">Issued: ${issued}</div>
+        <div class="month-head-right">
+          <div class="month-total-badge">₹${monthTotal.toLocaleString('en-IN')}</div>
         </div>
       </div>
-
-      <div class="inv-student-row">
-        <div>
-          <div class="inf-title">Student</div>
-          ${studentHTML}
-        </div>
-        <div>
-          <div class="inf-title">Session Rate</div>
-          <div class="inf-val">₹${rate.toLocaleString('en-IN')}<span style="font-size:12px;font-weight:400;color:var(--muted)"> / hour</span></div>
-          <div class="inf-sub">${hrs} hrs per session · ₹${ratePerSession.toLocaleString('en-IN')} per session</div>
-          ${startDateVal ? '<div class="inf-sub" style="margin-top:4px">Classes from: <strong>'+new Date(startDateVal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</strong></div>' : ''}
-        </div>
-      </div>
-
-      <div class="cal-title">${MONTHS[billingMonth]} ${billingYear}</div>
+      <div class="cal-legend-inline">${legendHTML}</div>
       <div class="cal-grid">${calHTML}</div>
-
-      <div class="legend">${legendHTML}</div>
-
-      <table class="sum-table">
-        <thead>
-          <tr>
-            <th>Session Type</th>
-            <th>Timing</th>
-            <th style="text-align:center">Duration</th>
-            <th style="text-align:center">Sessions</th>
-            <th style="text-align:right">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows}
-          <tr class="total-row">
-            <td class="tot-label" colspan="3">${totalSessions} sessions · ${totalSessions*hrs} total hours</td>
-            <td class="mono" style="text-align:center">${totalSessions}</td>
-            <td class="tot-amt">₹${totalAmount.toLocaleString('en-IN')}</td>
-          </tr>
-        </tbody>
+      <table class="month-sum">
+        <thead><tr><th>Day</th><th>Timing</th><th style="text-align:center">Sessions</th><th style="text-align:right">Subtotal</th></tr></thead>
+        <tbody>${sumRows}</tbody>
       </table>
+    </div>`,
+    sessions:totalSessions,
+    amount:monthTotal,
+    countByDow:countByDow
+  };
+}
 
-      <div class="inv-footer">
-        <div class="inv-footer-note">Session fees are payable in full at the beginning of the month before classes commence. Thank you for choosing Sehr Academy.</div>
-        <div class="inv-footer-brand">Sehr Academy<br>Thrissur, Kerala<br>sehracademy.com</div>
+function generate(){
+  hideErr();
+  var s=document.getElementById('rangeStart').value;
+  var e=document.getElementById('rangeEnd').value;
+  if(!s||!e){showErr('Please set both a start date and an end date.');return;}
+  var rangeStart=parseLocalDate(s),rangeEnd=parseLocalDate(e);
+  if(rangeEnd<rangeStart){showErr('End date must be after start date.');return;}
+
+  // Guard: more than 12 months is unusual
+  var months=getMonthsInRange(rangeStart,rangeEnd);
+  if(months.length>12){showErr('Range spans more than 12 months. Please check your dates.');return;}
+
+  var name=document.getElementById('studentName').value.trim();
+  var parent=document.getElementById('parentName').value.trim();
+  var contact=document.getElementById('parentContact').value.trim();
+  var cls=document.getElementById('studentClass').value;
+  var board=document.getElementById('studentBoard').value;
+  var subj=document.getElementById('studentSubject').value.trim();
+  var rate=parseFloat(document.getElementById('ratePerHour').value)||500;
+  var hrs=parseFloat(document.getElementById('hoursPerSession').value)||1.5;
+  var dueDateVal=document.getElementById('dueDate').value;
+  var ratePerSession=rate*hrs;
+
+  // Active days map
+  var activeDays={};
+  DAY_KEYS.forEach(function(key,i){
+    var cb=document.getElementById('tog-'+key);
+    if(cb.checked) activeDays[i]=document.getElementById('time-'+key).value||'10:00';
+  });
+  if(Object.keys(activeDays).length===0){showErr('Please select at least one class day.');return;}
+
+  // Build each month
+  var monthsHTML='';
+  var grandSessions=0,grandAmount=0;
+  var grandByDow={};
+  var grandRows='';
+
+  months.forEach(function(mo){
+    var result=buildMonthBlock(mo.year,mo.month,rangeStart,rangeEnd,activeDays,hrs,ratePerSession);
+    monthsHTML+=result.html;
+    grandSessions+=result.sessions;
+    grandAmount+=result.amount;
+    Object.keys(result.countByDow).forEach(function(dow){
+      grandByDow[dow]=(grandByDow[dow]||0)+result.countByDow[dow];
+    });
+  });
+
+  // Grand total table rows (by day across all months)
+  DAY_KEYS.forEach(function(key,i){
+    var cnt=grandByDow[i];
+    if(!cnt)return;
+    var t=document.getElementById('time-'+key).value;
+    grandRows+='<tr>'
+      +'<td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+DAY_BG[i]+';border:1px solid '+DAY_FG[i]+';margin-right:8px;vertical-align:middle"></span>'+DAY_FULL[i]+'</td>'
+      +'<td class="mono">'+fmt12(t)+'</td>'
+      +'<td class="mono" style="text-align:center">'+hrs+' hrs</td>'
+      +'<td class="mono" style="text-align:center">'+cnt+'</td>'
+      +'<td class="mono" style="text-align:center">₹'+ratePerSession.toLocaleString('en-IN')+'</td>'
+      +'<td class="mono" style="text-align:right">₹'+(cnt*ratePerSession).toLocaleString('en-IN')+'</td>'
+      +'</tr>';
+  });
+
+  var invNum='SA-'+rangeStart.getFullYear()+String(rangeStart.getMonth()+1).padStart(2,'0')+'-'+Math.floor(Math.random()*900+100);
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var studentLine=name||cls;
+  var studentSub=name?(cls+' · '+board+(subj?' · '+subj:'')):(board+(subj?' · '+subj:''));
+
+  var periodLabel=months.length===1
+    ?MONTHS[months[0].month]+' '+months[0].year
+    :MONTHS_SHORT[months[0].month]+' '+months[0].year+' – '+MONTHS_SHORT[months[months.length-1].month]+' '+months[months.length-1].year;
+
+  var html=`
+    <div class="inv-hdr">
+      <div>
+        <div class="inv-academy">SEHR<span>.</span></div>
+        <div class="inv-tagline">Private Tuition · Individual Sessions</div>
+        <div class="inv-addr">Vadanappally, Thrissur, Kerala<br>sehracademy.com</div>
       </div>
-    `;
+      <div class="inv-meta">
+        <div class="inv-type">Fee Statement</div>
+        <div class="inv-num">${invNum}</div>
+        <div class="inv-period-label">${periodLabel}</div>
+        <div class="inv-issued">Issued: ${issued}</div>
+        ${dueDateVal?'<div class="inv-due">Due by: '+parseLocalDate(dueDateVal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</div>':''}
+      </div>
+    </div>
 
-    document.getElementById('invoice-content').innerHTML = html;
-    document.getElementById('action-bar').style.display = 'flex';
-    document.querySelector('.invoice-outer').scrollIntoView({behavior:'smooth',block:'start'});
-  }
+    <div class="inv-info-row">
+      <div class="inv-info-cell">
+        <div class="inf-title">Student</div>
+        <div class="inf-val">${studentLine}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">${studentSub}</div>
+        ${parent?'<div class="inf-row" style="margin-top:10px"><span class="inf-row-label">Parent / Guardian</span><span class="inf-row-val">'+parent+'</span></div>':''}
+        ${contact?'<div class="inf-row"><span class="inf-row-label">Contact</span><span class="inf-row-val">'+contact+'</span></div>':''}
+      </div>
+      <div class="inv-info-cell">
+        <div class="inf-title">Session Rate</div>
+        <div class="inf-val">₹${rate.toLocaleString('en-IN')}<span style="font-size:12px;font-weight:400;color:var(--muted)"> / hour</span></div>
+        <div class="inf-row" style="margin-top:8px"><span class="inf-row-label">Duration per session</span><span class="inf-row-val">${hrs} hrs</span></div>
+        <div class="inf-row"><span class="inf-row-label">Rate per session</span><span class="inf-row-val">₹${ratePerSession.toLocaleString('en-IN')}</span></div>
+        <div class="inf-row"><span class="inf-row-label">Total sessions</span><span class="inf-row-val">${grandSessions}</span></div>
+        <div class="inf-row"><span class="inf-row-label">Total hours</span><span class="inf-row-val">${grandSessions*hrs}</span></div>
+      </div>
+    </div>
+
+    <div class="period-banner">
+      <div><div class="pb-label">Period Start</div><div class="pb-val">${fmtDate(rangeStart)}</div></div>
+      <div class="pb-arrow">→</div>
+      <div><div class="pb-label">Period End</div><div class="pb-val">${fmtDate(rangeEnd)}</div></div>
+      <div><div class="pb-label">Months</div><div class="pb-val">${months.length}</div></div>
+      <div style="margin-left:auto;text-align:right"><div class="pb-label">Grand Total</div><div class="pb-val" style="color:var(--lime);font-size:20px">₹${grandAmount.toLocaleString('en-IN')}</div></div>
+    </div>
+
+    <div class="inv-sec"><div class="inv-sec-dot"></div><div class="inv-sec-txt">Month-by-Month Breakdown</div><div class="inv-sec-rule"></div></div>
+
+    ${monthsHTML}
+
+    ${months.length>1?`
+    <div class="inv-sec"><div class="inv-sec-dot"></div><div class="inv-sec-txt">Combined Summary</div><div class="inv-sec-rule"></div></div>
+    <table class="grand-table">
+      <thead><tr><th>Day</th><th>Timing</th><th style="text-align:center">Hrs/Session</th><th style="text-align:center">Total Sessions</th><th style="text-align:center">Rate/Session</th><th style="text-align:right">Total</th></tr></thead>
+      <tbody>
+        ${grandRows}
+        <tr class="grand-total-row">
+          <td class="tot-label" colspan="3">Grand Total</td>
+          <td class="mono" style="text-align:center;color:#fff;font-size:15px">${grandSessions}</td>
+          <td></td>
+          <td class="tot-amt">₹${grandAmount.toLocaleString('en-IN')}</td>
+        </tr>
+      </tbody>
+    </table>`:''}
+
+    <div class="payment-box">
+      <div class="pb-box-head"><div class="pb-box-icon">₹</div><div class="pb-box-title">Payment Instructions</div></div>
+      <div class="pb-grid">
+        <div><div class="pb-item-label">Amount Due</div><div class="pb-item-val">₹${grandAmount.toLocaleString('en-IN')}</div></div>
+        ${dueDateVal?'<div><div class="pb-item-label">Due By</div><div class="pb-item-val">'+parseLocalDate(dueDateVal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</div></div>':''}
+        <div><div class="pb-item-label">Mode of Payment</div><div class="pb-item-val">Cash / UPI / Bank Transfer</div></div>
+        <div><div class="pb-item-label">Payable To</div><div class="pb-item-val">SEHR Academy</div></div>
+      </div>
+      <div class="pb-note">Fees are payable in full before classes commence. For queries regarding this statement, please contact us directly. Thank you for your continued trust in SEHR Academy.</div>
+    </div>
+
+    <div class="sig-strip">
+      <div><div class="sig-line"></div><div class="sig-label">Prepared By</div><div class="sig-name">SEHR Academy</div></div>
+      <div><div class="sig-line"></div><div class="sig-label">Parent / Guardian Acknowledgement</div><div class="sig-name">${parent||'&nbsp;'}</div></div>
+      <div><div class="sig-line"></div><div class="sig-label">Date</div><div class="sig-name">&nbsp;</div></div>
+    </div>
+
+    <div class="inv-footer">
+      <div class="inv-footer-tagline">Thank you for choosing SEHR Academy · Vadanappally, Thrissur</div>
+      <div class="inv-footer-brand">SEHR Academy · ${rangeStart.getFullYear()}</div>
+    </div>
+  `;
+
+  document.getElementById('invoice-content').innerHTML=html;
+  document.getElementById('action-bar').style.display='flex';
+  document.querySelector('.invoice-outer').scrollIntoView({behavior:'smooth',block:'start'});
+}
 </script>
 </body>
 </html>
