@@ -307,6 +307,42 @@ tbody tr:hover{background:var(--cream)}
 .form-inp:focus{border-color:var(--lime);background:var(--white);box-shadow:0 0 0 3px rgba(139,197,63,.1)}
 .form-inp::placeholder{color:var(--pale)}
 select.form-inp{cursor:pointer}
+/* BULK SESSION / MONTHLY REPORT MODAL */
+.day-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.day-chip{padding:7px 12px;border-radius:5px;border:1.5px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .14s;user-select:none}
+.day-chip.on{border-color:var(--lime);background:var(--lime-bg);color:var(--lime-2)}
+.bulk-preview{max-height:220px;overflow-y:auto;border:1.5px solid var(--cream-3);border-radius:6px;background:var(--cream)}
+.bulk-preview-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--rule);font-size:12px}
+.bulk-preview-row:last-child{border-bottom:none}
+.bulk-preview-row.warn{background:var(--amber-bg)}
+.bulk-cb{width:15px;height:15px;accent-color:var(--lime);cursor:pointer;flex-shrink:0}
+.bulk-date{font-weight:700;color:var(--ink);min-width:90px}
+.bulk-day{font-size:10px;color:var(--muted);min-width:50px}
+.bulk-warn{font-size:9px;font-weight:700;color:var(--amber);background:var(--amber-mid);padding:2px 6px;border-radius:3px;margin-left:auto}
+.bulk-count{font-size:11px;color:var(--lime-2);font-weight:700;margin-top:8px}
+/* DATE WARNING */
+.date-ambig{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--amber);background:var(--amber-bg);padding:1px 5px;border-radius:3px;border:1px solid var(--amber-mid);cursor:help;margin-left:4px}
+/* REPORT MODAL */
+.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--cream-3);border-radius:8px;overflow:hidden;margin-bottom:18px}
+.report-kpi{background:var(--white);padding:14px 16px}
+.report-kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-bottom:6px}
+.report-kpi-val{font-size:20px;font-weight:700;letter-spacing:-1px;color:var(--ink);font-variant-numeric:tabular-nums}
+.report-kpi-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.report-sec{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);border-bottom:2px solid var(--lime);padding-bottom:4px;margin:16px 0 10px}
+.report-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:14px}
+.report-table th{padding:6px 10px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);background:var(--cream);border-bottom:1.5px solid var(--rule)}
+.report-table td{padding:7px 10px;border-bottom:1px solid var(--cream-2)}
+.report-table tr:last-child td{border-bottom:none}
+/* PRINT REPORT */
+@media print{
+  .report-print-wrap{display:block!important}
+  .modal-bg,.toast,#app,#loginWrap,#loader{display:none!important}
+}
+.report-print-wrap{display:none}
+/* DUPLICATE WARNING */
+.dup-warn{display:none;padding:8px 12px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:5px;font-size:11px;font-weight:600;color:var(--amber);margin-bottom:10px}
+.dup-warn.on{display:block}
+
 .modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--rule);background:var(--cream);flex-shrink:0}
 .btn-cancel{padding:8px 16px;border-radius:5px;border:1.5px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
 .btn-cancel:hover{border-color:var(--rule);color:var(--ink)}
@@ -433,9 +469,10 @@ select.form-inp{cursor:pointer}
     <div class="modal-head"><span class="modal-title" id="modalSessionTitle">Add Session</span><button class="modal-close" onclick="closeModal('modalSession')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="modal-body">
       <div class="form-msg" id="msgSession"></div><div class="form-err" id="errSession"></div>
+      <div class="dup-warn" id="dupWarn"></div>
       <input type="hidden" id="ses_id">
-      <div class="form-row"><label class="form-lbl">Student *</label><select class="form-inp" id="ses_student"><option value="">Select student</option></select></div>
-      <div class="form-row half"><div><label class="form-lbl">Date *</label><input class="form-inp" id="ses_date" type="date"></div><div><label class="form-lbl">Start Time</label><input class="form-inp" id="ses_time" type="time"></div></div>
+      <div class="form-row"><label class="form-lbl">Student *</label><select class="form-inp" id="ses_student" onchange="checkDuplicate()" ><option value="">Select student</option></select></div>
+      <div class="form-row half"><div><label class="form-lbl">Date *</label><input class="form-inp" id="ses_date" type="date" onchange="checkDuplicate()"></div><div><label class="form-lbl">Start Time</label><input class="form-inp" id="ses_time" type="time"></div></div>
       <div class="form-row half"><div><label class="form-lbl">Duration (hrs) *</label><select class="form-inp" id="ses_dur"><option value="0.5">0.5 hr</option><option value="1" selected>1 hr</option><option value="1.5">1.5 hrs</option><option value="2">2 hrs</option><option value="2.5">2.5 hrs</option><option value="3">3 hrs</option></select></div><div><label class="form-lbl">Status</label><select class="form-inp" id="ses_status"><option value="Scheduled">Scheduled</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select></div></div>
       <div class="form-row half"><div><label class="form-lbl">Subject</label><input class="form-inp" id="ses_subject" placeholder="Physics"></div><div><label class="form-lbl">Topic</label><input class="form-inp" id="ses_topic" placeholder="Electrostatics"></div></div>
       <div class="form-row"><label class="form-lbl">Notes</label><input class="form-inp" id="ses_notes" placeholder="Remarks..."></div>
@@ -495,6 +532,77 @@ select.form-inp{cursor:pointer}
   </div>
 </div>
 
+
+<!-- BULK SESSION MODAL -->
+<div class="modal-bg" id="modalBulk">
+  <div class="modal wide">
+    <div class="modal-head"><span class="modal-title">Bulk Schedule Sessions</span><button class="modal-close" onclick="closeModal('modalBulk')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-msg" id="msgBulk"></div><div class="form-err" id="errBulk"></div>
+      <div class="form-row"><label class="form-lbl">Student *</label><select class="form-inp" id="bulk_student" onchange="bulkPreview()"><option value="">Select student</option></select></div>
+      <div class="form-row half">
+        <div><label class="form-lbl">Start Date *</label><input class="form-inp" id="bulk_start" type="date" onchange="bulkPreview()"></div>
+        <div><label class="form-lbl">End Date *</label><input class="form-inp" id="bulk_end" type="date" onchange="bulkPreview()"></div>
+      </div>
+      <div class="form-row">
+        <label class="form-lbl">Days of Week *</label>
+        <div class="day-picker">
+          <span class="day-chip" data-d="0" onclick="toggleDay(this)">Sun</span>
+          <span class="day-chip" data-d="1" onclick="toggleDay(this)">Mon</span>
+          <span class="day-chip" data-d="2" onclick="toggleDay(this)">Tue</span>
+          <span class="day-chip" data-d="3" onclick="toggleDay(this)">Wed</span>
+          <span class="day-chip" data-d="4" onclick="toggleDay(this)">Thu</span>
+          <span class="day-chip" data-d="5" onclick="toggleDay(this)">Fri</span>
+          <span class="day-chip" data-d="6" onclick="toggleDay(this)">Sat</span>
+        </div>
+      </div>
+      <div class="form-row third">
+        <div><label class="form-lbl">Start Time</label><input class="form-inp" id="bulk_time" type="time" onchange="bulkPreview()"></div>
+        <div><label class="form-lbl">Duration *</label>
+          <select class="form-inp" id="bulk_dur" onchange="bulkPreview()">
+            <option value="0.5">0.5 hr</option><option value="1" selected>1 hr</option>
+            <option value="1.5">1.5 hrs</option><option value="2">2 hrs</option>
+            <option value="2.5">2.5 hrs</option><option value="3">3 hrs</option>
+          </select>
+        </div>
+        <div><label class="form-lbl">Subject</label><input class="form-inp" id="bulk_subject" placeholder="Physics" oninput="bulkPreview()"></div>
+      </div>
+      <div id="bulkPreviewWrap" style="display:none">
+        <label class="form-lbl">Preview — uncheck any to skip</label>
+        <div class="bulk-preview" id="bulkPreviewList"></div>
+        <div class="bulk-count" id="bulkCount"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modalBulk')">Cancel</button>
+      <button class="btn-submit" id="submitBulk" onclick="submitBulk()">Schedule All</button>
+    </div>
+  </div>
+</div>
+
+<!-- MONTHLY REPORT MODAL -->
+<div class="modal-bg" id="modalReport">
+  <div class="modal wide">
+    <div class="modal-head">
+      <span class="modal-title">Monthly Summary Report</span>
+      <button class="modal-close" onclick="closeModal('modalReport')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="reportBody" style="padding:0 22px 20px">
+      <div style="display:flex;align-items:center;gap:8px;padding:14px 0 12px;border-bottom:1px solid var(--rule);margin-bottom:16px">
+        <button class="kpi-month-btn" onclick="reportPrev()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <span style="font-size:13px;font-weight:700;color:var(--ink);min-width:110px;text-align:center" id="reportMonthLbl"></span>
+        <button class="kpi-month-btn" onclick="reportNext()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <button class="kpi-month-today" onclick="reportResetMonth()">This Month</button>
+        <button class="bill-btn ink" onclick="printReport()" style="margin-left:auto;padding:7px 14px;font-size:11px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print / PDF
+        </button>
+      </div>
+      <div id="reportContent"></div>
+    </div>
+  </div>
+</div>
+<div id="report-print-area"></div>
 <div id="pdf-print-area"></div>
 <div class="toast" id="toast"></div>
 
@@ -511,6 +619,8 @@ select.form-inp{cursor:pointer}
       <button class="abt green" onclick="openAddStudent()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Add Student</button>
       <button class="abt" onclick="openAddSession(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Add Session</button>
       <button class="abt" onclick="openModal('modalPayment')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Record Payment</button>
+      <button class="abt" onclick="openBulkModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>Bulk Schedule</button>
+      <button class="abt" onclick="openModal('modalReport');renderReport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>Monthly Report</button>
       <button class="abt" id="btnRefresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Refresh</button>
       <a href="dashboard.html" class="abt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
       <button class="abt lime" id="btnLogout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button>
@@ -824,7 +934,7 @@ function scrollToCard(sid){
 /* DROPDOWNS */
 function populateDropdowns(all){
   var active=(all||STUDENTS.map(computeStudent)).filter(function(s){return s.status==='Active';});
-  ['ses_student','pay_student'].forEach(function(id){
+  ['ses_student','pay_student','bulk_student'].forEach(function(id){
     var sel=g(id);if(!sel)return;
     var cur=sel.value;sel.innerHTML='<option value="">Select student</option>';
     active.forEach(function(s){var o=document.createElement('option');o.value=s.sid;o.textContent=s.name+' (Class '+s.cls+(s.subjects.length?' \u00b7 '+s.subjects.join(', '):'')+'  \u00b7 Rs.'+fmtN(s.rate)+'/hr)';sel.appendChild(o);});
@@ -929,7 +1039,7 @@ function renderCards(list){
       }
       return '<div class="session-row"><div class="sess-bar" style="background:'+barCol+'"></div>'
         +'<div class="sess-info"><div class="sess-name">'+esc(r.topic_covered||r.subject||'Session')+'</div>'
-        +'<div class="sess-meta">'+esc(r.date_ddmmyyyy||'--')+(r.start_time?' \u00b7 '+esc(cleanTime(r.start_time)):'')+(r.subject?' \u00b7 '+esc(r.subject):'')+'</div></div>'
+        +'<div class="sess-meta">'+esc(r.date_ddmmyyyy||'--')+(isAmbiguousDate(r.date_ddmmyyyy)?ambigBadge():'')+(r.start_time?' \u00b7 '+esc(cleanTime(r.start_time)):'')+(r.subject?' \u00b7 '+esc(r.subject):'')+'</div></div>'
         +'<div class="sess-right"><div class="sess-hrs">'+Number(r.duration_hrs||0).toFixed(1)+'h</div>'
         +'<div class="ss-'+st+'">'+esc(r.status||'')+'</div>'+acts+'</div></div>';
     }).join(''):'<div class="no-sessions">No sessions logged yet</div>';
@@ -1246,6 +1356,314 @@ function submitPayment(){
     +'&notes='+encodeURIComponent(g('pay_notes').value.trim());
   apiPost(params,function(){refreshAndClose('modalPayment');},'errPayment','submitPayment','Record Payment');
 }
+/* ═══════════════════════════════════════════════════
+   FEATURE: DATE FORMAT VALIDATOR
+   Flag dates where day≤12 (ambiguous DD/MM vs MM/DD)
+═══════════════════════════════════════════════════ */
+function isAmbiguousDate(str){
+  if(!str)return false;
+  var s=String(str).trim();
+  // Only flag DD/MM/YYYY where DD≤12 (could be read as MM/DD)
+  var m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(!m)return false;
+  var dd=parseInt(m[1]),mm=parseInt(m[2]);
+  // Ambiguous if day part ≤12 AND month part ≤12 AND day≠month
+  return dd<=12&&mm<=12&&dd!==mm;
+}
+function ambigBadge(){
+  return '<span class="date-ambig" title="Date may be ambiguous — verify in sheet that day/month are correct">⚠ ambiguous</span>';
+}
+
+/* ═══════════════════════════════════════════════════
+   FEATURE: DUPLICATE SESSION DETECTION
+═══════════════════════════════════════════════════ */
+function checkDuplicate(){
+  var sid=g('ses_id').value; // editing existing — skip check for same session
+  var student=g('ses_student').value;
+  var date=g('ses_date').value;
+  var warn=g('dupWarn');
+  if(!student||!date){warn.className='dup-warn';return;}
+  // Convert input date (YYYY-MM-DD) to DD/MM/YYYY for comparison
+  var sheetDate=fmtSheet(date);
+  var existing=SCHEDULE.filter(function(r){
+    return String(r.student_id||'')===student
+      && String(r.date_ddmmyyyy||'')===sheetDate
+      && String(r.status||'').toLowerCase()!=='cancelled'
+      && (!sid||String(r.session_id||'')!==sid); // exclude self when editing
+  });
+  if(existing.length){
+    var names=existing.map(function(r){
+      return (r.subject||'session')+' at '+(cleanTime(r.start_time)||'--');
+    }).join(', ');
+    warn.textContent='⚠ Duplicate: This student already has a session on this date ('+names+')';
+    warn.className='dup-warn on';
+  } else {
+    warn.className='dup-warn';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   FEATURE: BULK SESSION ENTRY
+═══════════════════════════════════════════════════ */
+var BULK_DAYS=[];
+
+function openBulkModal(){
+  clearForm('modalBulk');
+  BULK_DAYS=[];
+  qa('#modalBulk .day-chip').forEach(function(c){c.classList.remove('on');});
+  g('bulkPreviewWrap').style.display='none';
+  g('bulk_start').value=today();
+  // Default end date = 8 weeks ahead
+  var end=new Date();end.setDate(end.getDate()+56);
+  g('bulk_end').value=end.getFullYear()+'-'+String(end.getMonth()+1).padStart(2,'0')+'-'+String(end.getDate()).padStart(2,'0');
+  // Populate student dropdown
+  var active=STUDENTS.map(computeStudent).filter(function(s){return s.status==='Active';});
+  var sel=g('bulk_student');
+  sel.innerHTML='<option value="">Select student</option>';
+  active.forEach(function(s){
+    var o=document.createElement('option');o.value=s.sid;
+    o.textContent=s.name+' (Class '+s.cls+')';sel.appendChild(o);
+  });
+  openModal('modalBulk');
+}
+
+function toggleDay(el){
+  el.classList.toggle('on');
+  var d=parseInt(el.dataset.d);
+  if(el.classList.contains('on')){if(BULK_DAYS.indexOf(d)===-1)BULK_DAYS.push(d);}
+  else{BULK_DAYS=BULK_DAYS.filter(function(x){return x!==d;});}
+  bulkPreview();
+}
+
+var DNAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function bulkPreview(){
+  var sid=g('bulk_student').value;
+  var start=g('bulk_start').value;
+  var end=g('bulk_end').value;
+  if(!sid||!start||!end||!BULK_DAYS.length){
+    g('bulkPreviewWrap').style.display='none';return;
+  }
+  var startD=new Date(start),endD=new Date(end);
+  if(isNaN(startD)||isNaN(endD)||endD<startD){g('bulkPreviewWrap').style.display='none';return;}
+
+  // Existing sessions for this student
+  var existing=SCHEDULE.filter(function(r){
+    return String(r.student_id||'')===sid&&String(r.status||'').toLowerCase()!=='cancelled';
+  });
+  var existingDates={};
+  existing.forEach(function(r){existingDates[r.date_ddmmyyyy]=r;});
+
+  var sessions=[];
+  var cur=new Date(startD);
+  while(cur<=endD&&sessions.length<60){ // cap at 60 to prevent accidental huge batches
+    if(BULK_DAYS.indexOf(cur.getDay())!==-1){
+      var dd=String(cur.getDate()).padStart(2,'0');
+      var mm=String(cur.getMonth()+1).padStart(2,'0');
+      var yyyy=cur.getFullYear();
+      var sheetDate=dd+'/'+mm+'/'+yyyy;
+      sessions.push({date:sheetDate,day:DNAMES[cur.getDay()],isDup:!!existingDates[sheetDate]});
+    }
+    cur.setDate(cur.getDate()+1);
+  }
+
+  var html='';
+  sessions.forEach(function(s,i){
+    html+='<div class="bulk-preview-row'+(s.isDup?' warn':'')+'">'
+      +'<input type="checkbox" class="bulk-cb" id="bk'+i+'"'+(s.isDup?'':' checked')+'>'
+      +'<span class="bulk-day">'+s.day+'</span>'
+      +'<span class="bulk-date">'+s.date+'</span>'
+      +(s.isDup?'<span class="bulk-warn">⚠ session exists</span>':'')
+      +'</div>';
+  });
+  g('bulkPreviewList').innerHTML=html;
+  g('bulkPreviewWrap').style.display='block';
+  // Update count dynamically
+  updateBulkCount();
+  // Wire checkboxes to update count
+  qa('#bulkPreviewList .bulk-cb').forEach(function(cb){
+    cb.addEventListener('change',updateBulkCount);
+  });
+}
+
+function updateBulkCount(){
+  var checked=qa('#bulkPreviewList .bulk-cb:checked').length;
+  var total=qa('#bulkPreviewList .bulk-cb').length;
+  g('bulkCount').textContent=checked+' of '+total+' sessions selected';
+}
+
+function submitBulk(){
+  var sid=g('bulk_student').value;
+  var timeVal=g('bulk_time').value;
+  var dur=g('bulk_dur').value;
+  var subj=g('bulk_subject').value.trim();
+  if(!sid){var e=g('errBulk');e.textContent='Please select a student.';e.className='form-err on';return;}
+  if(!BULK_DAYS.length){var e=g('errBulk');e.textContent='Please select at least one day.';e.className='form-err on';return;}
+
+  // Collect checked sessions
+  var rows=qa('#bulkPreviewList .bulk-preview-row');
+  var checked=[];
+  rows.forEach(function(row,i){
+    var cb=row.querySelector('.bulk-cb');
+    if(cb&&cb.checked){
+      var dateEl=row.querySelector('.bulk-date');
+      if(dateEl)checked.push(dateEl.textContent.trim());
+    }
+  });
+  if(!checked.length){var e=g('errBulk');e.textContent='No sessions selected.';e.className='form-err on';return;}
+
+  var btn=g('submitBulk');btn.disabled=true;btn.textContent='Scheduling...';
+  var timeFmt=timeVal?fmt12(timeVal):'';
+
+  // Build sessions array
+  var sessions=checked.map(function(date){
+    return {student_id:sid,date:date,start_time:timeFmt,duration:dur,subject:subj,status:'Scheduled',notes:''};
+  });
+
+  var params='action=addSessionBatch&password='+encodeURIComponent(PASS)
+    +'&sessions='+encodeURIComponent(JSON.stringify(sessions));
+
+  fetch(API+'?'+params).then(function(r){return r.json();})
+    .then(function(data){
+      btn.disabled=false;btn.textContent='Schedule All';
+      if(data.success){
+        var m=g('msgBulk');m.textContent=data.message||checked.length+' sessions scheduled!';m.className='form-msg on';
+        setTimeout(function(){
+          closeModal('modalBulk');
+          fetch(API+'?action=getData&password='+encodeURIComponent(PASS)).then(function(r){return r.json();}).then(function(d){loadData(d);init();showToast(checked.length+' sessions scheduled');});
+        },1400);
+      }else{var e=g('errBulk');e.textContent=data.error||'Failed.';e.className='form-err on';}
+    })
+    .catch(function(){btn.disabled=false;btn.textContent='Schedule All';var e=g('errBulk');e.textContent='Connection error.';e.className='form-err on';});
+}
+
+/* ═══════════════════════════════════════════════════
+   FEATURE: MONTHLY SUMMARY REPORT
+═══════════════════════════════════════════════════ */
+var REPORT_OFFSET=0;
+
+function reportPrev(){REPORT_OFFSET--;renderReport();}
+function reportNext(){REPORT_OFFSET++;renderReport();}
+function reportResetMonth(){REPORT_OFFSET=0;renderReport();}
+
+function reportMonthDate(){
+  var d=new Date();d.setDate(1);d.setMonth(d.getMonth()+REPORT_OFFSET);return d;
+}
+
+function renderReport(){
+  var rm=reportMonthDate();
+  var rm_m=rm.getMonth(),rm_y=rm.getFullYear();
+  g('reportMonthLbl').textContent=MONTHS[rm_m]+' '+rm_y;
+
+  var all=STUDENTS.map(computeStudent);
+
+  // Sessions this month
+  var monthSess=SCHEDULE.filter(function(r){
+    var d=parseDate(r.date_ddmmyyyy);return d&&d.getMonth()===rm_m&&d.getFullYear()===rm_y;
+  });
+  var completedSess=monthSess.filter(function(r){return String(r.status||'').toLowerCase()==='completed';});
+  var scheduledSess=monthSess.filter(function(r){return String(r.status||'').toLowerCase()==='scheduled';});
+  var cancelledSess=monthSess.filter(function(r){return String(r.status||'').toLowerCase()==='cancelled';});
+  var totalHrs=completedSess.reduce(function(a,r){return a+Number(r.duration_hrs||0);},0);
+
+  // Payments this month
+  var monthPay=PAYMENTS.filter(function(r){
+    var d=parseDate(r.date_ddmmyyyy);return d&&d.getMonth()===rm_m&&d.getFullYear()===rm_y;
+  });
+  var totalCollected=monthPay.reduce(function(a,r){return a+Number(r.amount_received_rs||0);},0);
+
+  // Outstanding across all active
+  var active=all.filter(function(s){return s.status==='Active';});
+  var totalOut=active.reduce(function(a,s){return a+Math.max(s.outstanding,0);},0);
+  var totalCredit=active.reduce(function(a,s){return a+Math.max(-s.outstanding,0);},0);
+
+  // New students this month (joined in this month)
+  var newStudents=STUDENTS.filter(function(s){
+    var d=parseDate(s.joining_date||'');return d&&d.getMonth()===rm_m&&d.getFullYear()===rm_y;
+  });
+
+  // Students with activity this month
+  var activeStudentIds={};
+  monthSess.forEach(function(r){activeStudentIds[r.student_id]=1;});
+  var activeThisMonth=Object.keys(activeStudentIds).length;
+
+  // Per-student breakdown
+  var studentsWithActivity=all.filter(function(s){
+    return s.sessions.some(function(r){
+      var d=parseDate(r.date_ddmmyyyy);return d&&d.getMonth()===rm_m&&d.getFullYear()===rm_y;
+    });
+  });
+
+  // KPI cards
+  var kpis=[
+    {lbl:'Sessions Done',val:completedSess.length,sub:totalHrs.toFixed(1)+' hrs completed',c:'var(--lime)'},
+    {lbl:'Sessions Scheduled',val:scheduledSess.length,sub:'upcoming this month',c:'var(--blue)'},
+    {lbl:'Sessions Cancelled',val:cancelledSess.length,sub:'this month',c:'var(--red)'},
+    {lbl:'Total Collected',val:'Rs.'+fmtN(totalCollected),sub:'received this month',c:'var(--lime)'},
+    {lbl:'Outstanding (all)',val:'Rs.'+fmtN(totalOut),sub:'Rs.'+fmtN(totalCredit)+' in credit',c:'var(--red)'},
+    {lbl:'Active Students',val:activeThisMonth,sub:newStudents.length+' new this month',c:'var(--purple)'},
+  ];
+  var kpiHtml=kpis.map(function(k){
+    return '<div class="report-kpi"><div class="report-kpi-lbl">'+k.lbl+'</div>'
+      +'<div class="report-kpi-val" style="color:'+k.c+'">'+k.val+'</div>'
+      +'<div class="report-kpi-sub">'+k.sub+'</div></div>';
+  }).join('');
+
+  // Per-student table
+  var studentRows=studentsWithActivity.map(function(s){
+    var sSess=s.sessions.filter(function(r){var d=parseDate(r.date_ddmmyyyy);return d&&d.getMonth()===rm_m&&d.getFullYear()===rm_y;});
+    var sDone=sSess.filter(function(r){return String(r.status||'').toLowerCase()==='completed';});
+    var sHrs=sDone.reduce(function(a,r){return a+Number(r.duration_hrs||0);},0);
+    var sPaid=PAYMENTS.filter(function(r){var d=parseDate(r.date_ddmmyyyy);return String(r.student_id||'')===s.sid&&d&&d.getMonth()===rm_m&&d.getFullYear()===rm_y;}).reduce(function(a,r){return a+Number(r.amount_received_rs||0);},0);
+    var outCls=s.outstanding>0?'color:var(--red)':s.outstanding<0?'color:var(--blue)':'color:var(--lime-2)';
+    var outTxt=s.outstanding>0?'Rs.'+fmtN(s.outstanding)+' due':s.outstanding<0?'Rs.'+fmtN(Math.abs(s.outstanding))+' CR':'Cleared';
+    return '<tr>'
+      +'<td style="font-weight:700">'+esc(s.name)+'</td>'
+      +'<td>'+esc(s.subjects.join(', '))+'</td>'
+      +'<td style="text-align:center">'+sDone.length+'/'+sSess.length+'</td>'
+      +'<td style="text-align:center;font-weight:700">'+sHrs.toFixed(1)+'h</td>'
+      +'<td style="text-align:right;color:var(--lime-2);font-weight:700">Rs.'+fmtN(sPaid)+'</td>'
+      +'<td style="text-align:right;font-weight:700;'+outCls+'">'+outTxt+'</td>'
+      +'</tr>';
+  }).join('');
+
+  var content='<div class="report-grid">'+kpiHtml+'</div>';
+
+  if(studentsWithActivity.length){
+    content+='<div class="report-sec">Student Breakdown</div>'
+      +'<table class="report-table"><thead><tr>'
+      +'<th>Student</th><th>Subjects</th><th>Done/Total</th><th>Hours</th><th>Collected</th><th>Outstanding</th>'
+      +'</tr></thead><tbody>'+studentRows+'</tbody></table>';
+  }
+
+  // New students section
+  if(newStudents.length){
+    content+='<div class="report-sec">New Students This Month</div>'
+      +'<table class="report-table"><thead><tr><th>Student</th><th>Class</th><th>Subjects</th><th>Joined</th></tr></thead><tbody>'
+      +newStudents.map(function(s){
+        return '<tr><td style="font-weight:700">'+esc(s.full_name||'')+'</td>'
+          +'<td>'+esc(s['class']||'')+'</td>'
+          +'<td>'+esc(s.subjects||'')+'</td>'
+          +'<td>'+esc(s.joining_date||'')+'</td></tr>';
+      }).join('')+'</tbody></table>';
+  }
+
+  g('reportContent').innerHTML=content;
+}
+
+function printReport(){
+  var rm=reportMonthDate();
+  var content=g('reportContent').innerHTML;
+  g('report-print-area').innerHTML='<div class="pdf-wrap">'
+    +'<div class="pdf-header"><div class="pdf-logo">SEHR ACADEMY</div>'
+    +'<div class="pdf-title">Monthly Summary — '+MONTHS[rm.getMonth()]+' '+rm.getFullYear()+'</div>'
+    +'<div class="pdf-sub">Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</div></div>'
+    +'<div style="padding:16px 0">'+content+'</div>'
+    +'<div class="pdf-footer">SEHR Academy — Ganeshamangalam, Vadanappally, Thrissur — sehracademy.com</div>'
+    +'</div>';
+  window.print();
+}
+
 function fmtSheet(iso){if(!iso)return'';var p=iso.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:iso;}
 function fmt12(t){if(!t)return'';var p=t.split(':');var h=parseInt(p[0]),m=parseInt(p[1])||0,s=h>=12?'PM':'AM';h=h%12;if(!h)h=12;return h+':'+(m<10?'0':'')+m+' '+s;}
 function clearForm(mid){var m=g(mid);m.querySelectorAll('input').forEach(function(i){if(i.type!=='hidden')i.value='';});m.querySelectorAll('select').forEach(function(s){s.selectedIndex=0;});}
