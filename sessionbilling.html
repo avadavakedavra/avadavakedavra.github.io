@@ -16,7 +16,9 @@
   --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
   --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
   --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
-  --red:#dc2626;
+  --red:#dc2626;--red-bg:#fef2f2;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-mid:#fde68a;--amber-dark:#92400e;
+  --blue:#2563eb;--blue-bg:#eff6ff;--blue-mid:#bfdbfe;
   --f-head:'Montserrat',sans-serif;
   --f:'Open Sans',sans-serif;
   --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
@@ -72,6 +74,15 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .fi::placeholder{color:var(--pale);font-weight:400}
 .fi option{background:#fff;color:var(--ink)}
 
+/* SESSION TYPE BADGE */
+.session-type-wrap{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:5px;background:var(--cream);border:1.5px solid var(--cream-3);margin-bottom:20px}
+.st-icon{font-size:18px;line-height:1}
+.st-info{flex:1}
+.st-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.st-val{font-family:var(--f-head);font-size:12px;font-weight:700;color:var(--ink-3)}
+.st-sel{padding:6px 10px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink);outline:none;cursor:pointer;transition:border-color .18s}
+.st-sel:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
+
 /* DATE RANGE ROW */
 .date-range-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
 .date-range-row .fg{flex:1;min-width:160px}
@@ -99,6 +110,59 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .tog-slider::before{content:'';position:absolute;width:12px;height:12px;left:3px;top:3px;background:var(--pale);border-radius:50%;transition:.2s}
 .tog input:checked+.tog-slider{background:var(--lime)}
 .tog input:checked+.tog-slider::before{transform:translateX(14px);background:#fff}
+
+/* ── MINI CALENDAR (session editor) ── */
+.mini-cal-notice{font-size:11px;color:var(--muted);font-style:italic;margin-bottom:12px;padding:9px 14px;background:var(--cream);border-radius:4px;border-left:3px solid var(--lime)}
+.mini-cal-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.ml-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--muted)}
+.ml-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.mini-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.mini-dh{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pale);text-align:center;padding:4px 0 6px}
+
+.mc-cell{border-radius:5px;padding:5px 4px 4px;display:flex;flex-direction:column;align-items:center;min-height:68px;position:relative;transition:box-shadow .15s}
+.mc-cell.clickable{cursor:pointer}
+.mc-cell.clickable:hover{box-shadow:0 0 0 2px var(--lime)}
+.mc-empty{background:transparent;pointer-events:none;min-height:68px}
+.mc-other{background:var(--cream)}
+.mc-wknd{background:var(--cream-2)}
+.mc-s-full{border:1.5px solid var(--lime-mid);background:var(--lime-bg)}
+.mc-s-absent{border:1.5px dashed var(--rule);background:var(--cream-2);opacity:.5}
+.mc-s-custom{border:1.5px solid var(--amber-mid);background:var(--amber-bg)}
+
+.mc-date{font-family:var(--f-head);font-size:12px;font-weight:700;line-height:1;text-align:center}
+.mc-other .mc-date,.mc-wknd .mc-date{color:var(--pale)}
+.mc-s-full .mc-date{color:var(--lime-3);font-weight:800}
+.mc-s-absent .mc-date{color:var(--pale);text-decoration:line-through}
+.mc-s-custom .mc-date{color:var(--amber-dark);font-weight:800}
+.mc-state-tag{font-size:7px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-top:2px;text-align:center}
+.mc-s-full .mc-state-tag{color:var(--lime-3)}
+.mc-s-custom .mc-state-tag{color:var(--amber-dark)}
+.mc-time-disp{font-size:7.5px;font-weight:700;margin-top:2px;text-align:center;line-height:1.2;white-space:nowrap}
+.mc-s-full .mc-time-disp{color:var(--lime-3);opacity:.85}
+.mc-s-custom .mc-time-disp{color:var(--amber-dark);opacity:.9}
+.mc-edit-link{font-size:7.5px;font-weight:700;color:var(--lime-3);cursor:pointer;margin-top:3px;text-align:center}
+.mc-s-custom .mc-edit-link{color:var(--amber-dark)}
+.mc-absent-hint{font-size:7px;color:var(--pale);margin-top:3px;text-align:center;font-style:italic}
+
+/* POPUP */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.popup-overlay.hidden{display:none}
+.popup-box{background:var(--white);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.22);padding:26px;width:290px;position:relative}
+.popup-title{font-family:var(--f-head);font-size:14px;font-weight:800;color:var(--ink);margin-bottom:3px;letter-spacing:-.3px}
+.popup-sub{font-size:11px;color:var(--muted);margin-bottom:18px}
+.popup-fields{display:flex;flex-direction:column;gap:14px}
+.popup-actions{display:flex;gap:8px;margin-top:18px}
+.popup-btn{flex:1;padding:10px 0;border:none;border-radius:4px;font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.popup-btn.confirm{background:var(--lime);color:var(--ink)}
+.popup-btn.confirm:hover{background:var(--lime-2)}
+.popup-btn.absent{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red)}
+.popup-btn.absent:hover{background:var(--red);color:#fff}
+.popup-btn.cancel{background:var(--cream-2);color:var(--muted)}
+.popup-btn.cancel:hover{background:var(--cream-3)}
+.popup-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:var(--pale);cursor:pointer;line-height:1}
+.popup-close:hover{color:var(--ink)}
+.popup-reset-link{font-size:10px;color:var(--muted);text-align:center;margin-top:10px;cursor:pointer;text-decoration:underline}
+.popup-reset-link:hover{color:var(--red)}
 
 /* BOTTOM ROW */
 .ctrl-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--cream-3)}
@@ -139,13 +203,18 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .inf-row-label{font-size:11px;color:var(--muted)}
 .inf-row-val{font-size:11px;font-weight:600;color:var(--ink-3)}
 
+/* Session type tag on invoice */
+.inv-session-type-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;margin-top:8px}
+.inv-session-type-tag.one-on-one{background:var(--lime-bg);border:1px solid var(--lime-mid);color:var(--lime-3)}
+.inv-session-type-tag.group{background:var(--blue-bg);border:1px solid var(--blue-mid);color:var(--blue)}
+
 /* Period banner */
 .period-banner{background:var(--ink);border-radius:5px;padding:12px 20px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .pb-label{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
 .pb-val{font-family:var(--f-head);font-size:13px;font-weight:700;color:#fff;letter-spacing:-.2px}
 .pb-arrow{color:var(--lime);font-size:18px;font-weight:900;line-height:1}
 
-/* Month section (repeating block) */
+/* Month section */
 .month-section{margin-bottom:36px}
 .month-section+.month-section{padding-top:28px;border-top:2px dashed var(--cream-3)}
 .month-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
@@ -155,28 +224,37 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .month-sessions-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--lime-bg);border:1px solid var(--lime-mid);font-size:10px;font-weight:700;color:var(--lime-3)}
 .month-total-badge{font-family:var(--f-head);font-size:14px;font-weight:800;color:var(--lime-3)}
 
-/* Calendar */
+/* Invoice calendar */
 .cal-legend-inline{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .cal-li{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--muted)}
 .cal-li-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;border:1px solid transparent}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px}
 .cal-dh{font-family:var(--f);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:5px 0 7px}
-.cal-cell{min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:4px 2px;position:relative}
+.cal-cell{min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:4px;padding:4px 2px;position:relative}
 .cal-cell.empty{background:transparent}
 .cal-cell.regular{background:var(--cream)}
 .cal-cell.wknd{background:var(--cream-2)}
+.cal-cell.absent-inv{background:var(--cream-2);opacity:.35}
 .cal-date{font-family:var(--f-head);font-size:11px;font-weight:700;line-height:1;letter-spacing:-.2px}
-.cal-cell.regular .cal-date{color:var(--pale)}
-.cal-cell.wknd .cal-date{color:var(--cream-3)}
+.cal-cell.regular .cal-date,.cal-cell.wknd .cal-date{color:var(--pale)}
+.cal-cell.absent-inv .cal-date{color:var(--pale);text-decoration:line-through}
 .cal-time{font-family:var(--f);font-size:7px;font-weight:600;text-align:center;line-height:1.3;margin-top:3px;letter-spacing:.02em}
+.cal-hrs-tag{font-family:var(--f-head);font-size:8px;font-weight:800;text-align:center;margin-top:2px}
 .cal-badge{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%}
-.day-mon{background:var(--mon-bg)}.day-mon .cal-date{color:var(--mon-fg)}.day-mon .cal-time{color:var(--mon-fg);opacity:.75}.day-mon .cal-badge{background:var(--mon-fg)}
-.day-tue{background:var(--tue-bg)}.day-tue .cal-date{color:var(--tue-fg)}.day-tue .cal-time{color:var(--tue-fg);opacity:.75}.day-tue .cal-badge{background:var(--tue-fg)}
-.day-wed{background:var(--wed-bg)}.day-wed .cal-date{color:var(--wed-fg)}.day-wed .cal-time{color:var(--wed-fg);opacity:.75}.day-wed .cal-badge{background:var(--wed-fg)}
-.day-thu{background:var(--thu-bg)}.day-thu .cal-date{color:var(--thu-fg)}.day-thu .cal-time{color:var(--thu-fg);opacity:.75}.day-thu .cal-badge{background:var(--thu-fg)}
-.day-fri{background:var(--fri-bg)}.day-fri .cal-date{color:var(--fri-fg)}.day-fri .cal-time{color:var(--fri-fg);opacity:.75}.day-fri .cal-badge{background:var(--fri-fg)}
-.day-sat{background:var(--sat-bg)}.day-sat .cal-date{color:var(--sat-fg)}.day-sat .cal-time{color:var(--sat-fg);opacity:.75}.day-sat .cal-badge{background:var(--sat-fg)}
-.day-sun{background:var(--sun-bg)}.day-sun .cal-date{color:var(--sun-fg)}.day-sun .cal-time{color:var(--sun-fg);opacity:.75}.day-sun .cal-badge{background:var(--sun-fg)}
+/* custom-hours sessions use amber */
+.cal-cell.custom-hrs{background:var(--amber-bg);border:1.5px solid var(--amber-mid)}
+.cal-cell.custom-hrs .cal-date{color:var(--amber-dark)}
+.cal-cell.custom-hrs .cal-time{color:var(--amber-dark);opacity:.85}
+.cal-cell.custom-hrs .cal-hrs-tag{color:var(--amber-dark)}
+.cal-cell.custom-hrs .cal-badge{background:var(--amber-dark)}
+/* day colours for normal sessions */
+.day-mon{background:var(--mon-bg)}.day-mon .cal-date{color:var(--mon-fg)}.day-mon .cal-time{color:var(--mon-fg);opacity:.75}.day-mon .cal-hrs-tag{color:var(--mon-fg)}.day-mon .cal-badge{background:var(--mon-fg)}
+.day-tue{background:var(--tue-bg)}.day-tue .cal-date{color:var(--tue-fg)}.day-tue .cal-time{color:var(--tue-fg);opacity:.75}.day-tue .cal-hrs-tag{color:var(--tue-fg)}.day-tue .cal-badge{background:var(--tue-fg)}
+.day-wed{background:var(--wed-bg)}.day-wed .cal-date{color:var(--wed-fg)}.day-wed .cal-time{color:var(--wed-fg);opacity:.75}.day-wed .cal-hrs-tag{color:var(--wed-fg)}.day-wed .cal-badge{background:var(--wed-fg)}
+.day-thu{background:var(--thu-bg)}.day-thu .cal-date{color:var(--thu-fg)}.day-thu .cal-time{color:var(--thu-fg);opacity:.75}.day-thu .cal-hrs-tag{color:var(--thu-fg)}.day-thu .cal-badge{background:var(--thu-fg)}
+.day-fri{background:var(--fri-bg)}.day-fri .cal-date{color:var(--fri-fg)}.day-fri .cal-time{color:var(--fri-fg);opacity:.75}.day-fri .cal-hrs-tag{color:var(--fri-fg)}.day-fri .cal-badge{background:var(--fri-fg)}
+.day-sat{background:var(--sat-bg)}.day-sat .cal-date{color:var(--sat-fg)}.day-sat .cal-time{color:var(--sat-fg);opacity:.75}.day-sat .cal-hrs-tag{color:var(--sat-fg)}.day-sat .cal-badge{background:var(--sat-fg)}
+.day-sun{background:var(--sun-bg)}.day-sun .cal-date{color:var(--sun-fg)}.day-sun .cal-time{color:var(--sun-fg);opacity:.75}.day-sun .cal-hrs-tag{color:var(--sun-fg)}.day-sun .cal-badge{background:var(--sun-fg)}
 
 /* Month summary mini-table */
 .month-sum{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0}
@@ -233,17 +311,36 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .err-banner{background:var(--red);color:#fff;padding:12px 20px;border-radius:5px;font-family:var(--f-head);font-size:12px;font-weight:700;margin-bottom:16px;display:none}
 
 @media print{
-  .topbar,.ctrl-card,.sec,.action-bar{display:none!important}
+  .topbar,.ctrl-card,.sec,.action-bar,.popup-overlay{display:none!important}
   body{background:#fff}
   .wrap{padding:0;max-width:100%}
   .invoice-outer{border:none;box-shadow:none;border-radius:0}
   #invoice-content{padding:28px 36px}
   .month-section+.month-section{page-break-before:always;border-top:none;padding-top:0}
-  .cal-cell,.grand-total-row td,.payment-box,.period-banner,.day-mon,.day-tue,.day-wed,.day-thu,.day-fri,.day-sat,.day-sun{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .cal-cell,.grand-total-row td,.payment-box,.period-banner,.day-mon,.day-tue,.day-wed,.day-thu,.day-fri,.day-sat,.day-sun,.cal-cell.custom-hrs,.cal-cell.absent-inv{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 </style>
 </head>
 <body>
+
+<!-- POPUP -->
+<div class="popup-overlay hidden" id="popupOverlay">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup()">&times;</button>
+    <div class="popup-title" id="popupTitle">Edit Session</div>
+    <div class="popup-sub" id="popupSub">Adjust time and hours for this date</div>
+    <div class="popup-fields">
+      <div class="fg"><label class="fl">Start Time</label><input class="fi" id="popupTime" type="time" value="10:00"></div>
+      <div class="fg"><label class="fl">Hours <small>(blank = use schedule default)</small></label><input class="fi" id="popupHrs" type="number" placeholder="e.g. 1.5" step="0.5" min="0.5"></div>
+    </div>
+    <div class="popup-actions">
+      <button class="popup-btn cancel" onclick="closePopup()">Cancel</button>
+      <button class="popup-btn absent" onclick="markAbsent()">Mark Absent</button>
+      <button class="popup-btn confirm" onclick="confirmPopup()">Save</button>
+    </div>
+    <div class="popup-reset-link" id="popupResetLink" style="display:none" onclick="resetOverride()">Reset to schedule default</div>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="tb-bg">SEHR</div>
@@ -252,7 +349,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
       <div class="tb-kicker"><div class="tb-kicker-rule"></div><div class="tb-kicker-txt">SEHR Academy · Internal Tools</div></div>
       <div class="tb-title">Fee Statement <i>Generator</i></div>
       <div class="tb-meta">
-        <span class="tb-sub">Multi-Month Billing · v3</span>
+        <span class="tb-sub">Multi-Month Billing · v4</span>
         <span class="tb-pill">Private Tuition</span>
       </div>
     </div>
@@ -281,11 +378,28 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
         <div class="fg"><label class="fl">Contact <small>(optional)</small></label><input class="fi" id="parentContact" type="text" placeholder="+91 98765 43210"></div>
       </div>
 
+      <!-- Session Type -->
+      <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Session Type</div><div class="sec-rule"></div></div>
+      <div class="session-type-wrap">
+        <div class="st-icon" id="stIcon">👤</div>
+        <div class="st-info">
+          <div class="st-label">Session Format</div>
+          <div class="st-val" id="stDesc">Individual one-on-one tuition</div>
+        </div>
+        <select class="st-sel fi" id="sessionType" onchange="updateSessionTypeUI()" style="max-width:220px">
+          <option value="1-on-1">1-on-1 (Individual)</option>
+          <option value="group-2">Private Group · 2 Students</option>
+          <option value="group-3">Private Group · 3 Students</option>
+          <option value="group-4">Private Group · 4 Students</option>
+          <option value="group-5+">Private Group · 5+ Students</option>
+        </select>
+      </div>
+
       <!-- Rates -->
       <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Rate</div><div class="sec-rule"></div></div>
       <div class="form-grid" style="margin-bottom:0">
         <div class="fg"><label class="fl">Rate / Hour (₹)</label><input class="fi" id="ratePerHour" type="number" value="500" min="0" step="50"></div>
-        <div class="fg"><label class="fl">Hours / Session</label><input class="fi" id="hoursPerSession" type="number" value="1.5" step="0.5" min="0.5"></div>
+        <div class="fg"><label class="fl">Default Hours / Session</label><input class="fi" id="hoursPerSession" type="number" value="1.5" step="0.5" min="0.5"></div>
         <div class="fg"><label class="fl">Payment Due Date</label><input class="fi" id="dueDate" type="date"></div>
       </div>
 
@@ -295,12 +409,12 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
       <div class="date-range-row">
         <div class="fg">
           <label class="fl">Classes Start</label>
-          <input class="fi" id="rangeStart" type="date" onchange="updateRangeInfo()">
+          <input class="fi" id="rangeStart" type="date" onchange="updateRangeInfo();updateMiniCalIfVisible()">
         </div>
         <div class="dr-arrow">→</div>
         <div class="fg">
           <label class="fl">Classes End</label>
-          <input class="fi" id="rangeEnd" type="date" onchange="updateRangeInfo()">
+          <input class="fi" id="rangeEnd" type="date" onchange="updateRangeInfo();updateMiniCalIfVisible()">
         </div>
         <div class="dr-info" id="rangeInfo" style="color:var(--pale);font-size:11px;font-weight:400;padding-top:20px"></div>
       </div>
@@ -309,13 +423,31 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
       <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Weekly Schedule</div><div class="sec-rule"></div></div>
 
       <div class="days-grid">
-        <div class="day-card" id="card-sun"><div class="day-card-top" onclick="toggleDay('sun')"><div><div class="day-label">Sunday</div><div class="day-short">SUN</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sun" onchange="syncCard('sun')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sun" type="time" value="10:00"></div></div>
-        <div class="day-card active" id="card-mon"><div class="day-card-top" onclick="toggleDay('mon')"><div><div class="day-label">Monday</div><div class="day-short">MON</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-mon" checked onchange="syncCard('mon')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-mon" type="time" value="17:00"></div></div>
-        <div class="day-card" id="card-tue"><div class="day-card-top" onclick="toggleDay('tue')"><div><div class="day-label">Tuesday</div><div class="day-short">TUE</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-tue" onchange="syncCard('tue')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-tue" type="time" value="17:00"></div></div>
-        <div class="day-card" id="card-wed"><div class="day-card-top" onclick="toggleDay('wed')"><div><div class="day-label">Wednesday</div><div class="day-short">WED</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-wed" onchange="syncCard('wed')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-wed" type="time" value="17:00"></div></div>
-        <div class="day-card" id="card-thu"><div class="day-card-top" onclick="toggleDay('thu')"><div><div class="day-label">Thursday</div><div class="day-short">THU</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-thu" onchange="syncCard('thu')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-thu" type="time" value="17:00"></div></div>
-        <div class="day-card active" id="card-fri"><div class="day-card-top" onclick="toggleDay('fri')"><div><div class="day-label">Friday</div><div class="day-short">FRI</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-fri" checked onchange="syncCard('fri')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-fri" type="time" value="17:00"></div></div>
-        <div class="day-card" id="card-sat"><div class="day-card-top" onclick="toggleDay('sat')"><div><div class="day-label">Saturday</div><div class="day-short">SAT</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sat" onchange="syncCard('sat')"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sat" type="time" value="10:00"></div></div>
+        <div class="day-card" id="card-sun"><div class="day-card-top" onclick="toggleDay('sun')"><div><div class="day-label">Sunday</div><div class="day-short">SUN</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sun" onchange="syncCard('sun');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sun" type="time" value="10:00" onchange="updateMiniCalIfVisible()"></div></div>
+        <div class="day-card active" id="card-mon"><div class="day-card-top" onclick="toggleDay('mon')"><div><div class="day-label">Monday</div><div class="day-short">MON</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-mon" checked onchange="syncCard('mon');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-mon" type="time" value="17:00" onchange="updateMiniCalIfVisible()"></div></div>
+        <div class="day-card" id="card-tue"><div class="day-card-top" onclick="toggleDay('tue')"><div><div class="day-label">Tuesday</div><div class="day-short">TUE</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-tue" onchange="syncCard('tue');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-tue" type="time" value="17:00" onchange="updateMiniCalIfVisible()"></div></div>
+        <div class="day-card" id="card-wed"><div class="day-card-top" onclick="toggleDay('wed')"><div><div class="day-label">Wednesday</div><div class="day-short">WED</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-wed" onchange="syncCard('wed');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-wed" type="time" value="17:00" onchange="updateMiniCalIfVisible()"></div></div>
+        <div class="day-card" id="card-thu"><div class="day-card-top" onclick="toggleDay('thu')"><div><div class="day-label">Thursday</div><div class="day-short">THU</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-thu" onchange="syncCard('thu');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-thu" type="time" value="17:00" onchange="updateMiniCalIfVisible()"></div></div>
+        <div class="day-card active" id="card-fri"><div class="day-card-top" onclick="toggleDay('fri')"><div><div class="day-label">Friday</div><div class="day-short">FRI</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-fri" checked onchange="syncCard('fri');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-fri" type="time" value="17:00" onchange="updateMiniCalIfVisible()"></div></div>
+        <div class="day-card" id="card-sat"><div class="day-card-top" onclick="toggleDay('sat')"><div><div class="day-label">Saturday</div><div class="day-short">SAT</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sat" onchange="syncCard('sat');updateMiniCalIfVisible()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sat" type="time" value="10:00" onchange="updateMiniCalIfVisible()"></div></div>
+      </div>
+
+      <!-- SESSION CALENDAR EDITOR -->
+      <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Session Calendar — Adjust or Remove Individual Dates</div><div class="sec-rule"></div></div>
+
+      <div class="mini-cal-notice">
+        Scheduled dates are highlighted below. <strong>Click any scheduled date</strong> to adjust its time, change the hours, or mark it absent. Absent sessions are excluded from billing.
+      </div>
+
+      <div class="mini-cal-legend">
+        <div class="ml-item"><div class="ml-dot" style="background:var(--lime-bg);border:1.5px solid var(--lime-mid)"></div>Scheduled (full)</div>
+        <div class="ml-item"><div class="ml-dot" style="background:var(--amber-bg);border:1.5px solid var(--amber-mid)"></div>Adjusted hours / time</div>
+        <div class="ml-item"><div class="ml-dot" style="background:var(--cream-2);border:1.5px dashed var(--rule)"></div>Marked absent</div>
+        <div style="margin-left:auto;font-size:9px;color:var(--pale);font-style:italic">Click a scheduled date to edit it</div>
+      </div>
+
+      <div id="miniCalContainer">
+        <div style="font-size:12px;color:var(--pale);font-style:italic;padding:12px 0">Set a date range and select class days above to see the session calendar.</div>
       </div>
 
       <div id="errBanner" class="err-banner"></div>
@@ -338,7 +470,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
       <div class="empty-state">
         <div class="empty-ico">📋</div>
         <div class="empty-txt">No statement generated yet</div>
-        <div class="empty-sub">Set a date range and schedule above, then click Generate Statement</div>
+        <div class="empty-sub">Configure the schedule above, adjust sessions if needed, then click Generate Statement</div>
       </div>
     </div>
   </div>
@@ -353,15 +485,19 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 </div>
 
 <script>
-const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const DAY_KEYS=['sun','mon','tue','wed','thu','fri','sat'];
-const DAY_CSS=['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
-const DAY_FG=['var(--sun-fg)','var(--mon-fg)','var(--tue-fg)','var(--wed-fg)','var(--thu-fg)','var(--fri-fg)','var(--sat-fg)'];
-const DAY_BG=['var(--sun-bg)','var(--mon-bg)','var(--tue-bg)','var(--wed-bg)','var(--thu-bg)','var(--fri-bg)','var(--sat-bg)'];
-const DAY_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DAY_KEYS=['sun','mon','tue','wed','thu','fri','sat'];
+var DAY_CSS=['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
+var DAY_FG=['var(--sun-fg)','var(--mon-fg)','var(--tue-fg)','var(--wed-fg)','var(--thu-fg)','var(--fri-fg)','var(--sat-fg)'];
+var DAY_BG=['var(--sun-bg)','var(--mon-bg)','var(--tue-bg)','var(--wed-bg)','var(--thu-bg)','var(--fri-bg)','var(--sat-bg)'];
+var DAY_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-// Default: current month
+// per-date overrides: {key: {absent:bool, time:'HH:MM'|null, hrs:number|null}}
+var dateOverrides = {};
+var popupKey = null;
+
+// Default dates
 (function(){
   var now=new Date();
   var y=now.getFullYear(),m=now.getMonth();
@@ -370,12 +506,25 @@ const DAY_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Sat
   var e=y+'-'+String(m+1).padStart(2,'0')+'-'+lastDay;
   document.getElementById('rangeStart').value=s;
   document.getElementById('rangeEnd').value=e;
-  // due date default: 5th of next month
   var nd=new Date(y,m+1,5);
   document.getElementById('dueDate').value=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-05';
   updateRangeInfo();
+  updateMiniCalIfVisible();
 })();
 
+/* ── SESSION TYPE UI ── */
+function updateSessionTypeUI(){
+  var v=document.getElementById('sessionType').value;
+  var icon=document.getElementById('stIcon');
+  var desc=document.getElementById('stDesc');
+  if(v==='1-on-1'){icon.textContent='👤';desc.textContent='Individual one-on-one tuition';}
+  else if(v==='group-2'){icon.textContent='👥';desc.textContent='Private group — 2 students sharing this session';}
+  else if(v==='group-3'){icon.textContent='👥';desc.textContent='Private group — 3 students sharing this session';}
+  else if(v==='group-4'){icon.textContent='👥';desc.textContent='Private group — 4 students sharing this session';}
+  else{icon.textContent='👥';desc.textContent='Private group — 5 or more students sharing this session';}
+}
+
+/* ── RANGE HELPERS ── */
 function updateRangeInfo(){
   var s=document.getElementById('rangeStart').value;
   var e=document.getElementById('rangeEnd').value;
@@ -385,81 +534,242 @@ function updateRangeInfo(){
   if(ed<sd){el.textContent='End before start';el.style.color='var(--red)';return;}
   var months=getMonthsInRange(sd,ed).length;
   el.textContent=months===1?'1 month':months+' months';
-  el.style.color='var(--lime-3)';
-  el.style.fontWeight='700';
-  el.style.fontFamily='var(--f-head)';
+  el.style.color='var(--lime-3)';el.style.fontWeight='700';el.style.fontFamily='var(--f-head)';
 }
 
-function parseLocalDate(str){
-  var p=str.split('-');
-  return new Date(+p[0],+p[1]-1,+p[2]);
-}
-
+function parseLocalDate(str){var p=str.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function getMonthsInRange(start,end){
-  var months=[];
-  var y=start.getFullYear(),m=start.getMonth();
+  var months=[],y=start.getFullYear(),m=start.getMonth();
   var ey=end.getFullYear(),em=end.getMonth();
-  while(y<ey||(y===ey&&m<=em)){
-    months.push({year:y,month:m});
-    m++;if(m>11){m=0;y++;}
-  }
+  while(y<ey||(y===ey&&m<=em)){months.push({year:y,month:m});m++;if(m>11){m=0;y++;}}
   return months;
 }
+function dateKey(y,mo,d){return y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
 
-function toggleDay(key){var cb=document.getElementById('tog-'+key);cb.checked=!cb.checked;syncCard(key);}
+function toggleDay(key){var cb=document.getElementById('tog-'+key);cb.checked=!cb.checked;syncCard(key);updateMiniCalIfVisible();}
 function syncCard(key){var cb=document.getElementById('tog-'+key);var card=document.getElementById('card-'+key);cb.checked?card.classList.add('active'):card.classList.remove('active');}
 
 function fmt12(t){if(!t)return'';var p=t.split(':'),h=parseInt(p[0]),m=p[1];return(h%12||12)+':'+m+' '+(h>=12?'PM':'AM');}
-function fmtRange(t,hrs){if(!t)return'';var p=t.split(':'),h=parseInt(p[0]),m=parseInt(p[1]);var sm=h*60+m,em=sm+Math.round(hrs*60);var eh=Math.floor(em/60)%24,em2=em%60;var pad=n=>String(n).padStart(2,'0');return fmt12(t)+'–'+fmt12(pad(eh)+':'+pad(em2));}
+function fmtRange(t,hrs){
+  if(!t)return'';
+  var p=t.split(':'),h=parseInt(p[0]),m=parseInt(p[1]);
+  var sm=h*60+m,em2=sm+Math.round(hrs*60);
+  var eh=Math.floor(em2/60)%24,erm=em2%60;
+  var pad=function(n){return String(n).padStart(2,'0');};
+  return fmt12(t)+'–'+fmt12(pad(eh)+':'+pad(erm));
+}
 function fmtDate(d){return d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});}
 
 function showErr(msg){var el=document.getElementById('errBanner');el.textContent=msg;el.style.display='block';}
 function hideErr(){document.getElementById('errBanner').style.display='none';}
 
-function buildMonthBlock(year,month,rangeStart,rangeEnd,activeDays,hrs,ratePerSession){
+/* ── POPUP ── */
+function openPopup(key,dow,day,schedTime,schedHrs){
+  var ov=dateOverrides[key]||{};
+  popupKey=key;
+  document.getElementById('popupTitle').textContent=DAY_FULL[dow]+' '+day+' '+MONTHS[parseInt(key.split('-')[1])-1];
+  document.getElementById('popupSub').textContent='Default: '+schedHrs+'h at '+fmt12(schedTime);
+  document.getElementById('popupTime').value=ov.time||schedTime;
+  document.getElementById('popupHrs').value=ov.hrs||'';
+  document.getElementById('popupResetLink').style.display=(ov.absent||ov.time||ov.hrs)?'block':'none';
+  document.getElementById('popupOverlay').classList.remove('hidden');
+}
+function closePopup(){document.getElementById('popupOverlay').classList.add('hidden');popupKey=null;}
+function confirmPopup(){
+  if(!popupKey)return;
+  var t=document.getElementById('popupTime').value;
+  var hv=document.getElementById('popupHrs').value;
+  var h=hv?parseFloat(hv):null;
+  if(!dateOverrides[popupKey])dateOverrides[popupKey]={};
+  dateOverrides[popupKey].absent=false;
+  dateOverrides[popupKey].time=t||null;
+  dateOverrides[popupKey].hrs=h;
+  closePopup();
+  renderMiniCal();
+}
+function markAbsent(){
+  if(!popupKey)return;
+  dateOverrides[popupKey]={absent:true,time:null,hrs:null};
+  closePopup();
+  renderMiniCal();
+}
+function resetOverride(){
+  if(!popupKey)return;
+  delete dateOverrides[popupKey];
+  closePopup();
+  renderMiniCal();
+}
+document.getElementById('popupOverlay').addEventListener('click',function(e){if(e.target===this)closePopup();});
+
+/* ── MINI CALENDAR RENDER ── */
+function getActiveDowTimes(){
+  var out={};
+  for(var i=0;i<DAY_KEYS.length;i++){
+    var cb=document.getElementById('tog-'+DAY_KEYS[i]);
+    if(cb&&cb.checked){
+      var te=document.getElementById('time-'+DAY_KEYS[i]);
+      out[i]=(te&&te.value)?te.value:'10:00';
+    }
+  }
+  return out;
+}
+
+function updateMiniCalIfVisible(){
+  var s=document.getElementById('rangeStart').value;
+  var e=document.getElementById('rangeEnd').value;
+  var adt=getActiveDowTimes();
+  if(!s||!e||Object.keys(adt).length===0){
+    document.getElementById('miniCalContainer').innerHTML='<div style="font-size:12px;color:var(--pale);font-style:italic;padding:12px 0">Set a date range and select class days above to see the session calendar.</div>';
+    return;
+  }
+  var sd=parseLocalDate(s),ed=parseLocalDate(e);
+  if(ed<sd)return;
+  renderMiniCal();
+}
+
+function renderMiniCal(){
+  var s=document.getElementById('rangeStart').value;
+  var e=document.getElementById('rangeEnd').value;
+  if(!s||!e)return;
+  var rangeStart=parseLocalDate(s),rangeEnd=parseLocalDate(e);
+  var defHrs=parseFloat(document.getElementById('hoursPerSession').value)||1.5;
+  var adt=getActiveDowTimes();
+  var months=getMonthsInRange(rangeStart,rangeEnd);
+  var container=document.getElementById('miniCalContainer');
+  var html='';
+
+  months.forEach(function(mo){
+    var year=mo.year,month=mo.month;
+    var totalDays=new Date(year,month+1,0).getDate();
+    var firstDOW=new Date(year,month,1).getDay();
+    var effStart=1,effEnd=totalDays;
+    if(rangeStart.getFullYear()===year&&rangeStart.getMonth()===month)effStart=rangeStart.getDate();
+    if(rangeEnd.getFullYear()===year&&rangeEnd.getMonth()===month)effEnd=rangeEnd.getDate();
+
+    html+='<div style="margin-bottom:24px">';
+    html+='<div style="font-family:var(--f-head);font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.3px">'+MONTHS[month]+' '+year+'</div>';
+    html+='<div class="mini-cal">';
+    var hdrs=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    for(var hi=0;hi<7;hi++)html+='<div class="mini-dh">'+hdrs[hi]+'</div>';
+    for(var ei=0;ei<firstDOW;ei++)html+='<div class="mc-cell mc-empty"></div>';
+
+    for(var day=1;day<=totalDays;day++){
+      var dow=new Date(year,month,day).getDay();
+      var key=dateKey(year,month,day);
+      var inRange=(day>=effStart&&day<=effEnd);
+      var isSchedDay=adt.hasOwnProperty(dow);
+      var ov=dateOverrides[key]||{};
+      var schedTime=adt[dow]||'10:00';
+
+      if(inRange&&isSchedDay){
+        var isAbsent=!!ov.absent;
+        var dispTime=ov.time||schedTime;
+        var dispHrs=ov.hrs||defHrs;
+        var isCustom=!isAbsent&&(ov.time||ov.hrs);
+
+        if(isAbsent){
+          html+='<div class="mc-cell mc-s-absent clickable" onclick="openPopup(\''+key+'\','+dow+','+day+',\''+schedTime+'\','+defHrs+')" title="Click to restore">'
+            +'<div class="mc-date">'+day+'</div>'
+            +'<div class="mc-state-tag" style="color:var(--pale)">Absent</div>'
+            +'<div class="mc-absent-hint">click to restore</div>'
+            +'</div>';
+        } else if(isCustom){
+          html+='<div class="mc-cell mc-s-custom clickable" onclick="openPopup(\''+key+'\','+dow+','+day+',\''+schedTime+'\','+defHrs+')">'
+            +'<div class="mc-date">'+day+'</div>'
+            +'<div class="mc-state-tag">'+dispHrs+'h</div>'
+            +'<div class="mc-time-disp">'+fmt12(dispTime)+'</div>'
+            +'<div class="mc-edit-link">edit</div>'
+            +'</div>';
+        } else {
+          html+='<div class="mc-cell mc-s-full clickable" onclick="openPopup(\''+key+'\','+dow+','+day+',\''+schedTime+'\','+defHrs+')">'
+            +'<div class="mc-date">'+day+'</div>'
+            +'<div class="mc-state-tag">'+defHrs+'h</div>'
+            +'<div class="mc-time-disp">'+fmt12(schedTime)+'</div>'
+            +'<div class="mc-edit-link">edit</div>'
+            +'</div>';
+        }
+      } else if(!inRange&&isSchedDay){
+        // outside range — show greyed
+        html+='<div class="mc-cell mc-other" style="opacity:.25"><div class="mc-date" style="text-decoration:line-through;color:var(--pale)">'+day+'</div></div>';
+      } else {
+        var isWknd=(dow===0||dow===6);
+        html+='<div class="mc-cell '+(isWknd?'mc-wknd':'mc-other')+'"><div class="mc-date">'+day+'</div></div>';
+      }
+    }
+    html+='</div></div>';
+  });
+
+  container.innerHTML=html;
+}
+
+/* ── MAIN GENERATE ── */
+function buildMonthBlock(year,month,rangeStart,rangeEnd,activeDays,defHrs,ratePerHour){
   var totalDays=new Date(year,month+1,0).getDate();
   var firstDOW=new Date(year,month,1).getDay();
-
-  // Effective start/end within this month
   var effStart=1,effEnd=totalDays;
-  if(rangeStart.getFullYear()===year&&rangeStart.getMonth()===month) effStart=rangeStart.getDate();
-  if(rangeEnd.getFullYear()===year&&rangeEnd.getMonth()===month) effEnd=rangeEnd.getDate();
+  if(rangeStart.getFullYear()===year&&rangeStart.getMonth()===month)effStart=rangeStart.getDate();
+  if(rangeEnd.getFullYear()===year&&rangeEnd.getMonth()===month)effEnd=rangeEnd.getDate();
 
-  var cells=[];
-  for(var i=0;i<firstDOW;i++) cells.push({type:'empty'});
-  var countByDow={};
-
+  // Build session list for this month
+  var sessions=[];
   for(var d=1;d<=totalDays;d++){
     var dow=new Date(year,month,d).getDay();
     var inRange=(d>=effStart&&d<=effEnd);
-    var isClassDay=activeDays[dow]!==undefined;
-    if(inRange&&isClassDay){
-      countByDow[dow]=(countByDow[dow]||0)+1;
-      cells.push({day:d,dow:dow,time:activeDays[dow],active:true});
-    } else {
-      cells.push({day:d,dow:dow,active:false,skipped:isClassDay&&!inRange});
+    if(inRange&&activeDays[dow]!==undefined){
+      var key=dateKey(year,month,d);
+      var ov=dateOverrides[key]||{};
+      if(!ov.absent){
+        sessions.push({
+          day:d,dow:dow,
+          time:ov.time||activeDays[dow],
+          hrs:ov.hrs||defHrs,
+          key:key,
+          isCustom:!!(ov.time||ov.hrs)
+        });
+      }
+      // absent sessions stored for calendar display
     }
   }
 
-  var totalSessions=0;
-  Object.values(countByDow).forEach(function(c){totalSessions+=c;});
-  var monthTotal=totalSessions*ratePerSession;
+  // Calendar grid HTML
+  var cells=[];
+  for(var ei=0;ei<firstDOW;ei++)cells.push({type:'empty'});
+  for(var cd=1;cd<=totalDays;cd++){
+    var cdow=new Date(year,month,cd).getDay();
+    var ckey=dateKey(year,month,cd);
+    var cov=dateOverrides[ckey]||{};
+    var inR=(cd>=effStart&&cd<=effEnd);
+    var isSched=activeDays.hasOwnProperty(cdow)&&inR;
+    if(isSched&&cov.absent){
+      cells.push({type:'absent',day:cd,dow:cdow});
+    } else {
+      var sess=sessions.find(function(s){return s.day===cd;});
+      if(sess){cells.push({type:'session',day:cd,dow:cdow,sess:sess});}
+      else{cells.push({type:'other',day:cd,dow:cdow,inRange:inR});}
+    }
+  }
 
-  // Calendar HTML
   var calHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(function(d){return'<div class="cal-dh">'+d+'</div>';}).join('');
   cells.forEach(function(c){
     if(c.type==='empty'){calHTML+='<div class="cal-cell empty"></div>';return;}
-    if(c.active){
-      calHTML+='<div class="cal-cell '+DAY_CSS[c.dow]+'">'
+    if(c.type==='absent'){
+      calHTML+='<div class="cal-cell absent-inv"><div class="cal-date">'+c.day+'</div></div>';return;
+    }
+    if(c.type==='session'){
+      var s=c.sess;
+      var cellCls=s.isCustom?'cal-cell custom-hrs':'cal-cell '+DAY_CSS[c.dow];
+      calHTML+='<div class="'+cellCls+'">'
         +'<span class="cal-badge"></span>'
         +'<div class="cal-date">'+c.day+'</div>'
-        +'<div class="cal-time">'+fmtRange(c.time,hrs)+'</div>'
+        +'<div class="cal-time">'+fmtRange(s.time,s.hrs)+'</div>'
+        +(s.hrs!==defHrs?'<div class="cal-hrs-tag">'+s.hrs+'h</div>':'')
         +'</div>';
-    } else if(c.skipped){
-      calHTML+='<div class="cal-cell regular" style="opacity:0.3"><div class="cal-date" style="color:var(--pale);text-decoration:line-through">'+c.day+'</div></div>';
-    } else {
+      return;
+    }
+    if(c.type==='other'){
       var wknd=(c.dow===0||c.dow===6);
-      calHTML+='<div class="cal-cell '+(wknd?'wknd':'regular')+'"><div class="cal-date">'+c.day+'</div></div>';
+      var outsideStyle=c.inRange?'':'opacity:.25;';
+      calHTML+='<div class="cal-cell '+(wknd?'wknd':'regular')+'" style="'+outsideStyle+'"><div class="cal-date">'+c.day+'</div></div>';
     }
   });
 
@@ -470,53 +780,73 @@ function buildMonthBlock(year,month,rangeStart,rangeEnd,activeDays,hrs,ratePerSe
       legendHTML+='<div class="cal-li"><div class="cal-li-dot" style="background:'+DAY_BG[i]+';border-color:'+DAY_FG[i]+'"></div>'+DAY_FULL[i]+'</div>';
     }
   });
+  var hasCustom=sessions.some(function(s){return s.isCustom;});
+  if(hasCustom)legendHTML+='<div class="cal-li"><div class="cal-li-dot" style="background:var(--amber-bg);border-color:var(--amber-dark)"></div>Custom hours</div>';
 
-  // Mini summary rows
+  // Group by DOW for summary table
+  var byDow={};
+  sessions.forEach(function(s){
+    if(!byDow[s.dow])byDow[s.dow]={count:0,totalHrs:0,time:s.time};
+    byDow[s.dow].count++;
+    byDow[s.dow].totalHrs+=s.hrs;
+  });
+
+  var totalSessions=sessions.length;
+  var totalHrs=sessions.reduce(function(a,s){return a+s.hrs;},0);
+  var monthTotal=totalHrs*ratePerHour;
+
   var sumRows='';
-  DAY_KEYS.forEach(function(key,i){
-    var cnt=countByDow[i];
-    if(!cnt)return;
-    var t=document.getElementById('time-'+key).value;
+  Object.keys(byDow).map(Number).sort(function(a,b){return a-b;}).forEach(function(dow){
+    var g=byDow[dow];
     sumRows+='<tr>'
-      +'<td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+DAY_BG[i]+';border:1px solid '+DAY_FG[i]+';margin-right:7px;vertical-align:middle"></span>'+DAY_FULL[i]+'</td>'
-      +'<td class="mono">'+fmtRange(t,hrs)+'</td>'
-      +'<td class="mono" style="text-align:center">'+cnt+'</td>'
-      +'<td class="mono" style="text-align:right">₹'+(cnt*ratePerSession).toLocaleString('en-IN')+'</td>'
+      +'<td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+DAY_BG[dow]+';border:1px solid '+DAY_FG[dow]+';margin-right:7px;vertical-align:middle"></span>'+DAY_FULL[dow]+'</td>'
+      +'<td class="mono">'+fmt12(g.time)+'</td>'
+      +'<td class="mono" style="text-align:center">'+g.count+'</td>'
+      +'<td class="mono" style="text-align:center">'+g.totalHrs+'h</td>'
+      +'<td class="mono" style="text-align:right">₹'+(g.totalHrs*ratePerHour).toLocaleString('en-IN')+'</td>'
       +'</tr>';
   });
-  // month subtotal row
   sumRows+='<tr class="sub-row">'
-    +'<td colspan="2" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-3)">'+MONTHS[month]+' Total</td>'
-    +'<td class="mono" style="text-align:center;color:var(--lime-3)">'+totalSessions+'</td>'
+    +'<td colspan="3" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-3)">'+MONTHS[month]+' Total</td>'
+    +'<td class="mono" style="text-align:center;color:var(--lime-3)">'+totalHrs+'h</td>'
     +'<td class="mono" style="text-align:right;color:var(--lime-3)">₹'+monthTotal.toLocaleString('en-IN')+'</td>'
     +'</tr>';
+
+  var absentCount=0;
+  for(var ad=effStart;ad<=effEnd;ad++){
+    var adow=new Date(year,month,ad).getDay();
+    if(activeDays.hasOwnProperty(adow)){
+      var akey=dateKey(year,month,ad);
+      if(dateOverrides[akey]&&dateOverrides[akey].absent)absentCount++;
+    }
+  }
 
   var periodStr='';
   if(effStart>1||effEnd<totalDays){
     periodStr='<span style="font-size:10px;color:var(--muted);margin-left:8px">'+effStart+' – '+effEnd+' '+MONTHS_SHORT[month]+'</span>';
   }
+  var absentNote=absentCount>0?'<span style="font-size:10px;color:var(--red);margin-left:10px">'+absentCount+' absent</span>':'';
 
   return {
-    html:`<div class="month-section">
-      <div class="month-head">
-        <div>
-          <div class="month-head-title">${MONTHS[month]} ${year}${periodStr}</div>
-          <div class="month-head-sub">${totalSessions} session${totalSessions!==1?'s':''} · ${totalSessions*hrs} hours</div>
-        </div>
-        <div class="month-head-right">
-          <div class="month-total-badge">₹${monthTotal.toLocaleString('en-IN')}</div>
-        </div>
-      </div>
-      <div class="cal-legend-inline">${legendHTML}</div>
-      <div class="cal-grid">${calHTML}</div>
-      <table class="month-sum">
-        <thead><tr><th>Day</th><th>Timing</th><th style="text-align:center">Sessions</th><th style="text-align:right">Subtotal</th></tr></thead>
-        <tbody>${sumRows}</tbody>
-      </table>
-    </div>`,
+    html:'<div class="month-section">'
+      +'<div class="month-head">'
+        +'<div>'
+          +'<div class="month-head-title">'+MONTHS[month]+' '+year+periodStr+'</div>'
+          +'<div class="month-head-sub">'+totalSessions+' session'+(totalSessions!==1?'s':'')+' · '+totalHrs+'h'+absentNote+'</div>'
+        +'</div>'
+        +'<div class="month-head-right"><div class="month-total-badge">₹'+monthTotal.toLocaleString('en-IN')+'</div></div>'
+      +'</div>'
+      +'<div class="cal-legend-inline">'+legendHTML+'</div>'
+      +'<div class="cal-grid">'+calHTML+'</div>'
+      +'<table class="month-sum">'
+        +'<thead><tr><th>Day</th><th>Timing</th><th style="text-align:center">Sessions</th><th style="text-align:center">Hours</th><th style="text-align:right">Subtotal</th></tr></thead>'
+        +'<tbody>'+sumRows+'</tbody>'
+      +'</table>'
+    +'</div>',
     sessions:totalSessions,
+    hours:totalHrs,
     amount:monthTotal,
-    countByDow:countByDow
+    byDow:byDow
   };
 }
 
@@ -527,8 +857,6 @@ function generate(){
   if(!s||!e){showErr('Please set both a start date and an end date.');return;}
   var rangeStart=parseLocalDate(s),rangeEnd=parseLocalDate(e);
   if(rangeEnd<rangeStart){showErr('End date must be after start date.');return;}
-
-  // Guard: more than 12 months is unusual
   var months=getMonthsInRange(rangeStart,rangeEnd);
   if(months.length>12){showErr('Range spans more than 12 months. Please check your dates.');return;}
 
@@ -539,46 +867,43 @@ function generate(){
   var board=document.getElementById('studentBoard').value;
   var subj=document.getElementById('studentSubject').value.trim();
   var rate=parseFloat(document.getElementById('ratePerHour').value)||500;
-  var hrs=parseFloat(document.getElementById('hoursPerSession').value)||1.5;
+  var defHrs=parseFloat(document.getElementById('hoursPerSession').value)||1.5;
+  var ratePerSession=rate*defHrs;
   var dueDateVal=document.getElementById('dueDate').value;
-  var ratePerSession=rate*hrs;
+  var sessTypeVal=document.getElementById('sessionType').value;
 
-  // Active days map
   var activeDays={};
   DAY_KEYS.forEach(function(key,i){
     var cb=document.getElementById('tog-'+key);
-    if(cb.checked) activeDays[i]=document.getElementById('time-'+key).value||'10:00';
+    if(cb.checked)activeDays[i]=document.getElementById('time-'+key).value||'10:00';
   });
   if(Object.keys(activeDays).length===0){showErr('Please select at least one class day.');return;}
 
-  // Build each month
-  var monthsHTML='';
-  var grandSessions=0,grandAmount=0;
+  var monthsHTML='',grandSessions=0,grandHours=0,grandAmount=0;
   var grandByDow={};
-  var grandRows='';
 
   months.forEach(function(mo){
-    var result=buildMonthBlock(mo.year,mo.month,rangeStart,rangeEnd,activeDays,hrs,ratePerSession);
+    var result=buildMonthBlock(mo.year,mo.month,rangeStart,rangeEnd,activeDays,defHrs,rate);
     monthsHTML+=result.html;
     grandSessions+=result.sessions;
+    grandHours+=result.hours;
     grandAmount+=result.amount;
-    Object.keys(result.countByDow).forEach(function(dow){
-      grandByDow[dow]=(grandByDow[dow]||0)+result.countByDow[dow];
+    Object.keys(result.byDow).map(Number).forEach(function(dow){
+      if(!grandByDow[dow])grandByDow[dow]={count:0,totalHrs:0,time:activeDays[dow]};
+      grandByDow[dow].count+=result.byDow[dow].count;
+      grandByDow[dow].totalHrs+=result.byDow[dow].totalHrs;
     });
   });
 
-  // Grand total table rows (by day across all months)
-  DAY_KEYS.forEach(function(key,i){
-    var cnt=grandByDow[i];
-    if(!cnt)return;
-    var t=document.getElementById('time-'+key).value;
+  var grandRows='';
+  Object.keys(grandByDow).map(Number).sort(function(a,b){return a-b;}).forEach(function(dow){
+    var g=grandByDow[dow];
     grandRows+='<tr>'
-      +'<td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+DAY_BG[i]+';border:1px solid '+DAY_FG[i]+';margin-right:8px;vertical-align:middle"></span>'+DAY_FULL[i]+'</td>'
-      +'<td class="mono">'+fmt12(t)+'</td>'
-      +'<td class="mono" style="text-align:center">'+hrs+' hrs</td>'
-      +'<td class="mono" style="text-align:center">'+cnt+'</td>'
-      +'<td class="mono" style="text-align:center">₹'+ratePerSession.toLocaleString('en-IN')+'</td>'
-      +'<td class="mono" style="text-align:right">₹'+(cnt*ratePerSession).toLocaleString('en-IN')+'</td>'
+      +'<td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+DAY_BG[dow]+';border:1px solid '+DAY_FG[dow]+';margin-right:8px;vertical-align:middle"></span>'+DAY_FULL[dow]+'</td>'
+      +'<td class="mono">'+fmt12(g.time)+'</td>'
+      +'<td class="mono" style="text-align:center">'+g.count+'</td>'
+      +'<td class="mono" style="text-align:center">'+g.totalHrs+'h</td>'
+      +'<td class="mono" style="text-align:right">₹'+(g.totalHrs*rate).toLocaleString('en-IN')+'</td>'
       +'</tr>';
   });
 
@@ -590,6 +915,16 @@ function generate(){
   var periodLabel=months.length===1
     ?MONTHS[months[0].month]+' '+months[0].year
     :MONTHS_SHORT[months[0].month]+' '+months[0].year+' – '+MONTHS_SHORT[months[months.length-1].month]+' '+months[months.length-1].year;
+
+  // Session type display
+  var stDisplay='';
+  var stIcon2='';
+  var stClass='one-on-one';
+  if(sessTypeVal==='1-on-1'){stDisplay='1-on-1 Individual';stIcon2='👤';stClass='one-on-one';}
+  else if(sessTypeVal==='group-2'){stDisplay='Private Group · 2 Students';stIcon2='👥';stClass='group';}
+  else if(sessTypeVal==='group-3'){stDisplay='Private Group · 3 Students';stIcon2='👥';stClass='group';}
+  else if(sessTypeVal==='group-4'){stDisplay='Private Group · 4 Students';stIcon2='👥';stClass='group';}
+  else{stDisplay='Private Group · 5+ Students';stIcon2='👥';stClass='group';}
 
   var html=`
     <div class="inv-hdr">
@@ -612,16 +947,16 @@ function generate(){
         <div class="inf-title">Student</div>
         <div class="inf-val">${studentLine}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:3px">${studentSub}</div>
+        <div class="inv-session-type-tag ${stClass}">${stIcon2} ${stDisplay}</div>
         ${parent?'<div class="inf-row" style="margin-top:10px"><span class="inf-row-label">Parent / Guardian</span><span class="inf-row-val">'+parent+'</span></div>':''}
         ${contact?'<div class="inf-row"><span class="inf-row-label">Contact</span><span class="inf-row-val">'+contact+'</span></div>':''}
       </div>
       <div class="inv-info-cell">
         <div class="inf-title">Session Rate</div>
         <div class="inf-val">₹${rate.toLocaleString('en-IN')}<span style="font-size:12px;font-weight:400;color:var(--muted)"> / hour</span></div>
-        <div class="inf-row" style="margin-top:8px"><span class="inf-row-label">Duration per session</span><span class="inf-row-val">${hrs} hrs</span></div>
-        <div class="inf-row"><span class="inf-row-label">Rate per session</span><span class="inf-row-val">₹${ratePerSession.toLocaleString('en-IN')}</span></div>
+        <div class="inf-row" style="margin-top:8px"><span class="inf-row-label">Default duration</span><span class="inf-row-val">${defHrs} hrs</span></div>
         <div class="inf-row"><span class="inf-row-label">Total sessions</span><span class="inf-row-val">${grandSessions}</span></div>
-        <div class="inf-row"><span class="inf-row-label">Total hours</span><span class="inf-row-val">${grandSessions*hrs}</span></div>
+        <div class="inf-row"><span class="inf-row-label">Total hours billed</span><span class="inf-row-val">${grandHours} hrs</span></div>
       </div>
     </div>
 
@@ -640,13 +975,12 @@ function generate(){
     ${months.length>1?`
     <div class="inv-sec"><div class="inv-sec-dot"></div><div class="inv-sec-txt">Combined Summary</div><div class="inv-sec-rule"></div></div>
     <table class="grand-table">
-      <thead><tr><th>Day</th><th>Timing</th><th style="text-align:center">Hrs/Session</th><th style="text-align:center">Total Sessions</th><th style="text-align:center">Rate/Session</th><th style="text-align:right">Total</th></tr></thead>
+      <thead><tr><th>Day</th><th>Timing</th><th style="text-align:center">Sessions</th><th style="text-align:center">Total Hours</th><th style="text-align:right">Total</th></tr></thead>
       <tbody>
         ${grandRows}
         <tr class="grand-total-row">
           <td class="tot-label" colspan="3">Grand Total</td>
-          <td class="mono" style="text-align:center;color:#fff;font-size:15px">${grandSessions}</td>
-          <td></td>
+          <td class="mono" style="text-align:center;color:#fff;font-size:14px">${grandHours}h</td>
           <td class="tot-amt">₹${grandAmount.toLocaleString('en-IN')}</td>
         </tr>
       </tbody>
