@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank Details — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
+  --white:#fdfcfa;--ink:#1a1a18;--ink-2:#2e2e2b;--ink-3:#4a4a46;
+  --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+  --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
+  --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+  --f:'Open Sans',sans-serif;
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 6px 24px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.05);
+  --sh-lg:0 12px 40px rgba(0,0,0,.13),0 4px 12px rgba(0,0,0,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5}
+
+/* ── SCREEN LAYOUT ── */
+.page-wrap{
+  max-width:720px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+/* ── HEADER CARD ── */
+.header-card{
+  background:var(--ink);
+  border-radius:12px;
+  padding:40px 40px 34px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:24px;
+  box-shadow:var(--sh-lg);
+}
+.header-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--lime),var(--lime-2));
+}
+.header-card::after{
+  content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.08),transparent 65%);
+  pointer-events:none;
+}
+.hc-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hc-inner{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.hc-left{}
+.hc-kicker{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.hc-kicker-rule{width:24px;height:2px;background:var(--lime)}
+.hc-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);opacity:.85}
+.hc-title{font-size:32px;font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.95;margin-bottom:8px}
+.hc-title i{font-style:italic;font-weight:300;color:var(--lime)}
+.hc-sub{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.04em}
+.hc-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;border-radius:999px;
+  background:rgba(139,197,63,.12);border:1px solid rgba(139,197,63,.22);
+  font-size:10px;font-weight:700;color:var(--lime);
+  margin-top:16px;
+}
+.hc-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime)}
+.hc-right{flex-shrink:0}
+
+/* QR container */
+.qr-wrap{
+  background:var(--white);
+  border-radius:8px;
+  padding:10px;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.qr-wrap img{
+  width:130px;height:130px;display:block;border-radius:4px;
+}
+.qr-label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center}
+
+/* ── SECTION DIVIDER ── */
+.sec{display:flex;align-items:center;gap:14px;margin:28px 0 16px}
+.sec-rule{flex:1;height:1px;background:var(--rule)}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.sec-txt{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
+
+/* ── DETAIL CARD ── */
+.detail-card{
+  background:var(--white);
+  border:1px solid var(--cream-3);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:var(--sh-md);
+  margin-bottom:16px;
+}
+.dc-head{
+  background:var(--ink);
+  padding:14px 22px;
+  display:flex;align-items:center;gap:10px;
+  position:relative;overflow:hidden;
+}
+.dc-head::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:32px 32px}
+.dc-head-icon{
+  width:30px;height:30px;border-radius:6px;
+  background:rgba(139,197,63,.15);
+  border:1px solid rgba(139,197,63,.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;position:relative;z-index:1;
+}
+.dc-head-icon svg{width:14px;height:14px;color:var(--lime)}
+.dc-head-title{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);position:relative;z-index:1}
+.dc-body{padding:0}
+
+/* Row */
+.drow{
+  display:grid;grid-template-columns:160px 1fr;
+  border-bottom:1px solid var(--cream-2);
+  align-items:stretch;
+}
+.drow:last-child{border-bottom:none}
+.drow-label{
+  padding:16px 20px;
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+  background:var(--cream);
+  border-right:1px solid var(--cream-2);
+  display:flex;align-items:center;
+}
+.drow-value{
+  padding:16px 22px;
+  font-size:14px;font-weight:700;color:var(--ink);
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;
+}
+.drow-value.mono{
+  font-size:16px;letter-spacing:.04em;font-weight:800;
+  color:var(--ink);
+}
+.drow-value.upi{
+  font-size:15px;font-weight:800;color:var(--lime-3);
+}
+
+/* Highlight accent */
+.val-chip{
+  display:inline-flex;align-items:center;
+  padding:3px 8px;border-radius:4px;
+  background:var(--lime-bg);border:1px solid var(--lime-mid);
+  font-size:10px;font-weight:700;color:var(--lime-3);letter-spacing:.08em;
+}
+
+/* ── UPI CARD ── */
+.upi-card{
+  background:var(--white);
+  border:1px solid var(--cream-3);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:var(--sh-md);
+  margin-bottom:16px;
+}
+.upi-inner{
+  padding:24px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.upi-left{}
+.upi-lbl{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.upi-id{font-size:22px;font-weight:800;letter-spacing:-.3px;color:var(--ink)}
+.upi-id span{color:var(--lime-2)}
+.upi-note{font-size:11px;color:var(--muted);margin-top:5px}
+.upi-right{}
+.sib-logo{
+  width:90px;height:auto;border-radius:8px;
+  display:block;
+  box-shadow:var(--sh);
+}
+
+/* ── DISCLAIMER ── */
+.disclaimer-card{
+  background:var(--white);
+  border:1px solid var(--cream-3);
+  border-left:3px solid var(--lime);
+  border-radius:8px;
+  padding:14px 18px;
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:16px;
+  box-shadow:var(--sh);
+}
+.disc-icon{flex-shrink:0;margin-top:1px}
+.disc-icon svg{width:14px;height:14px;color:var(--lime-2)}
+.disc-txt{font-size:12px;font-weight:500;color:var(--ink-3);line-height:1.65}
+.disc-txt strong{color:var(--ink);font-weight:700}
+.disc-txt em{font-style:normal;font-weight:700;color:var(--lime-3)}
+
+/* ── NOTE ── */
+.note-card{
+  background:var(--lime-bg);
+  border:1px solid var(--lime-mid);
+  border-radius:8px;
+  padding:14px 18px;
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:16px;
+}
+.note-icon{flex-shrink:0;margin-top:1px}
+.note-icon svg{width:14px;height:14px;color:var(--lime-3)}
+.note-txt{font-size:12px;font-weight:600;color:var(--lime-3);line-height:1.6}
+
+/* ── PRINT BUTTON ── */
+.btn-wrap{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:11px 20px;border-radius:5px;border:none;
+  font-family:var(--f);font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .18s;
+}
+.btn-primary{background:var(--lime);color:var(--ink);box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.btn-primary:hover{background:var(--lime-2)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--rule)}
+.btn-ghost:hover{background:var(--cream-2);color:var(--ink)}
+.btn svg{width:13px;height:13px}
+
+/* ── FOOTER ── */
+.footer{
+  margin-top:32px;padding-top:20px;
+  border-top:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.footer-brand{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--pale);display:flex;align-items:center;gap:7px}
+.footer-dot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
+.footer-note{font-size:10px;color:var(--pale)}
+
+/* ── PRINT / PDF ── */
+@media print{
+  @page{
+    size:A4;
+    margin:18mm 16mm 18mm 16mm;
+  }
+  body{
+    background:#fff !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .page-wrap{
+    max-width:100%;
+    padding:0;
+    margin:0;
+  }
+  .btn-wrap,
+  .no-print{display:none !important}
+
+  .header-card{
+    border-radius:8px;
+    page-break-inside:avoid;
+    margin-bottom:16px;
+  }
+  .detail-card,
+  .upi-card,
+  .note-card,
+  .disclaimer-card{
+    page-break-inside:avoid;
+    break-inside:avoid;
+    margin-bottom:12px;
+  }
+  .sec{margin:18px 0 12px}
+  .footer{margin-top:20px}
+
+  /* Force colors for print */
+  .header-card{background:#1a1a18 !important}
+  .dc-head{background:#1a1a18 !important}
+  .upi-logo{background:linear-gradient(135deg,#6a1bdb,#00baf2) !important}
+  .hc-title{color:#fff !important}
+  .dc-head-title{color:rgba(255,255,255,.7) !important}
+  .hc-kicker-txt{color:#8BC53F !important}
+  .hc-kicker-rule{background:#8BC53F !important}
+  .hc-badge{background:rgba(139,197,63,.15) !important; border-color:rgba(139,197,63,.3) !important; color:#5e8a24 !important}
+  .upi-id span{color:#72a530 !important}
+  .note-card{background:#f0f7e3 !important}
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="hc-grid"></div>
+    <div class="hc-inner">
+      <div class="hc-left">
+        <div class="hc-kicker">
+          <div class="hc-kicker-rule"></div>
+          <div class="hc-kicker-txt">Payment Information</div>
+        </div>
+        <div class="hc-title">SEHR<br><i>Academy</i></div>
+        <div class="hc-sub">Vadanappally, Thrissur, Kerala</div>
+        <div class="hc-badge">Bank &amp; UPI Details</div>
+      </div>
+      <div class="hc-right">
+        <div class="qr-wrap">
+          <img src="https://i.postimg.cc/qvfs6ZYS/82bf9f0c-c93b-4b36-917e-1f229bc70c76.jpg" alt="UPI QR Code">
+          <div class="qr-label">Scan to Pay</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPI -->
+  <div class="sec">
+    <div class="sec-dot"></div>
+    <div class="sec-txt">UPI Payment</div>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="upi-card">
+    <div class="upi-inner">
+      <div class="upi-left">
+        <div class="upi-lbl">UPI ID</div>
+        <div class="upi-id">sehracademy<span>@sib</span></div>
+        <div class="upi-note">South Indian Bank &mdash; Instant transfer, 24&times;7</div>
+      </div>
+      <div class="upi-right">
+        <img src="https://i.postimg.cc/SNb7tx71/unnamed.jpg" alt="South Indian Bank" class="sib-logo">
+      </div>
+    </div>
+  </div>
+
+  <!-- BANK DETAILS -->
+  <div class="sec">
+    <div class="sec-dot"></div>
+    <div class="sec-txt">Bank Account Details</div>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="detail-card">
+    <div class="dc-head">
+      <div class="dc-head-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-4 0v2"/>
+          <line x1="12" y1="12" x2="12" y2="16"/>
+          <circle cx="12" cy="12" r="1"/>
+        </svg>
+      </div>
+      <div class="dc-head-title">Account Information</div>
+    </div>
+    <div class="dc-body">
+
+      <div class="drow">
+        <div class="drow-label">Account Name</div>
+        <div class="drow-value">SEHR ACADEMY</div>
+      </div>
+
+      <div class="drow">
+        <div class="drow-label">Account Number</div>
+        <div class="drow-value mono">
+          0317073000042446
+        </div>
+      </div>
+
+      <div class="drow">
+        <div class="drow-label">IFSC Code</div>
+        <div class="drow-value mono">
+          SIBL0000317
+          <span class="val-chip">South Indian Bank</span>
+        </div>
+      </div>
+
+      <div class="drow">
+        <div class="drow-label">Bank Name</div>
+        <div class="drow-value">South Indian Bank</div>
+      </div>
+
+      <div class="drow">
+        <div class="drow-label">Branch</div>
+        <div class="drow-value">Vadanappally</div>
+      </div>
+
+      <div class="drow">
+        <div class="drow-label">Account Type</div>
+        <div class="drow-value">Current Account</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTE & DISCLAIMER -->
+  <div class="note-card">
+    <div class="note-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </div>
+    <div class="note-txt">
+      Please confirm your payment by sharing a screenshot on WhatsApp with the admins.
+    </div>
+  </div>
+
+  <div class="disclaimer-card">
+    <div class="disc-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+    <div class="disc-txt">
+      Before completing the transaction, kindly verify that the <strong>account name</strong> and <strong>UPI ID</strong> match exactly &mdash; <em>SEHR ACADEMY</em> / <em>sehracademy@sib</em>.
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS (screen only) -->
+  <div class="btn-wrap no-print">
+    <button class="btn btn-ghost" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      Print / Save as PDF
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">
+      <div class="footer-dot"></div>
+      SEHR Academy
+    </div>
+    <div class="footer-note">Vadanappally &bull; Thrissur &bull; Kerala</div>
+  </div>
+
+</div>
+
+</body>
+</html>
