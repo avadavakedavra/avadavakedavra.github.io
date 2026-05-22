@@ -12,8 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════
-   SEHR ACADEMY · SYLLABUS TRACKER
-   Design: Cream · Charcoal · Lime  (studentlist system)
+   SEHR ACADEMY · SYLLABUS TRACKER — ENHANCED
 ═══════════════════════════════════════════════ */
 :root {
   --cream:   #f5f2eb; --cream-2: #ede9e0; --cream-3: #e4dfd4;
@@ -23,6 +22,7 @@
   --lime:    #8BC53F; --lime-2:  #72a530; --lime-3:  #5e8a24;
   --lime-bg: #f0f7e3; --lime-mid:#c8e48e;
   --green:   #16a34a; --green-bg:rgba(22,163,74,.08);  --green-brd:rgba(22,163,74,.18);
+  --green-done-bg: #f0faf4; --green-done-brd: rgba(22,163,74,.22); --green-done-deep: #d1fae5;
   --amber:   #d97706; --amber-bg:rgba(217,119,6,.08);  --amber-brd:rgba(217,119,6,.18);
   --red:     #dc2626; --red-bg:  rgba(220,38,38,.08);  --red-brd:  rgba(220,38,38,.18);
   --blue:    #2563eb; --blue-bg: rgba(37,99,235,.08);  --blue-brd: rgba(37,99,235,.18);
@@ -68,7 +68,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
 #selectorScreen { display:block; }
 #selectorScreen.gone { display:none; }
 
-/* masthead (same pattern as every SEHR page) */
 .sel-masthead {
   background: var(--ink);
   margin: 0;
@@ -85,8 +84,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .mast-h1 { font-size:clamp(36px,5vw,64px); font-weight:800; letter-spacing:-2px; color:white; line-height:.95; margin-bottom:14px; }
 .mast-h1 i { font-style:italic; font-weight:300; color:var(--lime); }
 .mast-desc { font-size:14px; color:rgba(255,255,255,.45); max-width:500px; line-height:1.75; }
-
-/* stats bar inside masthead */
 .mast-stats { display:flex; gap:0; margin-top:32px; border-top:1px solid rgba(255,255,255,.08); padding-top:24px; }
 .mast-stat { padding-right:28px; margin-right:28px; border-right:1px solid rgba(255,255,255,.08); }
 .mast-stat:last-child { border-right:none; }
@@ -94,7 +91,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .mast-stat-val .unit { font-size:14px; color:var(--lime); font-weight:700; }
 .mast-stat-lbl { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.3); }
 
-/* class selection grid */
 .sel-body { max-width:1280px; margin:0 auto; padding:32px 40px 80px; }
 .sel-section-label { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--pale); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
 .sel-section-label::after { content:''; flex:1; height:1px; background:var(--rule); }
@@ -117,17 +113,14 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .class-card:hover { transform:translateY(-4px); box-shadow:var(--sh-2); border-color:var(--cream-3); }
 .class-card.c11 { border-left-color:var(--blue); }   .class-card.c11:hover { border-color:var(--blue-brd); }
 .class-card.c12 { border-left-color:var(--red);  }   .class-card.c12:hover { border-color:var(--red-brd);  }
-.class-card.c10s{ border-left-color:var(--amber);} .class-card.c10s:hover { border-color:var(--amber-brd);}
-.class-card.c10c{ border-left-color:var(--purple);}  .class-card.c10c:hover { border-color:var(--purp-brd); }
-
-/* subtle diagonal crosshatch on card */
+.class-card.c10s{ border-left-color:var(--amber);}   .class-card.c10s:hover { border-color:var(--amber-brd);}
+.class-card.c10c{ border-left-color:var(--purple);} .class-card.c10c:hover { border-color:var(--purp-brd); }
 .class-card::after { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; opacity:0; transition:opacity .2s; }
 .class-card.c11::after  { background:radial-gradient(circle,var(--blue-bg),transparent 70%); }
 .class-card.c12::after  { background:radial-gradient(circle,var(--red-bg),transparent 70%); }
 .class-card.c10s::after { background:radial-gradient(circle,var(--amber-bg),transparent 70%); }
 .class-card.c10c::after { background:radial-gradient(circle,var(--purp-bg),transparent 70%); }
 .class-card:hover::after { opacity:1; }
-
 .cc-tag  { font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--pale); margin-bottom:10px; }
 .cc-num  { font-size:38px; font-weight:800; letter-spacing:-2px; color:var(--ink); line-height:1; margin-bottom:4px; }
 .cc-desc { font-size:12px; color:var(--muted); font-weight:500; margin-bottom:14px; }
@@ -153,7 +146,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .page-masthead::after  { content:''; position:absolute; top:-100px; right:-100px; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle,rgba(139,197,63,.16),transparent 65%); pointer-events:none; }
 .pm-bg { position:absolute; right:-10px; bottom:-20px; font-size:160px; font-weight:800; letter-spacing:-5px; color:rgba(255,255,255,.04); pointer-events:none; user-select:none; white-space:nowrap; line-height:1; z-index:0; }
 .pm-inner { max-width:1280px; margin:0 auto; padding:36px 40px 32px; position:relative; z-index:1; display:grid; grid-template-columns:1fr auto; align-items:center; gap:32px; }
-.pm-left {}
 .pm-kicker { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
 .pm-kicker-rule { width:22px; height:2px; background:var(--lime); flex-shrink:0; }
 .pm-kicker-text { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); opacity:.9; }
@@ -164,7 +156,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .pm-prog-track { width:240px; height:6px; background:rgba(255,255,255,.1); border-radius:999px; overflow:hidden; }
 .pm-prog-fill  { height:100%; background:linear-gradient(90deg,var(--lime-3),var(--lime)); border-radius:999px; transition:width .7s var(--ease); }
 .pm-prog-label { font-size:12px; font-weight:800; color:var(--lime); }
-
 .pm-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
 .pm-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:4px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); font-family:var(--f); font-size:12px; font-weight:700; color:rgba(255,255,255,.7); cursor:pointer; transition:all .18s; white-space:nowrap; }
 .pm-btn:hover { background:rgba(255,255,255,.14); color:white; border-color:rgba(255,255,255,.25); }
@@ -202,87 +193,186 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .srch input { width:100%; padding:9px 12px 9px 30px; border:1.5px solid var(--cream-3); border-radius:4px; background:var(--white); font-family:var(--f); font-size:13px; color:var(--ink); outline:none; transition:border-color .18s,box-shadow .18s; box-shadow:var(--sh); }
 .srch input:focus { border-color:var(--lime); box-shadow:0 0 0 3px rgba(139,197,63,.1); }
 .srch input::placeholder { color:var(--pale); }
-
 .tabs { display:flex; gap:2px; background:var(--white); border:1.5px solid var(--cream-3); border-radius:4px; padding:3px; box-shadow:var(--sh); }
 .tab  { padding:5px 12px; border:none; border-radius:3px; background:none; font-family:var(--f); font-size:11px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .14s; white-space:nowrap; }
 .tab.on  { background:var(--lime); color:white; }
 .tab:hover:not(.on) { background:var(--cream-2); color:var(--ink-2); }
-
 .sort-sel { padding:9px 26px 9px 11px; border:1.5px solid var(--cream-3); border-radius:4px; background:var(--white); font-family:var(--f); font-size:12px; font-weight:600; color:var(--ink-2); appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center; cursor:pointer; outline:none; box-shadow:var(--sh); }
 .sort-sel:focus { border-color:var(--lime); }
 
-/* section divider */
 .sec-div { display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
 .sec-div-rule { flex:1; height:1px; background:var(--rule); }
 .sec-div-dot  { width:5px; height:5px; border-radius:50%; background:var(--lime); flex-shrink:0; }
 .sec-div-text { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--pale); white-space:nowrap; }
 
-/* ── SUBJECT BLOCK ── */
+/* ═══════════════════════════════════════
+   SUBJECT BLOCK — ENHANCED
+═══════════════════════════════════════ */
 .subject-block {
   background: var(--white);
   border: 1.5px solid var(--cream-3);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   box-shadow: var(--sh);
   animation: fadeUp .3s var(--ease) both;
+  transition: box-shadow .2s var(--ease), border-color .2s var(--ease);
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
+/* ── COMPLETED SUBJECT BLOCK — the big treatment ── */
+.subject-block.subj-all-done {
+  background: var(--green-done-bg);
+  border-color: rgba(22,163,74,.25);
+  border-left: 4px solid var(--green);
+  box-shadow: 0 2px 12px rgba(22,163,74,.08), 0 1px 3px rgba(22,163,74,.04);
+}
+.subject-block.subj-all-done:hover {
+  box-shadow: 0 6px 24px rgba(22,163,74,.12), 0 2px 6px rgba(22,163,74,.06);
+}
+
+/* completion banner that spans the top of a done block */
+.done-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 20px 7px 20px;
+  background: rgba(22,163,74,.1);
+  border-bottom: 1px solid rgba(22,163,74,.18);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--green);
+  gap: 8px;
+}
+.done-banner-left { display:flex; align-items:center; gap:8px; }
+.done-banner-check {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--green);
+  display: flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.done-banner-check svg { width:9px; height:9px; color:white; stroke-width:3; }
+.done-banner-right { font-size:9px; font-weight:700; color:rgba(22,163,74,.6); letter-spacing:.1em; }
+
+/* ongoing pulse indicator */
+.subj-ongoing-indicator {
+  display: flex; align-items:center; gap:6px;
+  font-size: 9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color: var(--amber);
+  padding: 6px 20px;
+  background: rgba(217,119,6,.05);
+  border-bottom: 1px solid rgba(217,119,6,.14);
+}
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--amber);
+  animation: pulse-amber 1.8s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes pulse-amber {
+  0%,100% { box-shadow: 0 0 0 0 rgba(217,119,6,.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(217,119,6,0); }
+}
+
+/* ── SUBJECT HEADER ── */
 .subj-head {
   padding: 16px 20px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   cursor: pointer;
   transition: background .14s;
-  background: var(--white);
-  border-left: 4px solid var(--rule);
+  border-left: 4px solid transparent;
   position: relative;
 }
-.subj-head:hover { background:var(--cream); }
-.subject-block.open .subj-head { background:var(--cream); }
+.subj-head:hover { background: rgba(0,0,0,.018); }
+.subject-block.open .subj-head { background: rgba(0,0,0,.014); }
 
-/* per-subject accent borders */
-.subj-physics     { border-left-color:var(--blue);   }
-.subj-chemistry   { border-left-color:var(--purple); }
-.subj-mathematics,.subj-maths { border-left-color:var(--lime-2); }
-.subj-biology     { border-left-color:var(--green);  }
-.subj-english     { border-left-color:var(--pink);   }
-.subj-social-science,.subj-social { border-left-color:var(--amber); }
+/* done subject header */
+.subject-block.subj-all-done .subj-head { border-left-color: var(--green); }
+.subject-block.subj-all-done .subj-head:hover { background: rgba(22,163,74,.05); }
+.subject-block.subj-all-done.open .subj-head { background: rgba(22,163,74,.04); }
+
+/* per-subject accent */
+.subj-head.subj-physics     { border-left-color:var(--blue);   }
+.subj-head.subj-chemistry   { border-left-color:var(--purple); }
+.subj-head.subj-mathematics,.subj-head.subj-maths { border-left-color:var(--lime-2); }
+.subj-head.subj-biology     { border-left-color:var(--green);  }
+.subj-head.subj-english     { border-left-color:var(--pink);   }
+.subj-head.subj-social-science,.subj-head.subj-social { border-left-color:var(--amber); }
 
 .subj-left  { display:flex; align-items:center; gap:12px; }
 .subj-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
 
 /* subject icon */
 .subj-icon {
-  width:36px; height:36px; border-radius:4px;
+  width:40px; height:40px; border-radius:6px;
   display:flex; align-items:center; justify-content:center;
-  font-size:14px; font-weight:800; flex-shrink:0;
+  font-size:15px; font-weight:800; flex-shrink:0;
   background:var(--cream-2); color:var(--muted); border:1px solid var(--rule);
-  transition:all .15s;
+  transition:all .2s var(--ease);
+  position:relative; overflow:hidden;
 }
-.subj-physics     .subj-icon { background:var(--blue-bg);  color:var(--blue);   border-color:var(--blue-brd); }
-.subj-chemistry   .subj-icon { background:var(--purp-bg);  color:var(--purple); border-color:var(--purp-brd); }
-.subj-mathematics .subj-icon,
-.subj-maths       .subj-icon { background:var(--lime-bg);  color:var(--lime-2); border-color:rgba(139,197,63,.2); }
-.subj-biology     .subj-icon { background:var(--green-bg); color:var(--green);  border-color:var(--green-brd); }
-.subj-english     .subj-icon { background:var(--pink-bg);  color:var(--pink);   border-color:var(--pink-brd); }
-.subj-social-science .subj-icon,
-.subj-social      .subj-icon { background:var(--amber-bg); color:var(--amber);  border-color:var(--amber-brd); }
+
+/* done icon: full green treatment */
+.subject-block.subj-all-done .subj-icon {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+  box-shadow: 0 2px 8px rgba(22,163,74,.3);
+}
+/* checkmark overlay on done icon */
+.subject-block.subj-all-done .subj-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.25)' stroke-width='2'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/18px no-repeat;
+  pointer-events:none;
+}
+
+/* per-subject icon colours (non-done) */
+.subj-head.subj-physics     .subj-icon { background:var(--blue-bg);  color:var(--blue);   border-color:var(--blue-brd); }
+.subj-head.subj-chemistry   .subj-icon { background:var(--purp-bg);  color:var(--purple); border-color:var(--purp-brd); }
+.subj-head.subj-mathematics .subj-icon,
+.subj-head.subj-maths       .subj-icon { background:var(--lime-bg);  color:var(--lime-2); border-color:rgba(139,197,63,.2); }
+.subj-head.subj-biology     .subj-icon { background:var(--green-bg); color:var(--green);  border-color:var(--green-brd); }
+.subj-head.subj-english     .subj-icon { background:var(--pink-bg);  color:var(--pink);   border-color:var(--pink-brd); }
+.subj-head.subj-social-science .subj-icon,
+.subj-head.subj-social      .subj-icon { background:var(--amber-bg); color:var(--amber);  border-color:var(--amber-brd); }
 
 .subj-name  { font-size:13px; font-weight:800; color:var(--ink); letter-spacing:.02em; text-transform:uppercase; }
-.subj-count { font-size:10px; color:var(--muted); margin-top:1px; }
+.subj-count { font-size:10px; color:var(--muted); margin-top:2px; }
+
+/* done: name gets green tint */
+.subject-block.subj-all-done .subj-name { color:var(--green); }
+.subject-block.subj-all-done .subj-count { color: rgba(22,163,74,.6); }
+
+/* done badge inline */
+.done-badge-inline {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:3px 8px; border-radius:99px;
+  background:rgba(22,163,74,.12); border:1px solid rgba(22,163,74,.25);
+  font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--green); white-space:nowrap;
+}
+.done-badge-inline svg { width:9px; height:9px; flex-shrink:0; }
 
 /* mini progress bar */
 .subj-prog { display:flex; align-items:center; gap:8px; }
 .subj-prog-track { width:80px; height:5px; background:var(--cream-3); border-radius:999px; overflow:hidden; }
-.subj-prog-fill  { height:100%; border-radius:999px; transition:width .5s var(--ease); }
-.subj-prog-pct   { font-size:11px; font-weight:800; color:var(--muted); min-width:28px; text-align:right; }
+.subj-prog-fill  { height:100%; border-radius:999px; transition:width .6s var(--ease); }
+.subj-prog-pct   { font-size:11px; font-weight:800; color:var(--muted); min-width:32px; text-align:right; }
+.subject-block.subj-all-done .subj-prog-pct { color:var(--green); font-weight:800; }
 
 /* collapse chevron */
-.subj-chev { width:22px; height:22px; border-radius:50%; border:1.5px solid var(--rule); display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+.subj-chev { width:24px; height:24px; border-radius:50%; border:1.5px solid var(--rule); display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
 .subj-chev svg { width:11px; height:11px; color:var(--pale); transition:transform .25s; }
 .subject-block.open .subj-chev { border-color:var(--lime-mid); background:var(--lime-bg); }
 .subject-block.open .subj-chev svg { transform:rotate(180deg); color:var(--lime-2); }
+.subject-block.subj-all-done .subj-chev { border-color:rgba(22,163,74,.3); }
+.subject-block.subj-all-done.open .subj-chev { border-color:rgba(22,163,74,.4); background:rgba(22,163,74,.08); }
+.subject-block.subj-all-done.open .subj-chev svg { color:var(--green); }
+.subject-block.subj-all-done .subj-chev svg { color:var(--green); }
 
 /* chapters list */
 .chapters-list { display:none; }
@@ -291,7 +381,7 @@ header#site-header { position:sticky; top:0; z-index:300; }
 /* ── CHAPTER ROW ── */
 .chapter {
   display: grid;
-  grid-template-columns: 42px 1fr auto;
+  grid-template-columns: 46px 1fr auto;
   align-items: center;
   gap: 14px;
   padding: 13px 20px;
@@ -303,20 +393,38 @@ header#site-header { position:sticky; top:0; z-index:300; }
 @keyframes slideIn{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:translateX(0)}}
 .chapter:hover { background:var(--cream); }
 
-/* status left marker */
+/* done subject: rows get faint green wash */
+.subject-block.subj-all-done .chapter { border-top-color:rgba(22,163,74,.1); }
+.subject-block.subj-all-done .chapter:hover { background:rgba(22,163,74,.03); }
+
 .chapter.st-completed { border-left:3px solid var(--green); padding-left:17px; }
 .chapter.st-ongoing   { border-left:3px solid var(--amber); padding-left:17px; }
 .chapter.st-pending   { border-left:3px solid var(--rule);  padding-left:17px; }
 
+/* chapter number badge */
 .ch-num {
-  width:36px; height:36px; border-radius:4px;
+  width:38px; height:38px; border-radius:6px;
   display:flex; align-items:center; justify-content:center;
   font-size:14px; font-weight:800; color:var(--pale);
   background:var(--cream-2); flex-shrink:0;
   border:1px solid var(--rule);
+  transition: all .15s;
 }
-.chapter.st-completed .ch-num { background:var(--green-bg); color:var(--green); border-color:var(--green-brd); }
-.chapter.st-ongoing   .ch-num { background:var(--amber-bg); color:var(--amber); border-color:var(--amber-brd); }
+.chapter.st-completed .ch-num {
+  background:var(--green);
+  color:white;
+  border-color:var(--green);
+  /* checkmark replaces number for done chapters */
+  font-size:0;
+  position:relative;
+}
+.chapter.st-completed .ch-num::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/16px no-repeat;
+}
+.chapter.st-ongoing .ch-num { background:var(--amber-bg); color:var(--amber); border-color:var(--amber-brd); }
 
 .ch-body {}
 .ch-title { font-size:13px; font-weight:700; color:var(--ink); letter-spacing:-.1px; line-height:1.35; }
@@ -336,6 +444,23 @@ header#site-header { position:sticky; top:0; z-index:300; }
 .p-pending   { background:var(--cream-2);   color:var(--pale);   border-color:var(--rule); }
 .p-teacher   { background:rgba(202,138,4,.08); color:#92400e; border-color:rgba(202,138,4,.2); }
 .p-date      { background:var(--blue-bg);    color:var(--blue);   border-color:var(--blue-brd); }
+
+/* done subject: chapters strip colour for pills */
+.subject-block.subj-all-done .p-completed {
+  background: rgba(22,163,74,.12);
+  border-color: rgba(22,163,74,.24);
+}
+
+/* ── CHAPTER COUNT IN DONE BLOCK ── */
+.chapters-done-footer {
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  padding:10px 20px;
+  border-top: 1px dashed rgba(22,163,74,.2);
+  background: rgba(22,163,74,.04);
+  font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color: rgba(22,163,74,.6);
+}
+.chapters-done-footer svg { width:12px; height:12px; color:var(--green); }
 
 /* ── EMPTY ── */
 .empty-row { padding:40px 24px; text-align:center; }
@@ -369,8 +494,10 @@ header#site-header { position:sticky; top:0; z-index:300; }
   .pm-bg{font-size:110px}
   .pm-actions{margin-top:20px}
   .page-wrap{padding:0 20px 60px}
-  .chapter{grid-template-columns:36px 1fr;gap:10px;padding:12px 16px}
+  .chapter{grid-template-columns:38px 1fr;gap:10px;padding:12px 16px}
   .ch-pills{grid-column:2}
+  .done-banner{padding:7px 16px}
+  .subj-ongoing-indicator{padding:6px 16px}
 }
 @media(max-width:640px){
   .sel-mast-inner{padding:28px 18px 24px}
@@ -387,6 +514,7 @@ header#site-header { position:sticky; top:0; z-index:300; }
   .tabs{justify-content:flex-start}
   .mast-stats{flex-wrap:wrap;gap:16px}
   .mast-stat{border-right:none;padding-right:0;margin-right:0}
+  .done-banner-right{display:none}
 }
 @media(max-width:400px){.sel-grid{grid-template-columns:1fr}}
 </style>
@@ -406,11 +534,8 @@ header#site-header { position:sticky; top:0; z-index:300; }
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
 
-<!-- ══════════════════════════
-     SELECTION SCREEN
-══════════════════════════ -->
+<!-- SELECTION SCREEN -->
 <div id="selectorScreen">
-
   <div class="sel-masthead">
     <div class="sel-mast-bg" aria-hidden="true">SYLLABUS</div>
     <div class="sel-mast-inner">
@@ -440,69 +565,40 @@ header#site-header { position:sticky; top:0; z-index:300; }
   <div class="sel-body">
     <div class="sel-section-label">Select your class</div>
     <div class="sel-grid">
-
       <button class="class-card c11" onclick="loadClass('Class 11')">
         <div class="cc-tag">Higher Secondary</div>
         <div class="cc-num">11</div>
         <div class="cc-desc">Science stream</div>
-        <div class="cc-subjects">
-          <span class="cc-subj">Physics</span>
-          <span class="cc-subj">Chemistry</span>
-          <span class="cc-subj">Maths</span>
-          <span class="cc-subj">Bio</span>
-        </div>
+        <div class="cc-subjects"><span class="cc-subj">Physics</span><span class="cc-subj">Chemistry</span><span class="cc-subj">Maths</span><span class="cc-subj">Bio</span></div>
         <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </button>
-
       <button class="class-card c12" onclick="loadClass('Class 12')">
         <div class="cc-tag">Higher Secondary</div>
         <div class="cc-num">12</div>
         <div class="cc-desc">Science stream</div>
-        <div class="cc-subjects">
-          <span class="cc-subj">Physics</span>
-          <span class="cc-subj">Chemistry</span>
-          <span class="cc-subj">Maths</span>
-          <span class="cc-subj">Bio</span>
-        </div>
+        <div class="cc-subjects"><span class="cc-subj">Physics</span><span class="cc-subj">Chemistry</span><span class="cc-subj">Maths</span><span class="cc-subj">Bio</span></div>
         <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </button>
-
       <button class="class-card c10s" onclick="loadClass('10 STATE')">
         <div class="cc-tag">Secondary · State Board</div>
         <div class="cc-num">10</div>
         <div class="cc-desc">State curriculum</div>
-        <div class="cc-subjects">
-          <span class="cc-subj">Maths</span>
-          <span class="cc-subj">Science</span>
-          <span class="cc-subj">English</span>
-          <span class="cc-subj">Social</span>
-        </div>
+        <div class="cc-subjects"><span class="cc-subj">Maths</span><span class="cc-subj">Science</span><span class="cc-subj">English</span><span class="cc-subj">Social</span></div>
         <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </button>
-
       <button class="class-card c10c" onclick="loadClass('10 CBSE')">
         <div class="cc-tag">Secondary · CBSE Board</div>
         <div class="cc-num">10</div>
         <div class="cc-desc">CBSE curriculum</div>
-        <div class="cc-subjects">
-          <span class="cc-subj">Maths</span>
-          <span class="cc-subj">Science</span>
-          <span class="cc-subj">English</span>
-          <span class="cc-subj">Social</span>
-        </div>
+        <div class="cc-subjects"><span class="cc-subj">Maths</span><span class="cc-subj">Science</span><span class="cc-subj">English</span><span class="cc-subj">Social</span></div>
         <div class="cc-cta">View syllabus <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </button>
-
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════
-     APP SCREEN
-══════════════════════════ -->
+<!-- APP SCREEN -->
 <div id="appScreen">
-
-  <!-- PAGE MASTHEAD -->
   <div class="page-masthead">
     <div class="pm-bg" id="pmBg" aria-hidden="true">TRACKER</div>
     <div class="pm-inner">
@@ -528,7 +624,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
   </div>
 
   <div class="page-wrap">
-
     <!-- STATS STRIP -->
     <div class="stats-strip">
       <div class="ss"><div class="ss-lbl">Total Chapters</div><div class="ss-val" id="stTotal">—</div><div class="ss-sub" id="stTotalSub"></div></div>
@@ -538,7 +633,6 @@ header#site-header { position:sticky; top:0; z-index:300; }
       <div class="ss"><div class="ss-lbl">Subjects</div><div class="ss-val" id="stSubjects">—</div><div class="ss-sub" id="stSubjectsSub"></div></div>
     </div>
 
-    <!-- SECTION DIVIDER -->
     <div class="sec-div" aria-hidden="true">
       <div class="sec-div-rule"></div><div class="sec-div-dot"></div>
       <div class="sec-div-text">Chapters</div>
@@ -565,10 +659,8 @@ header#site-header { position:sticky; top:0; z-index:300; }
       </select>
     </div>
 
-    <!-- SUBJECTS CONTENT -->
     <div id="contentWrap"></div>
 
-    <!-- LEGEND -->
     <div class="legend-bar">
       <span style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pale);margin-right:4px">Legend:</span>
       <span class="leg-item"><span class="leg-dot" style="background:var(--green)"></span>Completed</span>
@@ -576,9 +668,8 @@ header#site-header { position:sticky; top:0; z-index:300; }
       <span class="leg-item"><span class="leg-dot" style="background:var(--rule)"></span>Pending</span>
       <span style="margin-left:auto;font-size:10px;color:var(--pale);font-style:italic">Click subject header to collapse · All data live from Google Sheets</span>
     </div>
-
-  </div><!-- /page-wrap -->
-</div><!-- /appScreen -->
+  </div>
+</div>
 
 <script>
 (function(){
@@ -602,14 +693,11 @@ var FILTER_S   = '';
 var SEARCH_VAL = '';
 var SORT_VAL   = 'index';
 
-/* ── DOM ── */
 function g(id){ return document.getElementById(id); }
 function q(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
 function loaderOn()  { g('loader').classList.add('on'); }
 function loaderOff() { g('loader').classList.remove('on'); }
-
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
 function fmtDate(d){
   if(!d) return '';
   var dt = new Date(d);
@@ -617,13 +705,11 @@ function fmtDate(d){
   return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
 }
 
-/* ── LOAD ── */
 function loadClass(name){
   CURRENT = name;
   loaderOn();
   var range = encodeURIComponent(name + '!A1:F');
   var url   = 'https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+'/values/'+range+'?key='+API_KEY;
-
   fetch(url)
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -651,8 +737,6 @@ function loadClass(name){
 function showApp(name){
   g('selectorScreen').classList.add('gone');
   g('appScreen').classList.add('on');
-
-  /* title */
   var classLabel = name === '10 STATE' ? 'Class <i>10</i> — State'
                  : name === '10 CBSE'  ? 'Class <i>10</i> — CBSE'
                  : 'Class <i>' + name.replace('Class ','') + '</i>';
@@ -662,7 +746,6 @@ function showApp(name){
   window.scrollTo(0,0);
 }
 
-/* ── STATS ── */
 function buildStats(){
   var total   = ALL_ROWS.length;
   var done    = ALL_ROWS.filter(function(r){ return (r.Status||'').toLowerCase()==='completed'; }).length;
@@ -687,7 +770,6 @@ function buildStats(){
   g('stSubjectsSub').textContent = CURRENT;
 }
 
-/* ── RENDER SUBJECTS ── */
 function renderSubjects(){
   var wrap     = g('contentWrap');
   var subjects = SUBJECTS[CURRENT] || [];
@@ -695,10 +777,8 @@ function renderSubjects(){
   var anyVis   = false;
 
   subjects.forEach(function(subj, si){
-    /* all rows for this subject */
     var rows = ALL_ROWS.filter(function(r){ return (r.Subject||'').toLowerCase() === subj; });
 
-    /* filtered rows (search + status) */
     var filtered = rows.filter(function(r){
       var st = (r.Status||'pending').toLowerCase();
       if(FILTER_S && st !== FILTER_S) return false;
@@ -712,7 +792,6 @@ function renderSubjects(){
     if(filtered.length === 0) return;
     anyVis = true;
 
-    /* sort */
     filtered = filtered.slice().sort(function(a,b){
       if(SORT_VAL==='index')  return (Number(a.Index)||999)-(Number(b.Index)||999);
       if(SORT_VAL==='status'){ var ord={completed:0,ongoing:1,pending:2}; return (ord[(a.Status||'pending').toLowerCase()]||2)-(ord[(b.Status||'pending').toLowerCase()]||2); }
@@ -721,30 +800,61 @@ function renderSubjects(){
       return 0;
     });
 
-    /* per-subject stats */
-    var tot  = rows.length;
-    var done = rows.filter(function(r){ return (r.Status||'').toLowerCase()==='completed'; }).length;
-    var pct  = tot > 0 ? Math.round(done/tot*100) : 0;
-    var barClr = pct===100?'var(--green)':pct>50?'var(--lime-2)':'var(--amber)';
+    var tot     = rows.length;
+    var done    = rows.filter(function(r){ return (r.Status||'').toLowerCase()==='completed'; }).length;
+    var ongoing = rows.filter(function(r){ return (r.Status||'').toLowerCase()==='ongoing'; }).length;
+    var allDone = (tot > 0 && done === tot);
+    var hasOngoing = (ongoing > 0 && !allDone);
+    var pct     = tot > 0 ? Math.round(done/tot*100) : 0;
+    var barClr  = pct===100 ? 'var(--green)' : pct>50 ? 'var(--lime-2)' : 'var(--amber)';
 
     var slug = subj.replace(/\s+/g,'-');
     var icon = ICONS[subj] || subj[0].toUpperCase();
 
-    html += '<div class="subject-block subj-'+slug+' open" id="sb-'+slug+'" style="animation-delay:'+(si*35)+'ms">'
-      +'<div class="subj-head" onclick="toggleSubj(\'sb-'+slug+'\')">'
+    /* block open class */
+    var blockClasses = 'subject-block open';
+    if(allDone) blockClasses += ' subj-all-done';
+
+    html += '<div class="'+blockClasses+'" id="sb-'+slug+'" style="animation-delay:'+(si*35)+'ms">';
+
+    /* ── COMPLETION BANNER (all-done subjects only) ── */
+    if(allDone){
+      html += '<div class="done-banner">'
+        +'<div class="done-banner-left">'
+        +'<div class="done-banner-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>'
+        +'SYLLABUS COMPLETE'
+        +'</div>'
+        +'<div class="done-banner-right">All '+tot+' chapters finished</div>'
+        +'</div>';
+    }
+
+    /* ── ONGOING PULSE BANNER ── */
+    if(hasOngoing){
+      html += '<div class="subj-ongoing-indicator"><div class="pulse-dot"></div>In progress — '+ongoing+' chapter'+(ongoing!==1?'s':'')+' ongoing</div>';
+    }
+
+    /* ── SUBJECT HEADER ── */
+    html += '<div class="subj-head subj-'+slug+'" onclick="toggleSubj(\'sb-'+slug+'\')">'
       +'<div class="subj-left">'
       +'<div class="subj-icon">'+icon+'</div>'
-      +'<div><div class="subj-name">'+subj+'</div>'
-      +'<div class="subj-count">'+filtered.length+' of '+tot+' chapter'+(tot!==1?'s':'')+'</div></div>'
+      +'<div>'
+      +'<div class="subj-name">'+subj+'</div>'
+      +'<div class="subj-count">'+filtered.length+' of '+tot+' chapter'+(tot!==1?'s':'')+'</div>'
+      +'</div>'
       +'</div>'
       +'<div class="subj-right">'
+      +(allDone
+        ? '<span class="done-badge-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Complete</span>'
+        : '')
       +'<div class="subj-prog">'
       +'<div class="subj-prog-track"><div class="subj-prog-fill" style="width:'+pct+'%;background:'+barClr+'"></div></div>'
       +'<span class="subj-prog-pct">'+pct+'%</span>'
       +'</div>'
       +'<div class="subj-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>'
-      +'</div></div>'
-      +'<div class="chapters-list">';
+      +'</div></div>';
+
+    /* ── CHAPTERS LIST ── */
+    html += '<div class="chapters-list">';
 
     if(!filtered.length){
       html += '<div class="empty-row"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No chapters match</div><p class="empty-p">Try adjusting the search or filter.</p></div>';
@@ -755,7 +865,7 @@ function renderSubjects(){
         var dotC  = st==='completed'?'var(--green)':st==='ongoing'?'var(--amber)':'var(--pale)';
 
         html += '<div class="chapter st-'+st+'" style="animation-delay:'+(ri*12)+'ms">'
-          +'<div class="ch-num">'+esc(r.Index)+'</div>'
+          +'<div class="ch-num" title="Chapter '+esc(r.Index)+'">'+esc(r.Index)+'</div>'
           +'<div class="ch-body">'
           +'<div class="ch-title">'+esc(r.Title||'—')+'</div>'
           +'<div class="ch-meta">'
@@ -768,6 +878,14 @@ function renderSubjects(){
           +(r.ExpectedDate?'<span class="pill p-date">'+fmtDate(r.ExpectedDate)+'</span>':'')
           +'</div></div>';
       });
+    }
+
+    /* footer for all-done block */
+    if(allDone && filtered.length > 0){
+      html += '<div class="chapters-done-footer">'
+        +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+        +'All '+done+' chapters completed'
+        +'</div>';
     }
 
     html += '</div></div>';
@@ -783,13 +901,11 @@ function renderSubjects(){
   wrap.innerHTML = html;
 }
 
-/* ── COLLAPSE ── */
 window.toggleSubj = function(id){
   var el = document.getElementById(id);
   if(el) el.classList.toggle('open');
 };
 
-/* ── BACK ── */
 function goBack(){
   ALL_ROWS=[]; CURRENT=''; FILTER_S=''; SEARCH_VAL=''; SORT_VAL='index';
   g('searchInput').value=''; g('sortSel').value='index';
@@ -801,8 +917,6 @@ function goBack(){
 }
 
 g('backBtn').addEventListener('click', goBack);
-
-/* ── FILTERS ── */
 g('searchInput').addEventListener('input', function(){ SEARCH_VAL=this.value.toLowerCase().trim(); renderSubjects(); });
 g('sortSel').addEventListener('change', function(){ SORT_VAL=this.value; renderSubjects(); });
 q('.tab').forEach(function(btn){
@@ -814,9 +928,7 @@ q('.tab').forEach(function(btn){
   });
 });
 
-/* ── EXPOSE ── */
 window.loadClass = loadClass;
-
 })();
 </script>
 </body>
