@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sehr Academy™ – Trademark Announcement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa; --ink:#1a1a18; --ink-2:#2e2e2b;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --f:"Open Sans",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--f);
+  background: #cac6bc;
+  background-image:
+    linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 52px 20px;
+}
+
+/* ── POSTER SHELL ── */
+.poster {
+  width: 760px;
+  background: var(--white);
+  border: 1px solid var(--cream-3);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.04),
+    0 4px 12px rgba(0,0,0,.07),
+    0 16px 40px rgba(0,0,0,.09),
+    0 48px 96px rgba(0,0,0,.08);
+  overflow: hidden;
+  animation: fadeUp .8s var(--ease) both;
+  position: relative;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* animated shimmer top edge */
+.poster::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(139,197,63,.6) 40%,
+    var(--lime) 50%,
+    rgba(139,197,63,.6) 60%,
+    transparent 100%);
+  animation: shimmerEdge 3.5s ease-in-out infinite;
+  z-index: 10;
+}
+@keyframes shimmerEdge {
+  0%   { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  padding: 54px 60px 50px;
+  border-bottom: 3px solid var(--lime);
+}
+/* fine grid */
+.header::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+/* ambient glow */
+.header::after {
+  content: "";
+  position: absolute;
+  top: -140px; right: -120px;
+  width: 580px; height: 580px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.13), transparent 62%);
+  pointer-events: none;
+}
+/* second subtle glow bottom-left */
+.header-glow2 {
+  position: absolute;
+  bottom: -80px; left: -60px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.05), transparent 65%);
+  pointer-events: none;
+}
+/* ghost watermark */
+.hbg {
+  position: absolute;
+  bottom: -18px; right: -4px;
+  font-size: 158px;
+  font-weight: 800;
+  letter-spacing: -8px;
+  color: rgba(255,255,255,.03);
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  z-index: 0;
+}
+
+.header-inner {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+/* kicker */
+.kicker {
+  display: flex; align-items: center;
+  gap: 10px; margin-bottom: 16px;
+}
+.kicker-rule { width: 28px; height: 2px; background: var(--lime); flex-shrink: 0; }
+.kicker-txt {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--lime); opacity: .8;
+}
+
+/* title — Sehr same weight & size as Academy */
+.header-title {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  line-height: .88;
+  margin-bottom: 18px;
+}
+.title-sehr { color: var(--lime); }
+.title-academy { color: #fff; }
+.title-tm {
+  font-size: 20px;
+  font-weight: 700;
+  vertical-align: super;
+  color: var(--lime);
+  letter-spacing: 0;
+  margin-left: 1px;
+}
+
+.header-sub {
+  font-size: 11.5px;
+  color: rgba(255,255,255,.28);
+  letter-spacing: .04em;
+  line-height: 1.6;
+}
+/* small green tag inline */
+.header-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(139,197,63,.12);
+  border: 1px solid rgba(139,197,63,.2);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--lime);
+  margin-top: 10px;
+  display: block;
+  width: fit-content;
+}
+
+/* ── PREMIUM SEAL ── */
+.seal-wrap {
+  flex-shrink: 0;
+  position: relative;
+  width: 130px; height: 130px;
+}
+/* outermost slow-spin dashed */
+.seal-wrap::before {
+  content: "";
+  position: absolute;
+  top: -8px; left: -8px;
+  width: calc(100% + 16px); height: calc(100% + 16px);
+  border-radius: 50%;
+  border: 1px dashed rgba(139,197,63,.28);
+  animation: spinSlow 22s linear infinite;
+}
+/* counter-spin dashed inner */
+.seal-wrap::after {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px;
+  width: calc(100% + 4px); height: calc(100% + 4px);
+  border-radius: 50%;
+  border: 1px dashed rgba(139,197,63,.15);
+  animation: spinSlow 14s linear infinite reverse;
+}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+
+.seal-ring-outer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(139,197,63,.22);
+  background: rgba(139,197,63,.03);
+}
+.seal-ring-mid {
+  position: absolute;
+  top: 11px; left: 11px;
+  width: 108px; height: 108px;
+  border-radius: 50%;
+  border: 1px solid rgba(139,197,63,.14);
+}
+.seal-disc {
+  position: absolute;
+  top: 20px; left: 20px;
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(150deg, rgba(139,197,63,.18) 0%, rgba(139,197,63,.07) 100%);
+  border: 1.5px solid rgba(139,197,63,.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  animation: sealGlow 3.5s ease-in-out infinite;
+}
+@keyframes sealGlow {
+  0%,100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 16px rgba(139,197,63,.12); }
+  50%      { box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 28px rgba(139,197,63,.30); }
+}
+.seal-tm {
+  font-size: 32px; font-weight: 800;
+  color: var(--lime); line-height: 1; letter-spacing: -1px;
+}
+.seal-label {
+  font-size: 6.5px; font-weight: 700;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: rgba(139,197,63,.7);
+}
+/* clock-position dots */
+.seal-dot {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--lime); opacity: .45;
+}
+.seal-dot.t { top: 3px; left: 50%; transform: translateX(-50%); }
+.seal-dot.r { right: 3px; top: 50%; transform: translateY(-50%); }
+.seal-dot.b { bottom: 3px; left: 50%; transform: translateX(-50%); }
+.seal-dot.l { left: 3px; top: 50%; transform: translateY(-50%); }
+
+/* ── BODY ── */
+.body { padding: 48px 60px 52px; }
+
+/* Announcement card */
+.announcement {
+  position: relative;
+  background: var(--lime-bg);
+  border: 1px solid rgba(139,197,63,.25);
+  border-left: none;
+  border-radius: 6px;
+  padding: 26px 30px;
+  margin-bottom: 36px;
+  overflow: hidden;
+  animation: fadeUp .6s var(--ease) .1s both;
+}
+.announcement::before {
+  content: "";
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--lime) 0%, var(--lime-2) 100%);
+}
+/* subtle inner shimmer */
+.announcement::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,197,63,.35), transparent);
+}
+.announcement-text {
+  font-size: 14.5px; line-height: 1.82;
+  color: var(--ink-2); font-weight: 400;
+}
+.announcement-text strong { font-weight: 700; color: var(--lime-3); }
+
+/* Stats strip */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 36px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.04);
+  animation: fadeUp .6s var(--ease) .2s both;
+}
+.stat-cell {
+  padding: 22px 18px;
+  border-right: 1px solid var(--rule);
+  background: var(--white);
+  position: relative;
+  transition: background .18s;
+  overflow: hidden;
+}
+.stat-cell::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(139,197,63,0));
+  transition: background .3s;
+}
+.stat-cell:hover { background: var(--cream); }
+.stat-cell:hover::after {
+  background: linear-gradient(90deg, transparent, var(--lime-mid), transparent);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-label {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--pale); margin-bottom: 8px;
+}
+.stat-value {
+  font-size: 17px; font-weight: 800;
+  color: var(--ink); letter-spacing: -.5px;
+  line-height: 1;
+}
+.stat-value.lime { color: var(--lime-2); }
+
+/* Divider */
+.divider-row {
+  display: flex; align-items: center;
+  gap: 14px; margin-bottom: 36px;
+  animation: fadeUp .6s var(--ease) .28s both;
+}
+.divider-line { flex: 1; height: 1px; background: var(--rule); }
+.divider-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 18px;
+  border-radius: 999px;
+  background: var(--lime-bg);
+  border: 1px solid rgba(139,197,63,.28);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--lime-2);
+  box-shadow: 0 1px 6px rgba(139,197,63,.12), 0 0 0 3px rgba(139,197,63,.06);
+}
+.divider-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--lime);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(139,197,63,.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(139,197,63,0); }
+}
+
+/* Points */
+.section-label {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.section-label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+.points {
+  display: flex; flex-direction: column; gap: 10px;
+  animation: fadeUp .6s var(--ease) .36s both;
+}
+.point {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 18px 20px;
+  background: var(--cream);
+  border: 1px solid var(--cream-3);
+  border-radius: 8px;
+  position: relative; overflow: hidden;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.point::before {
+  content: "";
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--lime-mid), var(--lime-bg));
+  opacity: 0;
+  transition: opacity .2s;
+}
+.point:hover {
+  border-color: rgba(139,197,63,.28);
+  box-shadow: 0 4px 16px rgba(139,197,63,.10);
+  transform: translateX(2px);
+}
+.point:hover::before { opacity: 1; }
+
+.point-icon-wrap {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--lime-bg);
+  border: 1px solid rgba(139,197,63,.28);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.point-title {
+  font-size: 13.5px; font-weight: 700;
+  color: var(--ink); margin-bottom: 3px; letter-spacing: -.2px;
+}
+.point-desc {
+  font-size: 12.5px; color: var(--muted);
+  line-height: 1.6; font-weight: 400;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--ink);
+  padding: 22px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+/* top accent line */
+.footer::after {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,197,63,.25), transparent);
+}
+.footer::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.footer-brand {
+  position: relative; z-index: 1;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: .26em; text-transform: uppercase;
+  color: rgba(255,255,255,.38);
+  display: flex; align-items: center; gap: 9px;
+}
+.footer-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
+.footer-right {
+  position: relative; z-index: 1; text-align: right;
+}
+.footer-loc {
+  font-size: 10px; color: rgba(255,255,255,.18);
+  letter-spacing: .04em; line-height: 1.6;
+}
+.footer-tm {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(139,197,63,.4); margin-top: 2px;
+}
+
+/* ── PRINT BUTTON ── */
+.print-btn {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  z-index: 100;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 22px;
+  background: var(--ink);
+  border: 1.5px solid rgba(139,197,63,.35);
+  border-radius: 999px;
+  font-family: var(--f);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25), 0 0 0 0 rgba(139,197,63,.2);
+  transition: background .18s, box-shadow .18s, transform .15s;
+  animation: fadeUp .6s var(--ease) .9s both;
+}
+.print-btn:hover {
+  background: var(--lime-3);
+  border-color: var(--lime);
+  box-shadow: 0 6px 28px rgba(0,0,0,.28), 0 0 0 5px rgba(139,197,63,.12);
+  transform: translateY(-2px);
+}
+.print-btn:active { transform: translateY(0); }
+.print-btn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    display: block !important;
+    overflow: hidden;
+  }
+  .print-btn { display: none !important; }
+  /* Kill all animations */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .poster {
+    position: absolute;
+    top: 0; left: 0;
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .poster::before { display: none !important; }
+  /* Seal — lock all layers to exact px so they stay circular */
+  .seal-wrap { width: 108px !important; height: 108px !important; }
+  .seal-ring-outer { width: 108px !important; height: 108px !important; top: 0 !important; left: 0 !important; }
+  .seal-ring-mid { width: 86px !important; height: 86px !important; top: 11px !important; left: 11px !important; }
+  .seal-disc { width: 68px !important; height: 68px !important; top: 20px !important; left: 20px !important; }
+  .seal-wrap::before, .seal-wrap::after { display: none !important; }
+  .seal-dot { display: none !important; }
+  .seal-tm { font-size: 26px !important; }
+  /* Layout tightening to fit A4 */
+  .header { padding: 34px 48px 30px !important; }
+  .header-title { font-size: 44px !important; }
+  .hbg { font-size: 110px !important; }
+  .body { padding: 26px 48px 28px !important; flex: 1; }
+  .announcement { padding: 16px 20px !important; margin-bottom: 20px !important; }
+  .announcement-text { font-size: 12.5px !important; line-height: 1.65 !important; }
+  .stats-strip { margin-bottom: 20px !important; }
+  .stat-cell { padding: 14px 14px !important; }
+  .stat-value { font-size: 13px !important; }
+  .divider-row { margin-bottom: 20px !important; }
+  .section-label { margin-bottom: 12px !important; }
+  .points { gap: 8px !important; }
+  .point { padding: 11px 14px !important; }
+  .point-icon-wrap { width: 28px !important; height: 28px !important; font-size: 12px !important; }
+  .point-title { font-size: 11.5px !important; }
+  .point-desc { font-size: 10.5px !important; line-height: 1.5 !important; }
+  .footer { padding: 14px 48px !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- animated shimmer top edge handled by poster::before -->
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-glow2"></div>
+    <div class="hbg">SEHR</div>
+    <div class="header-inner">
+
+      <div class="header-left">
+        <div class="kicker">
+          <div class="kicker-rule"></div>
+          <div class="kicker-txt">Official Announcement · 2026</div>
+        </div>
+        <div class="header-title">
+          <span class="title-sehr">Sehr</span><span class="title-academy"> Academy</span><sup class="title-tm">™</sup>
+        </div>
+        <div class="header-sub">
+          Trademark Application — Successfully Completed<br>
+          Trade Marks Registry of India · Class 41 — Education Services
+        </div>
+        <div class="header-tag">
+          <span>&#10003;</span> Application No. 7602911
+        </div>
+      </div>
+
+      <!-- SEAL -->
+      <div class="seal-wrap">
+        <div class="seal-ring-outer"></div>
+        <div class="seal-ring-mid"></div>
+        <div class="seal-disc">
+          <div class="seal-tm">™</div>
+          <div class="seal-label">Completed</div>
+        </div>
+        <div class="seal-dot t"></div>
+        <div class="seal-dot r"></div>
+        <div class="seal-dot b"></div>
+        <div class="seal-dot l"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="announcement">
+      <p class="announcement-text">
+        We are proud to announce that <strong>Sehr Academy™</strong> has successfully completed its
+        Trademark Application with the Trade Marks Registry of India. Our brand name is now
+        officially protected under Class 41 — Education Services, and we are authorised to carry
+        the <strong>™ mark</strong> as a testament to our commitment to quality education.
+      </p>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-cell">
+        <div class="stat-label">Application No.</div>
+        <div class="stat-value">7602911</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Class</div>
+        <div class="stat-value">41 — Education</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Date Filed</div>
+        <div class="stat-value">19 Mar 2026</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Valid For</div>
+        <div class="stat-value lime">10 Years</div>
+      </div>
+    </div>
+
+    <div class="divider-row">
+      <div class="divider-line"></div>
+      <div class="divider-pill">
+        <div class="divider-dot"></div>
+        Milestone Achieved
+      </div>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="section-label">What This Means</div>
+    <div class="points">
+      <div class="point">
+        <div class="point-icon-wrap">🛡️</div>
+        <div class="point-content">
+          <div class="point-title">Brand Protection</div>
+          <div class="point-desc">The name "Sehr Academy" is now our exclusive intellectual property, legally protected under Indian trademark law.</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point-icon-wrap">✅</div>
+        <div class="point-content">
+          <div class="point-title">Authorised ™ Mark</div>
+          <div class="point-desc">We are officially authorised to use the ™ symbol across all platforms, materials, and communications.</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point-icon-wrap">🎓</div>
+        <div class="point-content">
+          <div class="point-title">A New Chapter</div>
+          <div class="point-desc">This milestone reflects our dedication to building a credible, trusted institution for students across Thrissur and beyond.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">
+      <div class="footer-dot"></div>
+      Sehr Academy™
+    </div>
+    <div class="footer-right">
+      <div class="footer-loc">Vadanappally · Thrissur · Kerala · India</div>
+      <div class="footer-tm">TM Application No. 7602911 · Class 41</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRINT BUTTON -->
+<button class="print-btn" onclick="window.print()">
+  <div class="print-btn-dot"></div>
+  Save as PDF
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+</button>
+
+</body>
+</html>
