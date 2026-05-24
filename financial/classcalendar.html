@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Calendar — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
+  --white:#fdfcfa;--ink:#1a1a18;--ink-2:#2e2e2b;
+  --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+  --lime:#8BC53F;--lime-2:#72a530;--lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+  --red:#dc2626;--red-bg:#fef2f2;
+  --f:"Open Sans",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06);--sh-md:0 6px 24px rgba(0,0,0,.10);--sh-lg:0 12px 40px rgba(0,0,0,.13);
+  /* Class colours */
+  --c9:#2563eb;  --c9-bg:#eff6ff;  --c9-mid:#bfdbfe;  --c9-dark:#1d4ed8;
+  --c10:#7c3aed; --c10-bg:#f5f3ff; --c10-mid:#ddd6fe; --c10-dark:#6d28d9;
+  --c11:#d97706; --c11-bg:#fffbeb; --c11-mid:#fde68a; --c11-dark:#b45309;
+  --c12:#0d9488; --c12-bg:#f0fdfa; --c12-mid:#99f6e4; --c12-dark:#0f766e;
+  --cx:#64748b;  --cx-bg:#f8fafc;  --cx-mid:#cbd5e1;  --cx-dark:#475569;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s var(--ease)}
+#loader.off{opacity:0;pointer-events:none}
+#loader::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025)1px,transparent 1px);background-size:48px 48px}
+.ld{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.ld-brand{font-size:11px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:36px;display:flex;align-items:center;gap:10px}
+.ld-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.5)}50%{box-shadow:0 0 0 10px rgba(139,197,63,0)}}
+.ld-ring{position:relative;width:48px;height:48px;margin-bottom:24px}
+.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(139,197,63,.25);animation:rspin .8s linear infinite}
+.ldr-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:var(--lime)}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ld-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.22);animation:ltxt 2s ease-in-out infinite}
+@keyframes ltxt{0%,100%{opacity:.22}50%{opacity:.55}}
+
+/* LOGIN */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400;transition:opacity .4s var(--ease)}
+#loginWrap.gone{opacity:0;pointer-events:none}
+#loginWrap::before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--rule)1px,transparent 1px),linear-gradient(90deg,var(--rule)1px,transparent 1px);background-size:48px 48px;opacity:.25}
+.lbox{position:relative;z-index:1;background:var(--white);border:1px solid var(--cream-3);border-radius:8px;width:100%;max-width:340px;box-shadow:var(--sh-lg);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 24px 20px;position:relative;overflow:hidden}
+.lbox-head::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.lbox-logo{font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.lbox-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.lbox-title i{font-style:italic;font-weight:300;color:var(--lime)}
+.lbox-body{padding:20px 24px 24px}
+.lbox-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.lbox-input{width:100%;padding:11px 13px;border:1.5px solid var(--cream-3);border-radius:5px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:all .18s}
+.lbox-input:focus{border-color:var(--lime);background:var(--white);box-shadow:0 0 0 3px rgba(139,197,63,.1)}
+.lbox-btn{width:100%;margin-top:12px;padding:12px;border:none;border-radius:5px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:background .18s}
+.lbox-btn:hover:not(:disabled){background:var(--lime-2)}
+.lbox-btn:disabled{opacity:.55;cursor:default}
+.lbox-err{display:none;margin-top:10px;padding:9px 11px;background:var(--red-bg);border:1px solid #fca5a5;border-radius:4px;font-size:11px;font-weight:600;color:var(--red)}
+.lbox-err.on{display:block}
+
+/* APP */
+#app{display:none}
+#app.on{display:block}
+
+/* TOPBAR */
+.topbar{background:var(--ink);border-bottom:3px solid var(--lime);position:sticky;top:0;z-index:200}
+.topbar::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.tb-inner{max-width:1600px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;position:relative;z-index:1}
+.tb-left{display:flex;align-items:center;gap:16px}
+.tb-brand{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.tb-brand span{color:var(--lime)}
+.tb-divider{width:1px;height:20px;background:rgba(255,255,255,.1)}
+.tb-title{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.tb-title i{font-style:italic;font-weight:300;color:var(--lime)}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:4px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);font-family:var(--f);font-size:11px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;white-space:nowrap}
+.tb-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.tb-btn.lime{background:var(--lime);border-color:transparent;color:var(--ink)}
+.tb-btn.lime:hover{background:var(--lime-2)}
+.tb-btn svg{width:13px;height:13px}
+
+/* CALENDAR HEADER */
+.cal-header{max-width:1600px;margin:0 auto;padding:20px 24px 12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.cal-nav-group{display:flex;align-items:center;gap:8px}
+.cal-nav-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--cream-3);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;color:var(--muted);box-shadow:var(--sh)}
+.cal-nav-btn:hover{border-color:var(--lime-mid);background:var(--lime-bg);color:var(--lime-2)}
+.cal-nav-btn svg{width:14px;height:14px}
+.cal-today-btn{padding:7px 14px;border-radius:6px;border:1.5px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;box-shadow:var(--sh)}
+.cal-today-btn:hover{border-color:var(--lime-mid);color:var(--lime-2);background:var(--lime-bg)}
+.cal-month-title{font-size:clamp(18px,2.5vw,28px);font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.cal-month-title span{color:var(--muted);font-weight:400;font-size:.7em;margin-left:6px}
+.cal-filters{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cf-label{font-size:10px;font-weight:700;color:var(--pale);text-transform:uppercase;letter-spacing:.1em;margin-right:2px}
+.cf-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:5px;border:1.5px solid transparent;font-family:var(--f);font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;user-select:none}
+.cf-chip.off{background:var(--white);border-color:var(--cream-3);color:var(--muted)}
+.cf-chip.off:hover{border-color:var(--rule);color:var(--ink-2)}
+.cf-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cf-c9{background:var(--c9-bg);border-color:var(--c9-mid);color:var(--c9)}
+.cf-c9 .cf-dot{background:var(--c9)}
+.cf-c10{background:var(--c10-bg);border-color:var(--c10-mid);color:var(--c10)}
+.cf-c10 .cf-dot{background:var(--c10)}
+.cf-c11{background:var(--c11-bg);border-color:var(--c11-mid);color:var(--c11)}
+.cf-c11 .cf-dot{background:var(--c11)}
+.cf-c12{background:var(--c12-bg);border-color:var(--c12-mid);color:var(--c12)}
+.cf-c12 .cf-dot{background:var(--c12)}
+
+/* LEGEND */
+.legend-bar{max-width:1600px;margin:0 auto;padding:0 24px 12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:3px;flex-shrink:0}
+.l-c9{background:var(--c9)}.l-c10{background:var(--c10)}.l-c11{background:var(--c11)}.l-c12{background:var(--c12)}
+.legend-muted{width:8px;height:8px;border-radius:3px;background:var(--pale)}
+
+/* CALENDAR GRID */
+.cal-wrap{max-width:1600px;margin:0 auto;padding:0 24px 40px}
+.cal-grid{background:var(--white);border:1px solid var(--cream-3);border-radius:12px;overflow:hidden;box-shadow:var(--sh-md)}
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);background:var(--ink);border-bottom:2px solid var(--lime)}
+.dow-cell{padding:10px 12px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.dow-cell.weekend{color:rgba(139,197,63,.7)}
+.days-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.day-cell{min-height:120px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:0;position:relative;transition:background .12s;cursor:default;display:flex;flex-direction:column}
+.day-cell:nth-child(7n){border-right:none}
+.day-cell.other-month{background:var(--cream-2)}
+.day-cell.today{background:rgba(139,197,63,.04)}
+.day-cell.today .day-num{color:var(--lime-2);font-weight:800}
+.day-cell.today::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime)}
+.day-cell.weekend-cell{background:#faf9f7}
+.day-cell.other-month.weekend-cell{background:var(--cream-3)}
+.day-num-row{display:flex;align-items:center;justify-content:space-between;padding:7px 8px 4px}
+.day-num{font-size:12px;font-weight:700;color:var(--muted);width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0}
+.day-num.today-num{background:var(--lime);color:var(--ink);font-weight:800}
+.day-count{font-size:9px;font-weight:700;color:var(--pale);white-space:nowrap}
+.day-pills{padding:0 4px 6px;display:flex;flex-direction:column;gap:2px;flex:1;overflow:hidden}
+.pill-item{display:flex;align-items:center;gap:4px;padding:3px 6px;border-radius:4px;cursor:pointer;transition:all .12s;border:1px solid transparent;flex-shrink:0}
+.pill-item:hover{filter:brightness(.93)}
+.pill-item.muted{opacity:.45;filter:grayscale(.4)}
+.pill-item.muted:hover{opacity:.7;filter:grayscale(.2)}
+.pill-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.pill-txt{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.pill-time{font-size:9px;font-weight:600;flex-shrink:0;opacity:.75}
+.pill-c9{background:var(--c9-bg);border-color:var(--c9-mid);color:var(--c9-dark)}
+.pill-c9 .pill-dot{background:var(--c9)}
+.pill-c10{background:var(--c10-bg);border-color:var(--c10-mid);color:var(--c10-dark)}
+.pill-c10 .pill-dot{background:var(--c10)}
+.pill-c11{background:var(--c11-bg);border-color:var(--c11-mid);color:var(--c11-dark)}
+.pill-c11 .pill-dot{background:var(--c11)}
+.pill-c12{background:var(--c12-bg);border-color:var(--c12-mid);color:var(--c12-dark)}
+.pill-c12 .pill-dot{background:var(--c12)}
+.pill-cx{background:var(--cx-bg);border-color:var(--cx-mid);color:var(--cx-dark)}
+.pill-cx .pill-dot{background:var(--cx)}
+.more-pill{font-size:9px;font-weight:700;color:var(--muted);padding:2px 6px;cursor:pointer;transition:color .12s}
+.more-pill:hover{color:var(--ink)}
+
+/* SESSION DETAIL MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:600;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-bg.on{display:flex}
+.modal{background:var(--white);border-radius:12px;width:100%;max-width:420px;box-shadow:var(--sh-lg);overflow:hidden}
+.modal-accent{height:4px}
+.modal-head{padding:16px 20px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.modal-date{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.modal-title{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.3px}
+.modal-close{width:28px;height:28px;border-radius:50%;border:1px solid var(--rule);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--pale);transition:all .14s;flex-shrink:0}
+.modal-close:hover{background:var(--cream-2);color:var(--ink)}
+.modal-close svg{width:13px;height:13px}
+.modal-body{padding:0 20px 20px;display:flex;flex-direction:column;gap:10px}
+.modal-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px;background:var(--cream)}
+.modal-row-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-row-ico svg{width:14px;height:14px}
+.modal-row-k{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-bottom:1px}
+.modal-row-v{font-size:13px;font-weight:700;color:var(--ink)}
+.modal-status{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:700}
+.ms-scheduled{background:rgba(139,197,63,.12);color:var(--lime-2)}
+.ms-completed{background:var(--cream-2);color:var(--muted)}
+.ms-cancelled{background:var(--red-bg);color:var(--red)}
+.ms-absent{background:#fffbeb;color:#d97706}
+
+/* DAY MODAL (overflow) */
+.day-modal{max-width:360px}
+.day-modal-date{font-size:13px;font-weight:800;color:var(--ink);padding:14px 18px 10px;border-bottom:1px solid var(--rule)}
+.day-modal-list{padding:10px 12px 14px;display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
+.day-sess-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:background .12s;border:1px solid var(--cream-3)}
+.day-sess-row:hover{background:var(--cream-2)}
+.day-sess-bar{width:4px;border-radius:2px;align-self:stretch;flex-shrink:0;min-height:36px}
+.day-sess-info{flex:1;min-width:0}
+.day-sess-subj{font-size:12px;font-weight:700;color:var(--ink)}
+.day-sess-meta{font-size:10px;color:var(--muted);margin-top:1px}
+.day-sess-time{font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0}
+
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:7px;font-size:12px;font-weight:600;box-shadow:var(--sh-lg);z-index:700;transform:translateY(60px);opacity:0;transition:all .3s var(--ease);border-left:3px solid var(--lime)}
+.toast.on{transform:translateY(0);opacity:1}
+
+@media(max-width:900px){
+  .cal-header{padding:14px 14px 8px}
+  .legend-bar{padding:0 14px 8px}
+  .cal-wrap{padding:0 14px 32px}
+  .day-cell{min-height:80px}
+  .pill-time{display:none}
+  .dow-cell{font-size:8px;padding:8px 4px}
+  .day-num{font-size:11px}
+}
+@media(max-width:600px){
+  .day-cell{min-height:60px}
+  .pill-txt{font-size:9px}
+  .cal-month-title{font-size:16px}
+}
+
+/* ── CLASS MESSAGE BAR ──────────────────────────────────────── */
+.msg-bar{max-width:1600px;margin:0 auto;padding:0 24px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.msg-sel{padding:8px 28px 8px 12px;border:1.5px solid var(--cream-3);border-radius:6px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;box-shadow:var(--sh);transition:border-color .15s}
+.msg-sel:focus{border-color:var(--lime)}
+.msg-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;border:none;background:#25D366;font-family:var(--f);font-size:12px;font-weight:700;color:#fff;cursor:pointer;transition:background .15s;box-shadow:var(--sh)}
+.msg-btn:hover{background:#1ebe5d}
+.msg-btn svg{width:13px;height:13px}
+.msg-label{font-size:11px;color:var(--muted);font-weight:600}
+
+/* ── MESSAGE COPY MODAL ──────────────────────────────────────── */
+.mcopy-modal{max-width:520px}
+.mcopy-head{background:var(--ink);padding:16px 20px;border-bottom:2px solid #25D366;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.mcopy-title{font-size:13px;font-weight:700;color:#fff}
+.mcopy-body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:12px}
+.mcopy-info{font-size:11px;color:var(--muted);background:var(--cream);padding:9px 12px;border-radius:6px;border:1px solid var(--rule)}
+.mcopy-textarea{width:100%;min-height:280px;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:7px;background:var(--cream);font-family:var(--f);font-size:12px;line-height:1.6;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s}
+.mcopy-textarea:focus{border-color:var(--lime);background:var(--white)}
+.mcopy-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mcopy-copy-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:6px;border:none;background:#25D366;font-family:var(--f);font-size:12px;font-weight:700;color:#fff;cursor:pointer;transition:background .15s}
+.mcopy-copy-btn:hover{background:#1ebe5d}
+.mcopy-copy-btn svg{width:13px;height:13px}
+.mcopy-copy-btn.copied{background:var(--lime-2)}
+.mcopy-close-btn{padding:10px 16px;border-radius:6px;border:1.5px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.mcopy-close-btn:hover{border-color:var(--rule);color:var(--ink)}
+.mcopy-count{font-size:10px;color:var(--pale)}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="ld">
+    <div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div>
+    <div class="ld-ring"><div class="ldr-spin"></div><div class="ldr-dot"></div></div>
+    <div class="ld-txt">Loading calendar</div>
+  </div>
+</div>
+
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-logo">SEHR Academy</div>
+      <div class="lbox-title">Class <i>Calendar</i></div>
+    </div>
+    <div class="lbox-body">
+      <form id="loginForm">
+        <div class="lbox-label">Password</div>
+        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" id="loginBtn" class="lbox-btn">Access Calendar</button>
+        <div class="lbox-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- SESSION DETAIL MODAL -->
+<div class="modal-bg" id="modalDetail">
+  <div class="modal">
+    <div class="modal-accent" id="detailAccent"></div>
+    <div class="modal-head">
+      <div>
+        <div class="modal-date" id="detailDate"></div>
+        <div class="modal-title" id="detailTitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeDetail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- DAY OVERFLOW MODAL -->
+<div class="modal-bg" id="modalDay">
+  <div class="modal day-modal">
+    <div class="modal-head" style="border-bottom:1px solid var(--rule);padding:14px 18px">
+      <div class="modal-title" id="dayModalTitle"></div>
+      <button class="modal-close" onclick="g('modalDay').classList.remove('on')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="day-modal-list" id="dayModalList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-inner">
+      <div class="tb-left">
+        <span class="tb-brand">SEHR <span>ACADEMY</span></span>
+        <div class="tb-divider"></div>
+        <span class="tb-title">Group Class <i>Calendar</i></span>
+      </div>
+      <div class="tb-right">
+        <button class="tb-btn" id="btnRefresh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Refresh
+        </button>
+        <button class="tb-btn lime" id="btnLogout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR HEADER -->
+  <div class="cal-header">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="cal-nav-group">
+        <button class="cal-nav-btn" id="btnPrev">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="cal-today-btn" id="btnToday">Today</button>
+        <button class="cal-nav-btn" id="btnNext">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="cal-month-title" id="calMonthTitle">May <span>2026</span></div>
+    </div>
+    <div class="cal-filters" id="calFilters">
+      <span class="cf-label">Filter</span>
+      <span class="cf-chip cf-c9" data-cls="9" onclick="toggleFilter(this)"><span class="cf-dot"></span>Class 9</span>
+      <span class="cf-chip cf-c10" data-cls="10" onclick="toggleFilter(this)"><span class="cf-dot"></span>Class 10</span>
+      <span class="cf-chip cf-c11" data-cls="11" onclick="toggleFilter(this)"><span class="cf-dot"></span>Class 11</span>
+      <span class="cf-chip cf-c12" data-cls="12" onclick="toggleFilter(this)"><span class="cf-dot"></span>Class 12</span>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend-bar">
+    <div class="legend-item"><div class="legend-dot l-c9"></div>Class 9</div>
+    <div class="legend-item"><div class="legend-dot l-c10"></div>Class 10</div>
+    <div class="legend-item"><div class="legend-dot l-c11"></div>Class 11</div>
+    <div class="legend-item"><div class="legend-dot l-c12"></div>Class 12</div>
+    <div class="legend-item"><div class="legend-muted"></div>Completed</div>
+    <div style="margin-left:auto;font-size:10px;color:var(--pale)" id="sessionCount"></div>
+  </div>
+
+  <!-- CALENDAR -->
+    <!-- CLASS MESSAGE BAR -->
+  <div class="msg-bar">
+    <span class="msg-label">Send class schedule to students:</span>
+    <select class="msg-sel" id="msgClassSel">
+      <option value="">Select class</option>
+      <option value="9">Class 9</option>
+      <option value="10">Class 10</option>
+      <option value="11">Class 11</option>
+      <option value="12">Class 12</option>
+    </select>
+    <button class="msg-btn" onclick="openClassMessage()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Generate Message
+    </button>
+    <button class="msg-btn" style="background:var(--ink);border:1.5px solid #333" onclick="generateSchedulePDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      7-Day Schedule PDF
+    </button>
+  </div>
+
+  <!-- MESSAGE COPY MODAL -->
+  <div class="modal-bg" id="modalMsg">
+    <div class="modal mcopy-modal">
+      <div class="mcopy-head">
+        <span class="mcopy-title" id="msgModalTitle">Class Schedule Message</span>
+        <button class="modal-close" onclick="g('modalMsg').classList.remove('on')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="mcopy-body">
+        <div class="mcopy-info">Copy this message and paste it into your WhatsApp group. WhatsApp formatting: *bold*, _italic_.</div>
+        <textarea class="mcopy-textarea" id="msgText" readonly></textarea>
+        <div class="mcopy-foot">
+          <span class="mcopy-count" id="msgCount"></span>
+          <div style="display:flex;gap:8px">
+            <button class="mcopy-close-btn" onclick="g('modalMsg').classList.remove('on')">Close</button>
+            <button class="mcopy-copy-btn" id="msgCopyBtn" onclick="copyMessage()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Message
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="cal-wrap">
+    <div class="cal-grid">
+      <div class="dow-row">
+        <div class="dow-cell">Sun</div>
+        <div class="dow-cell">Mon</div>
+        <div class="dow-cell">Tue</div>
+        <div class="dow-cell">Wed</div>
+        <div class="dow-cell">Thu</div>
+        <div class="dow-cell">Fri</div>
+        <div class="dow-cell weekend">Sat</div>
+      </div>
+      <div class="days-grid" id="daysGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycbyRQ4RUhG6AudtPkKQYoC05nvwSyEN2b85Ben6G5RY24AzF5BLMddFuyCaagF1EtRiqLg/exec';
+var PASSWORD = '';
+var SESSIONS = [], TEACHERS = [];
+var VIEW_YEAR, VIEW_MONTH;
+var ACTIVE_FILTERS = { '9': true, '10': true, '11': true, '12': true };
+var MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function g(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function loaderOff() { g('loader').classList.add('off'); }
+function showToast(msg) { var t=g('toast'); t.textContent=msg; t.className='toast on'; setTimeout(function(){ t.className='toast'; }, 2800); }
+
+function parseDate(s) {
+  if (!s) return null;
+  var p = String(s).trim().split('/');
+  if (p.length === 3 && p[2].length === 4) {
+    var d = new Date(p[2] + '-' + p[1].padStart(2,'0') + '-' + p[0].padStart(2,'0'));
+    return (!isNaN(d) && d.getFullYear() >= 2020) ? d : null;
+  }
+  return null;
+}
+
+function parseTimeStr(t) {
+  if (!t) return '99:99';
+  var m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  if (!m) return '99:99';
+  var h = parseInt(m[1], 10), min = m[2];
+  var ap = (m[3] || 'AM').toUpperCase();
+  if (ap === 'PM' && h !== 12) h += 12;
+  if (ap === 'AM' && h === 12) h = 0;
+  return String(h).padStart(2,'0') + ':' + min;
+}
+
+function clsColor(cls) {
+  var map = { '9': 'c9', '10': 'c10', '11': 'c11', '12': 'c12' };
+  return map[String(cls)] || 'cx';
+}
+
+function clsAccent(cls) {
+  var map = { '9': 'var(--c9)', '10': 'var(--c10)', '11': 'var(--c11)', '12': 'var(--c12)' };
+  return map[String(cls)] || 'var(--cx)';
+}
+
+function teacherName(tid) {
+  var t = TEACHERS.filter(function(x){ return x.teacher_id === tid; })[0];
+  return t ? String(t.full_name || '') : String(tid || '');
+}
+
+function fmtDateLong(d) {
+  if (!d) return '';
+  return DNAMES[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS_LONG[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+/* ── LOGIN ──────────────────────────────────────────────────── */
+var now0 = new Date();
+VIEW_YEAR = now0.getFullYear();
+VIEW_MONTH = now0.getMonth();
+
+window.addEventListener('load', function() {
+  loaderOff();
+  var saved = sessionStorage.getItem('sehr_grp_pass');
+  if (saved) tryLogin(saved, true);
+});
+
+g('loginForm').addEventListener('submit', function(ev) {
+  ev.preventDefault();
+  var p = g('passInput').value.trim();
+  if (p) tryLogin(p, false);
+});
+
+function tryLogin(pass, silent) {
+  var btn = g('loginBtn');
+  if (!silent) { btn.disabled = true; btn.textContent = 'Authenticating...'; }
+  g('loginErr').className = 'lbox-err';
+  if (!silent) g('loader').classList.remove('off');
+  fetch(API + '?action=getData&password=' + encodeURIComponent(pass))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      loaderOff();
+      if (data.error) {
+        if (!silent) {
+          btn.disabled = false; btn.textContent = 'Access Calendar';
+          g('loginErr').textContent = 'Incorrect password.';
+          g('loginErr').className = 'lbox-err on';
+        } else { sessionStorage.removeItem('sehr_grp_pass'); }
+        return;
+      }
+      PASSWORD = pass;
+      loadData(data);
+      sessionStorage.setItem('sehr_grp_pass', pass);
+      g('loginWrap').classList.add('gone');
+      g('app').classList.add('on');
+      renderCalendar();
+    })
+    .catch(function() {
+      loaderOff();
+      if (!silent) {
+        btn.disabled = false; btn.textContent = 'Access Calendar';
+        g('loginErr').textContent = 'Connection error.'; g('loginErr').className = 'lbox-err on';
+      }
+    });
+}
+
+function loadData(d) {
+  SESSIONS  = Array.isArray(d.sessions)  ? d.sessions  : [];
+  TEACHERS  = Array.isArray(d.teachers)  ? d.teachers  : [];
+}
+
+/* ── FILTER ─────────────────────────────────────────────────── */
+function toggleFilter(el) {
+  var cls = el.dataset.cls;
+  ACTIVE_FILTERS[cls] = !ACTIVE_FILTERS[cls];
+  if (ACTIVE_FILTERS[cls]) {
+    el.classList.remove('off');
+  } else {
+    el.classList.add('off');
+  }
+  renderCalendar();
+}
+
+/* ── NAV ────────────────────────────────────────────────────── */
+g('btnPrev').addEventListener('click', function() {
+  VIEW_MONTH--;
+  if (VIEW_MONTH < 0) { VIEW_MONTH = 11; VIEW_YEAR--; }
+  renderCalendar();
+});
+g('btnNext').addEventListener('click', function() {
+  VIEW_MONTH++;
+  if (VIEW_MONTH > 11) { VIEW_MONTH = 0; VIEW_YEAR++; }
+  renderCalendar();
+});
+g('btnToday').addEventListener('click', function() {
+  var n = new Date(); VIEW_YEAR = n.getFullYear(); VIEW_MONTH = n.getMonth();
+  renderCalendar();
+});
+g('btnRefresh').addEventListener('click', function() {
+  fetch(API + '?action=getData&password=' + encodeURIComponent(PASSWORD))
+    .then(function(r) { return r.json(); })
+    .then(function(d) { loadData(d); renderCalendar(); showToast('Refreshed'); })
+    .catch(function() { showToast('Refresh failed'); });
+});
+g('btnLogout').addEventListener('click', function() {
+  sessionStorage.removeItem('sehr_grp_pass'); PASSWORD = '';
+  g('app').classList.remove('on'); g('loginWrap').classList.remove('gone'); g('passInput').value = '';
+});
+
+/* ── RENDER CALENDAR ────────────────────────────────────────── */
+function renderCalendar() {
+  var y = VIEW_YEAR, m = VIEW_MONTH;
+  g('calMonthTitle').innerHTML = MONTHS_LONG[m] + ' <span>' + y + '</span>';
+
+  var today = new Date(); today.setHours(0,0,0,0);
+  var firstDay = new Date(y, m, 1).getDay();
+  var daysInMonth = new Date(y, m + 1, 0).getDate();
+  var daysInPrev = new Date(y, m, 0).getDate();
+
+  /* Build session lookup by date key YYYY-MM-DD */
+  var byDate = {};
+  SESSIONS.forEach(function(r) {
+    var cls = String(r['class'] || '');
+    if (!ACTIVE_FILTERS[cls]) return;
+    var st = String(r.status || '').toLowerCase();
+    if (st === 'cancelled') return;
+    var d = parseDate(r.date_ddmmyyyy);
+    if (!d) return;
+    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    if (!byDate[key]) byDate[key] = [];
+    byDate[key].push(r);
+  });
+
+  /* Sort each day's sessions by time */
+  Object.keys(byDate).forEach(function(k) {
+    byDate[k].sort(function(a, b) {
+      return parseTimeStr(a.start_time || '').localeCompare(parseTimeStr(b.start_time || ''));
+    });
+  });
+
+  var visibleTotal = Object.values(byDate).reduce(function(a, arr) { return a + arr.length; }, 0);
+  var inMonth = Object.keys(byDate).filter(function(k) {
+    var parts = k.split('-');
+    return parseInt(parts[1],10) === m+1 && parseInt(parts[0],10) === y;
+  }).reduce(function(a, k) { return a + byDate[k].length; }, 0);
+  g('sessionCount').textContent = inMonth + ' session' + (inMonth !== 1 ? 's' : '') + ' this month';
+
+  var grid = g('daysGrid');
+  grid.innerHTML = '';
+
+  /* Leading days from prev month */
+  for (var i = firstDay - 1; i >= 0; i--) {
+    var d = daysInPrev - i;
+    var prevM = m === 0 ? 11 : m - 1;
+    var prevY = m === 0 ? y - 1 : y;
+    var key = prevY + '-' + String(prevM+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    grid.appendChild(makeCell(d, true, false, key, byDate[key] || []));
+  }
+
+  /* Current month days */
+  for (var d = 1; d <= daysInMonth; d++) {
+    var key = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    var thisDate = new Date(y, m, d);
+    var isToday = thisDate.toDateString() === today.toDateString();
+    grid.appendChild(makeCell(d, false, isToday, key, byDate[key] || []));
+  }
+
+  /* Trailing days from next month */
+  var total = firstDay + daysInMonth;
+  var trailing = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (var n = 1; n <= trailing; n++) {
+    var nextM = m === 11 ? 0 : m + 1;
+    var nextY = m === 11 ? y + 1 : y;
+    var key = nextY + '-' + String(nextM+1).padStart(2,'0') + '-' + String(n).padStart(2,'0');
+    grid.appendChild(makeCell(n, true, false, key, byDate[key] || []));
+  }
+}
+
+var MAX_PILLS = 3;
+
+function makeCell(dayNum, isOther, isToday, dateKey, sessions) {
+  var cell = document.createElement('div');
+  var dayOfWeek = new Date(dateKey).getDay();
+  var isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+  cell.className = 'day-cell'
+    + (isOther ? ' other-month' : '')
+    + (isToday ? ' today' : '')
+    + (isWeekend ? ' weekend-cell' : '');
+
+  /* Day number row */
+  var numRow = document.createElement('div');
+  numRow.className = 'day-num-row';
+  var numEl = document.createElement('div');
+  numEl.className = 'day-num' + (isToday ? ' today-num' : '');
+  numEl.textContent = dayNum;
+  numRow.appendChild(numEl);
+  if (sessions.length > 0) {
+    var countEl = document.createElement('div');
+    countEl.className = 'day-count';
+    countEl.textContent = sessions.length + ' class' + (sessions.length > 1 ? 'es' : '');
+    numRow.appendChild(countEl);
+  }
+  cell.appendChild(numRow);
+
+  /* Pills */
+  var pillsWrap = document.createElement('div');
+  pillsWrap.className = 'day-pills';
+
+  var visible = sessions.slice(0, MAX_PILLS);
+  var overflow = sessions.slice(MAX_PILLS);
+
+  visible.forEach(function(r) {
+    var pill = makePill(r, dateKey);
+    pillsWrap.appendChild(pill);
+  });
+
+  if (overflow.length > 0) {
+    var more = document.createElement('div');
+    more.className = 'more-pill';
+    more.textContent = '+' + overflow.length + ' more';
+    more.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      openDayModal(dateKey, sessions);
+    });
+    pillsWrap.appendChild(more);
+  }
+
+  cell.appendChild(pillsWrap);
+  return cell;
+}
+
+function makePill(r, dateKey) {
+  var cls = String(r['class'] || '');
+  var cc = clsColor(cls);
+  var st = String(r.status || '').toLowerCase();
+  var isMuted = st === 'completed' || st === 'absent';
+
+  var pill = document.createElement('div');
+  pill.className = 'pill-item pill-' + cc + (isMuted ? ' muted' : '');
+  pill.title = buildTooltip(r);
+
+  var dot = document.createElement('span');
+  dot.className = 'pill-dot';
+
+  var txt = document.createElement('span');
+  txt.className = 'pill-txt';
+  var tname = r.teacher_name || teacherName(r.teacher_id) || '';
+  txt.textContent = (r.subject || 'Class') + (cls ? ' ' + cls : '') + (tname ? ' · ' + tname.replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i,'') : '');
+
+  var time = document.createElement('span');
+  time.className = 'pill-time';
+  time.textContent = r.start_time || '';
+
+  pill.appendChild(dot);
+  pill.appendChild(txt);
+  pill.appendChild(time);
+
+  pill.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    openDetail(r, dateKey);
+  });
+
+  return pill;
+}
+
+function buildTooltip(r) {
+  var parts = [];
+  if (r.start_time) parts.push(r.start_time);
+  if (r.subject) parts.push(r.subject);
+  if (r['class']) parts.push('Class ' + r['class']);
+  if (r.mode) parts.push(r.mode);
+  var tname = r.teacher_name || teacherName(r.teacher_id);
+  if (tname) parts.push(tname);
+  return parts.join(' · ');
+}
+
+/* ── DAY OVERFLOW MODAL ─────────────────────────────────────── */
+function openDayModal(dateKey, sessions) {
+  var d = new Date(dateKey);
+  g('dayModalTitle').textContent = DNAMES[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS_LONG[d.getMonth()];
+  var list = g('dayModalList');
+  list.innerHTML = '';
+  sessions.forEach(function(r) {
+    var cls = String(r['class'] || '');
+    var cc = clsColor(cls);
+    var st = String(r.status || '').toLowerCase();
+    var isMuted = st === 'completed' || st === 'absent';
+    var row = document.createElement('div');
+    row.className = 'day-sess-row';
+    row.style.opacity = isMuted ? '.55' : '1';
+    var bar = document.createElement('div');
+    bar.className = 'day-sess-bar';
+    bar.style.background = clsAccent(cls);
+    var info = document.createElement('div');
+    info.className = 'day-sess-info';
+    var subj = document.createElement('div');
+    subj.className = 'day-sess-subj';
+    subj.textContent = (r.subject || 'Class') + (cls ? ' · Class ' + cls : '');
+    var meta = document.createElement('div');
+    meta.className = 'day-sess-meta';
+    var tname = r.teacher_name || teacherName(r.teacher_id) || '—';
+    meta.textContent = tname + (r.mode ? ' · ' + r.mode : '') + (r.duration_hrs ? ' · ' + r.duration_hrs + 'h' : '');
+    var time = document.createElement('div');
+    time.className = 'day-sess-time';
+    time.textContent = r.start_time || '—';
+    info.appendChild(subj); info.appendChild(meta);
+    row.appendChild(bar); row.appendChild(info); row.appendChild(time);
+    row.addEventListener('click', function() {
+      g('modalDay').classList.remove('on');
+      openDetail(r, dateKey);
+    });
+    list.appendChild(row);
+  });
+  g('modalDay').classList.add('on');
+}
+
+/* ── SESSION DETAIL MODAL ───────────────────────────────────── */
+function openDetail(r, dateKey) {
+  var cls = String(r['class'] || '');
+  var cc = clsColor(cls);
+  var accent = clsAccent(cls);
+  var st = String(r.status || '').toLowerCase();
+  var tname = r.teacher_name || teacherName(r.teacher_id) || '—';
+  var d = new Date(dateKey);
+
+  g('detailAccent').style.background = accent;
+  g('detailDate').textContent = fmtDateLong(d);
+  g('detailTitle').textContent = (r.subject || 'Session') + (cls ? ' — Class ' + cls : '');
+
+  var stClass = { scheduled:'ms-scheduled', completed:'ms-completed', cancelled:'ms-cancelled', absent:'ms-absent' }[st] || 'ms-scheduled';
+  var stLabel = String(r.status || 'Scheduled');
+
+  var rows = [
+    { ico: 'var(--c'+cls+'-bg, var(--cream))', icoBorder: accent, svg: '<svg viewBox="0 0 24 24" fill="none" stroke="'+accent+'" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', k:'Date', v: esc(fmtDateLong(d)) },
+    { ico: 'var(--cream)', icoBorder: 'var(--rule)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', k:'Time', v: esc(r.start_time || '—') + (r.duration_hrs ? ' &nbsp;·&nbsp; ' + r.duration_hrs + ' hr' : '') },
+    { ico: 'var(--cream)', icoBorder: 'var(--rule)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>', k:'Teacher', v: esc(tname) },
+    { ico: 'var(--cream)', icoBorder: 'var(--rule)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>', k:'Subject', v: esc(r.subject || '—') },
+    { ico: 'var(--cream)', icoBorder: 'var(--rule)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', k:'Mode', v: esc(r.mode || '—') },
+    { ico: 'var(--cream)', icoBorder: 'var(--rule)', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>', k:'Rate / Amount', v: (r.rate_per_hr ? 'Rs.' + Number(r.rate_per_hr).toLocaleString('en-IN') + '/hr' : '—') + (r.amount ? ' &nbsp;·&nbsp; Rs.' + Number(r.amount).toLocaleString('en-IN') : '') },
+  ];
+
+  g('detailBody').innerHTML = rows.map(function(row) {
+    return '<div class="modal-row">'
+      + '<div class="modal-row-ico" style="background:' + row.ico + ';border:1.5px solid ' + row.icoBorder + '">' + row.svg + '</div>'
+      + '<div><div class="modal-row-k">' + row.k + '</div><div class="modal-row-v">' + row.v + '</div></div>'
+      + '</div>';
+  }).join('')
+  + '<div style="display:flex;align-items:center;gap:8px;padding:4px 0">'
+  + '<span class="modal-status ' + stClass + '">' + stLabel + '</span>'
+  + (r.notes ? '<span style="font-size:11px;color:var(--muted)">' + esc(r.notes) + '</span>' : '')
+  + '</div>';
+
+  g('modalDetail').classList.add('on');
+}
+
+function closeDetail() { g('modalDetail').classList.remove('on'); }
+
+/* Close modals on backdrop click */
+g('modalDetail').addEventListener('click', function(ev) { if (ev.target === this) closeDetail(); });
+g('modalDay').addEventListener('click', function(ev) { if (ev.target === this) this.classList.remove('on'); });
+g('modalMsg').addEventListener('click', function(ev) { if (ev.target === this) this.classList.remove('on'); });
+document.addEventListener('keydown', function(ev) { if (ev.key === 'Escape') { closeDetail(); g('modalDay').classList.remove('on'); g('modalMsg').classList.remove('on'); } });
+
+/* ── CLASS SCHEDULE MESSAGE ──────────────────────────────────── */
+function buildClassMsg(cls) {
+  var now = new Date(); now.setHours(0,0,0,0);
+  var dnames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var mnames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  /* Group upcoming sessions for this class by date, no cutoff — take first 7 days with sessions */
+  var byDate = {};
+  SESSIONS.forEach(function(r) {
+    if (String(r['class'] || '') !== String(cls)) return;
+    var st = String(r.status || '').toLowerCase();
+    if (st === 'cancelled') return;
+    var d = parseDate(r.date_ddmmyyyy);
+    if (!d || d < now) return;
+    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    if (!byDate[key]) byDate[key] = { d: d, sessions: [] };
+    byDate[key].sessions.push(r);
+  });
+
+  /* Sort dates and take first 7 days that have sessions */
+  var days = Object.keys(byDate).sort().slice(0, 7).map(function(k) { return byDate[k]; });
+
+  /* Flatten to get total session count */
+  var relevant = days.reduce(function(a, day) { return a.concat(day.sessions); }, []);
+
+  var dayLines = days.map(function(day, i) {
+    var d = day.d;
+    var dateStr = dnames[d.getDay()] + ', ' + d.getDate() + ' ' + mnames[d.getMonth()];
+
+    /* Sort sessions by time */
+    var sorted = day.sessions.slice().sort(function(a, b) {
+      return parseTimeStr(a.start_time || '').localeCompare(parseTimeStr(b.start_time || ''));
+    });
+
+    var sessLines = sorted.map(function(r) {
+      var time  = r.start_time || '--';
+      var subj  = r.subject || 'Class';
+      var mode  = r.mode ? '(' + r.mode + ')' : '';
+      var dur   = r.duration_hrs ? r.duration_hrs + 'hr' : '';
+      var tname = String(r.teacher_name || teacherNameFromId(r.teacher_id) || '').replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i, '');
+      var teacher = tname ? '  |  Taken by: ' + tname : '';
+      var note = String(r.notes || '').trim();
+      var noteLine = note ? '\n     _Note: ' + note + '_' : '';
+      return '   \u2022 ' + time + '  *' + subj + '* ' + mode + (dur ? '  ' + dur : '') + teacher + noteLine;
+    });
+
+    return (i + 1) + '. *' + dateStr + '*\n' + sessLines.join('\n');
+  });
+
+  var totalSess = relevant.length;
+  var heading = '\uD83D\uDCDA *Class ' + cls + ' \u2014 Upcoming Schedule*\n'
+    + '_Next ' + days.length + ' class day' + (days.length !== 1 ? 's' : '') + ' \u00B7 ' + totalSess + ' session' + (totalSess !== 1 ? 's' : '') + '_\n\n';
+
+  return heading + dayLines.join('\n\n') + '\n\n\u2014 SEHR Academy';
+}
+
+function teacherNameFromId(tid) {
+  if (!tid) return '';
+  var t = TEACHERS.filter(function(x) { return x.teacher_id === tid; })[0];
+  return t ? String(t.full_name || '') : '';
+}
+
+function openClassMessage() {
+  var cls = g('msgClassSel').value;
+  if (!cls) {
+    showToast('Please select a class first');
+    return;
+  }
+  var msg = buildClassMsg(cls);
+  if (!msg) {
+    showToast('No upcoming sessions found for Class ' + cls + ' in the next 7 days');
+    return;
+  }
+  g('msgModalTitle').textContent = 'Class ' + cls + ' — Schedule Message';
+  g('msgText').value = msg;
+  g('msgCount').textContent = msg.length + ' characters';
+  g('msgCopyBtn').textContent = 'Copy Message';
+  g('msgCopyBtn').className = 'mcopy-copy-btn';
+  g('msgCopyBtn').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Message';
+  g('modalMsg').classList.add('on');
+}
+
+function copyMessage() {
+  var ta = g('msgText');
+  ta.select();
+  ta.setSelectionRange(0, 99999);
+  try {
+    navigator.clipboard.writeText(ta.value).then(function() {
+      var btn = g('msgCopyBtn');
+      btn.className = 'mcopy-copy-btn copied';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      setTimeout(function() {
+        btn.className = 'mcopy-copy-btn';
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Message';
+      }, 2200);
+    });
+  } catch(e) {
+    /* Fallback for older browsers */
+    document.execCommand('copy');
+    showToast('Copied to clipboard');
+  }
+}
+
+
+/* ── 7-DAY SCHEDULE PDF ─────────────────────────────────────── */
+function generateSchedulePDF() {
+  var now = new Date(); now.setHours(0,0,0,0);
+  var CLASSES = ['9','10','11','12'];
+  var dnames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var mnames_long = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var mnames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  /* Gather all upcoming scheduled sessions across all classes — next 7 days with ANY class */
+  var byDate = {};
+  SESSIONS.forEach(function(r) {
+    var st = String(r.status || '').toLowerCase();
+    if (st === 'cancelled') return;
+    var d = parseDate(r.date_ddmmyyyy);
+    if (!d || d < now) return;
+    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    if (!byDate[key]) byDate[key] = { d: d, sessions: [] };
+    byDate[key].sessions.push(r);
+  });
+
+  var allDays = Object.keys(byDate).sort().slice(0, 7).map(function(k) { return byDate[k]; });
+
+  if (!allDays.length) {
+    showToast('No upcoming sessions found');
+    return;
+  }
+
+  var totalSess = allDays.reduce(function(a, day) { return a + day.sessions.length; }, 0);
+  var dateRange = dnames[allDays[0].d.getDay()] + ' ' + allDays[0].d.getDate() + ' ' + mnames[allDays[0].d.getMonth()]
+    + ' – ' + dnames[allDays[allDays.length-1].d.getDay()] + ' ' + allDays[allDays.length-1].d.getDate() + ' ' + mnames[allDays[allDays.length-1].d.getMonth()];
+  var genDate = now.getDate() + ' ' + mnames_long[now.getMonth()] + ' ' + now.getFullYear();
+
+  /* Count distinct classes */
+  var clsSet = {};
+  allDays.forEach(function(day){ day.sessions.forEach(function(r){ clsSet[r['class']] = 1; }); });
+  var clsList = Object.keys(clsSet).sort();
+
+  /* Build day blocks HTML */
+  var dayBlocksHTML = allDays.map(function(day) {
+    /* Sort sessions: by class then by time */
+    var sorted = day.sessions.slice().sort(function(a, b) {
+      var ca = parseInt(a['class']||'99',10), cb = parseInt(b['class']||'99',10);
+      if (ca !== cb) return ca - cb;
+      return parseTimeStr(a.start_time||'').localeCompare(parseTimeStr(b.start_time||''));
+    });
+
+    var d = day.d;
+    var dateStr = dnames[d.getDay()] + ', ' + d.getDate() + ' ' + mnames_long[d.getMonth()] + ' ' + d.getFullYear();
+
+    var sessHTML = sorted.map(function(r) {
+      var cls = String(r['class'] || '');
+      var tname = String(r.teacher_name || teacherNameFromId(r.teacher_id) || '').replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i, '');
+      var note = String(r.notes || '').trim();
+      var isMuted = String(r.status||'').toLowerCase() === 'completed';
+
+      return '<div class="pdf-sess" style="opacity:' + (isMuted?'.55':'1') + '">'
+        + '<div class="pdf-sess-bar bar-' + cls + '"></div>'
+        + '<div class="pdf-sess-body">'
+        + '<div class="pdf-sess-top">'
+        + '<span class="pdf-sess-time">' + (r.start_time || '—') + '</span>'
+        + '<span class="pdf-sess-subj">' + (r.subject || 'Class') + '</span>'
+        + (cls ? '<span class="pdf-sess-cls cls-' + cls + '">Class ' + cls + '</span>' : '')
+        + (r.mode ? '<span class="pdf-sess-mode">' + r.mode + '</span>' : '')
+        + (r.duration_hrs ? '<span class="pdf-sess-dur">' + r.duration_hrs + ' hr</span>' : '')
+        + '</div>'
+        + '<div class="pdf-sess-meta">'
+        + (tname ? '<span class="pdf-sess-teacher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Taken by: ' + tname + '</span>' : '')
+        + '</div>'
+        + (note ? '<div class="pdf-sess-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + note + '</div>' : '')
+        + '</div></div>';
+    }).join('');
+
+    return '<div class="pdf-day-block">'
+      + '<div class="pdf-day-header">'
+      + '<div><div class="pdf-day-date">' + dateStr + '</div>'
+      + '<div class="pdf-day-sub">' + sorted.length + ' session' + (sorted.length!==1?'s':'') + '</div></div>'
+      + '<span class="pdf-day-count">' + sorted.length + ' class' + (sorted.length!==1?'es':'') + '</span>'
+      + '</div>'
+      + '<div class="pdf-sessions">' + sessHTML + '</div>'
+      + '</div>';
+  }).join('');
+
+  /* Class colour legend */
+  var clsColours = {'9':'#2563eb','10':'#7c3aed','11':'#d97706','12':'#0d9488'};
+  var legendHTML = clsList.map(function(c) {
+    return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:rgba(255,255,255,.55)">'
+      + '<span style="width:8px;height:8px;border-radius:2px;background:' + (clsColours[c]||'#888') + ';flex-shrink:0"></span>Class ' + c + '</span>';
+  }).join('');
+
+  var html = '<div class="pdf-page">'
+    + '<div class="pdf-cover">'
+    + '<div class="pdf-cover-inner">'
+    + '<div class="pdf-logo">SEHR ACADEMY &nbsp;&middot;&nbsp; Vadanappally, Thrissur</div>'
+    + '<div class="pdf-main-title">7-Day Class <em>Schedule</em></div>'
+    + '<div class="pdf-subtitle">Group Classes &nbsp;&middot;&nbsp; Generated ' + genDate + '</div>'
+    + '<div class="pdf-meta-row">'
+    + '<span class="pdf-meta-chip"><span class="pdf-meta-dot"></span>' + dateRange + '</span>'
+    + '<span class="pdf-meta-chip"><span class="pdf-meta-dot"></span>' + totalSess + ' Sessions</span>'
+    + '<span class="pdf-meta-chip"><span class="pdf-meta-dot"></span>' + allDays.length + ' Class Days</span>'
+    + (legendHTML ? '<span style="display:inline-flex;gap:8px;flex-wrap:wrap">' + legendHTML + '</span>' : '')
+    + '</div>'
+    + '</div></div>'
+    + '<div class="pdf-body">' + dayBlocksHTML + '</div>'
+    + '<div class="pdf-footer">'
+    + '<div class="pdf-footer-brand">SEHR <span>ACADEMY</span></div>'
+    + '<div class="pdf-footer-meta">sehracademy.com &nbsp;&middot;&nbsp; +91 95394 09586 &nbsp;&middot;&nbsp; Vadanappally, Thrissur</div>'
+    + '</div></div>';
+
+  document.getElementById('pdfArea').innerHTML = html;
+  window.print();
+}
+
+</script>
+</body>
+</html>
