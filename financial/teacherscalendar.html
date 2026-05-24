@@ -233,6 +233,55 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .mcopy-close-btn{padding:10px 16px;border-radius:6px;border:1.5px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
 .mcopy-close-btn:hover{border-color:var(--rule);color:var(--ink)}
 .mcopy-count{font-size:10px;color:var(--pale)}
+
+/* ── PRINT / PDF ────────────────────────────────────────────── */
+#pdfArea{display:none}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{background:#fff!important;margin:0;padding:0}
+  .topbar,.msg-bar,.legend-bar,.cal-header,.cal-wrap,.modal-bg,.toast{display:none!important}
+  #pdfArea{display:block!important}
+}
+.pdf-page{width:100%;max-width:720px;margin:0 auto;font-family:'Open Sans',Arial,sans-serif;font-size:11px;color:#1a1a18;background:#fff}
+.pdf-cover{background:#1a1a18;padding:28px 32px 22px;position:relative;overflow:hidden}
+.pdf-cover::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#8BC53F,#72a530)}
+.pdf-ci{position:relative;z-index:1}
+.pdf-logo{font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:8px}
+.pdf-mt{font-size:26px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;margin-bottom:5px}
+.pdf-mt em{font-style:italic;font-weight:300;color:#8BC53F}
+.pdf-msub{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:14px}
+.pdf-mr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pdf-mc{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:9px;font-weight:600;color:rgba(255,255,255,.55)}
+.pdf-md{width:5px;height:5px;border-radius:50%;background:#8BC53F;flex-shrink:0}
+.pdf-legend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.pdf-li{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(255,255,255,.45);font-weight:600}
+.pdf-ld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.pdf-body{padding:20px 32px 24px}
+.pdf-db{margin-bottom:20px;page-break-inside:avoid}
+.pdf-dh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:7px;border-bottom:2px solid #8BC53F}
+.pdf-dd{font-size:14px;font-weight:800;color:#1a1a18;letter-spacing:-.3px}
+.pdf-dsub{font-size:9px;color:#7a7970;margin-top:2px;font-weight:600}
+.pdf-dbadge{font-size:8px;font-weight:700;padding:3px 9px;border-radius:3px;background:#f0f7e3;color:#72a530;border:1px solid #c8e48e}
+.pdf-sl{display:flex;flex-direction:column;gap:5px}
+.pdf-s{display:flex;border-radius:6px;overflow:hidden;border:1px solid #e4dfd4}
+.pdf-sb{width:5px;flex-shrink:0}
+.pdf-sd{flex:1;padding:8px 11px;background:#fdfcfa}
+.pdf-st{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:3px}
+.pdf-stime{font-size:11px;font-weight:800;color:#1a1a18;min-width:55px}
+.pdf-ssubj{font-size:11px;font-weight:800;color:#1a1a18}
+.pdf-scls{display:inline-flex;padding:1px 7px;border-radius:3px;font-size:8px;font-weight:700}
+.pdf-smode{font-size:8px;font-weight:600;color:#7a7970;padding:1px 6px;border-radius:3px;background:#f5f2eb}
+.pdf-sdur{font-size:9px;font-weight:600;color:#7a7970}
+.pdf-sm{display:flex;align-items:center;gap:12px;margin-top:2px}
+.pdf-steacher{font-size:9px;color:#7a7970;font-weight:600}
+.pdf-snote{font-size:9px;color:#b45309;font-style:italic;margin-top:2px}
+.pdf-foot{padding:12px 32px;border-top:2px solid #8BC53F;display:flex;align-items:center;justify-content:space-between;background:#fdfcfa}
+.pdf-fb{font-size:10px;font-weight:800;color:#1a1a18;letter-spacing:.06em}
+.pdf-fb span{color:#8BC53F}
+.pdf-fm{font-size:9px;color:#b0ada4}
+.cls-9{background:#eff6ff;color:#1d4ed8}.cls-10{background:#f5f3ff;color:#6d28d9}
+.cls-11{background:#fffbeb;color:#b45309}.cls-12{background:#f0fdfa;color:#0f766e}
+.bar-9{background:#2563eb}.bar-10{background:#7c3aed}.bar-11{background:#d97706}.bar-12{background:#0d9488}
 </style>
 </head>
 <body>
@@ -350,6 +399,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
   </div>
 
   <!-- CALENDAR -->
+    <!-- CALENDAR -->
     <!-- CLASS MESSAGE BAR -->
   <div class="msg-bar">
     <span class="msg-label">Send class schedule to students:</span>
@@ -410,6 +460,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
       <div class="days-grid" id="daysGrid"></div>
     </div>
   </div>
+  <div id="pdfArea"></div>
 </div>
 
 <script>
@@ -919,15 +970,13 @@ function copyMessage() {
 }
 
 
-/* ── 7-DAY SCHEDULE PDF ─────────────────────────────────────── */
+/* -- 7-DAY SCHEDULE PDF -- */
 function generateSchedulePDF() {
   var now = new Date(); now.setHours(0,0,0,0);
-  var CLASSES = ['9','10','11','12'];
   var dnames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  var mnames_long = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var mnames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var mnL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-  /* Gather all upcoming scheduled sessions across all classes — next 7 days with ANY class */
   var byDate = {};
   SESSIONS.forEach(function(r) {
     var st = String(r.status || '').toLowerCase();
@@ -940,91 +989,73 @@ function generateSchedulePDF() {
   });
 
   var allDays = Object.keys(byDate).sort().slice(0, 7).map(function(k) { return byDate[k]; });
-
-  if (!allDays.length) {
-    showToast('No upcoming sessions found');
-    return;
-  }
+  if (!allDays.length) { showToast('No upcoming sessions found'); return; }
 
   var totalSess = allDays.reduce(function(a, day) { return a + day.sessions.length; }, 0);
-  var dateRange = dnames[allDays[0].d.getDay()] + ' ' + allDays[0].d.getDate() + ' ' + mnames[allDays[0].d.getMonth()]
-    + ' – ' + dnames[allDays[allDays.length-1].d.getDay()] + ' ' + allDays[allDays.length-1].d.getDate() + ' ' + mnames[allDays[allDays.length-1].d.getMonth()];
-  var genDate = now.getDate() + ' ' + mnames_long[now.getMonth()] + ' ' + now.getFullYear();
+  var d0 = allDays[0].d, dN = allDays[allDays.length-1].d;
+  var dateRange = d0.getDate() + ' ' + mnames[d0.getMonth()] + ' - ' + dN.getDate() + ' ' + mnames[dN.getMonth()] + ' ' + dN.getFullYear();
+  var genDate = now.getDate() + ' ' + mnL[now.getMonth()] + ' ' + now.getFullYear();
 
-  /* Count distinct classes */
   var clsSet = {};
-  allDays.forEach(function(day){ day.sessions.forEach(function(r){ clsSet[r['class']] = 1; }); });
+  allDays.forEach(function(day){ day.sessions.forEach(function(r){ if(r['class']) clsSet[r['class']] = 1; }); });
   var clsList = Object.keys(clsSet).sort();
+  var clsC = {'9':'#2563eb','10':'#7c3aed','11':'#d97706','12':'#0d9488'};
 
-  /* Build day blocks HTML */
-  var dayBlocksHTML = allDays.map(function(day) {
-    /* Sort sessions: by class then by time */
+  var legHTML = clsList.map(function(c) {
+    return '<div class="pdf-li"><div class="pdf-ld" style="background:' + (clsC[c]||'#888') + '"></div>Class ' + c + '</div>';
+  }).join('');
+
+  var dayHTML = allDays.map(function(day) {
+    var d = day.d;
+    var ds = dnames[d.getDay()] + ', ' + d.getDate() + ' ' + mnL[d.getMonth()] + ' ' + d.getFullYear();
     var sorted = day.sessions.slice().sort(function(a, b) {
       var ca = parseInt(a['class']||'99',10), cb = parseInt(b['class']||'99',10);
       if (ca !== cb) return ca - cb;
       return parseTimeStr(a.start_time||'').localeCompare(parseTimeStr(b.start_time||''));
     });
-
-    var d = day.d;
-    var dateStr = dnames[d.getDay()] + ', ' + d.getDate() + ' ' + mnames_long[d.getMonth()] + ' ' + d.getFullYear();
-
-    var sessHTML = sorted.map(function(r) {
+    var sHTML = sorted.map(function(r) {
       var cls = String(r['class'] || '');
-      var tname = String(r.teacher_name || teacherNameFromId(r.teacher_id) || '').replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i, '');
+      var tn = String(r.teacher_name || teacherNameFromId(r.teacher_id) || '').replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i, '');
       var note = String(r.notes || '').trim();
-      var isMuted = String(r.status||'').toLowerCase() === 'completed';
-
-      return '<div class="pdf-sess" style="opacity:' + (isMuted?'.55':'1') + '">'
-        + '<div class="pdf-sess-bar bar-' + cls + '"></div>'
-        + '<div class="pdf-sess-body">'
-        + '<div class="pdf-sess-top">'
-        + '<span class="pdf-sess-time">' + (r.start_time || '—') + '</span>'
-        + '<span class="pdf-sess-subj">' + (r.subject || 'Class') + '</span>'
-        + (cls ? '<span class="pdf-sess-cls cls-' + cls + '">Class ' + cls + '</span>' : '')
-        + (r.mode ? '<span class="pdf-sess-mode">' + r.mode + '</span>' : '')
-        + (r.duration_hrs ? '<span class="pdf-sess-dur">' + r.duration_hrs + ' hr</span>' : '')
+      var muted = String(r.status||'').toLowerCase() === 'completed' ? 'opacity:.5' : '';
+      return '<div class="pdf-s" style="' + muted + '">'
+        + '<div class="pdf-sb bar-' + cls + '"></div>'
+        + '<div class="pdf-sd">'
+        + '<div class="pdf-st">'
+        + '<span class="pdf-stime">' + (r.start_time || '--') + '</span>'
+        + '<span class="pdf-ssubj">' + (r.subject || 'Class') + '</span>'
+        + (cls ? '<span class="pdf-scls cls-' + cls + '">Class ' + cls + '</span>' : '')
+        + (r.mode ? '<span class="pdf-smode">' + r.mode + '</span>' : '')
+        + (r.duration_hrs ? '<span class="pdf-sdur">' + r.duration_hrs + 'hr</span>' : '')
         + '</div>'
-        + '<div class="pdf-sess-meta">'
-        + (tname ? '<span class="pdf-sess-teacher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Taken by: ' + tname + '</span>' : '')
-        + '</div>'
-        + (note ? '<div class="pdf-sess-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + note + '</div>' : '')
+        + (tn ? '<div class="pdf-sm"><span class="pdf-steacher">Taken by: ' + tn + '</span></div>' : '')
+        + (note ? '<div class="pdf-snote">Note: ' + note + '</div>' : '')
         + '</div></div>';
     }).join('');
-
-    return '<div class="pdf-day-block">'
-      + '<div class="pdf-day-header">'
-      + '<div><div class="pdf-day-date">' + dateStr + '</div>'
-      + '<div class="pdf-day-sub">' + sorted.length + ' session' + (sorted.length!==1?'s':'') + '</div></div>'
-      + '<span class="pdf-day-count">' + sorted.length + ' class' + (sorted.length!==1?'es':'') + '</span>'
-      + '</div>'
-      + '<div class="pdf-sessions">' + sessHTML + '</div>'
-      + '</div>';
-  }).join('');
-
-  /* Class colour legend */
-  var clsColours = {'9':'#2563eb','10':'#7c3aed','11':'#d97706','12':'#0d9488'};
-  var legendHTML = clsList.map(function(c) {
-    return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:rgba(255,255,255,.55)">'
-      + '<span style="width:8px;height:8px;border-radius:2px;background:' + (clsColours[c]||'#888') + ';flex-shrink:0"></span>Class ' + c + '</span>';
+    return '<div class="pdf-db">'
+      + '<div class="pdf-dh">'
+      + '<div><div class="pdf-dd">' + ds + '</div>'
+      + '<div class="pdf-dsub">' + sorted.length + ' session' + (sorted.length!==1?'s':'') + '</div></div>'
+      + '<span class="pdf-dbadge">' + sorted.length + ' class' + (sorted.length!==1?'es':'') + '</span>'
+      + '</div><div class="pdf-sl">' + sHTML + '</div></div>';
   }).join('');
 
   var html = '<div class="pdf-page">'
-    + '<div class="pdf-cover">'
-    + '<div class="pdf-cover-inner">'
-    + '<div class="pdf-logo">SEHR ACADEMY &nbsp;&middot;&nbsp; Vadanappally, Thrissur</div>'
-    + '<div class="pdf-main-title">7-Day Class <em>Schedule</em></div>'
-    + '<div class="pdf-subtitle">Group Classes &nbsp;&middot;&nbsp; Generated ' + genDate + '</div>'
-    + '<div class="pdf-meta-row">'
-    + '<span class="pdf-meta-chip"><span class="pdf-meta-dot"></span>' + dateRange + '</span>'
-    + '<span class="pdf-meta-chip"><span class="pdf-meta-dot"></span>' + totalSess + ' Sessions</span>'
-    + '<span class="pdf-meta-chip"><span class="pdf-meta-dot"></span>' + allDays.length + ' Class Days</span>'
-    + (legendHTML ? '<span style="display:inline-flex;gap:8px;flex-wrap:wrap">' + legendHTML + '</span>' : '')
+    + '<div class="pdf-cover"><div class="pdf-ci">'
+    + '<div class="pdf-logo">SEHR ACADEMY - Vadanappally, Thrissur</div>'
+    + '<div class="pdf-mt">7-Day Class <em>Schedule</em></div>'
+    + '<div class="pdf-msub">Group Classes - Generated ' + genDate + '</div>'
+    + '<div class="pdf-mr">'
+    + '<span class="pdf-mc"><span class="pdf-md"></span>' + dateRange + '</span>'
+    + '<span class="pdf-mc"><span class="pdf-md"></span>' + totalSess + ' Sessions</span>'
+    + '<span class="pdf-mc"><span class="pdf-md"></span>' + allDays.length + ' Class Days</span>'
     + '</div>'
+    + (legHTML ? '<div class="pdf-legend">' + legHTML + '</div>' : '')
     + '</div></div>'
-    + '<div class="pdf-body">' + dayBlocksHTML + '</div>'
-    + '<div class="pdf-footer">'
-    + '<div class="pdf-footer-brand">SEHR <span>ACADEMY</span></div>'
-    + '<div class="pdf-footer-meta">sehracademy.com &nbsp;&middot;&nbsp; +91 95394 09586 &nbsp;&middot;&nbsp; Vadanappally, Thrissur</div>'
+    + '<div class="pdf-body">' + dayHTML + '</div>'
+    + '<div class="pdf-foot">'
+    + '<div class="pdf-fb">SEHR <span>ACADEMY</span></div>'
+    + '<div class="pdf-fm">sehracademy.com - +91 95394 09586 - Vadanappally, Thrissur</div>'
     + '</div></div>';
 
   document.getElementById('pdfArea').innerHTML = html;
