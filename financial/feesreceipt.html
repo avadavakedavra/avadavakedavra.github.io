@@ -336,37 +336,99 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
       </div>
       <div class="form-body">
 
-        <!-- Student Selection -->
-        <div class="fsection-lbl">Student Details</div>
-
-        <div class="fgrp">
-          <div class="flabel">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            Class
-          </div>
-          <select class="fselect" id="classSelect">
-            <option value="">— Select class —</option>
-          </select>
+        <!-- Mode toggle -->
+        <div style="display:flex;gap:0;border:1.5px solid var(--cream-3);border-radius:6px;overflow:hidden;margin-bottom:20px">
+          <button type="button" id="modeSheet" onclick="setMode('sheet')" style="flex:1;padding:9px 6px;border:none;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;background:var(--lime);color:var(--ink);transition:all .15s">
+            From Sheet
+          </button>
+          <button type="button" id="modeManual" onclick="setMode('manual')" style="flex:1;padding:9px 6px;border:none;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;background:var(--cream);color:var(--muted);transition:all .15s">
+            Manual Entry
+          </button>
         </div>
 
-        <div class="fgrp">
-          <div class="flabel">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            Syllabus
+        <!-- ── FROM SHEET ── -->
+        <div id="sheetBlock">
+          <div class="fsection-lbl">Select Student from Sheet</div>
+          <div class="fgrp">
+            <div class="flabel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Class
+            </div>
+            <select class="fselect" id="classSelect">
+              <option value="">— Select class —</option>
+            </select>
           </div>
-          <select class="fselect" id="sylSelect" disabled>
-            <option value="">— Select class first —</option>
-          </select>
+          <div class="fgrp">
+            <div class="flabel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Syllabus
+            </div>
+            <select class="fselect" id="sylSelect" disabled>
+              <option value="">— Select class first —</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <div class="flabel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Student
+            </div>
+            <select class="fselect" id="studentSelect" disabled>
+              <option value="">— Select syllabus first —</option>
+            </select>
+          </div>
         </div>
 
-        <div class="fgrp">
-          <div class="flabel">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Student Name
+        <!-- ── MANUAL ENTRY ── -->
+        <div id="manualBlock" style="display:none">
+          <div class="fsection-lbl">Student Details — Manual</div>
+          <div class="fgrp">
+            <div class="flabel">Student Name</div>
+            <input type="text" class="finput" id="manualName" placeholder="Full name…">
           </div>
-          <select class="fselect" id="studentSelect" disabled>
-            <option value="">— Select syllabus first —</option>
-          </select>
+          <div class="frow">
+            <div class="fgrp" style="margin-bottom:0">
+              <div class="flabel">Class</div>
+              <input type="text" class="finput" id="manualClass" placeholder="e.g. 12">
+            </div>
+            <div class="fgrp" style="margin-bottom:0">
+              <div class="flabel">Syllabus</div>
+              <input type="text" class="finput" id="manualSyllabus" placeholder="e.g. CBSE">
+            </div>
+          </div>
+          <div class="fgrp" style="margin-top:12px">
+            <div class="flabel">School / College</div>
+            <input type="text" class="finput" id="manualSchool" placeholder="Optional…">
+          </div>
+          <div class="fgrp">
+            <div class="flabel">Register / Admission No.</div>
+            <input type="text" class="finput" id="manualAdmNo" placeholder="Optional…">
+          </div>
+        </div>
+
+        <div class="fdivider"></div>
+
+        <!-- Fee Summary — always editable, pre-fills from sheet in sheet mode -->
+        <div class="fsection-lbl">Fee Summary</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:12px;font-weight:500;line-height:1.6" id="feeSummaryNote">Pre-filled from sheet. Edit freely — receipt only, no sheet changes.</div>
+        <div class="frow">
+          <div class="fgrp" style="margin-bottom:0">
+            <div class="flabel">Total Fee (₹)</div>
+            <div class="amount-wrap">
+              <span class="amount-prefix" style="font-size:13px;color:var(--ink-2)">₹</span>
+              <input type="number" class="finput" id="totalFeeInput" placeholder="0" min="0" step="1" style="padding-left:24px" oninput="updateBalanceDisp();updatePreview()">
+            </div>
+          </div>
+          <div class="fgrp" style="margin-bottom:0">
+            <div class="flabel">Total Paid so far (₹)</div>
+            <div class="amount-wrap">
+              <span class="amount-prefix" style="font-size:13px;color:var(--lime-2)">₹</span>
+              <input type="number" class="finput" id="totalPaidInput" placeholder="0" min="0" step="1" style="padding-left:24px" oninput="updateBalanceDisp();updatePreview()">
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px;background:var(--cream);border:1px solid var(--cream-3);border-radius:6px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:11px;font-weight:700;color:var(--muted)">Balance after this payment</span>
+          <span style="font-size:16px;font-weight:800" id="balanceDisp">—</span>
         </div>
 
         <div class="fdivider"></div>
@@ -377,7 +439,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
         <div class="fgrp">
           <div class="flabel">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            Amount Received (₹)
+            Amount Received This Payment (₹)
           </div>
           <div class="amount-wrap">
             <span class="amount-prefix">₹</span>
@@ -431,7 +493,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 
         <div class="fdivider"></div>
 
-        <!-- Receipt Number -->
+        <!-- Receipt Info -->
         <div class="fsection-lbl">Receipt Info</div>
 
         <div class="fgrp">
@@ -593,19 +655,22 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 var API = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
 var S = [];
 var receiptCounter = parseInt(localStorage.getItem('sehr_receipt_counter') || '1');
+var currentMode = 'sheet'; // 'sheet' | 'manual'
 
 /* ── UTILS ── */
 function g(id){ return document.getElementById(id); }
 function fmtN(n){ return Number(n||0).toLocaleString('en-IN'); }
-function fmtRs(n){ return '₹' + fmtN(n); }
+function fmtRs(n){ return '\u20b9' + fmtN(n); }
 function fmtDate(d){
-  if (!d) return '—';
+  if (!d) return '\u2014';
   var dt = new Date(d);
   return isNaN(dt.getTime()) ? String(d) : dt.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
 }
 function inits(n){ return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
 function loaderOn(){ g('loader').classList.add('on'); }
 function loaderOff(){ g('loader').classList.remove('on'); }
+function on(id,ev,fn){ var el=g(id); if(el) el.addEventListener(ev,fn); }
+function listen(id){ on(id,'input',updatePreview); on(id,'change',updatePreview); }
 
 function norm(s){
   return {
@@ -615,29 +680,34 @@ function norm(s){
     class:            String(s.class||''),
     syllabus:         String(s.syllabus||''),
     school_name:      String(s.school_name||''),
-    parent_name:      String(s.parent_name||''),
-    contact:          String(s.contact||''),
-    photo:            String(s.photo||''),
     subjects:         String(s.subjects||''),
-    monthly_fee:      Number(s.monthly_fee||0),
-    total_months:     Number(s.total_months||0),
+    photo:            String(s.photo||''),
     total_fee:        Number(s.total_fee||0),
-    admission_amount: Number(s.admission_amount||0),
-    june_amount:      Number(s.june_amount||0),
-    september_amount: Number(s.september_amount||0),
     total_paid:       Number(s.total_paid||0),
-    balance:          Number(s.balance||0),
-    status:           String(s.status||'').toUpperCase().trim(),
-    next_due:         String(s.next_due||''),
-    next_due_amount:  Number(s.next_due_amount||0),
     current_academic_year: String(s.current_academic_year||''),
-    admission_paid:   Number(s.admission_paid||0),
-    june_paid:        Number(s.june_paid||0),
-    september_paid:   Number(s.september_paid||0),
-    admission_pending:Number(s.admission_pending||0),
-    june_pending:     Number(s.june_pending||0),
-    september_pending:Number(s.september_pending||0),
   };
+}
+
+/* ── MODE TOGGLE ── */
+function setMode(m){
+  currentMode = m;
+  var isSheet = (m === 'sheet');
+  g('sheetBlock').style.display  = isSheet ? 'block' : 'none';
+  g('manualBlock').style.display = isSheet ? 'none'  : 'block';
+  g('modeSheet').style.background  = isSheet ? 'var(--lime)' : 'var(--cream)';
+  g('modeSheet').style.color       = isSheet ? 'var(--ink)'  : 'var(--muted)';
+  g('modeManual').style.background = isSheet ? 'var(--cream)' : 'var(--lime)';
+  g('modeManual').style.color      = isSheet ? 'var(--muted)' : 'var(--ink)';
+  g('feeSummaryNote').textContent  = isSheet
+    ? 'Pre-filled from sheet. Edit freely \u2014 receipt only, no sheet changes.'
+    : 'Manual entry \u2014 type in any values you need.';
+  if (!isSheet){
+    // clear sheet-driven fields, blank fee fields for fresh typing
+    g('totalFeeInput').value  = '';
+    g('totalPaidInput').value = '';
+    updateBalanceDisp();
+  }
+  updatePreview();
 }
 
 /* ── LOGIN ── */
@@ -646,7 +716,7 @@ g('loginForm').addEventListener('submit', function(ev){
   var pass = g('passInput').value.trim();
   if (!pass) return;
   var btn = g('loginBtn');
-  btn.disabled = true; btn.textContent = 'Authenticating…';
+  btn.disabled = true; btn.textContent = 'Authenticating\u2026';
   g('loginErr').className = 'lbox-err';
   loaderOn();
   fetch(API + '?action=studentList&password=' + encodeURIComponent(pass))
@@ -668,32 +738,24 @@ g('loginForm').addEventListener('submit', function(ev){
     })
     .catch(function(){
       loaderOff(); btn.disabled=false; btn.textContent='Access Receipt Maker';
-      g('loginErr').textContent='Connection error — check your network.';
+      g('loginErr').textContent='Connection error \u2014 check your network.';
       g('loginErr').className='lbox-err on';
     });
 });
 
 /* ── INIT ── */
 function initApp(){
-  // Set today's date
-  var today = new Date();
-  g('dateInput').value = today.toISOString().slice(0,10);
-
-  // Generate first receipt number
+  g('dateInput').value = new Date().toISOString().slice(0,10);
   g('receiptNo').value = genReceiptNum();
-
   buildClassDropdown();
-  wireFormListeners();
+  wireListeners();
 }
 
 /* ── RECEIPT NUMBER ── */
 function genReceiptNum(){
-  var yr = new Date().getFullYear();
-  var num = String(receiptCounter).padStart(3,'0');
-  return 'SEHR-' + yr + '-' + num;
+  return 'SEHR-' + new Date().getFullYear() + '-' + String(receiptCounter).padStart(3,'0');
 }
-
-g('genReceiptNo').addEventListener('click', function(){
+on('genReceiptNo','click',function(){
   receiptCounter++;
   localStorage.setItem('sehr_receipt_counter', receiptCounter);
   g('receiptNo').value = genReceiptNum();
@@ -702,209 +764,211 @@ g('genReceiptNo').addEventListener('click', function(){
 
 /* ── DROPDOWNS ── */
 function buildClassDropdown(){
-  var classes = [];
-  var seen = {};
-  S.forEach(function(s){
-    if (s.class && !seen[s.class]){ seen[s.class]=true; classes.push(s.class); }
-  });
-  classes.sort(function(a,b){
-    var na=parseInt(a)||0, nb=parseInt(b)||0;
-    return na!==nb ? na-nb : a.localeCompare(b);
-  });
-  var sel = g('classSelect');
-  sel.innerHTML = '<option value="">— Select class —</option>';
-  classes.forEach(function(c){
-    var opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = 'Class ' + c;
-    sel.appendChild(opt);
-  });
+  var seen={}, classes=[];
+  S.forEach(function(s){ if(s.class&&!seen[s.class]){seen[s.class]=true;classes.push(s.class);} });
+  classes.sort(function(a,b){ var na=parseInt(a)||0,nb=parseInt(b)||0; return na!==nb?na-nb:a.localeCompare(b); });
+  var sel=g('classSelect');
+  sel.innerHTML='<option value="">\u2014 Select class \u2014</option>';
+  classes.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent='Class '+c; sel.appendChild(o); });
 }
 
 function buildSylDropdown(cls){
-  var syls = [];
-  var seen = {};
-  S.filter(function(s){ return s.class===cls; }).forEach(function(s){
-    if (s.syllabus && !seen[s.syllabus]){ seen[s.syllabus]=true; syls.push(s.syllabus); }
-  });
+  var seen={}, syls=[];
+  S.filter(function(s){return s.class===cls;}).forEach(function(s){ if(s.syllabus&&!seen[s.syllabus]){seen[s.syllabus]=true;syls.push(s.syllabus);} });
   syls.sort();
-  var sel = g('sylSelect');
-  sel.innerHTML = '<option value="">— Select syllabus —</option>';
-  syls.forEach(function(sy){
-    var opt = document.createElement('option');
-    opt.value = sy; opt.textContent = sy;
-    sel.appendChild(opt);
-  });
-  sel.disabled = syls.length === 0;
-  // If only one syllabus, auto-select
-  if (syls.length === 1){
-    sel.value = syls[0];
-    buildStudentDropdown(cls, syls[0]);
-  }
+  var sel=g('sylSelect');
+  sel.innerHTML='<option value="">\u2014 Select syllabus \u2014</option>';
+  syls.forEach(function(sy){ var o=document.createElement('option'); o.value=sy; o.textContent=sy; sel.appendChild(o); });
+  sel.disabled = !syls.length;
+  if(syls.length===1){ sel.value=syls[0]; buildStudentDropdown(cls,syls[0]); }
 }
 
-function buildStudentDropdown(cls, syl){
-  var students = S.filter(function(s){ return s.class===cls && s.syllabus===syl; })
-    .sort(function(a,b){ return a.full_name.localeCompare(b.full_name); });
-  var sel = g('studentSelect');
-  sel.innerHTML = '<option value="">— Select student —</option>';
-  students.forEach(function(s){
-    var opt = document.createElement('option');
-    opt.value = s.id;
-    opt.textContent = s.full_name + (s.admission_no ? ' (#'+s.admission_no+')' : '');
-    sel.appendChild(opt);
-  });
-  sel.disabled = false;
+function buildStudentDropdown(cls,syl){
+  var students=S.filter(function(s){return s.class===cls&&s.syllabus===syl;})
+    .sort(function(a,b){return a.full_name.localeCompare(b.full_name);});
+  var sel=g('studentSelect');
+  sel.innerHTML='<option value="">\u2014 Select student \u2014</option>';
+  students.forEach(function(s){ var o=document.createElement('option'); o.value=s.id; o.textContent=s.full_name+(s.admission_no?' (#'+s.admission_no+')':''); sel.appendChild(o); });
+  sel.disabled=false;
 }
 
-/* ── WIRE LISTENERS ── */
-function wireFormListeners(){
-  g('classSelect').addEventListener('change', function(){
-    var cls = this.value;
-    g('sylSelect').innerHTML='<option value="">— Select syllabus —</option>';
-    g('sylSelect').disabled = true;
-    g('studentSelect').innerHTML='<option value="">— Select syllabus first —</option>';
-    g('studentSelect').disabled = true;
-    if (cls) buildSylDropdown(cls);
+/* ── WIRE ALL LISTENERS ── */
+function wireListeners(){
+  on('classSelect','change',function(){
+    var cls=this.value;
+    g('sylSelect').innerHTML='<option value="">\u2014 Select syllabus \u2014</option>'; g('sylSelect').disabled=true;
+    g('studentSelect').innerHTML='<option value="">\u2014 Select syllabus first \u2014</option>'; g('studentSelect').disabled=true;
+    g('totalFeeInput').value=''; g('totalPaidInput').value=''; updateBalanceDisp();
+    if(cls) buildSylDropdown(cls);
+    updatePreview();
+  });
+  on('sylSelect','change',function(){
+    var cls=g('classSelect').value, syl=this.value;
+    g('studentSelect').innerHTML='<option value="">\u2014 Select student \u2014</option>'; g('studentSelect').disabled=true;
+    g('totalFeeInput').value=''; g('totalPaidInput').value=''; updateBalanceDisp();
+    if(cls&&syl) buildStudentDropdown(cls,syl);
+    updatePreview();
+  });
+  on('studentSelect','change',function(){
+    var sid=this.value;
+    var s=sid?S.find(function(x){return x.id===sid;}):null;
+    if(s){
+      // Pre-fill fee fields from sheet — always editable
+      g('totalFeeInput').value  = s.total_fee  || 0;
+      g('totalPaidInput').value = s.total_paid || 0;
+      updateBalanceDisp();
+    } else {
+      g('totalFeeInput').value=''; g('totalPaidInput').value=''; updateBalanceDisp();
+    }
     updatePreview();
   });
 
-  g('sylSelect').addEventListener('change', function(){
-    var cls = g('classSelect').value;
-    var syl = this.value;
-    g('studentSelect').innerHTML='<option value="">— Select student —</option>';
-    g('studentSelect').disabled = true;
-    if (cls && syl) buildStudentDropdown(cls, syl);
+  // Manual fields — all trigger preview
+  ['manualName','manualClass','manualSyllabus','manualSchool','manualAdmNo'].forEach(listen);
+
+  // Payment
+  listen('amountInput');
+  listen('modeSelect');
+  listen('dateInput');
+  on('purposeSelect','change',function(){
+    g('otherPurposeGrp').style.display=this.value==='Other'?'block':'none';
     updatePreview();
   });
+  listen('otherPurposeInput');
+  listen('receiptNo');
+  listen('remarksInput');
 
-  g('studentSelect').addEventListener('change', function(){ updatePreview(); });
-  g('amountInput').addEventListener('input', function(){ updatePreview(); });
-  g('modeSelect').addEventListener('change', function(){ updatePreview(); });
-  g('dateInput').addEventListener('change', function(){ updatePreview(); });
-  g('purposeSelect').addEventListener('change', function(){
-    g('otherPurposeGrp').style.display = this.value==='Other' ? 'block' : 'none';
-    updatePreview();
-  });
-  g('otherPurposeInput').addEventListener('input', function(){ updatePreview(); });
-  g('receiptNo').addEventListener('input', function(){ updatePreview(); });
-  g('remarksInput').addEventListener('input', function(){ updatePreview(); });
+  on('btnPrint','click',function(){ window.print(); });
+  on('btnLogout','click',function(){ sessionStorage.removeItem('sehr_pass'); location.reload(); });
+}
 
-  g('btnPrint').addEventListener('click', function(){ window.print(); });
-  g('btnLogout').addEventListener('click', function(){
-    sessionStorage.removeItem('sehr_pass');
-    location.reload();
-  });
+/* ── BALANCE DISPLAY ── */
+function updateBalanceDisp(){
+  var tf  = parseFloat(g('totalFeeInput').value)  || 0;
+  var tp  = parseFloat(g('totalPaidInput').value) || 0;
+  var amt = parseFloat(g('amountInput')  ? g('amountInput').value : 0) || 0;
+  var bal = Math.max(0, tf - tp - amt);
+  var disp = g('balanceDisp');
+  if(!tf && !tp){ disp.textContent='\u2014'; disp.style.color='var(--pale)'; return; }
+  disp.textContent = '\u20b9' + bal.toLocaleString('en-IN');
+  disp.style.color = bal>0 ? 'var(--red)' : 'var(--lime-2)';
 }
 
 /* ── AMOUNT IN WORDS ── */
 function amountToWords(n){
-  n = Math.floor(Number(n)||0);
-  if (n === 0) return 'Zero Rupees Only';
-  var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
-  var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
-  function words(num){
-    if (num === 0) return '';
-    if (num < 20) return ones[num] + ' ';
-    if (num < 100) return tens[Math.floor(num/10)] + (num%10 ? ' ' + ones[num%10] : '') + ' ';
-    if (num < 1000) return ones[Math.floor(num/100)] + ' Hundred ' + words(num%100);
-    if (num < 100000) return words(Math.floor(num/1000)) + 'Thousand ' + words(num%1000);
-    if (num < 10000000) return words(Math.floor(num/100000)) + 'Lakh ' + words(num%100000);
-    return words(Math.floor(num/10000000)) + 'Crore ' + words(num%10000000);
-  }
-  return words(n).trim() + ' Rupees Only';
+  n=Math.floor(Number(n)||0); if(!n) return 'Zero Rupees Only';
+  var o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  var t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function w(x){ if(!x)return ''; if(x<20)return o[x]+' '; if(x<100)return t[Math.floor(x/10)]+(x%10?' '+o[x%10]:'')+' '; if(x<1000)return o[Math.floor(x/100)]+' Hundred '+w(x%100); if(x<100000)return w(Math.floor(x/1000))+'Thousand '+w(x%1000); if(x<10000000)return w(Math.floor(x/100000))+'Lakh '+w(x%100000); return w(Math.floor(x/10000000))+'Crore '+w(x%10000000); }
+  return w(n).trim()+' Rupees Only';
 }
 
-/* ── UPDATE PREVIEW ── */
+/* ── MAIN PREVIEW ── */
 function updatePreview(){
-  var studentId = g('studentSelect').value;
-  var amount    = parseFloat(g('amountInput').value) || 0;
-  var student   = studentId ? S.find(function(s){ return s.id===studentId; }) : null;
+  updateBalanceDisp();
 
-  // Show empty or filled state
-  var hasStudent = !!student;
-  g('receiptEmpty').style.display   = hasStudent ? 'none' : 'flex';
-  g('receiptFilled').style.display  = hasStudent ? 'block' : 'none';
+  var isSheet = (currentMode==='sheet');
+  var studentId = isSheet ? g('studentSelect').value : '';
+  var sheetS    = studentId ? S.find(function(x){return x.id===studentId;}) : null;
+  var amount    = parseFloat(g('amountInput').value)||0;
 
-  if (!hasStudent) return;
+  // Decide whether to show receipt
+  var hasData = isSheet ? !!sheetS : !!(g('manualName').value.trim());
+  g('receiptEmpty').style.display  = hasData ? 'none'  : 'flex';
+  g('receiptFilled').style.display = hasData ? 'block' : 'none';
+  if(!hasData) return;
 
-  var s = student;
+  /* ── Resolve all display values ── */
+  var displayName, displayClass, displaySyl, displaySchool, displayAdmNo, displayPhoto, displaySubjects, displayYear;
+
+  if(isSheet && sheetS){
+    displayName     = sheetS.full_name;
+    displayClass    = sheetS.class;
+    displaySyl      = sheetS.syllabus;
+    displaySchool   = sheetS.school_name;
+    displayAdmNo    = sheetS.admission_no;
+    displayPhoto    = sheetS.photo;
+    displaySubjects = sheetS.subjects;
+    displayYear     = sheetS.current_academic_year;
+  } else {
+    displayName     = g('manualName').value.trim();
+    displayClass    = g('manualClass').value.trim();
+    displaySyl      = g('manualSyllabus').value.trim();
+    displaySchool   = g('manualSchool').value.trim();
+    displayAdmNo    = g('manualAdmNo').value.trim();
+    displayPhoto    = '';
+    displaySubjects = '';
+    displayYear     = '';
+  }
+
+  // Fee values — always from the editable inputs
+  var totalFee  = parseFloat(g('totalFeeInput').value)  || 0;
+  var totalPaid = parseFloat(g('totalPaidInput').value) || 0;
+  // "Total paid" shown on receipt = previous paid + this payment
+  var newTotalPaid = totalPaid + amount;
+  var newBalance   = Math.max(0, totalFee - newTotalPaid);
+
   var dateVal  = g('dateInput').value;
   var dateDisp = dateVal ? fmtDate(dateVal) : fmtDate(new Date().toISOString().slice(0,10));
   var mode     = g('modeSelect').value;
-  var purpose  = g('purposeSelect').value === 'Other' ? (g('otherPurposeInput').value || 'Other') : g('purposeSelect').value;
+  var purpose  = g('purposeSelect').value==='Other' ? (g('otherPurposeInput').value||'Other') : g('purposeSelect').value;
   var receiptN = g('receiptNo').value || genReceiptNum();
   var remarks  = g('remarksInput').value.trim();
 
-  // Compute new totals after this payment
-  var newTotalPaid = s.total_paid + amount;
-  var newBalance   = Math.max(0, s.total_fee - newTotalPaid);
-
-  /* ── Receipt number + date ── */
+  /* receipt header */
   g('rReceiptNo').textContent = receiptN;
-  g('rDate').textContent = dateDisp;
+  g('rDate').textContent      = dateDisp;
 
-  /* ── Student strip ── */
+  /* student strip */
   var av = g('rAvatar');
-  if (s.photo){
-    av.innerHTML = '<img src="'+s.photo+'" alt="" onerror="this.style.display=\'none\'">';
+  if(displayPhoto){
+    av.innerHTML='<img src="'+displayPhoto+'" alt="" onerror="this.parentNode.textContent=\''+inits(displayName)+'\'">';
+    av.style.cssText='';
   } else {
-    av.textContent = inits(s.full_name);
+    av.innerHTML='';
+    av.textContent=inits(displayName);
+    av.style.background='var(--ink)';
+    av.style.color='var(--lime-2)';
+    av.style.border='2px solid var(--lime)';
   }
-  g('rName').textContent = s.full_name || '—';
-  var metaHTML = '';
-  if (s.class)       metaHTML += '<span class="stu-tag cls">Class ' + s.class + '</span>';
-  if (s.syllabus)    metaHTML += '<span class="stu-tag syl">' + s.syllabus + '</span>';
-  if (s.school_name) metaHTML += '<span class="stu-tag sch">' + s.school_name + '</span>';
-  g('rMeta').innerHTML = metaHTML;
-  g('rAdmNo').textContent = s.admission_no ? '#' + s.admission_no : '';
+  g('rName').textContent = displayName||'\u2014';
+  var metaHTML='';
+  if(displayClass)  metaHTML+='<span class="stu-tag cls">Class '+displayClass+'</span>';
+  if(displaySyl)    metaHTML+='<span class="stu-tag syl">'+displaySyl+'</span>';
+  if(displaySchool) metaHTML+='<span class="stu-tag sch">'+displaySchool+'</span>';
+  if(!isSheet)      metaHTML+='<span class="stu-tag" style="background:var(--amber-bg);border-color:var(--amber-mid);color:var(--amber)">Manual</span>';
+  g('rMeta').innerHTML    = metaHTML;
+  g('rAdmNo').textContent = displayAdmNo ? '#'+displayAdmNo : '';
 
-  /* ── Fee table ── */
-  var subjectList = s.subjects ? s.subjects.split(/[,;|\/\n]+/).map(function(x){return x.trim();}).filter(Boolean) : [];
-  var subjDisp = subjectList.length ? subjectList.join(', ') : '—';
+  /* fee table */
+  var subs = displaySubjects ? displaySubjects.split(/[,;|\/\n]+/).map(function(x){return x.trim();}).filter(Boolean) : [];
+  var subjDisp = subs.length ? subs.join(', ') : '\u2014';
+  g('rFeeBody').innerHTML =
+    '<tr>'
+    +'<td class="fee-desc" style="color:var(--pale);font-size:12px">1</td>'
+    +'<td><div class="fee-desc">'+purpose+'</div>'+(displayYear?'<div class="fee-note">Academic Year '+displayYear+'</div>':'')+'</td>'
+    +'<td style="font-size:11px;color:var(--muted)">'+subjDisp+'</td>'
+    +'<td class="fee-grn">'+fmtRs(amount)+'</td>'
+    +'</tr>';
 
-  var tbody = '';
-  tbody += '<tr>'
-    + '<td class="fee-desc" style="color:var(--pale);font-size:12px">1</td>'
-    + '<td><div class="fee-desc">' + purpose + '</div>'
-    + (s.current_academic_year ? '<div class="fee-note">Academic Year ' + s.current_academic_year + '</div>' : '')
-    + '</td>'
-    + '<td style="font-size:11px;color:var(--muted)">' + subjDisp + '</td>'
-    + '<td class="fee-grn">' + fmtRs(amount) + '</td>'
-    + '</tr>';
-
-  g('rFeeBody').innerHTML = tbody;
-
-  /* ── Amount row ── */
-  g('rAmount').textContent     = fmtRs(amount);
+  /* amount row */
+  g('rAmount').textContent      = fmtRs(amount);
   g('rAmountWords').textContent = amountToWords(amount);
-  g('rMode').textContent       = 'via ' + mode;
+  g('rMode').textContent        = 'via '+mode;
 
-  /* ── Balance grid ── */
-  g('rTotalFee').textContent  = fmtRs(s.total_fee);
-  g('rTotalPaid').textContent = fmtRs(newTotalPaid);
-  g('rBalance').textContent   = fmtRs(newBalance);
+  /* balance grid — uses editable field values */
+  g('rTotalFee').textContent  = totalFee  ? fmtRs(totalFee)      : '\u2014';
+  g('rTotalPaid').textContent = totalFee  ? fmtRs(newTotalPaid)   : '\u2014';
+  g('rBalance').textContent   = totalFee  ? fmtRs(newBalance)     : '\u2014';
 
-  /* ── Remarks ── */
-  if (remarks){
-    g('rRemarksRow').style.display = 'block';
-    g('rRemarks').textContent = remarks;
-  } else {
-    g('rRemarksRow').style.display = 'none';
-  }
+  /* remarks */
+  g('rRemarksRow').style.display = remarks ? 'block' : 'none';
+  if(remarks) g('rRemarks').textContent = remarks;
 
-  /* ── Stamp ── */
-  var stampHTML;
-  if (amount > 0){
-    stampHTML = '<div class="paid-stamp">'
-      + '<div class="paid-stamp-top">Received</div>'
-      + '<div class="paid-stamp-main">PAID</div>'
-      + '<div class="paid-stamp-date">' + (dateVal ? new Date(dateVal).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '') + '</div>'
-      + '</div>';
-  } else {
-    stampHTML = '<div class="unpaid-stamp"><div class="unpaid-stamp-main">PENDING PAYMENT</div></div>';
-  }
-  g('stampWrap').innerHTML = stampHTML;
+  /* stamp */
+  g('stampWrap').innerHTML = amount>0
+    ? '<div class="paid-stamp"><div class="paid-stamp-top">Received</div><div class="paid-stamp-main">PAID</div><div class="paid-stamp-date">'+(dateVal?new Date(dateVal).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'')+' </div></div>'
+    : '<div class="unpaid-stamp"><div class="unpaid-stamp-main">PENDING PAYMENT</div></div>';
 }
 </script>
 </body>
