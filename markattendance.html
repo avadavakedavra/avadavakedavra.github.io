@@ -307,6 +307,52 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
 .btn-re{width:100%;padding:12px;border-radius:10px;border:1.5px solid var(--ru);background:var(--wh);font-family:var(--f);font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;transition:all .15s;margin-bottom:16px}
 .btn-re:hover{border-color:var(--pa);color:var(--ink)}
 .hidden{display:none!important}
+
+/* ── ALREADY MARKED HARD BLOCK ── */
+.already-block{
+  background:var(--wh);border:1.5px solid var(--ru);
+  border-radius:14px;padding:28px 20px 24px;
+  text-align:center;margin-bottom:14px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+  animation:cardIn .4s var(--e1)
+}
+.already-icon-wrap{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--lb);border:2px solid var(--lm);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;color:var(--l2)
+}
+.already-tag{
+  display:inline-block;font-size:9px;font-weight:800;
+  letter-spacing:.18em;text-transform:uppercase;
+  background:var(--lb);color:var(--l3);
+  border:1px solid rgba(139,197,63,.25);
+  padding:4px 12px;border-radius:20px;margin-bottom:10px
+}
+.already-big{
+  font-family:var(--fs);font-size:26px;color:var(--ink);
+  line-height:1;margin-bottom:10px
+}
+.already-msg{
+  font-size:13px;color:var(--mu);line-height:1.75;
+  margin-bottom:10px
+}
+.already-msg strong{color:var(--ink)}
+.already-note{
+  font-size:11px;color:var(--pa);
+  background:var(--c2);border-radius:6px;
+  padding:7px 12px;display:inline-block;margin-top:2px
+}
+.btn-go-back{
+  width:100%;padding:13px;border-radius:10px;
+  border:none;background:var(--li);color:var(--ink);
+  font-family:var(--f);font-size:14px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:8px;
+  transition:all .2s var(--e1);
+  box-shadow:0 3px 14px rgba(139,197,63,.3)
+}
+.btn-go-back:hover{background:var(--l2);transform:translateY(-1px)}
 </style>
 </head>
 <body>
@@ -455,7 +501,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     Mark Another Class
   </button>
-  <button class="btn-re" id="btnRe">Edit & Resubmit</button>
+  <!-- Edit & Resubmit removed -->
   <div class="ticket">
     <div class="tkt-hd">
       <div class="tkt-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg></div>
@@ -678,9 +724,12 @@ function goBackFromStudents(){ /* handled dynamically above */ }
 /* ══ LOAD STUDENTS ══ */
 function loadStudents(){
   showSkel();
-  /* check if already submitted */
-  api({action:'checkAttendance',date:TODAY_YMD,class:CLS,syllabus:BOARD||''},function(chk,err){
-    if(!err&&chk&&chk.exists&&!OVERWRITE){
+  api({action:'checkAttendance',date:TODAY_YMD,class:CLS},function(chk,err){
+    if(err){
+      /* on network error just load students anyway */
+      fetchStudents(); return;
+    }
+    if(chk && chk.exists){
       showAlready(chk); return;
     }
     fetchStudents();
@@ -794,7 +843,7 @@ function doSubmit(){
     return {student_id:s.id,full_name:s.full_name,syllabus:s.syllabus,status:ABSENT[s.id]?'Absent':'Present'};
   });
 
-  api({action:'markAttendance',date:TODAY_YMD,class:CLS,teacher_id:T.id,overwrite:OVERWRITE,records:recs},
+  api({action:'markAttendance',date:TODAY_YMD,class:CLS,syllabus:BOARD||'',teacher_id:T.id,overwrite:false,records:recs},
   function(data,err){
     btn.disabled=false;
     btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Submit';
@@ -807,6 +856,30 @@ function doSubmit(){
     if(!data.success){alert(data.message||'Save failed.');return;}
     showConfirm(data);
   });
+}
+
+/* ══ ALREADY MARKED POST-SUBMIT (edge case: race condition) ══ */
+function showAlreadyPostSubmit(msg){
+  g('bar').classList.remove('on');
+  g('stuList').innerHTML=
+    '<div style="padding:20px 20px 0">'
+    +'<div class="already-block">'
+    +'<div class="already-icon-wrap"><svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>'
+    +'<div class="already-tag">Already Recorded</div>'
+    +'<div class="already-big">Already Marked</div>'
+    +'<div class="already-msg">'+msg+'</div>'
+    +'<div class="already-note">If there is an error, please contact the admin.</div>'
+    +'</div>'
+    +'<button class="btn-go-back" onclick="goBackFromAlready()">← Go Back to Class Selection</button>'
+    +'</div>';
+  goTo('s4','r');
+}
+
+function goBackFromAlready(){
+  STUDS=[];ABSENT={};CLS=null;BOARD=null;OVERWRITE=false;
+  g('stuList').innerHTML='';
+  g('bar').classList.remove('on');
+  goTo('s2','l');
 }
 
 /* ══ CONFIRM ══ */
