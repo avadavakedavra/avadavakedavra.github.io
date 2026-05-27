@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Attendance · SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
+  --cr:#f5f2eb;--c2:#ede9e0;--c3:#e4dfd4;
+  --wh:#fdfcfa;--mu:#7a7970;--pa:#b0ada4;--ru:#d8d4cb;
+  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;
+  --lb:#f0f7e3;--lm:#c8e48e;
+  --re:#dc2626;--rb:#fef2f2;--rm:#fca5a5;
+  --am:#d97706;--ab:#fffbeb;
+  --bl:#2563eb;--bb:#eff6ff;--bm:#bfdbfe;
+  --f:'Open Sans',sans-serif;
+  --fs:'DM Serif Display',serif;
+  --e1:cubic-bezier(.22,1,.36,1);
+  --e2:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;height:100%}
+body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;line-height:1.5;overflow-x:hidden;min-height:100%;overscroll-behavior:none}
+
+/* ── KEYFRAMES ── */
+@keyframes spin   {to{transform:rotate(360deg)}}
+@keyframes fIn    {from{opacity:0}to{opacity:1}}
+@keyframes fUp    {from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fLeft  {from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fRight {from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scIn   {from{opacity:0;transform:scale(.93) translateY(18px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes pop    {0%{transform:scale(0) rotate(-15deg);opacity:0}60%{transform:scale(1.2) rotate(3deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes pulse  {0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+@keyframes glow   {0%,100%{box-shadow:0 3px 16px rgba(139,197,63,.35)}50%{box-shadow:0 3px 28px rgba(139,197,63,.65)}}
+@keyframes ripple {to{transform:scale(5);opacity:0}}
+@keyframes barUp  {from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes cardIn {from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:54px;background:var(--ink);
+  border-bottom:2.5px solid var(--li);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;position:sticky;top:0;z-index:500
+}
+.tb-logo{
+  width:28px;height:28px;border-radius:7px;background:var(--li);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fs);font-size:11px;color:var(--ink);font-weight:700
+}
+.tb-name{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-left:8px}
+.tb-l{display:flex;align-items:center}
+.tb-r{display:flex;align-items:center;gap:8px}
+.tb-who{font-size:12px;color:rgba(255,255,255,.45);display:none}
+.tb-who.on{display:block}
+.tb-who b{color:#fff;font-weight:600}
+.btn-out{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,.1);
+  background:transparent;color:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;display:none
+}
+.btn-out.on{display:block}
+.btn-out:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)}
+
+/* ── SCREENS ── */
+/* Each screen is display:none by default, .on makes it visible */
+.scr{display:none;min-height:calc(100vh - 54px)}
+.scr.on{display:block!important}
+/* Slide-right animation = forward nav */
+.scr.slide-r{animation:fLeft .32s var(--e1)}
+/* Slide-left animation = back nav */
+.scr.slide-l{animation:fRight .32s var(--e1)}
+
+/* ══════════════════════════════════
+   S1: LOGIN
+══════════════════════════════════ */
+#s1{
+  background:var(--ink);align-items:center;
+  justify-content:center;padding:40px 20px;position:relative;overflow:hidden
+}
+#s1.on{display:flex!important}
+.lg-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.027)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.027)1px,transparent 1px);background-size:48px 48px}
+.lg-o1{position:absolute;width:650px;height:650px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 65%);top:-220px;right:-180px;pointer-events:none}
+.lg-o2{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.07),transparent 65%);bottom:-80px;left:-60px;pointer-events:none}
+.lg-wm{position:absolute;right:-10px;bottom:-30px;font-family:var(--fs);font-style:italic;font-size:clamp(130px,25vw,300px);color:rgba(255,255,255,.016);pointer-events:none;user-select:none;line-height:1}
+
+.lg-box{position:relative;z-index:1;width:100%;max-width:420px;animation:scIn .55s var(--e1)}
+.lg-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.2);color:var(--li);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:22px}
+.lg-pdot{width:6px;height:6px;border-radius:50%;background:var(--li);animation:pulse 2s ease infinite}
+.lg-h{font-family:var(--fs);font-size:clamp(46px,10vw,62px);color:#fff;line-height:.9;letter-spacing:-.5px;margin-bottom:8px}
+.lg-h em{font-style:italic;color:var(--li)}
+.lg-p{font-size:13px;color:rgba(255,255,255,.26);line-height:1.8;margin-bottom:32px}
+
+.lg-card{background:var(--cr);border-radius:16px;padding:30px 28px;border-top:3.5px solid var(--li);box-shadow:0 40px 100px rgba(0,0,0,.6)}
+.lf{margin-bottom:18px}
+.lf:last-of-type{margin-bottom:6px}
+.ll{display:block;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
+.li-w{position:relative}
+.li{width:100%;padding:12px 42px 12px 14px;border:1.5px solid var(--ru);border-radius:8px;background:var(--wh);font-family:var(--f);font-size:14px;color:var(--ink);outline:none;transition:border .2s,box-shadow .2s}
+.li:focus{border-color:var(--li);box-shadow:0 0 0 3.5px rgba(139,197,63,.14)}
+.li.bad{border-color:var(--re);box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;padding:4px;cursor:pointer;color:var(--pa);display:flex;transition:color .15s}
+.eye:hover{color:var(--ink)}
+.eye svg{width:16px;height:16px;pointer-events:none}
+.lerr{background:rgba(220,38,38,.07);color:var(--re);border:1px solid rgba(220,38,38,.18);border-radius:7px;padding:10px 14px;font-size:13px;line-height:1.5;margin-bottom:16px;display:none;animation:fUp .25s var(--e1)}
+.lerr.on{display:block}
+.btn-login{width:100%;padding:13px;border:none;border-radius:9px;background:var(--li);color:var(--ink);font-family:var(--f);font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .22s var(--e1);box-shadow:0 4px 20px rgba(139,197,63,.4);margin-top:6px;position:relative;overflow:hidden}
+.btn-login:hover:not(:disabled){background:var(--l2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(139,197,63,.5)}
+.btn-login:active{transform:translateY(0)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.spin{width:14px;height:14px;border:2px solid rgba(26,26,24,.2);border-top-color:var(--ink);border-radius:50%;animation:spin .65s linear infinite;display:none}
+.lg-ft{font-size:11px;color:rgba(255,255,255,.16);text-align:center;margin-top:20px}
+
+/* ══════════════════════════════════
+   S2: CLASS SELECTION
+══════════════════════════════════ */
+#s2{background:var(--cr)}
+.pg-hero{background:var(--ink);padding:24px 20px 22px;border-bottom:2.5px solid var(--li);position:relative;overflow:hidden}
+.pg-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.pg-glow{position:absolute;top:-120px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 65%);pointer-events:none}
+.pg-in{position:relative;z-index:1}
+.pg-date{display:inline-flex;align-items:center;gap:7px;background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.22);color:var(--li);font-size:11px;font-weight:700;letter-spacing:.06em;padding:5px 13px;border-radius:20px;margin-bottom:12px}
+.pg-ddot{width:6px;height:6px;border-radius:50%;background:var(--li);animation:pulse 2s ease infinite}
+.pg-h{font-family:var(--fs);font-size:28px;color:#fff;line-height:1;margin-bottom:4px}
+.pg-h em{font-style:italic;color:var(--li)}
+.pg-sub{font-size:12px;color:rgba(255,255,255,.28);line-height:1.6}
+
+/* back button */
+.pg-back{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:rgba(255,255,255,.4);background:none;border:none;cursor:pointer;transition:color .15s;margin-bottom:14px;padding:0;font-family:var(--f)}
+.pg-back:hover{color:rgba(255,255,255,.8)}
+.pg-back svg{width:14px;height:14px}
+
+.sel-body{padding:24px 20px}
+.sel-hint{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:14px}
+
+/* CLASS CARDS — large, full-width feel */
+.cls-list{display:flex;flex-direction:column;gap:10px}
+.cls-card{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 18px;background:var(--wh);
+  border:1.5px solid var(--ru);border-radius:12px;
+  cursor:pointer;transition:all .2s var(--e1);
+  position:relative;overflow:hidden;
+  animation:cardIn .4s var(--e1) both
+}
+.cls-card:nth-child(1){animation-delay:.04s}
+.cls-card:nth-child(2){animation-delay:.1s}
+.cls-card:nth-child(3){animation-delay:.16s}
+.cls-card:nth-child(4){animation-delay:.22s}
+.cls-card::after{content:'';position:absolute;right:16px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-right:2px solid var(--ru);border-top:2px solid var(--ru);transform:translateY(-50%) rotate(45deg);transition:all .2s}
+.cls-card:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(0,0,0,.07);border-color:var(--lm)}
+.cls-card:hover::after{border-color:var(--li)}
+.cls-card:active{transform:scale(.98)}
+.cls-num-big{font-family:var(--fs);font-size:44px;font-weight:400;color:var(--ink3);line-height:1;transition:color .18s;flex-shrink:0;width:56px}
+.cls-card:hover .cls-num-big{color:var(--l2)}
+.cls-info{}
+.cls-info-t{font-size:16px;font-weight:700;color:var(--ink)}
+.cls-info-s{font-size:12px;color:var(--mu);margin-top:2px}
+.cls-boards{display:flex;gap:5px;margin-top:6px}
+.cls-board-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.04em}
+.cls-board-tag.st{background:var(--lb);color:var(--l3)}
+.cls-board-tag.cb{background:var(--bb);color:var(--bl)}
+
+/* ══════════════════════════════════
+   S3: BOARD SELECTION (for classes with both)
+══════════════════════════════════ */
+#s3{background:var(--cr)}
+.board-list{display:flex;flex-direction:column;gap:12px}
+.board-card{
+  padding:24px 20px;background:var(--wh);
+  border:1.5px solid var(--ru);border-radius:14px;
+  cursor:pointer;transition:all .22s var(--e1);
+  position:relative;overflow:hidden;text-align:left;
+  animation:cardIn .4s var(--e1) both
+}
+.board-card:nth-child(1){animation-delay:.06s}
+.board-card:nth-child(2){animation-delay:.14s}
+.board-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:4px 0 0 4px;transition:background .2s}
+.board-card.st-card::before{background:var(--li)}
+.board-card.cb-card::before{background:var(--bl)}
+.board-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.09)}
+.board-card.st-card:hover{border-color:var(--lm);box-shadow:0 8px 28px rgba(139,197,63,.12)}
+.board-card.cb-card:hover{border-color:var(--bm);box-shadow:0 8px 28px rgba(37,99,235,.1)}
+.board-card:active{transform:scale(.98)}
+.board-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:6px;margin-bottom:10px}
+.board-card.st-card .board-tag{background:var(--lb);color:var(--l3)}
+.board-card.cb-card .board-tag{background:var(--bb);color:var(--bl)}
+.board-title{font-family:var(--fs);font-size:26px;color:var(--ink);line-height:1;margin-bottom:4px}
+.board-sub{font-size:13px;color:var(--mu)}
+.board-arr{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.board-card.st-card .board-arr{background:var(--lb)}
+.board-card.cb-card .board-arr{background:var(--bb)}
+.board-arr svg{width:14px;height:14px}
+.board-card.st-card .board-arr svg{color:var(--l2)}
+.board-card.cb-card .board-arr svg{color:var(--bl)}
+
+/* ══════════════════════════════════
+   S4: STUDENT LIST
+══════════════════════════════════ */
+#s4{background:var(--cr);padding-bottom:130px}
+.stu-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.stu-lbl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu)}
+.stu-cnt{font-size:11px;font-weight:700;color:var(--mu);background:var(--c2);padding:3px 10px;border-radius:20px}
+
+.stu-list{padding:20px 20px 0}
+
+/* student card */
+.sc{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--wh);
+  border:1.5px solid var(--ru);border-radius:10px;
+  margin-bottom:8px;cursor:pointer;
+  transition:border .15s,background .15s,transform .12s,box-shadow .15s;
+  position:relative;overflow:hidden;
+  user-select:none;-webkit-user-select:none;
+  animation:cardIn .35s var(--e1) both
+}
+.sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:3px 0 0 3px;background:transparent;transition:background .15s}
+.sc:hover{box-shadow:0 2px 14px rgba(0,0,0,.06);transform:translateX(2px)}
+.sc.ab{border-color:var(--rm);background:var(--rb);box-shadow:0 2px 14px rgba(220,38,38,.07)}
+.sc.ab::before{background:var(--re)}
+.sc:active{transform:scale(.98)}
+.rip{position:absolute;border-radius:50%;background:rgba(220,38,38,.12);width:20px;height:20px;transform:scale(0);opacity:1;animation:ripple .55s var(--e2) forwards;pointer-events:none}
+.sc-av{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1.5px solid var(--ru)}
+.sc-mn{width:44px;height:44px;border-radius:8px;background:var(--ink2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--li);flex-shrink:0;transition:background .15s,color .15s}
+.sc.ab .sc-mn{background:var(--re);color:#fff}
+.sc-info{flex:1;min-width:0}
+.sc-name{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s}
+.sc.ab .sc-name{color:var(--re)}
+.sc-sch{font-size:11px;color:var(--mu);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-tag{flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--lb);color:var(--l3);border:1px solid rgba(139,197,63,.2);transition:all .15s}
+.sc.ab .sc-tag{background:var(--rb);color:var(--re);border-color:rgba(220,38,38,.25)}
+
+.skel{height:70px;border-radius:10px;margin-bottom:8px;background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);background-size:600px 100%;animation:shimmer 1.5s linear infinite}
+
+/* already submitted */
+.already{background:var(--ab);border:1.5px solid rgba(217,119,6,.2);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px}
+.already em{font-size:28px;display:block;margin-bottom:8px}
+.already-t{font-size:14px;font-weight:700;color:var(--am);margin-bottom:5px}
+.already-s{font-size:12px;color:var(--mu);line-height:1.6}
+.btn-edit{margin-top:12px;padding:10px 20px;border-radius:7px;border:1.5px solid rgba(217,119,6,.3);background:var(--wh);font-family:var(--f);font-size:13px;font-weight:700;color:var(--am);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-edit:hover{background:var(--am);color:#fff;border-color:var(--am)}
+
+/* sticky bar */
+.bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--wh);border-top:1.5px solid var(--ru);padding:12px 20px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -6px 30px rgba(0,0,0,.1);transform:translateY(100%);transition:transform .35s var(--e1)}
+.bar.on{transform:translateY(0)}
+.bar-row{display:flex;align-items:center;gap:12px}
+.bar-info{flex:1}
+.bar-cnt{font-size:13px;font-weight:700;color:var(--ink)}
+.bar-cnt .red{color:var(--re)}
+.bar-d{font-size:11px;color:var(--mu);margin-top:1px}
+.btn-sub{padding:12px 22px;border-radius:9px;border:none;background:var(--li);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s var(--e1);animation:glow 2.5s ease 1s infinite;white-space:nowrap;flex-shrink:0}
+.btn-sub:hover:not(:disabled){background:var(--l2);transform:translateY(-2px)}
+.btn-sub:disabled{opacity:.5;cursor:not-allowed;transform:none;animation:none}
+.btn-sub svg{width:14px;height:14px;flex-shrink:0}
+
+/* ticket */
+.ticket{background:var(--wh);border-radius:12px;border:1px solid var(--ru);overflow:hidden;margin:18px 20px 0}
+.tkt-hd{padding:13px 16px;border-bottom:1px solid var(--c2);display:flex;align-items:center;gap:9px}
+.tkt-ic{width:28px;height:28px;border-radius:7px;background:rgba(37,211,102,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tkt-ic svg{width:14px;height:14px;color:#128c3e}
+.tkt-t{font-size:13px;font-weight:700;color:var(--ink)}
+.tkt-s{font-size:11px;color:var(--mu)}
+.tkt-bd{padding:13px 16px}
+.tarea{width:100%;min-height:76px;padding:10px 12px;border:1.5px solid var(--ru);border-radius:8px;background:var(--cr);font-family:var(--f);font-size:13px;color:var(--ink);outline:none;resize:none;transition:border .18s,box-shadow .18s;line-height:1.6}
+.tarea:focus{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.1);background:var(--wh)}
+.btn-wa{width:100%;margin-top:9px;padding:11px;border-radius:8px;border:1.5px solid rgba(37,211,102,.25);background:rgba(37,211,102,.08);color:#128c3e;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .18s}
+.btn-wa:hover{background:rgba(37,211,102,.18)}
+.btn-wa svg{width:14px;height:14px;flex-shrink:0}
+
+/* ══════════════════════════════════
+   S5: CONFIRM
+══════════════════════════════════ */
+#s5{padding:24px 20px 100px;background:var(--cr)}
+.cf-hero{background:var(--ink);border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 8px 32px rgba(0,0,0,.15);position:relative}
+.cf-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+.cf-top{padding:24px 20px;position:relative;z-index:1}
+.cf-ck{width:52px;height:52px;border-radius:50%;background:var(--li);display:flex;align-items:center;justify-content:center;margin-bottom:14px;animation:pop .5s var(--e1);box-shadow:0 4px 20px rgba(139,197,63,.4)}
+.cf-ck svg{width:24px;height:24px}
+.cf-h{font-family:var(--fs);font-size:24px;color:#fff;line-height:1.1}
+.cf-h em{font-style:italic;color:var(--li)}
+.cf-sub{font-size:12px;color:rgba(255,255,255,.3);margin-top:5px}
+.cf-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.06)}
+.cf-st{padding:16px 12px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.cf-st:last-child{border-right:none}
+.cf-v{font-family:var(--fs);font-size:32px;color:#fff;line-height:1}
+.cf-v.grn{color:var(--li)}
+.cf-v.red{color:#f87171}
+.cf-l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+
+.ab-card{background:var(--wh);border-radius:12px;border:1px solid var(--ru);overflow:hidden;margin-bottom:14px}
+.ab-hd{padding:12px 16px;border-bottom:1px solid var(--c2);background:var(--rb);display:flex;align-items:center;gap:8px}
+.ab-ic{width:24px;height:24px;border-radius:50%;background:var(--re);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ab-ic svg{width:12px;height:12px}
+.ab-t{font-size:13px;font-weight:700;color:var(--re)}
+.ab-bd{padding:12px 16px}
+.ab-chip{display:inline-flex;align-items:center;gap:5px;background:var(--rb);color:var(--re);border:1px solid rgba(220,38,38,.18);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;margin:3px 3px 3px 0}
+.ab-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+.btn-home{width:100%;padding:14px;border-radius:10px;border:none;background:var(--li);color:var(--ink);font-family:var(--f);font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s var(--e1);box-shadow:0 4px 18px rgba(139,197,63,.35);margin-bottom:10px}
+.btn-home:hover{background:var(--l2);transform:translateY(-2px)}
+.btn-home svg{width:15px;height:15px}
+.btn-re{width:100%;padding:12px;border-radius:10px;border:1.5px solid var(--ru);background:var(--wh);font-family:var(--f);font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;transition:all .15s;margin-bottom:16px}
+.btn-re:hover{border-color:var(--pa);color:var(--ink)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-l">
+    <div class="tb-logo">SA</div>
+    <span class="tb-name">SEHR Academy</span>
+  </div>
+  <div class="tb-r">
+    <span class="tb-who" id="tbWho"></span>
+    <button class="btn-out" id="btnOut">Logout</button>
+  </div>
+</div>
+
+<!-- ═══════ S1: LOGIN ═══════ -->
+<div class="scr on" id="s1">
+  <div class="lg-bg"></div><div class="lg-o1"></div><div class="lg-o2"></div>
+  <div class="lg-wm">SEHR</div>
+  <div class="lg-box">
+    <div class="lg-pill"><span class="lg-pdot"></span>Teacher Portal · 2026</div>
+    <h1 class="lg-h">Mark<br><em>Attendance</em></h1>
+    <p class="lg-p">Sign in with your teacher credentials<br>to mark today's attendance.</p>
+    <div class="lg-card">
+      <div class="lerr" id="lErr"></div>
+      <div class="lf">
+        <label class="ll" for="inId">Teacher ID</label>
+        <div class="li-w">
+          <input class="li" type="text" id="inId" placeholder="e.g. shan_sir" autocomplete="username" spellcheck="false">
+        </div>
+      </div>
+      <div class="lf">
+        <label class="ll" for="inPw">Password</label>
+        <div class="li-w">
+          <input class="li" type="password" id="inPw" placeholder="Enter password" autocomplete="current-password">
+          <button class="eye" id="eyeBtn" type="button">
+            <svg id="eyeOn" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="eyeOff" class="hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="btn-login" id="btnLogin">
+        <span id="btnLbl">Sign In</span>
+        <span class="spin hidden" id="btnSpin"></span>
+      </button>
+    </div>
+    <p class="lg-ft">SEHR Academy · Vadanappally · 2026</p>
+  </div>
+</div>
+
+<!-- ═══════ S2: CLASS SELECTION ═══════ -->
+<div class="scr" id="s2">
+  <div class="pg-hero">
+    <div class="pg-glow"></div>
+    <div class="pg-in">
+      <div class="pg-date"><span class="pg-ddot"></span><span id="heroDate"></span></div>
+      <div class="pg-h">Select <em>Class</em></div>
+      <div class="pg-sub" id="s2sub">Choose the class you want to mark</div>
+    </div>
+  </div>
+  <div class="sel-body">
+    <div class="sel-hint">Your Assigned Classes</div>
+    <div class="cls-list" id="clsList"></div>
+  </div>
+  <div class="ticket" style="margin:0 20px">
+    <div class="tkt-hd">
+      <div class="tkt-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg></div>
+      <div><div class="tkt-t">Raise a Ticket</div><div class="tkt-s">Report an issue to admin</div></div>
+    </div>
+    <div class="tkt-bd">
+      <textarea class="tarea" id="ta1" placeholder="Describe your issue…"></textarea>
+      <button class="btn-wa" onclick="sendTicket('ta1')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>Send on WhatsApp</button>
+    </div>
+  </div>
+  <div style="height:32px"></div>
+</div>
+
+<!-- ═══════ S3: BOARD SELECTION ═══════ -->
+<div class="scr" id="s3">
+  <div class="pg-hero">
+    <div class="pg-glow"></div>
+    <div class="pg-in">
+      <button class="pg-back" onclick="goTo('s2','l')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Classes
+      </button>
+      <div class="pg-date"><span class="pg-ddot"></span><span id="s3Date"></span></div>
+      <div class="pg-h" id="s3H">Class <em>10</em></div>
+      <div class="pg-sub">Select the board / syllabus</div>
+    </div>
+  </div>
+  <div class="sel-body">
+    <div class="sel-hint">Available Boards</div>
+    <div class="board-list" id="boardList"></div>
+  </div>
+</div>
+
+<!-- ═══════ S4: STUDENT LIST ═══════ -->
+<div class="scr" id="s4">
+  <div class="pg-hero">
+    <div class="pg-glow"></div>
+    <div class="pg-in">
+      <button class="pg-back" id="s4Back" onclick="goBackFromStudents()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span id="s4BackLbl">Back</span>
+      </button>
+      <div class="pg-date"><span class="pg-ddot"></span><span id="s4Date"></span></div>
+      <div class="pg-h" id="s4H">Class <em>10</em></div>
+      <div class="pg-sub" id="s4Sub">Tap a student to mark absent</div>
+    </div>
+  </div>
+  <div class="stu-list" id="stuList"></div>
+  <div class="ticket" id="ticketS4">
+    <div class="tkt-hd">
+      <div class="tkt-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg></div>
+      <div><div class="tkt-t">Raise a Ticket</div><div class="tkt-s">Report an issue to admin</div></div>
+    </div>
+    <div class="tkt-bd">
+      <textarea class="tarea" id="ta2" placeholder="Describe your issue…"></textarea>
+      <button class="btn-wa" onclick="sendTicket('ta2')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>Send on WhatsApp</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+
+<!-- ═══════ S5: CONFIRM ═══════ -->
+<div class="scr" id="s5">
+  <div class="cf-hero">
+    <div class="cf-top">
+      <div class="cf-ck"><svg fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="cf-h">Attendance <em>Saved</em></div>
+      <div class="cf-sub" id="cfSub"></div>
+    </div>
+    <div class="cf-stats">
+      <div class="cf-st"><div class="cf-v" id="cfT">—</div><div class="cf-l">Total</div></div>
+      <div class="cf-st"><div class="cf-v grn" id="cfP">—</div><div class="cf-l">Present</div></div>
+      <div class="cf-st"><div class="cf-v red" id="cfA">—</div><div class="cf-l">Absent</div></div>
+    </div>
+  </div>
+  <div class="ab-card hidden" id="abCard">
+    <div class="ab-hd"><div class="ab-ic"><svg fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="ab-t" id="abT">Absent Today</div></div>
+    <div class="ab-bd" id="abChips"></div>
+  </div>
+  <button class="btn-home" onclick="goHome()">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Mark Another Class
+  </button>
+  <button class="btn-re" id="btnRe">Edit & Resubmit</button>
+  <div class="ticket">
+    <div class="tkt-hd">
+      <div class="tkt-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg></div>
+      <div><div class="tkt-t">Raise a Ticket</div><div class="tkt-s">Report an issue to admin</div></div>
+    </div>
+    <div class="tkt-bd">
+      <textarea class="tarea" id="ta3" placeholder="Describe your issue…"></textarea>
+      <button class="btn-wa" onclick="sendTicket('ta3')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>Send on WhatsApp</button>
+    </div>
+  </div>
+  <div style="height:40px"></div>
+</div>
+
+<!-- STICKY SUBMIT BAR -->
+<div class="bar" id="bar">
+  <div class="bar-row">
+    <div class="bar-info">
+      <div class="bar-cnt" id="barCnt">0 students</div>
+      <div class="bar-d" id="barD"></div>
+    </div>
+    <button class="btn-sub" id="btnSub" onclick="doSubmit()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Submit
+    </button>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG ══ */
+var API = 'https://script.google.com/macros/s/AKfycbzYZTRCbMaYz1oGXmeKgp6j8mV5C495y18-0e77SOxm6DFwhASXImg8-gBXmlsY36BEUg/exec';
+var WA  = '919539409586';
+
+/*
+ * Which classes have both STATE + CBSE boards.
+ * From your data: 10, 11, 12 have both. 9 is STATE only.
+ * Adjust this if it changes.
+ */
+var MULTI_BOARD = ['10','11','12'];
+
+/* ══ STATE ══ */
+var T         = null;   // teacher
+var STUDS     = [];     // current students
+var ABSENT    = {};     // { id: true }
+var CLS       = null;   // selected class e.g. '12'
+var BOARD     = null;   // selected board e.g. 'STATE' or 'CBSE' or 'ALL'
+var OVERWRITE = false;
+var TODAY_YMD = '';
+var TODAY_DSP = '';
+
+/* ══ INIT ══ */
+!function(){
+  var d=new Date(), p=function(n){return String(n).padStart(2,'0');};
+  TODAY_YMD = d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+  TODAY_DSP = d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var sh    = d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  ['heroDate','s3Date','s4Date'].forEach(function(id){ g(id).textContent=sh; });
+  g('barD').textContent = TODAY_DSP;
+}();
+
+/* ══ UTILS ══ */
+function g(id){ return document.getElementById(id); }
+function mn(n){ return (n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
+
+/* Screen transition */
+function goTo(id, dir){
+  document.querySelectorAll('.scr').forEach(function(s){
+    s.classList.remove('on','slide-r','slide-l');
+  });
+  var el = g(id);
+  el.classList.add('on', dir==='r'?'slide-r':'slide-l');
+  g('bar').classList.remove('on');
+  window.scrollTo(0,0);
+}
+
+/* ══ API ══ */
+function api(payload, cb){
+  var url = API + '?data=' + encodeURIComponent(JSON.stringify(payload));
+  fetch(url)
+    .then(function(r){ return r.text(); })
+    .then(function(t){
+      try{ cb(JSON.parse(t), null); }
+      catch(e){ cb(null,'Parse error: '+t.slice(0,80)); }
+    })
+    .catch(function(e){ cb(null, e.message||'Network error'); });
+}
+
+/* ══ EYE ══ */
+g('eyeBtn').addEventListener('click',function(){
+  var i=g('inPw'), v=i.type==='text';
+  i.type=v?'password':'text';
+  g('eyeOn').classList.toggle('hidden',!v);
+  g('eyeOff').classList.toggle('hidden',v);
+});
+
+/* ══ LOGIN ══ */
+g('btnLogin').addEventListener('click',doLogin);
+g('inId').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+g('inPw').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+
+function doLogin(){
+  var id=g('inId').value.trim(), pw=g('inPw').value.trim();
+  if(!id){g('inId').classList.add('bad');showErr('Enter your teacher ID.');return;}
+  if(!pw){g('inPw').classList.add('bad');showErr('Enter your password.');return;}
+  setBtnLoad(true); hideErr();
+  api({action:'teacherLogin',teacher_id:id,password:pw},function(data,err){
+    setBtnLoad(false);
+    if(err){showErr('Connection error — '+err);return;}
+    if(!data||!data.success){showErr(data?data.message:'Login failed.');return;}
+    T=data.teacher;
+    afterLogin();
+  });
+}
+function setBtnLoad(on){
+  g('btnLogin').disabled=on;
+  g('btnLbl').textContent=on?'Signing in…':'Sign In';
+  g('btnSpin').classList.toggle('hidden',!on);
+}
+function showErr(m){g('lErr').textContent=m;g('lErr').classList.add('on');}
+function hideErr(){g('lErr').classList.remove('on');}
+
+function afterLogin(){
+  g('tbWho').innerHTML='Hello, <b>'+T.name+'</b>';
+  g('tbWho').classList.add('on');
+  g('btnOut').classList.add('on');
+  g('s2sub').textContent='Good day, '+T.name+' — choose your class';
+  buildClsList();
+  goTo('s2','r');
+}
+
+/* ══ LOGOUT ══ */
+g('btnOut').addEventListener('click',function(){
+  T=null;STUDS=[];ABSENT={};CLS=null;BOARD=null;OVERWRITE=false;
+  g('tbWho').classList.remove('on');
+  g('btnOut').classList.remove('on');
+  g('inId').value='';g('inPw').value='';
+  g('clsList').innerHTML='';g('stuList').innerHTML='';
+  g('bar').classList.remove('on');
+  goTo('s1','l');
+});
+
+/* ══ S2: BUILD CLASS LIST ══ */
+function buildClsList(){
+  var list = g('clsList');
+  list.innerHTML='';
+  (T.allowedClasses||[]).forEach(function(cls,i){
+    var hasMulti = MULTI_BOARD.indexOf(cls)!==-1;
+    /* check what boards actually exist for this class from teacher's perspective */
+    var div=document.createElement('div');
+    div.className='cls-card';
+    div.style.animationDelay=(i*0.07)+'s';
+    var boards='';
+    if(hasMulti){
+      boards='<div class="cls-boards"><span class="cls-board-tag st">STATE</span><span class="cls-board-tag cb">CBSE</span></div>';
+    } else {
+      boards='<div class="cls-boards"><span class="cls-board-tag st">STATE</span></div>';
+    }
+    div.innerHTML=
+      '<div class="cls-num-big">'+cls+'</div>'
+      +'<div class="cls-info">'
+      +'<div class="cls-info-t">Class '+cls+'</div>'
+      +'<div class="cls-info-s">'+(hasMulti?'STATE & CBSE students':'STATE students')+'</div>'
+      +boards
+      +'</div>';
+    div.addEventListener('click',function(){ onClassTap(cls); });
+    list.appendChild(div);
+  });
+}
+
+/* ══ S2 → S3 or S4 ══ */
+function onClassTap(cls){
+  CLS=cls; BOARD=null; ABSENT={}; OVERWRITE=false;
+  var hasMulti = MULTI_BOARD.indexOf(cls)!==-1;
+  if(hasMulti){
+    /* go to board selection */
+    g('s3H').innerHTML='Class <em>'+cls+'</em>';
+    buildBoardList(cls);
+    goTo('s3','r');
+  } else {
+    /* class 9 — only STATE, skip board screen */
+    BOARD='STATE';
+    openStudentList('Back to Classes','s2');
+  }
+}
+
+/* ══ S3: BOARD LIST ══ */
+function buildBoardList(cls){
+  var list=g('boardList');
+  list.innerHTML=
+    '<div class="board-card st-card" onclick="onBoardTap(\'STATE\')">'
+    +'<div class="board-tag">STATE</div>'
+    +'<div class="board-title">Kerala State Syllabus</div>'
+    +'<div class="board-sub">SCERT · Class '+cls+' STATE students</div>'
+    +'<div class="board-arr"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>'
+    +'</div>'
+    +'<div class="board-card cb-card" onclick="onBoardTap(\'CBSE\')">'
+    +'<div class="board-tag">CBSE</div>'
+    +'<div class="board-title">Central Board</div>'
+    +'<div class="board-sub">CBSE · Class '+cls+' CBSE students</div>'
+    +'<div class="board-arr"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>'
+    +'</div>';
+}
+
+function onBoardTap(board){
+  BOARD=board; ABSENT={};
+  openStudentList('Back to Boards','s3');
+}
+
+/* ══ S4: OPEN STUDENT LIST ══ */
+function openStudentList(backLbl, backScr){
+  g('s4Back').onclick=function(){ goTo(backScr,'l'); g('bar').classList.remove('on'); };
+  g('s4BackLbl').textContent=backLbl;
+  g('s4H').innerHTML='Class <em>'+CLS+(BOARD?' · '+BOARD:'')+'</em>';
+  g('s4Sub').textContent='Tap a student to mark absent';
+  goTo('s4','r');
+  loadStudents();
+}
+
+function goBackFromStudents(){ /* handled dynamically above */ }
+
+/* ══ LOAD STUDENTS ══ */
+function loadStudents(){
+  showSkel();
+  /* check if already submitted */
+  api({action:'checkAttendance',date:TODAY_YMD,class:CLS,syllabus:BOARD||''},function(chk,err){
+    if(!err&&chk&&chk.exists&&!OVERWRITE){
+      showAlready(chk); return;
+    }
+    fetchStudents();
+  });
+}
+
+function showSkel(){
+  g('stuList').innerHTML='<div style="padding:18px 20px 0">'
+    +[0,1,2,3,4].map(function(){return '<div class="skel"></div>';}).join('')
+    +'</div>';
+  g('bar').classList.remove('on');
+}
+
+function showAlready(chk){
+  var dateStr = chk.submitted_at || TODAY_DSP;
+  var who     = chk.marked_by   || 'a teacher';
+  g('stuList').innerHTML=
+    '<div style="padding:20px 20px 0">'
+    +'<div class="already-block">'
+    +'<div class="already-icon-wrap"><svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>'
+    +'<div class="already-tag">Attendance Recorded</div>'
+    +'<div class="already-big">Already Marked</div>'
+    +'<div class="already-msg">Attendance for <strong>Class '+CLS+(BOARD?' · '+BOARD:'')+'</strong> on <strong>'+TODAY_DSP+'</strong> was already submitted by <strong>'+who+'</strong> at '+dateStr+'.</div>'
+    +'<div class="already-note">If there is an error, please contact the admin.</div>'
+    +'</div>'
+    +'<button class="btn-go-back" onclick="goBackFromAlready()">← Go Back to Class Selection</button>'
+    +'</div>';
+  g('bar').classList.remove('on');
+}
+
+function fetchStudents(){
+  showSkel();
+  api({action:'getStudents',class:CLS,syllabus:BOARD||''},function(data,err){
+    if(err||!data||!data.success){
+      g('stuList').innerHTML='<div style="padding:20px;text-align:center;color:var(--mu);font-size:13px">Could not load students.<br><small>'+((err||(data&&data.message))||'')+'</small></div>';
+      return;
+    }
+    /* filter by board if one is selected */
+    var all = data.students||[];
+    if(BOARD){
+      all = all.filter(function(s){ return s.syllabus===BOARD; });
+    }
+    STUDS=all;
+    renderStudents();
+  });
+}
+
+/* ══ RENDER ══ */
+function renderStudents(){
+  if(!STUDS.length){
+    g('stuList').innerHTML='<div style="padding:20px;text-align:center;color:var(--mu);font-size:13px">No active students found for this selection.</div>';
+    g('bar').classList.remove('on');
+    return;
+  }
+  var html='<div style="padding:18px 20px 0">'
+    +'<div class="stu-top"><span class="stu-lbl">Students</span>'
+    +'<span class="stu-cnt">'+STUDS.length+' total</span></div>';
+  STUDS.forEach(function(s,i){
+    html+=mkCard(s,i*0.035);
+  });
+  html+='</div>';
+  g('stuList').innerHTML=html;
+  updBar();
+  g('bar').classList.add('on');
+}
+
+function mkCard(s,delay){
+  var ab  = ABSENT[s.id]===true;
+  var has = s.photo&&s.photo.startsWith('http');
+  var av  = has
+    ? '<img class="sc-av" src="'+s.photo+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+      +'<div class="sc-mn" style="display:none">'+mn(s.full_name)+'</div>'
+    : '<div class="sc-mn">'+mn(s.full_name)+'</div>';
+  return '<div class="sc'+(ab?' ab':'')+'" id="c'+s.id+'" style="animation-delay:'+delay+'s" onclick="tap(event,\''+s.id+'\')">'
+    +av
+    +'<div class="sc-info"><div class="sc-name">'+s.full_name+'</div>'
+    +'<div class="sc-sch">'+(s.school_name||'—')+'</div></div>'
+    +'<div class="sc-tag">'+(ab?'Absent':'Present')+'</div>'
+    +'</div>';
+}
+
+/* ══ TAP ══ */
+function tap(ev,id){
+  var el=g('c'+id);
+  if(el){
+    var r=document.createElement('span'),rc=el.getBoundingClientRect();
+    r.className='rip';r.style.left=(ev.clientX-rc.left-10)+'px';r.style.top=(ev.clientY-rc.top-10)+'px';
+    el.appendChild(r); setTimeout(function(){r.remove();},600);
+  }
+  if(ABSENT[id]) delete ABSENT[id]; else ABSENT[id]=true;
+  var s=STUDS.find(function(x){return x.id===id;});
+  if(s&&el) el.outerHTML=mkCard(s,0);
+  updBar();
+}
+
+function updBar(){
+  var tot=STUDS.length, abs=Object.keys(ABSENT).length;
+  g('barCnt').innerHTML=abs>0
+    ?'<span class="red">'+abs+' absent</span> / '+tot+' students'
+    :tot+' students — all present ✓';
+}
+
+/* ══ SUBMIT ══ */
+function doSubmit(){
+  if(!STUDS.length) return;
+  var btn=g('btnSub');
+  btn.disabled=true;
+  btn.innerHTML='<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(26,26,24,.2);border-top-color:var(--ink);border-radius:50%;animation:spin .6s linear infinite"></span> Saving…';
+
+  var recs=STUDS.map(function(s){
+    return {student_id:s.id,full_name:s.full_name,syllabus:s.syllabus,status:ABSENT[s.id]?'Absent':'Present'};
+  });
+
+  api({action:'markAttendance',date:TODAY_YMD,class:CLS,teacher_id:T.id,overwrite:OVERWRITE,records:recs},
+  function(data,err){
+    btn.disabled=false;
+    btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Submit';
+    if(err){alert('Error: '+err);return;}
+    if(!data.success&&data.duplicate){
+      /* Hard block — show already-marked screen, no overwrite */
+      showAlreadyPostSubmit(data.message||'Attendance already submitted.');
+      return;
+    }
+    if(!data.success){alert(data.message||'Save failed.');return;}
+    showConfirm(data);
+  });
+}
+
+/* ══ CONFIRM ══ */
+function showConfirm(data){
+  g('bar').classList.remove('on');
+  var board=BOARD?' ('+BOARD+')':'';
+  g('cfSub').textContent='Class '+CLS+board+' · '+TODAY_DSP;
+  g('cfT').textContent=data.total;
+  g('cfP').textContent=data.present;
+  g('cfA').textContent=data.absent;
+  if(data.absentNames&&data.absentNames.length){
+    g('abT').textContent=data.absentNames.length+' Absent Today';
+    g('abChips').innerHTML=data.absentNames.map(function(n){
+      return '<span class="ab-chip">'+n+'</span>';
+    }).join('');
+    g('abCard').classList.remove('hidden');
+  } else { g('abCard').classList.add('hidden'); }
+  /* No resubmit — attendance is final once submitted */
+  goTo('s5','r');
+}
+
+function goHome(){
+  STUDS=[];ABSENT={};CLS=null;BOARD=null;OVERWRITE=false;
+  g('stuList').innerHTML='';
+  goTo('s2','l');
+}
+
+/* ══ TICKET ══ */
+function sendTicket(id){
+  var txt=g(id).value.trim();
+  if(!txt){g(id).focus();return;}
+  var msg='*SEHR Academy — Teacher Ticket*\n\nFrom: *'+(T?T.name:'Teacher')+'*'
+    +(CLS?' (Class '+CLS+(BOARD?'/'+BOARD:'')+')':'')+'\nDate: '+TODAY_DSP+'\n\n*Issue:*\n'+txt;
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+}
+</script>
+</body>
+</html>
