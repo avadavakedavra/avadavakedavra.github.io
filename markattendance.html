@@ -265,7 +265,43 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
 .sc-tag{flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--lb);color:var(--l3);border:1px solid rgba(139,197,63,.2);transition:all .15s}
 .sc.ab .sc-tag{background:var(--rb);color:var(--re);border-color:rgba(220,38,38,.25)}
 
-.skel{height:70px;border-radius:10px;margin-bottom:8px;background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);background-size:600px 100%;animation:shimmer 1.5s linear infinite}
+.skel{
+  height:70px;border-radius:10px;margin-bottom:8px;
+  background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);
+  background-size:600px 100%;animation:shimmer 1.5s linear infinite
+}
+/* Loading overlay */
+.loading-state{
+  padding:32px 20px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;
+  animation:fIn .25s var(--e1)
+}
+.loading-ring{
+  width:48px;height:48px;border-radius:50%;
+  border:3px solid var(--c3);
+  border-top-color:var(--li);border-right-color:var(--lm);
+  animation:spin .8s linear infinite;flex-shrink:0
+}
+.loading-txt{font-size:13px;font-weight:600;color:var(--mu);letter-spacing:.02em}
+.loading-sub{font-size:11px;color:var(--pa);margin-top:-8px}
+.skel-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--wh);
+  border:1.5px solid var(--ru);border-radius:10px;
+  margin-bottom:8px;overflow:hidden
+}
+.skel-av{width:44px;height:44px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);
+  background-size:600px 100%;animation:shimmer 1.5s linear infinite}
+.skel-lines{flex:1;display:flex;flex-direction:column;gap:7px}
+.skel-line{height:11px;border-radius:4px;
+  background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);
+  background-size:600px 100%;animation:shimmer 1.5s linear infinite}
+.skel-line.w70{width:70%}
+.skel-line.w45{width:45%}
+.skel-tag-ph{width:56px;height:26px;border-radius:20px;flex-shrink:0;
+  background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);
+  background-size:600px 100%;animation:shimmer 1.5s linear infinite}
 
 /* already submitted */
 .already{background:var(--ab);border:1.5px solid rgba(217,119,6,.2);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px}
@@ -779,8 +815,26 @@ function loadStudents(){
 }
 
 function showSkel(){
-  g('stuList').innerHTML='<div style="padding:18px 20px 0">'
-    +[0,1,2,3,4].map(function(){return '<div class="skel"></div>';}).join('')
+  var skelCard = function(delay){
+    return '<div class="skel-row" style="animation-delay:'+delay+'s">'
+      +'<div class="skel-av"></div>'
+      +'<div class="skel-lines">'
+      +'<div class="skel-line w70"></div>'
+      +'<div class="skel-line w45"></div>'
+      +'</div>'
+      +'<div class="skel-tag-ph"></div>'
+      +'</div>';
+  };
+  var cls  = CLS  ? 'Class '+CLS  : '';
+  var brd  = BOARD? ' · '+BOARD   : '';
+  g('stuList').innerHTML=
+    '<div class="loading-state">'
+    +'<div class="loading-ring"></div>'
+    +'<div class="loading-txt">Loading students…</div>'
+    +'<div class="loading-sub">'+cls+brd+'</div>'
+    +'</div>'
+    +'<div style="padding:0 20px">'
+    +[0,.06,.12,.18,.24].map(skelCard).join('')
     +'</div>';
   g('bar').classList.remove('on');
 }
