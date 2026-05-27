@@ -724,7 +724,7 @@ function goBackFromStudents(){ /* handled dynamically above */ }
 /* ══ LOAD STUDENTS ══ */
 function loadStudents(){
   showSkel();
-  api({action:'checkAttendance',date:TODAY_YMD,class:CLS},function(chk,err){
+  api({action:'checkAttendance',date:TODAY_YMD,class:CLS,syllabus:BOARD||''},function(chk,err){
     if(err){
       /* on network error just load students anyway */
       fetchStudents(); return;
