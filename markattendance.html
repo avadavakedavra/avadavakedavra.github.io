@@ -42,29 +42,59 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
 
 /* ── TOPBAR ── */
 .topbar{
-  height:54px;background:var(--ink);
-  border-bottom:2.5px solid var(--li);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;position:sticky;top:0;z-index:500
+  background:var(--ink);padding:0 20px;
+  position:sticky;top:0;z-index:500;
+  border-bottom:3px solid var(--li);
+  overflow:hidden;
 }
-.tb-logo{
-  width:28px;height:28px;border-radius:7px;background:var(--li);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--fs);font-size:11px;color:var(--ink);font-weight:700
+.topbar::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035)1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.035)1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none
 }
-.tb-name{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-left:8px}
-.tb-l{display:flex;align-items:center}
-.tb-r{display:flex;align-items:center;gap:8px}
-.tb-who{font-size:12px;color:rgba(255,255,255,.45);display:none}
+.topbar::after{
+  content:'';position:absolute;top:-120px;right:-80px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.1),transparent 60%);
+  pointer-events:none
+}
+.tb-inner{
+  padding:22px 0 18px;display:flex;align-items:flex-end;
+  justify-content:space-between;gap:16px;
+  position:relative;z-index:1;flex-wrap:wrap
+}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.tb-kicker-rule{width:28px;height:2px;background:var(--li)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--li);opacity:.85}
+.tb-title{font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.95;margin-bottom:6px}
+.tb-title i{font-style:italic;font-weight:300;color:var(--li)}
+.tb-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.3)}
+.tb-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:999px;
+  background:rgba(139,197,63,.12);border:1px solid rgba(139,197,63,.22);
+  font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--li)
+}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--li);animation:pulse 2s ease-in-out infinite}
+.tb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.abt{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:4px;
+  border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);
+  font-family:var(--f);font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.6);cursor:pointer;transition:all .18s;
+  white-space:nowrap;text-decoration:none;display:none
+}
+.abt.on{display:inline-flex}
+.abt:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.22)}
+.abt.lime{background:var(--li);border-color:transparent;color:var(--ink);box-shadow:0 3px 12px rgba(139,197,63,.3)}
+.abt.lime:hover{background:var(--l2)}
+.abt svg{width:13px;height:13px}
+.tb-who{font-size:12px;color:rgba(255,255,255,.4);display:none}
 .tb-who.on{display:block}
 .tb-who b{color:#fff;font-weight:600}
-.btn-out{
-  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,.1);
-  background:transparent;color:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;display:none
-}
-.btn-out.on{display:block}
-.btn-out:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)}
 
 /* ── SCREENS ── */
 /* Each screen is display:none by default, .on makes it visible */
@@ -189,7 +219,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
 .board-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:6px;margin-bottom:10px}
 .board-card.st-card .board-tag{background:var(--lb);color:var(--l3)}
 .board-card.cb-card .board-tag{background:var(--bb);color:var(--bl)}
-.board-title{font-family:var(--fs);font-size:26px;color:var(--ink);line-height:1;margin-bottom:4px}
+.board-title{font-family:var(--f);font-size:22px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:4px;letter-spacing:-.3px}
 .board-sub{font-size:13px;color:var(--mu)}
 .board-arr{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .board-card.st-card .board-arr{background:var(--lb)}
@@ -359,13 +389,24 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="tb-l">
-    <div class="tb-logo">SA</div>
-    <span class="tb-name">SEHR Academy</span>
-  </div>
-  <div class="tb-r">
-    <span class="tb-who" id="tbWho"></span>
-    <button class="btn-out" id="btnOut">Logout</button>
+  <div class="tb-inner">
+    <div>
+      <div class="tb-kicker">
+        <div class="tb-kicker-rule"></div>
+        <span class="tb-kicker-txt">SEHR Academy &nbsp;·&nbsp; Teacher Portal</span>
+      </div>
+      <div class="tb-title">Attendance <i>System</i></div>
+      <div class="tb-meta">
+        <span class="tb-sub" id="tbWho">Sign in to begin</span>
+        <span class="tb-pill" id="tbPill" style="display:none">Live · Today</span>
+      </div>
+    </div>
+    <div class="tb-actions">
+      <button class="abt lime" id="btnOut">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
   </div>
 </div>
 
@@ -539,7 +580,7 @@ var WA  = '919539409586';
  * From your data: 10, 11, 12 have both. 9 is STATE only.
  * Adjust this if it changes.
  */
-var MULTI_BOARD = ['10','11','12'];
+var MULTI_BOARD = ['9','10','11','12'];
 
 /* ══ STATE ══ */
 var T         = null;   // teacher
@@ -623,8 +664,8 @@ function showErr(m){g('lErr').textContent=m;g('lErr').classList.add('on');}
 function hideErr(){g('lErr').classList.remove('on');}
 
 function afterLogin(){
-  g('tbWho').innerHTML='Hello, <b>'+T.name+'</b>';
-  g('tbWho').classList.add('on');
+  g('tbWho').innerHTML='Hello, <b>'+T.name+'</b> &nbsp;·&nbsp; Attendance Portal';
+  g('tbPill').style.display='inline-flex';
   g('btnOut').classList.add('on');
   g('s2sub').textContent='Good day, '+T.name+' — choose your class';
   buildClsList();
@@ -634,7 +675,8 @@ function afterLogin(){
 /* ══ LOGOUT ══ */
 g('btnOut').addEventListener('click',function(){
   T=null;STUDS=[];ABSENT={};CLS=null;BOARD=null;OVERWRITE=false;
-  g('tbWho').classList.remove('on');
+  g('tbWho').textContent='Sign in to begin';
+  g('tbPill').style.display='none';
   g('btnOut').classList.remove('on');
   g('inId').value='';g('inPw').value='';
   g('clsList').innerHTML='';g('stuList').innerHTML='';
