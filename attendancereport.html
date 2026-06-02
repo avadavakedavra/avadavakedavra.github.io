@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Attendance Report — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
+  --cr:#f5f2eb;--c2:#ede9e0;--c3:#e4dfd4;
+  --wh:#fdfcfa;--mu:#7a7970;--pa:#b0ada4;--ru:#d8d4cb;
+  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;
+  --lb:#f0f7e3;--lm:#c8e48e;
+  --re:#dc2626;--rb:#fef2f2;--rm:#fca5a5;
+  --am:#d97706;--ab:#fffbeb;
+  --bl:#2563eb;--bb:#eff6ff;--bm:#bfdbfe;
+  --f:'Open Sans',sans-serif;
+  --fs:'Open Sans',sans-serif;
+  --e1:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh}
+
+@keyframes fIn  {from{opacity:0}to{opacity:1}}
+@keyframes fUp  {from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin {to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--ink);padding:0 28px;overflow:hidden;position:sticky;top:0;z-index:300;border-bottom:3px solid var(--li)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 60%);pointer-events:none}
+.tb-inner{padding:18px 0 14px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:1;flex-wrap:wrap}
+.tb-l{}
+.tb-kicker{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.tb-kr{width:22px;height:2px;background:var(--li)}
+.tb-kt{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--li);opacity:.85}
+.tb-h{font-size:clamp(18px,2.5vw,28px);font-weight:800;letter-spacing:-1px;color:#fff;line-height:1;margin-bottom:4px}
+.tb-h i{font-style:italic;font-weight:300;color:var(--li)}
+.tb-date{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+.tb-date-big{font-size:clamp(18px,2.2vw,26px);font-weight:800;letter-spacing:-.6px;color:#fff;line-height:1;margin-bottom:3px}
+.tb-date-big em{font-style:normal;color:var(--li)}
+.tb-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn-icon{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;border:none;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-print-all{background:var(--li);color:var(--ink);box-shadow:0 3px 12px rgba(139,197,63,.3)}
+.btn-print-all:hover{background:var(--l2)}
+.btn-wa-all{background:rgba(37,211,102,.1);color:#128c3e;border:1.5px solid rgba(37,211,102,.25)!important;border-style:solid}
+.btn-wa-all:hover{background:rgba(37,211,102,.2)}
+.btn-icon svg{width:13px;height:13px;flex-shrink:0}
+
+/* ── CONTROLS ── */
+.controls{background:var(--wh);border-bottom:1.5px solid var(--c3);padding:14px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:72px;z-index:200}
+
+/* Date dropdown calendar */
+.date-picker-wrap{position:relative}
+.date-display{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1.5px solid var(--ru);border-radius:7px;background:var(--cr);cursor:pointer;font-family:var(--f);font-size:13px;font-weight:700;color:var(--ink);transition:all .18s;user-select:none;min-width:160px}
+.date-display:hover{border-color:var(--lm)}
+.date-display.open{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
+.date-display-icon{color:var(--mu);flex-shrink:0}
+.date-display-txt{flex:1}
+.date-display-arrow{color:var(--pa);font-size:10px;transition:transform .2s}
+.date-display.open .date-display-arrow{transform:rotate(180deg)}
+.date-dropdown{position:absolute;top:calc(100% + 6px);left:0;background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.14);z-index:500;min-width:220px;overflow:hidden;display:none;animation:fIn .18s var(--e1)}
+.date-dropdown.open{display:block}
+.dd-head{background:var(--ink);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.dd-month-nav{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f);font-size:13px;transition:color .15s}
+.dd-month-nav:hover{color:#fff}
+.dd-month-label{font-size:13px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.dd-cal{padding:10px}
+.dd-dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.dd-dow{text-align:center;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pa);padding:3px 0}
+.dd-week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.dd-day{text-align:center;padding:6px 2px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;color:var(--mu);transition:all .15s;position:relative}
+.dd-day:hover:not(.empty):not(.other-month){background:var(--lb);color:var(--l3)}
+.dd-day.has-data{color:var(--ink);font-weight:800}
+.dd-day.has-data::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--li)}
+.dd-day.selected{background:var(--li)!important;color:var(--ink)!important;font-weight:800}
+.dd-day.selected::after{background:var(--ink)!important}
+.dd-day.empty,.dd-day.other-month{color:var(--ru);cursor:default;pointer-events:none}
+.dd-day.today{box-shadow:0 0 0 1.5px var(--lm) inset}
+
+/* Ctrl sep */
+.ctrl-sep{width:1px;height:24px;background:var(--ru);flex-shrink:0}
+.ctrl-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+
+/* Class tabs */
+.cls-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.cls-tab{padding:7px 16px;border-radius:6px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .15s var(--e1)}
+.cls-tab:hover{border-color:var(--lm);color:var(--l3)}
+.cls-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* Board filter */
+.board-tabs{display:flex;gap:5px}
+.board-tab{padding:6px 14px;border-radius:6px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .15s}
+.board-tab:hover{border-color:var(--lm)}
+.board-tab.active-all{background:var(--cr);border-color:var(--ru);color:var(--ink)}
+.board-tab.active-state{background:var(--lb);border-color:rgba(139,197,63,.4);color:var(--l3)}
+.board-tab.active-cbse{background:var(--bb);border-color:var(--bm);color:var(--bl)}
+
+/* ── MAIN ── */
+.main{padding:24px 28px 80px;max-width:1240px}
+
+/* Summary bar */
+.summary-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.sum-card{background:var(--wh);border:1px solid var(--c3);border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:12px;animation:cardIn .4s var(--e1)}
+.sum-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sum-val{font-family:var(--fs);font-size:26px;line-height:1;letter-spacing:-.5px}
+.sum-val.lim{color:var(--l2)}
+.sum-val.grn{color:#16a34a}
+.sum-val.red{color:var(--re)}
+.sum-val.blu{color:var(--bl)}
+.sum-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-top:3px}
+
+/* class block */
+.cls-block{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;overflow:hidden;margin-bottom:16px;animation:cardIn .35s var(--e1)}
+.cls-hd{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--c3);flex-wrap:wrap;gap:10px}
+.cls-num{font-family:var(--fs);font-size:32px;color:var(--ink);line-height:1;flex-shrink:0}
+.cls-info{flex:1;min-width:0}
+.cls-name{font-size:14px;font-weight:800;color:var(--ink)}
+.cls-meta-sub{font-size:11px;color:var(--mu);margin-top:2px}
+.cls-pills{display:flex;gap:6px;margin-left:auto;align-items:center;flex-wrap:wrap;flex-shrink:0}
+.stat-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.stat-p{background:rgba(34,197,94,.1);color:#16a34a;border:1px solid rgba(34,197,94,.2)}
+.stat-a{background:var(--rb);color:var(--re);border:1px solid var(--rm)}
+.stat-pct{background:var(--bb);color:var(--bl);border:1px solid var(--bm)}
+.cls-btns{display:flex;gap:6px;flex-shrink:0}
+.btn-cls-pdf{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:5px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:11px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .15s}
+.btn-cls-pdf:hover{border-color:var(--li);color:var(--l2)}
+.btn-cls-wa{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:5px;border:1.5px solid rgba(37,211,102,.3);background:rgba(37,211,102,.07);font-family:var(--f);font-size:11px;font-weight:700;color:#128c3e;cursor:pointer;transition:all .15s}
+.btn-cls-wa:hover{background:rgba(37,211,102,.16)}
+.btn-cls-pdf svg,.btn-cls-wa svg{width:12px;height:12px;flex-shrink:0}
+
+.cls-body{padding:16px}
+
+/* board section */
+.board-section{margin-bottom:14px}
+.board-section:last-child{margin-bottom:0}
+.board-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.board-tag.st{background:var(--lb);color:var(--l3);border:1px solid rgba(139,197,63,.25)}
+.board-tag.cb{background:var(--bb);color:var(--bl);border:1px solid var(--bm)}
+.board-tag-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* student grid */
+.stu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.sc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1.5px solid var(--c3);background:var(--wh);position:relative;overflow:hidden;animation:cardIn .3s var(--e1) both}
+.sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(34,197,94,.5);border-radius:3px 0 0 3px}
+.sc.ab{border-color:var(--rm);background:var(--rb)}
+.sc.ab::before{background:var(--re)}
+.sc-photo{width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1.5px solid var(--ru)}
+.sc-mono{width:40px;height:40px;border-radius:8px;background:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--li);flex-shrink:0}
+.sc.ab .sc-mono{background:var(--re);color:#fff}
+.sc-info{flex:1;min-width:0}
+.sc-name{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc.ab .sc-name{color:var(--re)}
+.sc-id{font-size:10px;color:var(--mu);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-badge{flex-shrink:0;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:10px}
+.sc-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
+.sc-badge.a{background:var(--rb);color:var(--re);border:1px solid rgba(220,38,38,.2)}
+
+/* skeleton */
+.skel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.skel{height:62px;border-radius:8px;background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);background-size:600px 100%;animation:shimmer 1.5s linear infinite}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+
+/* empty */
+.empty{text-align:center;padding:56px 20px;color:var(--mu)}
+.empty-ico{font-size:36px;opacity:.25;margin-bottom:12px}
+.empty-txt{font-size:16px;font-weight:700;color:var(--pa)}
+.empty-sub{font-size:12px;color:var(--pa);margin-top:5px}
+
+/* loading overlay */
+.loading{display:flex;align-items:center;gap:10px;padding:32px;color:var(--mu);font-size:13px;font-weight:600}
+.loading-spin{width:18px;height:18px;border:2px solid var(--c3);border-top-color:var(--li);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
+/* ── PRINT ── */
+#printDoc{display:none}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  @page{margin:1.4cm 1.6cm;size:A4 portrait}
+  html,body{background:#fff!important}
+  body > *:not(#printDoc){display:none!important}
+  #printDoc{display:block!important}
+}
+.pr-lh{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:10px;border-bottom:2.5px solid var(--ink);margin-bottom:5px}
+.pr-brand{font-size:16px;font-weight:900;letter-spacing:-.3px;color:var(--ink)}
+.pr-brand span{color:var(--li)}
+.pr-brand-sub{font-size:9px;color:var(--mu);margin-top:3px}
+.pr-r-title{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-align:right}
+.pr-r-sub{font-size:9px;color:var(--mu);margin-top:2px;text-align:right}
+.pr-stripe{height:3px;background:linear-gradient(90deg,var(--l3),var(--li),var(--lm),var(--li),var(--l3));margin-bottom:16px}
+.pr-h1{font-size:22px;font-weight:900;letter-spacing:-.8px;color:var(--ink);margin-bottom:3px}
+.pr-h1 em{font-style:italic;font-weight:300;color:var(--l2)}
+.pr-meta{font-size:10px;color:var(--mu);margin-bottom:14px}
+.pr-summary{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--c3);border-radius:5px;overflow:hidden;margin-bottom:16px}
+.pr-sc{padding:10px 8px;text-align:center;border-right:1px solid var(--c3)}
+.pr-sc:last-child{border-right:none}
+.pr-sv{font-size:20px;font-weight:900;color:var(--ink);line-height:1}
+.pr-sv.lim{color:var(--l2)}
+.pr-sv.grn{color:#16a34a}
+.pr-sv.red{color:var(--re)}
+.pr-sl{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pa);margin-top:3px}
+.pr-cls-head{display:flex;align-items:center;gap:8px;margin:14px 0 8px;padding-bottom:6px;border-bottom:1.5px solid var(--ink);break-after:avoid}
+.pr-board-block{break-inside:avoid;page-break-inside:avoid}
+.pr-cls-num{font-size:18px;font-weight:900;color:var(--ink)}
+.pr-cls-name{font-size:12px;font-weight:700;color:var(--ink)}
+.pr-syl{font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;margin-left:auto}
+.pr-syl.st{background:var(--lb);color:var(--l3)}
+.pr-syl.cb{background:var(--bb);color:var(--bl)}
+.pr-table{width:100%;border-collapse:collapse;margin-bottom:8px;break-inside:avoid}
+.pr-table th{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);padding:7px 10px;background:var(--cr);border-bottom:1px solid var(--c3);text-align:left}
+.pr-table td{padding:7px 10px;border-bottom:1px solid var(--c2);font-size:11px;color:var(--ink2);vertical-align:middle}
+.pr-table tr:last-child td{border-bottom:none}
+.pr-photo{width:28px;height:28px;border-radius:5px;object-fit:cover;border:1px solid var(--ru)}
+.pr-mono{width:28px;height:28px;border-radius:5px;background:var(--ink);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--li)}
+.pr-badge{display:inline-flex;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
+.pr-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
+.pr-badge.a{background:var(--rb);color:var(--re);border:1px solid rgba(220,38,38,.18)}
+.pr-footer{border-top:1px solid var(--c3);padding-top:9px;display:flex;justify-content:space-between;font-size:8px;color:var(--pa);margin-top:16px}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-inner">
+    <div class="tb-l">
+      <div class="tb-kicker"><div class="tb-kr"></div><span class="tb-kt">SEHR Academy · Admin</span></div>
+      <div class="tb-h">Attendance <i>Report</i></div>
+      <div class="tb-date-big" id="tbDateBig">Loading…</div>
+      <div class="tb-date" id="tbDate"></div>
+    </div>
+    <div class="tb-r">
+      <button class="btn-icon btn-print-all" onclick="doPrintAll()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print Report
+      </button>
+      <button class="btn-icon btn-wa-all" onclick="sendWaAll()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        WhatsApp Summary
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <!-- Date calendar dropdown -->
+  <div class="date-picker-wrap" id="datePickerWrap">
+    <div class="date-display" id="dateDisplay" onclick="toggleCalendar()">
+      <svg class="date-display-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span class="date-display-txt" id="dateDisplayTxt">Select date</span>
+      <span class="date-display-arrow">▾</span>
+    </div>
+    <div class="date-dropdown" id="dateDropdown">
+      <div class="dd-head">
+        <button class="dd-month-nav" onclick="calPrev()">‹</button>
+        <span class="dd-month-label" id="calMonthLabel"></span>
+        <button class="dd-month-nav" onclick="calNext()">›</button>
+      </div>
+      <div class="dd-cal" id="calGrid"></div>
+    </div>
+  </div>
+
+  <div class="ctrl-sep"></div>
+  <span class="ctrl-label">Class</span>
+  <div class="cls-tabs" id="clsTabs">
+    <button class="cls-tab active" data-cls="ALL" onclick="setCls('ALL',this)">All</button>
+  </div>
+
+  <div class="ctrl-sep"></div>
+  <span class="ctrl-label">Board</span>
+  <div class="board-tabs">
+    <button class="board-tab active-all" id="bt-all"   onclick="setBoard('ALL')">All</button>
+    <button class="board-tab"            id="bt-state" onclick="setBoard('STATE')">STATE</button>
+    <button class="board-tab"            id="bt-cbse"  onclick="setBoard('CBSE')">CBSE</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+  <div class="loading" id="loadingEl">
+    <div class="loading-spin"></div>
+    Loading attendance data…
+  </div>
+  <div class="summary-bar hidden" id="summaryBar"></div>
+  <div id="classBlocks"></div>
+</div>
+
+<!-- PRINT -->
+<div id="printDoc"></div>
+
+<script>
+var API     = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
+var WA_NUM  = '919539409586';
+var MONTHS  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MONTHS_S= ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DAYS_S  = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+/* ── STATE ── */
+var ALL_RECORDS    = [];   // all fetched records
+var AVAIL_DATES    = [];   // dates that have data
+var PHOTO_MAP      = {};   // student_id → photo url
+var ATT_PCT        = {};   // student_id → {pct, sessions, present}
+var CUR_DATE       = '';
+var CUR_CLS        = 'ALL';
+var CUR_BOARD      = 'ALL';
+var _NOW           = new Date();
+var CAL_YEAR       = _NOW.getFullYear();
+var CAL_MONTH      = _NOW.getMonth();
+var ALL_CLASSES    = [];
+
+/* ── UTILS ── */
+function g(id){ return document.getElementById(id); }
+function mn(n){ return (n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
+function hide(id){ g(id).classList.add('hidden'); }
+function show(id){ g(id).classList.remove('hidden'); }
+
+function fmtLong(d){
+  if(!d) return '';
+  var p=d.split('-');
+  var dt=new Date(+p[0],+p[1]-1,+p[2]);
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return days[dt.getDay()]+', '+parseInt(p[2])+' '+MONTHS[+p[1]-1]+' '+p[0];
+}
+function fmtShort(d){
+  if(!d) return '';
+  var p=d.split('-');
+  return parseInt(p[2])+' '+MONTHS_S[+p[1]-1]+' '+p[0];
+}
+
+/* ── API ── */
+function apiCall(payload, cb){
+  var url = API + '?data=' + encodeURIComponent(JSON.stringify(payload));
+  fetch(url)
+    .then(function(r){ return r.text(); })
+    .then(function(t){
+      try{ cb(JSON.parse(t), null); }
+      catch(e){ cb(null,'Parse error: '+t.slice(0,80)); }
+    })
+    .catch(function(e){ cb(null, e.message||'Network error'); });
+}
+
+/* ── ATTENDANCE PERCENTAGE ── */
+function buildAttendancePct(){
+  ATT_PCT = {};
+  // Count sessions and present per student across all dates
+  ALL_RECORDS.forEach(function(r){
+    if(!ATT_PCT[r.student_id]) ATT_PCT[r.student_id] = {sessions:0, present:0, name:r.full_name};
+    ATT_PCT[r.student_id].sessions++;
+    if(r.status === 'Present') ATT_PCT[r.student_id].present++;
+  });
+  // Compute percentage
+  Object.keys(ATT_PCT).forEach(function(id){
+    var a = ATT_PCT[id];
+    a.pct = a.sessions ? Math.round(a.present / a.sessions * 100) : 0;
+  });
+}
+
+function pctBadge(studentId, cls){
+  // Only show for Class 9 and 10
+  if(cls !== '9' && cls !== '10') return '';
+  var a = ATT_PCT[studentId];
+  if(!a || !a.sessions) return '';
+  var pct = a.pct;
+  var col, bg, border;
+  if(pct >= 75){
+    col='#16a34a'; bg='rgba(34,197,94,.1)'; border='rgba(34,197,94,.2)';
+  } else if(pct >= 50){
+    col='#d97706'; bg='rgba(217,119,6,.1)'; border='rgba(217,119,6,.22)';
+  } else {
+    col='#dc2626'; bg='rgba(220,38,38,.09)'; border='rgba(220,38,38,.2)';
+  }
+  return '<span style="flex-shrink:0;font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;'
+    +'background:'+bg+';color:'+col+';border:1px solid '+border+'">'
+    +pct+'%</span>';
+}
+
+/* ── INIT ── */
+function init(){
+  g('loadingEl').style.display='flex';
+  // Fetch all records (no date filter) to get available dates + photo map
+  apiCall({action:'getAttendance'}, function(data, err){
+    g('loadingEl').style.display='none';
+    if(err || !data || !data.success){
+      g('classBlocks').innerHTML='<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-txt">Could not connect to sheet</div><div class="empty-sub">'+(err||data&&data.message||'Check your Apps Script deployment')+'</div></div>';
+      return;
+    }
+    ALL_RECORDS  = data.records || [];
+    AVAIL_DATES  = data.availableDates || [];
+
+    // Build photo map from all records
+    ALL_RECORDS.forEach(function(r){
+      if(r.photo && r.photo.startsWith('http')) PHOTO_MAP[r.student_id] = r.photo;
+    });
+
+    // Build attendance percentage map for each student (all-time)
+    buildAttendancePct();
+
+    // Get unique classes
+    var cset={};
+    ALL_RECORDS.forEach(function(r){ cset[r.class]=true; });
+    ALL_CLASSES = Object.keys(cset).sort();
+
+    // Build class tabs
+    buildClsTabs();
+
+    // Auto-select today if data exists, else most recent date
+    var todayYMD = (function(){
+      var t = new Date();
+      return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+    })();
+    if(AVAIL_DATES.indexOf(todayYMD) > -1){
+      CUR_DATE = todayYMD;
+    } else {
+      CUR_DATE = AVAIL_DATES[0] || '';
+    }
+
+    // Set calendar to show the selected date's month
+    if(CUR_DATE){
+      var p = CUR_DATE.split('-');
+      CAL_YEAR  = +p[0];
+      CAL_MONTH = +p[1]-1;
+    }
+    renderCalendar();
+    updateDateDisplay();
+    render();
+  });
+}
+
+/* ── CLASS TABS ── */
+function buildClsTabs(){
+  var tabs = g('clsTabs');
+  tabs.innerHTML='<button class="cls-tab'+(CUR_CLS==='ALL'?' active':'')+'" data-cls="ALL" onclick="setCls(\'ALL\',this)">All</button>';
+  ALL_CLASSES.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='cls-tab'+(c===CUR_CLS?' active':'');
+    btn.dataset.cls=c;
+    btn.textContent='Class '+c;
+    btn.onclick=function(){ setCls(c,btn); };
+    tabs.appendChild(btn);
+  });
+}
+
+function setCls(cls, btn){
+  CUR_CLS=cls;
+  document.querySelectorAll('.cls-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  render();
+}
+
+function setBoard(board){
+  CUR_BOARD=board;
+  g('bt-all').className  ='board-tab'+(board==='ALL'  ? ' active-all'  :'');
+  g('bt-state').className='board-tab'+(board==='STATE'? ' active-state':'');
+  g('bt-cbse').className ='board-tab'+(board==='CBSE' ? ' active-cbse' :'');
+  render();
+}
+
+/* ── CALENDAR ── */
+function toggleCalendar(){
+  var dd=g('dateDropdown'), disp=g('dateDisplay');
+  var open=dd.classList.toggle('open');
+  disp.classList.toggle('open',open);
+  if(open) renderCalendar();
+}
+
+function calPrev(){ CAL_MONTH--; if(CAL_MONTH<0){CAL_MONTH=11;CAL_YEAR--;} renderCalendar(); }
+function calNext(){ CAL_MONTH++; if(CAL_MONTH>11){CAL_MONTH=0;CAL_YEAR++;} renderCalendar(); }
+
+function renderCalendar(){
+  g('calMonthLabel').textContent = MONTHS[CAL_MONTH]+' '+CAL_YEAR;
+  var firstDOW = new Date(CAL_YEAR, CAL_MONTH, 1).getDay();
+  var daysInMonth = new Date(CAL_YEAR, CAL_MONTH+1, 0).getDate();
+  var today = new Date();
+  var todayStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+
+  var html = '<div class="dd-dow-row">'+DAYS_S.map(function(d){return '<div class="dd-dow">'+d+'</div>';}).join('')+'</div>';
+
+  // weeks
+  var cells = [];
+  for(var i=0;i<firstDOW;i++) cells.push({empty:true});
+  for(var d=1;d<=daysInMonth;d++){
+    var dStr = CAL_YEAR+'-'+String(CAL_MONTH+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    cells.push({d:d, str:dStr, hasData: AVAIL_DATES.indexOf(dStr)>-1, isToday:dStr===todayStr, isSel:dStr===CUR_DATE});
+  }
+  while(cells.length%7!==0) cells.push({empty:true});
+
+  for(var w=0;w<cells.length;w+=7){
+    html+='<div class="dd-week">';
+    for(var wd=0;wd<7;wd++){
+      var cell=cells[w+wd];
+      if(cell.empty){ html+='<div class="dd-day empty"></div>'; continue; }
+      var cls='dd-day';
+      if(cell.hasData) cls+=' has-data';
+      if(cell.isToday) cls+=' today';
+      if(cell.isSel)   cls+=' selected';
+      html+='<div class="'+cls+'" onclick="selectDate(\''+cell.str+'\')">'+cell.d+'</div>';
+    }
+    html+='</div>';
+  }
+  g('calGrid').innerHTML=html;
+}
+
+function selectDate(d){
+  CUR_DATE = d;
+  updateDateDisplay();
+  renderCalendar();
+  g('dateDropdown').classList.remove('open');
+  g('dateDisplay').classList.remove('open');
+  render();
+}
+
+function updateDateDisplay(){
+  g('dateDisplayTxt').textContent = CUR_DATE ? fmtShort(CUR_DATE) : 'Select date';
+  if(CUR_DATE){
+    var p=CUR_DATE.split('-');
+    var dt=new Date(+p[0],+p[1]-1,+p[2]);
+    var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    g('tbDateBig').innerHTML='<em>'+days[dt.getDay()]+'</em> · '+parseInt(p[2])+' '+months[+p[1]-1]+' '+p[0];
+    g('tbDate').textContent='Viewing attendance for this date';
+  } else {
+    g('tbDateBig').textContent='Select a date';
+    g('tbDate').textContent='';
+  }
+}
+
+// Close calendar when clicking outside
+document.addEventListener('click', function(e){
+  if(!g('datePickerWrap').contains(e.target)){
+    g('dateDropdown').classList.remove('open');
+    g('dateDisplay').classList.remove('open');
+  }
+});
+
+/* ── RENDER ── */
+function render(){
+  if(!CUR_DATE){ g('classBlocks').innerHTML='<div class="empty"><div class="empty-ico">📅</div><div class="empty-txt">Select a date</div><div class="empty-sub">Choose a date from the calendar above.</div></div>'; return; }
+
+  // Filter records
+  var rows = ALL_RECORDS.filter(function(r){
+    if(r.date !== CUR_DATE) return false;
+    if(CUR_CLS !== 'ALL' && r.class !== CUR_CLS) return false;
+    if(CUR_BOARD !== 'ALL' && r.syllabus !== CUR_BOARD) return false;
+    return true;
+  });
+
+  // Summary
+  var total=rows.length, present=rows.filter(function(r){return r.status==='Present';}).length;
+  var absent=total-present, pct=total?Math.round(present/total*100):0;
+
+  g('summaryBar').classList.remove('hidden');
+  g('summaryBar').innerHTML=
+    sum(total,'👥','lim','Total','rgba(139,197,63,.1)')+
+    sum(present,'✅','grn','Present','rgba(34,197,94,.08)')+
+    sum(absent,'❌','red','Absent','rgba(220,38,38,.08)')+
+    sum(pct+'%','📊','blu','Rate','rgba(37,99,235,.07)');
+
+  // Classes to show
+  var clsList = CUR_CLS==='ALL'
+    ? ALL_CLASSES.filter(function(c){ return rows.some(function(r){return r.class===c;}); })
+    : (rows.length ? [CUR_CLS] : []);
+
+  if(!clsList.length || !rows.length){
+    g('classBlocks').innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-txt">No attendance data</div><div class="empty-sub">No records found for this selection.</div></div>';
+    buildPrintDoc(rows, [], null);
+    return;
+  }
+
+  var html='';
+  clsList.forEach(function(cls){
+    var cr=rows.filter(function(r){return r.class===cls;});
+    if(!cr.length) return;
+    var cp=cr.filter(function(r){return r.status==='Present';}).length;
+    var ca=cr.length-cp;
+    var cpct=cr.length?Math.round(cp/cr.length*100):0;
+    var syls=[...new Set(cr.map(function(r){return r.syllabus;}))].sort(function(a,b){
+        if(a==='STATE') return -1; if(b==='STATE') return 1; return a.localeCompare(b);
+      });
+    var markedBy=[...new Set(cr.map(function(r){return r.marked_by;}))].join(', ');
+
+    html+='<div class="cls-block">';
+    // header
+    html+='<div class="cls-hd">';
+    html+='<div class="cls-num">'+cls+'</div>';
+    html+='<div class="cls-info">'
+      +'<div class="cls-name">Class '+cls+'</div>'
+      +'<div class="cls-meta-sub">Marked by: '+markedBy+' · '+cr[0].submitted_at+'</div>'
+      +'</div>';
+    html+='<div class="cls-pills">'
+      +'<span class="stat-pill stat-p">'+cp+' Present</span>'
+      +'<span class="stat-pill stat-a">'+ca+' Absent</span>'
+      +'<span class="stat-pill stat-pct">'+cpct+'%</span>'
+      +'</div>';
+    html+='<div class="cls-btns">'
+      +'<button class="btn-cls-pdf" onclick="doPrintClass(\''+cls+'\')">'
+      +'<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>PDF</button>'
+      +'<button class="btn-cls-wa" onclick="sendWaClass(\''+cls+'\')">'
+      +'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>WhatsApp</button>'
+      +'</div>';
+    html+='</div>';
+
+    // body — split by syllabus
+    html+='<div class="cls-body">';
+    syls.forEach(function(syl){
+      var sr=cr.filter(function(r){return r.syllabus===syl;});
+      var sp=sr.filter(function(r){return r.status==='Present';}).length;
+      html+='<div class="board-section">';
+      html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+        +'<div class="board-tag '+(syl==='STATE'?'st':'cb')+'">'
+        +'<div class="board-tag-dot"></div>'+syl
+        +'</div>'
+        +'<span style="font-size:11px;color:var(--mu)">'+sp+'/'+sr.length+' present</span>'
+        +'</div>';
+      html+='<div class="stu-grid">';
+      sr.forEach(function(r,idx){
+        var ab=r.status==='Absent';
+        var photo = PHOTO_MAP[r.student_id] || r.photo || '';
+        var av = photo
+          ? '<img class="sc-photo" src="'+photo+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+            +'<div class="sc-mono" style="display:none">'+mn(r.full_name)+'</div>'
+          : '<div class="sc-mono">'+mn(r.full_name)+'</div>';
+        html+='<div class="sc'+(ab?' ab':'')+'" style="animation-delay:'+(idx*0.03)+'s">'
+          +av
+          +'<div class="sc-info"><div class="sc-name">'+r.full_name+'</div></div>'
+          +'<span class="sc-badge '+(ab?'a':'p')+'">'+(ab?'Absent':'Present')+'</span>'
+          +'</div>';
+      });
+      html+='</div></div>';
+    });
+    html+='</div></div>';
+  });
+
+  g('classBlocks').innerHTML=html;
+  buildPrintDoc(rows, clsList, null);
+}
+
+function sum(val,ico,cls,lbl,bg){
+  return '<div class="sum-card"><div class="sum-icon" style="background:'+bg+'"><span style="font-size:18px">'+ico+'</span></div>'
+    +'<div><div class="sum-val '+cls+'">'+val+'</div><div class="sum-lbl">'+lbl+'</div></div></div>';
+}
+
+/* ── PRINT ── */
+function buildPrintDoc(rows, classes, singleCls){
+  var total=rows.length, present=rows.filter(function(r){return r.status==='Present';}).length;
+  var absent=total-present, pct=total?Math.round(present/total*100):0;
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var html='';
+
+  html+='<div class="pr-lh"><div><div class="pr-brand"><span>SEHR</span> ACADEMY</div><div class="pr-brand-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'
+    +'<div><div class="pr-r-title">Attendance Report</div><div class="pr-r-sub">'+(singleCls?'Class '+singleCls+' · ':'')+fmtLong(CUR_DATE)+'</div><div class="pr-r-sub">Generated: '+issued+'</div></div></div>';
+  html+='<div class="pr-stripe"></div>';
+  // Big date display
+  var _pd = CUR_DATE.split('-');
+  var _pdt = new Date(+_pd[0],+_pd[1]-1,+_pd[2]);
+  var _pdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var _pmons=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  html+='<div style="margin-bottom:4px">'
+    +'<div style="font-size:28px;font-weight:900;color:var(--ink);letter-spacing:-1px;line-height:1">'
+    +_pdays[_pdt.getDay()]
+    +'<span style="color:var(--l2)"> · </span>'
+    +parseInt(_pd[2])+' '+_pmons[+_pd[1]-1]+' '+_pd[0]
+    +'</div>'
+    +'<div style="font-size:11px;color:var(--mu);margin-top:4px;margin-bottom:16px">'
+    +'Attendance Report'+(singleCls?' · Class '+singleCls:' · All Classes')+(CUR_BOARD!=='ALL'?' · '+CUR_BOARD:'')
+    +'</div>'
+    +'</div>';
+  html+='<div class="pr-summary"><div class="pr-sc"><div class="pr-sv lim">'+total+'</div><div class="pr-sl">Total</div></div><div class="pr-sc"><div class="pr-sv grn">'+present+'</div><div class="pr-sl">Present</div></div><div class="pr-sc"><div class="pr-sv red">'+absent+'</div><div class="pr-sl">Absent</div></div><div class="pr-sc"><div class="pr-sv">'+pct+'%</div><div class="pr-sl">Rate</div></div></div>';
+
+  var clsToShow = singleCls ? [singleCls] : classes;
+  clsToShow.forEach(function(cls){
+    var cr=rows.filter(function(r){return r.class===cls;});
+    if(!cr.length) return;
+    var syls=[...new Set(cr.map(function(r){return r.syllabus;}))].sort(function(a,b){
+        if(a==='STATE') return -1; if(b==='STATE') return 1; return a.localeCompare(b);
+      });
+    syls.forEach(function(syl){
+      var sr=cr.filter(function(r){return r.syllabus===syl;});
+      var sp=sr.filter(function(r){return r.status==='Present';}).length;
+      var markedBy=[...new Set(sr.map(function(r){return r.marked_by;}))].join(', ');
+
+      html+='<div class="pr-board-block"><div class="pr-cls-head"><div class="pr-cls-num">'+cls+'</div>'
+        +'<div><div class="pr-cls-name">Class '+cls+' · '+syl+'</div>'
+        +'<div style="font-size:9px;color:var(--mu)">'+sp+'/'+sr.length+' present · Marked by: '+markedBy+' · '+sr[0].submitted_at+'</div></div>'
+        +'<span class="pr-syl '+(syl==='STATE'?'st':'cb')+'">'+syl+'</span></div>';
+
+      html+='<table class="pr-table"><thead><tr><th style="width:36px"></th><th>#</th><th>Name</th><th>Status</th></tr></thead><tbody>';
+      sr.forEach(function(r,i){
+        var ab=r.status==='Absent';
+        var photo=PHOTO_MAP[r.student_id]||r.photo||'';
+        var av=photo
+          ?'<img class="pr-photo" src="'+photo+'" alt="">'
+          :'<div class="pr-mono">'+mn(r.full_name)+'</div>';
+        var pctCell = '';
+        if(cls === '9' || cls === '10'){
+          var pa = ATT_PCT[r.student_id];
+          if(pa && pa.sessions){
+            var pcol = pa.pct>=75?'#16a34a':pa.pct>=50?'#d97706':'#dc2626';
+            var pbg  = pa.pct>=75?'rgba(34,197,94,.08)':pa.pct>=50?'rgba(217,119,6,.08)':'rgba(220,38,38,.07)';
+            pctCell = '<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pbg+';color:'+pcol+'">'+pa.pct+'%</span>';
+          }
+        }
+        html+='<tr'+(ab?' style="background:var(--rb)"':'')+'>'
+          +'<td>'+av+'</td>'
+          +'<td style="color:var(--pa);font-size:10px">'+(i+1)+'</td>'
+          +'<td style="font-weight:600;'+(ab?'color:var(--re)':'')+'">'+r.full_name+(pctCell?' &nbsp;'+pctCell:'')+'</td>'
+          +'<td><span class="pr-badge '+(ab?'a':'p')+'">'+r.status+'</span></td>'
+          +'</tr>';
+      });
+      html+='</tbody></table></div>';
+    });
+  });
+  html+='<div class="pr-footer"><div>SEHR Academy · Attendance Report · '+fmtLong(CUR_DATE)+'</div><div>sehracademy.com · +91 95394 09586</div></div>';
+  g('printDoc').innerHTML=html;
+}
+
+function doPrintAll(){
+  var rows=ALL_RECORDS.filter(function(r){
+    if(r.date!==CUR_DATE) return false;
+    if(CUR_BOARD!=='ALL' && r.syllabus!==CUR_BOARD) return false;
+    return true;
+  });
+  var cls=ALL_CLASSES.filter(function(c){return rows.some(function(r){return r.class===c;});});
+  buildPrintDoc(rows,cls,null);
+  window.print();
+}
+
+function doPrintClass(cls){
+  var rows=ALL_RECORDS.filter(function(r){
+    return r.date===CUR_DATE && r.class===cls && (CUR_BOARD==='ALL'||r.syllabus===CUR_BOARD);
+  });
+  buildPrintDoc(rows,[cls],cls);
+  window.print();
+}
+
+/* ── WHATSAPP ── */
+function waMsg(rows, cls){
+  var present=rows.filter(function(r){return r.status==='Present';});
+  var absent =rows.filter(function(r){return r.status==='Absent';});
+  var pct=rows.length?Math.round(present.length/rows.length*100):0;
+  var syls=[...new Set(rows.map(function(r){return r.syllabus;}))].sort(function(a,b){
+        if(a==='STATE') return -1; if(b==='STATE') return 1; return a.localeCompare(b);
+      });
+  var lines=[];
+  lines.push('*SEHR Academy — Attendance Report*');
+  lines.push('📅 '+fmtLong(CUR_DATE));
+  lines.push('🏫 Class '+cls);
+  lines.push('');
+  lines.push('*Summary*');
+  lines.push('✅ Present: '+present.length);
+  lines.push('❌ Absent:  '+absent.length);
+  lines.push('📊 Rate:    '+pct+'%');
+  syls.forEach(function(syl){
+    var sylAb=rows.filter(function(r){return r.syllabus===syl&&r.status==='Absent';});
+    if(sylAb.length){
+      lines.push('');
+      lines.push('*'+syl+' Absent:*');
+      sylAb.forEach(function(r,i){ lines.push((i+1)+'. '+r.full_name); });
+    }
+  });
+  lines.push('');
+  lines.push('_SEHR Academy Attendance System_');
+  return lines.join('\n');
+}
+
+function sendWaClass(cls){
+  var rows=ALL_RECORDS.filter(function(r){
+    return r.date===CUR_DATE && r.class===cls && (CUR_BOARD==='ALL'||r.syllabus===CUR_BOARD);
+  });
+  if(!rows.length){alert('No data for Class '+cls);return;}
+  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(waMsg(rows,cls)),'_blank');
+}
+
+function sendWaAll(){
+  var rows=ALL_RECORDS.filter(function(r){
+    if(r.date!==CUR_DATE) return false;
+    if(CUR_CLS!=='ALL'&&r.class!==CUR_CLS) return false;
+    if(CUR_BOARD!=='ALL'&&r.syllabus!==CUR_BOARD) return false;
+    return true;
+  });
+  if(!rows.length){alert('No data for this selection');return;}
+  var total=rows.length, present=rows.filter(function(r){return r.status==='Present';}).length;
+  var absent=total-present, pct=total?Math.round(present/total*100):0;
+  var lines=[];
+  lines.push('*SEHR Academy — Full Attendance Report*');
+  lines.push('📅 '+fmtLong(CUR_DATE));
+  lines.push('');
+  lines.push('*Overall*');
+  lines.push('👥 Total:   '+total);
+  lines.push('✅ Present: '+present);
+  lines.push('❌ Absent:  '+absent);
+  lines.push('📊 Rate:    '+pct+'%');
+  var clsList=ALL_CLASSES.filter(function(c){return rows.some(function(r){return r.class===c;});});
+  clsList.forEach(function(cls){
+    var cr=rows.filter(function(r){return r.class===cls;});
+    var cp=cr.filter(function(r){return r.status==='Present';}).length;
+    var abList=cr.filter(function(r){return r.status==='Absent';});
+    lines.push('');
+    lines.push('*Class '+cls+'* — '+cp+'/'+cr.length);
+    if(abList.length) abList.forEach(function(r){ lines.push('  ❌ '+r.full_name+(r.syllabus?' ('+r.syllabus+')':'')); });
+    else lines.push('  ✅ All present');
+  });
+  lines.push('');
+  lines.push('_SEHR Academy Attendance System_');
+  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+}
+
+init();
+</script>
+</body>
+</html>
