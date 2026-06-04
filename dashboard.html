@@ -125,7 +125,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .dh-stat-lbl{font-size:9px;color:rgba(255,255,255,.32);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.1em}
 
 /* ══ KPI STRIP ══ */
-.stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--rule);border:1px solid var(--cream-3);border-radius:10px;overflow:hidden;margin-top:16px;box-shadow:var(--sh-md)}
+.stat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--rule);border:1px solid var(--cream-3);border-radius:10px;overflow:hidden;margin-top:16px;box-shadow:var(--sh-md)}
 .stat-card{background:var(--white);padding:22px 24px;position:relative;overflow:hidden;transition:background .15s}
 .stat-card:hover{background:var(--cream)}
 .stat-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0}
@@ -424,6 +424,45 @@ tr.rev .bc{filter:none}
   .dh-stats{width:100%;justify-content:space-between}
   .ql-tiles{grid-template-columns:1fr 1fr}
 }
+
+/* ── ATTENDANCE OVERVIEW ── */
+.att-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:8px}
+.att-card{background:var(--white);border:1.5px solid var(--cream-3);border-radius:8px;padding:0;cursor:pointer;transition:all .18s var(--ease);overflow:hidden;box-shadow:var(--sh)}
+.att-card:hover{transform:translateY(-2px);box-shadow:var(--sh-md);border-color:var(--lime-mid)}
+.att-card-top{padding:14px 16px 10px;border-bottom:1px solid var(--cream-3)}
+.att-card-cls{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);margin-bottom:4px}
+.att-card-pct{font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:2px}
+.att-card-sub{font-size:10px;color:var(--muted)}
+.att-card-bar-wrap{height:4px;background:var(--cream-2);margin:0}
+.att-card-bar{height:100%;border-radius:0;transition:width .8s var(--ease)}
+.att-card-bot{padding:10px 16px;display:flex;justify-content:space-between;font-size:10px;font-weight:700}
+.att-card-bot-p{color:#16a34a}
+.att-card-bot-a{color:var(--red)}
+.att-card-bot-s{color:var(--muted)}
+
+/* Attendance modal */
+#attModal{display:none;position:fixed;inset:0;z-index:600;align-items:flex-end;justify-content:center}
+#attModal.on{display:flex}
+.att-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px)}
+.att-modal-box{position:relative;z-index:1;background:var(--white);border-radius:16px 16px 0 0;width:100%;max-width:680px;max-height:82vh;display:flex;flex-direction:column;box-shadow:0 -12px 40px rgba(0,0,0,.15);transform:translateY(100%);transition:transform .3s var(--ease)}
+#attModal.on .att-modal-box{transform:translateY(0)}
+.att-modal-handle{text-align:center;padding:12px 0 4px;flex-shrink:0}
+.att-modal-handle-bar{width:36px;height:4px;border-radius:2px;background:var(--rule);margin:0 auto}
+.att-modal-hd{padding:8px 20px 14px;border-bottom:1px solid var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.att-modal-title{font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--ink)}
+.att-modal-close{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f);line-height:1}
+.att-modal-close:hover{background:var(--cream);color:var(--ink)}
+.att-modal-body{overflow-y:auto;padding:16px 20px 24px;flex:1}
+.att-stu-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.att-stu-row:last-child{border-bottom:none}
+.att-stu-av{width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid var(--rule);background:var(--cream-2)}
+.att-stu-init{width:36px;height:36px;border-radius:50%;background:var(--cream-2);border:1.5px solid var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--lime-2)}
+.att-stu-name{font-size:13px;font-weight:600;color:var(--ink);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.att-stu-meta{font-size:10px;color:var(--muted);margin-top:1px}
+.att-stu-pct{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;flex-shrink:0}
+.att-stu-bar{width:60px;height:5px;border-radius:3px;background:var(--cream-2);overflow:hidden;flex-shrink:0}
+.att-stu-bar-fill{height:100%;border-radius:3px;transition:width .6s var(--ease)}
+.att-loading{text-align:center;padding:32px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
@@ -501,7 +540,7 @@ tr.rev .bc{filter:none}
         </div>
         <div class="dh-stats">
           <div class="dh-stat"><div class="dh-stat-val grn" id="dhCollected">—</div><div class="dh-stat-lbl">Collected</div></div>
-          <div class="dh-stat"><div class="dh-stat-val red" id="dhOutstanding">—</div><div class="dh-stat-lbl">Outstanding</div></div>
+          <div class="dh-stat"><div class="dh-stat-val red" id="dhOutstanding">—</div><div class="dh-stat-lbl">Overdue Now</div></div>
           <div class="dh-stat"><div class="dh-stat-val amb" id="dhOverdue">—</div><div class="dh-stat-lbl">Overdue</div></div>
           <div class="dh-stat"><div class="dh-stat-val" id="dhActive" style="color:#fff">—</div><div class="dh-stat-lbl">Active Students</div></div>
         </div>
@@ -783,6 +822,29 @@ tr.rev .bc{filter:none}
     </div>
   </div>
 
+
+  <!-- Attendance Overview -->
+  <div class="sec"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Attendance Overview · By Class</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div id="attSection">
+    <div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;display:flex;align-items:center;justify-content:center;gap:10px">
+      <div style="width:14px;height:14px;border:2px solid var(--cream-3);border-top-color:var(--lime);border-radius:50%;animation:rspin .8s linear infinite"></div>
+      Loading attendance data…
+    </div>
+  </div>
+
+  <!-- Attendance Modal -->
+  <div id="attModal" onclick="attModalBgClick(event)">
+    <div class="att-modal-bg"></div>
+    <div class="att-modal-box">
+      <div class="att-modal-handle"><div class="att-modal-handle-bar"></div></div>
+      <div class="att-modal-hd">
+        <div class="att-modal-title" id="attModalTitle">Class Attendance</div>
+        <button class="att-modal-close" onclick="closeAttModal()">✕</button>
+      </div>
+      <div class="att-modal-body" id="attModalBody"></div>
+    </div>
+  </div>
+
   <footer class="foot">
     <span class="foot-brand">SEHR <span>ACADEMY</span></span>
     <div class="foot-links">
@@ -868,7 +930,7 @@ function tryLogin(pass,silent){
     if(data&&data.error){loaderOff();if(!silent){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Access Dashboard';g('loginErr').textContent='Incorrect password.';g('loginErr').className='lbox-err on';}else sessionStorage.removeItem('sehr_pass');return;}
     var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:[];
     S=raw.map(norm);sessionStorage.setItem('sehr_pass',pass);
-    g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();init();
+    g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();init();loadAttendance();
   }).catch(function(){loaderOff();if(!silent){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Access Dashboard';g('loginErr').textContent='Connection error.';g('loginErr').className='lbox-err on';}});
 }
 function fixTopRow(){var tr=g('topRow');if(!tr)return;tr.style.gridTemplateColumns=window.innerWidth<900?'1fr':'1fr 340px';}
@@ -890,19 +952,41 @@ function init(){
   var overdue=active.filter(function(s){return s.status==='OVERDUE';});
   var cRate=pct(tPaid,tFee);
   g('dhCollected').textContent='Rs.'+fmtN(tPaid);
-  g('dhOutstanding').textContent='Rs.'+fmtN(tBal);
+  // Overdue = only instalments whose due date has passed
+  // Admission: always due. June: due from Jun 1. Sep: due from Sep 1.
+  var todayM=new Date().getMonth(); // 0=Jan
+  var tOverdue=overdue.reduce(function(a,s){
+    var amt=(s.admission_pending||0)+(s.june_pending||0);
+    if(todayM>=8) amt+=(s.september_pending||0); // Sep=8
+    return a+amt;
+  },0);
+  g('dhOutstanding').textContent='Rs.'+fmtN(tOverdue);
   g('dhOverdue').textContent=overdue.length+' students';
   g('dhActive').textContent=active.length+' students';
   var avgFee=active.length?Math.round(tFee/active.length):0;
   g('kpiStrip').innerHTML=[
     {lbl:'Total Collected',val:'Rs.'+fmtN(tPaid),sub:cRate+'% collection rate',color:'var(--lime)',cls:'v-grn',bar:cRate},
-    {lbl:'Outstanding Balance',val:'Rs.'+fmtN(tBal),sub:pct(tBal,tFee)+'% remaining',color:'var(--red)',cls:'v-red',bar:pct(tBal,tFee)},
+    {lbl:'Overdue Now',val:'Rs.'+fmtN(tOverdue),sub:overdue.length+' students past due',color:'var(--red)',cls:'v-red',bar:pct(tOverdue,tFee)},
+    {lbl:'Total Balance',val:'Rs.'+fmtN(tBal),sub:pct(tBal,tFee)+'% of annual fees',color:'var(--amber)',cls:'v-amb',bar:pct(tBal,tFee)},
     {lbl:'Annual Potential',val:'Rs.'+fmtN(tFee),sub:active.length+' active students',color:'var(--blue)',cls:'v-blu',bar:100},
     {lbl:'Monthly Revenue',val:'Rs.'+fmtN(tMon),sub:'from '+active.length+' students',color:'var(--amber)',cls:'v-amb',bar:Math.min(cRate,100)},
     {lbl:'Avg Fee/Student',val:'Rs.'+fmtN(avgFee),sub:'annual average',color:'var(--purple)',cls:'v-pur',bar:Math.min(pct(avgFee,20000),100)},
   ].map(function(k){return'<div class="stat-card"><div class="stat-card-accent" style="background:'+k.color+'"></div><div class="stat-card-lbl">'+k.lbl+'</div><div class="stat-card-val '+k.cls+'">'+k.val+'</div><div class="stat-card-sub">'+k.sub+'</div><div class="stat-card-bar"><div class="stat-card-bar-fill" style="width:'+k.bar+'%;background:'+k.color+'"></div></div></div>';}).join('');
   g('overdueCountBig').textContent=overdue.length;
-  if(overdue.length){g('overdueList').innerHTML=overdue.slice().sort(function(a,b){return b.balance-a.balance;}).map(function(s){return'<div class="overdue-item"><div style="display:flex;align-items:center;gap:9px"><div class="overdue-init">'+esc(inits(s.full_name))+'</div><div><div class="overdue-name">'+esc(s.full_name)+'</div><div class="overdue-cls">Class '+esc(s.class)+' &middot; '+esc(s.school_name||'--')+'</div></div></div><div style="text-align:right"><div class="overdue-amt">Rs.'+fmtN(s.balance)+'</div><div class="overdue-days">'+(s.days_overdue>0?s.days_overdue+'d overdue':'due')+'</div></div></div>';}).join('');}
+  if(overdue.length){g('overdueList').innerHTML=overdue.slice().sort(function(a,b){
+    var todM=new Date().getMonth();
+    function oa(s){var a=(s.admission_pending||0)+(s.june_pending||0);if(todM>=8)a+=(s.september_pending||0);return a;}
+    return oa(b)-oa(a);
+  }).map(function(s){
+    var todM=new Date().getMonth();
+    var amt=(s.admission_pending||0)+(s.june_pending||0);
+    if(todM>=8) amt+=(s.september_pending||0);
+    var bk=[];
+    if(s.admission_pending>0) bk.push('Adm: Rs.'+fmtN(s.admission_pending));
+    if(s.june_pending>0)      bk.push('Jun: Rs.'+fmtN(s.june_pending));
+    if(todM>=8&&s.september_pending>0) bk.push('Sep: Rs.'+fmtN(s.september_pending));
+    return '<div class="overdue-item"><div style="display:flex;align-items:center;gap:9px"><div class="overdue-init">'+esc(inits(s.full_name))+'</div><div><div class="overdue-name">'+esc(s.full_name)+'</div><div class="overdue-cls">Class '+esc(s.class)+' &middot; '+esc(s.school_name||'--')+'</div>'+(bk.length?'<div style="font-size:9px;color:var(--muted-text,#7a7970);margin-top:1px">'+bk.join(' &middot; ')+'</div>':'')+'</div></div><div style="text-align:right"><div class="overdue-amt">Rs.'+fmtN(amt)+'</div><div class="overdue-days">'+(s.days_overdue>0?s.days_overdue+'d overdue':'due')+'</div></div></div>';
+  }).join('');}
   else{g('overdueList').innerHTML='<div class="overdue-empty">All students are up to date</div>';}
   var today=new Date(),cutoff=new Date(today.getTime()+14*24*60*60*1000);
   var due=active.filter(function(s){if(!s.next_due||s.status==='OVERDUE')return false;var d=new Date(s.next_due);return !isNaN(d.getTime())&&d>=today&&d<=cutoff&&s.next_due_amount>0;}).sort(function(a,b){return new Date(a.next_due)-new Date(b.next_due);});
@@ -962,7 +1046,148 @@ function makeAvatar(photo,name,imgCls,initCls){var init=inits(name),html='';if(p
 function renderTable(list){var body=g('tbody');if(!list.length){body.innerHTML='<tr><td colspan="15"><div class="empty"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div></div></td></tr>';return;}body.innerHTML=list.map(function(s){var av=makeAvatar(s.photo,s.full_name,'av','av-init');return'<tr tabindex="0"><td><div class="scell">'+av+'<div><a class="slink" href="https://sehracademy.com/student?id='+encodeURIComponent(s.id)+'" target="_blank">'+esc(s.full_name||'--')+'</a><div class="sadm">#'+esc(s.admission_no||'--')+'</div></div></div></td><td>'+esc(s.class||'--')+'</td><td>'+esc(s.syllabus||'--')+'</td><td>'+esc(s.gender||'--')+'</td><td>'+esc(s.school_name||'--')+'</td><td class="bc">'+esc(s.subjects||'--')+'</td><td class="bc">'+fmtDate(s.joining_date)+'</td><td class="bc">Rs.'+fmtN(s.total_fee)+'</td><td class="bc">Rs.'+fmtN(s.total_paid)+'</td><td class="bc">Rs.'+fmtN(s.balance)+'</td><td class="bc">'+pill(s.status)+'</td><td class="bc">'+daysBadge(s.days_overdue)+'</td><td class="bc">'+esc(s.next_due||'--')+'</td><td class="bc">Rs.'+fmtN(s.next_due_amount)+'</td><td>'+pill(s.admission_status)+'</td></tr>';}).join('');}
 function renderCards(list){var grid=g('cardGrid');if(!list.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div></div>';return;}grid.innerHTML=list.map(function(s){var av=makeAvatar(s.photo,s.full_name,'scard-photo','scard-init');return'<div class="scard" onclick="this.classList.toggle(\'rev\')" style="cursor:pointer"><div class="scard-top">'+av+'<div><div class="scard-name">'+esc(s.full_name||'--')+'</div><div class="scard-cls">'+esc(s.class||'--')+(s.syllabus?' &middot; '+esc(s.syllabus):'')+'</div></div></div><div class="scard-rows"><div class="srow"><span class="srow-k">School</span><span class="srow-v">'+esc(s.school_name||'--')+'</span></div><div class="srow"><span class="srow-k">Adm No</span><span class="srow-v">#'+esc(s.admission_no||'--')+'</span></div><div class="srow"><span class="srow-k">Balance</span><span class="srow-v bc-card">Rs.'+fmtN(s.balance)+'</span></div><div class="srow"><span class="srow-k">Status</span><span class="srow-v bc-card">'+pill(s.status)+'</span></div><div class="srow"><span class="srow-k">Next Due</span><span class="srow-v bc-card">'+esc(s.next_due||'--')+'</span></div></div><div class="scard-foot"><span class="scard-link" onclick="event.stopPropagation();window.open(\'https://sehracademy.com/student?id=\'+encodeURIComponent(s.id)+\'\',\'_blank\')">View Profile</span>'+pill(s.admission_status)+'</div></div>';}).join('');}
 function setView(v){VIEW=v;g('tableView').style.display=v==='table'?'block':'none';g('cardView').style.display=v==='cards'?'block':'none';g('vTable').classList.toggle('on',v==='table');g('vCards').classList.toggle('on',v==='cards');render();}
-function exportCSV(){var list=sortList(filtered());var hdr=['Name','Adm No','Gender','Class','Syllabus','School','Subjects','Joining','Monthly Fee','Total Fee','Paid','Balance','Fee Status','Days Overdue','Next Due','Next Amt','Enrolment'];var rows=list.map(function(s){return[s.full_name,s.admission_no,s.gender,s.class,s.syllabus,s.school_name,s.subjects,fmtDate(s.joining_date),s.monthly_fee,s.total_fee,s.total_paid,s.balance,s.status,s.days_overdue,s.next_due,s.next_due_amount,s.admission_status].map(function(v){return'"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');});var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[hdr.join(',')].concat(rows).join('\n')],{type:'text/csv'}));a.download='sehr_students_'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);}
+function exportCSV(){var list=sortList(filtered());var hdr=['Name','Adm No','Gender','Class','Syllabus','School','Subjects','Joining','Monthly Fee','Total Fee','Paid','Balance','Fee Status','Days Overdue','Next Due','Next Amt','Enrolment'];var rows=list.map(function(s){return[s.full_name,s.admission_no,s.gender,s.class,s.syllabus,s.school_name,s.subjects,fmtDate(s.joining_date),s.monthly_fee,s.total_fee,s.total_paid,s.balance,s.status,s.days_overdue,s.next_due,s.next_due_amount,s.admission_status].map(function(v){return'"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');});var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[hdr.join(',')].concat(rows).join('\n')],{type:'text/csv'}));a.download='sehr_students_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+setTimeout(function(){URL.revokeObjectURL(a.href);},1000);}
+
+/* ══ ATTENDANCE OVERVIEW ══ */
+var ATT_API='https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
+var ATT_ALL=[];
+var ATT_PHOTO={};
+
+function loadAttendance(){
+  var url=ATT_API+'?data='+encodeURIComponent(JSON.stringify({action:'getAttendance'}));
+  fetch(url)
+    .then(function(r){return r.text();})
+    .then(function(t){
+      console.log('[ATT RAW]',t.slice(0,300));
+      try{
+        var data=JSON.parse(t);
+        console.log('[ATT DATA] success='+data.success+' records='+(data.records&&data.records.length)+' msg='+data.message);
+        if(data&&data.success){
+          ATT_ALL=data.records||[];
+          ATT_ALL.forEach(function(r){
+            if(r.photo&&r.photo.startsWith('http')) ATT_PHOTO[r.student_id]=r.photo;
+          });
+          renderAttSection();
+        } else {
+          g('attSection').innerHTML='<div style="padding:16px 20px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:6px;font-size:12px;color:var(--amber)">'
+            +'<strong>Attendance API responded but no data:</strong><br><code style="font-size:11px">'+(data&&data.message||JSON.stringify(data).slice(0,200))+'</code></div>';
+        }
+      }catch(e){
+        console.log('[ATT ERR]',e.message,'raw=',t.slice(0,200));
+        g('attSection').innerHTML='<div style="padding:16px 20px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:6px;font-size:12px;color:var(--red)">'
+          +'<strong>Attendance parse error:</strong><br><code style="font-size:11px">'+e.message+'</code><br><code style="font-size:10px;color:var(--muted)">'+t.slice(0,300)+'</code></div>';
+      }
+    })
+    .catch(function(){
+      g('attSection').innerHTML='<div style="padding:20px;color:var(--muted);font-size:13px">Attendance unavailable.</div>';
+    });
+}
+
+function renderAttSection(){
+  if(!ATT_ALL.length){
+    g('attSection').innerHTML='<div style="padding:20px;color:var(--muted);font-size:13px">No attendance records found.</div>';
+    return;
+  }
+  var classMap={};
+  ATT_ALL.forEach(function(r){
+    var cls=r.class||'?';
+    if(!classMap[cls]) classMap[cls]={};
+    var sid=r.student_id;
+    if(!classMap[cls][sid]) classMap[cls][sid]={name:r.full_name,sessions:0,present:0,photo:ATT_PHOTO[sid]||r.photo||'',syllabus:r.syllabus||''};
+    classMap[cls][sid].sessions++;
+    if(r.status==='Present') classMap[cls][sid].present++;
+  });
+  var classes=Object.keys(classMap).sort();
+  var html='<div class="att-grid">';
+  classes.forEach(function(cls){
+    var students=classMap[cls];
+    var ids=Object.keys(students);
+    var tSess=0,tPres=0;
+    ids.forEach(function(id){tSess+=students[id].sessions;tPres+=students[id].present;});
+    var avgPct=tSess?Math.round(tPres/tSess*100):0;
+    var absent=tSess-tPres;
+    var color=avgPct>=75?'#16a34a':avgPct>=50?'var(--amber)':'var(--red)';
+    html+='<div class="att-card" onclick="openAttModal(this)" data-cls="'+cls+'">'
+      +'<div class="att-card-top">'
+      +'<div class="att-card-cls">Class '+cls+' &middot; '+ids.length+' students</div>'
+      +'<div class="att-card-pct" style="color:'+color+'">'+avgPct+'%</div>'
+      +'<div class="att-card-sub">Avg attendance &middot; '+tSess+' records</div>'
+      +'</div>'
+      +'<div class="att-card-bar-wrap"><div class="att-card-bar" style="width:'+avgPct+'%;background:'+color+'"></div></div>'
+      +'<div class="att-card-bot">'
+      +'<span class="att-card-bot-p">&#10003; '+tPres+' present</span>'
+      +'<span class="att-card-bot-a">&#10007; '+absent+' absent</span>'
+      +'<span class="att-card-bot-s">'+ids.length+' students</span>'
+      +'</div></div>';
+  });
+  html+='</div>';
+  g('attSection').innerHTML=html;
+}
+
+function openAttModal(el){
+  var cls=el.dataset?el.dataset.cls:el;
+  var students={};
+  ATT_ALL.forEach(function(r){
+    if(r.class!==cls) return;
+    var sid=r.student_id;
+    if(!students[sid]) students[sid]={name:r.full_name,sessions:0,present:0,photo:ATT_PHOTO[sid]||r.photo||'',syllabus:r.syllabus||''};
+    students[sid].sessions++;
+    if(r.status==='Present') students[sid].present++;
+  });
+  var rows=Object.keys(students).map(function(id){
+    var s=students[id];s.id=id;
+    s.pct=s.sessions?Math.round(s.present/s.sessions*100):0;
+    return s;
+  }).sort(function(a,b){
+    if(a.syllabus!==b.syllabus){if(a.syllabus==='STATE')return -1;if(b.syllabus==='STATE')return 1;}
+    return a.name.localeCompare(b.name);
+  });
+
+  g('attModalTitle').textContent='Class '+cls+' Attendance';
+  var above75=rows.filter(function(r){return r.pct>=75;}).length;
+  var below50 =rows.filter(function(r){return r.pct<50; }).length;
+  var html='<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
+    +attChip(rows.length,'Students','var(--ink)','var(--cream-2)')
+    +attChip(above75,'above 75%','#16a34a','rgba(34,197,94,.1)')
+    +attChip(below50,'below 50%','var(--red)','var(--red-bg)')
+    +'</div>';
+  rows.forEach(function(s){
+    var color=s.pct>=75?'#16a34a':s.pct>=50?'var(--amber)':'var(--red)';
+    var ini=s.name.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
+    var av=s.photo
+      ?'<img class="att-stu-av" src="'+s.photo+'" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+        +'<div class="att-stu-init" style="display:none">'+ini+'</div>'
+      :'<div class="att-stu-init">'+ini+'</div>';
+    html+='<div class="att-stu-row">'+av
+      +'<div style="flex:1;min-width:0">'
+      +'<div class="att-stu-name">'+s.name+'</div>'
+      +'<div class="att-stu-meta">'+(s.syllabus||'')+' &middot; '+s.present+'/'+s.sessions+' sessions</div>'
+      +'</div>'
+      +'<div class="att-stu-bar"><div class="att-stu-bar-fill" style="width:'+s.pct+'%;background:'+color+'"></div></div>'
+      +'<div class="att-stu-pct" style="color:'+color+'">'+s.pct+'%</div>'
+      +'</div>';
+  });
+  g('attModalBody').innerHTML=html;
+  g('attModal').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+
+function attChip(val,lbl,color,bg){
+  return '<div style="background:'+bg+';border-radius:6px;padding:8px 14px;text-align:center">'
+    +'<div style="font-size:18px;font-weight:800;color:'+color+';letter-spacing:-.5px">'+val+'</div>'
+    +'<div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px">'+lbl+'</div>'
+    +'</div>';
+}
+
+function closeAttModal(){
+  g('attModal').classList.remove('on');
+  document.body.style.overflow='';
+}
+
+function attModalBgClick(e){
+  if(e.target===g('attModal')||e.target.classList.contains('att-modal-bg')) closeAttModal();
+}
 </script>
 </body>
 </html>
