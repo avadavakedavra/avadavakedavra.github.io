@@ -427,11 +427,11 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
         <div class="g3">
           <div class="fg" style="margin-bottom:0">
             <label class="fl">Start <span class="req">*</span></label>
-            <input type="time" class="fi" id="fStart" onchange="calcDur()">
+            <div class="fi-w"><select class="fi fi-sel" id="fStart" onchange="calcDur()"></select><span class="fi-arr"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
           </div>
           <div class="fg" style="margin-bottom:0">
             <label class="fl">End <span class="req">*</span></label>
-            <input type="time" class="fi" id="fEnd" onchange="calcDur()">
+            <div class="fi-w"><select class="fi fi-sel" id="fEnd" onchange="calcDur()"></select><span class="fi-arr"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
           </div>
           <div class="fg" style="margin-bottom:0">
             <label class="fl">Duration</label>
@@ -462,11 +462,11 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;l
         </div>
         <label class="fl" style="margin-top:14px;margin-bottom:8px">Mode <span class="req">*</span></label>
         <div class="mode-grid">
-          <button class="mode-btn on" onclick="selMode(this,'Offline')">
+          <button class="mode-btn on" onclick="pickMode(this,'Offline')">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Offline
           </button>
-          <button class="mode-btn" onclick="selMode(this,'Online')">
+          <button class="mode-btn" onclick="pickMode(this,'Online')">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             Online
           </button>
@@ -629,12 +629,41 @@ var SUBJECTS = {
 };
 
 /* ══ STATE ══ */
-var T         = null;
-var selType   = 'Regular';
-var selMode   = 'Offline';
-var selChaps  = [];
-var chapterCache = {};   // key: "class|syllabus|subject"
-var TODAY_YMD = '', TODAY_DSP = '';
+var T            = null;
+var selType      = 'Regular';
+var selModeVal   = 'Offline';
+var selChaps     = [];
+var chapterCache = {};
+var TODAY_YMD    = '', TODAY_DSP = '';
+
+/* ══ BUILD TIME SLOTS (multiples of 30 min, 6am–11pm) ══ */
+function buildTimeSlots() {
+  var slots = [];
+  for (var h = 6; h <= 23; h++) {
+    [0, 30].forEach(function(m) {
+      if (h === 23 && m === 30) return;
+      var hh = String(h).padStart(2,'0');
+      var mm = String(m).padStart(2,'0');
+      var val = hh + ':' + mm;
+      var disp = (h > 12 ? h - 12 : h === 0 ? 12 : h) + ':' + mm + ' ' + (h >= 12 ? 'PM' : 'AM');
+      slots.push({ val: val, disp: disp });
+    });
+  }
+  return slots;
+}
+
+function populateTimeSel(selId, defaultVal) {
+  var sel = g(selId);
+  var slots = buildTimeSlots();
+  sel.innerHTML = '<option value="">— Time —</option>';
+  slots.forEach(function(s) {
+    var o = document.createElement('option');
+    o.value = s.val;
+    o.textContent = s.disp;
+    if (s.val === defaultVal) o.selected = true;
+    sel.appendChild(o);
+  });
+}
 
 !function(){
   var d=new Date(), p=function(n){return String(n).padStart(2,'0');};
@@ -700,20 +729,17 @@ function afterLogin(){
   g('btnOut').classList.add('on');
   g('btnLogs').classList.add('on');
   g('s2sub').textContent='Hello '+T.name+' — log your session';
-  // Pre-fill date & times
   g('fDate').value=TODAY_YMD;
-  var now=new Date();
-  var hh=String(now.getHours()).padStart(2,'0'),mm=String(now.getMinutes()).padStart(2,'0');
-  var en=new Date(now.getTime()+60*60000);
-  g('fStart').value=hh+':'+mm;
-  g('fEnd').value=String(en.getHours()).padStart(2,'0')+':'+String(en.getMinutes()).padStart(2,'0');
-  calcDur();
   g('barD').textContent=TODAY_DSP;
+  // Populate 30-min time slots, default to 17:00 start / 18:00 end
+  populateTimeSel('fStart','17:00');
+  populateTimeSel('fEnd','18:00');
+  calcDur();
   goTo('s2','r');
 }
 
 g('btnOut').addEventListener('click',function(){
-  T=null;selChaps=[];selType='Regular';selMode='Offline';
+  T=null;selChaps=[];selType='Regular';selModeVal='Offline';
   g('tbPill').style.display='none';
   g('btnOut').classList.remove('on');
   g('btnLogs').classList.remove('on');
@@ -882,21 +908,14 @@ function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(
 
 /* pills */
 function selPill(btn,group){
-  g(group==='type'?'typePills':'modePills').querySelectorAll('.pill').forEach(function(p){p.classList.remove('on');});
+  g('typePills').querySelectorAll('.pill').forEach(function(p){p.classList.remove('on');});
   btn.classList.add('on');
-  if(group==='type')selType=btn.textContent.trim();
+  selType=btn.textContent.trim();
 }
-function selMode(btn,mode){
+function pickMode(btn,mode){
   document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
-  selMode_val=mode;
-}
-var selMode_val='Offline';
-// Override selMode function name conflict
-function selMode(btn,mode){
-  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
-  selMode_val=mode;
+  selModeVal=mode;
 }
 
 /* optional */
@@ -955,7 +974,7 @@ function doSubmit(){
     teacher_id:T.id, teacher_name:T.name,
     date:fmtDate(date), board:syl, class:cls, stream:stream||'',
     subject:subj, start_time:start, end_time:end,
-    duration_mins:durMins, session_type:selType, mode:selMode_val,
+    duration_mins:durMins, session_type:selType, mode:selModeVal,
     chapters:selChaps.join(' | '),
     topics:topics,
     homework:g('fHw').value.trim(),
@@ -992,7 +1011,7 @@ function showSuccess(sid,cls,stream,syl,subj,date,dur,topics){
     '<div class="det-t">Session Summary · '+sid+'</div></div>'+
     '<div class="det-bd">'+
     drow('Teacher',T.name)+drow('Date & Time',date+' · '+g('fStart').value+' – '+g('fEnd').value)+
-    drow('Class',label)+drow('Type',selType+' · '+selMode_val)+
+    drow('Class',label)+drow('Type',selType+' · '+selModeVal)+
     (selChaps.length?drow('Chapters',chHtml):'')+
     drow('Topics',escHtml(topics))+
     '</div>';
@@ -1009,10 +1028,12 @@ function logAnother(){
   g('fSyllabus').innerHTML='<option value="">— Syllabus —</option>';
   g('fSubject').innerHTML='<option value="">— Select subject —</option>';
   clearChapters();
-  selType='Regular';selMode_val='Offline';
+  selType='Regular';selModeVal='Offline';
   g('typePills').querySelectorAll('.pill').forEach(function(p,i){p.classList.toggle('on',i===0);});
   document.querySelectorAll('.mode-btn').forEach(function(b,i){b.classList.toggle('on',i===0);});
   g('fDate').value=TODAY_YMD;
+  populateTimeSel('fStart','17:00');
+  populateTimeSel('fEnd','18:00');
   g('fDur').textContent='—';delete g('fDur').dataset.mins;
   calcDur();updBar();
   goTo('s2','l');
