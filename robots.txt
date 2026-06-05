@@ -3,12 +3,22 @@ Allow: /
 
 # Disallow private/internal pages
 Disallow: /student.html
-Disallow: /studentlist.html
+Disallow: /studentslist.html
 Disallow: /attendancelist.html
-Disallow: /sessionanalytics.html
-Disallow: /admissionconfirm.html
+Disallow: /attendancereport.html
+Disallow: /confirmadmission.html
+Disallow: /dashboard.html
+Disallow: /markattendance.html
+Disallow: /registrationcertificates.html
+Disallow: /studentcalendar.html
+Disallow: /studentsfees.html
+Disallow: /teacherbilling.html
+Disallow: /bankdetails.html
+Disallow: /upi.html
+Disallow: /class12ratings.html
+Disallow: /financial/
 Disallow: /students/
-Disallow: /data/students.json
+Disallow: /data/
 
 # Sitemap location
 Sitemap: https://sehracademy.com/sitemap.xml
