@@ -315,6 +315,123 @@ header#site-header{position:sticky;top:0;z-index:300}
 @media(max-width:1100px){.hero-in{grid-template-columns:1fr;padding:64px 40px 56px}.hero-card{max-width:480px}.subj-grid{grid-template-columns:repeat(2,1fr)}.curr-panel.on{grid-template-columns:1fr}.curr-col{border-right:none;border-top:1px solid var(--rule)}.curr-col:first-child{border-top:none}.board-compare{grid-template-columns:1fr}.feat-grid{grid-template-columns:repeat(2,1fr)}.careers-grid{grid-template-columns:repeat(2,1fr)}.cta-in{grid-template-columns:1fr;gap:28px}.cta-btns{flex-direction:row;flex-wrap:wrap}}
 @media(max-width:800px){.hero-in{padding:52px 24px 44px}.sec{padding:52px 24px}.bc-in{padding:10px 24px}.stats-strip{grid-template-columns:repeat(3,1fr)}.sc:nth-child(3){border-right:none}.sc:nth-child(n+4){border-top:1px solid var(--rule)}.sc:nth-child(4){border-right:1px solid var(--rule)}.join-steps{grid-template-columns:repeat(2,1fr)}.js:nth-child(2){border-right:none}.js:nth-child(n+3){border-top:1px solid var(--rule)}.js:nth-child(3){border-right:1px solid var(--rule)}.also-grid{grid-template-columns:1fr}.cta-in{padding:44px 24px}.foot{padding:20px 24px}}
 @media(max-width:640px){.hero-in{padding:40px 16px 36px}.sec{padding:44px 16px}.bc-in{padding:10px 16px}.hero-wm{display:none}.subj-grid{grid-template-columns:1fr}.careers-grid{grid-template-columns:1fr 1fr}.feat-grid{grid-template-columns:1fr}.join-steps{grid-template-columns:1fr}.js{border-right:none;border-top:1px solid var(--rule)}.js:first-child{border-top:none}.stats-strip{grid-template-columns:repeat(2,1fr)}.sc:nth-child(2){border-right:none}.sc:nth-child(n+3){border-top:1px solid var(--rule)}.sc:nth-child(3){border-right:1px solid var(--rule)}.cta-in{padding:40px 16px}.foot{padding:18px 16px;flex-direction:column;align-items:flex-start}}
+
+
+/* ─── PRINT / PDF EXPORT ─── */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 14mm 12mm 14mm;
+  }
+
+  /* ── HIDE everything decorative and interactive ── */
+  header#site-header,
+  #site-footer,
+  footer.foot,
+  .bc,
+  .cta-band,
+  .hero-btns,
+  .hero-card,
+  .hero::before,
+  .hero::after,
+  .hero-glow2,
+  .hero-wm,
+  .hc-cta,
+  .board-tabs,
+  .curr-tabs,
+  .curr-toggle-head svg,
+  .faq-chev,
+  .also-grid,
+  section[aria-labelledby="also-h2"],
+  section[aria-labelledby="also-h2"] + *,
+  .join-steps,
+  section[aria-labelledby="join-h2"],
+  .careers-grid,
+  section[aria-labelledby="careers-h2"] { display: none !important; }
+
+  /* ── BODY ── */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff !important; color: #1a1a18 !important; font-size: 10pt; line-height: 1.5; }
+
+  /* ── KILL all section padding — add back tightly ── */
+  .sec { padding: 6mm 0 4mm !important; max-width: 100% !important; }
+  .bg-white { background: #fafafa !important; border: none !important;
+               padding: 0 !important; margin: 0 !important; }
+
+  /* ── HERO: compact dark strip ── */
+  .hero { background: #1a1a18 !important; border-bottom: 3px solid #d97706 !important; page-break-inside: avoid; }
+  .hero-in { grid-template-columns: 1fr !important; padding: 8mm 14mm 7mm !important; gap: 0 !important; }
+  .hero-kicker { margin-bottom: 6px !important; }
+  .hero-h1 { font-size: 22pt !important; margin-bottom: 8px !important; }
+  .hero-desc { font-size: 9.5pt !important; margin-bottom: 8px !important; }
+  .hero-tags { margin-bottom: 0 !important; gap: 4px !important; }
+  .hero-tag { font-size: 9pt !important; padding: 3px 8px !important; }
+
+  /* ── STATS STRIP: compact ── */
+  .stats-strip { border: 1px solid #d8d4cb !important; }
+  .sc { padding: 8px 12px !important; }
+  .sc-vl { font-size: 16px !important; }
+
+  /* ── SECTION HEADINGS ── */
+  .sec-kicker { margin-bottom: 6px !important; }
+  .sec-h2 { font-size: 17pt !important; margin-bottom: 6px !important; }
+  .sec-sub { font-size: 9.5pt !important; margin-bottom: 14px !important; }
+
+  /* ── BOARD COMPARISON ── */
+  .board-compare { grid-template-columns: 1fr 1fr !important; gap: 8px !important; margin-bottom: 0 !important; page-break-inside: avoid; }
+  .bcomp-card { page-break-inside: avoid; }
+  .bcomp-head { padding: 10px 14px !important; }
+  .bcomp-body { padding: 10px 14px !important; }
+  .bcomp-subj { padding: 5px 8px !important; font-size: 10pt !important; }
+
+  /* ── SUBJECTS GRID ── */
+  .subj-grid { grid-template-columns: repeat(3,1fr) !important; gap: 8px !important; }
+  .subj-card { padding: 12px 12px !important; page-break-inside: avoid; box-shadow: none !important; }
+  .subj-icon { font-size: 18px !important; margin-bottom: 6px !important; }
+  .subj-card h3 { font-size: 10.5pt !important; margin-bottom: 4px !important; }
+  .subj-card p { font-size: 8.5pt !important; line-height: 1.5 !important; }
+  .subj-boards { margin-top: 6px !important; }
+
+  /* ── CURRICULUM PANEL ── */
+  .curr-toggle-wrap { box-shadow: none !important; page-break-before: auto !important; page-break-inside: avoid; }
+  .curr-toggle-head { padding: 8px 14px !important; }
+  .curr-panel.on { grid-template-columns: repeat(2,1fr) !important; }
+  #curr-cbse { display: none !important; }
+  #curr-state { display: grid !important; }
+  #panel-cbse { display: none !important; }
+  #panel-state { display: block !important; }
+  .curr-col-head { padding: 8px 14px !important; }
+  .curr-item { padding: 4px 14px !important; font-size: 9pt !important; }
+
+  /* ── FEATURES GRID ── */
+  .feat-grid { grid-template-columns: repeat(3,1fr) !important; gap: 8px !important; }
+  .feat { padding: 12px 12px !important; box-shadow: none !important; page-break-inside: avoid; }
+  .feat-icon { font-size: 16px !important; margin-bottom: 6px !important; }
+  .feat h3 { font-size: 10pt !important; margin-bottom: 4px !important; }
+  .feat p { font-size: 8.5pt !important; line-height: 1.5 !important; }
+
+  /* ── FAQ: all open, compact ── */
+  .faq-list { gap: 4px !important; }
+  .faq-item { box-shadow: none !important; page-break-inside: avoid; }
+  .faq-q { padding: 10px 14px !important; }
+  .faq-num { font-size: 9pt !important; }
+  .faq-txt { font-size: 10pt !important; }
+  .faq-body { display: block !important; padding: 4px 14px 10px 34px !important; }
+  .faq-body p { font-size: 9pt !important; line-height: 1.55 !important; }
+
+  /* ── REVEAL: force show ── */
+  .reveal { opacity: 1 !important; transform: none !important; }
+
+  /* ── PAGE BREAKS: only where logical ── */
+  section[aria-labelledby="subj-h2"] { page-break-before: always; }
+  section[aria-labelledby="faq-h2"] { page-break-before: always; }
+
+  /* ── PRINT DOCUMENT HEADER ── */
+  .bc { display: flex !important; border-bottom: 1px solid #d8d4cb !important;
+        padding: 4px 0 4px !important; font-size: 8pt !important; }
+  .bc-in { padding: 0 !important; }
+}
+
 </style>
 </head>
 <body>
@@ -368,6 +485,10 @@ header#site-header{position:sticky;top:0;z-index:300}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           State vs CBSE
         </a>
+        <button class="btn-ghost" onclick="window.print()" style="cursor:pointer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Save as PDF
+        </button>
       </div>
     </div>
 
@@ -427,7 +548,7 @@ header#site-header{position:sticky;top:0;z-index:300}
   <div class="sc"><div class="sc-lb">Core Subjects</div><div class="sc-vl">3</div><div class="sc-sb">Accountancy, BST, Eco</div></div>
   <div class="sc ab"><div class="sc-lb">Optional Add-on</div><div class="sc-vl b">Maths</div><div class="sc-sb">Strongly recommended</div></div>
   <div class="sc al"><div class="sc-lb">Joining Fee</div><div class="sc-vl l">&#8377;0</div><div class="sc-sb">Monthly fees only</div></div>
-  <div class="sc"><div class="sc-lb">Session Length</div><div class="sc-vl">2<span style="font-size:14px;color:var(--acc-warm);font-weight:700">hr</span></div><div class="sc-sb">Minimum</div></div>
+  <div class="sc"><div class="sc-lb">Hours / Week</div><div class="sc-vl a">10<span style="font-size:14px;color:var(--acc-warm);font-weight:700">hr</span></div><div class="sc-sb">Structured schedule</div></div>
 </div>
 
 <!-- BOARD COMPARISON -->
@@ -595,13 +716,11 @@ header#site-header{position:sticky;top:0;z-index:300}
       <div class="curr-col">
         <div class="curr-col-head"><div class="curr-col-icon">&#128209;</div><div class="curr-col-name">Accountancy Part II</div></div>
         <ul class="curr-items">
-          <li class="curr-item acc">Partnership Accounts &mdash; Basics</li>
-          <li class="curr-item acc">Admission of a Partner</li>
-          <li class="curr-item acc">Retirement &amp; Death of a Partner</li>
-          <li class="curr-item acc">Dissolution of Partnership</li>
-          <li class="curr-item acc">Company Accounts &mdash; Share Capital</li>
-          <li class="curr-item acc">Debentures</li>
-          <li class="curr-item acc">Cash Flow Statement (Introduction)</li>
+          <li class="curr-item acc">Trial Balance &amp; Rectification of Errors</li>
+          <li class="curr-item acc">Accounts from Incomplete Records</li>
+          <li class="curr-item acc">Accounts of Not-for-Profit Organisations</li>
+          <li class="curr-item acc">Computerised Accounting System</li>
+          <li class="curr-item acc">Accounting Software &mdash; Spread Sheets</li>
         </ul>
       </div>
       <div class="curr-col">
@@ -627,7 +746,11 @@ header#site-header{position:sticky;top:0;z-index:300}
           <li class="curr-item eco">Measures of Dispersion</li>
           <li class="curr-item eco">Introduction to Index Numbers</li>
           <li class="curr-item eco">Introduction to Micro Economics</li>
-          <li class="curr-item eco">Demand, Supply &amp; Market Equilibrium</li>
+          <li class="curr-item eco">Theory of Consumer Behaviour &amp; Demand</li>
+          <li class="curr-item eco">Elasticity of Demand</li>
+          <li class="curr-item eco">Production Function &amp; Returns to a Factor</li>
+          <li class="curr-item eco">Cost Concepts &amp; Revenue</li>
+          <li class="curr-item eco">Market Forms &amp; Price Determination</li>
         </ul>
       </div>
     </div>
