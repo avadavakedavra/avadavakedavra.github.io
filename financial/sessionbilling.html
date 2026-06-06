@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fee Statement Generator — SEHR Academy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
@@ -16,6 +16,7 @@
   --re:#dc2626;--rb:#fef2f2;
   --am:#d97706;--amb:#fffbeb;--amm:#fde68a;
   --bl:#2563eb;--blb:#eff6ff;--blm:#bfdbfe;
+  --f-head:'Montserrat',sans-serif;
   --f:'Open Sans',sans-serif;
 
   /* Subject colour palette */
@@ -178,9 +179,9 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 ════════════════════════════════════ */
 .inv-top-bar{height:6px;background:var(--li)}
 .inv-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 36px 18px;border-bottom:1px solid var(--ru)}
-.inv-logo{font-size:20px;font-weight:900;letter-spacing:-.3px;color:var(--ink);line-height:1}
-.inv-logo .gr{color:var(--li)}
-.inv-logo-sub{font-size:10px;font-weight:400;color:var(--mu);margin-top:4px}
+.inv-logo{font-family:var(--f-head);font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
+.inv-logo span{color:var(--li)}
+.inv-logo-sub{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-top:7px}
 .inv-hdr-r{text-align:right}
 .inv-ref{font-size:10px;font-weight:600;color:var(--mu)}
 .inv-period{font-size:13px;font-weight:700;color:var(--ink);margin-top:2px}
@@ -1087,7 +1088,7 @@ function generate() {
 
   // Header
   html += '<div class="inv-hdr">';
-  html += '<div><div class="inv-logo"><span class="gr">SEHR</span> ACADEMY</div><div class="inv-logo-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>';
+  html += '<div><div class="inv-logo">Sehr<span>.</span></div><div class="inv-logo-sub">Session Billing &nbsp;&middot;&nbsp; SEHR Academy</div></div>';
   html += '<div class="inv-hdr-r"><div class="inv-ref">Ref: ' + refNo + ' · ' + issued + '</div><div class="inv-period">' + period + '</div></div>';
   html += '</div>';
 
