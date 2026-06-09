@@ -535,6 +535,155 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .pg-side-row:hover{background:var(--bg3)}
 .pg-side-ch{font-size:12px;font-weight:600;color:var(--text2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pg-side-pct{font-size:12px;font-weight:800;min-width:38px;text-align:right}
+
+/* ── SEARCH ── */
+.tb-search-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:0 12px;width:280px;flex-shrink:0;transition:all .15s;position:relative;z-index:1}
+.tb-search-wrap:focus-within{border-color:rgba(139,197,63,.5);background:rgba(255,255,255,.1)}
+.tb-search-wrap svg{color:rgba(255,255,255,.3);flex-shrink:0}
+.tb-search{flex:1;background:transparent;border:none;outline:none;font-family:var(--f);font-size:13px;font-weight:500;color:#fff;padding:8px 0}
+.tb-search::placeholder{color:rgba(255,255,255,.3)}
+.tb-search-clear{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:12px;padding:2px 4px;transition:color .13px;flex-shrink:0}
+.tb-search-clear:hover{color:#fff}
+.search-active .class-block,.search-active .ch-row,.search-active .data-table tr{opacity:.3;transition:opacity .15s}
+.search-match{opacity:1!important}
+.search-highlight{background:rgba(139,197,63,.25);border-radius:2px;padding:0 1px}
+
+/* ── KPI SPARKLINE / TREND ── */
+.kpi-trend-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.kpi-spark{display:flex;align-items:flex-end;gap:2px;height:24px}
+.kpi-spark-bar{width:4px;border-radius:2px;background:currentColor;opacity:.25;transition:opacity .15s;flex-shrink:0}
+.kpi-spark-bar.cur{opacity:.9}
+.kpi-trend-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.trend-up{background:rgba(139,197,63,.12);color:var(--li3)}
+.trend-dn{background:var(--red-dim);color:var(--red)}
+.trend-eq{background:var(--bg4);color:var(--text3)}
+
+/* ── HOMEWORK VIEW ── */
+.hw-summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.hw-summary-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.hw-summary-card:hover{border-color:rgba(139,197,63,.3)}
+.hw-ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.hw-summary-v{font-size:24px;font-weight:900;color:var(--text);line-height:1;font-family:var(--fs)}
+.hw-summary-l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-top:2px}
+
+.hw-group{margin-bottom:20px}
+.hw-group-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.hw-group-title{font-size:14px;font-weight:800;color:var(--text)}
+.hw-group-count{font-size:11px;font-weight:700;background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:2px 9px;border-radius:20px}
+.hw-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:8px;animation:fadeUp .3s var(--e1) both;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .15s;position:relative;overflow:hidden}
+.hw-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--li)}
+.hw-card:hover{border-color:rgba(139,197,63,.3);transform:translateX(2px)}
+.hw-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.hw-card-subject{font-size:14px;font-weight:800;color:var(--text)}
+.hw-card-date{font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap}
+.hw-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.hw-text{font-size:13px;color:var(--text2);line-height:1.55;padding:10px 12px;background:var(--bg3);border-radius:7px;border-left:3px solid var(--li)}
+.hw-meta{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--text3)}
+.hw-meta-teacher{font-weight:700;color:var(--text2)}
+.hw-overdue{border-color:var(--amber)!important}
+.hw-overdue::before{background:var(--amber)!important}
+.hw-overdue-tag{font-size:9px;font-weight:800;background:var(--amber-dim);color:var(--amber);padding:2px 7px;border-radius:8px;border:1px solid rgba(217,119,6,.2)}
+/* Archived (>7 days) */
+.hw-card-archived{opacity:.45;filter:grayscale(.4)}
+.hw-card-archived:hover{opacity:.75;filter:none}
+.hw-card-archived .hw-card::before{background:var(--text3)!important}
+.hw-archived-banner{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:10px;cursor:pointer;transition:background .13s;user-select:none}
+.hw-archived-banner:hover{background:var(--bg4);color:var(--text2)}
+.hw-archived-banner svg{width:14px;height:14px;flex-shrink:0;transition:transform .2s}
+.hw-archived-banner.open svg{transform:rotate(90deg)}
+.hw-archived-wrap{display:none}
+.hw-archived-wrap.open{display:block}
+.hw-card-archived .hw-actions{display:none}
+
+/* ── PAGE NUMBERS (print) ── */
+@media print{
+  .pr-page-num{position:running(pagenum)}
+  @page{
+    @bottom-right{content:"Page " counter(page) " of " counter(pages);font-size:8px;color:#b0ada4;font-family:'Open Sans',Arial,sans-serif}
+    @bottom-left{content:"SEHR Academy · Academic Report";font-size:8px;color:#b0ada4;font-family:'Open Sans',Arial,sans-serif}
+  }
+}
+
+/* ── HOMEWORK WA ACTIONS ── */
+.hw-actions{display:flex;align-items:center;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap}
+.hw-wa-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;border:1.5px solid rgba(37,211,102,.25);background:rgba(37,211,102,.07);color:#16a34a;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .14s;text-decoration:none;white-space:nowrap}
+.hw-wa-btn:hover{background:rgba(37,211,102,.14);border-color:rgba(37,211,102,.4);transform:translateY(-1px)}
+.hw-wa-btn:active{transform:none}
+.hw-wa-btn svg{width:13px;height:13px;flex-shrink:0;fill:currentColor}
+.hw-copy-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text3);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .14s;white-space:nowrap}
+.hw-copy-btn:hover{border-color:var(--border2);color:var(--text);background:var(--bg4)}
+.hw-copy-btn.copied{border-color:var(--li);color:var(--li3);background:var(--li-dim)}
+.hw-copy-btn svg{width:13px;height:13px;flex-shrink:0}
+.hw-group-actions{display:flex;align-items:center;gap:7px;margin-left:auto;flex-wrap:wrap}
+.hw-group-wa{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;border:1.5px solid rgba(37,211,102,.25);background:rgba(37,211,102,.07);color:#16a34a;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .14s}
+.hw-group-wa:hover{background:rgba(37,211,102,.14);border-color:rgba(37,211,102,.4)}
+.hw-group-wa svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:768px){
+  /* Hide sidebar on mobile — replaced by bottom drawer */
+  .sidebar{display:none}
+  .app-body{flex-direction:column}
+  .main{width:100%;min-width:0}
+  /* Topbar compact */
+  .tb-logo-wrap{width:auto;border-right:none;padding:0 14px}
+  .tb-logo-sub{display:none}
+  .tb-search-wrap{width:140px}
+  .tb-btn span,.tb-btn-label{display:none}
+  .tb-btn{padding:7px 9px}
+  .tb-page-title{font-size:13px}
+  .tb-page-sub{display:none}
+  /* Mobile bottom nav */
+  .mobile-nav{display:flex!important}
+  /* Page padding tighter */
+  .page-pad{padding:12px}
+  /* KPI strip 2 cols */
+  .kpi-strip{grid-template-columns:repeat(2,1fr);gap:8px}
+  /* Day grid single col */
+  .day-grid{grid-template-columns:1fr}
+  /* Overview grid single col */
+  #overviewGrid{grid-template-columns:1fr!important}
+  /* HW summary 2 cols */
+  .hw-summary-strip{grid-template-columns:repeat(2,1fr);gap:8px}
+  /* Tables scroll */
+  .data-table-wrap{overflow-x:auto}
+  /* Progress layout */
+  .pg-layout{grid-template-columns:1fr}
+  /* Chapter row wrap */
+  .ch-row-stats{display:none}
+  .ch-row-bar-wrap{width:60px}
+  /* Topbar height */
+  :root{--topbar:52px}
+  /* Filter bar scroll */
+  .filter-bar{overflow-x:auto;flex-wrap:nowrap;padding:8px 12px;gap:8px}
+  .filter-bar::-webkit-scrollbar{height:0}
+  /* HW group header wrap */
+  .hw-group-hd{flex-wrap:wrap;gap:7px}
+  .hw-group-actions{margin-left:0;width:100%}
+  /* Session blocks */
+  .cb-header{gap:7px}
+  .cb-btns{flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .kpi-val{font-size:22px}
+  .tb-search-wrap{width:110px}
+  .hw-summary-strip{grid-template-columns:1fr 1fr}
+}
+
+/* Mobile bottom nav */
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:400;
+  background:var(--bg2);border-top:1.5px solid var(--border);
+  padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  gap:0;
+}
+.mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;cursor:pointer;border:none;background:transparent;font-family:var(--f);font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;transition:color .13s;border-radius:7px}
+.mob-nav-item.on{color:var(--li3)}
+.mob-nav-item .mob-icon{font-size:18px;line-height:1}
+@media(max-width:768px){
+  .main{padding-bottom:70px}
+}
 </style>
 </head>
 <body>
@@ -552,6 +701,11 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="tb-page-title" id="tbPageTitle">Overview</div>
       <div class="tb-page-sub" id="tbPageSub">Loading data…</div>
     </div>
+  </div>
+  <div class="tb-search-wrap">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="tb-search" id="searchBox" placeholder="Search teacher, subject, chapter…" oninput="applySearch()" autocomplete="off">
+    <button class="tb-search-clear hidden" id="searchClear" onclick="clearSearch()">✕</button>
   </div>
   <div class="tb-spacer"></div>
   <div class="tb-right">
@@ -609,6 +763,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <div class="sb-item-icon">👨‍🏫</div>
         <div class="sb-item-label">Teachers</div>
       </div>
+      <div class="sb-item" id="nav-homework" onclick="setView('homework',this)">
+        <div class="sb-item-icon">📝</div>
+        <div class="sb-item-label">Homework</div>
+      </div>
     </div>
 
     <div class="sb-divider"></div>
@@ -657,8 +815,19 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 
     <!-- TEACHERS -->
     <div id="vTeachers" class="page-pad hidden"></div>
+
+    <!-- HOMEWORK -->
+    <div id="vHomework" class="page-pad hidden"></div>
   </main>
 </div>
+
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mob-nav-item on" onclick="mobNav('overview',this)"><span class="mob-icon">📊</span>Overview</button>
+  <button class="mob-nav-item" onclick="mobNav('day',this)"><span class="mob-icon">📅</span>Day</button>
+  <button class="mob-nav-item" onclick="mobNav('progress',this)"><span class="mob-icon">📈</span>Progress</button>
+  <button class="mob-nav-item" onclick="mobNav('homework',this)"><span class="mob-icon">📝</span>Homework</button>
+  <button class="mob-nav-item" onclick="mobNav('chapters',this)"><span class="mob-icon">📖</span>Chapters</button>
+</nav>
 
 <div id="printDoc"></div>
 
@@ -825,8 +994,8 @@ function setView(v,btn){
   CUR_VIEW=v;
   document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
-  ['vOverview','vDay','vProgress','vChapters','vTeachers'].forEach(function(id){g(id).classList.add('hidden');});
-  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers'};
+  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework'].forEach(function(id){g(id).classList.add('hidden');});
+  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker'};
   g('tbPageTitle').textContent=titles[v]||v;
   g('v'+v.charAt(0).toUpperCase()+v.slice(1)).classList.remove('hidden');
   renderAll();
@@ -861,6 +1030,7 @@ function renderAll(){
   else if(CUR_VIEW==='progress')  renderProgress(data);
   else if(CUR_VIEW==='chapters')  renderChapters(data);
   else if(CUR_VIEW==='teachers')  renderTeachers(data);
+  else if(CUR_VIEW==='homework')   renderHomework();
   buildPrintDoc(data,'ALL','','ALL');
 }
 
@@ -890,11 +1060,11 @@ function renderOverview(data){
   var attPct=attDay.length?Math.round(attP/attDay.length*100):null;
 
   g('kpiStrip').innerHTML=
-    kpiCard('📚',data.length,'Sessions','var(--li)','var(--li-dim)',ci(data.length,10))+
-    kpiCard('⏱',hrsFmt(mins),'Teaching Time','var(--blue)','var(--blue-dim)','')+
-    kpiCard('📖',Object.keys(chapSet).length,'Chapters Covered','var(--purple)','var(--purple-dim)','')+
+    kpiCard('📚',data.length,'Sessions','var(--li)','var(--li-dim)','sessions')+
+    kpiCard('⏱',hrsFmt(mins),'Teaching Time','var(--blue)','var(--blue-dim)','mins')+
+    kpiCard('📖',Object.keys(chapSet).length,'Chapters Covered','var(--purple)','var(--purple-dim)','chapters')+
     kpiCard('👨‍🏫',teachers,'Active Teachers','var(--teal)','var(--teal-dim)','')+
-    kpiCard('📝',hw,'With Homework','var(--amber)','var(--amber-dim)','')+
+    kpiCard('📝',hw,'With Homework','var(--amber)','var(--amber-dim)','hw')+
     (attDay.length?kpiCard('👥',attPct!==null?attPct+'%':'—','Attendance','var(--li)','var(--li-dim)',''):'');
 
   // Class breakdown table
@@ -964,17 +1134,48 @@ function renderOverview(data){
     '</div>';
 }
 
-function kpiCard(ic,v,l,accent,bg,trend){
+function getWeeklyData(field){
+  // Returns array of 7 daily values (Sun→Sat of current week)
+  var vals=[];
+  for(var i=6;i>=0;i--){
+    var d=new Date(CUR_DATE);d.setDate(d.getDate()-i);
+    var ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+    var daySess=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===ds;});
+    if(field==='sessions') vals.push(daySess.length);
+    else if(field==='mins') vals.push(daySess.reduce(function(a,r){return a+(+r.duration_mins||0);},0));
+    else if(field==='chapters'){var cs=new Set();daySess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){cs.add(c);});});vals.push(cs.size);}
+    else if(field==='hw') vals.push(daySess.filter(function(r){return r.homework&&r.homework.trim();}).length);
+    else vals.push(0);
+  }
+  return vals;
+}
+function sparkHtml(vals, accent){
+  if(!vals||!vals.length)return '';
+  var max=Math.max.apply(null,vals)||1;
+  return '<div class="kpi-spark">'+vals.map(function(v,i){
+    var h=Math.max(3,Math.round((v/max)*24));
+    return '<div class="kpi-spark-bar'+(i===vals.length-1?' cur':'')+'" style="height:'+h+'px;color:'+accent+'"></div>';
+  }).join('')+'</div>';
+}
+function trendBadge(vals){
+  if(vals.length<2)return '';
+  var today=vals[vals.length-1],yesterday=vals[vals.length-2];
+  if(today>yesterday)return '<span class="kpi-trend-badge trend-up">↑ '+today+'</span>';
+  if(today<yesterday)return '<span class="kpi-trend-badge trend-dn">↓ '+today+'</span>';
+  return '<span class="kpi-trend-badge trend-eq">= '+today+'</span>';
+}
+function kpiCard(ic,v,l,accent,bg,sparkField){
+  var vals=sparkField?getWeeklyData(sparkField):[];
   return '<div class="kpi-card" style="--accent:'+accent+'">'+
     '<div class="kpi-top">'+
       '<div class="kpi-icon" style="background:'+bg+'">'+ic+'</div>'+
-      (trend?'<span class="kpi-trend" style="background:'+bg+';color:'+accent+'">'+trend+'</span>':'')+
+      (vals.length?trendBadge(vals):'')+
     '</div>'+
     '<div class="kpi-val">'+esc(String(v))+'</div>'+
     '<div class="kpi-lbl">'+l+'</div>'+
+    (vals.length?'<div class="kpi-trend-row">'+sparkHtml(vals,accent)+'</div>':'')+
     '</div>';
-}
-function ci(v,threshold){return v>=threshold?'↑ Active':'';} // simple trend indicator
+} // simple trend indicator
 
 /* ══ DAY VIEW ══ */
 function renderDay(data){
@@ -1410,6 +1611,7 @@ function switchPgBoard(bodyId,btn,panelId){
 /* ══ CHAPTERS TABLE ══ */
 function renderChapters(data){
   var el=g('vChapters');
+  var data=searchFilter(data);
   if(!data.length){el.innerHTML=noDataMsg();return;}
   var map={};
   data.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){var k=r.class+'||'+r.subject+'||'+ch;if(!map[k])map[k]={class:r.class,stream:r.stream||'',board:r.board,subject:r.subject,chapter:ch,count:0,mins:0};map[k].count++;map[k].mins+=(+r.duration_mins||0);});});
@@ -1434,6 +1636,7 @@ function renderChapters(data){
 /* ══ TEACHERS ══ */
 function renderTeachers(data){
   var el=g('vTeachers');
+  var data=searchFilter(data);
   if(!data.length){el.innerHTML=noDataMsg();return;}
   var map={};
   data.forEach(function(r){if(!map[r.teacher_id])map[r.teacher_id]={name:r.teacher_name,sessions:0,mins:0,chapters:new Set(),classes:new Set(),subjects:new Set()};var t=map[r.teacher_id];t.sessions++;t.mins+=(+r.duration_mins||0);t.classes.add(r.class);t.subjects.add(r.subject);(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){t.chapters.add(c);});});
@@ -1508,6 +1711,13 @@ function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
 function prdet(k,v){return '<div class="pr-det-row"><div class="pr-det-k">'+k+'</div><div class="pr-det-v">'+v+'</div></div>';}
 function printClass(cls,stream,board){buildPrintDoc(SESSIONS,cls,stream||'',board||'');setTimeout(function(){window.print();},80);}
 function doPrintAll(){buildPrintDoc(SESSIONS,'ALL','','ALL');setTimeout(function(){window.print();},80);}
+function printWithPageNums(){
+  // Inject print-only CSS for page numbers
+  var style=document.createElement('style');
+  style.id='print-pg-style';
+  style.innerHTML='@page{margin:0;size:A4 portrait}@media print{.pr-page-num::before{content:counter(page) " / " counter(pages)}}';
+  document.head.appendChild(style);
+}
 function sendWAClass(cls,stream,board){
   var dayData=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!stream||r.stream===stream)&&(!board||board==='ALL'||r.board===board);});
   var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!board||board==='ALL'||r.syllabus===boardToSyl(board));});
@@ -1530,6 +1740,281 @@ function sendWAAll(){
   Object.keys(byClass).sort().forEach(function(key){var sessions=byClass[key];var r0=sessions[0];var label='Class '+r0.class+(r0.stream?' '+r0.stream:'');lines.push('');lines.push('*'+label+'*');sessions.forEach(function(r){var chaps=(r.chapters||'').split(' | ').filter(Boolean);lines.push('• '+r.teacher_name+' · '+r.subject+' · '+r.start_time+'-'+r.end_time);if(chaps.length)lines.push('  📖 '+chaps.join(', '));if(r.homework&&r.homework.trim())lines.push('  📝 HW assigned');});var att=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===r0.class;});if(att.length){var ap2=att.filter(function(r){return r.status==='Present';}).length;lines.push('  👥 '+ap2+'/'+att.length+' present');}});
   lines.push('');lines.push('_SEHR Academy_');
   window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+}
+
+
+
+/* ══ SEARCH ══ */
+var SEARCH_TERM = '';
+function applySearch(){
+  var term = g('searchBox').value.trim().toLowerCase();
+  SEARCH_TERM = term;
+  var clearBtn = g('searchClear');
+  clearBtn.classList.toggle('hidden', !term);
+  if(!term){ clearSearch(); return; }
+  // If not on a searchable view, switch to chapters/sessions view
+  if(['overview','progress'].indexOf(CUR_VIEW) > -1) setView('chapters', g('nav-chapters'));
+  else renderAll();
+}
+function clearSearch(){
+  SEARCH_TERM='';
+  g('searchBox').value='';
+  g('searchClear').classList.add('hidden');
+  renderAll();
+}
+// Highlight matches in a string
+function hlSearch(str){
+  if(!SEARCH_TERM||!str) return esc(str||'');
+  var escaped = SEARCH_TERM.replace(/[-\/\\^$*+?.()|[\]{}]/g,'\\$&');
+  var re = new RegExp('('+escaped+')','gi');
+  return esc(str).replace(re, '<span class="search-highlight">$1</span>');
+}
+// Filter sessions by search term
+function searchFilter(sessions){
+  if(!SEARCH_TERM) return sessions;
+  var t=SEARCH_TERM;
+  return sessions.filter(function(r){
+    return (r.teacher_name||'').toLowerCase().indexOf(t)>-1 ||
+           (r.subject||'').toLowerCase().indexOf(t)>-1 ||
+           (r.chapters||'').toLowerCase().indexOf(t)>-1 ||
+           (r.topics||'').toLowerCase().indexOf(t)>-1 ||
+           (r.board||'').toLowerCase().indexOf(t)>-1 ||
+           (r.class||'').toLowerCase().indexOf(t)>-1;
+  });
+}
+
+/* ══ HOMEWORK TRACKER ══ */
+function renderHomework(){
+  var el = g('vHomework');
+  var allWithHw = SESSIONS.filter(function(r){
+    return r.homework && r.homework.trim();
+  });
+  var fc = parseCurCls();
+  if(fc.cls)   allWithHw = allWithHw.filter(function(r){return r.class===fc.cls;});
+  if(fc.board) allWithHw = allWithHw.filter(function(r){return r.board===fc.board;});
+  if(SEARCH_TERM) allWithHw = searchFilter(allWithHw);
+  allWithHw.sort(function(a,b){
+    return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
+  });
+  if(!allWithHw.length){ el.innerHTML=noDataMsg(); return; }
+
+  var today = new Date();
+  var last14 = allWithHw.filter(function(r){
+    return Math.floor((today - new Date(sessDateToYMD(r.date)))/86400000) <= 14;
+  });
+  var clsSet = new Set(allWithHw.map(function(r){return r.class;}));
+  var teacherSet = new Set(allWithHw.map(function(r){return r.teacher_name;}));
+
+  var html = '<div class="hw-summary-strip">';
+  html += hwSumCard('📝', allWithHw.length, 'Total Assignments', 'rgba(139,197,63,.1)');
+  html += hwSumCard('📅', last14.length, 'Last 14 Days', 'rgba(79,142,247,.1)');
+  html += hwSumCard('🎓', clsSet.size, 'Classes', 'rgba(167,139,250,.1)');
+  html += hwSumCard('👨‍🏫', teacherSet.size, 'Teachers', 'rgba(45,212,191,.1)');
+  html += '</div>';
+
+  // Group by class
+  var byClass = {};
+  allWithHw.forEach(function(r){
+    var key = r.class+(r.board?'|'+r.board:'');
+    if(!byClass[key]) byClass[key] = {class:r.class,board:r.board||'',stream:r.stream||'',items:[]};
+    byClass[key].items.push(r);
+  });
+
+  Object.keys(byClass).sort(function(a,b){
+    var ca=byClass[a],cb=byClass[b];
+    return +ca.class - +cb.class || ca.board.localeCompare(cb.board);
+  }).forEach(function(key, gi){
+    var grp = byClass[key];
+    var grpLabel = 'Class '+grp.class+(grp.board?' · '+grp.board:'')+(grp.stream?' · '+grp.stream:'');
+    var safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');  // safe for onclick attr
+    html += '<div class="hw-group">';
+    html += '<div class="hw-group-hd">';
+    html += '<div class="hw-group-title">'+esc(grpLabel)+'</div>';
+    html += '<span class="hw-group-count">'+grp.items.length+' assignment'+(grp.items.length>1?'s':'')+'</span>';
+    // Group-level WA + copy buttons
+    html += '<div class="hw-group-actions">';
+    html += '<button class="hw-group-wa" onclick="sendHWGroupWA(\''+safeKey+'\')" title="Send all to WA">';
+    html += '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>';
+    html += 'Send All to WA</button>';
+    html += '</div>';
+    html += '</div>';
+
+    grp.items.forEach(function(r, i){
+      var date = sessDateToYMD(r.date);
+      var daysAgo = Math.floor((today - new Date(date))/86400000);
+      var isRecent = daysAgo <= 7;
+      var dateLabel = daysAgo===0?'Today':daysAgo===1?'Yesterday':fmtShort(date);
+      var chaps = (r.chapters||'').split(' | ').filter(Boolean);
+      // encode session data for onclick handlers
+      var idx = allWithHw.indexOf(r);
+
+      html += '<div class="hw-card'+(isRecent&&daysAgo>3?' hw-overdue':'')+'" style="animation-delay:'+Math.min(i*0.04,0.4)+'s">';
+      html += '<div class="hw-card-top">';
+      html += '<div class="hw-card-subject">'+hlSearch(r.subject)+'</div>';
+      html += '<div class="hw-card-date">'+dateLabel+'</div>';
+      html += '</div>';
+      html += '<div class="hw-card-badges">';
+      html += '<span class="badge badge-b">'+esc(r.board)+'</span>';
+      html += '<span class="badge badge-g">Class '+esc(r.class)+'</span>';
+      html += '<span class="badge badge-n">'+esc(r.session_type)+'</span>';
+      if(isRecent) html += '<span class="badge badge-a">Recent</span>';
+      html += '</div>';
+      html += '<div class="hw-text">'+hlSearch(r.homework)+'</div>';
+      html += '<div class="hw-meta">';
+      html += '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="11" height="11"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>';
+      html += '<span class="hw-meta-teacher">'+esc(r.teacher_name)+'</span>';
+      html += '<span>·</span><span>'+fmtLong(date)+'</span>';
+      if(chaps.length) html += '<span>· '+esc(chaps.slice(0,2).join(', '))+(chaps.length>2?' +'+( chaps.length-2):'')+'</span>';
+      html += '</div>';
+      // Action buttons
+      html += '<div class="hw-actions">';
+      html += '<a class="hw-wa-btn" href="'+buildHWWALink(r)+'" target="_blank" rel="noopener">';
+      html += '<svg viewBox="0 0 24 24"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>';
+      html += 'Send via WhatsApp</a>';
+      html += '<button class="hw-copy-btn" id="hwcopy-'+gi+'-'+i+'" onclick="copyHW(this,'+gi+','+i+')">';
+      html += '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+      html += 'Copy Text</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+
+  el.innerHTML = html;
+  // Store data reference for copy/WA callbacks
+  el._hwData = byClass;
+}
+
+function toggleHWArchive(bannerId, bodyId){
+  var banner = g(bannerId), body = g(bodyId);
+  if(!banner||!body) return;
+  var open = body.classList.toggle('open');
+  banner.classList.toggle('open', open);
+}
+
+function buildHWWALink(r){
+  var msg = buildHWMsg(r);
+  return 'https://wa.me/?text='+encodeURIComponent(msg);
+}
+
+function buildHWMsg(r){
+  var chaps = (r.chapters||'').split(' | ').filter(Boolean);
+  var lines = [];
+  lines.push('📚 *SEHR Academy — Homework*');
+  lines.push('');
+  lines.push('*Class '+r.class+(r.stream?' · '+r.stream:'')+'  |  '+r.subject+'  |  '+r.board+'*');
+  lines.push('📅 '+fmtLong(sessDateToYMD(r.date)));
+  lines.push('👨‍🏫 '+r.teacher_name);
+  if(chaps.length){
+    lines.push('');
+    lines.push('📖 *Chapters:* '+chaps.join(', '));
+  }
+  lines.push('');
+  lines.push('📝 *Homework:*');
+  lines.push(r.homework.trim());
+  lines.push('');
+  lines.push('_Please complete before the next class._');
+  lines.push('_— SEHR Academy_');
+  return lines.join('\n');
+}
+
+function buildHWGroupMsg(grpItems, grpLabel){
+  var lines = [];
+  lines.push('📚 *SEHR Academy — Homework Update*');
+  lines.push('*'+grpLabel+'*');
+  lines.push('');
+  grpItems.forEach(function(r, i){
+    var chaps = (r.chapters||'').split(' | ').filter(Boolean);
+    lines.push('*'+(i+1)+'. '+r.subject+'* — '+r.teacher_name);
+    lines.push('📅 '+fmtShort(sessDateToYMD(r.date)));
+    if(chaps.length) lines.push('📖 '+chaps.join(', '));
+    lines.push('📝 '+r.homework.trim());
+    if(i < grpItems.length-1) lines.push('');
+  });
+  lines.push('');
+  lines.push('_Please complete before the next class._');
+  lines.push('_— SEHR Academy_');
+  return lines.join('\n');
+}
+
+function sendHWGroupWA(safeKey){
+  var el = g('vHomework');
+  if(!el._hwData) return;
+  var today = new Date();
+  var grp = null;
+  Object.keys(el._hwData).forEach(function(k){
+    if(k.replace(/[^a-zA-Z0-9]/g,'_')===safeKey) grp=el._hwData[k];
+  });
+  if(!grp) return;
+  // Only active (≤7 days) items in the WA message
+  var active = grp.items.filter(function(r){
+    return Math.floor((today-new Date(sessDateToYMD(r.date)))/86400000) <= 7;
+  });
+  if(!active.length){ alert('No active homework to send.'); return; }
+  var grpLabel = 'Class '+grp.class+(grp.board?' · '+grp.board:'');
+  var msg = buildHWGroupMsg(active, grpLabel);
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+function copyHW(btn, gi, ii){
+  // Find the record by group index and item index
+  var el = g('vHomework');
+  if(!el._hwData) return;
+  var keys = Object.keys(el._hwData).sort(function(a,b){
+    var ca=el._hwData[a],cb=el._hwData[b];
+    return +ca.class - +cb.class || ca.board.localeCompare(cb.board);
+  });
+  var key = keys[gi];
+  if(!key) return;
+  var r = el._hwData[key].items[ii];
+  if(!r) return;
+  var msg = buildHWMsg(r).replace(/\n/g,'\n'); // already escaped above
+  // Actual newlines for clipboard
+  var chaps = (r.chapters||'').split(' | ').filter(Boolean);
+  var lines = [];
+  lines.push('📚 SEHR Academy — Homework');
+  lines.push('');
+  lines.push('Class '+r.class+(r.stream?' · '+r.stream:'')+' | '+r.subject+' | '+r.board);
+  lines.push('📅 '+fmtLong(sessDateToYMD(r.date)));
+  lines.push('👨‍🏫 '+r.teacher_name);
+  if(chaps.length) lines.push('📖 Chapters: '+chaps.join(', '));
+  lines.push('');
+  lines.push('📝 Homework:');
+  lines.push(r.homework.trim());
+  lines.push('');
+  lines.push('Please complete before the next class.');
+  lines.push('— SEHR Academy');
+  var text = lines.join('\n');
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      btn.classList.add('copied');
+      btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>Copied!';
+      setTimeout(function(){
+        btn.classList.remove('copied');
+        btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Text';
+      },2200);
+    });
+  }
+}
+
+function hwSumCard(ic, v, l, bg){
+  return '<div class="hw-summary-card">'+
+    '<div class="hw-ic" style="background:'+bg+'">'+ic+'</div>'+
+    '<div><div class="hw-summary-v">'+esc(String(v))+'</div><div class="hw-summary-l">'+l+'</div></div>'+
+    '</div>';
+}
+
+/* ══ SEARCH INTEGRATION into renderChapters ══ */
+
+
+/* ══ MOBILE NAV ══ */
+function mobNav(view, btn){
+  document.querySelectorAll('.mob-nav-item').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  // Also sync desktop sidebar
+  var sbItem = g('nav-'+view);
+  setView(view, sbItem);
 }
 
 /* ══ DATE PICKER ══ */
