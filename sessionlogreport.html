@@ -2,1089 +2,1538 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Academic Dashboard — SEHR Academy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
+/* ── RESET & TOKENS ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
-  --cr:#f5f2eb;--c2:#ede9e0;--c3:#e4dfd4;
-  --wh:#fdfcfa;--mu:#7a7970;--pa:#b0ada4;--ru:#d8d4cb;
-  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;
-  --lb:#f0f7e3;--lm:#c8e48e;
-  --re:#dc2626;--rb:#fef2f2;--rm:#fca5a5;
-  --am:#d97706;--ab:#fffbeb;
-  --bl:#2563eb;--bb:#eff6ff;--bm:#bfdbfe;
-  --pu:#7c3aed;--pb:#f5f3ff;--pm:#ddd6fe;
+  /* SEHR Academy palette — exact match to markattendance.html */
+  --bg:    #f5f2eb;   /* --cr  cream background */
+  --bg2:   #fdfcfa;   /* --wh  white cards */
+  --bg3:   #ede9e0;   /* --c2  card hover / section bg */
+  --bg4:   #e4dfd4;   /* --c3  subtle border fill */
+  --border:#d8d4cb;   /* --ru  standard border */
+  --border2:#b0ada4;  /* --pa  focus border */
+  --text:  #1a1a18;   /* --ink primary text */
+  --text2: #2e2e2b;   /* --ink2 */
+  --text3: #7a7970;   /* --mu  muted text */
+  --li:    #8BC53F;   /* lime accent */
+  --li2:   #72a530;
+  --li3:   #5e8a24;
+  --li-dim:rgba(139,197,63,.12);
+  --li-glow:rgba(139,197,63,.25);
+  --blue:  #2563eb;
+  --blue-dim:rgba(37,99,235,.1);
+  --amber: #d97706;
+  --amber-dim:rgba(217,119,6,.1);
+  --red:   #dc2626;
+  --red-dim:rgba(220,38,38,.08);
+  --purple:#7c3aed;
+  --purple-dim:rgba(124,58,237,.08);
+  --teal:  #0d9488;
+  --teal-dim:rgba(13,148,136,.1);
   --f:'Open Sans',sans-serif;
+  --fs:'DM Serif Display',serif;
+  --r:10px;
+  --r2:14px;
+  --sidebar:240px;
+  --topbar:60px;
   --e1:cubic-bezier(.22,1,.36,1);
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased}
-body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;font-weight:500;line-height:1.5;height:100%;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
 
-@keyframes fIn    {from{opacity:0}to{opacity:1}}
-@keyframes fUp    {from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes spin   {to{transform:rotate(360deg)}}
+@keyframes fadeUp {from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes pulse  {0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes cardIn {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes barIn  {from{width:0}to{width:var(--w)}}
 
-/* ── TOPBAR ── */
-.topbar{background:var(--ink);padding:0 28px;overflow:hidden;position:sticky;top:0;z-index:300;border-bottom:3px solid var(--li)}
+/* ── TOPBAR ──────────────────────────────────────────────────────── */
+.topbar{
+  height:var(--topbar);flex-shrink:0;
+  background:#1a1a18;
+  border-bottom:3px solid var(--li);
+  display:flex;align-items:center;
+  padding:0 20px 0 0;gap:0;z-index:200;
+  overflow:hidden;position:relative;
+}
 .topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
-.topbar::after{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 60%);pointer-events:none}
-.tb-inner{padding:16px 0 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1;flex-wrap:wrap}
-.tb-kicker{display:flex;align-items:center;gap:9px;margin-bottom:5px}
-.tb-kr{width:22px;height:2px;background:var(--li)}
-.tb-kt{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--li);opacity:.85}
-.tb-h{font-size:clamp(18px,2.5vw,26px);font-weight:800;letter-spacing:-1px;color:#fff;line-height:1;margin-bottom:2px}
-.tb-h i{font-style:italic;font-weight:300;color:var(--li)}
-.tb-sub{font-size:11px;color:rgba(255,255,255,.3)}
-.tb-r{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.btn-tb{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;border:none;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
-.btn-tb.pdf{background:var(--li);color:var(--ink);box-shadow:0 3px 12px rgba(139,197,63,.3)}
-.btn-tb.pdf:hover{background:var(--l2)}
-.btn-tb.wa{background:rgba(37,211,102,.1);color:#128c3e;border:1.5px solid rgba(37,211,102,.25)!important}
-.btn-tb.wa:hover{background:rgba(37,211,102,.2)}
-.btn-tb svg{width:13px;height:13px;flex-shrink:0}
+.topbar::after{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.08),transparent 60%);pointer-events:none}
+.tb-logo-wrap{
+  width:var(--sidebar);flex-shrink:0;
+  display:flex;align-items:center;gap:10px;
+  padding:0 20px;border-right:1px solid rgba(255,255,255,.08);
+  height:100%;position:relative;z-index:1;
+}
+.tb-logo{font-family:'Open Sans',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1}
+.tb-logo .dot{color:var(--li);font-weight:900}
+.tb-logo-sub{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:3px}
+.tb-center{flex:1;padding:0 20px;display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.tb-page-title{font-size:15px;font-weight:700;color:#fff}
+.tb-page-sub{font-size:11px;color:rgba(255,255,255,.3)}
+.tb-spacer{flex:1}
+.tb-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.1);font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .16s;white-space:nowrap;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6)}
+.tb-btn:hover{background:rgba(255,255,255,.11);color:#fff;border-color:rgba(255,255,255,.18)}
+.tb-btn-primary{background:var(--li);border-color:transparent;color:#1a1a18;font-weight:800;box-shadow:0 3px 12px rgba(139,197,63,.3)}
+.tb-btn-primary:hover{background:var(--li2);color:#1a1a18}
+.tb-btn-wa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.22);color:#4ade80}
+.tb-btn-wa:hover{background:rgba(37,211,102,.18)}
+.tb-btn svg{width:12px;height:12px;flex-shrink:0}
+.tb-date-pill{display:flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;position:relative;z-index:1}
+.tb-date-pill:hover{border-color:rgba(139,197,63,.5);color:#fff}
+.tb-date-pill svg{width:13px;height:13px;color:rgba(255,255,255,.3)}
 
-/* ── CONTROLS ── */
-.controls{background:var(--wh);border-bottom:1.5px solid var(--c3);padding:12px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:68px;z-index:200}
-.ctrl-sep{width:1px;height:22px;background:var(--ru);flex-shrink:0}
-.ctrl-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);flex-shrink:0}
+/* ── LAYOUT ──────────────────────────────────────────────────────── */
+.app-body{flex:1;display:flex;overflow:hidden;min-height:0}
 
-/* Date picker */
-.dp-wrap{position:relative}
-.dp-disp{display:flex;align-items:center;gap:7px;padding:7px 12px;border:1.5px solid var(--ru);border-radius:7px;background:var(--cr);cursor:pointer;font-family:var(--f);font-size:13px;font-weight:700;color:var(--ink);transition:all .16s;user-select:none;min-width:150px}
-.dp-disp:hover{border-color:var(--lm)}
-.dp-disp.open{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.1)}
-.dp-arrow{color:var(--pa);font-size:10px;transition:transform .2s;margin-left:auto}
-.dp-disp.open .dp-arrow{transform:rotate(180deg)}
-.dp-drop{position:absolute;top:calc(100%+5px);left:0;background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.14);z-index:500;min-width:216px;overflow:hidden;display:none;animation:fIn .16s var(--e1)}
-.dp-drop.open{display:block}
-.dp-hd{background:var(--ink);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
-.dp-nav{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f);font-size:13px;transition:color .14s}
-.dp-nav:hover{color:#fff}
-.dp-ml{font-size:13px;font-weight:700;color:#fff}
-.dp-cal{padding:9px}
-.dp-dows{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
-.dp-dow{text-align:center;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pa);padding:2px 0}
-.dp-week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.dp-day{text-align:center;padding:5px 2px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;color:var(--mu);transition:all .13s;position:relative}
-.dp-day:hover:not(.emp):not(.othr){background:var(--lb);color:var(--l3)}
-.dp-day.hd{color:var(--ink);font-weight:800}
-.dp-day.hd::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--li)}
-.dp-day.sel{background:var(--li)!important;color:var(--ink)!important;font-weight:800}
-.dp-day.sel::after{background:var(--ink)!important}
-.dp-day.emp,.dp-day.othr{color:var(--ru);cursor:default;pointer-events:none}
-.dp-day.tdy{box-shadow:0 0 0 1.5px var(--lm) inset}
+/* ── SIDEBAR ─────────────────────────────────────────────────────── */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--bg2);
+  border-right:1.5px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sb-section{padding:16px 12px 8px}
+.sb-section-label{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);padding:0 8px;margin-bottom:6px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:all .13s;user-select:none;-webkit-user-select:none;border:1px solid transparent}
+.sb-item:hover{background:var(--bg3)}
+.sb-item.on{background:rgba(139,197,63,.1);border-color:rgba(139,197,63,.25)}
+.sb-item-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--bg3)}
+.sb-item.on .sb-item-icon{background:var(--li-dim)}
+.sb-item-label{font-size:13px;font-weight:600;color:var(--text3)}
+.sb-item.on .sb-item-label{color:var(--li3);font-weight:700}
+.sb-item-count{margin-left:auto;font-size:10px;font-weight:700;background:var(--bg4);color:var(--text3);padding:2px 7px;border-radius:10px}
+.sb-item.on .sb-item-count{background:rgba(139,197,63,.12);color:var(--li3)}
+.sb-divider{height:1px;background:var(--border);margin:8px 12px}
 
-/* filter tabs */
-.ftabs{display:flex;gap:5px;flex-wrap:wrap}
-.ftab{padding:6px 13px;border-radius:6px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .14s}
-.ftab:hover{border-color:var(--lm);color:var(--l3)}
-.ftab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+/* Class list in sidebar */
+.sb-class-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;transition:all .13s;border:1px solid transparent}
+.sb-class-item:hover{background:var(--bg3)}
+.sb-class-item.on{background:var(--bg4);border-color:var(--border2)}
+.sb-class-num{width:28px;height:28px;border-radius:6px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--li3);flex-shrink:0}
+.sb-class-item.on .sb-class-num{background:var(--li);color:#1a1a18}
+.sb-class-info{flex:1;min-width:0}
+.sb-class-name{font-size:12px;font-weight:600;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-class-item.on .sb-class-name{color:var(--text)}
+.sb-class-meta{font-size:10px;color:var(--text3);margin-top:1px}
+.sb-at-tag{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--bg4);color:var(--text3);padding:1px 5px;border-radius:4px;opacity:.7}
+.sb-class-bar{height:3px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden}
+.sb-class-fill{height:100%;border-radius:2px;background:var(--li);transition:width .6s var(--e1)}
 
-/* view tabs */
-.view-tabs{display:flex;gap:0;border-bottom:1.5px solid var(--c3);margin-bottom:20px}
-.vtab{padding:10px 18px;border:none;background:transparent;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--mu);border-bottom:2.5px solid transparent;margin-bottom:-1.5px;transition:all .14s}
-.vtab.on{color:var(--l2);border-bottom-color:var(--li)}
+/* ── MAIN CONTENT ────────────────────────────────────────────────── */
+.main{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
+.main::-webkit-scrollbar{width:5px}
+.main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-/* ── MAIN ── */
-.main{padding:22px 28px 80px;max-width:1300px}
-@media(max-width:700px){.main{padding:14px 14px 60px}.controls{padding:10px 14px}.topbar{padding:0 14px}}
+/* ── FILTER BAR ──────────────────────────────────────────────────── */
+.filter-bar{
+  padding:10px 20px;
+  background:var(--bg2);
+  border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;position:sticky;top:0;z-index:100;
+  flex-shrink:0;
+}
+.fbar-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.fbar-sep{width:1px;height:18px;background:var(--border)}
+.fbar-tabs{display:flex;gap:4px}
+.fbar-tab{padding:5px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;transition:all .13s}
+.fbar-tab:hover{background:var(--bg3);color:var(--text);border-color:var(--li)}
+.fbar-tab.on{background:var(--li);border-color:var(--li);color:#1a1a18;font-weight:700}
 
-/* KPI strip */
-.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
-@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:520px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
-.kpi{background:var(--wh);border:1px solid var(--c3);border-radius:9px;padding:14px 16px;display:flex;align-items:center;gap:11px;animation:cardIn .4s var(--e1)}
-.kpi-ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.kpi-val{font-size:24px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-.5px}
-.kpi-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-top:2px}
-
-/* class block — main container */
-.cls-block{background:var(--wh);border:1.5px solid var(--c3);border-radius:12px;overflow:hidden;margin-bottom:16px;animation:cardIn .35s var(--e1)}
-.cls-hd{padding:14px 18px;display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--c3);flex-wrap:wrap;background:var(--cr)}
-.cls-num{font-size:32px;font-weight:900;color:var(--ink);line-height:1;flex-shrink:0}
-.cls-info{flex:1;min-width:0}
-.cls-name{font-size:14px;font-weight:800;color:var(--ink)}
-.cls-meta{font-size:11px;color:var(--mu);margin-top:2px}
-.cls-pills{display:flex;gap:6px;align-items:center;flex-wrap:wrap;flex:1;min-width:0}
-.stat-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
-.sp-g{background:rgba(34,197,94,.1);color:#16a34a;border:1px solid rgba(34,197,94,.2)}
-.sp-r{background:var(--rb);color:var(--re);border:1px solid var(--rm)}
-.sp-b{background:var(--bb);color:var(--bl);border:1px solid var(--bm)}
-.sp-a{background:var(--ab);color:var(--am);border:1px solid rgba(217,119,6,.2)}
-.cls-btns{display:flex;gap:6px;align-items:center;flex-shrink:0;margin-left:auto}
-.btn-cls{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;border:none;white-space:nowrap}
-.btn-cls-pdf{background:var(--li);color:var(--ink);box-shadow:0 2px 8px rgba(139,197,63,.25)}
-.btn-cls-pdf:hover{background:var(--l2)}
-.btn-cls-wa{background:rgba(37,211,102,.1);color:#128c3e;border:1.5px solid rgba(37,211,102,.25)!important}
-.btn-cls-wa:hover{background:rgba(37,211,102,.2)}
-.btn-cls svg{width:12px;height:12px;flex-shrink:0}
-
-.cls-body{padding:0}
-
-/* session panel inside class block */
-.sess-panel{border-bottom:1px solid var(--c3)}
-.sess-panel:first-child{border-top:none}
-.sess-panel:last-child{border-bottom:none}
-.sess-hd{padding:11px 18px;display:flex;align-items:center;gap:10px;background:var(--wh);border-bottom:1px solid var(--c2)}
-.sess-teacher{font-size:13px;font-weight:800;color:var(--ink)}
-.sess-time{font-size:11px;color:var(--mu);margin-top:1px}
-.sess-badges{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
-.badge{display:inline-flex;padding:3px 8px;border-radius:9px;font-size:10px;font-weight:700}
-.badge-g{background:var(--lb);color:var(--l3)}
-.badge-b{background:var(--bb);color:var(--bl)}
-.badge-a{background:var(--ab);color:var(--am)}
-.badge-p{background:var(--pb);color:var(--pu)}
-.badge-n{background:var(--c2);color:var(--mu)}
-.sess-body{padding:12px 18px}
-.srow{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--c2)}
-.srow:last-child{border-bottom:none}
-.sk{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);min-width:86px;flex-shrink:0;padding-top:2px}
-.sv{font-size:13px;color:var(--ink);line-height:1.5;flex:1}
-.sv.dim{color:var(--mu)}
-.ch-chip{display:inline-block;background:var(--lb);color:var(--l3);border-radius:4px;padding:2px 7px;font-size:11px;font-weight:600;margin:2px 2px 2px 0}
-.hw-flag{display:inline-flex;align-items:center;gap:4px;background:rgba(217,119,6,.1);color:var(--am);border:1px solid rgba(217,119,6,.2);border-radius:5px;padding:3px 8px;font-size:11px;font-weight:700;margin-top:4px}
-
-/* attendance grid inside class block */
-.att-panel{padding:14px 18px;border-top:2px solid var(--c3);background:var(--cr)}
-.att-panel-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.att-panel-title::after{content:'';flex:1;height:1px;background:var(--c3)}
-.att-board-lbl{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:8px 0 6px}
-.att-board-st{background:var(--lb);color:var(--l3);border:1px solid rgba(139,197,63,.25)}
-.att-board-cb{background:var(--bb);color:var(--bl);border:1px solid var(--bm)}
-.stu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px;margin-bottom:10px}
-.sc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1.5px solid var(--c3);background:var(--wh);position:relative;overflow:hidden;animation:cardIn .3s var(--e1) both}
-.sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(34,197,94,.5);border-radius:3px 0 0 3px}
-.sc.ab{border-color:var(--rm);background:var(--rb)}
-.sc.ab::before{background:var(--re)}
-.sc-photo{width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1.5px solid var(--ru)}
-.sc-mono{width:40px;height:40px;border-radius:8px;background:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--li);flex-shrink:0}
-.sc.ab .sc-mono{background:var(--re);color:#fff}
-.sc-name{font-size:12px;font-weight:600;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sc.ab .sc-name{color:var(--re)}
-.sc-badge{flex-shrink:0;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:10px}
-.sc-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
-.sc-badge.a{background:var(--rb);color:var(--re);border:1px solid rgba(220,38,38,.2)}
-.att-no-data{font-size:12px;color:var(--pa);font-style:italic;padding:8px 0}
-
-/* progress/chapters/teachers views */
-.sec-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.sec-title::after{content:'';flex:1;height:1px;background:var(--c3)}
-.cprog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
-.cprog-card{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;padding:16px;animation:cardIn .35s var(--e1)}
-.cprog-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.cprog-num{font-size:28px;font-weight:900;color:var(--ink);line-height:1}
-.cprog-info{flex:1}
-.cprog-name{font-size:13px;font-weight:700}
-.cprog-meta{font-size:11px;color:var(--mu);margin-top:1px}
-.cprog-hrs{font-size:22px;font-weight:900;color:var(--l2);line-height:1}
-.cprog-hrslbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu)}
-.subj-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.subj-row:last-child{margin-bottom:0}
-.subj-name{font-size:12px;font-weight:600;min-width:110px;flex-shrink:0}
-.subj-bar-bg{flex:1;background:var(--c3);border-radius:3px;height:6px;overflow:hidden}
-.subj-bar{height:100%;border-radius:3px;background:var(--li);transition:width .5s var(--e1)}
-.subj-stat{font-size:11px;font-weight:700;color:var(--mu);min-width:48px;text-align:right;flex-shrink:0}
-.cprog-subjects{border-top:1px solid var(--c3);padding-top:12px;margin-top:4px}
-
-.chap-wrap{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;overflow:hidden;overflow-x:auto}
-.chap-table{width:100%;border-collapse:collapse}
-.chap-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);padding:8px 12px;background:var(--cr);border-bottom:1.5px solid var(--c3);text-align:left}
-.chap-table td{padding:8px 12px;border-bottom:1px solid var(--c2);font-size:13px;color:var(--ink2);vertical-align:middle}
-.chap-table tr:last-child td{border-bottom:none}
-.chap-table tr:hover td{background:var(--cr)}
-.cov-bar{width:70px;background:var(--c3);border-radius:3px;height:5px;display:inline-block;overflow:hidden;vertical-align:middle}
-.cov-fill{height:100%;border-radius:3px;background:var(--li);display:block}
-
-.tsum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.tsum-card{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;padding:14px 16px;animation:cardIn .35s var(--e1)}
-.tsum-name{font-size:14px;font-weight:800;margin-bottom:2px}
-.tsum-role{font-size:11px;color:var(--mu);margin-bottom:10px}
-.tsum-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:1px solid var(--c3);padding-top:10px}
-.tstat-v{font-size:18px;font-weight:800;color:var(--l2);line-height:1}
-.tstat-l{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-top:2px}
-
-/* empty / loading */
-.empty{text-align:center;padding:48px 20px;color:var(--mu)}
-.empty-ico{font-size:36px;opacity:.25;margin-bottom:10px}
-.empty-txt{font-size:15px;font-weight:700;color:var(--pa)}
-.empty-sub{font-size:12px;margin-top:4px}
-.loading-wrap{display:flex;align-items:center;gap:10px;padding:32px;color:var(--mu);font-size:13px;font-weight:600}
-.lspin{width:18px;height:18px;border:2px solid var(--c3);border-top-color:var(--li);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+/* ── PAGE PADDING ────────────────────────────────────────────────── */
+.page-pad{padding:20px}
 .hidden{display:none!important}
 
-/* ── PRINT ── */
+/* ── KPI STRIP ───────────────────────────────────────────────────── */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:1100px){.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+.kpi-card{
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);
+  padding:16px 18px;position:relative;overflow:hidden;
+  animation:fadeUp .4s var(--e1) both;
+  transition:all .18s;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.kpi-card:hover{border-color:var(--li);transform:translateY(-1px);box-shadow:0 4px 16px rgba(139,197,63,.12)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent,var(--li));opacity:.7}
+.kpi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.kpi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.kpi-trend{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
+.kpi-val{font-size:28px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-.5px;font-family:var(--fs)}
+.kpi-lbl{font-size:11px;color:var(--text3);margin-top:3px;font-weight:700}
+
+/* ── SECTION HEADER ──────────────────────────────────────────────── */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-title{font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-.1px}
+.sec-title::before{content:'';width:3px;height:16px;background:var(--li);border-radius:2px;flex-shrink:0}
+.sec-actions{display:flex;gap:6px}
+
+/* ── TABLE ───────────────────────────────────────────────────────── */
+.data-table-wrap{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);padding:9px 14px;background:var(--bg3);border-bottom:1.5px solid var(--border);text-align:left;white-space:nowrap}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:rgba(139,197,63,.04);color:var(--text)}
+.data-table td.bold{font-weight:600;color:var(--text)}
+
+/* ── PROGRESS BARS ───────────────────────────────────────────────── */
+.pbar-wrap{display:flex;align-items:center;gap:8px}
+.pbar{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;min-width:60px}
+.pbar-fill{height:100%;border-radius:3px;transition:width .6s var(--e1)}
+.pbar-lbl{font-size:11px;font-weight:700;min-width:32px;text-align:right}
+
+/* ── BADGE ───────────────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.badge-g{background:var(--li-dim);color:var(--li)}
+.badge-b{background:var(--blue-dim);color:var(--blue)}
+.badge-a{background:var(--amber-dim);color:var(--amber)}
+.badge-r{background:var(--red-dim);color:var(--red)}
+.badge-p{background:var(--purple-dim);color:var(--purple)}
+.badge-t{background:var(--teal-dim);color:var(--teal)}
+.badge-n{background:var(--bg4);color:var(--text3)}
+
+/* ── DAY VIEW ────────────────────────────────────────────────────── */
+.day-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+@media(max-width:1000px){.day-grid{grid-template-columns:1fr}}
+.class-block{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:14px;animation:fadeUp .35s var(--e1) both;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.class-block:hover{border-color:rgba(139,197,63,.4);box-shadow:0 4px 16px rgba(139,197,63,.08)}
+.cb-header{padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1.5px solid var(--border);background:var(--bg3);flex-wrap:wrap}
+.cb-num{width:38px;height:38px;border-radius:8px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--li);flex-shrink:0}
+.cb-info{flex:1;min-width:0}
+.cb-title{font-size:14px;font-weight:700;color:var(--text)}
+.cb-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.cb-pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.cb-btns{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.cb-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .14s;border:none;white-space:nowrap}
+.cb-btn-pdf{background:var(--li);color:#0f1117}
+.cb-btn-pdf:hover{background:var(--li2)}
+.cb-btn-wa{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.2)!important;color:#4ade80}
+.cb-btn-wa:hover{background:rgba(37,211,102,.18)}
+.cb-btn svg{width:11px;height:11px}
+.cb-body{padding:0}
+.sess-item{border-bottom:1px solid var(--border);padding:12px 16px}
+.sess-item:last-child{border-bottom:none}
+.sess-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.sess-teacher{font-size:13px;font-weight:700;color:var(--text)}
+.sess-time{font-size:11px;color:var(--text3);margin-top:1px}
+.sess-det-grid{display:grid;grid-template-columns:82px 1fr;gap:0;border:1.5px solid var(--border);border-radius:7px;overflow:hidden}
+.sess-det-k{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:6px 10px;background:var(--bg3);border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.sess-det-v{font-size:12px;color:var(--text2);padding:6px 10px;border-bottom:1px solid var(--border);line-height:1.5}
+.sess-det-k:last-of-type,.sess-det-v:last-of-type{border-bottom:none}
+.ch-chip{display:inline-block;background:var(--li-dim);color:var(--li);border:1px solid rgba(139,197,63,.2);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600;margin:2px 2px 2px 0}
+.hw-flag{display:inline-flex;align-items:center;gap:4px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2);border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;margin-top:4px}
+
+/* ── ATTENDANCE PANEL ────────────────────────────────────────────── */
+.att-block{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:14px;animation:fadeUp .35s var(--e1) .05s both;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.att-hd{padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.att-title{font-size:13px;font-weight:700;color:var(--text);flex:1}
+.att-board-tabs{display:flex;border-bottom:1px solid var(--border)}
+.att-board-tab{padding:8px 16px;border:none;background:transparent;font-family:var(--f);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .13s}
+.att-board-tab.on{color:var(--li);border-bottom-color:var(--li)}
+.att-table{width:100%;border-collapse:collapse}
+.att-table td{padding:7px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);vertical-align:middle}
+.att-table tr:last-child td{border-bottom:none}
+.att-table tr.att-ab td{background:rgba(239,68,68,.04)}
+.att-photo{width:28px;height:28px;border-radius:6px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--li);position:relative;overflow:hidden;flex-shrink:0;vertical-align:middle}
+.att-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.att-photo.ab-av{background:var(--red-dim);color:var(--red)}
+.att-name{font-weight:700;color:var(--text);margin-left:9px;vertical-align:middle}
+.att-table tr.att-ab .att-name{color:var(--red)}
+.pct-pill-sm{font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;margin-left:6px;display:inline-flex;vertical-align:middle}
+
+/* ── PROGRESS VIEW ───────────────────────────────────────────────── */
+.pg-block{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:12px;animation:fadeUp .35s var(--e1) both;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.pg-block:hover{border-color:rgba(139,197,63,.4);box-shadow:0 4px 16px rgba(139,197,63,.08)}
+.pg-cls-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;transition:background .13s;user-select:none;-webkit-user-select:none;flex-wrap:wrap;background:var(--bg3)}
+.pg-cls-hd:hover{background:var(--bg4)}
+.pg-cls-num{width:44px;height:44px;border-radius:9px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:var(--li);flex-shrink:0}
+.pg-cls-info{flex:1;min-width:0}
+.pg-cls-title{font-size:15px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pg-stream-badge{font-size:10px;font-weight:700;background:var(--purple-dim);color:var(--purple);padding:2px 8px;border-radius:10px}
+.pg-cls-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.pg-ring-wrap{flex-shrink:0;text-align:center}
+.pg-ring-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:3px}
+.pg-expand-icon{font-size:11px;color:var(--text3);flex-shrink:0;transition:transform .2s}
+.pg-board-tabs{display:flex;border-bottom:1.5px solid var(--border);background:var(--bg4)}
+.pg-board-tab{padding:9px 18px;border:none;background:transparent;font-family:var(--f);font-size:12px;font-weight:600;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .13s}
+.pg-board-tab.on{color:var(--li);border-bottom-color:var(--li)}
+.pg-subj-block{border-bottom:1px solid var(--border)}
+.pg-subj-block:last-child{border-bottom:none}
+.pg-subj-hd{display:flex;align-items:center;gap:10px;padding:12px 18px;cursor:pointer;transition:background .12s;user-select:none;-webkit-user-select:none;flex-wrap:wrap}
+.pg-subj-hd:hover{background:var(--bg3)}
+.pg-subj-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.pg-subj-name{font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:120px}
+.pg-subj-stats{display:flex;gap:6px;flex-wrap:wrap}
+.pg-subj-stat{font-size:10px;font-weight:600;color:var(--text3);background:var(--bg4);padding:2px 8px;border-radius:8px;white-space:nowrap}
+.pg-subj-pct-wrap{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.pg-subj-pct-bar{width:80px;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.pg-subj-pct-fill{height:100%;border-radius:3px;transition:width .6s var(--e1)}
+.pg-subj-pct-lbl{font-size:11px;font-weight:800;min-width:34px;text-align:right}
+.pg-subj-arrow{font-size:10px;color:var(--text3);flex-shrink:0;width:14px;text-align:center}
+.pg-subj-body{background:var(--bg2)}
+.pg-ch-section-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);padding:10px 18px 5px;display:flex;align-items:center;gap:8px}
+.pg-ch-count{padding:1px 7px;border-radius:10px;font-size:9px;font-weight:800}
+.pg-ch-count-done{background:var(--li-dim);color:var(--li)}
+.pg-ch-count-todo{background:var(--bg4);color:var(--text3)}
+.pg-ch-list{padding:0 0 4px}
+.pg-ch-row{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--border)}
+.pg-ch-row:last-child{border-bottom:none}
+.pg-ch-row:hover{background:var(--bg3)}
+.pg-ch-done-dot{width:7px;height:7px;border-radius:50%;background:var(--li);flex-shrink:0}
+.pg-ch-pending-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--text3);flex-shrink:0}
+.pg-ch-name{font-size:13px;font-weight:500;color:var(--text);flex:1}
+.pg-ch-name-dim{color:var(--text3);font-weight:400;font-style:italic}
+.pg-ch-pills{display:flex;gap:4px;flex-wrap:wrap}
+.pg-ch-pill{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px}
+.pg-ch-pill-sess{background:var(--li-dim);color:var(--li)}
+.pg-ch-pill-time{background:var(--blue-dim);color:var(--blue)}
+.pg-ch-pill-date{background:var(--bg4);color:var(--text3)}
+.pg-ch-pill-teacher{background:var(--purple-dim);color:var(--purple)}
+.pg-ch-toggle{font-size:10px;color:var(--text3);flex-shrink:0;width:14px;text-align:right}
+.pg-ch-row-pending{cursor:default}
+.pg-ch-row-pending:hover{background:transparent}
+.pg-ch-list-pending{opacity:.5}
+.pg-ch-detail{background:var(--bg3);border-top:1px solid var(--border);padding:12px 18px 14px 36px}
+.pg-detail-section{margin-bottom:12px}
+.pg-detail-section:last-child{margin-bottom:0}
+.pg-detail-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.pg-detail-dates{display:flex;flex-wrap:wrap;gap:5px}
+.pg-date-chip{background:var(--li-dim);color:var(--li);border:1px solid rgba(139,197,63,.2);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600}
+.pg-detail-entry{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.pg-detail-entry:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.pg-detail-meta{font-size:10px;font-weight:600;color:var(--text3);display:block;margin-bottom:2px}
+.pg-detail-text{font-size:12px;color:var(--text2);line-height:1.5}
+.pg-detail-remark{color:var(--amber);font-style:italic}
+.pg-no-data{padding:16px 18px;font-size:12px;color:var(--text3);font-style:italic}
+
+/* ── CHAPTERS TABLE VIEW ─────────────────────────────────────────── */
+/* reuses .data-table */
+
+/* ── TEACHERS VIEW ───────────────────────────────────────────────── */
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:20px}
+.teacher-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px;animation:fadeUp .35s var(--e1) both;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.teacher-card:hover{border-color:rgba(139,197,63,.4);box-shadow:0 4px 16px rgba(139,197,63,.08)}
+.teacher-av{width:44px;height:44px;border-radius:10px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--li);margin-bottom:10px}
+.teacher-name{font-size:15px;font-weight:700;color:var(--text)}
+.teacher-role{font-size:11px;color:var(--text3);margin-bottom:12px}
+.teacher-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--border);padding-top:12px}
+.tstat-v{font-size:20px;font-weight:800;color:var(--li);line-height:1}
+.tstat-l{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-top:2px}
+
+/* ── EMPTY / LOADING ─────────────────────────────────────────────── */
+.empty-state{text-align:center;padding:60px 20px}
+.empty-icon{font-size:40px;opacity:.2;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:700;color:var(--text2);margin-bottom:6px}
+.empty-sub{font-size:13px;color:var(--text3)}
+.empty-hint{margin-top:12px;font-size:12px;color:var(--text3);background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;line-height:1.6}
+.empty-hint b{color:var(--li3);font-weight:700}
+.loading-overlay{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;gap:14px}
+.loading-ring{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--li);border-right-color:rgba(139,197,63,.4);animation:spin .7s linear infinite}
+.loading-txt{font-size:13px;font-weight:600;color:var(--text3)}
+.skel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:12px}
+.skel-line{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--bg3)0%,var(--bg4)50%,var(--bg3)100%);background-size:600px 100%;animation:shimmer 1.4s linear infinite;margin-bottom:8px}
+.skel-line.w60{width:60%}.skel-line.w40{width:40%}.skel-line.w80{width:80%}
+
+/* ── DATE PICKER ─────────────────────────────────────────────────── */
+.dp-wrap{position:relative}
+.dp-drop{position:fixed;top:var(--topbar);right:20px;background:#1a1a18;border:1px solid rgba(255,255,255,.1);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5);z-index:1000;min-width:230px;overflow:hidden;display:none;animation:fadeUp .18s var(--e1)}
+.dp-drop.open{display:block}
+.dp-hd{background:rgba(255,255,255,.05);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07)}
+.dp-nav{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;padding:4px 9px;border-radius:5px;font-family:var(--f);font-size:13px;transition:all .13s}
+.dp-nav:hover{background:rgba(255,255,255,.1);color:#fff}
+.dp-ml{font-size:13px;font-weight:700;color:#fff}
+.dp-cal{padding:10px}
+.dp-dows{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
+.dp-dow{text-align:center;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:2px 0}
+.dp-week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.dp-day{text-align:center;padding:6px 2px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.4);transition:all .12s;position:relative}
+.dp-day:hover:not(.emp){background:rgba(255,255,255,.1);color:#fff}
+.dp-day.hd{color:#fff;font-weight:700}
+.dp-day.hd::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--li)}
+.dp-day.sel{background:var(--li)!important;color:#0f1117!important;font-weight:800}
+.dp-day.sel::after{background:#0f1117!important}
+.dp-day.emp{color:rgba(255,255,255,.1);cursor:default;pointer-events:none}
+.dp-day.tdy{box-shadow:0 0 0 1.5px rgba(139,197,63,.4) inset}
+
+/* ── SCROLLABLE RIGHT PANEL (day view) ──────────────────────────── */
+.right-panel{display:flex;flex-direction:column;gap:14px;position:sticky;top:0}
+
+/* ── PRINT ───────────────────────────────────────────────────────── */
 #printDoc{display:none;position:absolute;left:-9999px;top:0}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   @page{margin:0;size:A4 portrait}
-  html,body{background:#fff!important;margin:0!important;padding:0!important;height:auto!important}
+  html,body{background:#fff!important;margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;display:block!important}
   body>*{display:none!important}
-  #printDoc{display:block!important;position:static!important;left:auto!important;top:auto!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
+  #printDoc{display:block!important;position:static!important;left:auto!important;top:auto!important;width:100%!important;font-family:'Inter',Arial,sans-serif!important}
 }
-
-
-/* ══ PRINT DOC — Invoice Style ══ */
-.pr-doc{font-family:'Open Sans',Arial,sans-serif;color:#1a1a18;background:#fff;font-size:12px;line-height:1.5}
-/* Top accent bar */
-.pr-top-bar{height:6px;background:#8BC53F;width:100%}
-/* Header */
-.pr-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 36px 18px;border-bottom:1px solid #d8d4cb}
-.pr-logo{font-size:22px;font-weight:900;letter-spacing:-.4px;color:#1a1a18;line-height:1}
+/* reuse existing pr- print styles */
+.pr-doc{font-family:'Inter',Arial,sans-serif;color:#1a1a18;background:#fff;font-size:12px;line-height:1.5}
+.pr-top-bar{height:5px;background:#8BC53F;width:100%}
+.pr-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 32px 16px;border-bottom:1px solid #e4dfd4}
+.pr-logo{font-size:20px;font-weight:900;letter-spacing:-.3px;color:#1a1a18;line-height:1}
 .pr-logo span{color:#8BC53F}
-.pr-logo-sub{font-size:10px;color:#7a7970;margin-top:4px;font-weight:400}
+.pr-logo-sub{font-size:9px;color:#7a7970;margin-top:3px}
 .pr-hdr-r{text-align:right}
-.pr-hdr-doc{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a1a18}
-.pr-hdr-date{font-size:10px;color:#7a7970;margin-top:3px}
-/* Date hero band */
-.pr-date-band{background:#1a1a18;padding:16px 36px;display:flex;align-items:center;justify-content:space-between}
-.pr-date-big{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1}
+.pr-hdr-doc{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1a1a18}
+.pr-hdr-date{font-size:9px;color:#7a7970;margin-top:2px}
+.pr-date-band{background:#1a1a18;padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+.pr-date-big{font-size:18px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1}
 .pr-date-big span{color:#8BC53F}
-.pr-date-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:3px}
+.pr-date-sub{font-size:9px;color:rgba(255,255,255,.4);margin-top:3px}
 .pr-date-right{text-align:right}
-.pr-date-tag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px}
-.pr-stat-row{display:flex;gap:16px;justify-content:flex-end}
+.pr-date-tag{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px}
+.pr-stat-row{display:flex;gap:14px;justify-content:flex-end}
 .pr-stat{text-align:center}
-.pr-stat-v{font-size:16px;font-weight:900;color:#8BC53F;line-height:1}
-.pr-stat-l{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:2px}
-/* Section rule */
-.pr-sec-rule{display:flex;align-items:center;gap:8px;padding:14px 36px 8px}
-.pr-sec-rule-line{width:16px;height:2px;background:#8BC53F;flex-shrink:0}
-.pr-sec-rule-txt{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#72a530}
-/* Class header */
-.pr-cls-hdr{display:flex;align-items:center;gap:12px;padding:12px 36px;background:#f5f2eb;border-top:1px solid #d8d4cb;border-bottom:1px solid #d8d4cb}
-.pr-cls-badge{width:40px;height:40px;border-radius:8px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#8BC53F;flex-shrink:0;line-height:1}
-.pr-cls-title{font-size:14px;font-weight:800;color:#1a1a18}
-.pr-cls-meta{font-size:10px;color:#7a7970;margin-top:1px}
-.pr-cls-pills{margin-left:auto;display:flex;gap:6px}
-.pr-cls-pill{font-size:9px;font-weight:800;padding:3px 9px;border-radius:10px}
+.pr-stat-v{font-size:15px;font-weight:900;color:#8BC53F;line-height:1}
+.pr-stat-l{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:2px}
+.pr-sec-rule{display:flex;align-items:center;gap:8px;padding:12px 32px 6px}
+.pr-sec-rule-line{width:14px;height:2px;background:#8BC53F;flex-shrink:0}
+.pr-sec-rule-txt{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#72a530}
+.pr-cls-hdr{display:flex;align-items:center;gap:10px;padding:10px 32px;background:#f5f2eb;border-top:1px solid #d8d4cb;border-bottom:2px solid #8BC53F}
+.pr-cls-badge{width:36px;height:36px;border-radius:7px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#8BC53F;flex-shrink:0;line-height:1}
+.pr-cls-title{font-size:13px;font-weight:800;color:#1a1a18}
+.pr-cls-meta{font-size:9px;color:#7a7970;margin-top:1px}
+.pr-cls-pills{margin-left:auto;display:flex;gap:5px}
+.pr-cls-pill{font-size:8px;font-weight:800;padding:3px 8px;border-radius:9px}
 .pr-cls-pill-g{background:rgba(34,197,94,.1);color:#16a34a}
 .pr-cls-pill-r{background:#fef2f2;color:#dc2626}
-/* Session block */
-.pr-sessions{padding:0 36px}
-.pr-sess-item{padding:12px 0;border-bottom:1px solid #ede9e0}
+.pr-sessions{padding:0 32px}
+.pr-sess-item{padding:10px 0;border-bottom:1px solid #ede9e0}
 .pr-sess-item:last-child{border-bottom:none}
-.pr-sess-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.pr-sess-teacher{font-size:13px;font-weight:800;color:#1a1a18}
-.pr-sess-time{font-size:10px;color:#7a7970;margin-top:1px}
-.pr-badges{display:flex;gap:4px;flex-wrap:wrap}
-.pr-badge{display:inline-flex;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700}
+.pr-sess-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;flex-wrap:wrap;gap:5px}
+.pr-sess-teacher{font-size:12px;font-weight:800;color:#1a1a18}
+.pr-sess-time{font-size:9px;color:#7a7970;margin-top:1px}
+.pr-badges{display:flex;gap:3px;flex-wrap:wrap}
+.pr-badge{display:inline-flex;padding:2px 6px;border-radius:4px;font-size:8px;font-weight:700}
 .pr-badge-b{background:#eff6ff;color:#2563eb}
 .pr-badge-a{background:#fffbeb;color:#d97706}
-.pr-badge-g{background:#f0f7e3;color:#5e8a24}
 .pr-badge-n{background:#ede9e0;color:#7a7970}
-/* Session detail rows */
-.pr-det-grid{display:grid;grid-template-columns:90px 1fr;gap:0;background:#fdfcfa;border:1px solid #e4dfd4;border-radius:5px;overflow:hidden}
+.pr-det-grid{display:grid;grid-template-columns:80px 1fr;background:#fdfcfa;border:1px solid #e4dfd4;border-radius:4px;overflow:hidden}
 .pr-det-row{display:contents}
-.pr-det-k{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b0ada4;padding:5px 10px;background:#f5f2eb;border-bottom:1px solid #e4dfd4;border-right:1px solid #e4dfd4}
-.pr-det-v{font-size:10px;color:#1a1a18;padding:5px 10px;border-bottom:1px solid #e4dfd4;line-height:1.4}
+.pr-det-k{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b0ada4;padding:5px 8px;background:#f5f2eb;border-bottom:1px solid #e4dfd4;border-right:1px solid #e4dfd4}
+.pr-det-v{font-size:9px;color:#1a1a18;padding:5px 8px;border-bottom:1px solid #e4dfd4;line-height:1.4}
 .pr-det-row:last-child .pr-det-k,.pr-det-row:last-child .pr-det-v{border-bottom:none}
-.pr-chapter-chip{display:inline-block;background:#f0f7e3;color:#5e8a24;border:1px solid rgba(139,197,63,.25);border-radius:3px;padding:1px 6px;font-size:9px;font-weight:700;margin:1px 2px 1px 0}
-.pr-hw-flag{display:inline-block;background:#fffbeb;color:#d97706;border:1px solid rgba(217,119,6,.2);border-radius:3px;padding:1px 6px;font-size:8px;font-weight:700;margin-top:3px}
-/* Attendance section */
-.pr-att-wrap{padding:0 36px 16px}
-.pr-att-board-row{display:flex;align-items:center;gap:8px;margin:10px 0 5px}
-.pr-att-board-lbl{font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:3px}
+.pr-chapter-chip{display:inline-block;background:#f0f7e3;color:#5e8a24;border:1px solid rgba(139,197,63,.25);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;margin:1px 2px 1px 0}
+.pr-hw-flag{display:inline-block;background:#fffbeb;color:#d97706;border:1px solid rgba(217,119,6,.18);border-radius:3px;padding:1px 5px;font-size:7px;font-weight:700;margin-top:2px}
+.pr-section-divider{margin:4px 32px 0;height:1px;background:linear-gradient(90deg,#8BC53F,#c8e48e,transparent)}
+.pr-att-wrap{padding:0 32px 14px}
+.pr-att-board-row{display:flex;align-items:center;gap:8px;margin:8px 0 4px}
+.pr-att-board-lbl{font-size:7px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px}
 .pr-att-board-st{background:#f0f7e3;color:#5e8a24}
 .pr-att-board-cb{background:#eff6ff;color:#2563eb}
-.pr-att-board-meta{font-size:10px;color:#7a7970}
-/* Attendance table */
-.pr-att-tbl{width:100%;border-collapse:collapse;border:1px solid #e4dfd4;border-radius:5px;overflow:hidden;table-layout:fixed}
-.pr-att-tbl th{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b0ada4;padding:5px 10px;background:#f5f2eb;border-bottom:1px solid #d8d4cb;text-align:left}
-.pr-att-tbl td{padding:4px 10px;border-bottom:1px solid #ede9e0;font-size:10px;vertical-align:middle;line-height:1.2}
+.pr-att-board-meta{font-size:9px;color:#7a7970}
+.pr-att-tbl{width:100%;border-collapse:collapse;border:1px solid #e4dfd4;table-layout:fixed}
+.pr-att-tbl th{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b0ada4;padding:4px 8px;background:#f5f2eb;border-bottom:1px solid #d8d4cb;text-align:left}
+.pr-att-tbl td{padding:3px 8px;border-bottom:1px solid #ede9e0;font-size:9px;vertical-align:middle;line-height:1.2}
 .pr-att-tbl tr:last-child td{border-bottom:none}
 .pr-att-tbl-p{background:#fff}
 .pr-att-tbl-a{background:#fef8f8}
-.pr-att-tbl th:nth-child(1),.pr-att-tbl td:nth-child(1){width:34px}
-.pr-att-tbl th:nth-child(3),.pr-att-tbl td:nth-child(3){width:65px;text-align:right}
-.pr-av{width:26px;height:26px;border-radius:5px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#8BC53F;position:relative;overflow:hidden;vertical-align:middle;flex-shrink:0}
+.pr-att-tbl th:nth-child(1),.pr-att-tbl td:nth-child(1){width:32px}
+.pr-att-tbl th:nth-child(3),.pr-att-tbl td:nth-child(3){width:58px;text-align:right}
+.pr-av{width:24px;height:24px;border-radius:4px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#8BC53F;position:relative;overflow:hidden;vertical-align:middle}
 .pr-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.pr-att-badge{display:inline-flex;padding:1px 6px;border-radius:8px;font-size:8px;font-weight:700}
+.pr-att-badge{display:inline-flex;padding:1px 5px;border-radius:7px;font-size:7px;font-weight:700}
 .pr-att-badge-p{background:rgba(34,197,94,.1);color:#16a34a}
-.pr-att-badge-a{background:#fef2f2;color:#dc2626;border:1px solid rgba(220,38,38,.18)}
-/* Separator between topics and attendance */
-.pr-section-divider{margin:4px 36px 0;height:1px;background:linear-gradient(90deg,#8BC53F,#c8e48e,transparent)}
-/* Footer */
-.pr-footer-band{border-top:1px solid #d8d4cb;padding:10px 36px;display:flex;align-items:center;justify-content:space-between;margin-top:8px}
-.pr-footer-brand{font-size:12px;font-weight:900;color:#1a1a18}
+.pr-att-badge-a{background:#fef2f2;color:#dc2626;border:1px solid rgba(220,38,38,.16)}
+.pr-footer-band{border-top:1px solid #d8d4cb;padding:8px 32px;display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.pr-footer-brand{font-size:11px;font-weight:900;color:#1a1a18}
 .pr-footer-brand span{color:#8BC53F}
-.pr-footer-contact{font-size:9px;color:#b0ada4;text-align:right;line-height:1.7}
-.pr-bot-bar{background:#8BC53F;height:5px;width:100%}
-/* Spacer */
-.pr-spacer{height:16px}
+.pr-footer-contact{font-size:8px;color:#b0ada4;text-align:right;line-height:1.7}
+.pr-bot-bar{background:#8BC53F;height:4px;width:100%}
+
+/* ══ CHAPTER VIEW (QuanticApp style) ══ */
+.pg-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start}
+@media(max-width:1100px){.pg-layout{grid-template-columns:1fr}}
+
+/* Subject selector strip */
+.subj-strip{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.subj-pill{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:700;color:var(--text3);cursor:pointer;transition:all .14s}
+.subj-pill:hover{border-color:var(--li);color:var(--li3)}
+.subj-pill.on{background:var(--li);border-color:var(--li);color:#1a1a18}
+
+/* Class header band */
+.pg-cls-band{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#1a1a18;border-radius:var(--r2) var(--r2) 0 0;margin-bottom:0}
+.pg-cls-band-num{width:40px;height:40px;border-radius:8px;background:rgba(139,197,63,.15);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:var(--li);flex-shrink:0;line-height:1}
+.pg-cls-band-info{flex:1}
+.pg-cls-band-title{font-size:15px;font-weight:800;color:#fff}
+.pg-cls-band-sub{font-size:11px;color:rgba(255,255,255,.38);margin-top:2px}
+.pg-cls-band-ring{flex-shrink:0}
+
+/* Board selector inside class */
+.pg-board-sel{display:flex;border-bottom:1.5px solid var(--border);background:var(--bg3);margin-bottom:0}
+.pg-board-sel-tab{padding:9px 18px;border:none;background:transparent;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--text3);border-bottom:3px solid transparent;margin-bottom:-1.5px;transition:all .13px}
+.pg-board-sel-tab:hover{color:var(--text);background:rgba(139,197,63,.04)}
+.pg-board-sel-tab.on{color:#1a1a18;background:var(--li);border-bottom-color:var(--li);border-radius:6px 6px 0 0;font-weight:800}
+
+/* Chapter list — QuanticApp rows */
+.ch-list-wrap{background:var(--bg2);border:1.5px solid var(--border);border-radius:0 0 var(--r2) var(--r2);overflow:hidden;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ch-list-hdr{padding:9px 18px;background:var(--bg3);border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:8px}
+.ch-list-hdr-txt{font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--text3)}
+.ch-list-hdr-count{font-size:9px;font-weight:800;padding:1px 7px;border-radius:10px}
+
+/* Individual chapter row */
+.ch-row{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
+.ch-row:last-child{border-bottom:none}
+.ch-row-main{display:flex;align-items:center;gap:12px;padding:13px 18px}
+.ch-row:hover .ch-row-main{background:var(--bg3)}
+.ch-row-expand{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:var(--bg4);flex-shrink:0;font-size:10px;color:var(--text3);transition:all .14s}
+.ch-row.open .ch-row-expand{background:var(--li-dim);color:var(--li3);transform:rotate(90deg)}
+.ch-row-name{font-size:13px;font-weight:700;color:var(--text);flex:1;min-width:0}
+.ch-row-stats{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.ch-row-stat{font-size:11px;color:var(--text3);white-space:nowrap;text-align:right}
+.ch-row-stat span{font-weight:700;color:var(--text2)}
+.ch-row-pct{font-size:16px;font-weight:900;min-width:44px;text-align:right}
+.ch-row-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}
+.badge-good{background:rgba(139,197,63,.12);color:var(--li3);border:1px solid rgba(139,197,63,.25)}
+.badge-avg{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(217,119,6,.2)}
+.badge-low{background:var(--red-dim);color:var(--red);border:1px solid rgba(220,38,38,.2)}
+.badge-none{background:var(--bg4);color:var(--text3);border:1px solid var(--border)}
+.ch-row-bar-wrap{width:90px;flex-shrink:0}
+.ch-row-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.ch-row-bar-fill{height:100%;border-radius:3px;transition:width .5s var(--e1)}
+
+/* Pending chapter rows */
+.ch-row-pending .ch-row-name{color:var(--text3);font-weight:500;font-style:italic}
+.ch-row-pending .ch-row-expand{opacity:.4;pointer-events:none}
+.ch-row-pending{cursor:default}
+.ch-row-pending:hover .ch-row-main{background:transparent}
+.ch-pending-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--text3);flex-shrink:0}
+.ch-done-dot{width:7px;height:7px;border-radius:50%;background:var(--li);flex-shrink:0}
+
+/* Chapter detail panel */
+.ch-detail-panel{background:var(--bg3);border-top:1px solid var(--border);padding:14px 18px 16px 52px;display:none}
+.ch-detail-panel.open{display:block}
+.ch-detail-panel.open{display:block;animation:fadeUp .18s var(--e1)}
+.ch-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.ch-detail-stat{background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px}
+.ch-detail-stat-v{font-size:18px;font-weight:800;color:var(--text);line-height:1}
+.ch-detail-stat-l{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:3px}
+.ch-detail-dates{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.ch-detail-section-lbl{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;margin-top:10px}
+.ch-detail-entry{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;margin-bottom:6px}
+.ch-detail-entry:last-child{margin-bottom:0}
+.ch-detail-meta{font-size:10px;font-weight:700;color:var(--text3);margin-bottom:3px}
+.ch-detail-text{font-size:12px;color:var(--text2);line-height:1.5}
+.ch-detail-remark{color:var(--amber)}
+
+/* Right panel — subject overview */
+.pg-side-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.pg-side-hdr{padding:11px 14px;background:var(--bg3);border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.pg-side-title{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text3)}
+.pg-side-row{display:flex;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.pg-side-row:last-child{border-bottom:none}
+.pg-side-row:hover{background:var(--bg3)}
+.pg-side-ch{font-size:12px;font-weight:600;color:var(--text2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-side-pct{font-size:12px;font-weight:800;min-width:38px;text-align:right}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- TOP BAR -->
 <div class="topbar">
-  <div class="tb-inner">
+  <div class="tb-logo-wrap">
     <div>
-      <div class="tb-kicker"><div class="tb-kr"></div><span class="tb-kt">SEHR Academy · Admin</span></div>
-      <div class="tb-h">Academic <i>Dashboard</i></div>
-      <div class="tb-sub" id="tbSub">Loading…</div>
-    </div>
-    <div class="tb-r">
-      <button class="btn-tb pdf" onclick="doPrintAll()">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        Print All
-      </button>
-      <button class="btn-tb wa" onclick="sendWAAll()">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
-        WhatsApp
-      </button>
+      <div class="tb-logo">SEHR<span class="dot">.</span></div>
+      <div class="tb-logo-sub">Academic Dashboard</div>
     </div>
   </div>
-</div>
-
-<!-- CONTROLS -->
-<div class="controls">
-  <div class="dp-wrap" id="dpWrap">
-    <div class="dp-disp" id="dpDisp" onclick="toggleDP()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span id="dpTxt">Select date</span>
-      <span class="dp-arrow">▾</span>
+  <div class="tb-center">
+    <div>
+      <div class="tb-page-title" id="tbPageTitle">Overview</div>
+      <div class="tb-page-sub" id="tbPageSub">Loading data…</div>
     </div>
-    <div class="dp-drop" id="dpDrop">
-      <div class="dp-hd">
-        <button class="dp-nav" onclick="dpPrev()">‹</button>
-        <span class="dp-ml" id="dpML"></span>
-        <button class="dp-nav" onclick="dpNext()">›</button>
+  </div>
+  <div class="tb-spacer"></div>
+  <div class="tb-right">
+    <!-- Date picker -->
+    <div class="dp-wrap" id="dpWrap">
+      <div class="tb-date-pill" id="dpDisp" onclick="toggleDP()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="dpTxt">Today</span>
       </div>
-      <div class="dp-cal" id="dpCal"></div>
+      <div class="dp-drop" id="dpDrop">
+        <div class="dp-hd">
+          <button class="dp-nav" onclick="dpPrev()">‹</button>
+          <span class="dp-ml" id="dpML"></span>
+          <button class="dp-nav" onclick="dpNext()">›</button>
+        </div>
+        <div class="dp-cal" id="dpCal"></div>
+      </div>
     </div>
-  </div>
-  <div class="ctrl-sep"></div>
-  <span class="ctrl-lbl">Class</span>
-  <div class="ftabs" id="clsTabs">
-    <button class="ftab on" onclick="setFilt('cls','ALL',this)">All</button>
-  </div>
-  <div class="ctrl-sep"></div>
-  <div class="ftabs" id="periodTabs">
-    <button class="ftab on" id="ptDay"   onclick="setPeriod('day',this)">Day</button>
-    <button class="ftab"    id="ptWeek"  onclick="setPeriod('week',this)">Week</button>
-    <button class="ftab"    id="ptMonth" onclick="setPeriod('month',this)">Month</button>
-    <button class="ftab"    id="ptAll"   onclick="setPeriod('all',this)">All Time</button>
+    <button class="tb-btn tb-btn-primary" onclick="doPrintAll()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print All
+    </button>
+    <button class="tb-btn tb-btn-wa" onclick="sendWAAll()">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+      WhatsApp
+    </button>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main" id="main">
-  <div class="loading-wrap" id="loadEl"><div class="lspin"></div><span id="loadTxt">Connecting…</span></div>
+<!-- APP BODY -->
+<div class="app-body">
 
-  <div class="kpi-strip hidden" id="kpiStrip"></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <!-- Nav items -->
+    <div class="sb-section">
+      <div class="sb-section-label">Views</div>
+      <div class="sb-item on" id="nav-overview" onclick="setView('overview',this)">
+        <div class="sb-item-icon">📊</div>
+        <div class="sb-item-label">Overview</div>
+      </div>
+      <div class="sb-item" id="nav-day" onclick="setView('day',this)">
+        <div class="sb-item-icon">📅</div>
+        <div class="sb-item-label">Day View</div>
+      </div>
+      <div class="sb-item" id="nav-progress" onclick="setView('progress',this)">
+        <div class="sb-item-icon">📈</div>
+        <div class="sb-item-label">Progress</div>
+      </div>
+      <div class="sb-item" id="nav-chapters" onclick="setView('chapters',this)">
+        <div class="sb-item-icon">📖</div>
+        <div class="sb-item-label">Chapters</div>
+      </div>
+      <div class="sb-item" id="nav-teachers" onclick="setView('teachers',this)">
+        <div class="sb-item-icon">👨‍🏫</div>
+        <div class="sb-item-label">Teachers</div>
+      </div>
+    </div>
 
-  <div class="view-tabs hidden" id="viewTabs">
-    <button class="vtab on" onclick="setView('day',this)">📅 Day View</button>
-    <button class="vtab"    onclick="setView('progress',this)">📊 Progress</button>
-    <button class="vtab"    onclick="setView('chapters',this)">📖 Chapters</button>
-    <button class="vtab"    onclick="setView('teachers',this)">👨‍🏫 Teachers</button>
-  </div>
+    <div class="sb-divider"></div>
 
-  <div id="vDay"></div>
-  <div id="vProgress" class="hidden"></div>
-  <div id="vChapters" class="hidden"></div>
-  <div id="vTeachers" class="hidden"></div>
+    <!-- Period filter -->
+    <div class="sb-section">
+      <div class="sb-section-label">Period</div>
+      <div class="sb-item on sb-period" onclick="setPeriod('day',this)"><div class="sb-item-icon">1</div><div class="sb-item-label">Today</div></div>
+      <div class="sb-item sb-period" onclick="setPeriod('week',this)"><div class="sb-item-icon">7</div><div class="sb-item-label">This Week</div></div>
+      <div class="sb-item sb-period" onclick="setPeriod('month',this)"><div class="sb-item-icon">30</div><div class="sb-item-label">This Month</div></div>
+      <div class="sb-item sb-period" onclick="setPeriod('all',this)"><div class="sb-item-icon">∞</div><div class="sb-item-label">All Time</div></div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Class list -->
+    <div class="sb-section">
+      <div class="sb-section-label">Classes</div>
+      <div id="sbClasses">
+        <div class="loading-txt" style="padding:8px 10px;font-size:11px">Loading…</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="mainEl">
+    <div class="loading-overlay" id="loadEl">
+      <div class="loading-ring"></div>
+      <div class="loading-txt" id="loadTxt">Connecting to SEHR Academy…</div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="vOverview" class="page-pad hidden">
+      <div class="kpi-strip" id="kpiStrip"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
+    </div>
+
+    <!-- DAY VIEW -->
+    <div id="vDay" class="page-pad hidden"></div>
+
+    <!-- PROGRESS -->
+    <div id="vProgress" class="page-pad hidden"></div>
+
+    <!-- CHAPTERS -->
+    <div id="vChapters" class="page-pad hidden"></div>
+
+    <!-- TEACHERS -->
+    <div id="vTeachers" class="page-pad hidden"></div>
+  </main>
 </div>
 
 <div id="printDoc"></div>
 
 <script>
+/* ══ CONFIG ══ */
 var SESSION_API = 'https://script.google.com/macros/s/AKfycbx-qC_S-wZnjvBW9LZGTU4Y36ZHMTVlgS__DIAl1ZZ404beOfAyJwwtGsv352UbiyOR/exec';
 var ATT_API     = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
 var SESS_PASS   = 'sehr2026';
 var WA_NUM      = '919539409586';
-var MONTHS      = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-var MONTHS_S    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var DAYS_S      = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-var DAYS_L      = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-/* STATE */
-var SESSIONS    = [];  // session log records
-var PHOTO_MAP   = {};  // student_id → photo url
-var ATT_PCT     = {};  // student_id → {pct, sessions, present}
-var ATTENDANCE  = [];  // attendance records
-var AVAIL       = [];  // dates with session data
-var ATT_DATES   = [];  // dates with attendance data
-var ALL_CLS     = [];
-var CUR_DATE    = '';
-var CUR_CLS     = 'ALL';
-var CUR_PERIOD  = 'day';
-var CUR_VIEW    = 'day';
+/* ══ STATE ══ */
+var SESSIONS        = [];
+var ATTENDANCE      = [];
+var PHOTO_MAP       = {};
+var ATT_PCT         = {};
+var MASTER_CHAPTERS = {};
+var CHAPTERS_LOADED = false;
+var AVAIL           = [];
+var ALL_CLS         = [];
+var CUR_DATE        = '';
+var CUR_CLS         = 'ALL';
+var CUR_PERIOD      = 'day';
+var CUR_VIEW        = 'overview';
 var CAL_Y, CAL_M;
 var NOW = new Date();
 
-/* UTILS */
+/* ══ CONSTANTS ══ */
+var MONTHS   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MONTHS_S = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DAYS_S   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+var DAYS_L   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+/* ══ UTILS ══ */
 function g(id){return document.getElementById(id);}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function mn(n){return (n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);}
-function fmtLong(d){if(!d)return '';var p=d.split('-');var dt=new Date(+p[0],+p[1]-1,+p[2]);return DAYS_L[dt.getDay()]+', '+parseInt(p[2])+' '+MONTHS[+p[1]-1]+' '+p[0];}
-function fmtShort(d){if(!d)return '';var p=d.split('-');return parseInt(p[2])+' '+MONTHS_S[+p[1]-1]+' '+p[0];}
-function todayYMD(){return NOW.getFullYear()+'-'+pad(NOW.getMonth()+1)+'-'+pad(NOW.getDate());}
 function pad(n){return String(n).padStart(2,'0');}
+function todayYMD(){return NOW.getFullYear()+'-'+pad(NOW.getMonth()+1)+'-'+pad(NOW.getDate());}
 function toMins(t){if(!t)return 0;var p=t.split(':');return +p[0]*60+(+p[1]||0);}
 function hrsFmt(m){var h=Math.floor(m/60),mn=m%60;return h?h+'h'+(mn?mn+'m':''):mn+'m';}
-// attendance date is stored as DD/MM/YYYY
+function fmtLong(d){if(!d)return '';var p=d.split('-');var dt=new Date(+p[0],+p[1]-1,+p[2]);return DAYS_L[dt.getDay()]+', '+parseInt(p[2])+' '+MONTHS[+p[1]-1]+' '+p[0];}
+function fmtShort(d){if(!d)return '';var p=d.split('-');return parseInt(p[2])+' '+MONTHS_S[+p[1]-1]+' '+p[0];}
+function sessDateToYMD(d){if(!d)return '';if(d.indexOf('/')>-1){var p=d.split('/');return p[2]+'-'+p[1]+'-'+p[0];}return d;}
+function attDateToYMD(d){return sessDateToYMD(d);}
+function boardToSyl(b){if(b==='Kerala State')return 'STATE';if(b==='CBSE')return 'CBSE';return b;}
+function sylLabel(s){if(s==='STATE')return 'Kerala State';return s;}
+function pctColor(pct){return pct>=75?'var(--li)':pct>=50?'var(--amber)':'var(--red)';}
+function pctBg(pct){return pct>=75?'var(--li-dim)':pct>=50?'var(--amber-dim)':'var(--red-dim)';}
 function pctPill(studentId){
-  var a=ATT_PCT[studentId];
-  if(!a||!a.sessions) return '';
+  var a=ATT_PCT[studentId];if(!a||!a.sessions)return '';
   var pct=a.pct;
-  var col=pct>=75?'#16a34a':pct>=50?'#d97706':'#dc2626';
-  var bg =pct>=75?'rgba(34,197,94,.1)':pct>=50?'rgba(217,119,6,.1)':'rgba(220,38,38,.08)';
-  var bdr=pct>=75?'rgba(34,197,94,.2)':pct>=50?'rgba(217,119,6,.22)':'rgba(220,38,38,.2)';
-  return '<span style="flex-shrink:0;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+bg+';color:'+col+';border:1px solid '+bdr+'">'+pct+'%</span>';
-}
-function attDateToYMD(d){if(!d)return '';if(d.indexOf('/')>-1){var p=d.split('/');return p[2]+'-'+p[1]+'-'+p[0];}return d;}
-// session date is also DD/MM/YYYY
-function sessDateToYMD(d){return attDateToYMD(d);}
-
-/* API */
-function apiFetch(url, cb){
-  fetch(url).then(function(r){return r.text();}).then(function(t){
-    try{cb(JSON.parse(t),null);}catch(e){cb(null,'Parse: '+t.slice(0,80));}
-  }).catch(function(e){cb(null,e.message);});
-}
-function apiSess(p, cb){
-  var url=SESSION_API+'?'+Object.keys(p).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(p[k]);}).join('&');
-  apiFetch(url,cb);
-}
-function apiAtt(payload, cb){
-  var url=ATT_API+'?data='+encodeURIComponent(JSON.stringify(payload));
-  apiFetch(url,cb);
+  return '<span class="pct-pill-sm" style="background:'+pctBg(pct)+';color:'+pctColor(pct)+'">'+pct+'%</span>';
 }
 
-/* INIT — load both APIs in parallel */
+/* ══ API ══ */
+function apiFetch(url,cb){fetch(url).then(function(r){return r.text();}).then(function(t){try{cb(JSON.parse(t),null);}catch(e){cb(null,'Parse: '+t.slice(0,80));}}).catch(function(e){cb(null,e.message);});}
+function apiSess(p,cb){var url=SESSION_API+'?'+Object.keys(p).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(p[k]);}).join('&');apiFetch(url,cb);}
+function apiAtt(payload,cb){var url=ATT_API+'?data='+encodeURIComponent(JSON.stringify(payload));apiFetch(url,cb);}
+
+/* ══ INIT ══ */
 function init(){
   g('loadEl').style.display='flex';
-  g('loadTxt').textContent='Loading sessions…';
-  var sessLoaded=false, attLoaded=false;
-
+  var sessOk=false,attOk=false;
   apiSess({action:'getAllLogs',appkey:SESS_PASS},function(data,err){
-    if(!err && data && data.success) SESSIONS=data.logs||[];
-    sessLoaded=true;
-    if(attLoaded) finishInit();
+    if(!err&&data&&data.success)SESSIONS=data.logs||[];
+    sessOk=true; if(attOk)finishInit();
   });
-
   apiAtt({action:'getAttendance'},function(data,err){
-    if(!err && data && data.success) ATTENDANCE=data.records||[];
-    attLoaded=true;
-    if(sessLoaded) finishInit();
+    if(!err&&data&&data.success)ATTENDANCE=data.records||[];
+    attOk=true; if(sessOk)finishInit();
   });
-
-  // Fallback if one fails — proceed after 6s
-  setTimeout(function(){
-    if(!sessLoaded||!attLoaded){g('loadEl').style.display='none';finishInit();}
-  },6000);
+  setTimeout(function(){if(!sessOk||!attOk){g('loadEl').style.display='none';finishInit();}},7000);
 }
 
 function finishInit(){
   g('loadEl').style.display='none';
-
-  // Build photo map from all attendance records
-  ATTENDANCE.forEach(function(r){
-    if(r.photo && r.photo.startsWith('http')) PHOTO_MAP[r.student_id] = r.photo;
-  });
-
-  // Build overall attendance % per student (all-time)
-  ATT_PCT = {};
-  ATTENDANCE.forEach(function(r){
-    if(!ATT_PCT[r.student_id]) ATT_PCT[r.student_id]={sessions:0,present:0};
-    ATT_PCT[r.student_id].sessions++;
-    if(r.status==='Present') ATT_PCT[r.student_id].present++;
-  });
-  Object.keys(ATT_PCT).forEach(function(id){
-    var a=ATT_PCT[id];
-    a.pct=a.sessions?Math.round(a.present/a.sessions*100):0;
-  });
-
-  // Build available session dates
-  var dset={};
-  SESSIONS.forEach(function(r){var d=sessDateToYMD(r.date);if(d)dset[d]=true;});
+  ATTENDANCE.forEach(function(r){if(r.photo&&r.photo.startsWith('http'))PHOTO_MAP[r.student_id]=r.photo;});
+  ATT_PCT={};
+  ATTENDANCE.forEach(function(r){if(!ATT_PCT[r.student_id])ATT_PCT[r.student_id]={sessions:0,present:0};ATT_PCT[r.student_id].sessions++;if(r.status==='Present')ATT_PCT[r.student_id].present++;});
+  Object.keys(ATT_PCT).forEach(function(id){var a=ATT_PCT[id];a.pct=a.sessions?Math.round(a.present/a.sessions*100):0;});
+  var dset={};SESSIONS.forEach(function(r){var d=sessDateToYMD(r.date);if(d)dset[d]=true;});
   AVAIL=Object.keys(dset).sort().reverse();
-
-  // Attendance dates
-  var aset={};
-  ATTENDANCE.forEach(function(r){var d=attDateToYMD(r.date);if(d)aset[d]=true;});
-  ATT_DATES=Object.keys(aset);
-
-  // Classes from sessions
-  var cset={};
-  SESSIONS.forEach(function(r){if(r.class)cset[r.class]=true;});
-  ALL_CLS=Object.keys(cset).sort();
-  buildClsTabs();
-
+  var cset={};SESSIONS.forEach(function(r){if(r.class)cset[r.class]=true;});
+  ALL_CLS=Object.keys(cset).sort(function(a,b){return +a-+b;});
   var td=todayYMD();
   CUR_DATE=AVAIL.indexOf(td)>-1?td:(AVAIL[0]||td);
-  var p=CUR_DATE.split('-');
-  CAL_Y=+p[0];CAL_M=+p[1]-1;
+  var p=CUR_DATE.split('-');CAL_Y=+p[0];CAL_M=+p[1]-1;
   updateDPDisp();renderDP();
-
-  g('tbSub').textContent=SESSIONS.length+' sessions · '+ATTENDANCE.length+' attendance records';
-  g('kpiStrip').classList.remove('hidden');
-  g('viewTabs').classList.remove('hidden');
-  renderAll();
+  buildSbClasses();
+  var totalSess=SESSIONS.length,totalAtt=ATTENDANCE.length;
+  g('tbPageSub').textContent=totalSess+' sessions · '+totalAtt+' attendance records';
+  setView('overview',g('nav-overview'));
 }
 
-/* FILTERS */
-function buildClsTabs(){
-  var tabs=g('clsTabs');
-  tabs.innerHTML='<button class="ftab on" onclick="setFilt(\'cls\',\'ALL\',this)">All</button>';
-  ALL_CLS.forEach(function(c){
-    var b=document.createElement('button');
-    b.className='ftab';b.textContent='Class '+c;
-    b.onclick=function(){setFilt('cls',c,b);};
-    tabs.appendChild(b);
+/* ══ SIDEBAR CLASSES ══ */
+function buildSbClasses(){
+  var el=g('sbClasses');el.innerHTML='';
+
+  // ALL
+  var allItem=document.createElement('div');
+  allItem.className='sb-class-item on';allItem.id='sb-cls-ALL';
+  allItem.innerHTML='<div class="sb-class-num" style="font-size:9px;letter-spacing:.08em">ALL</div>'+
+    '<div class="sb-class-info"><div class="sb-class-name">All Classes</div>'+
+    '<div class="sb-class-meta sb-all-time">'+SESSIONS.length+' sessions</div></div>';
+  allItem.onclick=function(){setClsFilt('ALL',allItem);};
+  el.appendChild(allItem);
+
+  ALL_CLS.forEach(function(cls){
+    var clsSess=SESSIONS.filter(function(r){return r.class===cls;});
+    var boards=Array.from(new Set(clsSess.map(function(r){return r.board;}))).sort();
+    var splitByBoard = cls==='9'||cls==='10';
+
+    if(splitByBoard && boards.length>1){
+      // Separate entry per board for Class 9 & 10
+      boards.forEach(function(board){
+        var filtKey=cls+'|'+board;
+        var bSess=clsSess.filter(function(r){return r.board===board;});
+        var bChaps=new Set();bSess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){bChaps.add(c);});});
+        var shortBoard=board==='Kerala State'?'State':board;
+        var item=document.createElement('div');
+        item.className='sb-class-item';item.id='sb-cls-'+cls+'_'+shortBoard;
+        item.innerHTML=
+          '<div class="sb-class-num" style="font-size:11px">'+esc(cls)+'</div>'+
+          '<div class="sb-class-info">'+
+            '<div class="sb-class-name">Class '+esc(cls)+' <span style="font-size:10px;font-weight:600;color:var(--text3)">'+esc(shortBoard)+'</span></div>'+
+            '<div class="sb-class-meta sb-all-time">'+bSess.length+' · '+bChaps.size+' ch <span class="sb-at-tag">all time</span></div>'+
+          '</div>';
+        (function(fk,it){item.onclick=function(){setClsFilt(fk,it);};})(filtKey,item);
+        el.appendChild(item);
+      });
+    } else {
+      // Single entry for Class 11, 12 (or 9/10 if only one board)
+      var clsChaps=new Set();clsSess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){clsChaps.add(c);});});
+      var item=document.createElement('div');
+      item.className='sb-class-item';item.id='sb-cls-'+cls;
+      item.innerHTML=
+        '<div class="sb-class-num">'+esc(cls)+'</div>'+
+        '<div class="sb-class-info">'+
+          '<div class="sb-class-name">Class '+esc(cls)+'</div>'+
+          '<div class="sb-class-meta sb-all-time">'+clsSess.length+' · '+clsChaps.size+' ch <span class="sb-at-tag">all time</span></div>'+
+        '</div>';
+      (function(c,it){item.onclick=function(){setClsFilt(c,it);};})(cls,item);
+      el.appendChild(item);
+    }
   });
 }
-function setFilt(t,v,btn){
-  if(t==='cls')CUR_CLS=v;
-  g('clsTabs').querySelectorAll('.ftab').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
+
+function setClsFilt(cls,el){
+  CUR_CLS=cls;
+  document.querySelectorAll('.sb-class-item').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
   renderAll();
-}
-function setPeriod(p,btn){
-  CUR_PERIOD=p;
-  g('periodTabs').querySelectorAll('.ftab').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
-  renderAll();
-}
-function setView(v,btn){
-  CUR_VIEW=v;
-  document.querySelectorAll('.vtab').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
-  ['vDay','vProgress','vChapters','vTeachers'].forEach(function(id){g(id).classList.add('hidden');});
-  var vId='v'+v.charAt(0).toUpperCase()+v.slice(1);
-  g(vId).classList.remove('hidden');
 }
 
-/* FILTERED SESSIONS */
+/* ══ PERIOD / VIEW ══ */
+function setPeriod(p,btn){
+  CUR_PERIOD=p;
+  document.querySelectorAll('.sb-period').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderAll();
+}
+
+function setView(v,btn){
+  CUR_VIEW=v;
+  document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  ['vOverview','vDay','vProgress','vChapters','vTeachers'].forEach(function(id){g(id).classList.add('hidden');});
+  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers'};
+  g('tbPageTitle').textContent=titles[v]||v;
+  g('v'+v.charAt(0).toUpperCase()+v.slice(1)).classList.remove('hidden');
+  renderAll();
+}
+
+/* ══ FILTERED DATA ══ */
+function parseCurCls(){
+  // CUR_CLS is either 'ALL', '9', '10', '11', '12', or '9|CBSE', '10|Kerala State' etc.
+  if(CUR_CLS==='ALL') return {cls:null,board:null};
+  var parts=CUR_CLS.split('|');
+  return {cls:parts[0], board:parts[1]||null};
+}
 function getSessions(){
+  var fc=parseCurCls();
   return SESSIONS.filter(function(r){
-    if(CUR_CLS!=='ALL'&&r.class!==CUR_CLS)return false;
+    if(fc.cls && r.class!==fc.cls) return false;
+    if(fc.board && r.board!==fc.board) return false;
     var d=sessDateToYMD(r.date);
     if(CUR_PERIOD==='day')  return d===CUR_DATE;
-    if(CUR_PERIOD==='week'){var cd=new Date(CUR_DATE),from=new Date(cd);from.setDate(cd.getDate()-6);var rd=new Date(d);return rd>=from&&rd<=cd;}
+    if(CUR_PERIOD==='week') {var cd=new Date(CUR_DATE),from=new Date(cd);from.setDate(cd.getDate()-6);var rd=new Date(d);return rd>=from&&rd<=cd;}
     if(CUR_PERIOD==='month'){var p=CUR_DATE.split('-');return d.startsWith(p[0]+'-'+p[1]);}
     return true;
   });
 }
+function getAtt(cls){return ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls;});}
 
-/* GET ATTENDANCE FOR A DATE+CLASS */
-function getAtt(cls){
-  return ATTENDANCE.filter(function(r){
-    return attDateToYMD(r.date)===CUR_DATE && r.class===cls;
-  });
-}
-
-/* RENDER ALL */
+/* ══ RENDER ALL ══ */
 function renderAll(){
   var data=getSessions();
-  renderKPI(data);
-  if(CUR_VIEW==='day')          renderDay(data);
-  else if(CUR_VIEW==='progress')renderProgress(data);
-  else if(CUR_VIEW==='chapters')renderChapters(data);
-  else if(CUR_VIEW==='teachers')renderTeachers(data);
-  buildPrintDoc(data,'ALL');
+  if(CUR_VIEW==='overview')  renderOverview(data);
+  else if(CUR_VIEW==='day')  renderDay(data);
+  else if(CUR_VIEW==='progress')  renderProgress(data);
+  else if(CUR_VIEW==='chapters')  renderChapters(data);
+  else if(CUR_VIEW==='teachers')  renderTeachers(data);
+  buildPrintDoc(data,'ALL','','ALL');
 }
 
-/* KPI */
-function renderKPI(data){
+/* ══ SMART EMPTY STATE ══ */
+function emptyState(icon,title,sub,hint){
+  var hintHtml=hint?'<div class="empty-hint">'+hint+'</div>':'';
+  return '<div class="empty-state"><div class="empty-icon">'+icon+'</div><div class="empty-title">'+title+'</div><div class="empty-sub">'+sub+'</div>'+hintHtml+'</div>';
+}
+function noDataMsg(){
+  var _fc=parseCurCls();var cls=CUR_CLS==='ALL'?'':('Class '+(_fc.cls||CUR_CLS)+(_fc.board?' '+_fc.board:'')+' ');
+  var period={day:'today',week:'this week',month:'this month',all:'at all time'}[CUR_PERIOD]||CUR_PERIOD;
+  var hint='';
+  if(CUR_PERIOD==='day'&&CUR_CLS!=='ALL') hint='Try switching to <b>Week</b> or <b>All Time</b> in the sidebar.';
+  else if(CUR_PERIOD==='day') hint='No sessions were logged today. Select a different date from the calendar.';
+  else if(CUR_CLS!=='ALL') hint='Try selecting <b>All Classes</b> or a different period.';
+  return emptyState('📋',cls+'No data '+period,'No sessions logged for this combination.',hint);
+}
+
+/* ══ OVERVIEW ══ */
+function renderOverview(data){
   var mins=data.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
   var chapSet={};data.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
   var hw=data.filter(function(r){return r.homework&&r.homework.trim();}).length;
-  var teachers=new Set(data.map(function(r){return r.teacher_id;})).size;
+  var teachers=Array.from(new Set(data.map(function(r){return r.teacher_id;}))).size;
+  var attDay=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE;});
+  var attP=attDay.filter(function(r){return r.status==='Present';}).length;
+  var attPct=attDay.length?Math.round(attP/attDay.length*100):null;
+
   g('kpiStrip').innerHTML=
-    kpi('📚',data.length,'Sessions','rgba(139,197,63,.1)')+
-    kpi('⏱',hrsFmt(mins),'Teaching Time','rgba(37,99,235,.08)')+
-    kpi('📖',Object.keys(chapSet).length,'Chapters','rgba(124,58,237,.08)')+
-    kpi('👨‍🏫',teachers,'Teachers','rgba(217,119,6,.08)')+
-    kpi('📝',hw,'With Homework','rgba(220,38,38,.07)');
-}
-function kpi(ic,v,l,bg){
-  return '<div class="kpi"><div class="kpi-ic" style="background:'+bg+'">'+ic+'</div>'+
-    '<div><div class="kpi-val">'+esc(String(v))+'</div><div class="kpi-lbl">'+l+'</div></div></div>';
-}
+    kpiCard('📚',data.length,'Sessions','var(--li)','var(--li-dim)',ci(data.length,10))+
+    kpiCard('⏱',hrsFmt(mins),'Teaching Time','var(--blue)','var(--blue-dim)','')+
+    kpiCard('📖',Object.keys(chapSet).length,'Chapters Covered','var(--purple)','var(--purple-dim)','')+
+    kpiCard('👨‍🏫',teachers,'Active Teachers','var(--teal)','var(--teal-dim)','')+
+    kpiCard('📝',hw,'With Homework','var(--amber)','var(--amber-dim)','')+
+    (attDay.length?kpiCard('👥',attPct!==null?attPct+'%':'—','Attendance','var(--li)','var(--li-dim)',''):'');
 
-/* ── DAY VIEW ── */
-function renderDay(data){
-  var el=g('vDay');
-  var dayData=SESSIONS.filter(function(r){
-    return sessDateToYMD(r.date)===CUR_DATE&&(CUR_CLS==='ALL'||r.class===CUR_CLS);
+  // Class breakdown table
+  // Group by class + board (separate CBSE/State for 9 & 10)
+  var byGroup={};
+  data.forEach(function(r){
+    var cls=r.class, board=r.board||'';
+    // For 9 & 10 separate by board; for 11 & 12 group together
+    var key=(cls==='9'||cls==='10')?(cls+'|'+board):cls;
+    if(!byGroup[key])byGroup[key]={class:cls,board:(cls==='9'||cls==='10')?board:'',sessions:0,mins:0,chapters:new Set()};
+    var c=byGroup[key];c.sessions++;c.mins+=(+r.duration_mins||0);
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){c.chapters.add(ch);});
   });
+  var maxMins=Math.max.apply(null,Object.values(byGroup).map(function(c){return c.mins;}))||1;
 
-  if(!dayData.length){
-    el.innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-txt">No sessions on '+fmtShort(CUR_DATE)+'</div><div class="empty-sub">No sessions logged for this date.</div></div>';
-    return;
+  // Average attendance % per class (all-time from ATT_PCT)
+  function avgAttPct(cls, board){
+    var students=Object.keys(ATT_PCT).filter(function(id){
+      // filter att records for this class+board
+      var recs=ATTENDANCE.filter(function(r){return r.class===cls&&(!board||boardToSyl(board)===r.syllabus);});
+      return recs.some(function(r){return r.student_id===id;});
+    });
+    if(!students.length) return null;
+    var total=students.reduce(function(a,id){return a+(ATT_PCT[id]?ATT_PCT[id].pct:0);},0);
+    return Math.round(total/students.length);
   }
 
-  // Group by class
-  var byClass={};
-  dayData.forEach(function(r){
-    var key=r.class+(r.stream?'|'+r.stream:'');
-    if(!byClass[key])byClass[key]={class:r.class,stream:r.stream||'',label:'Class '+r.class+(r.stream?' · '+r.stream:''),sessions:[]};
-    byClass[key].sessions.push(r);
-  });
+  var rows=Object.keys(byGroup).sort(function(a,b){
+    var pa=a.split('|'), pb=b.split('|');
+    if(pa[0]!==pb[0])return +pa[0]-+pb[0];
+    return (pa[1]||'').localeCompare(pb[1]||'');
+  }).map(function(key){
+    var c=byGroup[key];var pct=Math.round(c.mins/maxMins*100);
+    var avgPct=avgAttPct(c.class, c.board);
+    var avgStr=avgPct!==null?'<span style="font-weight:800;color:'+pctColor(avgPct)+'">'+ avgPct+'%</span>':'—';
+    var clsLabel='Class '+c.class+(c.board?' <span style="font-size:9px;font-weight:700;opacity:.7">'+c.board+'</span>':''  );
+    return '<tr>'+
+      '<td><span class="badge badge-g">'+clsLabel+'</span></td>'+
+      '<td class="bold">'+c.sessions+'</td>'+
+      '<td><div class="pbar-wrap"><div class="pbar"><div class="pbar-fill" style="width:'+pct+'%;background:var(--li)"></div></div><span class="pbar-lbl" style="color:var(--li)">'+hrsFmt(c.mins)+'</span></div></td>'+
+      '<td>'+c.chapters.size+'</td>'+
+      '<td>'+avgStr+'</td>'+
+      '</tr>';
+  }).join('');
 
-  var html='';
+  g('overviewGrid').innerHTML=
+    '<div>'+
+    '<div class="sec-hdr"><div class="sec-title">Class Breakdown</div></div>'+
+    '<div class="data-table-wrap"><table class="data-table">'+
+    '<thead><tr><th>Class</th><th>Sessions</th><th>Teaching Time</th><th>Chapters</th><th>Avg Att.</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table></div>'+
+    '</div>'+
+    '<div>'+
+    '<div class="sec-hdr"><div class="sec-title">Recent Sessions</div></div>'+
+    '<div class="data-table-wrap"><table class="data-table">'+
+    '<thead><tr><th>Teacher</th><th>Class</th><th>Subject</th><th>Duration</th></tr></thead>'+
+    '<tbody>'+
+    data.slice(0,10).map(function(r){
+      return '<tr>'+
+        '<td class="bold">'+esc(r.teacher_name)+'</td>'+
+        '<td><span class="badge badge-b">Cls '+esc(r.class)+'</span></td>'+
+        '<td>'+esc(r.subject)+'</td>'+
+        '<td style="color:var(--li);font-weight:700">'+hrsFmt(+r.duration_mins||0)+'</td>'+
+        '</tr>';
+    }).join('')+
+    '</tbody></table></div>'+
+    '</div>';
+}
+
+function kpiCard(ic,v,l,accent,bg,trend){
+  return '<div class="kpi-card" style="--accent:'+accent+'">'+
+    '<div class="kpi-top">'+
+      '<div class="kpi-icon" style="background:'+bg+'">'+ic+'</div>'+
+      (trend?'<span class="kpi-trend" style="background:'+bg+';color:'+accent+'">'+trend+'</span>':'')+
+    '</div>'+
+    '<div class="kpi-val">'+esc(String(v))+'</div>'+
+    '<div class="kpi-lbl">'+l+'</div>'+
+    '</div>';
+}
+function ci(v,threshold){return v>=threshold?'↑ Active':'';} // simple trend indicator
+
+/* ══ DAY VIEW ══ */
+function renderDay(data){
+  var el=g('vDay');
+  // For day period: use CUR_DATE filter. For other periods: use passed data.
+  var dayData = (CUR_PERIOD==='day')
+    ? (function(){var fc=parseCurCls();return SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE&&(!fc.cls||r.class===fc.cls)&&(!fc.board||r.board===fc.board);});}())
+    : data;
+  if(!dayData.length){
+    el.innerHTML=emptyState('📋',
+      CUR_PERIOD==='day'?'No sessions on '+fmtShort(CUR_DATE):'No sessions found',
+      'No sessions were logged for this selection.',
+      'Try selecting a different date from the calendar, or switch to <b>Week</b> or <b>All Time</b> in the sidebar.');
+    return;
+  }
+  var byClass={};
+  dayData.forEach(function(r){var key=r.class+(r.stream?'|'+r.stream:'');if(!byClass[key])byClass[key]={class:r.class,stream:r.stream||'',sessions:[]};byClass[key].sessions.push(r);});
+
+  var leftHtml='',rightHtml='';
+
   Object.keys(byClass).sort().forEach(function(key){
-    var cls=byClass[key];
-    var sessions=cls.sessions;
+    var cls=byClass[key];var sessions=cls.sessions;
     var totalMins=sessions.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
     var chapSet={};sessions.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
     var hwCount=sessions.filter(function(r){return r.homework&&r.homework.trim();}).length;
-
-    // Attendance for this class on this date
     var attRows=getAtt(cls.class);
-    var attPresent=attRows.filter(function(r){return r.status==='Present';}).length;
-    var attAbsent=attRows.length-attPresent;
-    var attPct=attRows.length?Math.round(attPresent/attRows.length*100):0;
-    var clsBoards=[...new Set(sessions.map(function(r){return r.board;}))].join(' · ');
+    var attP=attRows.filter(function(r){return r.status==='Present';}).length;
+    var attA=attRows.length-attP;
+    var boards=Array.from(new Set(sessions.map(function(r){return r.board;})));
 
-    html+='<div class="cls-block" id="cb-'+key.replace(/[^a-z0-9]/gi,'_')+'">';
-    // Header with per-class PDF + WA buttons
-    html+='<div class="cls-hd">'+
-      '<div class="cls-num">'+esc(cls.class)+'</div>'+
-      '<div class="cls-info">'+
-        '<div class="cls-name">'+esc(cls.label)+'</div>'+
-        '<div class="cls-meta">'+sessions.length+' session'+(sessions.length>1?'s':'')+' · '+hrsFmt(totalMins)+' · '+Object.keys(chapSet).length+' chapters</div>'+
-      '</div>'+
-      '<div class="cls-pills">'+
-        '<span class="stat-pill sp-b">'+hrsFmt(totalMins)+'</span>'+
-        (attRows.length?'<span class="stat-pill sp-g">'+attPresent+' Present</span><span class="stat-pill sp-r">'+attAbsent+' Absent</span>'+
-        '<span class="stat-pill sp-b">'+attPct+'%</span>':'')+
-        (hwCount?'<span class="stat-pill sp-a">📝 HW</span>':'')+
-      '</div>'+
-      '<div class="cls-btns">'+
-        '<button class="btn-cls btn-cls-pdf" onclick="printClass(\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\')">'+
-          '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>'+
-          'PDF</button>'+
-        '<button class="btn-cls btn-cls-wa" onclick="sendWAClass(\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\')">'+
-          '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>'+
-          'WA</button>'+
-      '</div>'+
-    '</div>';
-
-    // Sessions
-    html+='<div class="cls-body">';
+    leftHtml+='<div class="class-block"><div class="cb-header">';
+    leftHtml+='<div class="cb-num">'+esc(cls.class)+'</div>';
+    leftHtml+='<div class="cb-info"><div class="cb-title">Class '+esc(cls.class)+(cls.stream?' · '+esc(cls.stream):'')+' <span style="font-size:11px;font-weight:500;color:var(--text3)">'+Array.from(new Set(sessions.map(function(r){return r.board;}))).join(' · ')+'</span></div>';
+    leftHtml+='<div class="cb-meta">'+sessions.length+' session'+(sessions.length>1?'s':'')+' · '+hrsFmt(totalMins)+(attRows.length?' · '+attP+'/'+attRows.length+' present':'')+'</div></div>';
+    leftHtml+='<div class="cb-pills">';
+    if(attRows.length){leftHtml+='<span class="badge badge-g">'+attP+' P</span><span class="badge badge-r">'+attA+' A</span>';}
+    if(hwCount)leftHtml+='<span class="badge badge-a">📝 HW</span>';
+    leftHtml+='</div>';
+    leftHtml+='<div class="cb-btns">';
+    var showBoardLabel=boards.length>1;
+    boards.sort().forEach(function(b){
+      var lbl=showBoardLabel?' '+b:'';
+      leftHtml+='<button class="cb-btn cb-btn-pdf" onclick="printClass(\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\',\''+b+'\')">'+
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>'+
+        'PDF'+lbl+'</button>';
+      leftHtml+='<button class="cb-btn cb-btn-wa" onclick="sendWAClass(\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\',\''+b+'\')">'+
+        '<svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>'+
+        'WA'+lbl+'</button>';
+    });
+    leftHtml+='</div></div><div class="cb-body">';
     sessions.forEach(function(r){
       var chaps=(r.chapters||'').split(' | ').filter(Boolean);
-      var dur=+r.duration_mins;
-      var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60>0?dur%60+'m':''):dur+'m';
-      html+='<div class="sess-panel">'+
-        '<div class="sess-hd">'+
+      var dur=+r.duration_mins;var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60?dur%60+'m':''):dur+'m';
+      leftHtml+='<div class="sess-item">'+
+        '<div class="sess-top">'+
           '<div><div class="sess-teacher">'+esc(r.teacher_name)+'</div><div class="sess-time">'+esc(r.start_time)+' – '+esc(r.end_time)+' · '+durStr+'</div></div>'+
-          '<div class="sess-badges">'+
+          '<div style="display:flex;gap:5px;flex-wrap:wrap">'+
             '<span class="badge badge-b">'+esc(r.board)+'</span>'+
             '<span class="badge badge-a">'+esc(r.session_type)+'</span>'+
             '<span class="badge badge-n">'+esc(r.mode)+'</span>'+
           '</div>'+
         '</div>'+
-        '<div class="sess-body">'+
-          srow('Subject',esc(r.subject))+
-          (chaps.length?srow('Chapters',chaps.map(function(c){return '<span class="ch-chip">'+esc(c)+'</span>';}).join('')):'')+
-          srow('Topics',esc(r.topics||'—'))+
-          (r.homework&&r.homework.trim()?srow('Homework',esc(r.homework)+'<div class="hw-flag">📝 Homework Given</div>'):'')+
-          (r.remarks&&r.remarks.trim()?srow('Remarks',esc(r.remarks)):'')+
+        '<div class="sess-det-grid">'+
+          sdet('Subject',esc(r.subject))+
+          (chaps.length?sdet('Chapters',chaps.map(function(c){return '<span class="ch-chip">'+esc(c)+'</span>';}).join('')):'')+
+          sdet('Topics',esc(r.topics||'—'))+
+          (r.homework&&r.homework.trim()?sdet('Homework',esc(r.homework)+'<div class="hw-flag">📝 Homework Given</div>'):'')+
+          (r.remarks&&r.remarks.trim()?sdet('Remarks',esc(r.remarks)):'')+
         '</div>'+
       '</div>';
     });
-
-    // Attendance panel
-    if(attRows.length){
-      var syls=[...new Set(attRows.map(function(r){return r.syllabus;}))].sort(function(a,b){return a==='STATE'?-1:b==='STATE'?1:a.localeCompare(b);});
-      html+='<div class="att-panel">'+
-        '<div class="att-panel-title">Attendance · '+attPresent+'/'+attRows.length+' Present ('+attPct+'%)</div>';
-      syls.forEach(function(syl){
-        var sr=attRows.filter(function(r){return r.syllabus===syl;});
-        var sp=sr.filter(function(r){return r.status==='Present';}).length;
-        html+='<div class="att-board-lbl '+(syl==='STATE'?'att-board-st':'att-board-cb')+'">'+esc(syl)+' · '+sp+'/'+sr.length+'</div>'+
-          '<div class="stu-grid">';
-        sr.forEach(function(r){
-          var ab=r.status==='Absent';
-          var photo_url = PHOTO_MAP[r.student_id] || r.photo || '';
-        var av_html = photo_url
-          ? '<img class="sc-photo" src="'+photo_url+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
-            + '<div class="sc-mono" style="display:none">'+mn(r.full_name)+'</div>'
-          : '<div class="sc-mono">'+mn(r.full_name)+'</div>';
-        html+='<div class="sc'+(ab?' ab':'')+'">'+
-          av_html+
-          '<div class="sc-name">'+esc(r.full_name)+'</div>'+
-          '<span class="sc-badge '+(ab?'a':'p')+'">'+(ab?'Ab':'P')+'</span>'+
-          '</div>';
-        });
-        html+='</div>';
-      });
-      html+='</div>';
-    } else {
-      html+='<div class="att-panel"><div class="att-no-data">No attendance data for this class on this date.</div></div>';
-    }
-
-    html+='</div></div>';
+    leftHtml+='</div></div>';
   });
 
-  el.innerHTML=html;
-}
-function srow(k,v){return '<div class="srow"><div class="sk">'+k+'</div><div class="sv">'+v+'</div></div>';}
-
-/* ── PROGRESS VIEW ── */
-function renderProgress(data){
-  var el=g('vProgress');
-  if(!data.length){el.innerHTML='<div class="empty"><div class="empty-ico">📊</div><div class="empty-txt">No data</div></div>';return;}
-  var byClass={};
-  data.forEach(function(r){
-    var key=r.class+(r.stream?'|'+r.stream:'');
-    if(!byClass[key])byClass[key]={class:r.class,stream:r.stream||'',sessions:0,mins:0,subjects:{}};
-    var c=byClass[key];c.sessions++;c.mins+=(+r.duration_mins||0);
-    if(!c.subjects[r.subject])c.subjects[r.subject]={sessions:0,mins:0,chapters:new Set()};
-    c.subjects[r.subject].sessions++;c.subjects[r.subject].mins+=(+r.duration_mins||0);
-    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){c.subjects[r.subject].chapters.add(ch);});
-  });
-  var html='<div class="sec-title">Class Progress</div><div class="cprog-grid">';
-  Object.keys(byClass).sort().forEach(function(key){
-    var c=byClass[key];
-    var maxM=Math.max.apply(null,Object.values(c.subjects).map(function(s){return s.mins;}));
-    html+='<div class="cprog-card">'+
-      '<div class="cprog-head"><div class="cprog-num">'+esc(c.class)+'</div>'+
-      '<div class="cprog-info"><div class="cprog-name">Class '+esc(c.class)+(c.stream?' · '+esc(c.stream):'')+'</div><div class="cprog-meta">'+c.sessions+' sessions</div></div>'+
-      '<div style="text-align:right"><div class="cprog-hrs">'+hrsFmt(c.mins)+'</div><div class="cprog-hrslbl">Total</div></div></div>'+
-      '<div class="cprog-subjects">'+
-      Object.keys(c.subjects).sort().map(function(subj){
-        var s=c.subjects[subj];var pct=maxM>0?Math.round(s.mins/maxM*100):0;
-        return '<div class="subj-row"><div class="subj-name">'+esc(subj)+'</div>'+
-          '<div class="subj-bar-bg"><div class="subj-bar" style="width:'+pct+'%"></div></div>'+
-          '<div class="subj-stat">'+hrsFmt(s.mins)+'<br><small>'+s.chapters.size+' ch</small></div></div>';
-      }).join('')+
-      '</div></div>';
-  });
-  el.innerHTML=html+'</div>';
-}
-
-/* ── CHAPTERS VIEW ── */
-function renderChapters(data){
-  var el=g('vChapters');
-  if(!data.length){el.innerHTML='<div class="empty"><div class="empty-ico">📖</div><div class="empty-txt">No data</div></div>';return;}
-  var map={};
-  data.forEach(function(r){
-    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){
-      var k=r.class+'||'+r.subject+'||'+ch;
-      if(!map[k])map[k]={class:r.class,stream:r.stream||'',subject:r.subject,chapter:ch,count:0,mins:0};
-      map[k].count++;map[k].mins+=(+r.duration_mins||0);
-    });
-  });
-  var rows=Object.values(map).sort(function(a,b){return +a.class-+b.class||a.subject.localeCompare(b.subject)||b.count-a.count;});
-  var maxC=Math.max.apply(null,rows.map(function(r){return r.count;}));
-  el.innerHTML='<div class="sec-title">Chapter Coverage</div>'+
-    '<div class="chap-wrap"><table class="chap-table">'+
-    '<thead><tr><th>Class</th><th>Subject</th><th>Chapter</th><th>Sessions</th><th>Time</th><th>Frequency</th></tr></thead><tbody>'+
-    rows.map(function(r){
-      var pct=maxC>0?Math.round(r.count/maxC*100):0;
-      return '<tr><td><span class="badge badge-g">'+esc(r.class)+(r.stream?' '+esc(r.stream):'')+'</span></td>'+
-        '<td style="font-weight:600">'+esc(r.subject)+'</td><td>'+esc(r.chapter)+'</td>'+
-        '<td style="font-weight:700;color:var(--l2)">'+r.count+'</td><td>'+hrsFmt(r.mins)+'</td>'+
-        '<td><span class="cov-bar"><span class="cov-fill" style="width:'+pct+'%"></span></span></td></tr>';
-    }).join('')+
-    '</tbody></table></div>';
-}
-
-/* ── TEACHERS VIEW ── */
-function renderTeachers(data){
-  var el=g('vTeachers');
-  if(!data.length){el.innerHTML='<div class="empty"><div class="empty-ico">👨‍🏫</div><div class="empty-txt">No data</div></div>';return;}
-  var map={};
-  data.forEach(function(r){
-    if(!map[r.teacher_id])map[r.teacher_id]={name:r.teacher_name,sessions:0,mins:0,chapters:new Set(),classes:new Set()};
-    var t=map[r.teacher_id];t.sessions++;t.mins+=(+r.duration_mins||0);t.classes.add(r.class);
-    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){t.chapters.add(c);});
-  });
-  el.innerHTML='<div class="sec-title">Teacher Summary</div><div class="tsum-grid">'+
-    Object.keys(map).sort().map(function(tid){
-      var t=map[tid];
-      return '<div class="tsum-card"><div class="tsum-name">'+esc(t.name)+'</div>'+
-        '<div class="tsum-role">Classes: '+Array.from(t.classes).sort().join(', ')+'</div>'+
-        '<div class="tsum-stats">'+
-        '<div><div class="tstat-v">'+t.sessions+'</div><div class="tstat-l">Sessions</div></div>'+
-        '<div><div class="tstat-v">'+hrsFmt(t.mins)+'</div><div class="tstat-l">Time</div></div>'+
-        '<div><div class="tstat-v">'+t.chapters.size+'</div><div class="tstat-l">Chapters</div></div>'+
-        '</div></div>';
-    }).join('')+'</div>';
-}
-
-/* ══ PRINT / PDF ══ */
-function buildPrintDoc(sessions, filterCls, filterStream){
-  var dayData = sessions.filter(function(r){
-    var d=sessDateToYMD(r.date);
-    if(d!==CUR_DATE)return false;
-    if(filterCls!=='ALL'&&r.class!==filterCls)return false;
-    if(filterStream&&filterStream!==''&&r.stream!==filterStream)return false;
-    return true;
-  });
-
-  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-  var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
-  var chapSet={};dayData.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
-  var hwCount=dayData.filter(function(r){return r.homework&&r.homework.trim();}).length;
-  var attScope=ATTENDANCE.filter(function(r){
-    if(attDateToYMD(r.date)!==CUR_DATE)return false;
-    if(filterCls!=='ALL'&&r.class!==filterCls)return false;
-    return true;
-  });
-  var attP=attScope.filter(function(r){return r.status==='Present';}).length;
-  var teachers=[...new Set(dayData.map(function(r){return r.teacher_name;}))].join(', ');
-  var clsLabel=filterCls==='ALL'?'All Classes':('Class '+filterCls+(filterStream?' · '+filterStream:''));
-  var byClass={};
-  dayData.forEach(function(r){
-    var key=r.class+(r.stream?'|'+r.stream:'');
-    if(!byClass[key])byClass[key]={class:r.class,stream:r.stream||'',sessions:[]};
-    byClass[key].sessions.push(r);
-  });
-
-  // ── Premium invoice-style HTML ──
-  var html='<div class="pr-doc">';
-
-  // Top bar
-  html+='<div class="pr-top-bar"></div>';
-
-  // Header
-  html+='<div class="pr-hdr">'+
-    '<div>'+
-      '<div class="pr-logo"><span>SEHR</span> ACADEMY</div>'+
-      '<div class="pr-logo-sub">Vadanappally, Thrissur, Kerala &nbsp;·&nbsp; sehracademy.com</div>'+
-    '</div>'+
-    '<div class="pr-hdr-r">'+
-      '<div class="pr-hdr-doc">Daily Academic Report</div>'+
-      '<div class="pr-hdr-date">'+esc(clsLabel)+' &nbsp;·&nbsp; Generated '+issued+'</div>'+
-    '</div>'+
-  '</div>';
-
-  // Date hero band with stats
-  html+='<div class="pr-date-band">'+
-    '<div>'+
-      '<div class="pr-date-big"><span>'+fmtLong(CUR_DATE).split(',')[0]+'</span> '+fmtLong(CUR_DATE).split(', ').slice(1).join(', ')+'</div>'+
-      '<div class="pr-date-sub">'+esc(clsLabel)+(teachers?' &nbsp;·&nbsp; '+esc(teachers):'')+'</div>'+
-    '</div>'+
-    '<div class="pr-date-right">'+
-      '<div class="pr-date-tag">Today&#39;s Summary</div>'+
-      '<div class="pr-stat-row">'+
-        '<div class="pr-stat"><div class="pr-stat-v">'+dayData.length+'</div><div class="pr-stat-l">Sessions</div></div>'+
-        '<div class="pr-stat"><div class="pr-stat-v">'+hrsFmt(totalMins)+'</div><div class="pr-stat-l">Taught</div></div>'+
-        '<div class="pr-stat"><div class="pr-stat-v">'+Object.keys(chapSet).length+'</div><div class="pr-stat-l">Chapters</div></div>'+
-        (attScope.length?'<div class="pr-stat"><div class="pr-stat-v">'+Math.round(attP/attScope.length*100)+'%</div><div class="pr-stat-l">Attendance</div></div>':'')+
-      '</div>'+
-    '</div>'+
-  '</div>';
-
-  if(!Object.keys(byClass).length){
-    html+='<div style="padding:40px 36px;text-align:center;color:#7a7970;font-size:13px">No sessions logged for '+esc(clsLabel)+' on this date.</div>';
-  }
-
-  // ── SECTION 1: WHAT WAS TAUGHT ──
-  html+='<div class="pr-sec-rule"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">📚 What Was Taught</div></div>';
-
+  // Right panel: attendance per class
   Object.keys(byClass).sort().forEach(function(key){
     var cls=byClass[key];
-    var sessions=cls.sessions;
-    var clsMins=sessions.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
-    var clsBrds=[...new Set(sessions.map(function(r){return r.board;}))].join(' · ');
-    var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls.class;});
-    var ap=attRows.filter(function(r){return r.status==='Present';}).length;
-    var aa=attRows.length-ap;
-
-    // Class header
-    html+='<div class="pr-cls-hdr">'+
-      '<div class="pr-cls-badge">'+esc(cls.class)+'</div>'+
-      '<div>'+
-        '<div class="pr-cls-title">Class '+esc(cls.class)+(cls.stream?' &nbsp;·&nbsp; '+esc(cls.stream):'')+'</div>'+
-        '<div class="pr-cls-meta">'+sessions.length+' session'+(sessions.length>1?'s':'')+' &nbsp;·&nbsp; '+hrsFmt(clsMins)+(clsBrds?' &nbsp;·&nbsp; '+esc(clsBrds):'')+'</div>'+
-      '</div>'+
-      '<div class="pr-cls-pills">'+
-        (attRows.length?'<span class="pr-cls-pill pr-cls-pill-g">'+ap+' Present</span><span class="pr-cls-pill pr-cls-pill-r">'+aa+' Absent</span>':'')+
-      '</div>'+
-    '</div>';
-
-    // Sessions
-    html+='<div class="pr-sessions">';
-    sessions.forEach(function(r){
-      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
-      var dur=+r.duration_mins;
-      var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60>0?dur%60+'m':''):dur+'m';
-      html+='<div class="pr-sess-item">'+
-        '<div class="pr-sess-top">'+
-          '<div>'+
-            '<div class="pr-sess-teacher">'+esc(r.teacher_name)+'</div>'+
-            '<div class="pr-sess-time">'+esc(r.start_time)+' – '+esc(r.end_time)+' &nbsp;·&nbsp; '+durStr+'</div>'+
-          '</div>'+
-          '<div class="pr-badges">'+
-            '<span class="pr-badge pr-badge-b">'+esc(r.board)+'</span>'+
-            '<span class="pr-badge pr-badge-a">'+esc(r.session_type)+'</span>'+
-            '<span class="pr-badge pr-badge-n">'+esc(r.mode)+'</span>'+
-          '</div>'+
-        '</div>'+
-        '<div class="pr-det-grid">'+
-          prdet('Subject',esc(r.subject))+
-          (chaps.length?prdet('Chapters',chaps.map(function(c){return '<span class="pr-chapter-chip">'+esc(c)+'</span>';}).join('')):'')+
-          prdet('Topics',esc(r.topics||'—'))+
-          (r.homework&&r.homework.trim()?prdet('Homework',esc(r.homework)+'<div class="pr-hw-flag">📝 Homework Assigned</div>'):'')+
-          (r.remarks&&r.remarks.trim()?prdet('Remarks',esc(r.remarks)):'')+
-        '</div>'+
-      '</div>';
-    });
-    html+='</div>';
-  });
-
-  // ── SECTION 2: ATTENDANCE ──
-  html+='<div class="pr-section-divider"></div>';
-  html+='<div class="pr-sec-rule" style="margin-top:14px"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">👥 Attendance</div></div>';
-
-  Object.keys(byClass).sort().forEach(function(key){
-    var cls=byClass[key];
-    var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls.class;});
+    var _safeKey=key.replace(/[^a-zA-Z0-9]/g,'_');  // safe for use in HTML IDs
+    var attRows=getAtt(cls.class);
     if(!attRows.length){
-      html+='<div style="padding:8px 36px;font-size:11px;color:#b0ada4;font-style:italic">No attendance data for Class '+esc(cls.class)+' on this date.</div>';
+      rightHtml+='<div class="att-block"><div class="att-hd"><div class="att-title">Class '+esc(cls.class)+' · Attendance</div></div><div style="padding:16px;font-size:12px;color:var(--text3);font-style:italic">No attendance data for this date.</div></div>';
       return;
     }
     var ap=attRows.filter(function(r){return r.status==='Present';}).length;
-    var syls=[...new Set(attRows.map(function(r){return r.syllabus;}))].sort(function(a,b){return a==='STATE'?-1:b==='STATE'?1:a.localeCompare(b);});
+    var aa=attRows.length-ap;
+    var syls=Array.from(new Set(attRows.map(function(r){return r.syllabus;}))).sort(function(a,b){return a==='STATE'?-1:b==='STATE'?1:a.localeCompare(b);});
+    rightHtml+='<div class="att-block"><div class="att-hd">'+
+      '<div class="att-title">Class '+esc(cls.class)+' Attendance</div>'+
+      '<span class="badge badge-g">'+ap+' P</span>'+
+      '<span class="badge badge-r">'+aa+' A</span>'+
+      '<span class="badge badge-n" style="margin-left:auto">'+Math.round(ap/attRows.length*100)+'%</span>'+
+      '</div>';
 
-    html+='<div class="pr-cls-hdr" style="margin-top:4px">'+
-      '<div class="pr-cls-badge">'+esc(cls.class)+'</div>'+
-      '<div>'+
-        '<div class="pr-cls-title">Class '+esc(cls.class)+(cls.stream?' &nbsp;·&nbsp; '+esc(cls.stream):'')+'</div>'+
-        '<div class="pr-cls-meta">'+ap+' / '+attRows.length+' Present &nbsp;·&nbsp; '+Math.round(ap/attRows.length*100)+'% Attendance</div>'+
-      '</div>'+
-      '<div class="pr-cls-pills">'+
-        '<span class="pr-cls-pill pr-cls-pill-g">'+ap+' Present</span>'+
-        '<span class="pr-cls-pill pr-cls-pill-r">'+(attRows.length-ap)+' Absent</span>'+
-      '</div>'+
-    '</div>';
-
-    html+='<div class="pr-att-wrap">';
-    syls.forEach(function(syl){
+    if(syls.length>1){
+      rightHtml+='<div class="att-board-tabs">';
+      syls.forEach(function(s,si){rightHtml+='<button class="att-board-tab'+(si===0?' on':'')+'" onclick="switchAttBoard(this,\'att-syl-'+_safeKey+'-'+si+'\')">'+esc(sylLabel(s))+'</button>';});
+      rightHtml+='</div>';
+    }
+    syls.forEach(function(syl,si){
       var sr=attRows.filter(function(r){return r.syllabus===syl;});
       var sp=sr.filter(function(r){return r.status==='Present';}).length;
-      html+='<div class="pr-att-board-row">'+
-        '<span class="pr-att-board-lbl '+(syl==='STATE'?'pr-att-board-st':'pr-att-board-cb')+'">'+esc(syl)+'</span>'+
-        '<span class="pr-att-board-meta">'+sp+' / '+sr.length+' Present</span>'+
-      '</div>';
-      html+='<table class="pr-att-tbl"><thead><tr><th></th><th>Name</th><th>Status</th></tr></thead><tbody>';
+      rightHtml+='<div id="att-syl-'+_safeKey+'-'+si+'"'+(si>0&&syls.length>1?' style="display:none"':'')+'>';
+      rightHtml+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text3)">'+esc(sylLabel(syl))+' · '+sp+'/'+sr.length+' present</div>';
+      rightHtml+='<table class="att-table">';
       sr.forEach(function(r){
         var ab=r.status==='Absent';
         var ph=PHOTO_MAP[r.student_id]||r.photo||'';
-        var av='<div class="pr-av'+(ab?' style=background:#dc2626':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
-        html+='<tr class="'+(ab?'pr-att-tbl-a':'pr-att-tbl-p')+'">'+
-          '<td>'+av+'</td>'+
-          '<td style="font-weight:600;'+(ab?'color:#dc2626':'')+'">'+esc(r.full_name)+(pctPill(r.student_id)?' &nbsp;'+pctPill(r.student_id):'')+'</td>'+
-          '<td><span class="pr-att-badge '+(ab?'pr-att-badge-a':'pr-att-badge-p')+'">'+r.status+'</span></td>'+
-        '</tr>';
+        var av='<div class="att-photo'+(ab?' ab-av':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
+        rightHtml+='<tr class="'+(ab?'att-ab':'')+'"><td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+pctPill(r.student_id)+'</td>'+
+          '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span></td></tr>';
+      });
+      rightHtml+='</table></div>';
+    });
+    rightHtml+='</div>';
+  });
+
+  el.innerHTML='<div class="day-grid"><div>'+leftHtml+'</div><div class="right-panel">'+rightHtml+'</div></div>';
+}
+function sdet(k,v){return '<div class="sess-det-k">'+k+'</div><div class="sess-det-v">'+v+'</div>';}
+function switchAttBoard(btn,panelId){
+  var block=btn.closest('.att-block');
+  block.querySelectorAll('.att-board-tab').forEach(function(b){b.classList.remove('on');});
+  // (replaced by getElementsByTagName loop above)
+  btn.classList.add('on');
+  var panel=g(panelId);if(panel)panel.style.display='block';
+}
+
+/* ══ PROGRESS VIEW ══ */
+function loadMasterChapters(cb){
+  if(CHAPTERS_LOADED){cb();return;}
+  apiSess({action:'getChaptersList',appkey:SESS_PASS},function(data,err){
+    if(!err&&data&&data.success&&data.chapters){
+      data.chapters.forEach(function(r){var key=r.class+'|'+r.syllabus+'|'+r.subject;if(!MASTER_CHAPTERS[key])MASTER_CHAPTERS[key]=[];MASTER_CHAPTERS[key].push(r.chapter);});
+    }
+    CHAPTERS_LOADED=true;cb();
+  });
+}
+function renderProgress(data){
+  var el=g('vProgress');
+  el.innerHTML='<div class="loading-overlay"><div class="loading-ring"></div><div class="loading-txt">Loading chapter data…</div></div>';
+  loadMasterChapters(function(){buildProgressView(data,el);});
+}
+function buildProgressView(data,el){
+  if(!data.length){el.innerHTML=noDataMsg();return;}
+
+  // ── Build tree: class → board → subject → chapters ──────────────
+  var tree={};
+  data.forEach(function(r){
+    var cls=r.class,board=r.board||'',subj=r.subject||'',date=sessDateToYMD(r.date);
+    if(!tree[cls])tree[cls]={stream:r.stream||'',boards:{}};
+    if(!tree[cls].boards[board])tree[cls].boards[board]={subjects:{}};
+    if(!tree[cls].boards[board].subjects[subj])tree[cls].boards[board].subjects[subj]={sessions:[],chapterMap:{}};
+    var sd=tree[cls].boards[board].subjects[subj];
+    sd.sessions.push(r);
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){
+      if(!sd.chapterMap[ch])sd.chapterMap[ch]={count:0,mins:0,dates:[],remarks:[],topics:[],teachers:new Set()};
+      var cd=sd.chapterMap[ch];cd.count++;cd.mins+=(+r.duration_mins||0);
+      if(date&&cd.dates.indexOf(date)===-1)cd.dates.push(date);
+      if(r.topics&&r.topics.trim())cd.topics.push({date:date,text:r.topics.trim(),teacher:r.teacher_name});
+      if(r.remarks&&r.remarks.trim())cd.remarks.push({date:date,text:r.remarks.trim(),teacher:r.teacher_name});
+      cd.teachers.add(r.teacher_name);
+    });
+  });
+
+  var html='';
+
+  Object.keys(tree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
+    var clsData=tree[cls];
+    var totalSess=data.filter(function(r){return r.class===cls;}).length;
+    var totalMins=data.filter(function(r){return r.class===cls;}).reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+    var totalMaster=0,totalCovered=0;
+    Object.keys(clsData.boards).forEach(function(b){
+      Object.keys(clsData.boards[b].subjects).forEach(function(s){
+        var mk=cls+'|'+b+'|'+s;
+        var master=MASTER_CHAPTERS[mk]||[];
+        totalMaster+=master.length;
+        totalCovered+=Object.keys(clsData.boards[b].subjects[s].chapterMap).length;
+      });
+    });
+    var overallPct=totalMaster>0?Math.min(100,Math.round(totalCovered/totalMaster*100)):null;
+    var bodyId='pgb-'+cls.replace(/\W/g,'_');
+
+    // ── Class header band ─────────────────────────────────────────
+    var rc=overallPct===null?'var(--text3)':overallPct>=75?'var(--li)':overallPct>=40?'var(--amber)':'var(--red)';
+    html+='<div class="pg-block">';
+    html+='<div class="pg-cls-band">';
+    html+='<div class="pg-cls-band-num">'+esc(cls)+'</div>';
+    html+='<div class="pg-cls-band-info">';
+    html+='<div class="pg-cls-band-title">Class '+esc(cls)+(clsData.stream?' · '+esc(clsData.stream):'')+'</div>';
+    html+='<div class="pg-cls-band-sub">'+totalSess+' sessions · '+hrsFmt(totalMins)+(overallPct!==null?' · '+overallPct+'% covered':'')+'</div>';
+    html+='</div>';
+    // Ring
+    if(overallPct!==null){
+      var R=22,circ=2*Math.PI*R,dash=circ*(overallPct/100),gap=circ-dash;
+      html+='<div class="pg-cls-band-ring">'+
+        '<svg width="60" height="60" viewBox="0 0 60 60">'+
+        '<circle cx="30" cy="30" r="'+R+'" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="5"/>'+
+        '<circle cx="30" cy="30" r="'+R+'" fill="none" stroke="'+rc+'" stroke-width="5"'+
+        ' stroke-dasharray="'+dash.toFixed(1)+' '+gap.toFixed(1)+'"'+
+        ' stroke-dashoffset="'+(circ/4).toFixed(1)+'" stroke-linecap="round"/>'+
+        '<text x="30" y="35" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">'+overallPct+'%</text>'+
+        '</svg></div>';
+    }
+    html+='</div>'; // end pg-cls-band
+
+    // ── Board tabs ────────────────────────────────────────────────
+    var boards=Object.keys(clsData.boards).sort();
+    html+='<div id="'+bodyId+'">';
+    if(boards.length>1){
+      html+='<div class="pg-board-sel">';
+      boards.forEach(function(b,bi){
+        html+='<button class="pg-board-sel-tab'+(bi===0?' on':'')+'"'+
+          ' onclick="switchPgBoard(\''+bodyId+'\',this,\'pgpanel-'+bodyId+'-'+bi+'\')">';
+        html+=esc(b)+'</button>';
+      });
+      html+='</div>';
+    }
+
+    boards.forEach(function(board,bi){
+      var panelId='pgpanel-'+bodyId+'-'+bi;
+      html+='<div id="'+panelId+'"'+(bi>0?' style="display:none"':'')+' class="pg-board-panel">';
+
+      var subjects=Object.keys(clsData.boards[board].subjects).sort();
+
+      // ── Layout: chapter list left, overview sidebar right ───────
+      html+='<div class="pg-layout">';
+
+      // LEFT: subject selector + chapter list
+      html+='<div>';
+
+      // Subject selector pills
+      html+='<div class="subj-strip">';
+      subjects.forEach(function(subj,si){
+        var subjSafeId='subjpill-'+bodyId+'-'+bi+'-'+si;
+        var panelSubjId='subjpanel-'+bodyId+'-'+bi+'-'+si;
+        html+='<button class="subj-pill'+(si===0?' on':'')+'" id="'+subjSafeId+'"'+
+          ' onclick="switchSubject(\''+bodyId+'-'+bi+'\','+si+')">'+esc(subj)+'</button>';
+      });
+      html+='</div>';
+
+      // Subject panels
+      subjects.forEach(function(subj,si){
+        var subjPanelId='subjpanel-'+bodyId+'-'+bi+'-'+si;
+        var sd=clsData.boards[board].subjects[subj];
+        var mk=cls+'|'+board+'|'+subj;
+        var master=MASTER_CHAPTERS[mk]||[];
+        var coveredChs=Object.keys(sd.chapterMap);
+        var notCovered=master.filter(function(c){return!sd.chapterMap[c];});
+        var covPct=master.length>0?Math.min(100,Math.round(coveredChs.length/master.length*100)):null;
+        var maxSess=Math.max.apply(null,coveredChs.map(function(c){return sd.chapterMap[c].count;})||[1]);
+
+        html+='<div id="'+subjPanelId+'"'+(si>0?' style="display:none"':'')+' class="subj-panel">';
+
+        // Covered chapters
+        if(coveredChs.length){
+          html+='<div class="ch-list-wrap">';
+          html+='<div class="ch-list-hdr"><span class="ch-list-hdr-txt">Chapters Covered</span>'+
+            '<span class="ch-list-hdr-count pg-ch-count-done">'+coveredChs.length+(master.length?'/'+master.length:'')+'</span>'+
+            (covPct!==null?'<span style="margin-left:auto;font-size:11px;font-weight:800;color:'+(covPct>=75?'var(--li3)':covPct>=40?'var(--amber)':'var(--red)')+'">'+covPct+'% covered</span>':'')+
+          '</div>';
+
+          // Sort by most sessions first
+          coveredChs.slice().sort(function(a,b){
+            return sd.chapterMap[b].count - sd.chapterMap[a].count;
+          }).forEach(function(ch,chi){
+            var cd=sd.chapterMap[ch];
+            var chId='chd-'+bodyId+'-'+bi+'-'+si+'-'+chi;
+            var lastDate=cd.dates.slice().sort().pop()||'';
+            var barPct=maxSess>0?Math.round(cd.count/maxSess*100):0;
+            var barCol=cd.count>=3?'var(--li)':cd.count>=2?'var(--amber)':'var(--blue)';
+            // Rating badge
+            var rating,ratingClass;
+            if(cd.count>=4){rating='Strong';ratingClass='badge-good';}
+            else if(cd.count>=2){rating='Average';ratingClass='badge-avg';}
+            else{rating='Intro';ratingClass='badge-none';}
+
+            html+='<div class="ch-row" id="chrow-'+chId+'">';
+            html+='<div class="ch-row-main" onclick="toggleChRow(\''+chId+'\')"">';
+            html+='<div class="ch-row-expand">▶</div>';
+            html+='<div class="ch-done-dot"></div>';
+            html+='<div class="ch-row-name">'+esc(ch)+'</div>';
+            html+='<div class="ch-row-stats">';
+            html+='<div class="ch-row-stat"><span>'+cd.count+'</span> sess</div>';
+            html+='<div class="ch-row-stat"><span>'+hrsFmt(cd.mins)+'</span></div>';
+            if(lastDate)html+='<div class="ch-row-stat"><span>'+fmtShort(lastDate)+'</span></div>';
+            html+='</div>';
+            html+='<span class="ch-row-badge '+ratingClass+'">'+rating+'</span>';
+            html+='<div class="ch-row-bar-wrap"><div class="ch-row-bar"><div class="ch-row-bar-fill" style="width:'+barPct+'%;background:'+barCol+'"></div></div></div>';
+            html+='</div>'; // end ch-row-main
+
+            // Detail panel
+            html+='<div class="ch-detail-panel" id="'+chId+'">';
+            // Stat cards
+            html+='<div class="ch-detail-grid">';
+            html+='<div class="ch-detail-stat"><div class="ch-detail-stat-v">'+cd.count+'</div><div class="ch-detail-stat-l">Sessions</div></div>';
+            html+='<div class="ch-detail-stat"><div class="ch-detail-stat-v">'+hrsFmt(cd.mins)+'</div><div class="ch-detail-stat-l">Time Spent</div></div>';
+            html+='<div class="ch-detail-stat"><div class="ch-detail-stat-v">'+cd.dates.length+'</div><div class="ch-detail-stat-l">Unique Dates</div></div>';
+            html+='<div class="ch-detail-stat"><div class="ch-detail-stat-v">'+esc(Array.from(cd.teachers).join(', '))+'</div><div class="ch-detail-stat-l">Teacher(s)</div></div>';
+            html+='</div>';
+            // Dates
+            if(cd.dates.length){
+              html+='<div class="ch-detail-section-lbl">📅 Session Dates</div>';
+              html+='<div class="ch-detail-dates">'+cd.dates.slice().sort().map(function(d){return '<span class="pg-date-chip">'+fmtShort(d)+'</span>';}).join('')+'</div>';
+            }
+            // Topics
+            if(cd.topics.length){
+              html+='<div class="ch-detail-section-lbl">💡 Topics Covered</div>';
+              cd.topics.forEach(function(t){
+                html+='<div class="ch-detail-entry"><div class="ch-detail-meta">'+fmtShort(t.date)+' · '+esc(t.teacher)+'</div><div class="ch-detail-text">'+esc(t.text)+'</div></div>';
+              });
+            }
+            // Remarks
+            if(cd.remarks.length){
+              html+='<div class="ch-detail-section-lbl">📝 Remarks & Notes</div>';
+              cd.remarks.forEach(function(rk){
+                html+='<div class="ch-detail-entry"><div class="ch-detail-meta">'+fmtShort(rk.date)+' · '+esc(rk.teacher)+'</div><div class="ch-detail-text ch-detail-remark">'+esc(rk.text)+'</div></div>';
+              });
+            }
+            html+='</div>'; // end ch-detail-panel
+            html+='</div>'; // end ch-row
+          });
+          html+='</div>'; // end ch-list-wrap
+        }
+
+        // Not yet covered
+        if(notCovered.length){
+          html+='<div class="ch-list-wrap">';
+          html+='<div class="ch-list-hdr">'+
+            '<span class="ch-list-hdr-txt">Not Yet Covered</span>'+
+            '<span class="ch-list-hdr-count pg-ch-count-todo">'+notCovered.length+'</span>'+
+          '</div>';
+          notCovered.forEach(function(ch){
+            html+='<div class="ch-row ch-row-pending">';
+            html+='<div class="ch-row-main">';
+            html+='<div class="ch-row-expand" style="opacity:.3">▶</div>';
+            html+='<div class="ch-pending-dot"></div>';
+            html+='<div class="ch-row-name" style="color:var(--text3);font-weight:500;font-style:italic">'+esc(ch)+'</div>';
+            html+='<span class="ch-row-badge badge-none">Pending</span>';
+            html+='<div class="ch-row-bar-wrap"><div class="ch-row-bar"></div></div>';
+            html+='</div></div>';
+          });
+          html+='</div>';
+        }
+
+        if(!coveredChs.length&&!notCovered.length){
+          html+='<div class="pg-no-data">No chapters logged for this subject yet.</div>';
+        }
+
+        html+='</div>'; // end subjpanel
+      });
+      html+='</div>'; // end left col
+
+      // RIGHT: subject overview sidebar
+      html+='<div>';
+      html+='<div class="pg-side-card">';
+      html+='<div class="pg-side-hdr"><span class="pg-side-title">Subject Overview</span></div>';
+      subjects.forEach(function(subj){
+        var sd=clsData.boards[board].subjects[subj];
+        var mk=cls+'|'+board+'|'+subj;
+        var master=MASTER_CHAPTERS[mk]||[];
+        var cov=Object.keys(sd.chapterMap).length;
+        var pct=master.length>0?Math.min(100,Math.round(cov/master.length*100)):null;
+        var col=pct===null?'var(--text3)':pct>=75?'var(--li3)':pct>=40?'var(--amber)':'var(--red)';
+        html+='<div class="pg-side-row">';
+        html+='<div class="pg-side-ch">'+esc(subj)+'</div>';
+        html+='<div class="pg-side-pct" style="color:'+col+'">'+(pct!==null?pct+'%':'—')+'</div>';
+        html+='</div>';
+      });
+      html+='</div>';
+      html+='</div>'; // end right col
+
+      html+='</div>'; // end pg-layout
+      html+='</div>'; // end board panel
+    });
+
+    html+='</div>'; // end bodyId
+    html+='</div>'; // end pg-block
+  });
+
+  el.innerHTML=html||noDataMsg();
+}
+
+function toggleChRow(chId){
+  var panel=g(chId);
+  var row=g('chrow-'+chId);
+  if(!panel||!row)return;
+  var open=!row.classList.contains('open');
+  row.classList.toggle('open',open);
+  panel.classList.toggle('open',open);
+  panel.style.display=open?'block':'none';
+}
+function switchSubject(groupId,selIdx){
+  // Pills — find via direct ID (no querySelectorAll subtree issues)
+  var si=0;
+  while(true){
+    var pill=g('subjpill-'+groupId+'-'+si);
+    if(!pill)break;
+    pill.classList.toggle('on', si===selIdx);
+    si++;
+  }
+  // Panels — same approach
+  var pi=0;
+  while(true){
+    var panel=g('subjpanel-'+groupId+'-'+pi);
+    if(!panel)break;
+    panel.style.display=(pi===selIdx)?'block':'none';
+    pi++;
+  }
+}
+
+
+function togglePgBlock(id){var b=g(id),a=g('pga-'+id),open=b.style.display==='none';b.style.display=open?'block':'none';if(a)a.textContent=open?'▲':'▼';}
+function toggleSubj(id){var b=g(id),a=g('psa-'+id),open=b.style.display==='none';b.style.display=open?'block':'none';if(a)a.textContent=open?'▲':'▼';}
+function toggleChDetail(id){var b=g(id),t=g('pgct-'+id),open=b.style.display==='none';b.style.display=open?'block':'none';if(t)t.textContent=open?'▲':'▼';}
+function switchPgBoard(bodyId,btn,panelId){
+  var body=g(bodyId);
+  if(!body)return;
+  // Deselect all board tabs
+  body.querySelectorAll('.pg-board-tab,.pg-board-sel-tab').forEach(function(b){b.classList.remove('on');});
+  // Hide only panels that belong to this bodyId (prefix match, scoped to this block)
+  var prefix='pgpanel-'+bodyId+'-';
+  var allDivs=body.getElementsByTagName('div');
+  for(var i=0;i<allDivs.length;i++){
+    if(allDivs[i].id && allDivs[i].id.indexOf(prefix)===0){
+      allDivs[i].style.display='none';
+    }
+  }
+  btn.classList.add('on');
+  var panel=g(panelId);
+  if(panel)panel.style.display='block';
+}
+
+/* ══ CHAPTERS TABLE ══ */
+function renderChapters(data){
+  var el=g('vChapters');
+  if(!data.length){el.innerHTML=noDataMsg();return;}
+  var map={};
+  data.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){var k=r.class+'||'+r.subject+'||'+ch;if(!map[k])map[k]={class:r.class,stream:r.stream||'',board:r.board,subject:r.subject,chapter:ch,count:0,mins:0};map[k].count++;map[k].mins+=(+r.duration_mins||0);});});
+  var rows=Object.values(map).sort(function(a,b){return+a.class-+b.class||a.subject.localeCompare(b.subject)||b.count-a.count;});
+  var maxC=Math.max.apply(null,rows.map(function(r){return r.count;}));
+  el.innerHTML=
+    '<div class="sec-hdr"><div class="sec-title">Chapter Coverage</div><div class="sec-actions"><span class="badge badge-n">'+rows.length+' chapters</span></div></div>'+
+    '<div class="data-table-wrap"><table class="data-table">'+
+    '<thead><tr><th>Class</th><th>Board</th><th>Subject</th><th>Chapter</th><th>Sessions</th><th>Time</th><th>Frequency</th></tr></thead><tbody>'+
+    rows.map(function(r){var pct=maxC>0?Math.round(r.count/maxC*100):0;return '<tr>'+
+      '<td><span class="badge badge-g">'+esc(r.class)+'</span></td>'+
+      '<td><span class="badge badge-b">'+esc(r.board)+'</span></td>'+
+      '<td class="bold">'+esc(r.subject)+'</td>'+
+      '<td>'+esc(r.chapter)+'</td>'+
+      '<td style="font-weight:700;color:var(--li)">'+r.count+'</td>'+
+      '<td style="color:var(--text2)">'+hrsFmt(r.mins)+'</td>'+
+      '<td><div class="pbar-wrap"><div class="pbar" style="min-width:50px"><div class="pbar-fill" style="width:'+pct+'%;background:var(--li)"></div></div></div></td>'+
+      '</tr>';}).join('')+
+    '</tbody></table></div>';
+}
+
+/* ══ TEACHERS ══ */
+function renderTeachers(data){
+  var el=g('vTeachers');
+  if(!data.length){el.innerHTML=noDataMsg();return;}
+  var map={};
+  data.forEach(function(r){if(!map[r.teacher_id])map[r.teacher_id]={name:r.teacher_name,sessions:0,mins:0,chapters:new Set(),classes:new Set(),subjects:new Set()};var t=map[r.teacher_id];t.sessions++;t.mins+=(+r.duration_mins||0);t.classes.add(r.class);t.subjects.add(r.subject);(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){t.chapters.add(c);});});
+  el.innerHTML=
+    '<div class="sec-hdr"><div class="sec-title">Teacher Summary</div></div>'+
+    '<div class="teacher-grid">'+
+    Object.keys(map).sort().map(function(tid){var t=map[tid];return '<div class="teacher-card">'+
+      '<div class="teacher-av">'+mn(t.name)+'</div>'+
+      '<div class="teacher-name">'+esc(t.name)+'</div>'+
+      '<div class="teacher-role">Classes: '+Array.from(t.classes).sort().join(', ')+' · '+Array.from(t.subjects).sort().slice(0,2).join(', ')+'</div>'+
+      '<div class="teacher-stats">'+
+        '<div><div class="tstat-v">'+t.sessions+'</div><div class="tstat-l">Sessions</div></div>'+
+        '<div><div class="tstat-v">'+hrsFmt(t.mins)+'</div><div class="tstat-l">Time</div></div>'+
+        '<div><div class="tstat-v">'+t.chapters.size+'</div><div class="tstat-l">Chapters</div></div>'+
+      '</div></div>';}).join('')+'</div>';
+}
+
+/* ══ PRINT DOC ══ */
+function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
+  var dayData=sessions.filter(function(r){var d=sessDateToYMD(r.date);if(d!==CUR_DATE)return false;if(filterCls!=='ALL'&&r.class!==filterCls)return false;if(filterStream&&filterStream!==''&&r.stream!==filterStream)return false;if(filterBoard&&filterBoard!=='ALL'&&r.board!==filterBoard)return false;return true;});
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var chapSet={};dayData.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
+  var teachers=Array.from(new Set(dayData.map(function(r){return r.teacher_name;}))).join(', ');
+  var attScope=ATTENDANCE.filter(function(r){if(attDateToYMD(r.date)!==CUR_DATE)return false;if(filterCls!=='ALL'&&r.class!==filterCls)return false;if(filterBoard&&filterBoard!=='ALL'&&r.syllabus!==boardToSyl(filterBoard))return false;return true;});
+  var attP=attScope.filter(function(r){return r.status==='Present';}).length;
+  var boardLabel=filterBoard&&filterBoard!=='ALL'?' · '+filterBoard:'';
+  var clsLabel=filterCls==='ALL'?'All Classes':('Class '+filterCls+(filterStream?' · '+filterStream:'')+boardLabel);
+  var byClass={};dayData.forEach(function(r){var key=r.class+(r.stream?'|'+r.stream:'');if(!byClass[key])byClass[key]={class:r.class,stream:r.stream||'',sessions:[]};byClass[key].sessions.push(r);});
+  var html='<div class="pr-doc"><div class="pr-top-bar"></div>';
+  html+='<div class="pr-hdr"><div><div class="pr-logo"><span>SEHR</span> ACADEMY</div><div class="pr-logo-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div><div class="pr-hdr-r"><div class="pr-hdr-doc">Daily Academic Report</div><div class="pr-hdr-date">'+esc(clsLabel)+' · Generated '+issued+'</div></div></div>';
+  html+='<div class="pr-date-band"><div><div class="pr-date-big"><span>'+fmtLong(CUR_DATE).split(',')[0]+'</span> '+fmtLong(CUR_DATE).split(', ').slice(1).join(', ')+'</div><div class="pr-date-sub">'+esc(clsLabel)+(teachers?' · '+esc(teachers):'')+'</div></div>';
+  html+='<div class="pr-date-right"><div class="pr-date-tag">Today&#39;s Summary</div><div class="pr-stat-row"><div class="pr-stat"><div class="pr-stat-v">'+dayData.length+'</div><div class="pr-stat-l">Sessions</div></div><div class="pr-stat"><div class="pr-stat-v">'+hrsFmt(totalMins)+'</div><div class="pr-stat-l">Taught</div></div><div class="pr-stat"><div class="pr-stat-v">'+Object.keys(chapSet).length+'</div><div class="pr-stat-l">Chapters</div></div>'+(attScope.length?'<div class="pr-stat"><div class="pr-stat-v">'+Math.round(attP/attScope.length*100)+'%</div><div class="pr-stat-l">Attendance</div></div>':'')+'</div></div></div>';
+  if(!Object.keys(byClass).length)html+='<div style="padding:32px;text-align:center;color:#7a7970;font-size:12px">No sessions on this date.</div>';
+  html+='<div class="pr-sec-rule"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">📚 What Was Taught</div></div>';
+  Object.keys(byClass).sort().forEach(function(key){
+    var cls=byClass[key];var sessions=cls.sessions;
+    var clsMins=sessions.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+    var clsBrds=Array.from(new Set(sessions.map(function(r){return r.board;}))).join(' · ');
+    var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls.class&&(!filterBoard||filterBoard==='ALL'||r.syllabus===boardToSyl(filterBoard));});
+    var ap=attRows.filter(function(r){return r.status==='Present';}).length;var aa=attRows.length-ap;
+    html+='<div class="pr-cls-hdr"><div class="pr-cls-badge">'+esc(cls.class)+'</div><div><div class="pr-cls-title">Class '+esc(cls.class)+(cls.stream?' · '+esc(cls.stream):'')+'</div><div class="pr-cls-meta">'+sessions.length+' session'+(sessions.length>1?'s':'')+' · '+hrsFmt(clsMins)+(clsBrds?' · '+esc(clsBrds):'')+'</div></div>'+(attRows.length?'<div class="pr-cls-pills"><span class="pr-cls-pill pr-cls-pill-g">'+ap+' Present</span><span class="pr-cls-pill pr-cls-pill-r">'+aa+' Absent</span></div>':'')+'</div>';
+    html+='<div class="pr-sessions">';
+    sessions.forEach(function(r){var chaps=(r.chapters||'').split(' | ').filter(Boolean);var dur=+r.duration_mins;var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60?dur%60+'m':''):dur+'m';
+      html+='<div class="pr-sess-item"><div class="pr-sess-top"><div><div class="pr-sess-teacher">'+esc(r.teacher_name)+'</div><div class="pr-sess-time">'+esc(r.start_time)+' – '+esc(r.end_time)+' · '+durStr+'</div></div><div class="pr-badges"><span class="pr-badge pr-badge-b">'+esc(r.board)+'</span><span class="pr-badge pr-badge-a">'+esc(r.session_type)+'</span><span class="pr-badge pr-badge-n">'+esc(r.mode)+'</span></div></div>';
+      html+='<div class="pr-det-grid">'+prdet('Subject',esc(r.subject))+(chaps.length?prdet('Chapters',chaps.map(function(c){return '<span class="pr-chapter-chip">'+esc(c)+'</span>';}).join('')):'')+prdet('Topics',esc(r.topics||'—'))+(r.homework&&r.homework.trim()?prdet('Homework',esc(r.homework)+'<div class="pr-hw-flag">📝 Homework</div>'):'')+( r.remarks&&r.remarks.trim()?prdet('Remarks',esc(r.remarks)):'')+' </div></div>';
+    });
+    html+='</div>';
+  });
+  html+='<div class="pr-section-divider"></div>';
+  html+='<div class="pr-sec-rule" style="margin-top:14px"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">👥 Attendance</div></div>';
+  Object.keys(byClass).sort().forEach(function(key){
+    var cls=byClass[key];var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls.class&&(!filterBoard||filterBoard==='ALL'||r.syllabus===boardToSyl(filterBoard));});
+    if(!attRows.length){html+='<div style="padding:6px 32px;font-size:10px;color:#b0ada4;font-style:italic">No attendance data for Class '+esc(cls.class)+'.</div>';return;}
+    var ap=attRows.filter(function(r){return r.status==='Present';}).length;
+    var syls=Array.from(new Set(attRows.map(function(r){return r.syllabus;}))).sort(function(a,b){return a==='STATE'?-1:b==='STATE'?1:a.localeCompare(b);});
+    html+='<div class="pr-cls-hdr" style="margin-top:4px"><div class="pr-cls-badge">'+esc(cls.class)+'</div><div><div class="pr-cls-title">Class '+esc(cls.class)+(cls.stream?' · '+esc(cls.stream):'')+'</div><div class="pr-cls-meta">'+ap+' / '+attRows.length+' Present · '+Math.round(ap/attRows.length*100)+'%</div></div><div class="pr-cls-pills"><span class="pr-cls-pill pr-cls-pill-g">'+ap+' Present</span><span class="pr-cls-pill pr-cls-pill-r">'+(attRows.length-ap)+' Absent</span></div></div>';
+    html+='<div class="pr-att-wrap">';
+    syls.forEach(function(syl){var sr=attRows.filter(function(r){return r.syllabus===syl;});var sp=sr.filter(function(r){return r.status==='Present';}).length;
+      html+='<div class="pr-att-board-row"><span class="pr-att-board-lbl '+(syl==='STATE'?'pr-att-board-st':'pr-att-board-cb')+'">'+esc(sylLabel(syl))+'</span><span class="pr-att-board-meta">'+sp+'/'+sr.length+' Present</span></div>';
+      html+='<table class="pr-att-tbl"><thead><tr><th></th><th>Name</th><th>Status</th></tr></thead><tbody>';
+      sr.forEach(function(r){var ab=r.status==='Absent';var ph=PHOTO_MAP[r.student_id]||r.photo||'';var av='<div class="pr-av'+(ab?' style="background:#dc2626"':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
+        html+='<tr class="'+(ab?'pr-att-tbl-a':'pr-att-tbl-p')+'"><td>'+av+'</td><td style="font-weight:600;'+(ab?'color:#dc2626':'')+'">'+esc(r.full_name)+(function(){var a=ATT_PCT[r.student_id];if(!a||!a.sessions)return '';var p=a.pct;var col=p>=75?'#16a34a':p>=50?'#d97706':'#dc2626';var bg=p>=75?'rgba(34,197,94,.1)':p>=50?'rgba(217,119,6,.1)':'rgba(220,38,38,.08)';return ' <span style="font-size:7px;font-weight:800;padding:1px 5px;border-radius:8px;background:'+bg+';color:'+col+'">'+p+'%</span>';})()+'</td><td><span class="pr-att-badge '+(ab?'pr-att-badge-a':'pr-att-badge-p')+'">'+r.status+'</span></td></tr>';
       });
       html+='</tbody></table>';
     });
     html+='</div>';
   });
-
-  // Footer
-  html+='<div class="pr-spacer"></div>'+
-    '<div class="pr-footer-band">'+
-      '<div class="pr-footer-brand"><span>SEHR</span> ACADEMY</div>'+
-      '<div class="pr-footer-contact">sehracademy.com &nbsp;·&nbsp; +91 95394 09586 &nbsp;·&nbsp; +91 90377 89586<br>Priyadarshini Road, Ganeshamangalam, Vadanappally, Thrissur 680614</div>'+
-    '</div>'+
-    '<div class="pr-bot-bar"></div>';
-
-  html+='</div>'; // end pr-doc
+  html+='<div style="height:12px"></div><div class="pr-footer-band"><div class="pr-footer-brand"><span>SEHR</span> ACADEMY</div><div class="pr-footer-contact">sehracademy.com · +91 95394 09586 · +91 90377 89586<br>Priyadarshini Road, Ganeshamangalam, Vadanappally, Thrissur 680614</div></div><div class="pr-bot-bar"></div></div>';
   g('printDoc').innerHTML=html;
 }
-
 function prdet(k,v){return '<div class="pr-det-row"><div class="pr-det-k">'+k+'</div><div class="pr-det-v">'+v+'</div></div>';}
-
-
-
-
-/* Per-class PDF button */
-function printClass(cls, stream){
-  buildPrintDoc(SESSIONS, cls, stream||'');
-  setTimeout(function(){window.print();},80);
-}
-
-/* Print all classes */
-function doPrintAll(){
-  buildPrintDoc(SESSIONS,'ALL','');
-  setTimeout(function(){window.print();},80);
-}
-
-/* WhatsApp — per class */
-function sendWAClass(cls, stream){
-  var dayData=SESSIONS.filter(function(r){
-    return sessDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!stream||r.stream===stream);
-  });
-  var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls;});
-  var label='Class '+cls+(stream?' · '+stream:'');
+function printClass(cls,stream,board){buildPrintDoc(SESSIONS,cls,stream||'',board||'');setTimeout(function(){window.print();},80);}
+function doPrintAll(){buildPrintDoc(SESSIONS,'ALL','','ALL');setTimeout(function(){window.print();},80);}
+function sendWAClass(cls,stream,board){
+  var dayData=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!stream||r.stream===stream)&&(!board||board==='ALL'||r.board===board);});
+  var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!board||board==='ALL'||r.syllabus===boardToSyl(board));});
+  var label='Class '+cls+(stream?' · '+stream:'')+(board&&board!=='ALL'?' · '+board:'');
   var lines=['*SEHR Academy · '+label+'*','📅 '+fmtLong(CUR_DATE),''];
-  if(dayData.length){
-    var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
-    lines.push('*Sessions: '+dayData.length+' · '+hrsFmt(totalMins)+'*');
-    dayData.forEach(function(r){
-      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
-      lines.push('');
-      lines.push('👨‍🏫 '+r.teacher_name+' · '+r.subject+' ('+r.board+')');
-      lines.push('🕐 '+r.start_time+' – '+r.end_time+' · '+r.mode);
-      if(chaps.length)lines.push('📖 '+chaps.join(', '));
-      if(r.topics)lines.push('💡 '+r.topics.substring(0,150)+(r.topics.length>150?'…':''));
-      if(r.homework&&r.homework.trim())lines.push('📝 HW: '+r.homework.substring(0,120));
-    });
-  }
-  if(attRows.length){
-    var ap=attRows.filter(function(r){return r.status==='Present';}).length;
-    var aa=attRows.length-ap;
-    var abList=attRows.filter(function(r){return r.status==='Absent';});
-    lines.push('');lines.push('*Attendance*');
-    lines.push('✅ Present: '+ap+' | ❌ Absent: '+aa+' | 📊 '+Math.round(ap/attRows.length*100)+'%');
-    if(abList.length){lines.push('Absent: '+abList.map(function(r){return r.full_name;}).join(', '));}
-  }
+  if(dayData.length){var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);lines.push('*'+dayData.length+' session'+(dayData.length>1?'s':'')+' · '+hrsFmt(totalMins)+'*');
+    dayData.forEach(function(r){var chaps=(r.chapters||'').split(' | ').filter(Boolean);lines.push('');lines.push('👨‍🏫 '+r.teacher_name+' · '+r.subject+' ('+r.board+')');lines.push('🕐 '+r.start_time+' – '+r.end_time+' · '+r.mode);if(chaps.length)lines.push('📖 '+chaps.join(', '));if(r.topics)lines.push('💡 '+r.topics.substring(0,150)+(r.topics.length>150?'…':''));if(r.homework&&r.homework.trim())lines.push('📝 HW: '+r.homework.substring(0,120));});}
+  if(attRows.length){var ap=attRows.filter(function(r){return r.status==='Present';}).length;var abList=attRows.filter(function(r){return r.status==='Absent';});lines.push('');lines.push('*Attendance*');lines.push('✅ Present: '+ap+' | ❌ Absent: '+(attRows.length-ap)+' | 📊 '+Math.round(ap/attRows.length*100)+'%');if(abList.length)lines.push('Absent: '+abList.map(function(r){return r.full_name;}).join(', '));}
   lines.push('');lines.push('_SEHR Academy_');
   window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
 }
-
-/* WhatsApp — all */
 function sendWAAll(){
   var dayData=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE;});
   var attDay=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE;});
   var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
   var chapSet={};dayData.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
-  var lines=['*SEHR Academy · Daily Report*','📅 '+fmtLong(CUR_DATE),''];
-  lines.push('*Summary*');
-  lines.push('📚 Sessions: '+dayData.length);
-  lines.push('⏱ Teaching: '+hrsFmt(totalMins));
-  lines.push('📖 Chapters: '+Object.keys(chapSet).length);
-  if(attDay.length){
-    var ap=attDay.filter(function(r){return r.status==='Present';}).length;
-    lines.push('👥 Attendance: '+ap+'/'+attDay.length+' ('+Math.round(ap/attDay.length*100)+'%)');
-  }
-  var byClass={};
-  dayData.forEach(function(r){var k=r.class+(r.stream?'|'+r.stream:'');if(!byClass[k])byClass[k]=[];byClass[k].push(r);});
-  Object.keys(byClass).sort().forEach(function(key){
-    var sessions=byClass[key];var r0=sessions[0];
-    var label='Class '+r0.class+(r0.stream?' '+r0.stream:'');
-    lines.push('');lines.push('*'+label+'*');
-    sessions.forEach(function(r){
-      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
-      lines.push('• '+r.teacher_name+' · '+r.subject+' · '+r.start_time+'-'+r.end_time);
-      if(chaps.length)lines.push('  📖 '+chaps.join(', '));
-      if(r.homework&&r.homework.trim())lines.push('  📝 HW assigned');
-    });
-    var att=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===r0.class;});
-    if(att.length){var ap2=att.filter(function(r){return r.status==='Present';}).length;lines.push('  👥 '+ap2+'/'+att.length+' present');}
-  });
+  var lines=['*SEHR Academy · Daily Report*','📅 '+fmtLong(CUR_DATE),'','*Summary*','📚 Sessions: '+dayData.length,'⏱ Teaching: '+hrsFmt(totalMins),'📖 Chapters: '+Object.keys(chapSet).length];
+  if(attDay.length){var ap=attDay.filter(function(r){return r.status==='Present';}).length;lines.push('👥 Attendance: '+ap+'/'+attDay.length+' ('+Math.round(ap/attDay.length*100)+'%)');}
+  var byClass={};dayData.forEach(function(r){var k=r.class+(r.stream?'|'+r.stream:'');if(!byClass[k])byClass[k]=[];byClass[k].push(r);});
+  Object.keys(byClass).sort().forEach(function(key){var sessions=byClass[key];var r0=sessions[0];var label='Class '+r0.class+(r0.stream?' '+r0.stream:'');lines.push('');lines.push('*'+label+'*');sessions.forEach(function(r){var chaps=(r.chapters||'').split(' | ').filter(Boolean);lines.push('• '+r.teacher_name+' · '+r.subject+' · '+r.start_time+'-'+r.end_time);if(chaps.length)lines.push('  📖 '+chaps.join(', '));if(r.homework&&r.homework.trim())lines.push('  📝 HW assigned');});var att=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===r0.class;});if(att.length){var ap2=att.filter(function(r){return r.status==='Present';}).length;lines.push('  👥 '+ap2+'/'+att.length+' present');}});
   lines.push('');lines.push('_SEHR Academy_');
   window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
 }
 
-/* DATE PICKER */
-function toggleDP(){var drop=g('dpDrop'),disp=g('dpDisp'),open=drop.classList.toggle('open');disp.classList.toggle('open',open);if(open)renderDP();}
+/* ══ DATE PICKER ══ */
+function toggleDP(){var drop=g('dpDrop'),disp=g('dpDisp'),open=drop.classList.toggle('open');disp.style.borderColor=open?'var(--li)':'';if(open)renderDP();}
 function dpPrev(){CAL_M--;if(CAL_M<0){CAL_M=11;CAL_Y--;}renderDP();}
 function dpNext(){CAL_M++;if(CAL_M>11){CAL_M=0;CAL_Y++;}renderDP();}
 function renderDP(){
@@ -1095,16 +1544,12 @@ function renderDP(){
   for(var i=0;i<first;i++)cells.push({emp:true});
   for(var d=1;d<=dim;d++){var ds=CAL_Y+'-'+pad(CAL_M+1)+'-'+pad(d);cells.push({d:d,ds:ds,hd:AVAIL.indexOf(ds)>-1,td:ds===td,sel:ds===CUR_DATE});}
   while(cells.length%7)cells.push({emp:true});
-  for(var w=0;w<cells.length;w+=7){
-    html+='<div class="dp-week">';
-    for(var wd=0;wd<7;wd++){var c=cells[w+wd];if(c.emp){html+='<div class="dp-day emp"></div>';continue;}var cl='dp-day'+(c.hd?' hd':'')+(c.td?' tdy':'')+(c.sel?' sel':'');html+='<div class="'+cl+'" onclick="selectDate(\''+c.ds+'\')">'+c.d+'</div>';}
-    html+='</div>';
-  }
+  for(var w=0;w<cells.length;w+=7){html+='<div class="dp-week">';for(var wd=0;wd<7;wd++){var c=cells[w+wd];if(c.emp){html+='<div class="dp-day emp"></div>';continue;}var cl='dp-day'+(c.hd?' hd':'')+(c.td?' tdy':'')+(c.sel?' sel':'');html+='<div class="'+cl+'" onclick="selectDate(\''+c.ds+'\')">'+c.d+'</div>';}html+='</div>';}
   g('dpCal').innerHTML=html;
 }
-function selectDate(d){CUR_DATE=d;updateDPDisp();renderDP();g('dpDrop').classList.remove('open');g('dpDisp').classList.remove('open');renderAll();}
-function updateDPDisp(){g('dpTxt').textContent=CUR_DATE?fmtShort(CUR_DATE):'Select date';}
-document.addEventListener('click',function(e){if(!g('dpWrap').contains(e.target)){g('dpDrop').classList.remove('open');g('dpDisp').classList.remove('open');}});
+function selectDate(d){CUR_DATE=d;updateDPDisp();renderDP();g('dpDrop').classList.remove('open');g('dpDisp').style.borderColor='';renderAll();}
+function updateDPDisp(){g('dpTxt').textContent=CUR_DATE?fmtShort(CUR_DATE):'Today';}
+document.addEventListener('click',function(e){if(!g('dpWrap').contains(e.target)){g('dpDrop').classList.remove('open');g('dpDisp').style.borderColor='';}});
 
 init();
 </script>
