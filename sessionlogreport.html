@@ -995,9 +995,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <div class="dp-cal" id="dpCal"></div>
       </div>
     </div>
-    <div id="tbPeriodBadge" class="tb-period-badge">Today</div><div class="tb-spacer"></div>
-    <div class="tb-right">
-      <button class="tb-btn tb-btn-primary" onclick="doPrintAll()">
+    <button class="tb-btn tb-btn-primary" onclick="doPrintAll()">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         <span class="btn-lbl">Print All</span>
       </button>
@@ -1635,7 +1633,7 @@ function buildProgressView(data,el){
 
   var html='';
 
-  Object.keys(printTree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
+  Object.keys(tree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
     var clsData=tree[cls];
     var totalSess=data.filter(function(r){return r.class===cls;}).length;
     var totalMins=data.filter(function(r){return r.class===cls;}).reduce(function(a,r){return a+(+r.duration_mins||0);},0);
@@ -1896,6 +1894,7 @@ function buildProgressView(data,el){
   printBtn.onclick=printProgress;
 
   topBar.appendChild(note);
+  topBar.appendChild(selWrap);
   topBar.appendChild(printBtn);
 
   var pel=g('vProgress');
@@ -2517,10 +2516,16 @@ function printProgress(){
     alert('No progress data loaded. Open the Progress view first.');return;
   }
   var tree=window._progressTree;
-  var selCls='ALL'; // print all classes
+  var selCls='ALL';
+  var printTree=tree;
   var fc=parseCurCls();
   var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-  var printTree=tree; // print all classes
+  // Filter tree if specific class selected
+  var printTree={};
+  Object.keys(tree).forEach(function(cls){
+    if(selCls==='ALL'||cls===selCls) printTree[cls]=tree[cls];
+  });
+  if(!Object.keys(printTree).length){alert('No data for selected class.');return;}
   var html='<div class="pgpr-doc">';
   html+='<div class="pgpr-top-bar"></div>';
   html+='<div class="pgpr-hdr">'+
@@ -2532,7 +2537,7 @@ function printProgress(){
     '</div>'+
   '</div>';
 
-  Object.keys(printTree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
+  Object.keys(tree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
     var clsData=tree[cls];
     // Overall coverage
     var totalMaster=0,totalCovered=0;
