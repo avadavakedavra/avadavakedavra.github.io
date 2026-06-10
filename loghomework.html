@@ -318,7 +318,7 @@ body{overscroll-behavior-y:contain}
   height:1px;background:linear-gradient(90deg,transparent,var(--li),transparent);
   opacity:.4;
 }
-.bnav-item{
+.bnav-item{background:none;border:none;cursor:pointer;outline:none;
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:3px;padding:10px 4px;
   text-decoration:none;color:rgba(255,255,255,.38);
@@ -343,6 +343,57 @@ body{overscroll-behavior-y:contain}
 @media(min-width:600px){
   .screen.on .page{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
 }
+
+
+/* ══ NAVIGATION CONFIRM MODAL ══ */
+.nav-modal-bg{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:900;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+}
+.nav-modal-bg.on{display:flex;animation:fIn .18s var(--e1)}
+.nav-modal{
+  background:var(--wh);border-radius:18px 18px 0 0;
+  width:100%;max-width:480px;
+  padding:0 0 calc(16px + env(safe-area-inset-bottom,0px));
+  animation:fUp .22s var(--e1);
+}
+.nav-modal-handle{
+  width:36px;height:4px;border-radius:2px;
+  background:var(--ru);margin:12px auto 0;
+}
+.nav-modal-body{padding:20px 22px 8px}
+.nav-modal-icon{font-size:36px;text-align:center;margin-bottom:10px}
+.nav-modal-title{font-family:var(--fs);font-size:20px;color:var(--ink);
+  text-align:center;margin-bottom:5px}
+.nav-modal-sub{font-size:13px;color:var(--mu);text-align:center;
+  line-height:1.5;margin-bottom:20px}
+.nav-modal-dest{
+  background:var(--c2);border:1.5px solid var(--ru);border-radius:9px;
+  padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.nav-modal-dest-icon{font-size:20px;flex-shrink:0}
+.nav-modal-dest-name{font-size:14px;font-weight:800;color:var(--ink)}
+.nav-modal-dest-url{font-size:10px;color:var(--mu);margin-top:1px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-modal-btns{display:flex;flex-direction:column;gap:8px;padding:0 22px}
+.nav-modal-go{
+  width:100%;padding:14px;border:none;border-radius:10px;
+  background:var(--li);color:var(--ink);
+  font-family:var(--f);font-size:14px;font-weight:800;
+  cursor:pointer;transition:all .15s;
+  box-shadow:0 3px 12px rgba(139,197,63,.3);
+}
+.nav-modal-go:hover{background:var(--l2)}
+.nav-modal-go:active{transform:scale(.98)}
+.nav-modal-cancel{
+  width:100%;padding:13px;border:1.5px solid var(--ru);border-radius:10px;
+  background:var(--c2);color:var(--mu);
+  font-family:var(--f);font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .14s;
+}
+.nav-modal-cancel:hover{border-color:var(--ru);color:var(--ink2)}
+.nav-modal-cancel:active{transform:scale(.98)}
 
 </style>
 </head>
@@ -773,6 +824,28 @@ function setSaveLoad(on){
   g('saveSpin').classList.toggle('hidden',!on);
 }
 
+
+/* ══ NAVIGATION CONFIRM ══ */
+var _navTarget = '';
+function navConfirm(url, icon, name, urlLabel){
+  _navTarget = url;
+  g('navModalDestIcon').textContent = icon;
+  g('navModalDestName').textContent = name;
+  g('navModalDestUrl').textContent  = urlLabel||url;
+  g('navModalBg').classList.add('on');
+}
+function confirmNav(){
+  g('navModalBg').classList.remove('on');
+  if(_navTarget) window.location.href = _navTarget;
+}
+function closeNavModal(e){
+  if(!e || e.target === g('navModalBg')) g('navModalBg').classList.remove('on');
+}
+// Close on Escape
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') g('navModalBg').classList.remove('on');
+});
+
 // Enter key on login
 document.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&CUR_SCR==='s1')doLogin();
@@ -780,23 +853,46 @@ document.addEventListener('keydown',function(e){
 </script>
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <a class="bnav-item active" href="homeworktracker.html">
+  <button class="bnav-item active" onclick="void(0)">
     <span class="bnav-icon">📋</span>
     <span class="bnav-lbl">Homework</span>
-  </a>
-  <a class="bnav-item" href="markattendance.html">
+  </button>
+  <button class="bnav-item" onclick="navConfirm('markattendance.html','👥','Attendance Portal','Mark daily attendance')">
     <span class="bnav-icon">👥</span>
     <span class="bnav-lbl">Attendance</span>
-  </a>
-  <a class="bnav-item" href="sessionlog.html">
+  </button>
+  <button class="bnav-item" onclick="navConfirm('sessionlog.html','📚','Session Log','Log teaching sessions')">
     <span class="bnav-icon">📚</span>
     <span class="bnav-lbl">Session Log</span>
-  </a>
-  <a class="bnav-item" href="https://sehracademy.com/sessionlogreport">
+  </button>
+  <button class="bnav-item" onclick="navConfirm('https://sehracademy.com/sessionlogreport','📊','Session Reports','sehracademy.com/sessionlogreport')">
     <span class="bnav-icon">📊</span>
     <span class="bnav-lbl">Reports</span>
-  </a>
+  </button>
 </nav>
+
+<!-- NAVIGATION CONFIRM MODAL -->
+<div class="nav-modal-bg" id="navModalBg" onclick="closeNavModal(event)">
+  <div class="nav-modal">
+    <div class="nav-modal-handle"></div>
+    <div class="nav-modal-body">
+      <div class="nav-modal-icon" id="navModalIcon">🔗</div>
+      <div class="nav-modal-title" id="navModalTitle">Leave page?</div>
+      <div class="nav-modal-sub">Any unsaved marking will be lost if you navigate away.</div>
+      <div class="nav-modal-dest">
+        <div class="nav-modal-dest-icon" id="navModalDestIcon">📄</div>
+        <div>
+          <div class="nav-modal-dest-name" id="navModalDestName"></div>
+          <div class="nav-modal-dest-url" id="navModalDestUrl"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-modal-btns">
+      <button class="nav-modal-go" id="navModalGo" onclick="confirmNav()">Yes, go there</button>
+      <button class="nav-modal-cancel" onclick="closeNavModal()">Stay here</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
