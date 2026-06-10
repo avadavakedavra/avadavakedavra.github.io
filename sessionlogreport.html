@@ -59,7 +59,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
   border-bottom:3px solid var(--li);
   display:flex;align-items:center;
   padding:0 20px 0 0;gap:0;z-index:200;
-  overflow:hidden;position:relative;
+  position:relative;
 }
 .topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
 .topbar::after{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.08),transparent 60%);pointer-events:none}
@@ -251,7 +251,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .pct-pill-sm{font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;margin-left:6px;display:inline-flex;vertical-align:middle}
 
 /* ── PROGRESS VIEW ───────────────────────────────────────────────── */
-.pg-block{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:12px;animation:fadeUp .35s var(--e1) both;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.pg-block{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:visible;margin-bottom:12px;animation:fadeUp .35s var(--e1) both;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .pg-block:hover{border-color:rgba(139,197,63,.4);box-shadow:0 4px 16px rgba(139,197,63,.08)}
 .pg-cls-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;transition:background .13s;user-select:none;-webkit-user-select:none;flex-wrap:wrap;background:var(--bg3)}
 .pg-cls-hd:hover{background:var(--bg4)}
@@ -374,7 +374,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
   @page{margin:0;size:A4 portrait}
   html,body{background:#fff!important;margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;display:block!important}
   body>*{display:none!important}
+  .hwr-print{display:block!important;position:static!important}
   #printDoc{display:block!important;position:static!important;left:auto!important;top:auto!important;width:100%!important;font-family:'Inter',Arial,sans-serif!important}
+  #hwPrintDoc{display:block!important;position:static!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
+  #progressPrintDoc{display:block!important;position:static!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
 }
 /* reuse existing pr- print styles */
 .pr-doc{font-family:'Inter',Arial,sans-serif;color:#1a1a18;background:#fff;font-size:12px;line-height:1.5}
@@ -452,7 +455,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .pr-bot-bar{background:#8BC53F;height:4px;width:100%}
 
 /* ══ CHAPTER VIEW (QuanticApp style) ══ */
-.pg-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start}
+.pg-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start;overflow:visible}
 @media(max-width:1100px){.pg-layout{grid-template-columns:1fr}}
 
 /* Subject selector strip */
@@ -619,6 +622,28 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .hw-group-wa:hover{background:rgba(37,211,102,.14);border-color:rgba(37,211,102,.4)}
 .hw-group-wa svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
 
+
+/* ── MOBILE HEADER FIX ── */
+@media(max-width:768px){
+  .topbar{padding:0 10px 0 0;gap:0}
+  .tb-logo-wrap{padding:0 12px;width:auto;flex-shrink:0;border-right:none}
+  .tb-center{display:none}
+  .tb-search-wrap{display:none}
+  .tb-spacer{display:none}
+  .tb-period-badge{display:none}
+  .tb-btn svg{width:14px;height:14px}
+  .tb-btn{padding:7px 10px;gap:0}
+  .tb-btn .btn-lbl{display:none}
+}
+/* Mobile search bar — shown below topbar */
+.mob-search-bar{
+  display:none;padding:8px 12px;
+  background:var(--bg2);border-bottom:1.5px solid var(--border);
+  position:sticky;top:var(--topbar);z-index:99;
+}
+.mob-search-bar .tb-search-wrap{display:flex;width:100%}
+@media(max-width:768px){.mob-search-bar{display:block}}
+
 /* ── MOBILE RESPONSIVE ── */
 @media(max-width:768px){
   /* Hide sidebar on mobile — replaced by bottom drawer */
@@ -684,6 +709,252 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 @media(max-width:768px){
   .main{padding-bottom:70px}
 }
+
+/* ── VISUAL ENHANCEMENTS ── */
+/* Period indicator pill in topbar */
+.tb-period-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.2);font-size:10px;font-weight:700;color:var(--li3);letter-spacing:.04em;flex-shrink:0}
+/* KPI hover lift */
+.kpi-card{cursor:default}
+/* Sidebar active glow */
+.sb-item.on{box-shadow:0 0 0 1px rgba(139,197,63,.15) inset}
+/* Section titles with accent */
+.sec-title::before{animation:pulse 3s ease infinite}
+/* Chapter row hover — left accent bar grows */
+.ch-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--li);transition:width .15s;border-radius:0 2px 2px 0}
+.ch-row{position:relative}
+.ch-row:hover::before{width:3px}
+/* Board card selected glow */
+.pg-board-card.on{box-shadow:0 0 0 1px rgba(139,197,63,.25) inset,0 4px 16px rgba(139,197,63,.08)}
+/* Homework card entry animation stagger */
+.hw-card{transition:all .15s}
+/* Filter bar period active style */
+.sb-item.on .sb-item-icon{font-weight:900;color:var(--li3)}
+
+/* ── PREMIUM BOARD SELECTOR ── */
+.pg-board-cards{display:flex;gap:10px;padding:16px 18px;background:var(--bg3);border-bottom:1.5px solid var(--border);flex-wrap:wrap}
+.pg-board-card{flex:1;min-width:120px;padding:12px 16px;border-radius:10px;border:2px solid var(--border);background:var(--bg2);cursor:pointer;transition:all .16s;position:relative;overflow:hidden;display:flex;align-items:center;gap:10px}
+.pg-board-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--li);opacity:0;transition:opacity .16s}
+.pg-board-card:hover{border-color:rgba(139,197,63,.3)}
+.pg-board-card.on{border-color:rgba(139,197,63,.5);background:rgba(139,197,63,.06);box-shadow:0 0 0 1px rgba(139,197,63,.25) inset,0 4px 16px rgba(139,197,63,.08)}
+.pg-board-card.on::before{opacity:1}
+.pg-board-card-ic{width:36px;height:36px;border-radius:8px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:background .16s}
+.pg-board-card.on .pg-board-card-ic{background:rgba(139,197,63,.15)}
+.pg-board-card-info{flex:1;min-width:0}
+.pg-board-card-name{font-size:13px;font-weight:800;color:var(--text);line-height:1.2}
+.pg-board-card.on .pg-board-card-name{color:var(--li3)}
+.pg-board-card-meta{font-size:10px;color:var(--text3);margin-top:2px}
+.pg-board-card-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.pg-board-card.on .pg-board-card-check{background:var(--li);border-color:var(--li)}
+.pg-board-card-check svg{width:9px;height:9px;color:transparent;transition:color .12s}
+.pg-board-card.on .pg-board-card-check svg{color:#1a1a18}
+
+/* ── PREMIUM SUBJECT DROPDOWN ── */
+.subj-dropdown-wrap{position:relative;margin-bottom:14px;overflow:visible}
+.subj-dropdown-btn{width:100%;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg2);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .16s;user-select:none;-webkit-user-select:none}
+.subj-dropdown-btn:hover{border-color:rgba(139,197,63,.4)}
+.subj-dropdown-btn.open{border-color:var(--li);background:rgba(139,197,63,.04);border-radius:10px 10px 0 0}
+.subj-dropdown-ic{width:34px;height:34px;border-radius:7px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.subj-dropdown-label{flex:1;min-width:0}
+.subj-dropdown-name{font-size:14px;font-weight:800;color:var(--text)}
+.subj-dropdown-meta{font-size:10px;color:var(--text3);margin-top:1px}
+.subj-dropdown-arrow{color:var(--text3);font-size:12px;transition:transform .18s;flex-shrink:0}
+.subj-dropdown-btn.open .subj-dropdown-arrow{transform:rotate(180deg)}
+.subj-dropdown-menu{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:2px solid var(--li);border-top:none;border-radius:0 0 10px 10px;z-index:200;overflow:hidden;display:none;box-shadow:0 16px 40px rgba(0,0,0,.25)}
+.subj-dropdown-menu.open{display:block}
+.subj-dropdown-opt{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border)}
+.subj-dropdown-opt:last-child{border-bottom:none}
+.subj-dropdown-opt:hover{background:var(--bg3)}
+.subj-dropdown-opt.sel{background:rgba(139,197,63,.07)}
+.subj-dropdown-opt-ic{width:30px;height:30px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.subj-dropdown-opt.sel .subj-dropdown-opt-ic{background:rgba(139,197,63,.15)}
+.subj-dropdown-opt-name{font-size:13px;font-weight:700;color:var(--text2);flex:1}
+.subj-dropdown-opt.sel .subj-dropdown-opt-name{color:var(--li3)}
+.subj-dropdown-opt-stat{font-size:10px;font-weight:700;color:var(--text3);white-space:nowrap}
+.subj-dropdown-opt-check{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .14s}
+.subj-dropdown-opt.sel .subj-dropdown-opt-check{background:var(--li);border-color:var(--li)}
+.subj-dropdown-opt-check svg{width:8px;height:8px;color:transparent;transition:color .12s}
+.subj-dropdown-opt.sel .subj-dropdown-opt-check svg{color:#1a1a18}
+
+/* ══ VISUAL ENHANCEMENTS ══ */
+
+/* KPI cards — gradient top line + hover lift */
+.kpi-card::before{background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,transparent))}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08),0 0 0 1px rgba(139,197,63,.1)}
+.kpi-val{font-family:'DM Serif Display',serif}
+
+/* Sidebar — active item gradient */
+.sb-item.on{background:linear-gradient(90deg,rgba(139,197,63,.12),rgba(139,197,63,.04))}
+.sb-class-item.on{background:linear-gradient(90deg,rgba(139,197,63,.1),rgba(139,197,63,.03))}
+
+/* Day view class blocks — left accent border */
+.class-block{border-left:3px solid transparent;transition:all .18s}
+.class-block:hover{border-left-color:var(--li)}
+
+/* Chapter rows — animated left bar */
+.ch-row{position:relative;overflow:hidden}
+.ch-row::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--li);transform:scaleY(0);transition:transform .18s var(--e1);transform-origin:center}
+.ch-row:hover::after{transform:scaleY(1)}
+
+/* Attendance photos — ring on present */
+.att-table tr:not(.att-ab) .att-photo{box-shadow:0 0 0 2px var(--li)}
+
+/* Homework cards — gradient shimmer on hover */
+.hw-card{transition:all .16s}
+.hw-card:hover{transform:translateX(3px);border-color:rgba(139,197,63,.35)}
+.hw-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,197,63,.03),transparent 60%);pointer-events:none}
+
+/* HW text block — styled quote */
+.hw-text{border-left:3px solid var(--li);background:linear-gradient(90deg,rgba(139,197,63,.05),transparent)}
+
+/* Progress ring — drop shadow */
+.pg-cls-band svg circle:last-of-type{filter:drop-shadow(0 0 4px rgba(139,197,63,.4))}
+
+/* Board cards — premium gradient border on hover */
+.pg-board-card{transition:all .18s var(--e1)}
+.pg-board-card:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.pg-board-card.on{transform:none}
+
+/* Subject dropdown — backdrop blur on menu */
+.subj-dropdown-menu{backdrop-filter:blur(8px)}
+
+/* Overview table rows — left accent on hover */
+.data-table tbody tr{position:relative;transition:background .1s}
+.data-table tbody tr:hover{background:rgba(139,197,63,.04)!important}
+
+/* Filter bar — sticky with backdrop */
+.filter-bar{backdrop-filter:blur(12px);background:rgba(253,252,250,.9)!important}
+
+/* Section titles — weight */
+.sec-title{font-size:14px}
+
+/* Topbar glow line */
+.topbar::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--li3),var(--li),var(--lm,#c8e48e),var(--li),var(--li3));background-size:200% 100%;animation:shimmer 3s linear infinite;z-index:1}
+
+/* Sidebar top logo area gradient */
+.tb-logo-wrap::after{content:'';position:absolute;right:-1px;top:20%;bottom:20%;width:1px;background:linear-gradient(transparent,rgba(139,197,63,.3),transparent)}
+.tb-logo-wrap{position:relative}
+
+/* Page padding fade-in */
+.page-pad>*{animation:fadeUp .3s var(--e1) both}
+
+/* Mobile bottom nav active indicator */
+.mob-nav-item.on::after{content:'';position:absolute;bottom:0;left:25%;right:25%;height:2px;background:var(--li);border-radius:1px}
+.mob-nav-item{position:relative}
+
+/* Shimmer loading states */
+.skel-line{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:400% 100%;animation:shimmer 1.2s ease infinite}
+
+/* ══ HOMEWORK REPORT VIEW ══ */
+.hwr-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.hwr-filter-sel{padding:7px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .13s;outline:none}
+.hwr-filter-sel:focus{border-color:var(--li)}
+.hwr-tabs{display:flex;gap:0;border-bottom:1.5px solid var(--border);margin-bottom:16px}
+.hwr-tab{padding:9px 18px;border:none;background:transparent;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--text3);border-bottom:2.5px solid transparent;margin-bottom:-1.5px;transition:all .14s}
+.hwr-tab.on{color:var(--li3);border-bottom-color:var(--li)}
+.hwr-group{margin-bottom:20px;animation:fadeUp .3s var(--e1) both}
+.hwr-group-hd{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r2) var(--r2) 0 0;flex-wrap:wrap;gap:8px}
+.hwr-group-ic{font-size:18px;flex-shrink:0}
+.hwr-group-info{flex:1;min-width:0}
+.hwr-group-title{font-size:14px;font-weight:800;color:var(--text)}
+.hwr-group-meta{font-size:11px;color:var(--text3);margin-top:1px}
+.hwr-group-pills{display:flex;gap:5px;flex-wrap:wrap}
+.hwr-group-actions{display:flex;gap:6px;margin-left:auto;flex-shrink:0;flex-wrap:wrap}
+.hwr-action-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .14s;border:none;white-space:nowrap}
+.hwr-pdf-btn{background:var(--li);color:var(--ink)}
+.hwr-pdf-btn:hover{background:var(--li2)}
+.hwr-copy-btn{background:var(--bg4);border:1.5px solid var(--border)!important;color:var(--text2)}
+.hwr-copy-btn:hover{border-color:var(--border2)!important;color:var(--text)}
+.hwr-copy-btn.copied{background:var(--li-dim);border-color:rgba(139,197,63,.3)!important;color:var(--li3)}
+.hwr-action-btn svg{width:11px;height:11px;flex-shrink:0}
+/* Table */
+.hwr-table-wrap{background:var(--bg2);border:1.5px solid var(--border);border-top:none;border-radius:0 0 var(--r2) var(--r2);overflow-x:auto}
+.hwr-table{width:100%;border-collapse:collapse;min-width:600px}
+.hwr-table th{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);padding:8px 12px;background:var(--bg4);border-bottom:1.5px solid var(--border);text-align:left;white-space:nowrap}
+.hwr-table td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);vertical-align:middle}
+.hwr-table tr:last-child td{border-bottom:none}
+.hwr-table tr:hover td{background:rgba(255,255,255,.02)}
+.hwr-stu-av{width:28px;height:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:7px;border:1.5px solid var(--border)}
+.hwr-stu-mn{width:28px;height:28px;border-radius:6px;background:var(--ink);display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--li);vertical-align:middle;margin-right:7px;position:relative;overflow:hidden;flex-shrink:0}
+.hwr-stu-mn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hwr-nd{color:var(--red)!important;font-weight:700}
+.hwr-done{color:#16a34a!important;font-weight:700}
+.hwr-empty-group{padding:14px 16px;font-size:12px;color:var(--text3);font-style:italic;background:var(--bg2);border:1.5px solid var(--border);border-top:none;border-radius:0 0 var(--r2) var(--r2)}
+/* Print styles for HW report */
+.hwr-print{display:none;position:absolute;left:-9999px}
+@media print{
+  body>*{display:none!important}
+  .hwr-print{display:block!important;position:static!important;font-family:'Open Sans',Arial,sans-serif;color:#1a1a18;font-size:11px}
+}
+.hwr-pr-top-bar{height:5px;background:#8BC53F}
+.hwr-pr-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 28px 12px;border-bottom:1px solid #d8d4cb}
+.hwr-pr-logo{font-size:18px;font-weight:900;letter-spacing:-.3px;color:#1a1a18}
+.hwr-pr-logo span{color:#8BC53F}
+.hwr-pr-title{text-align:right;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7a7970}
+.hwr-pr-band{background:#1a1a18;padding:12px 28px;display:flex;align-items:center;justify-content:space-between}
+.hwr-pr-band-title{font-size:16px;font-weight:900;color:#fff;letter-spacing:-.3px}
+.hwr-pr-band-title span{color:#8BC53F}
+.hwr-pr-band-meta{font-size:10px;color:rgba(255,255,255,.4)}
+.hwr-pr-hw-box{margin:14px 28px;padding:10px 14px;background:#f5f2eb;border-left:3px solid #8BC53F;border-radius:0 6px 6px 0}
+.hwr-pr-hw-label{font-size:8px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#7a7970;margin-bottom:3px}
+.hwr-pr-hw-text{font-size:11px;color:#1a1a18;line-height:1.5}
+.hwr-pr-tbl{width:100%;border-collapse:collapse;margin:0 28px;width:calc(100% - 56px)}
+.hwr-pr-tbl th{font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#7a7970;padding:6px 8px;background:#ede9e0;border-bottom:1.5px solid #d8d4cb;text-align:left}
+.hwr-pr-tbl td{padding:6px 8px;border-bottom:1px solid #e4dfd4;font-size:10px;color:#2e2e2b;vertical-align:middle}
+.hwr-pr-tbl tr:last-child td{border-bottom:none}
+.hwr-pr-tbl tr.nd{background:#fef2f2}
+.hwr-pr-tbl tr.done{background:#f0f7e3}
+.hwr-pr-av{width:22px;height:22px;border-radius:4px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#8BC53F;position:relative;overflow:hidden;vertical-align:middle}
+.hwr-pr-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hwr-pr-footer{border-top:1px solid #d8d4cb;padding:8px 28px;display:flex;justify-content:space-between;font-size:8px;color:#b0ada4;margin-top:10px}
+.hwr-pr-bot-bar{height:4px;background:#8BC53F}
+
+/* ══ PROGRESS PRINT ══ */
+#progressPrintDoc{display:none;position:absolute;left:-9999px;top:0}
+@media print{
+  #progressPrintDoc{display:block!important;position:static!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
+}
+.pgpr-doc{font-family:'Open Sans',Arial,sans-serif;color:#1a1a18;font-size:11px;line-height:1.5}
+.pgpr-top-bar{height:5px;background:#8BC53F}
+.pgpr-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 28px 12px;border-bottom:1px solid #d8d4cb}
+.pgpr-logo{font-size:18px;font-weight:900;letter-spacing:-.3px;color:#1a1a18}
+.pgpr-logo span{color:#8BC53F}
+.pgpr-hdr-sub{font-size:9px;color:#7a7970;margin-top:2px}
+.pgpr-title-r{text-align:right}
+.pgpr-title-main{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1a1a18}
+.pgpr-title-sub{font-size:9px;color:#7a7970;margin-top:2px}
+.pgpr-cls-block{margin:14px 28px 0;border:1px solid #d8d4cb;border-radius:8px;overflow:hidden;page-break-inside:avoid}
+.pgpr-cls-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#1a1a18}
+.pgpr-cls-num{width:34px;height:34px;border-radius:7px;background:rgba(139,197,63,.2);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#8BC53F;flex-shrink:0;line-height:1}
+.pgpr-cls-info{flex:1}
+.pgpr-cls-title{font-size:13px;font-weight:800;color:#fff}
+.pgpr-cls-meta{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px}
+.pgpr-cls-ring{flex-shrink:0}
+.pgpr-board-label{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:#f5f2eb;border-bottom:1px solid #d8d4cb;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4a4a46}
+.pgpr-board-label span{color:#8BC53F}
+.pgpr-subj-row{display:flex;align-items:center;gap:10px;padding:7px 14px;border-bottom:1px solid #ede9e0}
+.pgpr-subj-row:last-child{border-bottom:none}
+.pgpr-subj-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pgpr-subj-name{font-size:11px;font-weight:700;color:#1a1a18;flex:1}
+.pgpr-subj-bar-wrap{display:flex;align-items:center;gap:8px;width:160px;flex-shrink:0}
+.pgpr-subj-bar{flex:1;height:5px;background:#e4dfd4;border-radius:3px;overflow:hidden}
+.pgpr-subj-bar-fill{height:100%;border-radius:3px}
+.pgpr-subj-pct{font-size:10px;font-weight:800;min-width:32px;text-align:right}
+.pgpr-subj-stats{font-size:9px;color:#7a7970;white-space:nowrap;width:80px;text-align:right;flex-shrink:0}
+.pgpr-ch-block{padding:6px 14px 8px 32px;background:#fdfcfa;border-bottom:1px solid #ede9e0}
+.pgpr-ch-block:last-child{border-bottom:none}
+.pgpr-ch-label{font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#b0ada4;margin-bottom:4px}
+.pgpr-ch-item{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f0ece4}
+.pgpr-ch-item:last-child{border-bottom:none}
+.pgpr-ch-dot-done{width:6px;height:6px;border-radius:50%;background:#8BC53F;flex-shrink:0}
+.pgpr-ch-dot-todo{width:6px;height:6px;border-radius:50%;border:1.5px solid #b0ada4;flex-shrink:0}
+.pgpr-ch-name{font-size:9px;color:#2e2e2b;flex:1}
+.pgpr-ch-name-dim{color:#b0ada4;font-style:italic}
+.pgpr-ch-sess{font-size:8px;color:#7a7970;white-space:nowrap}
+.pgpr-footer{border-top:1px solid #d8d4cb;padding:8px 28px;display:flex;justify-content:space-between;font-size:8px;color:#b0ada4;margin-top:14px}
+.pgpr-bot-bar{height:4px;background:#8BC53F}
+
+/* Progress print select */
+#pgPrintClsSel option{font-family:'Open Sans',sans-serif;font-weight:700}
 </style>
 </head>
 <body>
@@ -707,7 +978,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
     <input type="text" class="tb-search" id="searchBox" placeholder="Search teacher, subject, chapter…" oninput="applySearch()" autocomplete="off">
     <button class="tb-search-clear hidden" id="searchClear" onclick="clearSearch()">✕</button>
   </div>
-  <div class="tb-spacer"></div>
+  <div id="tbPeriodBadge" class="tb-period-badge">Today</div><div class="tb-spacer"></div>
   <div class="tb-right">
     <!-- Date picker -->
     <div class="dp-wrap" id="dpWrap">
@@ -724,23 +995,31 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <div class="dp-cal" id="dpCal"></div>
       </div>
     </div>
-    <button class="tb-btn tb-btn-primary" onclick="doPrintAll()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Print All
-    </button>
-    <button class="tb-btn tb-btn-wa" onclick="sendWAAll()">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
-      WhatsApp
-    </button>
+    <div id="tbPeriodBadge" class="tb-period-badge">Today</div><div class="tb-spacer"></div>
+    <div class="tb-right">
+      <button class="tb-btn tb-btn-primary" onclick="doPrintAll()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span class="btn-lbl">Print All</span>
+      </button>
+      <button class="tb-btn tb-btn-wa" onclick="sendWAAll()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        <span class="btn-lbl">WhatsApp</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="mob-search-bar">
+  <div class="tb-search-wrap">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="tb-search" id="searchBoxMob" placeholder="Search teacher, subject, chapter…" oninput="applySearchMob()" autocomplete="off">
+    <button class="tb-search-clear hidden" id="searchClearMob" onclick="clearSearchMob()">✕</button>
   </div>
 </div>
 
 <!-- APP BODY -->
 <div class="app-body">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <!-- Nav items -->
     <div class="sb-section">
       <div class="sb-section-label">Views</div>
       <div class="sb-item on" id="nav-overview" onclick="setView('overview',this)">
@@ -768,10 +1047,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <div class="sb-item-label">Homework</div>
       </div>
     </div>
-
     <div class="sb-divider"></div>
-
-    <!-- Period filter -->
     <div class="sb-section">
       <div class="sb-section-label">Period</div>
       <div class="sb-item on sb-period" onclick="setPeriod('day',this)"><div class="sb-item-icon">1</div><div class="sb-item-label">Today</div></div>
@@ -779,44 +1055,25 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="sb-item sb-period" onclick="setPeriod('month',this)"><div class="sb-item-icon">30</div><div class="sb-item-label">This Month</div></div>
       <div class="sb-item sb-period" onclick="setPeriod('all',this)"><div class="sb-item-icon">∞</div><div class="sb-item-label">All Time</div></div>
     </div>
-
     <div class="sb-divider"></div>
-
-    <!-- Class list -->
     <div class="sb-section">
       <div class="sb-section-label">Classes</div>
-      <div id="sbClasses">
-        <div class="loading-txt" style="padding:8px 10px;font-size:11px">Loading…</div>
-      </div>
+      <div id="sbClasses"><div class="loading-txt" style="padding:8px 10px;font-size:11px">Loading…</div></div>
     </div>
   </aside>
-
-  <!-- MAIN -->
   <main class="main" id="mainEl">
     <div class="loading-overlay" id="loadEl">
       <div class="loading-ring"></div>
       <div class="loading-txt" id="loadTxt">Connecting to SEHR Academy…</div>
     </div>
-
-    <!-- OVERVIEW -->
     <div id="vOverview" class="page-pad hidden">
       <div class="kpi-strip" id="kpiStrip"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
     </div>
-
-    <!-- DAY VIEW -->
     <div id="vDay" class="page-pad hidden"></div>
-
-    <!-- PROGRESS -->
     <div id="vProgress" class="page-pad hidden"></div>
-
-    <!-- CHAPTERS -->
     <div id="vChapters" class="page-pad hidden"></div>
-
-    <!-- TEACHERS -->
     <div id="vTeachers" class="page-pad hidden"></div>
-
-    <!-- HOMEWORK -->
     <div id="vHomework" class="page-pad hidden"></div>
   </main>
 </div>
@@ -830,8 +1087,20 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 </nav>
 
 <div id="printDoc"></div>
+<div id="hwPrintDoc" class="hwr-print"></div>
+<div id="progressPrintDoc"></div>
 
 <script>
+
+
+
+
+
+
+
+
+
+
 /* ══ CONFIG ══ */
 var SESSION_API = 'https://script.google.com/macros/s/AKfycbx-qC_S-wZnjvBW9LZGTU4Y36ZHMTVlgS__DIAl1ZZ404beOfAyJwwtGsv352UbiyOR/exec';
 var ATT_API     = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
@@ -987,6 +1256,8 @@ function setPeriod(p,btn){
   CUR_PERIOD=p;
   document.querySelectorAll('.sb-period').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
+  var labels={day:'Today',week:'This Week',month:'This Month',all:'All Time'};
+  var badge=g('tbPeriodBadge');if(badge)badge.textContent=labels[p]||p;
   renderAll();
 }
 
@@ -996,6 +1267,9 @@ function setView(v,btn){
   if(btn)btn.classList.add('on');
   ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework'].forEach(function(id){g(id).classList.add('hidden');});
   var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker'};
+  // Show/hide progress print button
+  var pgPrintBtn=g('pgPrintBtn');
+  if(pgPrintBtn) pgPrintBtn.style.display=(v==='progress'?'inline-flex':'none');
   g('tbPageTitle').textContent=titles[v]||v;
   g('v'+v.charAt(0).toUpperCase()+v.slice(1)).classList.remove('hidden');
   renderAll();
@@ -1306,20 +1580,45 @@ function switchAttBoard(btn,panelId){
 /* ══ PROGRESS VIEW ══ */
 function loadMasterChapters(cb){
   if(CHAPTERS_LOADED){cb();return;}
-  apiSess({action:'getChaptersList',appkey:SESS_PASS},function(data,err){
-    if(!err&&data&&data.success&&data.chapters){
-      data.chapters.forEach(function(r){var key=r.class+'|'+r.syllabus+'|'+r.subject;if(!MASTER_CHAPTERS[key])MASTER_CHAPTERS[key]=[];MASTER_CHAPTERS[key].push(r.chapter);});
+  var done=false;
+  function finish(data,source){
+    if(done)return; done=true;
+    var count=0;
+    if(data&&data.chapters&&data.chapters.length){
+      data.chapters.forEach(function(r){
+        var key=r.class+'|'+r.syllabus+'|'+r.subject;
+        if(!MASTER_CHAPTERS[key])MASTER_CHAPTERS[key]=[];
+        MASTER_CHAPTERS[key].push(r.chapter);
+        count++;
+      });
     }
-    CHAPTERS_LOADED=true;cb();
-  });
+    CHAPTERS_LOADED=true;
+    cb();
+  }
+  // Timeout fallback
+  setTimeout(function(){finish({chapters:[]});},8000);
+  try{
+    apiSess({action:'getChaptersList',appkey:SESS_PASS},function(data,err){
+      finish((!err&&data&&data.success)?data:{chapters:[]});
+    });
+  }catch(e){finish({chapters:[]});}
 }
 function renderProgress(data){
   var el=g('vProgress');
   el.innerHTML='<div class="loading-overlay"><div class="loading-ring"></div><div class="loading-txt">Loading chapter data…</div></div>';
-  loadMasterChapters(function(){buildProgressView(data,el);});
+  // Progress always shows ALL sessions for the selected class/board
+  // (period filter would hide subjects not taught in that window)
+  var fc=parseCurCls();
+  var progData=SESSIONS.filter(function(r){
+    if(fc.cls&&r.class!==fc.cls)return false;
+    if(fc.board&&r.board!==fc.board)return false;
+    return true;
+  });
+  loadMasterChapters(function(){buildProgressView(progData,el);});
 }
 function buildProgressView(data,el){
-  if(!data.length){el.innerHTML=noDataMsg();return;}
+  console.log('BPV called, data.length=',data?data.length:0);
+  if(!data||!data.length){el.innerHTML=noDataMsg();return;}
 
   // ── Build tree: class → board → subject → chapters ──────────────
   var tree={};
@@ -1342,7 +1641,7 @@ function buildProgressView(data,el){
 
   var html='';
 
-  Object.keys(tree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
+  Object.keys(printTree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
     var clsData=tree[cls];
     var totalSess=data.filter(function(r){return r.class===cls;}).length;
     var totalMins=data.filter(function(r){return r.class===cls;}).reduce(function(a,r){return a+(+r.duration_mins||0);},0);
@@ -1381,15 +1680,24 @@ function buildProgressView(data,el){
     }
     html+='</div>'; // end pg-cls-band
 
-    // ── Board tabs ────────────────────────────────────────────────
+    // ── Board cards ─────────────────────────────────────────────────
     var boards=Object.keys(clsData.boards).sort();
     html+='<div id="'+bodyId+'">';
     if(boards.length>1){
-      html+='<div class="pg-board-sel">';
+      html+='<div class="pg-board-cards">';
       boards.forEach(function(b,bi){
-        html+='<button class="pg-board-sel-tab'+(bi===0?' on':'')+'"'+
-          ' onclick="switchPgBoard(\''+bodyId+'\',this,\'pgpanel-'+bodyId+'-'+bi+'\')">';
-        html+=esc(b)+'</button>';
+        var bIc=BOARD_ICONS[b]||'📋';
+        var bS=Object.values(clsData.boards[b].subjects).reduce(function(a,s){return a+s.sessions.length;},0);
+        var bC=0;Object.values(clsData.boards[b].subjects).forEach(function(s){bC+=Object.keys(s.chapterMap).length;});
+        html+='<div class="pg-board-card'+(bi===0?' on':'')+'"'+
+          ' onclick="switchPgBoard(\''+bodyId+'\',this,\'pgpanel-'+bodyId+'-'+bi+'\')">'+
+          '<div class="pg-board-card-ic">'+bIc+'</div>'+
+          '<div class="pg-board-card-info">'+
+            '<div class="pg-board-card-name">'+esc(b)+'</div>'+
+            '<div class="pg-board-card-meta">'+bS+' sessions · '+bC+' ch</div>'+
+          '</div>'+
+          '<div class="pg-board-card-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+          '</div>';
       });
       html+='</div>';
     }
@@ -1406,15 +1714,37 @@ function buildProgressView(data,el){
       // LEFT: subject selector + chapter list
       html+='<div>';
 
-      // Subject selector pills
-      html+='<div class="subj-strip">';
+      // Subject dropdown
+      var ddId='sdd-'+bodyId+'-'+bi;
+      var firstSubj=subjects[0]||'';
+      var firstIc=SUBJ_ICONS[firstSubj]||'📚';
+      var firstSd=clsData.boards[board].subjects[firstSubj];
+      var firstSess=firstSd?firstSd.sessions.length:0;
+      html+='<div class="subj-dropdown-wrap">'+
+        '<div class="subj-dropdown-btn" id="'+ddId+'-btn" onclick="toggleSubjDD(\''+ddId+'\')">'+
+          '<div class="subj-dropdown-ic" id="'+ddId+'-ic">'+firstIc+'</div>'+
+          '<div class="subj-dropdown-label">'+
+            '<div class="subj-dropdown-name" id="'+ddId+'-name">'+esc(firstSubj)+'</div>'+
+            '<div class="subj-dropdown-meta" id="'+ddId+'-meta">'+firstSess+' sessions</div>'+
+          '</div>'+
+          '<span class="subj-dropdown-arrow">▾</span>'+
+        '</div>'+
+        '<div class="subj-dropdown-menu" id="'+ddId+'-menu">';
       subjects.forEach(function(subj,si){
-        var subjSafeId='subjpill-'+bodyId+'-'+bi+'-'+si;
-        var panelSubjId='subjpanel-'+bodyId+'-'+bi+'-'+si;
-        html+='<button class="subj-pill'+(si===0?' on':'')+'" id="'+subjSafeId+'"'+
-          ' onclick="switchSubject(\''+bodyId+'-'+bi+'\','+si+')">'+esc(subj)+'</button>';
+        var sIc=SUBJ_ICONS[subj]||'📚';
+        var sd2=clsData.boards[board].subjects[subj];
+        var sc=sd2?sd2.sessions.length:0;
+        var mc=sd2?Object.keys(sd2.chapterMap).length:0;
+        html+='<div class="subj-dropdown-opt'+(si===0?' sel':'')+'"'+
+          ' id="subjpill-'+bodyId+'-'+bi+'-'+si+'"'+
+          ' onclick="pickSubjDD(\''+ddId+'\','+si+',\''+esc(subj)+'\',\''+sIc+'\','+sc+')">'+
+          '<div class="subj-dropdown-opt-ic">'+sIc+'</div>'+
+          '<div class="subj-dropdown-opt-name">'+esc(subj)+'</div>'+
+          '<div class="subj-dropdown-opt-stat">'+sc+' sess · '+mc+' ch</div>'+
+          '<div class="subj-dropdown-opt-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+          '</div>';
       });
-      html+='</div>';
+      html+='</div></div>';
 
       // Subject panels
       subjects.forEach(function(subj,si){
@@ -1555,7 +1885,54 @@ function buildProgressView(data,el){
     html+='</div>'; // end pg-block
   });
 
+  console.log('BPV setting innerHTML, html length=',html?html.length:0);
   el.innerHTML=html||noDataMsg();
+  window._progressTree=tree; // store for PDF export
+  // Add all-time note at top
+  // Build top bar: info note + print button
+  var topBar=document.createElement('div');
+  topBar.style.cssText='display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap';
+
+  var note=document.createElement('div');
+  note.style.cssText='flex:1;font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;display:flex;align-items:center;gap:6px;min-width:0';
+  note.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Showing <b style="color:var(--text2)">all sessions</b> regardless of period filter.';
+
+  // Class selector dropdown
+  var clsSel=document.createElement('select');
+  clsSel.id='pgPrintClsSel';
+  clsSel.style.cssText='padding:7px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:700;color:var(--text);cursor:pointer;flex-shrink:0;outline:none;appearance:none;-webkit-appearance:none;padding-right:28px';
+  clsSel.innerHTML='<option value="ALL">All Classes</option>';
+  if(window._progressTree){
+    Object.keys(window._progressTree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
+      var opt=document.createElement('option');
+      opt.value=cls;
+      opt.textContent='Class '+cls;
+      clsSel.appendChild(opt);
+    });
+  }
+
+  var selWrap=document.createElement('div');
+  selWrap.style.cssText='position:relative;flex-shrink:0';
+  var arrowSpan=document.createElement('span');
+  arrowSpan.style.cssText='position:absolute;right:9px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:10px;color:var(--text3)';
+  arrowSpan.textContent='▾';
+  selWrap.appendChild(clsSel);
+  selWrap.appendChild(arrowSpan);
+
+  var printBtn=document.createElement('button');
+  printBtn.style.cssText='display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:7px;border:none;background:var(--li);color:var(--ink);font-family:var(--f);font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0;white-space:nowrap;box-shadow:0 3px 12px rgba(139,197,63,.3)';
+  printBtn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Export PDF';
+  printBtn.onclick=printProgress;
+
+  topBar.appendChild(note);
+  topBar.appendChild(selWrap);
+  topBar.appendChild(printBtn);
+
+  try{
+    var pel=g('vProgress');
+    if(pel&&pel.firstChild)pel.insertBefore(topBar,pel.firstChild);
+    else if(pel)pel.appendChild(topBar);
+  }catch(e){console.error('topBar inject error:',e);}
 }
 
 function toggleChRow(chId){
@@ -1594,7 +1971,7 @@ function switchPgBoard(bodyId,btn,panelId){
   var body=g(bodyId);
   if(!body)return;
   // Deselect all board tabs
-  body.querySelectorAll('.pg-board-tab,.pg-board-sel-tab').forEach(function(b){b.classList.remove('on');});
+  body.querySelectorAll('.pg-board-tab,.pg-board-sel-tab,.pg-board-card').forEach(function(b){b.classList.remove('on');});
   // Hide only panels that belong to this bodyId (prefix match, scoped to this block)
   var prefix='pgpanel-'+bodyId+'-';
   var allDivs=body.getElementsByTagName('div');
@@ -1746,6 +2123,8 @@ function sendWAAll(){
 
 /* ══ SEARCH ══ */
 var SEARCH_TERM = '';
+var SUBJ_ICONS = {"Mathematics": "\ud83d\udcd0", "Physics": "\u26a1", "Chemistry": "\ud83e\uddea", "Biology": "\ud83c\udf3f", "English": "\ud83d\udcda", "Social Science": "\ud83c\udf0d", "Hindi": "\ud83d\udd24", "Malayalam": "\ud83d\udd24", "IT": "\ud83d\udcbb", "Computer Science": "\ud83d\udcbb", "Accountancy": "\ud83d\udcd2", "Business Studies": "\ud83d\udcca", "Economics": "\ud83d\udcb9", "Informatics Practices": "\ud83d\udda5\ufe0f", "Science": "\ud83d\udd2c"};
+var BOARD_ICONS = {"CBSE": "\ud83c\udf93", "Kerala State": "\ud83c\udfdb\ufe0f", "NEET Prep": "\ud83c\udfe5", "JEE Prep": "\u2699\ufe0f"};
 function applySearch(){
   var term = g('searchBox').value.trim().toLowerCase();
   SEARCH_TERM = term;
@@ -1755,6 +2134,19 @@ function applySearch(){
   // If not on a searchable view, switch to chapters/sessions view
   if(['overview','progress'].indexOf(CUR_VIEW) > -1) setView('chapters', g('nav-chapters'));
   else renderAll();
+}
+function applySearchMob(){
+  var box=g('searchBoxMob');
+  if(!box)return;
+  g('searchBox').value=box.value;
+  g('searchClearMob').classList.toggle('hidden',!box.value.trim());
+  applySearch();
+}
+function clearSearchMob(){
+  g('searchBoxMob').value='';
+  g('searchBox').value='';
+  g('searchClearMob').classList.add('hidden');
+  clearSearch();
 }
 function clearSearch(){
   SEARCH_TERM='';
@@ -1785,214 +2177,305 @@ function searchFilter(sessions){
 
 /* ══ HOMEWORK TRACKER ══ */
 function renderHomework(){
-  var el = g('vHomework');
-  var allWithHw = SESSIONS.filter(function(r){
-    return r.homework && r.homework.trim();
-  });
-  var fc = parseCurCls();
-  if(fc.cls)   allWithHw = allWithHw.filter(function(r){return r.class===fc.cls;});
-  if(fc.board) allWithHw = allWithHw.filter(function(r){return r.board===fc.board;});
-  if(SEARCH_TERM) allWithHw = searchFilter(allWithHw);
-  allWithHw.sort(function(a,b){
-    return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
-  });
-  if(!allWithHw.length){ el.innerHTML=noDataMsg(); return; }
+  var el=g('vHomework');
+  el.innerHTML='<div class="loading-overlay"><div class="loading-ring"></div><div class="loading-txt">Loading homework records…</div></div>';
 
-  var today = new Date();
-  var last14 = allWithHw.filter(function(r){
-    return Math.floor((today - new Date(sessDateToYMD(r.date)))/86400000) <= 14;
-  });
-  var clsSet = new Set(allWithHw.map(function(r){return r.class;}));
-  var teacherSet = new Set(allWithHw.map(function(r){return r.teacher_name;}));
+  // Load from HomeworkTracking sheet + session log homework assignments
+  var fc=parseCurCls();
+  var p={action:'getHomeworkTracking',appkey:SESS_PASS};
+  if(fc.cls) p.class=fc.cls;
 
-  var html = '<div class="hw-summary-strip">';
-  html += hwSumCard('📝', allWithHw.length, 'Total Assignments', 'rgba(139,197,63,.1)');
-  html += hwSumCard('📅', last14.length, 'Last 14 Days', 'rgba(79,142,247,.1)');
-  html += hwSumCard('🎓', clsSet.size, 'Classes', 'rgba(167,139,250,.1)');
-  html += hwSumCard('👨‍🏫', teacherSet.size, 'Teachers', 'rgba(45,212,191,.1)');
-  html += '</div>';
+  // Run both in parallel: get tracking records + session homework list
+  var trackDone=false, sessDone=false;
+  var TRACK_RECS=[], SESS_HW=[];
 
-  // Group by class
-  var byClass = {};
-  allWithHw.forEach(function(r){
-    var key = r.class+(r.board?'|'+r.board:'');
-    if(!byClass[key]) byClass[key] = {class:r.class,board:r.board||'',stream:r.stream||'',items:[]};
-    byClass[key].items.push(r);
-  });
-
-  Object.keys(byClass).sort(function(a,b){
-    var ca=byClass[a],cb=byClass[b];
-    return +ca.class - +cb.class || ca.board.localeCompare(cb.board);
-  }).forEach(function(key, gi){
-    var grp = byClass[key];
-    var grpLabel = 'Class '+grp.class+(grp.board?' · '+grp.board:'')+(grp.stream?' · '+grp.stream:'');
-    var safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');  // safe for onclick attr
-    html += '<div class="hw-group">';
-    html += '<div class="hw-group-hd">';
-    html += '<div class="hw-group-title">'+esc(grpLabel)+'</div>';
-    html += '<span class="hw-group-count">'+grp.items.length+' assignment'+(grp.items.length>1?'s':'')+'</span>';
-    // Group-level WA + copy buttons
-    html += '<div class="hw-group-actions">';
-    html += '<button class="hw-group-wa" onclick="sendHWGroupWA(\''+safeKey+'\')" title="Send all to WA">';
-    html += '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>';
-    html += 'Send All to WA</button>';
-    html += '</div>';
-    html += '</div>';
-
-    grp.items.forEach(function(r, i){
-      var date = sessDateToYMD(r.date);
-      var daysAgo = Math.floor((today - new Date(date))/86400000);
-      var isRecent = daysAgo <= 7;
-      var dateLabel = daysAgo===0?'Today':daysAgo===1?'Yesterday':fmtShort(date);
-      var chaps = (r.chapters||'').split(' | ').filter(Boolean);
-      // encode session data for onclick handlers
-      var idx = allWithHw.indexOf(r);
-
-      html += '<div class="hw-card'+(isRecent&&daysAgo>3?' hw-overdue':'')+'" style="animation-delay:'+Math.min(i*0.04,0.4)+'s">';
-      html += '<div class="hw-card-top">';
-      html += '<div class="hw-card-subject">'+hlSearch(r.subject)+'</div>';
-      html += '<div class="hw-card-date">'+dateLabel+'</div>';
-      html += '</div>';
-      html += '<div class="hw-card-badges">';
-      html += '<span class="badge badge-b">'+esc(r.board)+'</span>';
-      html += '<span class="badge badge-g">Class '+esc(r.class)+'</span>';
-      html += '<span class="badge badge-n">'+esc(r.session_type)+'</span>';
-      if(isRecent) html += '<span class="badge badge-a">Recent</span>';
-      html += '</div>';
-      html += '<div class="hw-text">'+hlSearch(r.homework)+'</div>';
-      html += '<div class="hw-meta">';
-      html += '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="11" height="11"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>';
-      html += '<span class="hw-meta-teacher">'+esc(r.teacher_name)+'</span>';
-      html += '<span>·</span><span>'+fmtLong(date)+'</span>';
-      if(chaps.length) html += '<span>· '+esc(chaps.slice(0,2).join(', '))+(chaps.length>2?' +'+( chaps.length-2):'')+'</span>';
-      html += '</div>';
-      // Action buttons
-      html += '<div class="hw-actions">';
-      html += '<a class="hw-wa-btn" href="'+buildHWWALink(r)+'" target="_blank" rel="noopener">';
-      html += '<svg viewBox="0 0 24 24"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>';
-      html += 'Send via WhatsApp</a>';
-      html += '<button class="hw-copy-btn" id="hwcopy-'+gi+'-'+i+'" onclick="copyHW(this,'+gi+','+i+')">';
-      html += '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-      html += 'Copy Text</button>';
-      html += '</div>';
-      html += '</div>';
-    });
-    html += '</div>';
-  });
-
-  el.innerHTML = html;
-  // Store data reference for copy/WA callbacks
-  el._hwData = byClass;
-}
-
-function toggleHWArchive(bannerId, bodyId){
-  var banner = g(bannerId), body = g(bodyId);
-  if(!banner||!body) return;
-  var open = body.classList.toggle('open');
-  banner.classList.toggle('open', open);
-}
-
-function buildHWWALink(r){
-  var msg = buildHWMsg(r);
-  return 'https://wa.me/?text='+encodeURIComponent(msg);
-}
-
-function buildHWMsg(r){
-  var chaps = (r.chapters||'').split(' | ').filter(Boolean);
-  var lines = [];
-  lines.push('📚 *SEHR Academy — Homework*');
-  lines.push('');
-  lines.push('*Class '+r.class+(r.stream?' · '+r.stream:'')+'  |  '+r.subject+'  |  '+r.board+'*');
-  lines.push('📅 '+fmtLong(sessDateToYMD(r.date)));
-  lines.push('👨‍🏫 '+r.teacher_name);
-  if(chaps.length){
-    lines.push('');
-    lines.push('📖 *Chapters:* '+chaps.join(', '));
+  function tryRender(){
+    if(!trackDone||!sessDone) return;
+    buildHWReport(el, TRACK_RECS, SESS_HW, fc);
   }
-  lines.push('');
-  lines.push('📝 *Homework:*');
-  lines.push(r.homework.trim());
-  lines.push('');
-  lines.push('_Please complete before the next class._');
-  lines.push('_— SEHR Academy_');
-  return lines.join('\n');
+
+  apiSess(p, function(data,err){
+    if(!err&&data&&data.success) TRACK_RECS=data.records||[];
+    trackDone=true; tryRender();
+  });
+
+  // Also get all session homework for the full assignment list
+  var sp={action:'getAllLogs',appkey:SESS_PASS};
+  apiSess(sp, function(data,err){
+    if(!err&&data&&data.success){
+      SESS_HW=(data.logs||[]).filter(function(r){
+        return r.homework&&r.homework.trim();
+      });
+      if(fc.cls)   SESS_HW=SESS_HW.filter(function(r){return r.class===fc.cls;});
+      if(fc.board) SESS_HW=SESS_HW.filter(function(r){return r.board===fc.board;});
+    }
+    sessDone=true; tryRender();
+  });
 }
 
-function buildHWGroupMsg(grpItems, grpLabel){
-  var lines = [];
-  lines.push('📚 *SEHR Academy — Homework Update*');
-  lines.push('*'+grpLabel+'*');
-  lines.push('');
-  grpItems.forEach(function(r, i){
-    var chaps = (r.chapters||'').split(' | ').filter(Boolean);
-    lines.push('*'+(i+1)+'. '+r.subject+'* — '+r.teacher_name);
-    lines.push('📅 '+fmtShort(sessDateToYMD(r.date)));
-    if(chaps.length) lines.push('📖 '+chaps.join(', '));
-    lines.push('📝 '+r.homework.trim());
-    if(i < grpItems.length-1) lines.push('');
+function buildHWReport(el, tracks, sessHw, fc){
+  // Build a key for each unique homework assignment from session logs
+  // Key: class|board|subject|hw_date
+  var assignMap={};
+  sessHw.forEach(function(r){
+    var date=sessDateToYMD(r.date);
+    var key=r.class+'|'+r.board+'|'+r.subject+'|'+date;
+    if(!assignMap[key]) assignMap[key]={
+      key:key,class:r.class,board:r.board,stream:r.stream||'',
+      subject:r.subject,teacher:r.teacher_name,
+      hw_date:date,homework:r.homework,
+      chapters:(r.chapters||'').split(' | ').filter(Boolean)
+    };
   });
-  lines.push('');
-  lines.push('_Please complete before the next class._');
-  lines.push('_— SEHR Academy_');
-  return lines.join('\n');
+
+  // Group tracking records by hw_date+class+subject
+  var trackMap={};
+  tracks.forEach(function(r){
+    var k=r.class+'|'+(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'|'+r.subject+'|'+r.hw_date;
+    if(!trackMap[k]) trackMap[k]=[];
+    trackMap[k].push(r);
+  });
+
+  var assignments=Object.values(assignMap).sort(function(a,b){
+    return b.hw_date.localeCompare(a.hw_date);
+  });
+
+  if(!assignments.length){
+    el.innerHTML=noDataMsg();
+    return;
+  }
+
+  // Summary strip
+  var totalAssign=assignments.length;
+  var totalTracked=Object.keys(trackMap).length;
+  var totalNd=tracks.length;
+  var classSet=new Set(assignments.map(function(a){return a.class;}));
+
+  var html=
+    '<div class="hw-summary-strip" style="margin-bottom:16px">'+
+    hwSumCard('📋',totalAssign,'Assignments','rgba(139,197,63,.1)')+
+    hwSumCard('✅',totalTracked,'Marked','rgba(79,142,247,.1)')+
+    hwSumCard('❌',totalNd,'Not Submitted','rgba(220,38,38,.08)')+
+    hwSumCard('🎓',classSet.size,'Classes','rgba(167,139,250,.1)')+
+    '</div>';
+
+  // View tabs: All / Not Submitted / Submitted
+  html+='<div class="hwr-tabs">'+
+    '<button class="hwr-tab on" onclick="setHWTab(\"all\",this)">All Assignments</button>'+
+    '<button class="hwr-tab" onclick="setHWTab(\"nd\",this)">Not Submitted</button>'+
+    '<button class="hwr-tab" onclick="setHWTab(\"done\",this)">Submitted</button>'+
+    '</div>';
+
+  html+='<div id="hwTabContent">';
+  html+=buildHWTabContent(assignments, trackMap, 'all');
+  html+='</div>';
+
+  el.innerHTML=html;
+  // Store for tab switching
+  el._assignments=assignments;
+  el._trackMap=trackMap;
 }
 
-function sendHWGroupWA(safeKey){
-  var el = g('vHomework');
-  if(!el._hwData) return;
-  var today = new Date();
-  var grp = null;
-  Object.keys(el._hwData).forEach(function(k){
-    if(k.replace(/[^a-zA-Z0-9]/g,'_')===safeKey) grp=el._hwData[k];
+function buildHWTabContent(assignments, trackMap, tab){
+  window._hwGroupData={}; // reset global data map
+  var html='';
+  assignments.forEach(function(a,gi){
+    var trackRecs=trackMap[a.key]||[];
+    var ndRecs=trackRecs; // all records in tracking are "not done"
+    var ic=SUBJ_ICONS[a.subject]||'📝';
+    var today=new Date();
+    var daysAgo=Math.floor((today-new Date(a.hw_date))/86400000);
+    var dateLabel=daysAgo===0?'Today':daysAgo===1?'Yesterday':fmtShort(a.hw_date);
+    var marked=trackRecs.length>0;
+
+    // Tab filter
+    if(tab==='nd'&&!marked) return;
+    if(tab==='done'&&marked) return;
+
+    var safeKey=a.key.replace(/[^a-zA-Z0-9]/g,'_');
+
+    html+='<div class="hwr-group" id="hwg-'+safeKey+'">';
+    // Group header
+    html+='<div class="hwr-group-hd">';
+    html+='<div class="hwr-group-ic">'+ic+'</div>';
+    html+='<div class="hwr-group-info">'+
+      '<div class="hwr-group-title">'+esc(a.subject)+' &nbsp;·&nbsp; Class '+esc(a.class)+(a.stream?' '+esc(a.stream):'')+' &nbsp;·&nbsp; '+esc(a.board)+'</div>'+
+      '<div class="hwr-group-meta">'+esc(a.teacher)+' &nbsp;·&nbsp; Given: '+dateLabel+
+        (trackRecs.length?' &nbsp;·&nbsp; Marked: '+fmtShort(trackRecs[0].marked_date||''):'&nbsp;·&nbsp; <span style="color:var(--amber)">Not yet marked</span>')+
+      '</div>'+
+    '</div>';
+    html+='<div class="hwr-group-pills">';
+    if(ndRecs.length) html+='<span class="badge badge-r">'+ndRecs.length+' not submitted</span>';
+    else if(marked)   html+='<span class="badge badge-g">All submitted</span>';
+    else              html+='<span class="badge badge-n">Not marked yet</span>';
+    html+='</div>';
+    // Action buttons
+    html+='<div class="hwr-group-actions">'+
+      '<button class="hwr-action-btn hwr-pdf-btn" onclick="printHWGroup(\''+safeKey+'\')">'+
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>'+
+        'PDF</button>'+
+      '<button class="hwr-action-btn hwr-copy-btn" id="hwcopy2-'+safeKey+'" onclick="copyHWGroup(\''+safeKey+'\',this)">'+
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'+
+        'Copy</button>'+
+    '</div>';
+    html+='</div>'; // end hwr-group-hd
+
+    // Homework text
+    html+='<div style="padding:10px 16px;background:var(--bg2);border-left:1.5px solid var(--border);border-right:1.5px solid var(--border);border-top:none">'+
+      '<div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Homework</div>'+
+      '<div style="font-size:13px;color:var(--text);line-height:1.55;padding:8px 12px;background:var(--bg3);border-radius:6px;border-left:3px solid var(--li)">'+esc(a.homework)+'</div>'+
+      (a.chapters.length?'<div style="margin-top:6px;font-size:10px;color:var(--text3)">📖 '+esc(a.chapters.join(', '))+'</div>':'')+
+    '</div>';
+
+    // Student table
+    html+='<div class="hwr-table-wrap">';
+    if(!marked){
+      html+='<div class="hwr-empty-group">No submission data yet. Use the Homework Tracker app to mark students.</div>';
+    } else {
+      html+='<table class="hwr-table"><thead><tr>'+
+        '<th>Student</th><th>Status</th><th>Class</th><th>Syllabus</th><th>Marked On</th>'+
+        '</tr></thead><tbody>';
+      ndRecs.forEach(function(r){
+        var ph=PHOTO_MAP[r.student_id]||'';
+        var av='<div class="hwr-stu-mn">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.student_name||r.full_name||'')+'</div>';
+        html+='<tr>'+
+          '<td>'+av+'<span style="font-weight:700;color:var(--red)">'+esc(r.student_name||r.full_name||'')+'</span></td>'+
+          '<td><span class="badge badge-r">Not Submitted</span></td>'+
+          '<td><span class="badge badge-g">'+esc(r.class)+'</span></td>'+
+          '<td><span class="badge badge-b">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</span></td>'+
+          '<td style="color:var(--text3)">'+fmtShort(r.marked_date||'')+'</td>'+
+          '</tr>';
+      });
+      html+='</tbody></table>';
+    }
+    html+='</div>'; // end hwr-table-wrap
+    html+='</div>'; // end hwr-group
+
+    // Store in global map (DOM doesn't exist yet at this point)
+    window._hwGroupData=window._hwGroupData||{};
+    window._hwGroupData[safeKey]={assignment:a,ndRecs:ndRecs};
   });
-  if(!grp) return;
-  // Only active (≤7 days) items in the WA message
-  var active = grp.items.filter(function(r){
-    return Math.floor((today-new Date(sessDateToYMD(r.date)))/86400000) <= 7;
-  });
-  if(!active.length){ alert('No active homework to send.'); return; }
-  var grpLabel = 'Class '+grp.class+(grp.board?' · '+grp.board:'');
-  var msg = buildHWGroupMsg(active, grpLabel);
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+  return html||'<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-title">No records for this filter</div></div>';
 }
 
-function copyHW(btn, gi, ii){
-  // Find the record by group index and item index
-  var el = g('vHomework');
-  if(!el._hwData) return;
-  var keys = Object.keys(el._hwData).sort(function(a,b){
-    var ca=el._hwData[a],cb=el._hwData[b];
-    return +ca.class - +cb.class || ca.board.localeCompare(cb.board);
+// Store group data map globally for pdf/copy callbacks
+var HW_GROUP_DATA={};
+function buildHWReport_afterRender(assignments, trackMap){
+  assignments.forEach(function(a){
+    var safeKey=a.key.replace(/[^a-zA-Z0-9]/g,'_');
+    var trackRecs=trackMap[a.key]||[];
+    HW_GROUP_DATA[safeKey]={assignment:a,ndRecs:trackRecs};
   });
-  var key = keys[gi];
-  if(!key) return;
-  var r = el._hwData[key].items[ii];
-  if(!r) return;
-  var msg = buildHWMsg(r).replace(/\n/g,'\n'); // already escaped above
-  // Actual newlines for clipboard
-  var chaps = (r.chapters||'').split(' | ').filter(Boolean);
-  var lines = [];
-  lines.push('📚 SEHR Academy — Homework');
+}
+
+function setHWTab(tab,btn){
+  document.querySelectorAll('.hwr-tab').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  var hwEl=g('vHomework');
+  if(!hwEl||!hwEl._assignments) return;
+  g('hwTabContent').innerHTML=buildHWTabContent(hwEl._assignments,hwEl._trackMap,tab);
+  // Re-store data
+  hwEl._assignments.forEach(function(a){
+    var sk=a.key.replace(/[^a-zA-Z0-9]/g,'_');
+    var el2=g('hwg-'+sk);
+    if(el2) el2._data={assignment:a,ndRecs:hwEl._trackMap[a.key]||[]};
+  });
+}
+
+function getHWGroupData(safeKey){
+  return (window._hwGroupData&&window._hwGroupData[safeKey])||null;
+}
+
+/* ── HW GROUP PRINT ── */
+function printHWGroup(safeKey){
+  var d=getHWGroupData(safeKey);
+  if(!d) return;
+  var a=d.assignment, ndRecs=d.ndRecs;
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+
+  var html='<div class="hwr-print" style="display:block">';
+  html+='<div class="hwr-pr-top-bar"></div>';
+  html+='<div class="hwr-pr-hdr">'+
+    '<div><div class="hwr-pr-logo"><span>SEHR</span> ACADEMY</div>'+
+    '<div style="font-size:9px;color:#7a7970;margin-top:2px">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'+
+    '<div class="hwr-pr-title">Homework Submission Report<br>Generated: '+issued+'</div>'+
+  '</div>';
+  html+='<div class="hwr-pr-band">'+
+    '<div>'+
+      '<div class="hwr-pr-band-title"><span>'+esc(a.subject)+'</span> &nbsp;·&nbsp; Class '+esc(a.class)+(a.stream?' '+esc(a.stream):'')+'</div>'+
+      '<div class="hwr-pr-band-meta">'+esc(a.board)+' &nbsp;·&nbsp; '+esc(a.teacher)+' &nbsp;·&nbsp; Given: '+fmtLong(a.hw_date)+'</div>'+
+    '</div>'+
+    '<div style="text-align:right">'+
+      '<div style="font-size:18px;font-weight:900;color:#8BC53F;line-height:1">'+ndRecs.length+'</div>'+
+      '<div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Not Submitted</div>'+
+    '</div>'+
+  '</div>';
+  html+='<div class="hwr-pr-hw-box">'+
+    '<div class="hwr-pr-hw-label">Homework Assigned</div>'+
+    '<div class="hwr-pr-hw-text">'+esc(a.homework)+'</div>'+
+    (a.chapters.length?'<div style="margin-top:4px;font-size:9px;color:#7a7970">📖 '+esc(a.chapters.join(', '))+'</div>':'')+
+  '</div>';
+
+  html+='<table class="hwr-pr-tbl"><thead><tr>'+
+    '<th></th><th>Student Name</th><th>Status</th><th>Syllabus</th><th>Marked On</th>'+
+    '</tr></thead><tbody>';
+
+  if(ndRecs.length){
+    ndRecs.forEach(function(r){
+      var ph=PHOTO_MAP[r.student_id]||'';
+      var av='<div class="hwr-pr-av">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.student_name||r.full_name||'')+'</div>';
+      html+='<tr class="nd">'+
+        '<td>'+av+'</td>'+
+        '<td style="font-weight:700;color:#dc2626">'+esc(r.student_name||r.full_name||'')+'</td>'+
+        '<td><span style="font-size:8px;font-weight:800;background:#fef2f2;color:#dc2626;padding:2px 7px;border-radius:8px;border:1px solid rgba(220,38,38,.2)">Not Submitted</span></td>'+
+        '<td style="font-size:9px;color:#7a7970">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</td>'+
+        '<td style="font-size:9px;color:#7a7970">'+fmtShort(r.marked_date||'')+'</td>'+
+      '</tr>';
+    });
+  } else {
+    html+='<tr><td colspan="5" style="text-align:center;padding:16px;color:#7a7970;font-style:italic">All students submitted this homework.</td></tr>';
+  }
+  html+='</tbody></table>';
+  html+='<div style="height:12px"></div>';
+  html+='<div class="hwr-pr-footer"><div>SEHR Academy · Homework Report · '+fmtLong(a.hw_date)+'</div><div>sehracademy.com · +91 95394 09586</div></div>';
+  html+='<div class="hwr-pr-bot-bar"></div></div>';
+
+  g('hwPrintDoc').innerHTML=html;
+  g('printDoc').innerHTML=''; // clear main printDoc so only hw doc prints
+  setTimeout(function(){window.print();},80);
+}
+
+/* ── HW GROUP COPY ── */
+function copyHWGroup(safeKey,btn){
+  var d=getHWGroupData(safeKey);
+  if(!d) return;
+  var a=d.assignment, ndRecs=d.ndRecs;
+  var lines=[];
+  lines.push('📋 SEHR Academy — Homework Report');
   lines.push('');
-  lines.push('Class '+r.class+(r.stream?' · '+r.stream:'')+' | '+r.subject+' | '+r.board);
-  lines.push('📅 '+fmtLong(sessDateToYMD(r.date)));
-  lines.push('👨‍🏫 '+r.teacher_name);
-  if(chaps.length) lines.push('📖 Chapters: '+chaps.join(', '));
+  lines.push('📚 '+a.subject+' · Class '+a.class+(a.stream?' '+a.stream:'')+' · '+a.board);
+  lines.push('👨‍🏫 '+a.teacher);
+  lines.push('📅 Given: '+fmtLong(a.hw_date));
+  if(a.chapters.length) lines.push('📖 Chapters: '+a.chapters.join(', '));
   lines.push('');
   lines.push('📝 Homework:');
-  lines.push(r.homework.trim());
+  lines.push(a.homework);
   lines.push('');
-  lines.push('Please complete before the next class.');
+  if(ndRecs.length){
+    lines.push('❌ NOT SUBMITTED ('+ndRecs.length+'):');
+    ndRecs.forEach(function(r,i){lines.push('  '+(i+1)+'. '+r.student_name+' ('+r.syllabus+')');});
+  } else {
+    lines.push('✅ All students submitted this homework.');
+  }
+  lines.push('');
   lines.push('— SEHR Academy');
-  var text = lines.join('\n');
-
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(lines.join('\n')).then(function(){
       btn.classList.add('copied');
-      btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>Copied!';
+      btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg>Copied!';
       setTimeout(function(){
         btn.classList.remove('copied');
-        btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Text';
+        btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="11" height="11"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy';
       },2200);
     });
   }
@@ -2017,6 +2500,218 @@ function mobNav(view, btn){
   setView(view, sbItem);
 }
 
+
+/* ══ SUBJECT DROPDOWN ══ */
+function toggleSubjDD(ddId){
+  var btn=g(ddId+'-btn'), menu=g(ddId+'-menu');
+  if(!btn||!menu)return;
+  var open=menu.classList.toggle('open');
+  btn.classList.toggle('open',open);
+}
+function pickSubjDD(ddId, selIdx, subjName, subjIcon, sessCount){
+  // Update button display
+  var ic=g(ddId+'-ic'), name=g(ddId+'-name'), meta=g(ddId+'-meta');
+  var btn=g(ddId+'-btn'), menu=g(ddId+'-menu');
+  if(ic) ic.textContent=subjIcon;
+  if(name) name.textContent=subjName;
+  if(meta) meta.textContent=sessCount+' sessions';
+  // Close dropdown
+  if(menu) menu.classList.remove('open');
+  if(btn)  btn.classList.remove('open');
+  // Mark selected option
+  if(menu){
+    menu.querySelectorAll('.subj-dropdown-opt').forEach(function(o,i){
+      o.classList.toggle('sel',i===selIdx);
+    });
+  }
+  // Switch the subject panel
+  // ddId format: sdd-bodyId-bi  → groupId = bodyId+'-'+bi
+  var parts=ddId.split('-');
+  parts.shift(); // remove 'sdd'
+  var groupId=parts.join('-');
+  switchSubject(groupId, selIdx);
+}
+// Close dropdown when clicking outside
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.subj-dropdown-wrap')){
+    document.querySelectorAll('.subj-dropdown-menu.open').forEach(function(m){
+      m.classList.remove('open');
+      var btn=m.previousElementSibling;
+      if(btn) btn.classList.remove('open');
+    });
+  }
+});
+
+
+/* ══ PRINT PROGRESS ══ */
+function printProgress(){
+  var el=g('vProgress');
+  if(!el||!window._progressTree){
+    alert('No progress data loaded. Open the Progress view first.');return;
+  }
+  var tree=window._progressTree;
+  var selCls=g('pgPrintClsSel')?g('pgPrintClsSel').value:'ALL';
+  var fc=parseCurCls();
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  // Filter tree if specific class selected
+  var printTree={};
+  Object.keys(tree).forEach(function(cls){
+    if(selCls==='ALL'||cls===selCls) printTree[cls]=tree[cls];
+  });
+  if(!Object.keys(printTree).length){alert('No data for selected class.');return;}
+  var html='<div class="pgpr-doc">';
+  html+='<div class="pgpr-top-bar"></div>';
+  html+='<div class="pgpr-hdr">'+
+    '<div><div class="pgpr-logo"><span>SEHR</span> ACADEMY</div>'+
+    '<div class="pgpr-hdr-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'+
+    '<div class="pgpr-title-r">'+
+      '<div class="pgpr-title-main">Syllabus Progress Report</div>'+
+      '<div class="pgpr-title-sub">Generated: '+issued+(fc.cls?' · Class '+fc.cls+(fc.board?' '+fc.board:''):'')+'</div>'+
+    '</div>'+
+  '</div>';
+
+  Object.keys(printTree).sort(function(a,b){return+a-+b;}).forEach(function(cls){
+    var clsData=tree[cls];
+    // Overall coverage
+    var totalMaster=0,totalCovered=0;
+    Object.keys(clsData.boards).forEach(function(b){
+      Object.keys(clsData.boards[b].subjects).forEach(function(s){
+        var mk=cls+'|'+b+'|'+s;
+        var master=MASTER_CHAPTERS[mk]||[];
+        totalMaster+=master.length;
+        totalCovered+=Object.keys(clsData.boards[b].subjects[s].chapterMap).length;
+      });
+    });
+    var overallPct=totalMaster>0?Math.min(100,Math.round(totalCovered/totalMaster*100)):null;
+    var totalSess=0,totalMins=0;
+    Object.keys(clsData.boards).forEach(function(b){
+      Object.keys(clsData.boards[b].subjects).forEach(function(s){
+        clsData.boards[b].subjects[s].sessions.forEach(function(r){totalSess++;totalMins+=(+r.duration_mins||0);});
+      });
+    });
+
+    html+='<div class="pgpr-cls-block">';
+    html+='<div class="pgpr-cls-hdr">';
+    html+='<div class="pgpr-cls-num">'+esc(cls)+'</div>';
+    html+='<div class="pgpr-cls-info">';
+    html+='<div class="pgpr-cls-title">Class '+esc(cls)+(clsData.stream?' · '+esc(clsData.stream):'')+'</div>';
+    html+='<div class="pgpr-cls-meta">'+totalSess+' sessions · '+hrsFmt(totalMins)+(overallPct!==null?' · '+overallPct+'% covered':'')+'</div>';
+    html+='</div>';
+    if(overallPct!==null){
+      var R=16,circ=2*Math.PI*R,dash=circ*(overallPct/100),gap=circ-dash;
+      var rc=overallPct>=75?'#8BC53F':overallPct>=40?'#d97706':'#dc2626';
+      html+='<svg width="44" height="44" viewBox="0 0 44 44" class="pgpr-cls-ring">'+
+        '<circle cx="22" cy="22" r="'+R+'" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="4"/>'+
+        '<circle cx="22" cy="22" r="'+R+'" fill="none" stroke="'+rc+'" stroke-width="4"'+
+        ' stroke-dasharray="'+dash.toFixed(1)+' '+gap.toFixed(1)+'"'+
+        ' stroke-dashoffset="'+(circ/4).toFixed(1)+'" stroke-linecap="round"/>'+
+        '<text x="22" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">'+overallPct+'%</text>'+
+        '</svg>';
+    }
+    html+='</div>';
+
+    Object.keys(clsData.boards).sort().forEach(function(board){
+      html+='<div class="pgpr-board-label"><span>'+(board==='Kerala State'?'🏛️':'🎓')+'</span> '+esc(board)+'</div>';
+      Object.keys(clsData.boards[board].subjects).sort().forEach(function(subj){
+        var sd=clsData.boards[board].subjects[subj];
+        var mk=cls+'|'+board+'|'+subj;
+        var master=MASTER_CHAPTERS[mk]||[];
+        var covered=Object.keys(sd.chapterMap);
+        var pct=master.length>0?Math.min(100,Math.round(covered.length/master.length*100)):null;
+        var subjMins=sd.sessions.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+        var dotCol=pct===null?'#b0ada4':pct>=75?'#8BC53F':pct>=40?'#d97706':'#dc2626';
+        var barCol=dotCol;
+
+        html+='<div class="pgpr-subj-row">';
+        html+='<div class="pgpr-subj-dot" style="background:'+dotCol+'"></div>';
+        html+='<div class="pgpr-subj-name">'+esc(subj)+'</div>';
+        if(pct!==null){
+          html+='<div class="pgpr-subj-bar-wrap">'+
+            '<div class="pgpr-subj-bar"><div class="pgpr-subj-bar-fill" style="width:'+pct+'%;background:'+barCol+'"></div></div>'+
+            '<div class="pgpr-subj-pct" style="color:'+barCol+'">'+pct+'%</div>'+
+          '</div>';
+        }
+        html+='<div class="pgpr-subj-stats">'+sd.sessions.length+' sess · '+hrsFmt(subjMins)+'</div>';
+        html+='</div>';
+
+        // Covered chapters
+        var notCovered=master.filter(function(c){return!sd.chapterMap[c];});
+        if(covered.length||notCovered.length){
+          html+='<div class="pgpr-ch-block">';
+          if(covered.length){
+            html+='<div class="pgpr-ch-label">Covered ('+covered.length+')</div>';
+            // Sort by most recent first
+            covered.slice().sort(function(a,b){
+              var da=sd.chapterMap[a].dates.slice().sort().pop()||'';
+              var db=sd.chapterMap[b].dates.slice().sort().pop()||'';
+              return db.localeCompare(da);
+            }).forEach(function(ch){
+              var cd=sd.chapterMap[ch];
+              var lastDate=cd.dates.slice().sort().pop()||'';
+              var teachers=Array.from(cd.teachers).join(', ');
+              html+='<div class="pgpr-ch-item" style="flex-direction:column;align-items:flex-start;padding:5px 0;border-bottom:1px solid #ede9e0;gap:0">';
+              // Chapter header row
+              html+='<div style="display:flex;align-items:center;gap:6px;width:100%">'+
+                '<div class="pgpr-ch-dot-done"></div>'+
+                '<div class="pgpr-ch-name" style="font-weight:700">'+esc(ch)+'</div>'+
+                '<div class="pgpr-ch-sess" style="margin-left:auto">'+cd.count+' sess · '+hrsFmt(cd.mins)+(lastDate?' · '+fmtShort(lastDate):'')+'</div>'+
+              '</div>';
+              // Teacher
+              if(teachers) html+='<div style="padding-left:14px;font-size:8px;color:#7a7970;margin-top:1px">👨‍🏫 '+esc(teachers)+'</div>';
+              // Session entries: topics + dates
+              if(cd.topics.length){
+                cd.topics.forEach(function(t){
+                  html+='<div style="display:flex;gap:6px;padding-left:14px;margin-top:3px;padding-top:3px;border-top:1px dashed #e4dfd4">'+
+                    '<div style="font-size:8px;color:#b0ada4;white-space:nowrap;flex-shrink:0">'+fmtShort(t.date)+' · '+esc(t.teacher)+'</div>'+
+                    '<div style="font-size:9px;color:#2e2e2b;line-height:1.4;flex:1">'+esc(t.text)+'</div>'+
+                  '</div>';
+                });
+              } else {
+                // Just show dates if no topics
+                if(cd.dates.length){
+                  html+='<div style="padding-left:14px;font-size:8px;color:#b0ada4;margin-top:2px">📅 '+cd.dates.slice().sort().join(' · ')+'</div>';
+                }
+              }
+              // Remarks
+              if(cd.remarks.length){
+                cd.remarks.forEach(function(rk){
+                  html+='<div style="display:flex;gap:6px;padding-left:14px;margin-top:2px">'+
+                    '<div style="font-size:8px;color:#d97706;white-space:nowrap;flex-shrink:0">📝 '+fmtShort(rk.date)+'</div>'+
+                    '<div style="font-size:9px;color:#d97706;font-style:italic;flex:1;line-height:1.4">'+esc(rk.text)+'</div>'+
+                  '</div>';
+                });
+              }
+              html+='</div>';
+            });
+          }
+          if(notCovered.length){
+            html+='<div class="pgpr-ch-label" style="margin-top:5px">Pending ('+notCovered.length+')</div>';
+            notCovered.forEach(function(ch){
+              html+='<div class="pgpr-ch-item">'+
+                '<div class="pgpr-ch-dot-todo"></div>'+
+                '<div class="pgpr-ch-name pgpr-ch-name-dim">'+esc(ch)+'</div>'+
+              '</div>';
+            });
+          }
+          html+='</div>';
+        }
+      });
+    });
+    html+='</div>'; // pgpr-cls-block
+  });
+
+  html+='<div style="height:12px"></div>';
+  html+='<div class="pgpr-footer"><div>SEHR Academy · Syllabus Progress Report · '+issued+'</div><div>sehracademy.com · +91 95394 09586</div></div>';
+  html+='<div class="pgpr-bot-bar"></div>';
+  html+='</div>';
+
+  // Clear other print docs, set this one
+  g('printDoc').innerHTML='';
+  g('hwPrintDoc').innerHTML='';
+  g('progressPrintDoc').innerHTML=html;
+  setTimeout(function(){window.print();},80);
+}
+
 /* ══ DATE PICKER ══ */
 function toggleDP(){var drop=g('dpDrop'),disp=g('dpDisp'),open=drop.classList.toggle('open');disp.style.borderColor=open?'var(--li)':'';if(open)renderDP();}
 function dpPrev(){CAL_M--;if(CAL_M<0){CAL_M=11;CAL_Y--;}renderDP();}
@@ -2037,6 +2732,17 @@ function updateDPDisp(){g('dpTxt').textContent=CUR_DATE?fmtShort(CUR_DATE):'Toda
 document.addEventListener('click',function(e){if(!g('dpWrap').contains(e.target)){g('dpDrop').classList.remove('open');g('dpDisp').style.borderColor='';}});
 
 init();
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
