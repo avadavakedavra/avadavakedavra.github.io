@@ -54,10 +54,10 @@ body::before{content:'';position:fixed;top:-120px;right:-80px;width:500px;height
 .screen.on{display:block}
 
 /* ── STEP 1: SELECT TEST ── */
-.step-hd{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.step-title{font-size:26px;font-weight:900;color:var(--text);letter-spacing:-.4px;margin-bottom:5px}
-.step-title span{color:var(--li)}
-.step-sub{font-size:13px;color:var(--text4);line-height:1.6}
+.step-hd{margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.step-title{font-size:42px;font-weight:900;color:var(--text);letter-spacing:-.8px;line-height:1.1;margin-bottom:8px}
+.step-title span{color:var(--li);font-style:italic}
+.step-sub{font-size:14px;color:var(--text3);line-height:1.6;font-weight:400}
 
 /* Filter row */
 .filter-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
@@ -111,7 +111,7 @@ body::before{content:'';position:fixed;top:-120px;right:-80px;width:500px;height
 .auth-icon-inner{width:22px;height:26px;border:2.5px solid var(--li);border-radius:4px;position:relative}
 .auth-icon-inner::before{content:'';position:absolute;top:-10px;left:3px;right:3px;height:12px;border:2.5px solid var(--li);border-radius:50% 50% 0 0;border-bottom:none}
 .auth-icon-inner::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--li);border-radius:50%}
-.auth-title{font-size:18px;font-weight:900;color:var(--text);text-align:center;letter-spacing:-.3px;margin-bottom:4px}
+.auth-title{font-size:26px;font-weight:900;color:var(--text);text-align:center;letter-spacing:-.5px;margin-bottom:4px}
 .auth-sub{font-size:12px;color:var(--text4);text-align:center;margin-bottom:20px}
 .auth-test-info{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;margin-bottom:20px;display:flex;gap:10px;align-items:center}
 .ati-badge{font-size:9px;font-weight:800;color:var(--li);background:var(--li-dim);border:1px solid rgba(139,197,63,.15);border-radius:6px;padding:5px 8px;flex-shrink:0;letter-spacing:.04em}
@@ -135,7 +135,7 @@ body::before{content:'';position:fixed;top:-120px;right:-80px;width:500px;height
 /* Summary strip */
 .report-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
 .report-hd-info{}
-.report-test-name{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.4px;margin-bottom:3px}
+.report-test-name{font-size:36px;font-weight:900;color:var(--text);letter-spacing:-.6px;line-height:1.1;margin-bottom:6px}
 .report-test-meta{font-size:12px;color:var(--text4);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .report-dot{width:3px;height:3px;border-radius:50%;background:var(--border2)}
 .report-actions{display:flex;gap:8px;flex-shrink:0}
@@ -290,8 +290,8 @@ body::before{content:'';position:fixed;top:-120px;right:-80px;width:500px;height
   <!-- ══ S1: SELECT TEST ══ -->
   <div class="screen on" id="s1">
     <div class="step-hd">
-      <div class="step-title">Test <span>Reports</span></div>
-      <div class="step-sub">Select a test to view class results and rankings.</div>
+      <div class="step-title">Test<br><span>Reports</span></div>
+      <div class="step-sub">Select a test to view full class results and rankings.</div>
     </div>
     <div class="filter-row">
       <div class="fsel-wrap">
@@ -618,7 +618,7 @@ function renderReport(){
 
   // Print header date
   g('prDate').textContent='Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-  g('prHeader').style.display='block';
+  // prHeader only shown in print via CSS
 }
 
 function sumCard(v,l){
