@@ -262,7 +262,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 .viol-banner.on{display:flex;animation:fDown .2s var(--e1)}
 
 /* Test body */
-.test-body{flex:1;padding:16px 16px 100px;max-width:640px;margin:0 auto;width:100%}
+.test-body{flex:1;padding:16px 16px 140px;max-width:640px;margin:0 auto;width:100%}
 
 /* Question card */
 .q-card{
@@ -312,37 +312,40 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 /* Navigation bar — sticky bottom */
 .q-nav-bar{
   position:fixed;bottom:0;left:0;right:0;
-  background:var(--wh);border-top:1.5px solid var(--ru);
-  padding:10px 16px max(10px,env(safe-area-inset-bottom));
-  display:flex;align-items:center;gap:10px;
-  z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);
+  background:var(--wh);border-top:2px solid var(--ru);
+  padding:12px 14px;
+  padding-bottom:max(14px,env(safe-area-inset-bottom,14px));
+  display:flex;align-items:center;gap:8px;
+  z-index:300;box-shadow:0 -6px 24px rgba(0,0,0,.12);
 }
 .btn-nav{
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:12px 18px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  width:48px;height:48px;border-radius:12px;
   border:2px solid var(--ru);background:var(--c2);
-  font-family:var(--f);font-size:14px;font-weight:700;
+  font-family:var(--f);font-size:18px;font-weight:700;
   color:var(--ink2);cursor:pointer;transition:all .13s;
   -webkit-appearance:none;flex-shrink:0;
 }
 .btn-nav:active{transform:scale(.95)}
 .btn-nav:disabled{opacity:.35;cursor:not-allowed;transform:none}
 .btn-skip{
-  flex:1;padding:12px;border-radius:12px;
+  flex:1;height:48px;border-radius:12px;
   border:2px solid var(--am);background:var(--amb);
   font-family:var(--f);font-size:13px;font-weight:700;
   color:var(--am);cursor:pointer;transition:all .13s;
   -webkit-appearance:none;text-align:center;
+  display:flex;align-items:center;justify-content:center;
 }
 .btn-skip.skipped{background:var(--am);color:#fff;border-color:var(--am)}
 .btn-skip:active{transform:scale(.97)}
 .btn-submit-main{
-  padding:12px 20px;border-radius:12px;
+  height:48px;padding:0 18px;border-radius:12px;
   border:none;background:var(--li);
   font-family:var(--f);font-size:14px;font-weight:800;
   color:#1a1a18;cursor:pointer;transition:all .13s;
   box-shadow:0 3px 10px rgba(139,197,63,.35);
   -webkit-appearance:none;flex-shrink:0;
+  display:flex;align-items:center;white-space:nowrap;
 }
 .btn-submit-main:active{transform:scale(.95)}
 
@@ -545,9 +548,9 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
   </div>
   <!-- Sticky nav -->
   <div class="q-nav-bar" id="qNavBar">
-    <button class="btn-nav" id="prevBtn" onclick="goQ(-1)">←</button>
+    <button class="btn-nav" id="prevBtn" onclick="goQ(-1)" title="Previous">←</button>
     <button class="btn-skip" id="skipBtn" onclick="skipQ()">Skip</button>
-    <button class="btn-nav" id="nextBtn" onclick="goQ(1)">→</button>
+    <button class="btn-nav" id="nextBtn" onclick="goQ(1)" title="Next">→</button>
     <button class="btn-submit-main" onclick="confirmSubmit()">Submit ✓</button>
   </div>
   <!-- Anti-cheat overlay -->
@@ -934,6 +937,10 @@ function pickOpt(oi){
   ANSWERS[CUR_Q]=oi;
   delete SKIPPED[CUR_Q];
   renderQ(CUR_Q);
+  // Auto-advance to next question after short delay
+  if(CUR_Q < QUESTIONS.length-1){
+    setTimeout(function(){goQ(1);},600);
+  }
 }
 function goQ(dir){
   var n=CUR_Q+dir;
