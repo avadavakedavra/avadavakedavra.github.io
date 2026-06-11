@@ -49,10 +49,11 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
   padding:0 16px;height:56px;flex-shrink:0;
   display:flex;align-items:center;gap:10px;
   position:sticky;top:0;z-index:200;
+  overflow:visible;
 }
 .tb-logo{font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px}
 .tb-logo .dot{color:var(--li)}
-.tb-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.tb-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);padding-left:2px}
 .tb-spacer{flex:1}
 .tb-student{
   display:none;align-items:center;gap:8px;
@@ -75,7 +76,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 #sListing{background:var(--cr)}
 .list-body{flex:1;padding:20px 16px 80px;max-width:640px;margin:0 auto;width:100%}
 .page-hd{margin-bottom:20px}
-.page-title{font-family:var(--fs);font-size:26px;color:var(--ink);line-height:1.2;margin-bottom:4px}
+.page-title{font-family:var(--f);font-size:26px;color:var(--ink);line-height:1.2;margin-bottom:4px}
 .page-sub{font-size:13px;color:var(--mu);line-height:1.5}
 
 /* Filter pills — scrollable row */
@@ -165,7 +166,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 }
 @media(min-height:700px){.sheet{padding-bottom:max(32px,env(safe-area-inset-bottom))}}
 .sheet-handle{width:40px;height:4px;background:var(--c3);border-radius:2px;margin:14px auto 20px}
-.sheet-title{font-family:var(--fs);font-size:22px;color:var(--ink);margin-bottom:4px}
+.sheet-title{font-family:var(--f);font-size:20px;font-weight:900;color:var(--ink);margin-bottom:4px}
 .sheet-sub{font-size:13px;color:var(--mu);margin-bottom:20px}
 .sheet-test-info{
   background:var(--c2);border-radius:14px;padding:14px;
@@ -219,7 +220,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 #sLoading{background:var(--cr)}
 .loading-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;gap:20px}
 .ls-ic{font-size:56px;animation:pulse 2s ease infinite}
-.ls-title{font-family:var(--fs);font-size:24px;color:var(--ink)}
+.ls-title{font-family:var(--f);font-size:22px;font-weight:900;color:var(--ink)}
 .ls-sub{font-size:14px;color:var(--mu);line-height:1.6;max-width:280px}
 .ls-progress{width:200px;height:4px;background:var(--c3);border-radius:2px;overflow:hidden}
 .ls-prog-fill{height:100%;background:var(--li);border-radius:2px;animation:loading-fill 2s var(--e1) forwards}
@@ -233,6 +234,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
   padding:0 16px;height:56px;
   display:flex;align-items:center;gap:10px;
   position:sticky;top:0;z-index:200;
+  overflow:visible;
 }
 .test-tb-info{flex:1;min-width:0}
 .test-tb-name{font-size:14px;font-weight:800;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -262,7 +264,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 .viol-banner.on{display:flex;animation:fDown .2s var(--e1)}
 
 /* Test body */
-.test-body{flex:1;padding:16px 16px 140px;max-width:640px;margin:0 auto;width:100%}
+.test-body{flex:1;padding:16px 16px 160px;max-width:640px;margin:0 auto;width:100%}
 
 /* Question card */
 .q-card{
@@ -313,18 +315,20 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 .q-nav-bar{
   position:fixed;bottom:0;left:0;right:0;
   background:var(--wh);border-top:2px solid var(--ru);
-  padding:12px 14px;
-  padding-bottom:max(14px,env(safe-area-inset-bottom,14px));
-  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;
+  padding-bottom:max(10px,env(safe-area-inset-bottom,10px));
+  display:flex;flex-direction:column;gap:8px;
   z-index:300;box-shadow:0 -6px 24px rgba(0,0,0,.12);
 }
+.q-nav-row1{display:flex;gap:8px;align-items:center}
+.q-nav-row2{display:flex}
 .btn-nav{
   display:flex;align-items:center;justify-content:center;
-  width:48px;height:48px;border-radius:12px;
+  flex:1;height:48px;border-radius:12px;
   border:2px solid var(--ru);background:var(--c2);
   font-family:var(--f);font-size:18px;font-weight:700;
   color:var(--ink2);cursor:pointer;transition:all .13s;
-  -webkit-appearance:none;flex-shrink:0;
+  -webkit-appearance:none;
 }
 .btn-nav:active{transform:scale(.95)}
 .btn-nav:disabled{opacity:.35;cursor:not-allowed;transform:none}
@@ -339,15 +343,15 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 .btn-skip.skipped{background:var(--am);color:#fff;border-color:var(--am)}
 .btn-skip:active{transform:scale(.97)}
 .btn-submit-main{
-  height:48px;padding:0 18px;border-radius:12px;
+  width:100%;height:48px;border-radius:12px;
   border:none;background:var(--li);
-  font-family:var(--f);font-size:14px;font-weight:800;
+  font-family:var(--f);font-size:15px;font-weight:800;
   color:#1a1a18;cursor:pointer;transition:all .13s;
   box-shadow:0 3px 10px rgba(139,197,63,.35);
-  -webkit-appearance:none;flex-shrink:0;
-  display:flex;align-items:center;white-space:nowrap;
+  -webkit-appearance:none;
+  display:flex;align-items:center;justify-content:center;gap:6px;
 }
-.btn-submit-main:active{transform:scale(.95)}
+.btn-submit-main:active{transform:scale(.98)}
 
 /* Question palette */
 .palette-card{
@@ -382,7 +386,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 }
 .ac-overlay.on{display:flex;animation:fIn .25s var(--e1)}
 .ac-ic{font-size:64px;margin-bottom:4px}
-.ac-title{font-family:var(--fs);font-size:26px;color:#fff}
+.ac-title{font-family:var(--f);font-size:26px;color:#fff}
 .ac-sub{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;max-width:320px}
 .ac-count{font-size:56px;font-weight:900;color:var(--re);font-variant-numeric:tabular-nums;line-height:1}
 .ac-btn{
@@ -407,7 +411,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
   animation:slideUp .3s var(--e1);
 }
 .modal-handle{width:40px;height:4px;background:var(--c3);border-radius:2px;margin:14px auto 20px}
-.modal-title{font-family:var(--fs);font-size:22px;color:var(--ink);margin-bottom:4px}
+.modal-title{font-family:var(--f);font-size:20px;font-weight:900;color:var(--ink);margin-bottom:4px}
 .modal-sub{font-size:13px;color:var(--mu);margin-bottom:18px}
 .sub-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
 .ss{background:var(--c2);border-radius:12px;padding:14px;text-align:center}
@@ -431,7 +435,7 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
 #sResult{background:var(--cr)}
 .result-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px max(40px,env(safe-area-inset-bottom));text-align:center;max-width:500px;margin:0 auto;width:100%}
 .res-ic{font-size:80px;margin-bottom:16px;animation:fUp .4s var(--e1)}
-.res-title{font-family:var(--fs);font-size:30px;color:var(--ink);margin-bottom:6px;animation:fUp .4s var(--e1) .05s both}
+.res-title{font-family:var(--f);font-size:26px;font-weight:900;color:var(--ink);margin-bottom:6px;animation:fUp .4s var(--e1) .05s both}
 .res-name{font-size:15px;color:var(--mu);margin-bottom:28px;animation:fUp .4s var(--e1) .1s both;line-height:1.5}
 .res-card{
   background:var(--wh);border:1.5px solid var(--ru);
@@ -548,10 +552,14 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
   </div>
   <!-- Sticky nav -->
   <div class="q-nav-bar" id="qNavBar">
-    <button class="btn-nav" id="prevBtn" onclick="goQ(-1)" title="Previous">←</button>
-    <button class="btn-skip" id="skipBtn" onclick="skipQ()">Skip</button>
-    <button class="btn-nav" id="nextBtn" onclick="goQ(1)" title="Next">→</button>
-    <button class="btn-submit-main" onclick="confirmSubmit()">Submit ✓</button>
+    <div class="q-nav-row1">
+      <button class="btn-nav" id="prevBtn" onclick="goQ(-1)">←</button>
+      <button class="btn-skip" id="skipBtn" onclick="skipQ()">Skip</button>
+      <button class="btn-nav" id="nextBtn" onclick="goQ(1)">→</button>
+    </div>
+    <div class="q-nav-row2">
+      <button class="btn-submit-main" onclick="confirmSubmit()">Submit Test ✓</button>
+    </div>
   </div>
   <!-- Anti-cheat overlay -->
   <div class="ac-overlay" id="acOverlay">
@@ -561,6 +569,14 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;f
     <div class="ac-count" id="acCount">3</div>
     <button class="ac-btn" onclick="returnToTest()">Return to Test</button>
   </div>
+</div>
+
+<!-- ══ SUBMITTING OVERLAY ══ -->
+<div id="submittingOverlay" style="display:none;position:fixed;inset:0;background:var(--cr);z-index:800;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:32px">
+  <div style="font-size:52px;animation:pulse 1.5s ease infinite">📤</div>
+  <div style="font-size:22px;font-weight:900;color:var(--ink);font-family:var(--f)" id="submittingTitle">Submitting your answers…</div>
+  <div style="font-size:14px;color:var(--mu);max-width:260px;line-height:1.6">Please wait, don't close this page.</div>
+  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
 </div>
 
 <!-- ══ S3: RESULT ══ -->
@@ -995,6 +1011,10 @@ function doSubmit(auto){
   g('submitLbl').textContent='Submitting…';
   clearInterval(TIMER_INT);
   exitFS();
+  // Show submitting overlay immediately
+  var ov=g('submittingOverlay');
+  ov.style.display='flex';
+  g("submittingTitle").textContent=auto?"Time is up! Submitting...":"Submitting your answers...";
   var timeTaken=Math.round((Date.now()-new Date(START_TIME).getTime())/1000);
   var answersArr=QUESTIONS.map(function(q,i){
     return{q_ref:q.q_ref,selected:ANSWERS[i]!==undefined?ANSWERS[i]:null,skipped:!!SKIPPED[i],opt_map:q.opt_map||null};
@@ -1016,12 +1036,14 @@ function doSubmit(auto){
     auto_submitted:auto?'YES':'NO'
   };
   apiTest(p,function(data,err){
+    var ov=g('submittingOverlay');if(ov)ov.style.display='none';
     showResult();
   });
 }
 
 /* ══ RESULT ══ */
 function showResult(){
+  var ov=g('submittingOverlay');if(ov)ov.style.display='none';
   setScreen('sResult');
   var name=STUDENT?STUDENT.full_name.split(' ')[0]:'';
   var test=CUR_TEST?CUR_TEST.test_name:'the test';
