@@ -115,10 +115,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 }
 #sListing>.topbar,#sListing>.list-body{position:relative;z-index:1}
 .list-body{flex:1;padding:24px 16px 100px;max-width:600px;margin:0 auto;width:100%}
-.page-hd{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.page-title{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1.1;margin-bottom:6px}
-.page-title span{color:var(--li)}
-.page-sub{font-size:13px;color:var(--text3);line-height:1.6}
+.page-hd{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.page-title{font-size:42px;font-weight:900;color:var(--text);letter-spacing:-.8px;line-height:1.1;margin-bottom:8px}
+.page-title span{color:var(--li);font-style:italic}
+.page-sub{font-size:14px;color:var(--text3);line-height:1.6;font-weight:400}
 
 /* Filter dropdowns */
 .filter-row{display:flex;gap:10px;margin-bottom:24px}
@@ -196,7 +196,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 #sLoading{position:relative}
 .ls-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;gap:20px}
 .ls-icon{width:64px;height:64px;border-radius:16px;background:var(--li-dim);border:1px solid rgba(139,197,63,.2);display:flex;align-items:center;justify-content:center;font-size:28px}
-.ls-title{font-size:24px;font-weight:900;color:var(--text);letter-spacing:-.3px}
+.ls-title{font-size:32px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1.15}
 .ls-title span{color:var(--li)}
 .ls-sub{font-size:14px;color:var(--text3);max-width:260px;line-height:1.6}
 .ls-bar-wrap{width:200px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
@@ -390,7 +390,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 }
 .sheet::-webkit-scrollbar{display:none}
 .sheet-handle{width:36px;height:3px;background:var(--border2);border-radius:2px;margin:14px auto 20px}
-.sheet-title{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.3px;margin-bottom:4px}
+.sheet-title{font-size:24px;font-weight:900;color:var(--text);letter-spacing:-.5px;margin-bottom:4px}
 .sheet-sub{font-size:13px;color:var(--text4);margin-bottom:20px}
 
 /* Test info in sheet */
@@ -483,7 +483,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 }
 .subm-icon{width:64px;height:64px;border-radius:14px;background:var(--li-dim);border:1px solid rgba(139,197,63,.2);display:flex;align-items:center;justify-content:center;animation:pulse 1.5s ease infinite}
 .subm-icon::after{content:'';width:26px;height:26px;border:2.5px solid var(--li);border-radius:50%;border-top-color:transparent;animation:spin .8s linear infinite}
-.subm-title{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.3px}
+.subm-title{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.5px}
 .subm-sub{font-size:14px;color:var(--text4);max-width:260px;line-height:1.6}
 
 /* ── SUBMIT MODAL ── */
@@ -532,7 +532,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 }
 .res-icon-inner{width:36px;height:36px;border:3px solid var(--li);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
 .res-icon-inner::after{content:'✓';color:var(--li);font-size:16px;font-weight:900}
-.res-title{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.4px;margin-bottom:6px;animation:fUp .4s var(--e1) .05s both}
+.res-title{font-size:36px;font-weight:900;color:var(--text);letter-spacing:-.6px;margin-bottom:6px;animation:fUp .4s var(--e1) .05s both;line-height:1.1}
 .res-name{font-size:14px;color:var(--text4);margin-bottom:28px;animation:fUp .4s var(--e1) .1s both;line-height:1.5}
 .res-card{
   background:var(--card);border:1px solid var(--border);
@@ -571,7 +571,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
   </div>
   <div class="list-body">
     <div class="page-hd">
-      <div class="page-title">Class <span>Tests</span></div>
+      <div class="page-title">Class<br><span>Tests</span></div>
       <div class="page-sub">Select a test to begin. Identity verification required before starting.</div>
     </div>
     <div class="filter-row">
