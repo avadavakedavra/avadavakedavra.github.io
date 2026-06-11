@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f0f0d">
+<title>Test Reports — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f0d;--bg2:#1a1a18;--bg3:#232320;--bg4:#2e2e2a;
+  --card:#1e1e1b;--border:#2e2e2a;--border2:#3a3a36;
+  --text:#ffffff;--text2:#e0ddd6;--text3:#9a9790;--text4:#5a5a56;
+  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;--li-dim:rgba(139,197,63,.1);--li-glow:rgba(139,197,63,.2);
+  --re:#ef4444;--re-dim:rgba(239,68,68,.1);
+  --am:#f59e0b;--am-dim:rgba(245,158,11,.1);
+  --pu:#a78bfa;--pu-dim:rgba(167,139,250,.1);
+  --gold:#f59e0b;--silver:#94a3b8;--bronze:#cd7c3a;
+  --f:'Open Sans',sans-serif;--r:8px;--r2:12px;
+  --e1:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;background:var(--bg)}
+body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;font-weight:500;line-height:1.5;min-height:100vh;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+body::before{content:'';position:fixed;top:-120px;right:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12) 0%,transparent 65%);pointer-events:none;z-index:0}
+
+@keyframes spin  {to{transform:rotate(360deg)}}
+@keyframes fIn   {from{opacity:0}to{opacity:1}}
+@keyframes fUp   {from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes shine {0%{left:-100%}100%{left:200%}}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 24px;gap:14px;position:sticky;top:0;z-index:200;position:relative}
+.tb-logo{display:flex;align-items:center;gap:4px;font-size:22px;font-weight:900;color:var(--text);letter-spacing:-1px}
+.logo-dot{color:var(--li);font-weight:900}
+.tb-divider{width:1px;height:16px;background:var(--border2)}
+.tb-sub{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text4)}
+.tb-spacer{flex:1}
+.tb-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--r);border:1px solid var(--border2);background:var(--bg3);font-family:var(--f);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .14s}
+.tb-btn:hover{border-color:var(--li);color:var(--li)}
+.tb-btn-li{background:var(--li);border-color:var(--li);color:#0f0f0d;font-weight:800}
+.tb-btn-li:hover{background:var(--l2)}
+
+/* ── MAIN LAYOUT ── */
+.page{max-width:860px;margin:0 auto;padding:28px 20px 60px;position:relative;z-index:1}
+
+/* ── SCREENS ── */
+.screen{display:none;animation:fIn .25s var(--e1)}
+.screen.on{display:block}
+
+/* ── STEP 1: SELECT TEST ── */
+.step-hd{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.step-title{font-size:26px;font-weight:900;color:var(--text);letter-spacing:-.4px;margin-bottom:5px}
+.step-title span{color:var(--li)}
+.step-sub{font-size:13px;color:var(--text4);line-height:1.6}
+
+/* Filter row */
+.filter-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.fsel-wrap{position:relative;flex:1;min-width:140px}
+.fsel-wrap select{width:100%;padding:10px 32px 10px 12px;border:1px solid var(--border2);border-radius:var(--r2);font-family:var(--f);font-size:13px;font-weight:700;background:var(--bg3);color:var(--text2);outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:all .15s}
+.fsel-wrap select:focus{border-color:var(--li);box-shadow:0 0 0 2px var(--li-dim)}
+.fsel-wrap select.active{border-color:rgba(139,197,63,.3);color:var(--li)}
+.fsel-arrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text4);font-size:11px;pointer-events:none}
+
+/* Test list */
+.tests-list{display:flex;flex-direction:column;gap:10px}
+.test-item{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r2);
+  padding:16px;cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;
+}
+.test-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--li);transition:width .15s}
+.test-item:hover{border-color:var(--border2);background:var(--bg3)}
+.test-item:hover::before{width:3px}
+.test-item:active{transform:scale(.99)}
+.ti-badge{width:44px;height:44px;border-radius:8px;background:var(--li-dim);border:1px solid rgba(139,197,63,.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--li);flex-shrink:0;letter-spacing:.04em}
+.ti-info{flex:1;min-width:0}
+.ti-name{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px;letter-spacing:-.2px}
+.ti-meta{font-size:11px;color:var(--text4)}
+.ti-chips{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.04em}
+.chip-n{background:var(--bg4);color:var(--text4);border:1px solid var(--border)}
+.chip-li{background:var(--li-dim);color:var(--li);border:1px solid rgba(139,197,63,.2)}
+.chip-bl{background:rgba(37,99,235,.1);color:#60a5fa;border:1px solid rgba(37,99,235,.2)}
+.chip-am{background:var(--am-dim);color:var(--am);border:1px solid rgba(245,158,11,.2)}
+.ti-arrow{font-size:16px;color:var(--text4);flex-shrink:0}
+.ti-subs{font-size:11px;font-weight:700;color:var(--li);margin-left:auto;padding-left:10px;flex-shrink:0;white-space:nowrap}
+
+/* Loading / empty */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:60px 20px;text-align:center}
+.spin-ring{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--border2);border-top-color:var(--li);animation:spin .7s linear infinite}
+.loading-lbl{font-size:13px;color:var(--text4);font-weight:600}
+.empty-wrap{padding:60px 20px;text-align:center;color:var(--text4)}
+.empty-ic{font-size:32px;margin-bottom:12px;opacity:.3}
+.empty-txt{font-size:15px;font-weight:700;color:var(--text3);margin-bottom:4px}
+.empty-sub{font-size:13px}
+
+/* ── STEP 2: PASSWORD ── */
+.auth-card{
+  max-width:400px;margin:0 auto;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:28px;
+  animation:fUp .3s var(--e1);
+}
+.auth-icon{width:56px;height:56px;border-radius:14px;background:var(--li-dim);border:1px solid rgba(139,197,63,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.auth-icon-inner{width:22px;height:26px;border:2.5px solid var(--li);border-radius:4px;position:relative}
+.auth-icon-inner::before{content:'';position:absolute;top:-10px;left:3px;right:3px;height:12px;border:2.5px solid var(--li);border-radius:50% 50% 0 0;border-bottom:none}
+.auth-icon-inner::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--li);border-radius:50%}
+.auth-title{font-size:18px;font-weight:900;color:var(--text);text-align:center;letter-spacing:-.3px;margin-bottom:4px}
+.auth-sub{font-size:12px;color:var(--text4);text-align:center;margin-bottom:20px}
+.auth-test-info{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;margin-bottom:20px;display:flex;gap:10px;align-items:center}
+.ati-badge{font-size:9px;font-weight:800;color:var(--li);background:var(--li-dim);border:1px solid rgba(139,197,63,.15);border-radius:6px;padding:5px 8px;flex-shrink:0;letter-spacing:.04em}
+.ati-name{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.2px}
+.ati-meta{font-size:11px;color:var(--text4);margin-top:1px}
+.field-lbl{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);margin-bottom:7px}
+.field-inp{width:100%;padding:13px 14px;border:1px solid var(--border2);border-radius:10px;font-family:var(--f);font-size:15px;font-weight:700;background:var(--bg3);color:var(--text);outline:none;transition:all .15s;letter-spacing:.15em}
+.field-inp:focus{border-color:var(--li);box-shadow:0 0 0 2px var(--li-dim)}
+.err-box{background:var(--re-dim);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:10px 13px;font-size:12px;font-weight:600;color:var(--re);margin-bottom:14px;display:none;align-items:center;gap:7px}
+.err-box.on{display:flex;animation:fIn .2s}
+.btn-big{width:100%;padding:14px;border:none;border-radius:10px;background:var(--li);color:#0f0f0d;font-family:var(--f);font-size:14px;font-weight:800;cursor:pointer;transition:all .14s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.02em}
+.btn-big:hover{background:var(--l2)}
+.btn-big:active{transform:scale(.98)}
+.btn-big:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-big-spin{width:15px;height:15px;border-radius:50%;border:2px solid rgba(0,0,0,.2);border-top-color:#0f0f0d;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.btn-big-spin.on{display:block}
+.btn-back{background:none;border:none;color:var(--text4);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;padding:10px 0 0;letter-spacing:.04em;text-transform:uppercase}
+.btn-back:hover{color:var(--text2)}
+
+/* ── STEP 3: REPORT ── */
+/* Summary strip */
+.report-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.report-hd-info{}
+.report-test-name{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.4px;margin-bottom:3px}
+.report-test-meta{font-size:12px;color:var(--text4);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.report-dot{width:3px;height:3px;border-radius:50%;background:var(--border2)}
+.report-actions{display:flex;gap:8px;flex-shrink:0}
+
+.summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+@media(max-width:600px){.summary-strip{grid-template-columns:repeat(2,1fr)}}
+.sum-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;animation:fUp .3s var(--e1) both}
+.sum-card:first-child{border-color:rgba(139,197,63,.25);background:rgba(139,197,63,.05)}
+.sum-v{font-size:26px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-.5px}
+.sum-card:first-child .sum-v{color:var(--li)}
+.sum-l{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);margin-top:4px}
+
+/* Topper highlight */
+.topper-card{
+  background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.03));
+  border:1px solid rgba(245,158,11,.25);border-radius:var(--r2);
+  padding:18px 20px;margin-bottom:24px;
+  display:flex;align-items:center;gap:16px;
+  animation:fUp .35s var(--e1) .1s both;position:relative;overflow:hidden;
+}
+.topper-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),rgba(245,158,11,.3),transparent);
+}
+.topper-glow{position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.08),transparent 70%);pointer-events:none}
+.topper-badge{
+  font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);
+  padding:3px 10px;border-radius:4px;flex-shrink:0;align-self:flex-start;margin-top:2px;
+}
+.topper-av{
+  width:52px;height:52px;border-radius:12px;flex-shrink:0;
+  background:var(--bg4);position:relative;overflow:hidden;
+  border:2px solid rgba(245,158,11,.3);
+}
+.topper-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.topper-av-mn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--gold)}
+.topper-info{flex:1;min-width:0}
+.topper-name{font-size:17px;font-weight:900;color:var(--text);letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topper-meta{font-size:12px;color:var(--text4);margin-top:2px}
+.topper-score{font-size:36px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-.5px;flex-shrink:0;text-align:right}
+.topper-score-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,158,11,.6);margin-top:2px;text-align:right}
+
+/* Leaderboard table */
+.lb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.lb-title{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.1px;display:flex;align-items:center;gap:8px}
+.lb-title::before{content:'';width:3px;height:16px;background:var(--li);border-radius:2px;flex-shrink:0}
+.lb-count{font-size:11px;color:var(--text4);background:var(--bg3);border:1px solid var(--border);padding:2px 9px;border-radius:20px}
+
+.lb-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;animation:fUp .35s var(--e1) .15s both}
+.lb-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  transition:background .12s;
+}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:var(--bg3)}
+.lb-row.rank-1{background:rgba(245,158,11,.05)}
+.lb-row.rank-1:hover{background:rgba(245,158,11,.08)}
+.lb-row.rank-2{background:rgba(148,163,184,.04)}
+.lb-row.rank-3{background:rgba(205,124,58,.04)}
+.lb-rank{
+  width:28px;height:28px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;
+}
+.rank-1 .lb-rank{background:rgba(245,158,11,.15);color:var(--gold);border:1px solid rgba(245,158,11,.25)}
+.rank-2 .lb-rank{background:rgba(148,163,184,.1);color:var(--silver);border:1px solid rgba(148,163,184,.2)}
+.rank-3 .lb-rank{background:rgba(205,124,58,.1);color:var(--bronze);border:1px solid rgba(205,124,58,.2)}
+.lb-row:not(.rank-1):not(.rank-2):not(.rank-3) .lb-rank{background:var(--bg3);color:var(--text4);border:1px solid var(--border)}
+.lb-av{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  background:var(--bg4);position:relative;overflow:hidden;border:1px solid var(--border2);
+}
+.lb-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lb-av-mn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--text3)}
+.lb-info{flex:1;min-width:0}
+.lb-name{font-size:13px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.1px}
+.lb-sub{font-size:11px;color:var(--text4);margin-top:1px}
+.lb-score-wrap{flex-shrink:0;text-align:right;min-width:80px}
+.lb-pct{font-size:18px;font-weight:900;line-height:1;letter-spacing:-.3px}
+.lb-marks{font-size:10px;color:var(--text4);margin-top:2px}
+.lb-bar-wrap{width:80px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:4px;margin-left:auto}
+.lb-bar{height:100%;border-radius:2px;transition:width .6s var(--e1)}
+.pct-color-hi{color:var(--li)}
+.pct-color-md{color:var(--am)}
+.pct-color-lo{color:var(--re)}
+.bar-hi{background:var(--li)}
+.bar-md{background:var(--am)}
+.bar-lo{background:var(--re)}
+
+/* Absent / not attempted badge */
+.badge-na{font-size:10px;font-weight:700;color:var(--text4);background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
+.badge-flagged{font-size:10px;font-weight:700;color:var(--re);background:var(--re-dim);border:1px solid rgba(239,68,68,.2);padding:2px 8px;border-radius:4px}
+
+/* ── PRINT STYLES ── */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  @page{margin:12mm;size:A4 portrait}
+  body{background:#fff!important;background-image:none!important;color:#1a1a18!important}
+  body::before{display:none}
+  .topbar,.report-actions,.btn-back,.filter-row,.no-print{display:none!important}
+  .page{padding:0;max-width:100%}
+  .sum-card,.topper-card,.lb-card,.lb-row{background:#f8f8f6!important;border-color:#d8d4cb!important}
+  .lb-row.rank-1{background:#fffbeb!important}
+  .text,.lb-name,.report-test-name,.topper-name,.sum-v,.lb-pct{color:#1a1a18!important}
+  .text4,.lb-sub,.topper-meta,.sum-l,.lb-marks,.report-test-meta{color:#7a7970!important}
+  .topper-card{background:#fffbeb!important;border-color:#f59e0b!important}
+  .topper-score{color:#d97706!important}
+  .pct-color-hi{color:#5e8a24!important}
+  .pct-color-md{color:#d97706!important}
+  .pct-color-lo{color:#dc2626!important}
+  .bar-hi{background:#8BC53F!important}
+  .bar-md{background:#f59e0b!important}
+  .bar-lo{background:#dc2626!important}
+  .lb-rank{background:#f0f0ec!important;color:#4a4a46!important}
+  .rank-1 .lb-rank{background:#fffbeb!important;color:#d97706!important}
+  .pr-header{display:block!important}
+}
+.pr-header{
+  display:none;
+  background:#1a1a18;padding:14px 0;margin-bottom:16px;
+}
+.pr-header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 2px}
+.pr-logo{font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px}
+.pr-logo span{color:#8BC53F}
+.pr-logo-sub{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px;letter-spacing:.1em;text-transform:uppercase}
+.pr-date{font-size:10px;color:rgba(255,255,255,.4);text-align:right}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo">SEHR<span class="logo-dot">.</span></div>
+  <div class="tb-divider"></div>
+  <div class="tb-sub">Test Reports</div>
+  <div class="tb-spacer"></div>
+  <button class="tb-btn" id="exportBtn" style="display:none" onclick="exportReport()">Export PDF</button>
+  <button class="tb-btn" id="refreshBtn" style="display:none" onclick="reloadReport()">Refresh</button>
+</div>
+
+<div class="page">
+  <!-- Print header (shows only in print) -->
+  <div class="pr-header" id="prHeader">
+    <div class="pr-header-inner">
+      <div><div class="pr-logo">SEHR<span>.</span> ACADEMY</div><div class="pr-logo-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>
+      <div class="pr-date" id="prDate"></div>
+    </div>
+  </div>
+
+  <!-- ══ S1: SELECT TEST ══ -->
+  <div class="screen on" id="s1">
+    <div class="step-hd">
+      <div class="step-title">Test <span>Reports</span></div>
+      <div class="step-sub">Select a test to view class results and rankings.</div>
+    </div>
+    <div class="filter-row">
+      <div class="fsel-wrap">
+        <select id="fCls" onchange="filterTests()">
+          <option value="">All Classes</option>
+          <option value="12">Class 12</option>
+          <option value="11">Class 11</option>
+          <option value="10">Class 10</option>
+          <option value="9">Class 9</option>
+        </select>
+        <span class="fsel-arrow">▾</span>
+      </div>
+      <div class="fsel-wrap">
+        <select id="fBrd" onchange="filterTests()">
+          <option value="">All Boards</option>
+          <option value="CBSE">CBSE</option>
+          <option value="STATE">Kerala State</option>
+        </select>
+        <span class="fsel-arrow">▾</span>
+      </div>
+    </div>
+    <div id="testsList">
+      <div class="loading-wrap"><div class="spin-ring"></div><div class="loading-lbl">Loading tests…</div></div>
+    </div>
+  </div>
+
+  <!-- ══ S2: PASSWORD ══ -->
+  <div class="screen" id="s2">
+    <div class="auth-card">
+      <div class="auth-icon"><div class="auth-icon-inner"></div></div>
+      <div class="auth-title">Admin Access</div>
+      <div class="auth-sub">Enter password to view results</div>
+      <div class="auth-test-info">
+        <div class="ati-badge" id="atiLabel">PHY</div>
+        <div>
+          <div class="ati-name" id="atiName">Test Name</div>
+          <div class="ati-meta" id="atiMeta">Class · Subject</div>
+        </div>
+      </div>
+      <div class="err-box" id="authErr"><span>!</span><span id="authErrMsg"></span></div>
+      <div style="margin-bottom:14px">
+        <div class="field-lbl">Password</div>
+        <input class="field-inp" id="authPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAuth()">
+      </div>
+      <button class="btn-big" id="authBtn" onclick="checkAuth()">
+        <span class="btn-big-spin" id="authSpin"></span>
+        <span id="authLbl">View Results</span>
+      </button>
+      <button class="btn-back" onclick="goBack()">← Back to Tests</button>
+    </div>
+  </div>
+
+  <!-- ══ S3: REPORT ══ -->
+  <div class="screen" id="s3">
+    <!-- Report header -->
+    <div class="report-hd">
+      <div class="report-hd-info">
+        <div class="report-test-name" id="rTestName">Test Name</div>
+        <div class="report-test-meta" id="rTestMeta"></div>
+      </div>
+      <div class="report-actions no-print">
+        <button class="tb-btn" onclick="goBack2()">← Change Test</button>
+        <button class="tb-btn tb-btn-li" onclick="exportReport()">Export PDF</button>
+      </div>
+    </div>
+    <!-- Summary -->
+    <div class="summary-strip" id="summaryStrip"></div>
+    <!-- Topper -->
+    <div id="topperWrap"></div>
+    <!-- Leaderboard -->
+    <div class="lb-header">
+      <div class="lb-title">Full Rankings</div>
+      <span class="lb-count" id="lbCount">0 students</span>
+    </div>
+    <div class="lb-card" id="lbCard"></div>
+  </div>
+</div>
+
+<script>
+/* ── CONFIG ── */
+var TEST_API   = 'https://script.google.com/macros/s/AKfycbwvPI5M9_MM125MN8XEr3E6MvDdb3iTeM3QyRz2vWgv2u6lloBKEFE91Yycr71IDNy9kw/exec';
+var ADMIN_PASS = 'sehr2026';
+
+/* ── STATE ── */
+var ALL_TESTS = [];
+var CUR_TEST  = null;
+var RESULTS   = [];
+
+/* ── UTILS ── */
+function g(id){return document.getElementById(id);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mn(n){return(n||'??').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);}
+function pad(n){return String(n).padStart(2,'0');}
+function fmtSecs(s){var m=Math.floor((s||0)/60),sec=(s||0)%60;return m+'m '+sec+'s';}
+function pctCol(p){return p>=75?'hi':p>=50?'md':'lo';}
+var SUBJ_AB={'Mathematics':'MATH','Physics':'PHY','Chemistry':'CHEM','Biology':'BIO','Social Science':'SOC','English':'ENG','Accountancy':'ACC','Business Studies':'BUS','Economics':'ECO'};
+
+function apiFetch(url,cb){
+  fetch(url).then(function(r){return r.text();}).then(function(t){
+    try{cb(JSON.parse(t),null);}catch(e){cb(null,'Error');}
+  }).catch(function(e){cb(null,e.message);});
+}
+function apiCall(p,cb){
+  var url=TEST_API+'?'+Object.keys(p).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(p[k]);
+  }).join('&');
+  apiFetch(url,cb);
+}
+
+function setScreen(id){
+  ['s1','s2','s3'].forEach(function(s){g(s).classList.remove('on');});
+  g(id).classList.add('on');
+  g('exportBtn').style.display = id==='s3'?'':'none';
+  g('refreshBtn').style.display = id==='s3'?'':'none';
+}
+
+/* ── LOAD TESTS ── */
+window.onload = function(){loadTests();};
+
+function loadTests(){
+  g('testsList').innerHTML='<div class="loading-wrap"><div class="spin-ring"></div><div class="loading-lbl">Loading tests…</div></div>';
+  apiCall({action:'getTests',appkey:ADMIN_PASS,include_inactive:'yes'},function(data,err){
+    if(err||!data||!data.success){
+      g('testsList').innerHTML='<div class="empty-wrap"><div class="empty-ic">📭</div><div class="empty-txt">Could not load tests</div></div>';
+      return;
+    }
+    // Newest first
+    ALL_TESTS = (data.tests||[]).slice().reverse();
+    filterTests();
+  });
+}
+
+function filterTests(){
+  var cls = g('fCls').value;
+  var brd = g('fBrd').value;
+  g('fCls').classList.toggle('active',!!cls);
+  g('fBrd').classList.toggle('active',!!brd);
+  var tests = ALL_TESTS.filter(function(t){
+    if(cls && t.class!==cls) return false;
+    if(brd && t.syllabus!==brd) return false;
+    return true;
+  });
+  renderTestList(tests);
+}
+
+function renderTestList(tests){
+  if(!tests.length){
+    g('testsList').innerHTML='<div class="empty-wrap"><div class="empty-ic" style="font-size:28px;opacity:.2">—</div><div class="empty-txt">No tests found</div><div class="empty-sub">Adjust the filters above</div></div>';
+    return;
+  }
+  var html='<div class="tests-list">';
+  tests.forEach(function(t){
+    var bl=t.syllabus==='STATE'?'Kerala State':t.syllabus;
+    var ab=SUBJ_AB[t.subject]||t.subject.slice(0,4).toUpperCase();
+    var active=String(t.active||'no').toLowerCase()==='yes';
+    html+='<div class="test-item" onclick="selectTest(\''+esc(t.test_id)+'\')">';
+    html+='<div class="ti-badge">'+esc(ab)+'</div>';
+    html+='<div class="ti-info">';
+    html+='<div class="ti-name">'+esc(t.test_name)+'</div>';
+    html+='<div class="ti-meta">Class '+esc(t.class)+' · '+esc(t.subject)+'</div>';
+    html+='<div class="ti-chips">';
+    html+='<span class="chip chip-n">'+t.question_count+' Qs</span>';
+    html+='<span class="chip chip-am">'+t.duration_mins+' min</span>';
+    html+='<span class="chip '+(t.syllabus==='STATE'?'chip-li':'chip-bl')+'">'+esc(bl)+'</span>';
+    html+='<span class="chip '+(active?'chip-li':'chip-n')+'">'+(active?'Active':'Inactive')+'</span>';
+    html+='</div></div>';
+    html+='<div class="ti-arrow">›</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  g('testsList').innerHTML=html;
+}
+
+/* ── SELECT TEST → PASSWORD ── */
+function selectTest(testId){
+  CUR_TEST = ALL_TESTS.find(function(t){return t.test_id===testId;})||null;
+  if(!CUR_TEST)return;
+  var bl=CUR_TEST.syllabus==='STATE'?'Kerala State':CUR_TEST.syllabus;
+  var ab=SUBJ_AB[CUR_TEST.subject]||CUR_TEST.subject.slice(0,4).toUpperCase();
+  g('atiLabel').textContent=ab;
+  g('atiName').textContent=CUR_TEST.test_name;
+  g('atiMeta').textContent='Class '+CUR_TEST.class+' · '+CUR_TEST.subject+' · '+bl;
+  g('authPass').value='';
+  g('authErr').classList.remove('on');
+  setScreen('s2');
+  setTimeout(function(){g('authPass').focus();},100);
+}
+
+/* ── CHECK PASSWORD ── */
+function checkAuth(){
+  var pw=g('authPass').value.trim();
+  if(!pw){showAuthErr('Enter the password');return;}
+  if(pw!==ADMIN_PASS){
+    g('authPass').value='';
+    showAuthErr('Incorrect password');
+    return;
+  }
+  g('authBtn').disabled=true;
+  g('authSpin').classList.add('on');
+  g('authLbl').textContent='Loading…';
+  loadReport();
+}
+function showAuthErr(msg){g('authErrMsg').textContent=msg;g('authErr').classList.add('on');}
+
+function goBack(){setScreen('s1');}
+function goBack2(){setScreen('s1');}
+
+/* ── LOAD REPORT ── */
+function loadReport(){
+  apiCall({action:'getResults',test_id:CUR_TEST.test_id,appkey:ADMIN_PASS},function(data,err){
+    g('authBtn').disabled=false;
+    g('authSpin').classList.remove('on');
+    g('authLbl').textContent='View Results';
+    if(err||!data||!data.success){showAuthErr('Could not load results');return;}
+    RESULTS=data.results||[];
+    renderReport();
+    setScreen('s3');
+  });
+}
+
+/* ── RENDER REPORT ── */
+function renderReport(){
+  var bl=CUR_TEST.syllabus==='STATE'?'Kerala State':CUR_TEST.syllabus;
+  g('rTestName').textContent=CUR_TEST.test_name;
+  g('rTestMeta').innerHTML=
+    'Class '+esc(CUR_TEST.class)+
+    '<div class="report-dot"></div>'+esc(CUR_TEST.subject)+
+    '<div class="report-dot"></div>'+esc(bl)+
+    '<div class="report-dot"></div>'+CUR_TEST.duration_mins+' min · '+CUR_TEST.question_count+' questions';
+
+  // Sort by percentage desc, then by time asc as tiebreaker
+  var sorted=RESULTS.slice().sort(function(a,b){
+    if(b.percentage!==a.percentage)return b.percentage-a.percentage;
+    return (a.duration_secs||9999)-(b.duration_secs||9999);
+  });
+
+  // Summary stats
+  var total=sorted.length;
+  var avg=total?Math.round(sorted.reduce(function(s,r){return s+r.percentage;},0)/total):0;
+  var passed=sorted.filter(function(r){return r.percentage>=35;}).length;
+  var flagged=sorted.filter(function(r){return String(r.flagged||'').toUpperCase()==='YES';}).length;
+
+  g('summaryStrip').innerHTML=
+    sumCard(total,'Students Attempted')+
+    sumCard(avg+'%','Class Average')+
+    sumCard(passed,'Passed (≥35%)')+
+    sumCard(flagged,'Flagged');
+
+  // Topper
+  var topperHtml='';
+  if(sorted.length){
+    var t=sorted[0];
+    var pCol=pctCol(t.percentage);
+    topperHtml='<div class="topper-card">'+
+      '<div class="topper-glow"></div>'+
+      '<div class="topper-badge">Topper</div>'+
+      '<div class="topper-av" id="topperAv">'+
+        '<div class="topper-av-mn">'+esc(mn(t.student_name))+'</div>'+
+      '</div>'+
+      '<div class="topper-info">'+
+        '<div class="topper-name">'+esc(t.student_name||t.student_id)+'</div>'+
+        '<div class="topper-meta">'+esc(t.student_id)+' · '+esc(t.class_syllabus||'')+'</div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="topper-score pct-color-hi">'+t.percentage+'%</div>'+
+        '<div class="topper-score-lbl">'+t.correct+' / '+t.total+' correct</div>'+
+      '</div>'+
+    '</div>';
+    // Load photo
+    if(t.photo){
+      setTimeout(function(){
+        var av=g('topperAv');if(!av)return;
+        var img=new Image();
+        img.onload=function(){av.innerHTML='<img src="'+t.photo+'" alt="">';};
+        img.src=t.photo;
+      },200);
+    }
+  }
+  g('topperWrap').innerHTML=topperHtml;
+
+  // Leaderboard
+  g('lbCount').textContent=sorted.length+' student'+(sorted.length!==1?'s':'');
+  var rows='';
+  sorted.forEach(function(r,i){
+    var rank=i+1;
+    var rankCls=rank<=3?'rank-'+rank:'';
+    var pCol=pctCol(r.percentage);
+    var flaggedBadge=String(r.flagged||'').toUpperCase()==='YES'?'<span class="badge-flagged">Flagged</span>':'';
+    rows+=
+      '<div class="lb-row '+rankCls+'">';
+    // Rank
+    rows+='<div class="lb-rank">'+rank+'</div>';
+    // Avatar
+    rows+='<div class="lb-av" id="av'+i+'">'+
+      '<div class="lb-av-mn">'+esc(mn(r.student_name))+'</div>'+
+    '</div>';
+    // Info
+    rows+='<div class="lb-info">'+
+      '<div class="lb-name">'+esc(r.student_name||r.student_id)+'</div>'+
+      '<div class="lb-sub">'+esc(r.student_id)+(flaggedBadge?' '+flaggedBadge:'')+' · '+fmtSecs(r.duration_secs)+'</div>'+
+    '</div>';
+    // Score
+    rows+='<div class="lb-score-wrap">'+
+      '<div class="lb-pct pct-color-'+pCol+'">'+r.percentage+'%</div>'+
+      '<div class="lb-marks">'+r.correct+' / '+r.total+'</div>'+
+      '<div class="lb-bar-wrap"><div class="lb-bar bar-'+pCol+'" style="width:'+r.percentage+'%"></div></div>'+
+    '</div>';
+    rows+='</div>';
+  });
+  g('lbCard').innerHTML=rows||'<div class="loading-wrap"><div class="loading-lbl">No submissions yet.</div></div>';
+
+  // Load avatars async
+  sorted.forEach(function(r,i){
+    if(!r.photo)return;
+    (function(idx,url){
+      var img=new Image();
+      img.onload=function(){
+        var av=g('av'+idx);
+        if(av)av.innerHTML='<img src="'+url+'" alt="">';
+      };
+      img.src=url;
+    })(i,r.photo);
+  });
+
+  // Print header date
+  g('prDate').textContent='Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  g('prHeader').style.display='block';
+}
+
+function sumCard(v,l){
+  return '<div class="sum-card"><div class="sum-v">'+esc(String(v))+'</div><div class="sum-l">'+esc(l)+'</div></div>';
+}
+
+/* ── EXPORT ── */
+function exportReport(){window.print();}
+function reloadReport(){
+  g('authBtn').disabled=true;
+  g('authSpin').classList.add('on');
+  g('authLbl').textContent='Loading…';
+  loadReport();
+}
+</script>
+</body>
+</html>
