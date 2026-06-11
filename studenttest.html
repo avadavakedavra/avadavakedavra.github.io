@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1a1a18">
+<title>Class Tests — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
+  --cr:#f5f2eb;--c2:#ede9e0;--c3:#e4dfd4;
+  --wh:#fdfcfa;--mu:#7a7970;--pa:#b0ada4;--ru:#d8d4cb;
+  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;--lb:#f0f7e3;
+  --re:#dc2626;--rb:#fef2f2;--rm:#fca5a5;
+  --pu:#7c3aed;--pub:#f0ebff;
+  --bl:#2563eb;--blb:#eff6ff;
+  --am:#d97706;--amb:#fffbeb;
+  --f:'Open Sans',sans-serif;--fs:'DM Serif Display',serif;
+  --r:12px;--r2:16px;--r3:20px;
+  --e1:cubic-bezier(.22,1,.36,1);
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --shadow2:0 8px 32px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:15px;font-weight:500;line-height:1.5;min-height:100%;overflow-x:hidden}
+
+@keyframes spin  {to{transform:rotate(360deg)}}
+@keyframes fIn   {from{opacity:0}to{opacity:1}}
+@keyframes fUp   {from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fDown {from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes pulse {0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes shake {0%,100%{transform:none}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes blink {0%,100%{color:var(--ink)}50%{color:var(--re)}}
+@keyframes dot1  {0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+@keyframes dot2  {0%,20%,100%{transform:scale(0)}60%{transform:scale(1)}}
+@keyframes dot3  {0%,40%,100%{transform:scale(0)}80%{transform:scale(1)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* ── SCREENS ── */
+.screen{display:none}
+.screen.on{display:flex;flex-direction:column;min-height:100vh;animation:fIn .2s var(--e1)}
+
+/* ══ TOPBAR ══ */
+.topbar{
+  background:#1a1a18;border-bottom:3px solid var(--li);
+  padding:0 16px;height:56px;flex-shrink:0;
+  display:flex;align-items:center;gap:10px;
+  position:sticky;top:0;z-index:200;
+}
+.tb-logo{font-size:20px;font-weight:900;color:#fff;letter-spacing:-1px}
+.tb-logo .dot{color:var(--li)}
+.tb-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.tb-spacer{flex:1}
+.tb-student{
+  display:none;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;padding:6px 10px;max-width:180px;
+}
+.tb-student.on{display:flex}
+.tb-av{
+  width:28px;height:28px;border-radius:7px;
+  background:rgba(139,197,63,.2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:var(--li);
+}
+.tb-sname{font-size:11px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-smeta{font-size:9px;color:rgba(255,255,255,.38)}
+.tb-logout{background:none;border:none;color:rgba(255,255,255,.35);font-size:16px;cursor:pointer;padding:2px 4px;transition:color .13s;flex-shrink:0}
+.tb-logout:hover{color:var(--re)}
+
+/* ══ S1: LISTING ══ */
+#sListing{background:var(--cr)}
+.list-body{flex:1;padding:20px 16px 80px;max-width:640px;margin:0 auto;width:100%}
+.page-hd{margin-bottom:20px}
+.page-title{font-family:var(--fs);font-size:26px;color:var(--ink);line-height:1.2;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--mu);line-height:1.5}
+
+/* Filter pills — scrollable row */
+.filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.fpill{flex-shrink:0;padding:8px 16px;border-radius:20px;border:1.5px solid var(--ru);background:var(--wh);font-family:var(--f);font-size:13px;font-weight:700;color:var(--mu);cursor:pointer;transition:all .14s;white-space:nowrap}
+.fpill.on{background:var(--li);border-color:var(--li);color:#1a1a18}
+.filter-divider{width:1px;height:24px;background:var(--ru);flex-shrink:0;align-self:center}
+
+/* Class section */
+.cls-section{margin-bottom:28px;animation:fUp .3s var(--e1) both}
+.cls-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.cls-badge{
+  width:36px;height:36px;border-radius:9px;background:#1a1a18;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:900;color:var(--li);flex-shrink:0;
+}
+.cls-lbl{font-size:17px;font-weight:800;color:var(--ink)}
+.cls-count{font-size:11px;color:var(--mu);background:var(--c2);padding:2px 8px;border-radius:10px}
+
+.board-sec{margin-bottom:16px}
+.board-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.board-pill{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.board-cbse{background:var(--blb);color:var(--bl)}
+.board-state{background:var(--lb);color:var(--l3)}
+.board-hd::after{content:'';flex:1;height:1px;background:var(--ru)}
+
+/* Test cards — stacked list on mobile */
+.test-card{
+  background:var(--wh);border:1.5px solid var(--ru);border-radius:var(--r2);
+  padding:16px;margin-bottom:10px;cursor:pointer;
+  transition:all .15s;position:relative;overflow:hidden;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:var(--shadow);
+}
+.test-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--li);transition:width .15s}
+.test-card:active{transform:scale(.98)}
+.test-card:hover::before,.test-card:active::before{width:4px}
+.test-card-ic{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.ic-cbse{background:var(--blb)}
+.ic-state{background:var(--lb)}
+.test-card-body{flex:1;min-width:0}
+.test-card-name{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.test-card-subject{font-size:12px;color:var(--mu);margin-bottom:6px}
+.test-card-chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap}
+.chip-n{background:var(--c2);color:var(--mu)}
+.chip-am{background:var(--amb);color:var(--am)}
+.chip-li{background:var(--lb);color:var(--l3)}
+.chip-bl{background:var(--blb);color:var(--bl)}
+.test-card-arrow{font-size:20px;color:var(--pa);flex-shrink:0}
+
+/* Loading */
+.loading-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px}
+.spin-ring{width:36px;height:36px;border-radius:50%;border:3px solid var(--ru);border-top-color:var(--li);animation:spin .7s linear infinite}
+.loading-lbl{font-size:14px;font-weight:600;color:var(--mu)}
+
+/* Dot loader */
+.dots{display:flex;gap:5px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--li)}
+.dot:nth-child(1){animation:dot1 1.2s ease infinite}
+.dot:nth-child(2){animation:dot2 1.2s ease infinite}
+.dot:nth-child(3){animation:dot3 1.2s ease infinite}
+
+/* Empty */
+.empty-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;gap:8px}
+.empty-ic{font-size:48px;opacity:.2}
+.empty-txt{font-size:16px;font-weight:700;color:var(--ink2)}
+.empty-sub{font-size:13px;color:var(--mu)}
+
+/* ══ LOGIN MODAL (bottom sheet on mobile) ══ */
+.sheet-bg{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);z-index:500;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.sheet-bg.on{display:flex;align-items:flex-end;justify-content:center;animation:fIn .2s var(--e1)}
+.sheet{
+  background:var(--wh);width:100%;max-width:500px;
+  border-radius:24px 24px 0 0;padding:0 20px 32px;
+  animation:slideUp .3s var(--e1);
+  max-height:90vh;overflow-y:auto;
+}
+@media(min-height:700px){.sheet{padding-bottom:max(32px,env(safe-area-inset-bottom))}}
+.sheet-handle{width:40px;height:4px;background:var(--c3);border-radius:2px;margin:14px auto 20px}
+.sheet-title{font-family:var(--fs);font-size:22px;color:var(--ink);margin-bottom:4px}
+.sheet-sub{font-size:13px;color:var(--mu);margin-bottom:20px}
+.sheet-test-info{
+  background:var(--c2);border-radius:14px;padding:14px;
+  margin-bottom:20px;display:flex;gap:12px;align-items:center;
+}
+.sti-ic{font-size:28px;flex-shrink:0}
+.sti-name{font-size:15px;font-weight:800;color:var(--ink);line-height:1.3}
+.sti-meta{font-size:12px;color:var(--mu);margin-top:2px}
+.field{margin-bottom:14px}
+.field-lbl{font-size:12px;font-weight:700;color:var(--ink3);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.field-inp{
+  width:100%;padding:14px 16px;
+  border:2px solid var(--ru);border-radius:12px;
+  font-family:var(--f);font-size:16px;font-weight:600;
+  background:var(--cr);color:var(--ink);outline:none;
+  transition:all .15s;-webkit-appearance:none;
+}
+.field-inp:focus{border-color:var(--li);background:var(--wh);box-shadow:0 0 0 4px rgba(139,197,63,.12)}
+.field-inp.bad{border-color:var(--re);background:var(--rb);animation:shake .4s var(--e1)}
+.monitor-note{
+  display:flex;gap:10px;align-items:flex-start;
+  background:rgba(124,58,237,.06);border:1.5px solid rgba(124,58,237,.15);
+  border-radius:12px;padding:12px 14px;margin-bottom:20px;
+}
+.monitor-note-ic{font-size:18px;flex-shrink:0;margin-top:1px}
+.monitor-note-txt{font-size:12px;color:var(--ink3);line-height:1.6}
+.monitor-note-txt b{color:var(--pu)}
+.err-box{
+  background:var(--rb);border:2px solid var(--rm);
+  border-radius:10px;padding:12px 14px;
+  font-size:13px;font-weight:600;color:var(--re);
+  margin-bottom:14px;display:none;
+  animation:fDown .2s var(--e1);
+}
+.err-box.on{display:flex;align-items:center;gap:8px}
+.btn-big{
+  width:100%;padding:16px;border:none;border-radius:14px;
+  background:var(--li);color:#1a1a18;
+  font-family:var(--f);font-size:16px;font-weight:800;
+  cursor:pointer;transition:all .15s;
+  box-shadow:0 4px 16px rgba(139,197,63,.35);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  -webkit-appearance:none;
+}
+.btn-big:active{transform:scale(.97);box-shadow:0 2px 8px rgba(139,197,63,.2)}
+.btn-big:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-big-spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(26,26,24,.25);border-top-color:var(--ink);animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.btn-big-spin.on{display:block}
+
+/* ══ LOADING SCREEN ══ */
+#sLoading{background:var(--cr)}
+.loading-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;gap:20px}
+.ls-ic{font-size:56px;animation:pulse 2s ease infinite}
+.ls-title{font-family:var(--fs);font-size:24px;color:var(--ink)}
+.ls-sub{font-size:14px;color:var(--mu);line-height:1.6;max-width:280px}
+.ls-progress{width:200px;height:4px;background:var(--c3);border-radius:2px;overflow:hidden}
+.ls-prog-fill{height:100%;background:var(--li);border-radius:2px;animation:loading-fill 2s var(--e1) forwards}
+@keyframes loading-fill{from{width:0}to{width:85%}}
+
+/* ══ S2: TEST ══ */
+#sTest{background:var(--cr);user-select:none;-webkit-user-select:none}
+
+.test-topbar{
+  background:#1a1a18;flex-shrink:0;
+  padding:0 16px;height:56px;
+  display:flex;align-items:center;gap:10px;
+  position:sticky;top:0;z-index:200;
+}
+.test-tb-info{flex:1;min-width:0}
+.test-tb-name{font-size:14px;font-weight:800;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.test-tb-sub{font-size:10px;color:rgba(255,255,255,.35)}
+.timer-box{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;padding:6px 12px;flex-shrink:0;
+}
+.timer-val{font-size:16px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;min-width:50px;text-align:center;letter-spacing:.02em}
+.timer-val.warn{color:#fb923c;animation:blink 1s ease infinite}
+.timer-val.danger{color:var(--re);animation:blink .5s ease infinite}
+
+/* Progress strip */
+.prog-strip{background:rgba(255,255,255,.07);height:36px;flex-shrink:0;display:flex;align-items:center;padding:0 16px;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.prog-bar{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--li);border-radius:3px;transition:width .3s var(--e1)}
+.prog-txt{font-size:11px;font-weight:700;color:rgba(255,255,255,.45);white-space:nowrap}
+
+/* Violation banner */
+.viol-banner{
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+  color:#fff;font-size:12px;font-weight:700;
+  padding:10px 16px;display:none;align-items:center;gap:8px;
+  flex-shrink:0;
+}
+.viol-banner.on{display:flex;animation:fDown .2s var(--e1)}
+
+/* Test body */
+.test-body{flex:1;padding:16px 16px 100px;max-width:640px;margin:0 auto;width:100%}
+
+/* Question card */
+.q-card{
+  background:var(--wh);border:1.5px solid var(--ru);
+  border-radius:var(--r2);padding:20px;
+  margin-bottom:14px;box-shadow:var(--shadow);
+  animation:fUp .2s var(--e1);
+}
+.q-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mu);margin-bottom:14px;
+}
+.q-label-num{
+  background:var(--li);color:#1a1a18;
+  width:24px;height:24px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;
+}
+.q-text{font-size:16px;font-weight:600;color:var(--ink);line-height:1.65}
+
+/* Options */
+.q-opts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.q-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-radius:12px;
+  border:2px solid var(--ru);background:var(--cr);
+  cursor:pointer;transition:all .13s;
+  font-size:15px;font-weight:600;color:var(--ink);
+  min-height:52px;
+}
+.q-opt:active{transform:scale(.98)}
+.q-opt.sel{border-color:var(--li);background:var(--lb)}
+.q-opt.sel .q-opt-ic{background:var(--li);border-color:var(--li)}
+.q-opt.sel .q-opt-ic::after{opacity:1}
+.q-opt-ic{
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--ru);background:var(--wh);
+  flex-shrink:0;position:relative;transition:all .13s;
+}
+.q-opt-ic::after{
+  content:'';position:absolute;inset:3px;
+  border-radius:50%;background:#fff;opacity:0;transition:opacity .13s;
+}
+.q-opt-txt{flex:1;line-height:1.4}
+
+/* Navigation bar — sticky bottom */
+.q-nav-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--wh);border-top:1.5px solid var(--ru);
+  padding:10px 16px max(10px,env(safe-area-inset-bottom));
+  display:flex;align-items:center;gap:10px;
+  z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);
+}
+.btn-nav{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 18px;border-radius:12px;
+  border:2px solid var(--ru);background:var(--c2);
+  font-family:var(--f);font-size:14px;font-weight:700;
+  color:var(--ink2);cursor:pointer;transition:all .13s;
+  -webkit-appearance:none;flex-shrink:0;
+}
+.btn-nav:active{transform:scale(.95)}
+.btn-nav:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-skip{
+  flex:1;padding:12px;border-radius:12px;
+  border:2px solid var(--am);background:var(--amb);
+  font-family:var(--f);font-size:13px;font-weight:700;
+  color:var(--am);cursor:pointer;transition:all .13s;
+  -webkit-appearance:none;text-align:center;
+}
+.btn-skip.skipped{background:var(--am);color:#fff;border-color:var(--am)}
+.btn-skip:active{transform:scale(.97)}
+.btn-submit-main{
+  padding:12px 20px;border-radius:12px;
+  border:none;background:var(--li);
+  font-family:var(--f);font-size:14px;font-weight:800;
+  color:#1a1a18;cursor:pointer;transition:all .13s;
+  box-shadow:0 3px 10px rgba(139,197,63,.35);
+  -webkit-appearance:none;flex-shrink:0;
+}
+.btn-submit-main:active{transform:scale(.95)}
+
+/* Question palette */
+.palette-card{
+  background:var(--wh);border:1.5px solid var(--ru);
+  border-radius:var(--r2);padding:16px;
+  margin-bottom:14px;box-shadow:var(--shadow);
+}
+.palette-hd{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:12px}
+.palette-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:12px}
+@media(max-width:360px){.palette-grid{grid-template-columns:repeat(6,1fr)}}
+.p-btn{
+  aspect-ratio:1;border-radius:8px;
+  border:1.5px solid var(--ru);background:var(--c2);
+  font-family:var(--f);font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .12s;color:var(--ink3);
+  display:flex;align-items:center;justify-content:center;
+}
+.p-btn:active{transform:scale(.9)}
+.p-btn.answered{background:var(--li);border-color:var(--li);color:#1a1a18}
+.p-btn.skipped{background:var(--amb);border-color:var(--am);color:var(--am)}
+.p-btn.current{box-shadow:0 0 0 2.5px var(--li);transform:scale(1.1)}
+.palette-leg{display:flex;gap:12px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mu)}
+.leg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+
+/* Anti-cheat overlay */
+.ac-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,10,30,.96);z-index:900;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:32px;gap:14px;
+}
+.ac-overlay.on{display:flex;animation:fIn .25s var(--e1)}
+.ac-ic{font-size:64px;margin-bottom:4px}
+.ac-title{font-family:var(--fs);font-size:26px;color:#fff}
+.ac-sub{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;max-width:320px}
+.ac-count{font-size:56px;font-weight:900;color:var(--re);font-variant-numeric:tabular-nums;line-height:1}
+.ac-btn{
+  padding:14px 32px;border:none;border-radius:14px;
+  background:var(--li);color:#1a1a18;
+  font-family:var(--f);font-size:15px;font-weight:800;cursor:pointer;
+  -webkit-appearance:none;
+}
+
+/* Submit confirm modal */
+.modal-bg{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);z-index:500;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  align-items:flex-end;justify-content:center;
+}
+.modal-bg.on{display:flex;animation:fIn .2s var(--e1)}
+.modal{
+  background:var(--wh);width:100%;max-width:500px;
+  border-radius:24px 24px 0 0;
+  padding:0 20px max(24px,env(safe-area-inset-bottom));
+  animation:slideUp .3s var(--e1);
+}
+.modal-handle{width:40px;height:4px;background:var(--c3);border-radius:2px;margin:14px auto 20px}
+.modal-title{font-family:var(--fs);font-size:22px;color:var(--ink);margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--mu);margin-bottom:18px}
+.sub-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.ss{background:var(--c2);border-radius:12px;padding:14px;text-align:center}
+.ss-v{font-size:26px;font-weight:900;color:var(--ink);line-height:1}
+.ss-l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-top:3px}
+.warn-box{
+  background:var(--amb);border-radius:10px;
+  padding:11px 14px;font-size:13px;font-weight:600;color:var(--am);
+  margin-bottom:14px;display:none;
+}
+.btn-cancel{
+  width:100%;padding:14px;border-radius:12px;
+  border:2px solid var(--ru);background:var(--c2);
+  font-family:var(--f);font-size:15px;font-weight:700;
+  color:var(--ink2);cursor:pointer;margin-top:10px;
+  -webkit-appearance:none;
+}
+.btn-cancel:active{transform:scale(.98)}
+
+/* ══ S3: RESULT ══ */
+#sResult{background:var(--cr)}
+.result-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px max(40px,env(safe-area-inset-bottom));text-align:center;max-width:500px;margin:0 auto;width:100%}
+.res-ic{font-size:80px;margin-bottom:16px;animation:fUp .4s var(--e1)}
+.res-title{font-family:var(--fs);font-size:30px;color:var(--ink);margin-bottom:6px;animation:fUp .4s var(--e1) .05s both}
+.res-name{font-size:15px;color:var(--mu);margin-bottom:28px;animation:fUp .4s var(--e1) .1s both;line-height:1.5}
+.res-card{
+  background:var(--wh);border:1.5px solid var(--ru);
+  border-radius:var(--r2);padding:20px;width:100%;
+  margin-bottom:20px;box-shadow:var(--shadow);
+  animation:fUp .4s var(--e1) .15s both;
+}
+.res-note{font-size:14px;color:var(--ink2);line-height:1.65}
+.res-back{
+  width:100%;max-width:300px;padding:16px;border:none;
+  border-radius:14px;background:var(--li);color:#1a1a18;
+  font-family:var(--f);font-size:16px;font-weight:800;
+  cursor:pointer;box-shadow:0 4px 16px rgba(139,197,63,.3);
+  animation:fUp .4s var(--e1) .2s both;
+  -webkit-appearance:none;
+}
+.res-back:active{transform:scale(.97)}
+</style>
+</head>
+<body>
+
+<!-- ══ S1: LISTING ══ -->
+<div class="screen on" id="sListing">
+  <div class="topbar">
+    <div class="tb-logo">SEHR<span class="dot">.</span></div>
+    <div class="tb-sub">Tests</div>
+    <div class="tb-spacer"></div>
+    <div class="tb-student" id="tbStudent">
+      <div class="tb-av" id="tbAv">--</div>
+      <div style="min-width:0">
+        <div class="tb-sname" id="tbSname"></div>
+        <div class="tb-smeta" id="tbSmeta"></div>
+      </div>
+      <button class="tb-logout" onclick="doLogout()" title="Sign out">✕</button>
+    </div>
+  </div>
+  <div class="list-body">
+    <div class="page-hd">
+      <div class="page-title">Class Tests</div>
+      <div class="page-sub">Select a test to begin. You'll verify your identity before starting.</div>
+    </div>
+    <!-- Filters -->
+    <div class="filter-row" id="filterRow">
+      <div class="fpill on" onclick="setFClass('',this)">All Classes</div>
+      <div class="fpill" onclick="setFClass('9',this)">Class 9</div>
+      <div class="fpill" onclick="setFClass('10',this)">Class 10</div>
+      <div class="fpill" onclick="setFClass('11',this)">Class 11</div>
+      <div class="fpill" onclick="setFClass('12',this)">Class 12</div>
+      <div class="filter-divider"></div>
+      <div class="fpill on" onclick="setFBoard('',this)" id="fpBoardAll">All Boards</div>
+      <div class="fpill" onclick="setFBoard('CBSE',this)">CBSE</div>
+      <div class="fpill" onclick="setFBoard('STATE',this)">Kerala State</div>
+    </div>
+    <div id="testsContainer">
+      <div class="loading-wrap"><div class="spin-ring"></div><div class="loading-lbl">Loading tests…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S4: LOADING (between login and test) ══ -->
+<div class="screen" id="sLoading">
+  <div class="topbar">
+    <div class="tb-logo">SEHR<span class="dot">.</span></div>
+    <div class="tb-sub">Tests</div>
+  </div>
+  <div class="loading-screen">
+    <div class="ls-ic">📋</div>
+    <div class="ls-title" id="loadingTitle">Preparing your test…</div>
+    <div class="ls-sub" id="loadingSubtitle">Loading questions. Please wait.</div>
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="ls-progress"><div class="ls-prog-fill"></div></div>
+  </div>
+</div>
+
+<!-- ══ S2: TEST ══ -->
+<div class="screen" id="sTest">
+  <div class="test-topbar">
+    <div class="test-tb-info">
+      <div class="test-tb-name" id="ttName"></div>
+      <div class="test-tb-sub" id="ttSub"></div>
+    </div>
+    <div class="timer-box">
+      <span style="font-size:14px">⏱</span>
+      <div class="timer-val" id="timerDisp">00:00</div>
+    </div>
+  </div>
+  <div class="prog-strip" style="background:#1a1a18">
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-txt" id="progTxt">0 / 0</div>
+  </div>
+  <div class="viol-banner" id="violBanner">
+    <span>⚠️</span><span id="violMsg">Warning detected</span>
+  </div>
+  <div class="test-body" id="testBody">
+    <!-- Question card -->
+    <div class="q-card" id="qCard">
+      <div class="q-label">
+        <div class="q-label-num" id="qNum">1</div>
+        <span id="qOf">of 0</span>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-opts" id="qOpts"></div>
+    </div>
+    <!-- Palette card -->
+    <div class="palette-card">
+      <div class="palette-hd">All Questions</div>
+      <div class="palette-grid" id="paletteGrid"></div>
+      <div class="palette-leg">
+        <div class="leg"><div class="leg-dot" style="background:var(--li)"></div>Answered</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--amb);border:1px solid var(--am)"></div>Skipped</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--c3);border:1px solid var(--ru)"></div>Not yet</div>
+      </div>
+    </div>
+  </div>
+  <!-- Sticky nav -->
+  <div class="q-nav-bar" id="qNavBar">
+    <button class="btn-nav" id="prevBtn" onclick="goQ(-1)">←</button>
+    <button class="btn-skip" id="skipBtn" onclick="skipQ()">Skip</button>
+    <button class="btn-nav" id="nextBtn" onclick="goQ(1)">→</button>
+    <button class="btn-submit-main" onclick="confirmSubmit()">Submit ✓</button>
+  </div>
+  <!-- Anti-cheat overlay -->
+  <div class="ac-overlay" id="acOverlay">
+    <div class="ac-ic">🔒</div>
+    <div class="ac-title" id="acTitle">Tab Switch Detected</div>
+    <div class="ac-sub" id="acSub">This has been recorded. Returning in:</div>
+    <div class="ac-count" id="acCount">3</div>
+    <button class="ac-btn" onclick="returnToTest()">Return to Test</button>
+  </div>
+</div>
+
+<!-- ══ S3: RESULT ══ -->
+<div class="screen" id="sResult">
+  <div class="topbar">
+    <div class="tb-logo">SEHR<span class="dot">.</span></div>
+    <div class="tb-sub">Test Complete</div>
+  </div>
+  <div class="result-body">
+    <div class="res-ic">🎉</div>
+    <div class="res-title">Test Submitted!</div>
+    <div class="res-name" id="resName">Thank you for completing the test.</div>
+    <div class="res-card">
+      <div class="res-note" id="resNote">Your answers have been recorded successfully. Your teacher will review and share your results.</div>
+    </div>
+    <button class="res-back" onclick="goToListing()">← Back to Tests</button>
+  </div>
+</div>
+
+<!-- LOGIN SHEET -->
+<div class="sheet-bg" id="loginSheet">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Student Login</div>
+    <div class="sheet-sub">Verify your identity to start the test</div>
+    <div class="sheet-test-info">
+      <div class="sti-ic" id="stiIc">📋</div>
+      <div>
+        <div class="sti-name" id="stiName">Test Name</div>
+        <div class="sti-meta" id="stiMeta">Class · Subject</div>
+      </div>
+    </div>
+    <div class="err-box" id="loginErr">⚠️ <span id="loginErrMsg"></span></div>
+    <div class="field">
+      <div class="field-lbl">👤 Student ID</div>
+      <input class="field-inp" id="inId" type="text" placeholder="e.g. STU001" autocomplete="off" autocapitalize="characters" inputmode="text" onkeydown="if(event.key==='Enter')g('inDob').focus()" oninput="clearErr()">
+    </div>
+    <div class="field">
+      <div class="field-lbl">🎂 Date of Birth</div>
+      <input class="field-inp" id="inDob" type="date" onkeydown="if(event.key==='Enter')doLogin()" oninput="clearErr()">
+    </div>
+    <div class="monitor-note">
+      <div class="monitor-note-ic">🔒</div>
+      <div class="monitor-note-txt"><b>This test is monitored.</b> Tab switching, copy-paste, and screen sharing are detected and recorded as violations.</div>
+    </div>
+    <button class="btn-big" id="loginBtn" onclick="doLogin()">
+      <span class="btn-big-spin" id="loginSpin"></span>
+      <span id="loginLbl">Verify &amp; Start Test →</span>
+    </button>
+  </div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="modal-bg" id="submitModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Submit Test?</div>
+    <div class="modal-sub">Review your progress before submitting.</div>
+    <div class="sub-stats">
+      <div class="ss"><div class="ss-v" id="smAnswered">0</div><div class="ss-l">Answered</div></div>
+      <div class="ss"><div class="ss-v" id="smSkipped">0</div><div class="ss-l">Skipped</div></div>
+      <div class="ss"><div class="ss-v" id="smLeft">0</div><div class="ss-l">Remaining</div></div>
+    </div>
+    <div class="warn-box" id="submitWarn">⚠️ You have unanswered questions. Submit anyway?</div>
+    <button class="btn-big" id="submitBtn" onclick="doSubmit()">
+      <span class="btn-big-spin" id="submitSpin"></span>
+      <span id="submitLbl">Submit &amp; Finish ✓</span>
+    </button>
+    <button class="btn-cancel" onclick="closeSubmit()">Review Questions</button>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG ══ */
+var TEST_API = 'https://script.google.com/macros/s/AKfycbwvPI5M9_MM125MN8XEr3E6MvDdb3iTeM3QyRz2vWgv2u6lloBKEFE91Yycr71IDNy9kw/exec';
+
+/* ══ STATE ══ */
+var STUDENT    = null;
+var ALL_TESTS  = [];
+var CUR_TEST   = null;
+var QUESTIONS  = [];
+var ANSWERS    = {};
+var SKIPPED    = {};
+var CUR_Q      = 0;
+var TIMER_INT  = null;
+var TIME_LEFT  = 0;
+var START_TIME = null;
+var VIOLATIONS = [];
+var IP_ADDR    = '';
+var AC_TIMER   = null;
+var F_CLS      = '';
+var F_BOARD    = '';
+
+/* ══ UTILS ══ */
+function g(id){return document.getElementById(id);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mn(n){return(n||'??').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);}
+function pad(n){return String(n).padStart(2,'0');}
+function setScreen(id){
+  ['sListing','sLoading','sTest','sResult'].forEach(function(s){
+    var el=g(s); el.classList.remove('on');
+  });
+  g(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+function apiFetch(url,cb){
+  fetch(url).then(function(r){return r.text();}).then(function(t){
+    try{cb(JSON.parse(t),null);}catch(e){cb(null,'Parse error');}
+  }).catch(function(e){cb(null,e.message||'Network error');});
+}
+function apiTest(p,cb){
+  var url=TEST_API+'?'+Object.keys(p).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(p[k]);
+  }).join('&');
+  apiFetch(url,cb);
+}
+
+/* ══ FETCH IP ══ */
+function fetchIP(){
+  fetch('https://api.ipify.org?format=json')
+    .then(function(r){return r.json();})
+    .then(function(d){IP_ADDR=d.ip||'';})
+    .catch(function(){
+      fetch('https://api.ip.sb/ip')
+        .then(function(r){return r.text();})
+        .then(function(t){IP_ADDR=t.trim();})
+        .catch(function(){IP_ADDR='unknown';});
+    });
+}
+
+/* ══ INIT ══ */
+window.addEventListener('load',function(){
+  fetchIP();
+  loadTests();
+  setupAntiCheat();
+});
+
+/* ══ LOAD TESTS ══ */
+function loadTests(){
+  g('testsContainer').innerHTML='<div class="loading-wrap"><div class="spin-ring"></div><div class="loading-lbl">Loading tests…</div></div>';
+  apiTest({action:'getTests'},function(data,err){
+    if(err||!data||!data.success){
+      g('testsContainer').innerHTML='<div class="empty-wrap"><div class="empty-ic">📭</div><div class="empty-txt">Could not load tests</div><div class="empty-sub">'+(err||'Please refresh')+'</div></div>';
+      return;
+    }
+    ALL_TESTS=data.tests||[];
+    renderTests();
+  });
+}
+
+/* ══ FILTERS ══ */
+function setFClass(cls,el){
+  F_CLS=cls;
+  g('filterRow').querySelectorAll('.fpill').forEach(function(p,i){
+    if(i<=4)p.classList.remove('on');
+  });
+  el.classList.add('on');
+  renderTests();
+}
+function setFBoard(board,el){
+  F_BOARD=board;
+  ['fpBoardAll'].concat([]).forEach(function(){}); // handled below
+  var pills=g('filterRow').querySelectorAll('.fpill');
+  [5,6,7].forEach(function(i){if(pills[i])pills[i].classList.remove('on');});
+  el.classList.add('on');
+  renderTests();
+}
+
+function renderTests(){
+  var tests=ALL_TESTS.filter(function(t){
+    if(F_CLS&&t.class!==F_CLS)return false;
+    if(F_BOARD&&t.syllabus!==F_BOARD)return false;
+    return true;
+  });
+  if(!tests.length){
+    g('testsContainer').innerHTML='<div class="empty-wrap"><div class="empty-ic">🔍</div><div class="empty-txt">No tests found</div><div class="empty-sub">Try adjusting the filters above</div></div>';
+    return;
+  }
+  var groups={};
+  tests.forEach(function(t){
+    var c=t.class||'?', b=t.syllabus||'CBSE';
+    if(!groups[c])groups[c]={};
+    if(!groups[c][b])groups[c][b]=[];
+    groups[c][b].push(t);
+  });
+  var SUBJ_IC={'Mathematics':'📐','Physics':'⚡','Chemistry':'🧪','Biology':'🌿','Social Science':'🌍','English':'📚','Hindi':'🔤','Malayalam':'🔤','Accountancy':'📒','Business Studies':'📊','Economics':'💹'};
+  var html='';
+  Object.keys(groups).sort(function(a,b){return+a-+b;}).forEach(function(cls,ci){
+    html+='<div class="cls-section" style="animation-delay:'+ci*.06+'s">';
+    var total=Object.values(groups[cls]).reduce(function(a,b){return a+b.length;},0);
+    html+='<div class="cls-hd"><div class="cls-badge">'+esc(cls)+'</div><div class="cls-lbl">Class '+esc(cls)+'</div><span class="cls-count">'+total+' test'+(total>1?'s':'')+'</span></div>';
+    Object.keys(groups[cls]).sort().forEach(function(board){
+      var bl=board==='STATE'?'Kerala State':board;
+      var bc=board==='STATE'?'board-state':'board-cbse';
+      html+='<div class="board-sec"><div class="board-hd"><span class="board-pill '+bc+'">'+esc(bl)+'</span></div>';
+      groups[cls][board].forEach(function(t,ti){
+        var ic=SUBJ_IC[t.subject]||'📋';
+        var icCls=board==='STATE'?'ic-state':'ic-cbse';
+        html+='<div class="test-card" onclick="selectTest(\''+esc(t.test_id)+'\')" style="animation-delay:'+((ci*.06)+(ti*.03))+'s">';
+        html+='<div class="test-card-ic '+icCls+'">'+ic+'</div>';
+        html+='<div class="test-card-body">';
+        html+='<div class="test-card-name">'+esc(t.test_name)+'</div>';
+        html+='<div class="test-card-subject">'+esc(t.subject)+'</div>';
+        html+='<div class="test-card-chips">';
+        html+='<span class="chip chip-n">'+t.question_count+' Qs</span>';
+        html+='<span class="chip chip-am">'+t.duration_mins+' min</span>';
+        html+='<span class="chip '+(board==='STATE'?'chip-li':'chip-bl')+'">'+esc(bl)+'</span>';
+        html+='</div></div>';
+        html+='<div class="test-card-arrow">›</div>';
+        html+='</div>';
+      });
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  g('testsContainer').innerHTML=html;
+}
+
+/* ══ SELECT TEST ══ */
+function selectTest(testId){
+  CUR_TEST=ALL_TESTS.find(function(t){return t.test_id===testId;})||null;
+  if(!CUR_TEST)return;
+  var bl=CUR_TEST.syllabus==='STATE'?'Kerala State':CUR_TEST.syllabus;
+  var SUBJ_IC={'Mathematics':'📐','Physics':'⚡','Chemistry':'🧪','Biology':'🌿','Social Science':'🌍','English':'📚','Hindi':'🔤','Malayalam':'🔤'};
+  g('stiIc').textContent=SUBJ_IC[CUR_TEST.subject]||'📋';
+  g('stiName').textContent=CUR_TEST.test_name;
+  g('stiMeta').textContent='Class '+CUR_TEST.class+' · '+CUR_TEST.subject+' · '+bl;
+  g('loginErr').classList.remove('on');
+  g('inId').value='';g('inDob').value='';
+  g('inId').classList.remove('bad');g('inDob').classList.remove('bad');
+  g('loginSheet').classList.add('on');
+  setTimeout(function(){g('inId').focus();},300);
+}
+function closeLogin(){g('loginSheet').classList.remove('on');}
+function clearErr(){g('loginErr').classList.remove('on');}
+
+/* ══ LOGIN ══ */
+function doLogin(){
+  var id=g('inId').value.trim().toUpperCase();
+  var dob=g('inDob').value.trim();
+  if(!id){g('inId').classList.add('bad');showErr('Enter your Student ID');return;}
+  if(!dob){g('inDob').classList.add('bad');showErr('Enter your date of birth');return;}
+  setLoginLoad(true);
+  var dobParts=dob.split('-');
+  var dobFmt=dobParts[2]+'/'+dobParts[1]+'/'+dobParts[0];
+  apiTest({action:'studentLogin',student_id:id,dob:dobFmt,class:CUR_TEST.class,syllabus:CUR_TEST.syllabus},function(data,err){
+    if(err||!data||!data.success){
+      setLoginLoad(false);
+      showErr((data&&data.message)||err||'Login failed. Check your ID and date of birth.');
+      return;
+    }
+    STUDENT=data.student;
+    // Check previous attempt
+    apiTest({action:'checkAttempt',test_id:CUR_TEST.test_id,student_id:STUDENT.id},function(d2){
+      if(d2&&d2.attempted){
+        setLoginLoad(false);
+        showErr('You have already submitted this test. Each test can only be taken once.');
+        return;
+      }
+      // Show loading screen while fetching questions
+      g('loginSheet').classList.remove('on');
+      showLoadingScreen();
+      // Fetch questions
+      apiTest({action:'startTest',test_id:CUR_TEST.test_id,student_id:STUDENT.id},function(d3,e3){
+        if(e3||!d3||!d3.success){
+          setScreen('sListing');
+          alert((d3&&d3.message)||e3||'Could not load test. Please try again.');
+          return;
+        }
+        QUESTIONS=d3.questions||[];
+        if(!QUESTIONS.length){
+          setScreen('sListing');
+          alert('This test has no questions yet.');
+          return;
+        }
+        // Small delay so loading screen is visible
+        setTimeout(function(){
+          startTest();
+        },1200);
+      });
+    });
+  });
+}
+
+function showErr(msg){
+  g('loginErrMsg').textContent=msg;
+  g('loginErr').classList.add('on');
+}
+function setLoginLoad(on){
+  g('loginBtn').disabled=on;
+  g('loginSpin').classList.toggle('on',on);
+  g('loginLbl').textContent=on?'Verifying…':'Verify & Start Test →';
+}
+
+function showLoadingScreen(){
+  setScreen('sLoading');
+  var name=STUDENT?STUDENT.full_name.split(' ')[0]:'there';
+  g('loadingTitle').textContent='Hi '+name+'! 👋';
+  g('loadingSubtitle').textContent='Loading your '+CUR_TEST.subject+' test. Just a moment…';
+  // Reset animation
+  var fill=g('sLoading').querySelector('.ls-prog-fill');
+  if(fill){fill.style.animation='none';void fill.offsetHeight;fill.style.animation='';}
+}
+
+/* ══ START TEST ══ */
+function startTest(){
+  ANSWERS={};SKIPPED={};CUR_Q=0;VIOLATIONS=[];
+  START_TIME=new Date().toISOString();
+  TIME_LEFT=(CUR_TEST.duration_mins||30)*60;
+  // Update topbar
+  if(STUDENT){
+    g('tbAv').textContent=mn(STUDENT.full_name);
+    g('tbSname').textContent=STUDENT.full_name;
+    g('tbSmeta').textContent='Class '+STUDENT.class;
+    g('tbStudent').classList.add('on');
+  }
+  g('ttName').textContent=CUR_TEST.test_name;
+  g('ttSub').textContent='Class '+CUR_TEST.class+' · '+CUR_TEST.subject;
+  buildPalette();
+  renderQ(0);
+  startTimer();
+  setScreen('sTest');
+  requestFS();
+}
+
+/* ══ TIMER ══ */
+function startTimer(){
+  clearInterval(TIMER_INT);
+  updateTimerDisp();
+  TIMER_INT=setInterval(function(){
+    TIME_LEFT--;
+    updateTimerDisp();
+    if(TIME_LEFT<=0){clearInterval(TIMER_INT);autoSubmit();}
+  },1000);
+}
+function updateTimerDisp(){
+  var m=Math.floor(TIME_LEFT/60),s=TIME_LEFT%60;
+  var el=g('timerDisp');
+  el.textContent=pad(m)+':'+pad(s);
+  el.className='timer-val';
+  if(TIME_LEFT<=300&&TIME_LEFT>60)el.classList.add('warn');
+  if(TIME_LEFT<=60)el.classList.add('danger');
+}
+function autoSubmit(){logViol('timer_expired');doSubmit(true);}
+
+/* ══ RENDER QUESTION ══ */
+function renderQ(idx){
+  CUR_Q=idx;
+  var q=QUESTIONS[idx];if(!q)return;
+  g('qNum').textContent=idx+1;
+  g('qOf').textContent='of '+QUESTIONS.length;
+  g('qText').textContent=q.question;
+  var html='';
+  q.options.forEach(function(opt,oi){
+    var sel=ANSWERS[idx]===oi;
+    html+='<div class="q-opt'+(sel?' sel':'')+'" onclick="pickOpt('+oi+')">';
+    html+='<div class="q-opt-ic"></div>';
+    html+='<div class="q-opt-txt">'+esc(opt)+'</div>';
+    html+='</div>';
+  });
+  g('qOpts').innerHTML=html;
+  var sb=g('skipBtn');
+  if(SKIPPED[idx]){sb.textContent='Unskip ↩';sb.classList.add('skipped');}
+  else{sb.textContent='Skip →';sb.classList.remove('skipped');}
+  g('prevBtn').disabled=idx===0;
+  g('nextBtn').disabled=idx===QUESTIONS.length-1;
+  updateProgress();
+  updatePalette();
+  // Scroll to top of question
+  var qc=g('qCard');if(qc)qc.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function pickOpt(oi){
+  ANSWERS[CUR_Q]=oi;
+  delete SKIPPED[CUR_Q];
+  renderQ(CUR_Q);
+}
+function goQ(dir){
+  var n=CUR_Q+dir;
+  if(n>=0&&n<QUESTIONS.length)renderQ(n);
+}
+function skipQ(){
+  if(SKIPPED[CUR_Q]){delete SKIPPED[CUR_Q];}
+  else{SKIPPED[CUR_Q]=true;delete ANSWERS[CUR_Q];}
+  renderQ(CUR_Q);
+  if(SKIPPED[CUR_Q]&&CUR_Q<QUESTIONS.length-1)setTimeout(function(){goQ(1);},250);
+}
+function updateProgress(){
+  var ans=Object.keys(ANSWERS).length;
+  var pct=QUESTIONS.length?Math.round(ans/QUESTIONS.length*100):0;
+  g('progFill').style.width=pct+'%';
+  g('progTxt').textContent=ans+' / '+QUESTIONS.length;
+}
+function buildPalette(){
+  var html='';
+  QUESTIONS.forEach(function(q,i){
+    html+='<button class="p-btn" id="pb'+i+'" onclick="renderQ('+i+')">'+(i+1)+'</button>';
+  });
+  g('paletteGrid').innerHTML=html;
+}
+function updatePalette(){
+  QUESTIONS.forEach(function(q,i){
+    var b=g('pb'+i);if(!b)return;
+    b.className='p-btn';
+    if(ANSWERS[i]!==undefined)b.classList.add('answered');
+    else if(SKIPPED[i])b.classList.add('skipped');
+    if(i===CUR_Q)b.classList.add('current');
+  });
+}
+
+/* ══ SUBMIT ══ */
+function confirmSubmit(){
+  var ans=Object.keys(ANSWERS).length;
+  var sk=Object.keys(SKIPPED).length;
+  var left=QUESTIONS.length-ans-sk;
+  g('smAnswered').textContent=ans;
+  g('smSkipped').textContent=sk;
+  g('smLeft').textContent=left;
+  g('submitWarn').style.display=(left>0||sk>0)?'block':'none';
+  g('submitModal').classList.add('on');
+}
+function closeSubmit(){g('submitModal').classList.remove('on');}
+
+function doSubmit(auto){
+  g('submitModal').classList.remove('on');
+  g('submitBtn').disabled=true;
+  g('submitSpin').classList.add('on');
+  g('submitLbl').textContent='Submitting…';
+  clearInterval(TIMER_INT);
+  exitFS();
+  var timeTaken=Math.round((Date.now()-new Date(START_TIME).getTime())/1000);
+  var answersArr=QUESTIONS.map(function(q,i){
+    return{q_ref:q.q_ref,selected:ANSWERS[i]!==undefined?ANSWERS[i]:null,skipped:!!SKIPPED[i],opt_map:q.opt_map||null};
+  });
+  var p={
+    action:'submitTest',
+    test_id:CUR_TEST.test_id,
+    student_id:STUDENT.id,
+    student_name:STUDENT.full_name,
+    class:STUDENT.class,
+    syllabus:STUDENT.syllabus,
+    ip_address:IP_ADDR,
+    time_taken_secs:timeTaken,
+    start_time:START_TIME,
+    end_time:new Date().toISOString(),
+    answers:JSON.stringify(answersArr),
+    violations:JSON.stringify(VIOLATIONS),
+    flagged:VIOLATIONS.length>2?'YES':'NO',
+    auto_submitted:auto?'YES':'NO'
+  };
+  apiTest(p,function(data,err){
+    showResult();
+  });
+}
+
+/* ══ RESULT ══ */
+function showResult(){
+  setScreen('sResult');
+  var name=STUDENT?STUDENT.full_name.split(' ')[0]:'';
+  var test=CUR_TEST?CUR_TEST.test_name:'the test';
+  g('resName').textContent=(name?name+', thank you':'Thank you')+' for completing '+test+'!';
+  g('resNote').innerHTML='Your answers have been recorded successfully.<br><br>Your teacher will review and share your results with you.';
+}
+
+function goToListing(){
+  STUDENT=null;CUR_TEST=null;QUESTIONS=[];ANSWERS={};SKIPPED={};VIOLATIONS=[];
+  g('tbStudent').classList.remove('on');
+  setScreen('sListing');
+}
+function doLogout(){STUDENT=null;g('tbStudent').classList.remove('on');}
+
+/* ══ ANTI-CHEAT ══ */
+function setupAntiCheat(){
+  document.addEventListener('visibilitychange',function(){
+    if(g('sTest').classList.contains('on')&&document.hidden){
+      logViol('tab_switch');
+      showACOverlay('Tab Switch Detected','You left the test window. This has been recorded. Returning in:');
+    }
+  });
+  window.addEventListener('blur',function(){
+    if(g('sTest').classList.contains('on'))logViol('window_blur');
+  });
+  document.addEventListener('fullscreenchange',function(){
+    if(g('sTest').classList.contains('on')&&!document.fullscreenElement){
+      logViol('fullscreen_exit');
+      showACOverlay('Full-Screen Required','Please stay in full-screen mode during the test.');
+    }
+  });
+  document.addEventListener('keydown',function(e){
+    if(!g('sTest').classList.contains('on'))return;
+    if((e.ctrlKey||e.metaKey)&&'cvuaspCVUASP'.includes(e.key)){e.preventDefault();logViol('keyboard:ctrl+'+e.key);}
+    if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&'ijcIJC'.includes(e.key))){e.preventDefault();logViol('devtools_attempt');}
+  },true);
+  document.addEventListener('contextmenu',function(e){if(g('sTest').classList.contains('on'))e.preventDefault();});
+  ['copy','cut','paste'].forEach(function(ev){
+    document.addEventListener(ev,function(e){if(g('sTest').classList.contains('on'))e.preventDefault();});
+  });
+  document.addEventListener('selectstart',function(e){if(g('sTest').classList.contains('on'))e.preventDefault();});
+}
+
+function logViol(type){
+  VIOLATIONS.push({type:type,time:new Date().toISOString(),q:CUR_Q+1,ip:IP_ADDR});
+  g('violMsg').textContent='Violation recorded: '+type.replace(/_/g,' ');
+  g('violBanner').classList.add('on');
+  setTimeout(function(){g('violBanner').classList.remove('on');},3500);
+}
+function showACOverlay(title,sub){
+  g('acTitle').textContent=title;
+  g('acSub').textContent=sub;
+  g('acCount').textContent='3';
+  g('acOverlay').classList.add('on');
+  var n=3;
+  clearInterval(AC_TIMER);
+  AC_TIMER=setInterval(function(){
+    n--;g('acCount').textContent=n;
+    if(n<=0){clearInterval(AC_TIMER);g('acOverlay').classList.remove('on');}
+  },1000);
+}
+function returnToTest(){clearInterval(AC_TIMER);g('acOverlay').classList.remove('on');requestFS();}
+function requestFS(){
+  try{var el=document.documentElement;(el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||function(){}).call(el);}catch(e){}
+}
+function exitFS(){
+  try{(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);}catch(e){}
+}
+
+// Close login sheet on background tap
+g('loginSheet').addEventListener('click',function(e){
+  if(e.target===this)closeLogin();
+});
+g('submitModal').addEventListener('click',function(e){
+  if(e.target===this)closeSubmit();
+});
+</script>
+</body>
+</html>
