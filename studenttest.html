@@ -59,20 +59,28 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 
 /* ── SCREENS ── */
 .screen{display:none}
-.screen.on{display:flex;flex-direction:column;min-height:100vh}
+.screen.on{
+  display:flex;flex-direction:column;min-height:100vh;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size:48px 48px;
+}
 
 /* ── TOPBAR ── */
 .topbar{
   height:56px;flex-shrink:0;
-  background:var(--bg2);border-bottom:1px solid var(--border);
+  background:var(--bg2);border-bottom:1px solid var(--border);backdrop-filter:none;
   display:flex;align-items:center;padding:0 20px;gap:14px;
   position:sticky;top:0;z-index:200;
 }
 .tb-logo{
-  display:flex;align-items:center;gap:8px;
-  font-size:18px;font-weight:900;color:var(--text);
-  letter-spacing:-.5px;
+  display:flex;align-items:center;gap:4px;
+  font-size:22px;font-weight:900;color:var(--text);
+  letter-spacing:-1px;
 }
+.logo-dot{color:var(--li);font-weight:900}
 .tb-logo-dot{
   width:8px;height:8px;border-radius:50%;
   background:var(--li);flex-shrink:0;
@@ -98,7 +106,14 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 .tb-logout:hover{color:var(--re)}
 
 /* ── S1: LISTING ── */
-#sListing{background:var(--bg)}
+#sListing{position:relative}
+#sListing::before{
+  content:'';position:fixed;top:-120px;right:-80px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle, rgba(139,197,63,.15) 0%, transparent 65%);
+  pointer-events:none;z-index:0;
+}
+#sListing>.topbar,#sListing>.list-body{position:relative;z-index:1}
 .list-body{flex:1;padding:24px 16px 100px;max-width:600px;margin:0 auto;width:100%}
 .page-hd{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
 .page-title{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1.1;margin-bottom:6px}
@@ -178,7 +193,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 .empty-sub{font-size:13px;color:var(--text4)}
 
 /* ── S4: LOADING SCREEN ── */
-#sLoading{background:var(--bg)}
+#sLoading{position:relative}
 .ls-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;gap:20px}
 .ls-icon{width:64px;height:64px;border-radius:16px;background:var(--li-dim);border:1px solid rgba(139,197,63,.2);display:flex;align-items:center;justify-content:center;font-size:28px}
 .ls-title{font-size:24px;font-weight:900;color:var(--text);letter-spacing:-.3px}
@@ -193,15 +208,22 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 .ldot:nth-child(3){animation:dot3 1.2s ease infinite}
 
 /* ── S2: TEST ── */
-#sTest{background:var(--bg);user-select:none;-webkit-user-select:none}
+#sTest{user-select:none;-webkit-user-select:none;position:relative}
+#sTest::before{
+  content:'';position:fixed;top:-100px;right:-60px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle, rgba(139,197,63,.12) 0%, transparent 65%);
+  pointer-events:none;z-index:0;
+}
 .test-topbar{
   background:var(--bg2);border-bottom:1px solid var(--border);
   padding:0 16px;height:56px;flex-shrink:0;
   display:flex;align-items:center;gap:12px;
   position:sticky;top:0;z-index:200;
 }
-.test-tb-logo{font-size:16px;font-weight:900;color:var(--text);letter-spacing:-.5px;flex-shrink:0;display:flex;align-items:center;gap:6px}
-.test-tb-logo .tb-logo-dot{width:6px;height:6px}
+.test-tb-logo{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-1px;flex-shrink:0;display:flex;align-items:center;gap:3px}
+.test-tb-logo .logo-dot{color:var(--li);font-weight:900}
+.tb-logo-dot{width:6px;height:6px}
 .test-tb-divider{width:1px;height:16px;background:var(--border2);flex-shrink:0}
 .test-tb-info{flex:1;min-width:0}
 .test-tb-name{font-size:13px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.2px}
@@ -495,7 +517,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 .btn-cancel:active{background:var(--bg4)}
 
 /* ── S3: RESULT ── */
-#sResult{background:var(--bg)}
+#sResult{position:relative}
 .result-body{
   flex:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
@@ -534,7 +556,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 <!-- ══ S1: LISTING ══ -->
 <div class="screen on" id="sListing">
   <div class="topbar">
-    <div class="tb-logo">SEHR<div class="tb-logo-dot"></div></div>
+    <div class="tb-logo">SEHR<span class="logo-dot">.</span></div>
     <div class="tb-logo-divider"></div>
     <div class="tb-sub">Tests</div>
     <div class="tb-spacer"></div>
@@ -581,7 +603,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 <!-- ══ S4: LOADING ══ -->
 <div class="screen" id="sLoading">
   <div class="topbar">
-    <div class="tb-logo">SEHR<div class="tb-logo-dot"></div></div>
+    <div class="tb-logo">SEHR<span class="logo-dot">.</span></div>
     <div class="tb-logo-divider"></div>
     <div class="tb-sub">Tests</div>
   </div>
@@ -597,7 +619,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 <!-- ══ S2: TEST ══ -->
 <div class="screen" id="sTest">
   <div class="test-topbar">
-    <div class="test-tb-logo">SEHR<div class="tb-logo-dot"></div></div>
+    <div class="test-tb-logo">SEHR<span class="logo-dot">.</span></div>
     <div class="test-tb-divider"></div>
     <div class="test-tb-info">
       <div class="test-tb-name" id="ttName"></div>
@@ -657,7 +679,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 <!-- ══ S3: RESULT ══ -->
 <div class="screen" id="sResult">
   <div class="topbar">
-    <div class="tb-logo">SEHR<div class="tb-logo-dot"></div></div>
+    <div class="tb-logo">SEHR<span class="logo-dot">.</span></div>
     <div class="tb-logo-divider"></div>
     <div class="tb-sub">Complete</div>
   </div>
