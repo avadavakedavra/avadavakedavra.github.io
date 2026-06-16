@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class 12 Results — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f0d;--bg2:#1a1a18;--bg3:#232320;--bg4:#2e2e2a;
+  --card:#1e1e1b;--border:#2e2e2a;--border2:#3a3a36;
+  --text:#fff;--text2:#e0ddd6;--text3:#9a9790;--text4:#5a5a56;
+  --li:#8BC53F;--l2:#72a530;
+  --gold:#f59e0b;--silver:#94a3b8;--bronze:#cd7c54;
+  --re:#ef4444;
+  --f:'Open Sans',sans-serif;--e1:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--f);background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025)1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025)1px,transparent 1px);
+  background-size:48px 48px;
+}
+body::before{
+  content:'';position:fixed;top:-120px;right:-80px;width:700px;height:700px;
+  border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.06),transparent 65%);
+  pointer-events:none;z-index:0
+}
+
+@keyframes fUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(0);opacity:0}65%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes barIn{from{width:0}to{width:var(--w)}}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:56px;background:#1a1a18;border-bottom:2px solid #8BC53F;
+  display:flex;align-items:center;padding:0 24px;gap:14px;
+  position:sticky;top:0;z-index:100
+}
+.tb-logo{font-size:22px;font-weight:900;letter-spacing:-1px;color:#fff}
+.tb-logo span{color:#8BC53F}
+.tb-div{width:1px;height:16px;background:#3a3a36}
+.tb-sub{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#5a5a56}
+.tb-spacer{flex:1}
+.tb-pill{
+  padding:5px 14px;border-radius:20px;
+  background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.25);
+  font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8BC53F;
+  display:flex;align-items:center;gap:6px
+}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:#8BC53F;flex-shrink:0}
+
+/* ── PAGE ── */
+.page{max-width:720px;margin:0 auto;padding:32px 16px 80px;position:relative;z-index:1}
+
+/* ── PAGE HEADER ── */
+.page-header{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:16px;
+  padding:28px 28px 24px;margin-bottom:36px;position:relative;overflow:hidden;
+  animation:fUp .4s var(--e1)
+}
+.page-header::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--li),rgba(139,197,63,.4),transparent)
+}
+.ph-eyebrow{
+  font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--li);margin-bottom:10px;display:flex;align-items:center;gap:8px
+}
+.ph-eyebrow::before{content:'';width:3px;height:14px;background:var(--li);border-radius:2px;flex-shrink:0}
+.ph-title{font-size:40px;font-weight:900;color:var(--text);letter-spacing:-1.5px;line-height:1}
+.ph-sub{font-size:15px;font-weight:700;color:var(--li);font-style:italic;margin-top:4px}
+.ph-meta{font-size:12px;color:var(--text4);margin-top:8px}
+.ph-glow{
+  position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,197,63,.06),transparent 70%);pointer-events:none
+}
+
+/* ── SUBJECT SECTION ── */
+.subj-section{margin-bottom:48px;animation:fUp .4s var(--e1) both}
+
+.subj-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border2)
+}
+.subj-left{}
+.subj-icon{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text4);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.subj-icon::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--li);flex-shrink:0}
+.subj-name{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-1px;line-height:1}
+.subj-right{text-align:right}
+.subj-max{font-size:12px;color:var(--text4);font-weight:600}
+.subj-max strong{color:var(--text3);font-size:14px}
+
+/* ── TOPPER CARD ── */
+.topper-card{
+  background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.02));
+  border:1px solid rgba(245,158,11,.28);border-radius:14px;
+  padding:20px 22px;margin-bottom:10px;position:relative;overflow:hidden;
+}
+.topper-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),rgba(245,158,11,.3),transparent)
+}
+.topper-glow{
+  position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,158,11,.07),transparent 70%);pointer-events:none
+}
+.topper-body{display:flex;align-items:center;gap:18px}
+.topper-av{
+  width:80px;height:80px;border-radius:50%;flex-shrink:0;
+  border:2.5px solid rgba(245,158,11,.6);
+  background:rgba(245,158,11,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:900;color:var(--gold);
+  overflow:hidden;position:relative;
+  box-shadow:0 0 0 3px rgba(245,158,11,.12),0 6px 20px rgba(245,158,11,.18)
+}
+.topper-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.topper-crown{
+  position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+  font-size:14px;animation:pop .5s .2s var(--e1) both;display:inline-block
+}
+.topper-info{flex:1;min-width:0}
+.topper-badge{
+  font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:5px
+}
+.topper-name{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.5px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topper-board{font-size:11px;color:var(--text4);margin-top:3px}
+.topper-score{text-align:right;flex-shrink:0}
+.topper-pct{font-size:38px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-2px}
+.topper-marks{font-size:11px;color:rgba(245,158,11,.5);margin-top:3px;font-weight:600}
+
+/* ── ROW ── */
+.lb-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:7px;
+  position:relative;overflow:hidden;transition:border-color .13s
+}
+.lb-row:hover{border-color:var(--border2)}
+.lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px}
+.lb-row.r2{border-color:rgba(148,163,184,.15)}.lb-row.r2::before{background:var(--silver)}
+.lb-row.r3{border-color:rgba(205,124,84,.15)}.lb-row.r3::before{background:var(--bronze)}
+.lb-row.pass::before{background:var(--li)}
+.lb-row.fail::before{background:var(--re)}
+
+.lb-rank{width:36px;text-align:center;flex-shrink:0;font-weight:900;line-height:1}
+.r2-num{font-size:16px;color:var(--silver)}
+.r3-num{font-size:16px;color:var(--bronze)}
+.rn-num{font-size:11px;color:var(--text4)}
+
+.lb-av{
+  width:52px;height:52px;border-radius:10px;flex-shrink:0;overflow:hidden;
+  background:var(--bg3);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:15px;color:var(--li);position:relative
+}
+.lb-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+
+.lb-info{flex:1;min-width:0}
+.lb-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-board{font-size:10px;color:var(--text4);margin-top:2px}
+.lb-bar-wrap{margin-top:6px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;width:100%}
+.lb-bar-fill{height:100%;border-radius:2px;transition:width .7s var(--e1)}
+
+.lb-right{text-align:right;flex-shrink:0;min-width:80px}
+.lb-pct{font-size:20px;font-weight:900;line-height:1;letter-spacing:-.4px}
+.lb-marks{font-size:10px;color:var(--text4);margin-top:2px}
+
+/* ── DIVIDER ── */
+.subj-divider{height:1px;background:linear-gradient(90deg,var(--border2),transparent);margin:40px 0 0}
+
+/* ── FOOTER ── */
+.page-footer{
+  text-align:center;padding-top:40px;border-top:1px solid var(--border2)
+}
+.pf-brand{font-size:16px;font-weight:900;color:var(--text);letter-spacing:-.3px}
+.pf-brand span{color:var(--li)}
+.pf-url{font-size:11px;color:var(--text4);margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">SEHR<span>.</span></div>
+  <div class="tb-div"></div>
+  <div class="tb-sub">Exam Results</div>
+  <div class="tb-spacer"></div>
+  <div class="tb-pill">13 June 2026</div>
+</div>
+
+<div class="page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="ph-glow"></div>
+    <div class="ph-eyebrow">Monthly Examination · Second Saturday</div>
+    <div class="ph-title">Class 12</div>
+    <div class="ph-sub">June 2026 Results</div>
+    <div class="ph-meta">SEHR Academy · Vadanappally, Thrissur</div>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="page-footer">
+    <div class="pf-brand">SEHR<span>.</span> ACADEMY</div>
+    <div class="pf-url">sehracademy.com · Vadanappally, Thrissur</div>
+  </div>
+
+</div>
+
+<script>
+/* ── Photo map from student database ── */
+var PHOTOS = {
+  gayathri:   'https://i.postimg.cc/T17Hf5Rt/v1CCU.jpg',
+  devanandha: 'https://i.postimg.cc/FsGLptpm/deva.jpg',
+  fidha:      'https://i.postimg.cc/d3HSwZq4/y4Rh6.jpg',
+  alga:       'https://i.postimg.cc/ZRcdM1ZT/alga.jpg',
+  rishana:    'https://i.postimg.cc/Zn5dtVY1/rishana.jpg',
+  aadinanda:  'https://i.postimg.cc/L5C02gHV/fr-ZEj.jpg',
+  rithika:    'https://i.postimg.cc/Xv7wfjdR/rithika.jpg',
+};
+
+/* ── Hardcoded data — marks as recorded, max adjusted ── */
+var SUBJECTS = [
+  {
+    key: 'chemistry',
+    name: 'Chemistry',
+    chapter: 'Chapter 2 — Solutions',
+    max: 40,
+    maxNote: '10 Questions × 4',
+    students: [
+      { id:'gayathri',   name:'Gayathri M R',      board:'Kerala State', score:26 },
+      { id:'devanandha', name:'Devanandha TP',      board:'Kerala State', score:25 },
+      { id:'fidha',      name:'Fidha Rasheed',      board:'Kerala State', score:22 },
+      { id:'alga',       name:'Alga Unnikrishnan',  board:'Kerala State', score:20 },
+      { id:'rishana',    name:'Rishana R',           board:'Kerala State', score:15 },
+      { id:'aadinanda',  name:'Aadinanda CP',        board:'Kerala State', score:12 },
+    ]
+  },
+  {
+    key: 'physics',
+    name: 'Physics',
+    chapter: 'Chapter 1 — Electric Charges & Fields',
+    max: 52, /* 60 − 8 as instructed */
+    maxNote: '15 Questions × 4, adjusted −8',
+    students: [
+      { id:'devanandha', name:'Devanandha TP',      board:'Kerala State', score:27 },
+      { id:'alga',       name:'Alga Unnikrishnan',  board:'Kerala State', score:27 },
+      { id:'fidha',      name:'Fidha Rasheed',      board:'Kerala State', score:17 },
+      { id:'aadinanda',  name:'Aadinanda CP',        board:'Kerala State', score:13 },
+      { id:'gayathri',   name:'Gayathri M R',        board:'Kerala State', score:12 },
+      { id:'rishana',    name:'Rishana R',            board:'Kerala State', score:8  },
+      { id:'rithika',    name:'Rithika shal',         board:'CBSE',         score:7  },
+    ]
+  },
+  {
+    key: 'maths',
+    name: 'Mathematics',
+    chapter: 'Monthly Test',
+    max: 72, /* 76 − 4 as instructed */
+    maxNote: '19 Questions × 4, adjusted −4',
+    students: [
+      { id:'alga',       name:'Alga Unnikrishnan',  board:'Kerala State', score:48 },
+      { id:'devanandha', name:'Devanandha TP',      board:'Kerala State', score:47 },
+      { id:'fidha',      name:'Fidha Rasheed',      board:'Kerala State', score:32 },
+      { id:'rishana',    name:'Rishana R',           board:'Kerala State', score:23 },
+      { id:'gayathri',   name:'Gayathri M R',        board:'Kerala State', score:20 },
+      { id:'aadinanda',  name:'Aadinanda CP',        board:'Kerala State', score:15 },
+    ]
+  },
+  {
+    key: 'biology',
+    name: 'Biology',
+    chapter: 'Human Reproduction',
+    max: 80,
+    maxNote: '20 Questions × 4',
+    students: [
+      { id:'rithika',    name:'Rithika shal',         board:'CBSE',         score:74 },
+      { id:'alga',       name:'Alga Unnikrishnan',  board:'Kerala State', score:40 },
+      { id:'fidha',      name:'Fidha Rasheed',      board:'Kerala State', score:35 },
+      { id:'gayathri',   name:'Gayathri M R',        board:'Kerala State', score:34 },
+      { id:'devanandha', name:'Devanandha TP',      board:'Kerala State', score:31 },
+    ]
+  }
+];
+
+function mn(n){ return n.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function pctCol(p){
+  if(p>=75) return 'var(--li)';
+  if(p>=50) return 'var(--gold)';
+  if(p>=35) return '#f97316';
+  return 'var(--re)';
+}
+
+function rowClass(i, pct){
+  if(i===1) return 'r2';
+  if(i===2) return 'r3';
+  return pct >= 35 ? 'pass' : 'fail';
+}
+
+function buildSubject(subj, delay){
+  var html = '<div class="subj-section" style="animation-delay:'+delay+'s">';
+
+  /* Subject header */
+  html += '<div class="subj-header">'
+    + '<div class="subj-left">'
+    + '<div class="subj-icon">Monthly Examination · June 2026</div>'
+    + '<div class="subj-name">'+esc(subj.name)+'</div>'
+    + '</div>'
+    + '<div class="subj-right">'
+    + '<div class="subj-max">Max Marks <strong>'+subj.max+'</strong></div>'
+    + '<div class="subj-max" style="margin-top:2px">'+esc(subj.maxNote)+'</div>'
+    + '</div>'
+    + '</div>';
+
+  /* Sort by score desc */
+  var sorted = subj.students.slice().sort(function(a,b){return b.score - a.score;});
+
+  /* Topper card */
+  var t = sorted[0];
+  var tPct = Math.round(t.score / subj.max * 1000) / 10;
+  var tPhoto = PHOTOS[t.id] || null;
+  var tCol = pctCol(tPct);
+
+  html += '<div class="topper-card">'
+    + '<div class="topper-glow"></div>'
+    + '<div class="topper-body">'
+    + '<div class="topper-av" id="tav-'+subj.key+'">'
+    + '<span class="topper-crown">👑</span>'
+    + (tPhoto ? '<img src="'+esc(tPhoto)+'" alt="">' : mn(t.name))
+    + '</div>'
+    + '<div class="topper-info">'
+    + '<div class="topper-badge">1st · Subject Topper</div>'
+    + '<div class="topper-name">'+esc(t.name)+'</div>'
+    + '<div class="topper-board">'+esc(t.board)+'</div>'
+    + '</div>'
+    + '<div class="topper-score">'
+    + '<div class="topper-pct" style="color:'+tCol+'">'+tPct+'%</div>'
+    + '<div class="topper-marks">'+t.score+' / '+subj.max+'</div>'
+    + '</div>'
+    + '</div>'
+    + '</div>';
+
+  /* Remaining rows */
+  sorted.forEach(function(s, i){
+    if(i === 0) return;
+    var pct = Math.round(s.score / subj.max * 1000) / 10;
+    var col = i===1?'var(--silver)':i===2?'var(--bronze)':pctCol(pct);
+    var barPct = Math.round(s.score / subj.max * 100);
+    var photo = PHOTOS[s.id] || null;
+    var rankHtml = i===1
+      ? '<div class="lb-rank r2-num">2<span style="font-size:.6em">nd</span></div>'
+      : i===2
+      ? '<div class="lb-rank r3-num">3<span style="font-size:.6em">rd</span></div>'
+      : '<div class="lb-rank rn-num">#'+(i+1)+'</div>';
+
+    html += '<div class="lb-row '+rowClass(i,pct)+'">'
+      + rankHtml
+      + '<div class="lb-av" id="av-'+subj.key+'-'+i+'">'
+      + (photo ? '<img src="'+esc(photo)+'" alt="">' : mn(s.name))
+      + '</div>'
+      + '<div class="lb-info">'
+      + '<div class="lb-name">'+esc(s.name)+'</div>'
+      + '<div class="lb-board">'+esc(s.board)+'</div>'
+      + '<div class="lb-bar-wrap"><div class="lb-bar-fill" style="width:'+barPct+'%;background:'+col+'"></div></div>'
+      + '</div>'
+      + '<div class="lb-right">'
+      + '<div class="lb-pct" style="color:'+col+'">'+pct+'%</div>'
+      + '<div class="lb-marks">'+s.score+' / '+subj.max+'</div>'
+      + '</div>'
+      + '</div>';
+  });
+
+  html += '</div>'; /* end subj-section */
+  return html;
+}
+
+/* Build all subjects */
+var out = '';
+SUBJECTS.forEach(function(subj, i){
+  if(i > 0) out += '<div class="subj-divider"></div>';
+  out += buildSubject(subj, i * 0.08);
+});
+document.getElementById('results').innerHTML = out;
+</script>
+</body>
+</html>
