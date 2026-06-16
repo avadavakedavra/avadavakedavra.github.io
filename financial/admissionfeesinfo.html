@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fee Bill Generator — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
+  --cream:#f5f2eb;--c2:#ede9e0;--c3:#e4dfd4;
+  --wh:#fdfcfa;--mu:#7a7970;--pa:#b0ada4;--ru:#d8d4cb;
+  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;--lb:#f0f7e3;--lm:#c8e48e;
+  --re:#dc2626;--rb:#fef2f2;--rm:#fca5a5;
+  --am:#d97706;--amb:#fffbeb;
+  --bl:#2563eb;--blb:#eff6ff;--blm:#bfdbfe;
+  --f-head:'Montserrat',sans-serif;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.09);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh}
+
+@keyframes fUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── LOGIN ── */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400}
+#loginWrap.gone{display:none}
+#loginWrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--ru)1px,transparent 1px),linear-gradient(90deg,var(--ru)1px,transparent 1px);background-size:48px 48px;opacity:.3}
+.lbox{position:relative;z-index:1;background:var(--wh);border:1.5px solid var(--c3);border-left:4px solid var(--li);border-radius:4px;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 28px 20px;position:relative;overflow:hidden}
+.lbox-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--li),var(--l2))}
+.lbox-brand{font-family:var(--f-head);font-size:22px;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1;margin-bottom:6px}
+.lbox-brand span{color:var(--li)}
+.lbox-sub{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.04em}
+.lbox-body{padding:24px 28px 28px}
+.lbox-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
+.lbox-input{width:100%;padding:11px 14px;border:1.5px solid var(--c3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s}
+.lbox-input:focus{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
+.lbox-btn{width:100%;margin-top:14px;padding:12px;border:none;border-radius:4px;background:var(--li);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.lbox-btn:hover{background:var(--l2)}
+.lbox-err{display:none;margin-top:10px;padding:9px 12px;background:var(--rb);border:1px solid var(--rm);border-radius:4px;font-size:12px;font-weight:600;color:var(--re)}
+.lbox-err.on{display:block}
+
+/* ── APP ── */
+#app{display:none;max-width:900px;margin:0 auto;padding:0 24px 80px}
+#app.on{display:block}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--ink);margin:0 -24px;padding:0 24px;border-bottom:3px solid var(--li);position:relative;overflow:hidden}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+.tb-inner{padding:28px 0 24px;position:relative;z-index:1}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.tb-kicker-rule{width:22px;height:2px;background:var(--li)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--li)}
+.tb-title{font-family:var(--f-head);font-size:clamp(24px,3vw,38px);font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:.95}
+.tb-title i{font-style:italic;font-weight:700;color:var(--li)}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px}
+
+/* ── SECTION ── */
+.sec-head{display:flex;align-items:center;gap:12px;margin:32px 0 16px}
+.sec-rule{flex:1;height:1px;background:var(--ru)}
+.sec-dot{width:4px;height:4px;border-radius:50%;background:var(--li);flex-shrink:0}
+.sec-txt{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pa);white-space:nowrap}
+
+/* ── FORM CARD ── */
+.card{background:var(--wh);border:1.5px solid var(--c3);border-radius:8px;padding:24px;box-shadow:var(--sh);margin-bottom:14px}
+
+/* ── FORM CONTROLS ── */
+.form-row{display:grid;gap:14px;margin-bottom:14px}
+.form-row.cols-2{grid-template-columns:1fr 1fr}
+.form-row.cols-3{grid-template-columns:1fr 1fr 1fr}
+.form-row.cols-4{grid-template-columns:1fr 1fr 1fr 1fr}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+.fld-input,.fld-select{padding:10px 12px;border:1.5px solid var(--c3);border-radius:5px;background:var(--cream);font-family:var(--f);font-size:13px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s;width:100%}
+.fld-input:focus,.fld-select:focus{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.1);background:var(--wh)}
+.fld-input.readonly{background:var(--lb);color:var(--l3);border-color:var(--lm);cursor:default}
+.fld-hint{font-size:10px;color:var(--pa);margin-top:2px}
+
+/* ── SUBJECT SECTION ── */
+.subj-stream-tabs{display:flex;gap:6px;margin-bottom:16px}
+.stream-tab{padding:7px 16px;border-radius:5px;border:1.5px solid var(--ru);background:var(--cream);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .15s}
+.stream-tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.stream-tab:hover:not(.on){border-color:var(--lm)}
+
+.combo-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.combo-btn{padding:8px 14px;border-radius:5px;border:1.5px solid var(--ru);background:var(--cream);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .15s;white-space:nowrap}
+.combo-btn:hover{border-color:var(--lm);color:var(--l3)}
+.combo-btn.on{border-color:var(--li);background:var(--lb);color:var(--l3)}
+.combo-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:8px}
+
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.subj-item{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:6px;border:1.5px solid var(--c3);background:var(--cream);cursor:pointer;transition:all .15s;user-select:none}
+.subj-item:hover{border-color:var(--lm)}
+.subj-item.on{border-color:var(--li);background:var(--lb)}
+.subj-cb{width:16px;height:16px;border-radius:3px;border:2px solid var(--ru);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.subj-item.on .subj-cb{background:var(--li);border-color:var(--li)}
+.subj-cb-tick{display:none;width:9px;height:9px}
+.subj-item.on .subj-cb-tick{display:block}
+.subj-name{font-size:13px;font-weight:600;color:var(--ink)}
+.subj-price{font-size:11px;color:var(--mu);margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* ── FEE ADDON ROW ── */
+.addon-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:6px;border:1.5px solid var(--c3);background:var(--cream);margin-bottom:8px}
+.addon-toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.addon-toggle input{opacity:0;width:0;height:0;position:absolute}
+.addon-slider{position:absolute;inset:0;border-radius:20px;background:var(--ru);cursor:pointer;transition:background .2s}
+.addon-slider::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.addon-toggle input:checked + .addon-slider{background:var(--li)}
+.addon-toggle input:checked + .addon-slider::before{transform:translateX(16px)}
+.addon-label{flex:1;font-size:13px;font-weight:600;color:var(--ink)}
+.addon-note{font-size:11px;color:var(--mu)}
+.addon-input{width:100px;padding:7px 10px;border:1.5px solid var(--c3);border-radius:5px;background:var(--wh);font-family:var(--f);font-size:13px;font-weight:700;color:var(--ink);text-align:right;outline:none;transition:border-color .18s}
+.addon-input:focus{border-color:var(--li)}
+.addon-input:disabled{background:var(--cream);color:var(--pa);border-color:var(--c3);cursor:not-allowed}
+
+/* ── DISCOUNT ROW ── */
+.discount-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:6px;border:1.5px solid var(--am);background:var(--amb);margin-bottom:8px}
+.discount-label{flex:1;font-size:13px;font-weight:600;color:var(--am)}
+.discount-pct-wrap{display:flex;align-items:center;gap:6px}
+.discount-input{width:72px;padding:7px 10px;border:1.5px solid rgba(217,119,6,.3);border-radius:5px;background:var(--wh);font-family:var(--f);font-size:13px;font-weight:700;color:var(--am);text-align:right;outline:none;transition:border-color .18s}
+.discount-input:focus{border-color:var(--am)}
+.discount-pct-sym{font-size:13px;font-weight:700;color:var(--am)}
+
+/* ── SUMMARY BOX ── */
+.summary-box{background:var(--ink);border-radius:8px;overflow:hidden;box-shadow:var(--sh-md);animation:fUp .4s var(--ease)}
+.summary-box::before{content:'';display:block;height:4px;background:linear-gradient(90deg,var(--l3),var(--li),var(--lm))}
+.summary-inner{padding:24px}
+.summary-title{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px}
+.sum-line{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:13px}
+.sum-line-label{color:rgba(255,255,255,.55)}
+.sum-line-val{font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.sum-line.disc .sum-line-val{color:var(--am)}
+.sum-divider{height:1px;background:rgba(255,255,255,.08);margin:14px 0}
+.sum-total-row{display:flex;justify-content:space-between;align-items:baseline}
+.sum-total-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.sum-total-val{font-family:var(--f-head);font-size:28px;font-weight:900;color:var(--li);letter-spacing:-1px}
+.sum-admission-box{margin-top:18px;padding:16px;border-radius:6px;background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.2)}
+.sum-adm-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--li);margin-bottom:10px}
+.sum-adm-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;font-size:12px}
+.sum-adm-row-l{color:rgba(255,255,255,.45)}
+.sum-adm-row-v{font-weight:700;color:rgba(255,255,255,.85);font-variant-numeric:tabular-nums}
+.sum-adm-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:10px;border-top:1px solid rgba(139,197,63,.25)}
+.sum-adm-total-l{font-size:11px;font-weight:700;color:var(--li);letter-spacing:.04em}
+.sum-adm-total-v{font-family:var(--f-head);font-size:22px;font-weight:900;color:var(--li)}
+.sum-months-note{margin-top:12px;font-size:11px;color:rgba(255,255,255,.35);line-height:1.6;text-align:center}
+
+.btn-generate{width:100%;padding:15px;border:none;border-radius:6px;background:var(--li);color:var(--ink);font-family:var(--f-head);font-size:14px;font-weight:900;cursor:pointer;margin-top:18px;letter-spacing:.04em;transition:all .2s;box-shadow:0 4px 18px rgba(139,197,63,.35)}
+.btn-generate:hover{background:var(--l2);transform:translateY(-2px)}
+.btn-generate:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── INVOICE ── */
+#invoice-outer{display:none;margin-top:28px}
+#invoice-outer.on{display:block}
+.inv-actions{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.abt{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:5px;border:1.5px solid var(--c3);background:var(--wh);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;color:var(--ink2)}
+.abt:hover{border-color:var(--li);color:var(--l2)}
+.abt.primary{background:var(--li);border-color:var(--li);color:var(--ink)}
+.abt.primary:hover{background:var(--l2)}
+.abt svg{width:13px;height:13px;flex-shrink:0}
+
+/* ── INVOICE DOC ── */
+#printDoc{display:none}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  @page{margin:1.5cm 1.8cm;size:A4 portrait}
+  html,body{background:#fff!important}
+  body > *:not(#printDoc){display:none!important}
+  #printDoc{display:block!important}
+}
+.inv-doc{background:#fff;border:1px solid #e4dfd4;border-radius:6px;overflow:hidden;font-family:'Open Sans',sans-serif;font-size:12px;color:#1a1a18}
+
+/* Invoice top bar */
+.inv-bar{height:5px;background:linear-gradient(90deg,#5e8a24,#8BC53F,#c8e48e,#8BC53F,#5e8a24)}
+
+/* Invoice header */
+.inv-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding:28px 32px 22px;border-bottom:1.5px solid #1a1a18}
+.inv-logo-wrap{}
+.inv-logo{font-family:'Montserrat',sans-serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#1a1a18;line-height:.95;text-transform:uppercase}
+.inv-logo span{color:#8BC53F}
+.inv-tagline{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#7a7970;margin-top:7px}
+.inv-meta{text-align:right}
+.inv-ref{font-size:10px;font-weight:700;color:#4a4a46;letter-spacing:.04em}
+.inv-date{font-size:10px;color:#7a7970;margin-top:3px}
+
+/* Invoice student block */
+.inv-stu{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #e4dfd4}
+.inv-stu-l{padding:20px 32px;border-right:1px solid #e4dfd4}
+.inv-stu-r{padding:20px 32px}
+.inv-field-label{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#b0ada4;margin-bottom:3px}
+.inv-field-val{font-size:14px;font-weight:700;color:#1a1a18;margin-bottom:12px;line-height:1.2}
+.inv-field-val.large{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.inv-field-val.lime{color:#5e8a24}
+.inv-pill{display:inline-flex;padding:2px 9px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#f0f7e3;color:#5e8a24;border:1px solid rgba(139,197,63,.3);margin-top:-6px}
+.inv-pill.cbse{background:#eff6ff;color:#2563eb;border-color:rgba(37,99,235,.25)}
+
+/* Invoice period */
+.inv-period{padding:14px 32px;background:#f5f2eb;border-bottom:1px solid #e4dfd4;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.inv-period-item{display:flex;flex-direction:column;gap:2px}
+.inv-period-lbl{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#b0ada4}
+.inv-period-val{font-size:13px;font-weight:700;color:#1a1a18}
+
+/* Invoice subject table */
+.inv-section-label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#7a7970;padding:12px 32px 6px;background:#f5f2eb;border-bottom:1px solid #e4dfd4;border-top:1px solid #e4dfd4;margin-top:0}
+.inv-table-wrap{padding:0 0 0}
+.inv-table{width:100%;border-collapse:collapse}
+.inv-table th{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7a7970;padding:10px 32px;background:#f5f2eb;border-bottom:1px solid #e4dfd4;text-align:left}
+.inv-table th:last-child{text-align:right}
+.inv-table td{padding:10px 32px;border-bottom:1px solid #ede9e0;font-size:12px;color:#2e2e2b;vertical-align:middle}
+.inv-table td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.inv-table tbody tr:last-child td{border-bottom:none}
+.inv-table .disc-row td{color:#d97706;background:#fffbeb}
+.inv-table .waived-row td{color:#b0ada4;background:#f5f2eb}
+.inv-table .total-row{background:#f5f2eb}
+.inv-table .total-row td{font-weight:800;color:#1a1a18;font-size:13px;border-bottom:none;border-top:1.5px solid #d8d4cb}
+
+/* Invoice admission block */
+.inv-adm{margin:0;background:#1a1a18;padding:20px 32px}
+.inv-adm-title{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
+.inv-adm-rows{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.inv-adm-cell{padding:14px 16px;border-right:1px solid rgba(255,255,255,.08)}
+.inv-adm-cell:last-child{border-right:none}
+.inv-adm-cell-l{font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:4px}
+.inv-adm-cell-v{font-size:15px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums}
+.inv-adm-total-row{display:flex;align-items:baseline;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)}
+.inv-adm-total-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.inv-adm-total-note{font-size:10px;color:rgba(255,255,255,.3)}
+.inv-adm-total-val{font-family:'Montserrat',sans-serif;font-size:26px;font-weight:900;color:#8BC53F;letter-spacing:-1px}
+.inv-adm-months{font-size:10px;color:rgba(255,255,255,.3);margin-top:8px;line-height:1.6}
+
+/* Invoice footer */
+.inv-footer{padding:14px 32px;border-top:1px solid #e4dfd4;display:flex;align-items:center;justify-content:space-between}
+.inv-footer-brand{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:900;letter-spacing:-.3px;color:#1a1a18}
+.inv-footer-brand span{color:#8BC53F}
+.inv-footer-contact{font-size:9px;color:#b0ada4;text-align:right}
+
+@media(max-width:640px){
+  .form-row.cols-2,.form-row.cols-3,.form-row.cols-4{grid-template-columns:1fr}
+  .subj-grid{grid-template-columns:1fr}
+  #app{padding:0 14px 60px}
+  .topbar{margin:0 -14px;padding:0 14px}
+  .combo-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-brand">Sehr<span>.</span></div>
+      <div class="lbox-sub">Fee Bill Generator &nbsp;·&nbsp; Admin Access</div>
+    </div>
+    <div class="lbox-body">
+      <div class="lbox-label">Admin Password</div>
+      <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+      <button class="lbox-btn" id="btnLogin">Access Generator</button>
+      <div class="lbox-err" id="loginErr">Incorrect password</div>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div class="tb-inner">
+      <div class="tb-kicker"><div class="tb-kicker-rule"></div><span class="tb-kicker-txt">SEHR Academy &nbsp;·&nbsp; Admin</span></div>
+      <div class="tb-title">Fee Bill <i>Generator</i></div>
+      <div class="tb-sub">2026–27 Academic Year &nbsp;·&nbsp; Rs. 500 per subject per month</div>
+    </div>
+  </div>
+
+  <!-- STUDENT -->
+  <div class="sec-head"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Student Details</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="card">
+    <div class="form-row cols-3">
+      <div class="fld">
+        <div class="fld-label">Class</div>
+        <select class="fld-select" id="selClass">
+          <option value="">Select class…</option>
+          <option value="9">Class 9</option>
+          <option value="10">Class 10</option>
+          <option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+      </div>
+      <div class="fld">
+        <div class="fld-label">Syllabus</div>
+        <select class="fld-select" id="selSyllabus">
+          <option value="">Select syllabus…</option>
+          <option value="STATE">Kerala State</option>
+          <option value="CBSE">CBSE</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="fld">
+        <div class="fld-label">Student Name</div>
+        <input type="text" class="fld-input" id="inName" placeholder="Enter full name">
+      </div>
+      <div class="fld">
+        <div class="fld-label">Class Start Month</div>
+        <select class="fld-select" id="selStartMonth">
+          <option value="">Select class start month…</option>
+          <option value="2026-06">June 2026</option>
+          <option value="2026-07">July 2026</option>
+          <option value="2026-08">August 2026</option>
+          <option value="2026-09">September 2026</option>
+          <option value="2026-10">October 2026</option>
+          <option value="2026-11">November 2026</option>
+          <option value="2026-12">December 2026</option>
+          <option value="2027-01">January 2027</option>
+          <option value="2027-02">February 2027</option>
+          <option value="2027-03">March 2027</option>
+        </select>
+      </div>
+    </div>
+    <!-- Class 9 & 10: manual flat fee -->
+    <div class="form-row" id="manualFeeRow" style="display:none">
+      <div class="fld">
+        <div class="fld-label">Monthly Tuition Fee</div>
+        <input type="number" class="fld-input" id="inManualFee" value="1000" min="0" placeholder="Enter monthly fee">
+        <div class="fld-hint">Default Rs. 1,000 / month · edit as needed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBJECTS -->
+  <div class="sec-head" id="subjSecHead"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Subjects</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="card" id="subjCard">
+    <div class="subj-stream-tabs" id="streamTabs">
+      <button class="stream-tab on" onclick="setStream('science',this)">Science</button>
+      <button class="stream-tab" onclick="setStream('commerce',this)">Commerce</button>
+    </div>
+
+    <!-- Science combos -->
+    <div id="sciCombos">
+      <div class="combo-label">Quick Select Combo</div>
+      <div class="combo-row">
+        <button class="combo-btn" onclick="applyCombo('PCM')">PCM</button>
+        <button class="combo-btn" onclick="applyCombo('PCB')">PCB</button>
+        <button class="combo-btn" onclick="applyCombo('PCBM')">PCBM</button>
+        <button class="combo-btn" onclick="applyCombo('CLEAR')">Clear</button>
+      </div>
+    </div>
+
+    <div class="subj-grid" id="subjGrid"></div>
+  </div>
+
+  <!-- FEES -->
+  <div class="sec-head"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Fee Components</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="card">
+    <!-- Discount -->
+    <div class="discount-row">
+      <div class="discount-label">Discount on Tuition</div>
+      <div class="discount-pct-wrap">
+        <input type="number" class="discount-input" id="inDiscount" value="0" min="0" max="100" oninput="calcSummary()">
+        <span class="discount-pct-sym">%</span>
+      </div>
+    </div>
+
+    <!-- Add-ons -->
+    <div id="addonRows">
+      <!-- Admission fee -->
+      <div class="addon-row">
+        <label class="addon-toggle"><input type="checkbox" id="togAdm" onchange="toggleAddon('adm')"><span class="addon-slider"></span></label>
+        <div class="addon-label">Admission Fee</div>
+        <div class="addon-note">One-time</div>
+        <input type="number" class="addon-input" id="inAdm" value="1000" min="0" disabled oninput="calcSummary()">
+      </div>
+      <!-- Exam fee -->
+      <div class="addon-row">
+        <label class="addon-toggle"><input type="checkbox" id="togExam" onchange="toggleAddon('exam')"><span class="addon-slider"></span></label>
+        <div class="addon-label">Exam Fee</div>
+        <div class="addon-note" id="examNote">Rs. 50 / subject</div>
+        <input type="number" class="addon-input" id="inExam" value="0" min="0" disabled oninput="calcSummary()">
+      </div>
+      <!-- Study materials -->
+      <div class="addon-row">
+        <label class="addon-toggle"><input type="checkbox" id="togMat" onchange="toggleAddon('mat')"><span class="addon-slider"></span></label>
+        <div class="addon-label">Study Materials</div>
+        <div class="addon-note">One-time</div>
+        <input type="number" class="addon-input" id="inMat" value="0" min="0" disabled oninput="calcSummary()">
+      </div>
+      <!-- Transport -->
+      <div class="addon-row">
+        <label class="addon-toggle"><input type="checkbox" id="togTrans" onchange="toggleAddon('trans')"><span class="addon-slider"></span></label>
+        <div class="addon-label">Transport Fee</div>
+        <div class="addon-note">Per month</div>
+        <input type="number" class="addon-input" id="inTrans" value="0" min="0" disabled oninput="calcSummary()">
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="sec-head"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Bill Summary</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="summary-box">
+    <div class="summary-inner">
+      <div class="summary-title">Monthly Fee Breakdown</div>
+      <div id="sumLines"></div>
+      <div id="sumOneTime" style="display:none;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;margin-top:4px"></div>
+      <div class="sum-divider"></div>
+      <div class="sum-total-row">
+        <span class="sum-total-label">Monthly Total</span>
+        <span class="sum-total-val" id="sumMonthly">Rs. 0</span>
+      </div>
+
+      <div class="sum-admission-box" id="sumAdmBox">
+        <div class="sum-adm-label">Due at Admission</div>
+        <div id="sumAdmLines"></div>
+        <div class="sum-adm-total">
+          <div>
+            <div class="sum-adm-total-l">Total Due Now</div>
+            <div class="sum-months-note" id="sumMonthsNote"></div>
+          </div>
+          <div class="sum-adm-total-v" id="sumAdmTotal">—</div>
+        </div>
+        <div class="inv-adm-months" id="sumRemaining"></div>
+      </div>
+
+      <button class="btn-generate" id="btnGenerate" onclick="generateBill()">Generate Fee Bill</button>
+    </div>
+  </div>
+
+  <!-- INVOICE OUTPUT -->
+  <div id="invoice-outer">
+    <div class="sec-head"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Generated Bill</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+    <div class="inv-actions">
+      <button class="abt primary" onclick="window.print()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save PDF
+      </button>
+      <button class="abt" onclick="shareWa()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        Share on WhatsApp
+      </button>
+    </div>
+    <div class="inv-doc" id="invDoc"></div>
+  </div>
+</div>
+
+<div id="printDoc"></div>
+
+<script>
+/* ══ CONFIG ══ */
+var API        = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
+var PASSWORD   = 'shan9586';
+var SHEET_PASS = 'sehr2026';
+var RATE       = 500;
+var NBSP       = ' ';
+var ACADEMIC_END_Y = 2027, ACADEMIC_END_M = 3;
+
+/* ══ STATE ══ */
+var SEL_STREAM   = 'science';
+var SEL_SUBJECTS = new Set();
+var BILL_DATA    = null;
+
+var SCIENCE_SUBJECTS  = ['Physics','Chemistry','Biology','Maths'];
+var COMMERCE_SUBJECTS = ['Accountancy','Business Studies','Economics','Maths'];
+
+/* ══ UTILS ══ */
+function g(id){ return document.getElementById(id); }
+function fmtRs(n){ return 'Rs. '+Number(n).toLocaleString('en-IN'); }
+function fmtN(n) { return Number(n).toLocaleString('en-IN'); }
+function fmtMonth(ym){
+  if(!ym) return '';
+  var p=ym.split('-');
+  var names=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return names[+p[1]-1]+' '+p[0];
+}
+function billRef(){
+  var now=new Date();
+  var p=function(n){return String(n).padStart(2,'0');};
+  return 'SEHR/2627/'+String(now.getFullYear()).slice(-2)+p(now.getMonth()+1)+p(now.getDate())+p(now.getHours())+p(now.getMinutes());
+}
+function calcMonths(startYM){
+  if(!startYM) return {total:0,upfront:0,remaining:0,upfrontMonths:[]};
+  var p=startYM.split('-');
+  var sy=+p[0],sm=+p[1];
+  var total=(ACADEMIC_END_Y-sy)*12+(ACADEMIC_END_M-sm)+1;
+  if(total<1) total=1;
+  var upfront=Math.min(4,total);
+  var remaining=total-upfront;
+  var names=['','January','February','March','April','May','June','July','August','September','October','November','December'];
+  var upfrontMonths=[];
+  for(var i=0;i<upfront;i++){
+    var mm=((sm-1+i)%12)+1;
+    var yy=sy+Math.floor((sm-1+i)/12);
+    upfrontMonths.push(names[mm]+' '+yy);
+  }
+  return {total:total,upfront:upfront,remaining:remaining,upfrontMonths:upfrontMonths};
+}
+
+/* ══ LOGIN ══ */
+function doLogin(){
+  var pw=g('passInput').value.trim();
+  if(pw===PASSWORD){
+    g('loginWrap').classList.add('gone');
+    g('app').classList.add('on');
+    calcSummary();
+  } else {
+    g('loginErr').classList.add('on');
+    g('passInput').value='';
+    g('passInput').focus();
+  }
+}
+
+/* ══ CLASS CHANGE ══ */
+function onClassChange(){
+  var cls=g('selClass').value;
+  var is910=cls==='9'||cls==='10';
+  g('manualFeeRow').style.display  = is910?'block':'none';
+  var sh=g('subjSecHead'), sc=g('subjCard');
+  if(sh) sh.style.display = is910?'none':'flex';
+  if(sc) sc.style.display = is910?'none':'block';
+  if(is910){ SEL_SUBJECTS.clear(); renderSubjects(); }
+  calcSummary();
+}
+
+/* ══ STREAM + SUBJECTS ══ */
+function setStream(stream,btn){
+  SEL_STREAM=stream;
+  SEL_SUBJECTS.clear();
+  document.querySelectorAll('.stream-tab').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  g('sciCombos').style.display=stream==='science'?'block':'none';
+  renderSubjects();
+  calcSummary();
+}
+
+function renderSubjects(){
+  var list=SEL_STREAM==='science'?SCIENCE_SUBJECTS:COMMERCE_SUBJECTS;
+  var html='';
+  list.forEach(function(s){
+    var on=SEL_SUBJECTS.has(s);
+    html+='<div class="subj-item'+(on?' on':'')+'" onclick="toggleSubj(this.dataset.s)" data-s="'+s+'"><div class="subj-cb"><svg class="subj-cb-tick" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span class="subj-name">'+s+'</span><span class="subj-price">Rs. 500</span></div>';
+  });
+  g('subjGrid').innerHTML=html;
+}
+
+function toggleSubj(el){ var name=typeof el==='string'?el:(el.dataset?el.dataset.s:el);
+  if(SEL_SUBJECTS.has(name)) SEL_SUBJECTS.delete(name);
+  else SEL_SUBJECTS.add(name);
+  renderSubjects();
+  calcSummary();
+}
+
+function applyCombo(combo){
+  SEL_SUBJECTS.clear();
+  if(combo==='PCM'){['Physics','Chemistry','Maths'].forEach(function(s){SEL_SUBJECTS.add(s);});}
+  else if(combo==='PCB'){['Physics','Chemistry','Biology'].forEach(function(s){SEL_SUBJECTS.add(s);});}
+  else if(combo==='PCBM'){['Physics','Chemistry','Biology','Maths'].forEach(function(s){SEL_SUBJECTS.add(s);});}
+  document.querySelectorAll('.combo-btn').forEach(function(b){b.classList.remove('on');});
+  if(combo!=='CLEAR' && event.target) event.target.classList.add('on');
+  renderSubjects();
+  calcSummary();
+}
+
+/* ══ ADDON TOGGLE ══ */
+function toggleAddon(key){
+  var map={Adm:'inAdm',Exam:'inExam',Mat:'inMat',Trans:'inTrans'};
+  var K=key.charAt(0).toUpperCase()+key.slice(1);
+  var chk=g('tog'+K), inp=g(map[K]);
+  inp.disabled=!chk.checked;
+  if(!chk.checked){ inp.value = key==='adm'?1000:0; }
+  calcSummary();
+}
+
+/* ══ CALC SUMMARY ══ */
+function calcSummary(){
+  var cls    = g('selClass').value;
+  var is910  = cls==='9'||cls==='10';
+  var startYM= g('selStartMonth').value;
+  var mc     = calcMonths(startYM);
+
+  /* month dropdown border feedback */
+  var smEl=g('selStartMonth');
+  if(smEl) smEl.style.borderColor=startYM?'var(--c3)':'var(--am)';
+
+  /* ── Fee calculations ── */
+  var EXAM_RATE=50;
+  var n        = is910?0:SEL_SUBJECTS.size;
+  var disc     = Math.min(Math.max(+g('inDiscount').value||0,0),100);
+  var tuition, discAmt, tuitionNet;
+
+  if(is910){
+    tuition    = g('inManualFee')?(+g('inManualFee').value||1000):1000;
+    discAmt    = Math.round(tuition*disc/100);
+    tuitionNet = tuition-discAmt;
+  } else {
+    tuition    = n*RATE;
+    discAmt    = Math.round(tuition*disc/100);
+    tuitionNet = tuition-discAmt;
+  }
+
+  /* exam fee */
+  var examFee=0;
+  if(g('togExam').checked){
+    if(is910){
+      examFee=+g('inExam').value||0;
+      g('examNote').textContent='Per month';
+    } else {
+      examFee=n*EXAM_RATE;
+      g('inExam').value=examFee;
+      g('examNote').textContent='Rs.'+EXAM_RATE+' × '+n+' subject'+(n!==1?'s':'')+' / month';
+    }
+  }
+
+  var admFee   = g('togAdm').checked  ? +g('inAdm').value||0  : 0;
+  var matFee   = g('togMat').checked  ? +g('inMat').value||0  : 0;
+  var transFee = g('togTrans').checked? +g('inTrans').value||0 : 0;
+  var monthly  = tuitionNet+examFee+transFee;
+  var upfrontMonthly = mc.upfront*monthly;
+  var upfrontOneTime = admFee+matFee;
+  var upfrontTotal   = upfrontMonthly+upfrontOneTime;
+
+  /* ── Summary lines ── */
+  var lines='';
+  if(is910){
+    lines+='<div class="sum-line"><span class="sum-line-label">Tuition (Class '+cls+')</span><span class="sum-line-val">'+fmtRs(tuition)+'</span></div>';
+    if(discAmt>0) lines+='<div class="sum-line disc"><span class="sum-line-label">Discount ('+disc+'%)</span><span class="sum-line-val">− '+fmtRs(discAmt)+'</span></div>';
+    if(examFee>0) lines+='<div class="sum-line"><span class="sum-line-label">Exam Fee</span><span class="sum-line-val">'+fmtRs(examFee)+'</span></div>';
+    if(transFee>0)lines+='<div class="sum-line"><span class="sum-line-label">Transport</span><span class="sum-line-val">'+fmtRs(transFee)+'</span></div>';
+  } else if(n>0){
+    lines+='<div class="sum-line"><span class="sum-line-label">Tuition ('+n+' subject'+(n!==1?'s':'')+' × Rs.500)</span><span class="sum-line-val">'+fmtRs(tuition)+'</span></div>';
+    if(discAmt>0) lines+='<div class="sum-line disc"><span class="sum-line-label">Discount ('+disc+'%)</span><span class="sum-line-val">− '+fmtRs(discAmt)+'</span></div>';
+    if(examFee>0) lines+='<div class="sum-line"><span class="sum-line-label">Exam Fee (Rs.'+EXAM_RATE+' × '+n+' subject'+(n!==1?'s':'')+')</span><span class="sum-line-val">'+fmtRs(examFee)+'</span></div>';
+    if(transFee>0)lines+='<div class="sum-line"><span class="sum-line-label">Transport</span><span class="sum-line-val">'+fmtRs(transFee)+'</span></div>';
+  } else {
+    lines='<div class="sum-line"><span class="sum-line-label" style="color:rgba(255,255,255,.3)">No subjects selected</span></div>';
+  }
+  g('sumLines').innerHTML=lines;
+  g('sumMonthly').textContent=fmtRs(monthly);
+
+  /* one-time panel */
+  var otLines='';
+  if(g('togAdm').checked){
+    if(admFee>0) otLines+='<div class="sum-line"><span class="sum-line-label">Admission Fee (one-time)</span><span class="sum-line-val">'+fmtRs(admFee)+'</span></div>';
+    else otLines+='<div class="sum-line"><span class="sum-line-label">Admission Fee</span><span class="sum-line-val" style="text-decoration:line-through;color:rgba(255,255,255,.3)">Waived</span></div>';
+  }
+  if(matFee>0) otLines+='<div class="sum-line"><span class="sum-line-label">Study Materials (one-time)</span><span class="sum-line-val">'+fmtRs(matFee)+'</span></div>';
+  var otEl=g('sumOneTime');
+  if(otEl){otEl.innerHTML=otLines;otEl.style.display=otLines?'block':'none';}
+
+  /* due at admission */
+  var admLines='';
+  if(startYM&&mc.upfront>0){
+    admLines+='<div class="sum-adm-row"><span class="sum-adm-row-l">'+mc.upfront+' months × Rs.'+fmtN(monthly)+'/month</span><span class="sum-adm-row-v">'+fmtRs(upfrontMonthly)+'</span></div>';
+    if(g('togAdm').checked) admLines+='<div class="sum-adm-row"><span class="sum-adm-row-l">Admission Fee'+(admFee===0?' (Waived)':'')+'</span><span class="sum-adm-row-v">'+(admFee>0?fmtRs(admFee):'<span style="text-decoration:line-through;opacity:.4">Rs. 0</span>')+'</span></div>';
+    if(matFee>0) admLines+='<div class="sum-adm-row"><span class="sum-adm-row-l">Study Materials</span><span class="sum-adm-row-v">'+fmtRs(matFee)+'</span></div>';
+  } else {
+    admLines='<div style="font-size:12px;color:rgba(255,255,255,.3);padding:4px 0">Select a class start month to calculate</div>';
+  }
+  g('sumAdmLines').innerHTML=admLines;
+  g('sumAdmTotal').textContent=startYM&&mc.upfront>0?fmtRs(upfrontTotal):'—';
+  if(startYM&&mc.upfront>0){
+    g('sumMonthsNote').textContent='Covers: '+mc.upfrontMonths.join(', ');
+    g('sumRemaining').textContent=mc.remaining>0?'Remaining '+mc.remaining+' month'+(mc.remaining!==1?'s':'')+' at '+fmtRs(monthly)+'/month · Academic year ends March 2027':'Full academic year covered by upfront payment';
+  } else {
+    g('sumMonthsNote').textContent='Select class start month to calculate';
+    g('sumRemaining').textContent='';
+  }
+
+  BILL_DATA={
+    n:n, cls:cls, is910:is910, tuition:tuition, discAmt:discAmt, disc:disc,
+    tuitionNet:tuitionNet, examFee:examFee, admFee:admFee, matFee:matFee,
+    transFee:transFee, monthly:monthly, mc:mc, upfrontMonthly:upfrontMonthly,
+    upfrontOneTime:upfrontOneTime, upfrontTotal:upfrontTotal, EXAM_RATE:EXAM_RATE
+  };
+}
+
+/* ══ GENERATE BILL ══ */
+function generateBill(){
+  calcSummary();
+  var is910=g('selClass').value==='9'||g('selClass').value==='10';
+  if(!BILL_DATA||(!is910&&BILL_DATA.n===0)){alert('Please select at least one subject.');return;}
+  if(!g('selStartMonth').value){alert('Please select a class start month.');return;}
+  if(!g('inName').value.trim()){alert('Please enter student name.');return;}
+
+  var name   =g('inName').value.trim();
+  var cls    =g('selClass').value||'—';
+  var syl    =g('selSyllabus').value||'—';
+  var start  =g('selStartMonth').value;
+  var ref    =billRef();
+  var today  =new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var mc     =BILL_DATA.mc;
+  var subjList=Array.from(SEL_SUBJECTS);
+
+  var html='';
+  html+='<div class="inv-bar"></div>';
+
+  /* header */
+  html+='<div class="inv-hdr">';
+  html+='<div><div class="inv-logo">Sehr<span>.</span></div><div class="inv-tagline">Fee Bill · SEHR Academy</div></div>';
+  html+='<div class="inv-meta"><div class="inv-ref">'+ref+'</div><div class="inv-date">Issued: '+today+'</div></div>';
+  html+='</div>';
+
+  /* student block */
+  html+='<div class="inv-stu">';
+  html+='<div class="inv-stu-l">';
+  html+='<div class="inv-field-label">Student</div><div class="inv-field-val large">'+name+'</div>';
+  html+='<div class="inv-field-label">Class</div><div class="inv-field-val">Class '+cls+'</div>';
+  html+='<div class="inv-field-label">Syllabus</div><div class="inv-pill'+(syl==='CBSE'?' cbse':'')+'">'+syl+'</div>';
+  html+='</div>';
+  html+='<div class="inv-stu-r">';
+  if(!is910){
+    html+='<div class="inv-field-label">Stream</div><div class="inv-field-val lime">'+SEL_STREAM.charAt(0).toUpperCase()+SEL_STREAM.slice(1)+'</div>';
+    html+='<div class="inv-field-label">Subjects Enrolled</div><div class="inv-field-val">'+subjList.join(', ')+'</div>';
+  } else {
+    html+='<div class="inv-field-label">Stream</div><div class="inv-field-val lime">General</div>';
+  }
+  html+='</div></div>';
+
+  /* period bar */
+  html+='<div class="inv-period">';
+  html+='<div class="inv-period-item"><div class="inv-period-lbl">Class Start</div><div class="inv-period-val">'+fmtMonth(start)+'</div></div>';
+  html+='<div class="inv-period-item"><div class="inv-period-lbl">Academic Year End</div><div class="inv-period-val">March 2027</div></div>';
+  html+='<div class="inv-period-item"><div class="inv-period-lbl">Total Months</div><div class="inv-period-val">'+mc.total+'</div></div>';
+  html+='<div class="inv-period-item"><div class="inv-period-lbl">Months Upfront</div><div class="inv-period-val">'+mc.upfront+'</div></div>';
+  html+='<div class="inv-period-item"><div class="inv-period-lbl">Remaining</div><div class="inv-period-val">'+mc.remaining+'</div></div>';
+  html+='</div>';
+
+  /* Monthly fee table */
+  html+='<div class="inv-section-label">Monthly Fee</div>';
+  html+='<div class="inv-table-wrap"><table class="inv-table"><thead><tr><th>Description</th><th>Rate</th><th>Amount</th></tr></thead><tbody>';
+  if(is910){
+    html+='<tr><td>Tuition — Class '+cls+'</td><td>Monthly flat rate</td><td>'+fmtRs(BILL_DATA.tuition)+'</td></tr>';
+  } else {
+    subjList.forEach(function(s){ html+='<tr><td>'+s+'</td><td>Rs. 500 / month</td><td>'+fmtRs(500)+'</td></tr>'; });
+  }
+  if(BILL_DATA.discAmt>0)
+    html+='<tr class="disc-row"><td colspan="2">Tuition Discount ('+BILL_DATA.disc+'%)</td><td>− '+fmtRs(BILL_DATA.discAmt)+'</td></tr>';
+  if(g('togExam').checked){
+    var examDesc=is910?'Per month':'Rs.'+BILL_DATA.EXAM_RATE+' × '+subjList.length+' subject'+(subjList.length!==1?'s':'')+' / month';
+    if(BILL_DATA.examFee>0)
+      html+='<tr><td>Exam Fee</td><td>'+examDesc+'</td><td>'+fmtRs(BILL_DATA.examFee)+'</td></tr>';
+    else
+      html+='<tr><td>Exam Fee</td><td>'+examDesc+'</td><td>'+fmtRs(0)+'</td></tr>';
+  }
+  if(g('togTrans').checked){
+    if(BILL_DATA.transFee>0)
+      html+='<tr><td>Transport Fee</td><td>Per month</td><td>'+fmtRs(BILL_DATA.transFee)+'</td></tr>';
+    else
+      html+='<tr><td>Transport Fee</td><td>Per month</td><td>'+fmtRs(0)+'</td></tr>';
+  }
+  html+='<tr class="total-row"><td colspan="2"><strong>Monthly Total</strong></td><td>'+fmtRs(BILL_DATA.monthly)+'</td></tr>';
+  html+='</tbody></table></div>';
+
+  /* One-time fees — show if toggle ON, strikethrough if 0 */
+  var hasOneTime=g('togAdm').checked||g('togMat').checked;
+  if(hasOneTime){
+    html+='<div class="inv-section-label">One-Time Fees</div>';
+    html+='<div class="inv-table-wrap"><table class="inv-table"><thead><tr><th>Description</th><th>Note</th><th>Amount</th></tr></thead><tbody>';
+    if(g('togAdm').checked){
+      if(BILL_DATA.admFee>0)
+        html+='<tr><td>Admission Fee</td><td>One-time at joining</td><td>'+fmtRs(BILL_DATA.admFee)+'</td></tr>';
+      else
+        html+='<tr><td>Admission Fee</td><td>Waived</td><td>'+fmtRs(0)+'</td></tr>';
+    }
+    if(g('togMat').checked){
+      if(BILL_DATA.matFee>0)
+        html+='<tr><td>Study Materials</td><td>One-time</td><td>'+fmtRs(BILL_DATA.matFee)+'</td></tr>';
+      else
+        html+='<tr><td>Study Materials</td><td>One-time</td><td>'+fmtRs(0)+'</td></tr>';
+    }
+    var ott=BILL_DATA.admFee+BILL_DATA.matFee;
+    if(ott>0)
+      html+='<tr class="total-row"><td colspan="2"><strong>One-Time Total</strong></td><td>'+fmtRs(ott)+'</td></tr>';
+    html+='</tbody></table></div>';
+  }
+
+  /* Due at admission dark block */
+  html+='<div class="inv-adm">';
+  html+='<div class="inv-adm-title">Due at Admission</div>';
+  html+='<div class="inv-adm-rows">';
+  html+='<div class="inv-adm-cell"><div class="inv-adm-cell-l">'+mc.upfront+' months × Rs.'+fmtN(BILL_DATA.monthly)+'/month</div><div class="inv-adm-cell-v">'+fmtRs(BILL_DATA.upfrontMonthly)+'</div></div>';
+  if(g('togAdm').checked) html+='<div class="inv-adm-cell"><div class="inv-adm-cell-l">Admission Fee'+(BILL_DATA.admFee===0?' (Waived)':'')+'</div><div class="inv-adm-cell-v">'+(BILL_DATA.admFee>0?fmtRs(BILL_DATA.admFee):'<span style="text-decoration:line-through;opacity:.5">Rs. 0</span>')+'</div></div>';
+  if(BILL_DATA.matFee>0) html+='<div class="inv-adm-cell"><div class="inv-adm-cell-l">Study Materials</div><div class="inv-adm-cell-v">'+fmtRs(BILL_DATA.matFee)+'</div></div>';
+  html+='</div>';
+  html+='<div class="inv-adm-total-row"><div><div class="inv-adm-total-label">Total Payable at Admission</div><div class="inv-adm-total-note" style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px">Covers: '+mc.upfrontMonths.join(', ')+'</div></div><div class="inv-adm-total-val">'+fmtRs(BILL_DATA.upfrontTotal)+'</div></div>';
+  if(mc.remaining>0) html+='<div class="inv-adm-months">'+mc.remaining+' month'+(mc.remaining!==1?'s':'')+' remaining · '+fmtRs(BILL_DATA.monthly)+'/month · Academic year ends March 2027</div>';
+  html+='</div>';
+
+  /* footer */
+  html+='<div class="inv-footer"><div class="inv-footer-brand">Sehr<span>.</span> Academy</div><div class="inv-footer-contact">Vadanappally, Thrissur, Kerala<br>sehracademy.com · +91 95394 09586</div></div>';
+
+  g('invDoc').innerHTML=html;
+  g('printDoc').innerHTML='<style>@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:wght@400;600;700;800&display=swap");</style>'+html;
+  g('invoice-outer').classList.add('on');
+  setTimeout(function(){g('invoice-outer').scrollIntoView({behavior:'smooth',block:'start'});},100);
+}
+
+/* ══ WHATSAPP ══ */
+function shareWa(){
+  if(!BILL_DATA) return;
+  var name=g('inName').value.trim()||'Student';
+  var cls=g('selClass').value;
+  var syl=g('selSyllabus').value;
+  var mc=BILL_DATA.mc;
+  var lines=[
+    '*SEHR Academy — Fee Statement*','',
+    'Student: *'+name+'*',
+    'Class: '+cls+' · '+syl,
+    BILL_DATA.is910?'Monthly Fee: '+fmtRs(BILL_DATA.tuition):'Subjects: '+Array.from(SEL_SUBJECTS).join(', '),
+    '','*Monthly Fee: '+fmtRs(BILL_DATA.monthly)+'*',
+    (BILL_DATA.discAmt>0?'(includes '+BILL_DATA.disc+'% discount)':''),
+    '','*Due at Admission*',
+    '  '+mc.upfront+' months upfront: '+fmtRs(BILL_DATA.upfrontMonthly),
+  ];
+  if(BILL_DATA.admFee>0) lines.push('  Admission fee: '+fmtRs(BILL_DATA.admFee));
+  if(BILL_DATA.matFee>0) lines.push('  Study materials: '+fmtRs(BILL_DATA.matFee));
+  lines.push('  *Total: '+fmtRs(BILL_DATA.upfrontTotal)+'*');
+  lines.push('  Covers: '+mc.upfrontMonths.join(', '));
+  if(mc.remaining>0) lines.push('','Remaining '+mc.remaining+' months at '+fmtRs(BILL_DATA.monthly)+'/month');
+  lines.push('','_SEHR Academy · Vadanappally · sehracademy.com_');
+  window.open('https://wa.me/?text='+encodeURIComponent(lines.filter(Boolean).join('\n')),'_blank');
+}
+
+/* ══ INIT ══ */
+renderSubjects();
+calcSummary();
+
+/* Wire events — guard each with null check */
+function on(id,ev,fn){var el=g(id);if(el)el.addEventListener(ev,fn);}
+on('passInput','keydown',function(e){if(e.key==='Enter')doLogin();});
+on('btnLogin','click',doLogin);
+on('selClass','change',onClassChange);
+on('selSyllabus','change',calcSummary);
+on('selStartMonth','change',calcSummary);
+on('inName','input',calcSummary);
+on('inDiscount','input',calcSummary);
+on('inManualFee','input',calcSummary);
+on('inAdm','input',calcSummary);
+on('inExam','input',calcSummary);
+on('inMat','input',calcSummary);
+on('inTrans','input',calcSummary);
+</script>
+</body>
+</html>
