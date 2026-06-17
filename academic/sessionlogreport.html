@@ -860,7 +860,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .hwr-group-pills{display:flex;gap:5px;flex-wrap:wrap}
 .hwr-group-actions{display:flex;gap:6px;margin-left:auto;flex-shrink:0;flex-wrap:wrap}
 .hwr-action-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .14s;border:none;white-space:nowrap}
-.hwr-pdf-btn{background:var(--li);color:var(--ink)}
+.hwr-pdf-btn{background:var(--li);color:#1a1a18}
 .hwr-pdf-btn:hover{background:var(--li2)}
 .hwr-copy-btn{background:var(--bg4);border:1.5px solid var(--border)!important;color:var(--text2)}
 .hwr-copy-btn:hover{border-color:var(--border2)!important;color:var(--text)}
@@ -874,7 +874,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .hwr-table tr:last-child td{border-bottom:none}
 .hwr-table tr:hover td{background:rgba(255,255,255,.02)}
 .hwr-stu-av{width:28px;height:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:7px;border:1.5px solid var(--border)}
-.hwr-stu-mn{width:28px;height:28px;border-radius:6px;background:var(--ink);display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--li);vertical-align:middle;margin-right:7px;position:relative;overflow:hidden;flex-shrink:0}
+.hwr-stu-mn{width:28px;height:28px;border-radius:6px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--li);vertical-align:middle;margin-right:7px;position:relative;overflow:hidden;flex-shrink:0}
 .hwr-stu-mn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .hwr-nd{color:var(--red)!important;font-weight:700}
 .hwr-done{color:#16a34a!important;font-weight:700}
@@ -1163,7 +1163,14 @@ function init(){
     if(!err&&data&&data.success)ATTENDANCE=data.records||[];
     attOk=true; if(sessOk)finishInit();
   });
-  setTimeout(function(){if(!sessOk||!attOk){g('loadEl').style.display='none';finishInit();}},7000);
+  setTimeout(function(){
+    if(!sessOk||!attOk){
+      g('loadEl').style.display='none';
+      if(!sessOk)console.warn('Session API timed out — continuing with empty data');
+      if(!attOk)console.warn('Attendance API timed out — continuing with empty data');
+      finishInit();
+    }
+  },7000);
 }
 
 function finishInit(){
@@ -1889,12 +1896,11 @@ function buildProgressView(data,el){
   note.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Showing <b style="color:var(--text2)">all sessions</b> regardless of period filter.';
 
   var printBtn=document.createElement('button');
-  printBtn.style.cssText='display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:7px;border:none;background:var(--li);color:var(--ink);font-family:var(--f);font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0;white-space:nowrap;box-shadow:0 3px 12px rgba(139,197,63,.3)';
+  printBtn.style.cssText='display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:7px;border:none;background:var(--li);color:#1a1a18;font-family:var(--f);font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0;white-space:nowrap;box-shadow:0 3px 12px rgba(139,197,63,.3)';
   printBtn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Export PDF';
   printBtn.onclick=printProgress;
 
   topBar.appendChild(note);
-  topBar.appendChild(selWrap);
   topBar.appendChild(printBtn);
 
   var pel=g('vProgress');
