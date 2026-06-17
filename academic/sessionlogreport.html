@@ -561,6 +561,28 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .trend-dn{background:var(--red-dim);color:var(--red)}
 .trend-eq{background:var(--bg4);color:var(--text3)}
 
+/* ── SUBJECT CARDS ── */
+.subj-cards-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.subj-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.sc-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:16px 18px;position:relative;overflow:hidden;transition:all .18s;box-shadow:0 2px 8px rgba(0,0,0,.04);cursor:default}
+.sc-card:hover{border-color:rgba(139,197,63,.4);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.09)}
+.sc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--sc-accent,var(--li));border-radius:var(--r2) var(--r2) 0 0}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
+.sc-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--sc-dim,var(--li-dim))}
+.sc-tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.sc-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;background:var(--bg4);color:var(--text3);white-space:nowrap}
+.sc-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px;margin-bottom:2px;line-height:1.2}
+.sc-meta{font-size:11px;color:var(--text3);margin-bottom:12px}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sc-stat{background:var(--bg3);border-radius:7px;padding:7px 10px}
+.sc-stat-v{font-size:17px;font-weight:800;color:var(--text);line-height:1}
+.sc-stat-l{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-top:2px}
+.sc-prog-lbl{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--text3);margin-bottom:4px}
+.sc-prog-lbl span:last-child{color:var(--sc-accent,var(--li));font-weight:800}
+.sc-prog-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.sc-prog-fill{height:100%;border-radius:3px;background:var(--sc-accent,var(--li));transition:width .6s var(--e1)}
+.sc-no-master{font-size:10px;color:var(--text3);font-style:italic;margin-top:8px}
+
 /* ── HOMEWORK VIEW ── */
 .hw-summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
 .hw-summary-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
@@ -1066,6 +1088,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
     </div>
     <div id="vOverview" class="page-pad hidden">
       <div class="kpi-strip" id="kpiStrip"></div>
+      <div id="subjCardsWrap" style="margin-bottom:20px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
@@ -1190,6 +1213,10 @@ function finishInit(){
   buildSbClasses();
   var totalSess=SESSIONS.length,totalAtt=ATTENDANCE.length;
   g('tbPageSub').textContent=totalSess+' sessions · '+totalAtt+' attendance records';
+  // Pre-load master chapters so subject cards are ready on overview
+  loadMasterChapters(function(){
+    if(CUR_VIEW==='overview') renderAll();
+  });
   setView('overview',g('nav-overview'));
 }
 
@@ -1325,12 +1352,104 @@ function noDataMsg(){
   return emptyState('📋',cls+'No data '+period,'No sessions logged for this combination.',hint);
 }
 
+/* ══ SUBJECT CARD ACCENTS ══ */
+var SUBJ_PALETTE={
+  'Mathematics':   {accent:'#2563eb',dim:'rgba(37,99,235,.1)',  ic:'🔢'},
+  'Math':          {accent:'#2563eb',dim:'rgba(37,99,235,.1)',  ic:'🔢'},
+  'Physics':       {accent:'#7c3aed',dim:'rgba(124,58,237,.08)',ic:'⚛️'},
+  'Chemistry':     {accent:'#0d9488',dim:'rgba(13,148,136,.1)', ic:'🧪'},
+  'Biology':       {accent:'#16a34a',dim:'rgba(22,163,74,.1)',  ic:'🧬'},
+  'English':       {accent:'#d97706',dim:'rgba(217,119,6,.1)',  ic:'📝'},
+  'History':       {accent:'#b45309',dim:'rgba(180,83,9,.1)',   ic:'📜'},
+  'Geography':     {accent:'#059669',dim:'rgba(5,150,105,.1)',  ic:'🌍'},
+  'Social Science':{accent:'#db2777',dim:'rgba(219,39,119,.1)',ic:'🌐'},
+  'Social':        {accent:'#db2777',dim:'rgba(219,39,119,.1)',ic:'🌐'},
+  'Computer':      {accent:'#6366f1',dim:'rgba(99,102,241,.1)',ic:'💻'},
+  'Economics':     {accent:'#ca8a04',dim:'rgba(202,138,4,.1)', ic:'📊'},
+  'Accountancy':   {accent:'#0891b2',dim:'rgba(8,145,178,.1)', ic:'🧾'},
+  'Business':      {accent:'#0891b2',dim:'rgba(8,145,178,.1)', ic:'🏢'},
+  'Malayalam':     {accent:'#dc2626',dim:'rgba(220,38,38,.08)',ic:'🔤'},
+  'Hindi':         {accent:'#ea580c',dim:'rgba(234,88,12,.1)', ic:'🔤'},
+  'Sanskrit':      {accent:'#a21caf',dim:'rgba(162,28,175,.1)',ic:'📿'},
+};
+function subjPalette(name){
+  var k=Object.keys(SUBJ_PALETTE).find(function(k){return name.toLowerCase().indexOf(k.toLowerCase())>-1;});
+  return k?SUBJ_PALETTE[k]:{accent:'var(--li)',dim:'var(--li-dim)',ic:'📚'};
+}
+
+function renderSubjectCards(data){
+  var wrap=g('subjCardsWrap');
+  if(!wrap)return;
+
+  // Build subject map: key = "class|board|subject"
+  var subjMap={};
+  data.forEach(function(r){
+    var key=(r.class||'')+'|'+(r.board||'')+'|'+(r.subject||'');
+    if(!subjMap[key])subjMap[key]={cls:r.class,board:r.board||'',subj:r.subject||'',sessions:0,mins:0,chapSet:new Set()};
+    var s=subjMap[key];
+    s.sessions++;
+    s.mins+=(+r.duration_mins||0);
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){s.chapSet.add(c);});
+  });
+
+  var keys=Object.keys(subjMap).sort(function(a,b){
+    var pa=a.split('|'),pb=b.split('|');
+    if(pa[0]!==pb[0])return +pa[0]-+pb[0];
+    return pa[2].localeCompare(pb[2]);
+  });
+
+  if(!keys.length){wrap.innerHTML='';return;}
+
+  var cards=keys.map(function(key){
+    var s=subjMap[key];
+    var p=subjPalette(s.subj);
+    var masterKey=s.cls+'|'+s.board+'|'+s.subj;
+    var master=MASTER_CHAPTERS[masterKey]||[];
+    var covered=s.chapSet.size;
+    var total=master.length;
+    var pct=total?Math.round(covered/total*100):null;
+    var pctStr=pct!==null?pct+'%':'—';
+    var pctColor=pct===null?'var(--li)':pct>=80?'#16a34a':pct>=50?'var(--amber)':'var(--red)';
+
+    var tags='<span class="sc-tag">Class '+esc(s.cls)+'</span>';
+    if(s.board)tags+='<span class="sc-tag">'+esc(s.board)+'</span>';
+
+    var progSection=total>0
+      ?'<div class="sc-prog-lbl"><span>Syllabus</span><span style="color:'+pctColor+'">'+covered+' / '+total+' ch · '+pctStr+'</span></div>'+
+        '<div class="sc-prog-bar"><div class="sc-prog-fill" style="width:'+pct+'%;background:'+pctColor+'"></div></div>'
+      :(covered>0
+        ?'<div class="sc-no-master">'+covered+' chapter'+(covered>1?'s':'')+' covered (no master syllabus)</div>'
+        :'<div class="sc-no-master">No chapter data logged</div>');
+
+    return '<div class="sc-card" style="--sc-accent:'+p.accent+';--sc-dim:'+p.dim+'">'+
+      '<div class="sc-top">'+
+        '<div class="sc-ic">'+p.ic+'</div>'+
+        '<div class="sc-tags">'+tags+'</div>'+
+      '</div>'+
+      '<div class="sc-name">'+esc(s.subj||'Unknown')+'</div>'+
+      '<div class="sc-meta">'+s.sessions+' session'+(s.sessions!==1?'s':'')+'</div>'+
+      '<div class="sc-stats">'+
+        '<div class="sc-stat"><div class="sc-stat-v">'+hrsFmt(s.mins)+'</div><div class="sc-stat-l">Hours</div></div>'+
+        '<div class="sc-stat"><div class="sc-stat-v" style="color:'+pctColor+'">'+pctStr+'</div><div class="sc-stat-l">Progress</div></div>'+
+      '</div>'+
+      progSection+
+    '</div>';
+  }).join('');
+
+  wrap.innerHTML=
+    '<div class="subj-cards-hdr">'+
+      '<div class="sec-title">Subject Breakdown</div>'+
+      (CHAPTERS_LOADED?'':'<span style="font-size:11px;color:var(--text3)">Loading syllabus…</span>')+
+    '</div>'+
+    '<div class="subj-cards-grid">'+cards+'</div>';
+}
+
 /* ══ OVERVIEW ══ */
 function renderOverview(data){
   var mins=data.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
   var chapSet={};data.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
   var hw=data.filter(function(r){return r.homework&&r.homework.trim();}).length;
-  var teachers=Array.from(new Set(data.map(function(r){return r.teacher_id;}))).size;
+  var teachers=Array.from(new Set(data.map(function(r){return r.teacher_id;}))).length;
   var attDay=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE;});
   var attP=attDay.filter(function(r){return r.status==='Present';}).length;
   var attPct=attDay.length?Math.round(attP/attDay.length*100):null;
@@ -1342,6 +1461,9 @@ function renderOverview(data){
     kpiCard('👨‍🏫',teachers,'Active Teachers','var(--teal)','var(--teal-dim)','')+
     kpiCard('📝',hw,'With Homework','var(--amber)','var(--amber-dim)','hw')+
     (attDay.length?kpiCard('👥',attPct!==null?attPct+'%':'—','Attendance','var(--li)','var(--li-dim)',''):'');
+
+  // Subject cards
+  renderSubjectCards(data);
 
   // Class breakdown table
   // Group by class + board (separate CBSE/State for 9 & 10)
