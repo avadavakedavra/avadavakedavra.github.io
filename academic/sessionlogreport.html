@@ -590,6 +590,42 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .sc-week-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
 .sc-week-fill{height:100%;border-radius:2px;transition:width .5s var(--e1)}
 
+/* ── GAP ALERT ── */
+.sc-gap-alert{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:6px}
+.sc-gap-ok{background:rgba(22,163,74,.08);color:#16a34a}
+.sc-gap-warn{background:var(--amber-dim);color:var(--amber)}
+.sc-gap-danger{background:var(--red-dim);color:var(--red)}
+.sc-hw-rate{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:700;margin-top:8px;margin-bottom:3px}
+.sc-abs-btn{width:100%;margin-top:10px;padding:6px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);font-family:var(--f);font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;transition:all .13s;display:flex;align-items:center;justify-content:center;gap:5px}
+.sc-abs-btn:hover{border-color:var(--border2);color:var(--text);background:var(--bg4)}
+.sc-abs-panel{display:none;margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
+.sc-abs-panel.open{display:block}
+.sc-abs-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+.sc-abs-row:last-child{border-bottom:none}
+.sc-abs-name{flex:1;font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-abs-cnt{font-size:11px;font-weight:700;color:var(--red)}
+.sc-abs-pct{font-size:11px;font-weight:800;min-width:34px;text-align:right}
+
+/* ── SUBSTITUTE ALERTS ── */
+.sub-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.sub-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border:1.5px solid var(--amber-mid);border-radius:var(--r2);animation:fadeUp .3s var(--e1) both}
+.sub-badge{flex-shrink:0;padding:2px 8px;border-radius:6px;font-size:9px;font-weight:800;background:var(--amber-dim);color:var(--amber);letter-spacing:.06em;text-transform:uppercase}
+.sub-info{flex:1;min-width:0}
+.sub-date{font-size:11px;font-weight:700;color:var(--text)}
+.sub-detail{font-size:10px;color:var(--text3);margin-top:1px}
+.sub-teacher{font-size:12px;font-weight:700;color:var(--amber);white-space:nowrap}
+.sub-empty{font-size:12px;color:var(--text3);font-style:italic;padding:12px 0}
+
+/* ── HEATMAP ── */
+.hm-wrap{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px 20px;overflow-x:auto}
+.hm-grid{display:grid;gap:3px}
+.hm-cell{width:14px;height:14px;border-radius:2px;cursor:default;transition:outline .1s}
+.hm-cell:hover{outline:2px solid var(--li);outline-offset:1px}
+.hm-day-lbl{font-size:9px;font-weight:700;color:var(--text3);line-height:14px;text-align:right;padding-right:5px;white-space:nowrap}
+.hm-legend{display:flex;align-items:center;gap:5px;margin-top:10px;justify-content:flex-end}
+.hm-legend-lbl{font-size:10px;color:var(--text3);font-weight:600}
+.hm-legend-cell{width:12px;height:12px;border-radius:2px}
+
 /* ── TEACHER LOAD ── */
 .tl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
 .tl-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .15s}
@@ -1123,6 +1159,8 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div id="subjCardsWrap" style="margin-bottom:20px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
       <div id="teacherLoadWrap" style="margin-top:4px"></div>
+      <div id="substituteWrap" style="margin-top:20px"></div>
+      <div id="heatmapWrap" style="margin-top:20px"></div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
@@ -1503,6 +1541,61 @@ function renderSubjectCards(data){
       '</div>'+
       '<div class="sc-week-bar"><div class="sc-week-fill" style="width:'+wkPct+'%;background:'+wkColor+'"></div></div>';
 
+    // Gap alert: days since last session for this subject
+    var subjectSessions = SESSIONS.filter(function(r){
+      return r.class===s.cls&&(r.board||'')===s.board&&(r.subject||'')===s.subj;
+    });
+    var lastDateStr = subjectSessions.reduce(function(best,r){
+      var d=sessDateToYMD(r.date); return (d&&d>best)?d:best;
+    },'');
+    var daysSinceVal = lastDateStr ? Math.floor((new Date(CUR_DATE+'T00:00:00')-new Date(lastDateStr+'T00:00:00'))/86400000) : null;
+    var gapHtml='';
+    if(daysSinceVal===null){
+      gapHtml='<span class="sc-gap-alert sc-gap-danger">⚠ Never taught</span>';
+    } else if(daysSinceVal===0){
+      gapHtml='<span class="sc-gap-alert sc-gap-ok">✓ Taught today</span>';
+    } else if(daysSinceVal<=7){
+      gapHtml='<span class="sc-gap-alert sc-gap-ok">'+daysSinceVal+'d ago</span>';
+    } else if(daysSinceVal<=14){
+      gapHtml='<span class="sc-gap-alert sc-gap-warn">⚠ '+daysSinceVal+'d gap</span>';
+    } else {
+      gapHtml='<span class="sc-gap-alert sc-gap-danger">🔴 '+daysSinceVal+'d gap</span>';
+    }
+
+    // Homework rate for this subject
+    var hwCount = subjectSessions.filter(function(r){return r.homework&&r.homework.trim();}).length;
+    var hwRate = s.sessions ? Math.round(hwCount/s.sessions*100) : 0;
+    var hwColor = hwRate>=70?'#16a34a':hwRate>=40?'var(--amber)':'var(--red)';
+    var hwHtml = '<div class="sc-hw-rate">'+
+      '<span style="color:var(--text3)">Homework given</span>'+
+      '<span style="color:'+hwColor+'">'+hwRate+'% ('+hwCount+'/'+s.sessions+')</span>'+
+    '</div>'+
+    '<div class="sc-week-bar"><div class="sc-week-fill" style="width:'+hwRate+'%;background:'+hwColor+'"></div></div>';
+
+    // Absence panel for this subject
+    var absCardId='scabs-'+key.replace(/\|/g,'-').replace(/\s/g,'_');
+    var subjDateSet={};
+    subjectSessions.forEach(function(r){var d=sessDateToYMD(r.date);if(d)subjDateSet[d]=true;});
+    var stuAbsMap={};
+    ATTENDANCE.forEach(function(r){
+      var d=attDateToYMD(r.date);
+      if(!subjDateSet[d]||r.class!==s.cls)return;
+      var id=r.student_id||r.student_name||'?';
+      if(!stuAbsMap[id])stuAbsMap[id]={name:r.student_name||id,present:0,absent:0};
+      if(r.status==='Present')stuAbsMap[id].present++;else stuAbsMap[id].absent++;
+    });
+    var absList=Object.values(stuAbsMap).sort(function(a,b){return b.absent-a.absent;}).slice(0,8);
+    var absRows=absList.length
+      ?absList.map(function(st){
+        var tot=st.present+st.absent;
+        var pct=tot?Math.round(st.present/tot*100):0;
+        var pc=pct>=75?'#16a34a':pct>=50?'var(--amber)':'var(--red)';
+        return '<div class="sc-abs-row"><span class="sc-abs-name">'+esc(st.name)+'</span>'+
+          '<span class="sc-abs-cnt">'+st.absent+' absent</span>'+
+          '<span class="sc-abs-pct" style="color:'+pc+'">'+pct+'%</span></div>';
+      }).join('')+'<div style="font-size:10px;color:var(--text3);margin-top:5px">'+Object.keys(subjDateSet).length+' sessions tracked</div>'
+      :'<div style="font-size:11px;color:var(--text3)">No attendance data</div>';
+
     return '<div class="sc-card" style="--sc-accent:'+p.accent+';--sc-dim:'+p.dim+'">'+
       '<div class="sc-top">'+
         '<div class="sc-ic">'+p.ic+'</div>'+
@@ -1510,12 +1603,19 @@ function renderSubjectCards(data){
       '</div>'+
       '<div class="sc-name">'+esc(s.subj||'Unknown')+'</div>'+
       '<div class="sc-meta">'+s.sessions+' session'+(s.sessions!==1?'s':'')+'</div>'+
-      '<div class="sc-stats">'+
+      gapHtml+
+      '<div class="sc-stats" style="margin-top:8px">'+
         '<div class="sc-stat"><div class="sc-stat-v">'+hrsFmt(s.mins)+'</div><div class="sc-stat-l">Total Hours</div></div>'+
         '<div class="sc-stat"><div class="sc-stat-v" style="color:'+pctColor+'">'+pctStr+'</div><div class="sc-stat-l">Progress</div></div>'+
       '</div>'+
       weekBar+
+      hwHtml+
       '<div style="margin-top:10px">'+progSection+'</div>'+
+      '<button class="sc-abs-btn" onclick="document.getElementById(\''+absCardId+'\').classList.toggle(\'open\');this.querySelector(\'.abs-arrow\').textContent=document.getElementById(\''+absCardId+'\').classList.contains(\'open\')?\'▲\':\'▼\'">'+
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="11" height="11"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>'+
+        'Absence by Student <span class="abs-arrow">▼</span>'+
+      '</button>'+
+      '<div class="sc-abs-panel" id="'+absCardId+'">'+absRows+'</div>'+
     '</div>';
   }).join('');
 
@@ -1596,6 +1696,152 @@ function tlToggle(id){
   el.classList.toggle('open');
 }
 
+/* ── Substitute Teacher Detector ── */
+function renderSubstituteAlerts(data){
+  var wrap=g('substituteWrap');
+  if(!wrap)return;
+
+  // Primary teacher per class|board = teacher with most sessions overall
+  var clsPrimary={};
+  var clsTCount={};
+  SESSIONS.forEach(function(r){
+    var k=(r.class||'')+'|'+(r.board||'');
+    var t=r.teacher_id||r.teacher_name||'';
+    if(!clsTCount[k])clsTCount[k]={};
+    clsTCount[k][t]=(clsTCount[k][t]||0)+1;
+  });
+  Object.keys(clsTCount).forEach(function(k){
+    var tc=clsTCount[k];
+    clsPrimary[k]=Object.keys(tc).sort(function(a,b){return tc[b]-tc[a];})[0];
+  });
+
+  // Find substitute sessions in last 45 days from CUR_DATE
+  var cutoff=new Date(CUR_DATE+'T00:00:00');
+  cutoff.setDate(cutoff.getDate()-45);
+  var cutoffStr=cutoff.getFullYear()+'-'+pad(cutoff.getMonth()+1)+'-'+pad(cutoff.getDate());
+
+  var subs=data.filter(function(r){
+    var d=sessDateToYMD(r.date);
+    if(!d||d<cutoffStr)return false;
+    var k=(r.class||'')+'|'+(r.board||'');
+    var t=r.teacher_id||r.teacher_name||'';
+    return clsPrimary[k]&&t&&t!==clsPrimary[k];
+  }).sort(function(a,b){return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));});
+
+  if(!subs.length){
+    wrap.innerHTML='<div class="sec-hdr" style="margin-bottom:8px"><div class="sec-title">Substitute Sessions</div></div>'+
+      '<div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 18px"><div class="sub-empty">No substitute sessions detected in the last 45 days.</div></div>';
+    return;
+  }
+
+  var items=subs.slice(0,20).map(function(r){
+    var k=(r.class||'')+'|'+(r.board||'');
+    var primary=clsPrimary[k]||'';
+    var subTeacher=r.teacher_name||r.teacher_id||'Unknown';
+    var clsLabel='Class '+esc(r.class)+(r.board?' · '+esc(r.board):'');
+    return '<div class="sub-item">'+
+      '<span class="sub-badge">SUB</span>'+
+      '<div class="sub-info">'+
+        '<div class="sub-date">'+esc(fmtShort(sessDateToYMD(r.date)))+' · '+clsLabel+'</div>'+
+        '<div class="sub-detail">'+esc(r.subject||'—')+' · Usually: <b>'+esc(primary)+'</b></div>'+
+      '</div>'+
+      '<span class="sub-teacher">'+esc(subTeacher)+'</span>'+
+    '</div>';
+  }).join('');
+
+  wrap.innerHTML=
+    '<div class="sec-hdr" style="margin-bottom:8px">'+
+      '<div class="sec-title">Substitute Sessions</div>'+
+      '<span style="font-size:11px;color:var(--text3)">Last 45 days · '+subs.length+' detected</span>'+
+    '</div>'+
+    '<div class="sub-list">'+items+'</div>';
+}
+
+/* ── Session Heatmap ── */
+function renderHeatmap(data){
+  var wrap=g('heatmapWrap');
+  if(!wrap)return;
+
+  // Count sessions per date
+  var dateCnt={};
+  data.forEach(function(r){
+    var d=sessDateToYMD(r.date);
+    if(d)dateCnt[d]=(dateCnt[d]||0)+1;
+  });
+
+  // 16 weeks ending at end-of-week containing CUR_DATE
+  var WEEKS=16;
+  var anchor=new Date(CUR_DATE+'T00:00:00');
+  var dow=anchor.getDay(); // 0=Sun
+  anchor.setDate(anchor.getDate()+(dow===0?0:7-dow)); // Move to Sunday
+
+  var start=new Date(anchor);
+  start.setDate(anchor.getDate()-WEEKS*7+1); // Start on Monday
+
+  var maxCnt=Math.max(1,Math.max.apply(null,Object.values(dateCnt).concat([0])));
+  var todayStr=todayYMD();
+
+  // Build cols (each col = 1 week, each row = day Mon-Sun)
+  var cols=[];
+  for(var w=0;w<WEEKS;w++){
+    var col=[];
+    for(var d=0;d<7;d++){
+      var dt=new Date(start);
+      dt.setDate(start.getDate()+w*7+d);
+      var ymd=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());
+      col.push({ymd:ymd,cnt:dateCnt[ymd]||0,future:ymd>todayStr,mon:dt.getMonth()});
+    }
+    cols.push(col);
+  }
+
+  // Month labels row
+  var monthRow='<div></div>'; // empty first cell for day labels
+  var prevMon=-1;
+  cols.forEach(function(col){
+    var m=col[0].mon;
+    if(m!==prevMon){monthRow+='<div style="font-size:9px;font-weight:700;color:var(--text3);padding-bottom:2px">'+MONTHS_S[m]+'</div>';prevMon=m;}
+    else monthRow+='<div></div>';
+  });
+
+  // Day label rows + cells
+  var dayLabels=['Mo','Tu','We','Th','Fr','Sa','Su'];
+  var rowsHtml='';
+  for(var d=0;d<7;d++){
+    rowsHtml+='<div class="hm-day-lbl">'+(d%2===0?dayLabels[d]:'')+'</div>';
+    cols.forEach(function(col){
+      var cell=col[d];
+      var opacity=cell.future?0.05:cell.cnt===0?0.12:0.2+0.8*(cell.cnt/maxCnt);
+      var bg=cell.cnt>0?'var(--li)':'var(--bg4)';
+      var title=cell.ymd+(cell.cnt?' — '+cell.cnt+' session'+(cell.cnt>1?'s':''):' — no sessions');
+      rowsHtml+='<div class="hm-cell" title="'+esc(title)+'"'+
+        ' style="background:'+bg+';opacity:'+opacity.toFixed(2)+'"'+
+        ' onmouseenter="this.style.outline=\'2px solid var(--li)\';this.style.outlineOffset=\'1px\'"'+
+        ' onmouseleave="this.style.outline=\'none\'"'+
+        '></div>';
+    });
+  }
+
+  var gridCols='16px repeat('+WEEKS+',1fr)';
+  var legendHtml='<div class="hm-legend">'+
+    '<span class="hm-legend-lbl">Less</span>'+
+    [0.12,0.35,0.55,0.75,1].map(function(o){
+      return '<div class="hm-legend-cell" style="background:var(--li);opacity:'+o+'"></div>';
+    }).join('')+
+    '<span class="hm-legend-lbl">More</span>'+
+  '</div>';
+
+  wrap.innerHTML=
+    '<div class="sec-hdr" style="margin-bottom:12px">'+
+      '<div class="sec-title">Session Heatmap</div>'+
+      '<span style="font-size:11px;color:var(--text3)">Last 16 weeks</span>'+
+    '</div>'+
+    '<div class="hm-wrap">'+
+      '<div style="display:grid;grid-template-columns:'+gridCols+';gap:3px;margin-bottom:3px">'+monthRow+'</div>'+
+      '<div style="display:grid;grid-template-columns:'+gridCols+';gap:3px">'+rowsHtml+'</div>'+
+      legendHtml+
+    '</div>';
+}
+
 /* ══ OVERVIEW ══ */
 function renderOverview(data){
   var mins=data.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
@@ -1661,6 +1907,8 @@ function renderOverview(data){
   }).join('');
 
   renderTeacherLoad(data);
+  renderSubstituteAlerts(data);
+  renderHeatmap(data);
 
   g('overviewGrid').innerHTML=
     '<div>'+
