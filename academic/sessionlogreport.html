@@ -1490,8 +1490,9 @@ function renderSubjectCards(data){
 
   var keys=Object.keys(subjMap).sort(function(a,b){
     var pa=a.split('|'),pb=b.split('|');
-    if(pa[0]!==pb[0])return +pa[0]-+pb[0];
-    return pa[2].localeCompare(pb[2]);
+    if(pa[0]!==pb[0])return +pa[0]-+pb[0];      // class numeric
+    if(pa[1]!==pb[1])return pa[1].localeCompare(pb[1]); // board (CBSE before Kerala State)
+    return pa[2].localeCompare(pb[2]);            // subject name
   });
 
   if(!keys.length){wrap.innerHTML='';return;}
@@ -1562,13 +1563,13 @@ function renderSubjectCards(data){
       gapHtml='<span class="sc-gap-alert sc-gap-danger">🔴 '+daysSinceVal+'d gap</span>';
     }
 
-    // Homework rate for this subject
+    // Homework rate for this subject (both numerator and denominator from all-time subjectSessions)
     var hwCount = subjectSessions.filter(function(r){return r.homework&&r.homework.trim();}).length;
-    var hwRate = s.sessions ? Math.round(hwCount/s.sessions*100) : 0;
+    var hwRate = subjectSessions.length ? Math.round(hwCount/subjectSessions.length*100) : 0;
     var hwColor = hwRate>=70?'#16a34a':hwRate>=40?'var(--amber)':'var(--red)';
     var hwHtml = '<div class="sc-hw-rate">'+
       '<span style="color:var(--text3)">Homework given</span>'+
-      '<span style="color:'+hwColor+'">'+hwRate+'% ('+hwCount+'/'+s.sessions+')</span>'+
+      '<span style="color:'+hwColor+'">'+hwRate+'% ('+hwCount+'/'+subjectSessions.length+')</span>'+
     '</div>'+
     '<div class="sc-week-bar"><div class="sc-week-fill" style="width:'+hwRate+'%;background:'+hwColor+'"></div></div>';
 
