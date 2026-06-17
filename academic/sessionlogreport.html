@@ -582,6 +582,38 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .sc-prog-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
 .sc-prog-fill{height:100%;border-radius:3px;background:var(--sc-accent,var(--li));transition:width .6s var(--e1)}
 .sc-no-master{font-size:10px;color:var(--text3);font-style:italic;margin-top:8px}
+.sc-update-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 10px;border-radius:6px;border:1.5px dashed var(--border2);background:transparent;font-family:var(--f);font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;transition:all .14s}
+.sc-update-btn:hover{border-color:var(--li);color:var(--li3);background:var(--li-dim)}
+.sc-week-row{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:700;margin-top:10px;margin-bottom:3px}
+.sc-week-lbl{color:var(--text3)}
+.sc-week-val{color:var(--text2)}
+.sc-week-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.sc-week-fill{height:100%;border-radius:2px;transition:width .5s var(--e1)}
+
+/* ── TEACHER LOAD ── */
+.tl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.tl-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .15s}
+.tl-card:hover{border-color:rgba(139,197,63,.35);box-shadow:0 4px 16px rgba(139,197,63,.07)}
+.tl-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;transition:background .12s}
+.tl-head:hover{background:var(--bg3)}
+.tl-cls-badge{width:42px;height:42px;border-radius:9px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:var(--li);flex-shrink:0}
+.tl-info{flex:1;min-width:0}
+.tl-cls-name{font-size:13px;font-weight:800;color:var(--text)}
+.tl-lead-name{font-size:12px;color:var(--li3);font-weight:700;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-lead-meta{font-size:10px;color:var(--text3);margin-top:1px}
+.tl-chevron{font-size:11px;color:var(--text3);transition:transform .18s;flex-shrink:0}
+.tl-card.open .tl-chevron{transform:rotate(90deg)}
+.tl-body{display:none;border-top:1.5px solid var(--border);padding:10px 14px}
+.tl-card.open .tl-body{display:block}
+.tl-teacher-row{margin-bottom:10px}
+.tl-teacher-row:last-child{margin-bottom:0}
+.tl-t-top{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.tl-av{width:26px;height:26px;border-radius:6px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--li);flex-shrink:0}
+.tl-t-name{font-size:12px;font-weight:700;color:var(--text);flex:1}
+.tl-t-hrs{font-size:11px;font-weight:800;color:var(--li3);white-space:nowrap}
+.tl-subj-pills{display:flex;flex-wrap:wrap;gap:4px;padding-left:33px}
+.tl-subj-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.tl-subj-pill span{color:var(--text3);font-weight:500}
 
 /* ── HOMEWORK VIEW ── */
 .hw-summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
@@ -1090,6 +1122,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="kpi-strip" id="kpiStrip"></div>
       <div id="subjCardsWrap" style="margin-bottom:20px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
+      <div id="teacherLoadWrap" style="margin-top:4px"></div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
@@ -1377,19 +1410,44 @@ function subjPalette(name){
   return k?SUBJ_PALETTE[k]:{accent:'var(--li)',dim:'var(--li-dim)',ic:'📚'};
 }
 
+/* ── Weekly helpers ── */
+function weekRangeForDate(dateStr){
+  var d=new Date(dateStr+'T00:00:00');
+  var dow=d.getDay(); // 0=Sun
+  var mon=new Date(d); mon.setDate(d.getDate()-(dow===0?6:dow-1));
+  var sun=new Date(mon); sun.setDate(mon.getDate()+6);
+  function fmt(x){return x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());}
+  return {start:fmt(mon),end:fmt(sun)};
+}
+function sessInWeek(sessions, wk){
+  return sessions.filter(function(r){
+    var d=sessDateToYMD(r.date); return d&&d>=wk.start&&d<=wk.end;
+  });
+}
+
 function renderSubjectCards(data){
   var wrap=g('subjCardsWrap');
   if(!wrap)return;
+
+  var wk=weekRangeForDate(CUR_DATE);
+  var WEEK_TARGET_MINS=60; // 1 hour per subject per week
 
   // Build subject map: key = "class|board|subject"
   var subjMap={};
   data.forEach(function(r){
     var key=(r.class||'')+'|'+(r.board||'')+'|'+(r.subject||'');
-    if(!subjMap[key])subjMap[key]={cls:r.class,board:r.board||'',subj:r.subject||'',sessions:0,mins:0,chapSet:new Set()};
+    if(!subjMap[key])subjMap[key]={cls:r.class,board:r.board||'',subj:r.subject||'',sessions:0,mins:0,weekMins:0,chapSet:new Set()};
     var s=subjMap[key];
     s.sessions++;
     s.mins+=(+r.duration_mins||0);
     (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){s.chapSet.add(c);});
+  });
+  // Compute weekly mins separately (SESSIONS not filtered by period)
+  SESSIONS.forEach(function(r){
+    var key=(r.class||'')+'|'+(r.board||'')+'|'+(r.subject||'');
+    if(subjMap[key]&&sessDateToYMD(r.date)>=wk.start&&sessDateToYMD(r.date)<=wk.end){
+      subjMap[key].weekMins+=(+r.duration_mins||0);
+    }
   });
 
   var keys=Object.keys(subjMap).sort(function(a,b){
@@ -1414,12 +1472,36 @@ function renderSubjectCards(data){
     var tags='<span class="sc-tag">Class '+esc(s.cls)+'</span>';
     if(s.board)tags+='<span class="sc-tag">'+esc(s.board)+'</span>';
 
-    var progSection=total>0
-      ?'<div class="sc-prog-lbl"><span>Syllabus</span><span style="color:'+pctColor+'">'+covered+' / '+total+' ch · '+pctStr+'</span></div>'+
-        '<div class="sc-prog-bar"><div class="sc-prog-fill" style="width:'+pct+'%;background:'+pctColor+'"></div></div>'
-      :(covered>0
-        ?'<div class="sc-no-master">'+covered+' chapter'+(covered>1?'s':'')+' covered (no master syllabus)</div>'
-        :'<div class="sc-no-master">No chapter data logged</div>');
+    // Syllabus progress section
+    var progSection;
+    if(total>0){
+      progSection=
+        '<div class="sc-prog-lbl"><span>Syllabus</span><span style="color:'+pctColor+'">'+covered+' / '+total+' ch · '+pctStr+'</span></div>'+
+        '<div class="sc-prog-bar"><div class="sc-prog-fill" style="width:'+pct+'%;background:'+pctColor+'"></div></div>';
+    } else if(covered>0){
+      progSection=
+        '<div class="sc-no-master">'+covered+' chapter'+(covered>1?'s':'')+' covered</div>'+
+        '<button class="sc-update-btn" onclick="setView(\'progress\',g(\'nav-progress\'))">'+
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="11" height="11"><path d="M12 5v14M5 12h14"/></svg>'+
+        'Update Syllabus</button>';
+    } else {
+      progSection=
+        '<div class="sc-no-master">No chapters logged yet</div>'+
+        '<button class="sc-update-btn" onclick="setView(\'progress\',g(\'nav-progress\'))">'+
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="11" height="11"><path d="M12 5v14M5 12h14"/></svg>'+
+        'Update Syllabus</button>';
+    }
+
+    // Weekly target bar
+    var wkPct=Math.min(100,Math.round(s.weekMins/WEEK_TARGET_MINS*100));
+    var wkMet=s.weekMins>=WEEK_TARGET_MINS;
+    var wkColor=wkMet?'#16a34a':s.weekMins>0?'var(--amber)':'var(--red)';
+    var weekBar=
+      '<div class="sc-week-row">'+
+        '<span class="sc-week-lbl">This week</span>'+
+        '<span class="sc-week-val" style="color:'+wkColor+'">'+hrsFmt(s.weekMins)+' / 1h'+(wkMet?' ✓':'')+'</span>'+
+      '</div>'+
+      '<div class="sc-week-bar"><div class="sc-week-fill" style="width:'+wkPct+'%;background:'+wkColor+'"></div></div>';
 
     return '<div class="sc-card" style="--sc-accent:'+p.accent+';--sc-dim:'+p.dim+'">'+
       '<div class="sc-top">'+
@@ -1429,19 +1511,89 @@ function renderSubjectCards(data){
       '<div class="sc-name">'+esc(s.subj||'Unknown')+'</div>'+
       '<div class="sc-meta">'+s.sessions+' session'+(s.sessions!==1?'s':'')+'</div>'+
       '<div class="sc-stats">'+
-        '<div class="sc-stat"><div class="sc-stat-v">'+hrsFmt(s.mins)+'</div><div class="sc-stat-l">Hours</div></div>'+
+        '<div class="sc-stat"><div class="sc-stat-v">'+hrsFmt(s.mins)+'</div><div class="sc-stat-l">Total Hours</div></div>'+
         '<div class="sc-stat"><div class="sc-stat-v" style="color:'+pctColor+'">'+pctStr+'</div><div class="sc-stat-l">Progress</div></div>'+
       '</div>'+
-      progSection+
+      weekBar+
+      '<div style="margin-top:10px">'+progSection+'</div>'+
     '</div>';
   }).join('');
 
   wrap.innerHTML=
     '<div class="subj-cards-hdr">'+
       '<div class="sec-title">Subject Breakdown</div>'+
-      (CHAPTERS_LOADED?'':'<span style="font-size:11px;color:var(--text3)">Loading syllabus…</span>')+
+      '<span style="font-size:10px;color:var(--text3);font-weight:600">Week of '+wk.start+' · 1h/week target</span>'+
     '</div>'+
     '<div class="subj-cards-grid">'+cards+'</div>';
+}
+
+/* ── Teacher Load per Class ── */
+function renderTeacherLoad(data){
+  var wrap=g('teacherLoadWrap');
+  if(!wrap)return;
+
+  // Group by class → teacher → subject
+  var clsMap={};
+  data.forEach(function(r){
+    var key=(r.class||'')+(r.board?'|'+r.board:'');
+    if(!clsMap[key])clsMap[key]={cls:r.class,board:r.board||'',teachers:{}};
+    var t=r.teacher_name||r.teacher_id||'Unknown';
+    if(!clsMap[key].teachers[t])clsMap[key].teachers[t]={name:t,sessions:0,mins:0,subjects:{}};
+    var td=clsMap[key].teachers[t];
+    td.sessions++; td.mins+=(+r.duration_mins||0);
+    var subj=r.subject||'Unknown';
+    if(!td.subjects[subj])td.subjects[subj]={sessions:0,mins:0};
+    td.subjects[subj].sessions++; td.subjects[subj].mins+=(+r.duration_mins||0);
+  });
+
+  var clsKeys=Object.keys(clsMap).sort(function(a,b){return +(a.split('|')[0])- +(b.split('|')[0]);});
+  if(!clsKeys.length){wrap.innerHTML='';return;}
+
+  var cards=clsKeys.map(function(key,i){
+    var c=clsMap[key];
+    var teachers=Object.values(c.teachers).sort(function(a,b){return b.sessions-a.sessions;});
+    var lead=teachers[0];
+    var clsLabel='Class '+c.cls+(c.board?' · '+c.board:'');
+    var cardId='tlcard-'+i;
+
+    var teacherRows=teachers.map(function(t){
+      var subjPills=Object.keys(t.subjects).sort(function(a,b){
+        return t.subjects[b].sessions-t.subjects[a].sessions;
+      }).map(function(s){
+        return '<span class="tl-subj-pill">'+esc(s)+' <span>'+t.subjects[s].sessions+'×</span></span>';
+      }).join('');
+      return '<div class="tl-teacher-row">'+
+        '<div class="tl-t-top">'+
+          '<div class="tl-av">'+esc(mn(t.name))+'</div>'+
+          '<span class="tl-t-name">'+esc(t.name)+'</span>'+
+          '<span class="tl-t-hrs">'+hrsFmt(t.mins)+'</span>'+
+        '</div>'+
+        '<div class="tl-subj-pills">'+subjPills+'</div>'+
+      '</div>';
+    }).join('');
+
+    return '<div class="tl-card" id="'+cardId+'">'+
+      '<div class="tl-head" onclick="tlToggle(\''+cardId+'\')">'+
+        '<div class="tl-cls-badge">'+esc(c.cls)+'</div>'+
+        '<div class="tl-info">'+
+          '<div class="tl-cls-name">'+esc(clsLabel)+'</div>'+
+          '<div class="tl-lead-name">'+esc(lead.name)+'</div>'+
+          '<div class="tl-lead-meta">'+lead.sessions+' sessions · '+hrsFmt(lead.mins)+'</div>'+
+        '</div>'+
+        '<span class="tl-chevron">▶</span>'+
+      '</div>'+
+      '<div class="tl-body">'+teacherRows+'</div>'+
+    '</div>';
+  }).join('');
+
+  wrap.innerHTML=
+    '<div class="sec-hdr" style="margin-bottom:12px"><div class="sec-title">Teacher Load by Class</div>'+
+    '<span style="font-size:11px;color:var(--text3)">Click a class to see subject breakdown</span></div>'+
+    '<div class="tl-grid">'+cards+'</div>';
+}
+function tlToggle(id){
+  var el=g(id); if(!el)return;
+  el.classList.toggle('open');
 }
 
 /* ══ OVERVIEW ══ */
@@ -1507,6 +1659,8 @@ function renderOverview(data){
       '<td>'+avgStr+'</td>'+
       '</tr>';
   }).join('');
+
+  renderTeacherLoad(data);
 
   g('overviewGrid').innerHTML=
     '<div>'+
