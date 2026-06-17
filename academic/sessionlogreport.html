@@ -626,6 +626,49 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .hm-legend-lbl{font-size:10px;color:var(--text3);font-weight:600}
 .hm-legend-cell{width:12px;height:12px;border-radius:2px}
 
+/* ── TEACHER PROFILE ── */
+.tr-clickable{cursor:pointer}
+.tr-clickable:hover{border-color:rgba(139,197,63,.5)!important;transform:translateY(-3px);box-shadow:0 8px 28px rgba(139,197,63,.13)!important}
+.tr-view-hint{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.tp-back{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:700;color:var(--text3);cursor:pointer;margin-bottom:18px;transition:all .13s}
+.tp-back:hover{border-color:var(--border2);color:var(--text);background:var(--bg3)}
+.tp-header{background:#1a1a18;border-radius:var(--r2);padding:24px 28px;display:flex;align-items:center;gap:20px;margin-bottom:20px;flex-wrap:wrap;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.tp-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.tp-header::after{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%);pointer-events:none}
+.tp-av{width:58px;height:58px;border-radius:13px;background:var(--li);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#1a1a18;flex-shrink:0;position:relative;z-index:1}
+.tp-meta{flex:1;min-width:140px;position:relative;z-index:1}
+.tp-name{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1}
+.tp-role{font-size:11px;color:rgba(255,255,255,.38);margin-top:4px;font-weight:600}
+.tp-kpis{display:flex;gap:0;flex-shrink:0;position:relative;z-index:1;flex-wrap:wrap;border-left:1px solid rgba(255,255,255,.08);margin-left:8px}
+.tp-kpi{text-align:center;padding:8px 20px;border-right:1px solid rgba(255,255,255,.08)}
+.tp-kpi-v{font-size:22px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
+.tp-kpi-l{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+.tp-cls-grid{display:flex;flex-direction:column;gap:10px}
+.tp-cls-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.tp-cls-card.open{border-color:rgba(139,197,63,.35)}
+.tp-cls-head{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .12s;background:var(--bg3)}
+.tp-cls-head:hover{background:var(--bg4)}
+.tp-cls-badge{width:46px;height:46px;border-radius:10px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:var(--li);flex-shrink:0;line-height:1}
+.tp-cls-info{flex:1;min-width:0}
+.tp-cls-name{font-size:14px;font-weight:800;color:var(--text)}
+.tp-cls-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.tp-cls-kpis{display:flex;gap:0;flex-shrink:0;border-left:1px solid var(--border)}
+.tp-cls-kpi{text-align:center;padding:4px 16px;border-right:1px solid var(--border);font-size:10px;color:var(--text3);line-height:1.7}
+.tp-cls-kpi span{display:block;font-size:17px;font-weight:800;color:var(--text);line-height:1.2}
+.tp-chevron{font-size:10px;color:var(--text3);transition:transform .18s var(--e1);flex-shrink:0;margin-left:4px}
+.tp-cls-card.open .tp-chevron{transform:rotate(90deg)}
+.tp-cls-body{display:none;border-top:1.5px solid var(--border)}
+.tp-cls-card.open .tp-cls-body{display:block;animation:fadeUp .2s var(--e1)}
+.tp-cls-body-hdr{display:grid;grid-template-columns:1fr 80px 80px 60px 80px 70px;gap:0;padding:6px 18px;background:var(--bg4);border-bottom:1px solid var(--border)}
+.tp-cls-body-hdr span{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);text-align:center}
+.tp-cls-body-hdr span:first-child{text-align:left}
+.tp-subj-row{display:grid;grid-template-columns:1fr 80px 80px 60px 80px 70px;gap:0;align-items:center;padding:11px 18px;border-bottom:1px solid var(--border);transition:background .1s}
+.tp-subj-row:last-child{border-bottom:none}
+.tp-subj-row:hover{background:rgba(139,197,63,.04)}
+.tp-subj-name{font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.tp-subj-cell{text-align:center;font-size:13px;font-weight:700;color:var(--text2)}
+.tp-subj-cell-sub{font-size:9px;font-weight:600;color:var(--text3);display:block;margin-top:1px}
+
 /* ── TEACHER LOAD ── */
 .tl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
 .tl-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .15s}
@@ -1199,6 +1242,7 @@ var WA_NUM      = '919539409586';
 /* ══ STATE ══ */
 var SESSIONS        = [];
 var ATTENDANCE      = [];
+var SEL_TEACHER     = null;
 var PHOTO_MAP       = {};
 var ATT_PCT         = {};
 var MASTER_CHAPTERS = {};
@@ -1362,6 +1406,7 @@ function setPeriod(p,btn){
 }
 
 function setView(v,btn){
+  if(v!=='teachers')SEL_TEACHER=null;
   CUR_VIEW=v;
   document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
@@ -2511,22 +2556,152 @@ function renderChapters(data){
 /* ══ TEACHERS ══ */
 function renderTeachers(data){
   var el=g('vTeachers');
-  var data=searchFilter(data);
+  data=searchFilter(data);
   if(!data.length){el.innerHTML=noDataMsg();return;}
+  if(SEL_TEACHER){renderTeacherProfile(data,el);return;}
+
   var map={};
-  data.forEach(function(r){if(!map[r.teacher_id])map[r.teacher_id]={name:r.teacher_name,sessions:0,mins:0,chapters:new Set(),classes:new Set(),subjects:new Set()};var t=map[r.teacher_id];t.sessions++;t.mins+=(+r.duration_mins||0);t.classes.add(r.class);t.subjects.add(r.subject);(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){t.chapters.add(c);});});
+  data.forEach(function(r){
+    if(!map[r.teacher_id])map[r.teacher_id]={name:r.teacher_name,sessions:0,mins:0,hw:0,days:new Set(),chapters:new Set(),classes:new Set(),subjects:new Set()};
+    var t=map[r.teacher_id];
+    t.sessions++;t.mins+=(+r.duration_mins||0);
+    if(r.homework&&r.homework.trim())t.hw++;
+    var d=sessDateToYMD(r.date);if(d)t.days.add(d);
+    t.classes.add(r.class);t.subjects.add(r.subject);
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){t.chapters.add(c);});
+  });
+
   el.innerHTML=
-    '<div class="sec-hdr"><div class="sec-title">Teacher Summary</div></div>'+
+    '<div class="sec-hdr"><div class="sec-title">Teacher Summary</div>'+
+    '<span style="font-size:11px;color:var(--text3)">Click any teacher to see full breakdown</span></div>'+
     '<div class="teacher-grid">'+
-    Object.keys(map).sort().map(function(tid){var t=map[tid];return '<div class="teacher-card">'+
-      '<div class="teacher-av">'+mn(t.name)+'</div>'+
-      '<div class="teacher-name">'+esc(t.name)+'</div>'+
-      '<div class="teacher-role">Classes: '+Array.from(t.classes).sort().join(', ')+' · '+Array.from(t.subjects).sort().slice(0,2).join(', ')+'</div>'+
-      '<div class="teacher-stats">'+
-        '<div><div class="tstat-v">'+t.sessions+'</div><div class="tstat-l">Sessions</div></div>'+
-        '<div><div class="tstat-v">'+hrsFmt(t.mins)+'</div><div class="tstat-l">Time</div></div>'+
-        '<div><div class="tstat-v">'+t.chapters.size+'</div><div class="tstat-l">Chapters</div></div>'+
-      '</div></div>';}).join('')+'</div>';
+    Object.keys(map).sort().map(function(tid){
+      var t=map[tid];
+      var hwRate=t.sessions?Math.round(t.hw/t.sessions*100):0;
+      var hwCol=hwRate>=70?'#16a34a':hwRate>=40?'var(--amber)':'var(--red)';
+      return '<div class="teacher-card tr-clickable" onclick="SEL_TEACHER=\''+tid+'\';renderAll()">'+
+        '<div class="teacher-av">'+mn(t.name)+'</div>'+
+        '<div class="teacher-name">'+esc(t.name)+'</div>'+
+        '<div class="teacher-role">Classes: '+Array.from(t.classes).sort().join(', ')+'</div>'+
+        '<div class="teacher-stats">'+
+          '<div><div class="tstat-v">'+t.sessions+'</div><div class="tstat-l">Sessions</div></div>'+
+          '<div><div class="tstat-v">'+hrsFmt(t.mins)+'</div><div class="tstat-l">Time</div></div>'+
+          '<div><div class="tstat-v">'+t.chapters.size+'</div><div class="tstat-l">Chapters</div></div>'+
+        '</div>'+
+        '<div class="tr-view-hint">'+
+          '<span style="font-size:11px;color:var(--text3)">HW rate: <b style="color:'+hwCol+'">'+hwRate+'%</b></span>'+
+          '<span style="font-size:11px;color:var(--text3)">'+t.days.size+' days active</span>'+
+          '<span style="font-size:11px;font-weight:800;color:var(--li)">View profile →</span>'+
+        '</div>'+
+      '</div>';
+    }).join('')+'</div>';
+}
+
+function renderTeacherProfile(data, el){
+  el=el||g('vTeachers');
+  var tSess=data.filter(function(r){return r.teacher_id===SEL_TEACHER;});
+  if(!tSess.length){SEL_TEACHER=null;renderTeachers(data);return;}
+
+  var tName=tSess[0].teacher_name||SEL_TEACHER;
+
+  // Build class → subject tree
+  var clsMap={};
+  tSess.forEach(function(r){
+    var ck=(r.class||'')+'|'+(r.board||'');
+    if(!clsMap[ck])clsMap[ck]={cls:r.class,board:r.board||'',sessions:0,mins:0,hw:0,days:new Set(),chapters:new Set(),subjects:{}};
+    var c=clsMap[ck];
+    c.sessions++;c.mins+=(+r.duration_mins||0);
+    if(r.homework&&r.homework.trim())c.hw++;
+    var d=sessDateToYMD(r.date);if(d)c.days.add(d);
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){c.chapters.add(ch);});
+    var sk=r.subject||'Unknown';
+    if(!c.subjects[sk])c.subjects[sk]={sessions:0,mins:0,hw:0,days:new Set(),chapters:new Set()};
+    var s=c.subjects[sk];
+    s.sessions++;s.mins+=(+r.duration_mins||0);
+    if(r.homework&&r.homework.trim())s.hw++;
+    if(d)s.days.add(d);
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){s.chapters.add(ch);});
+  });
+
+  // Overall KPIs
+  var totalMins=tSess.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var totalHw=tSess.filter(function(r){return r.homework&&r.homework.trim();}).length;
+  var totalDays=new Set(tSess.map(function(r){return sessDateToYMD(r.date);}).filter(Boolean));
+  var totalChaps=new Set();tSess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){totalChaps.add(c);});});
+  var hwRate=tSess.length?Math.round(totalHw/tSess.length*100):0;
+  var hwRateCol=hwRate>=70?'#4ade80':hwRate>=40?'#fbbf24':'#f87171';
+
+  var clsKeys=Object.keys(clsMap).sort(function(a,b){
+    var pa=a.split('|'),pb=b.split('|');
+    if(pa[0]!==pb[0])return +pa[0]-+pb[0];
+    return pa[1].localeCompare(pb[1]);
+  });
+
+  var classCards=clsKeys.map(function(ck,ci){
+    var c=clsMap[ck];
+    var clsLabel='Class '+c.cls+(c.board?' · '+c.board:'');
+    var cHwRate=c.sessions?Math.round(c.hw/c.sessions*100):0;
+    var cHwCol=cHwRate>=70?'#16a34a':cHwRate>=40?'var(--amber)':'var(--red)';
+
+    var subjRows=Object.keys(c.subjects).sort(function(a,b){
+      return c.subjects[b].sessions-c.subjects[a].sessions;
+    }).map(function(sk){
+      var s=c.subjects[sk];
+      var sHwRate=s.sessions?Math.round(s.hw/s.sessions*100):0;
+      var sHwCol=sHwRate>=70?'#16a34a':sHwRate>=40?'var(--amber)':'var(--red)';
+      return '<div class="tp-subj-row">'+
+        '<div class="tp-subj-name">'+subjPalette(sk).ic+' '+esc(sk)+'</div>'+
+        '<div class="tp-subj-cell">'+s.sessions+'<span class="tp-subj-cell-sub">sessions</span></div>'+
+        '<div class="tp-subj-cell">'+hrsFmt(s.mins)+'<span class="tp-subj-cell-sub">hours</span></div>'+
+        '<div class="tp-subj-cell">'+s.days.size+'<span class="tp-subj-cell-sub">days</span></div>'+
+        '<div class="tp-subj-cell">'+s.chapters.size+'<span class="tp-subj-cell-sub">chapters</span></div>'+
+        '<div class="tp-subj-cell"><span style="color:'+sHwCol+'">'+sHwRate+'%</span><span class="tp-subj-cell-sub">'+s.hw+' hw given</span></div>'+
+      '</div>';
+    }).join('');
+
+    return '<div class="tp-cls-card" id="tpcard-'+ci+'">'+
+      '<div class="tp-cls-head" onclick="document.getElementById(\'tpcard-'+ci+'\').classList.toggle(\'open\')">'+
+        '<div class="tp-cls-badge">'+esc(c.cls)+'</div>'+
+        '<div class="tp-cls-info">'+
+          '<div class="tp-cls-name">'+esc(clsLabel)+'</div>'+
+          '<div class="tp-cls-meta">'+c.sessions+' sessions · '+hrsFmt(c.mins)+' · '+c.days.size+' days covered</div>'+
+        '</div>'+
+        '<div class="tp-cls-kpis">'+
+          '<div class="tp-cls-kpi"><span>'+c.chapters.size+'</span>chapters</div>'+
+          '<div class="tp-cls-kpi"><span>'+c.hw+'</span>hw given</div>'+
+          '<div class="tp-cls-kpi"><span style="color:'+cHwCol+'">'+cHwRate+'%</span>hw rate</div>'+
+        '</div>'+
+        '<span class="tp-chevron">▶</span>'+
+      '</div>'+
+      '<div class="tp-cls-body">'+
+        '<div class="tp-cls-body-hdr">'+
+          '<span>Subject</span><span>Sessions</span><span>Hours</span><span>Days</span><span>Chapters</span><span>HW Rate</span>'+
+        '</div>'+
+        subjRows+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  el.innerHTML=
+    '<button class="tp-back" onclick="SEL_TEACHER=null;renderAll()">← All Teachers</button>'+
+    '<div class="tp-header">'+
+      '<div class="tp-av">'+mn(tName)+'</div>'+
+      '<div class="tp-meta">'+
+        '<div class="tp-name">'+esc(tName)+'</div>'+
+        '<div class="tp-role">SEHR Academy · Teacher Profile</div>'+
+      '</div>'+
+      '<div class="tp-kpis">'+
+        '<div class="tp-kpi"><div class="tp-kpi-v">'+tSess.length+'</div><div class="tp-kpi-l">Sessions</div></div>'+
+        '<div class="tp-kpi"><div class="tp-kpi-v">'+hrsFmt(totalMins)+'</div><div class="tp-kpi-l">Total Hours</div></div>'+
+        '<div class="tp-kpi"><div class="tp-kpi-v">'+totalDays.size+'</div><div class="tp-kpi-l">Days Active</div></div>'+
+        '<div class="tp-kpi"><div class="tp-kpi-v">'+totalChaps.size+'</div><div class="tp-kpi-l">Chapters</div></div>'+
+        '<div class="tp-kpi"><div class="tp-kpi-v">'+totalHw+'</div><div class="tp-kpi-l">HW Given</div></div>'+
+        '<div class="tp-kpi"><div class="tp-kpi-v" style="color:'+hwRateCol+'">'+hwRate+'%</div><div class="tp-kpi-l">HW Rate</div></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="sec-hdr" style="margin-bottom:12px"><div class="sec-title">Classes Covered</div>'+
+    '<span style="font-size:11px;color:var(--text3)">Click a class to see subject breakdown</span></div>'+
+    '<div class="tp-cls-grid">'+classCards+'</div>';
 }
 
 /* ══ PRINT DOC ══ */
