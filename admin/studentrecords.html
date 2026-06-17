@@ -699,11 +699,13 @@ g('loginForm').addEventListener('submit',function(ev){
         loaderOff();btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Access Records';
         g('loginErr').textContent='Incorrect password.';g('loginErr').className='lbox-err on';return;
       }
-      var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:[];
+      var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:Array.isArray(data.data)?data.data:[];
+      if(raw.length===0){console.warn('[StudentRecords] API returned 0 students. Raw response:',JSON.stringify(data));}
       S=raw.map(norm);PASS=pass;
       sessionStorage.setItem('sehr_admin_pass',pass);
       g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();
       init();
+      if(S.length===0){toast('⚠ API returned 0 students. Check Apps Script deployment.',true);}
     })
     .catch(function(){
       loaderOff();btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Access Records';
@@ -988,8 +990,9 @@ function loadStudents(cb){
   fetch(API+'?action=studentList&password='+encodeURIComponent(PASS))
     .then(function(r){return r.json();})
     .then(function(data){
-      var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:[];
+      var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:Array.isArray(data.data)?data.data:[];
       S=raw.map(norm);loaderOff();init();if(cb)cb();
+      if(S.length===0){toast('⚠ 0 students returned — open browser console (F12) for details.',true);}
     })
     .catch(function(){loaderOff();toast('Refresh failed.',true);});
 }
@@ -1020,8 +1023,9 @@ g('filterFee').addEventListener('change',function(){FFEE=this.value;render();});
       .then(function(r){return r.json();})
       .then(function(data){
         if(data&&data.error){loaderOff();sessionStorage.removeItem('sehr_admin_pass');return;}
-        var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:[];
+        var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:Array.isArray(data.data)?data.data:[];
         S=raw.map(norm);g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();init();
+        if(S.length===0){toast('⚠ API returned 0 students. Check Apps Script deployment.',true);}
       })
       .catch(function(){loaderOff();});
   }
