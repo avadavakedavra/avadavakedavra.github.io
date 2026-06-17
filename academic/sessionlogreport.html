@@ -1204,6 +1204,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div id="teacherLoadWrap" style="margin-top:4px"></div>
       <div id="substituteWrap" style="margin-top:20px"></div>
       <div id="heatmapWrap" style="margin-top:20px"></div>
+      <div id="waBatchWrap" style="margin-top:20px"></div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
@@ -1513,7 +1514,12 @@ function renderSubjectCards(data){
   if(!wrap)return;
 
   var wk=weekRangeForDate(CUR_DATE);
-  var WEEK_TARGET_MINS=60; // 1 hour per subject per week
+  // Per-subject weekly targets (mins). Default = 60 (1h). Maths = 120 (2h).
+  var SUBJ_WEEK_TARGETS={'mathematics':120,'math':120};
+  function weekTarget(subjName){
+    var k=Object.keys(SUBJ_WEEK_TARGETS).find(function(k){return subjName.toLowerCase().indexOf(k)>-1;});
+    return k?SUBJ_WEEK_TARGETS[k]:60;
+  }
 
   // Build subject map: key = "class|board|subject"
   var subjMap={};
@@ -1576,14 +1582,15 @@ function renderSubjectCards(data){
         'Update Syllabus</button>';
     }
 
-    // Weekly target bar
-    var wkPct=Math.min(100,Math.round(s.weekMins/WEEK_TARGET_MINS*100));
-    var wkMet=s.weekMins>=WEEK_TARGET_MINS;
+    // Weekly target bar (Maths = 2h, others = 1h)
+    var wkTarget=weekTarget(s.subj);
+    var wkPct=Math.min(100,Math.round(s.weekMins/wkTarget*100));
+    var wkMet=s.weekMins>=wkTarget;
     var wkColor=wkMet?'#16a34a':s.weekMins>0?'var(--amber)':'var(--red)';
     var weekBar=
       '<div class="sc-week-row">'+
         '<span class="sc-week-lbl">This week</span>'+
-        '<span class="sc-week-val" style="color:'+wkColor+'">'+hrsFmt(s.weekMins)+' / 1h'+(wkMet?' ✓':'')+'</span>'+
+        '<span class="sc-week-val" style="color:'+wkColor+'">'+hrsFmt(s.weekMins)+' / '+hrsFmt(wkTarget)+(wkMet?' ✓':'')+'</span>'+
       '</div>'+
       '<div class="sc-week-bar"><div class="sc-week-fill" style="width:'+wkPct+'%;background:'+wkColor+'"></div></div>';
 
@@ -1889,6 +1896,149 @@ function renderHeatmap(data){
     '</div>';
 }
 
+/* ══ WHATSAPP BATCH REPORT ══ */
+function generateBatchText(cls, board, wk){
+  // Sessions this week for this batch
+  var bSess=SESSIONS.filter(function(r){
+    var d=sessDateToYMD(r.date);
+    return r.class===cls&&(r.board||'')===board&&d>=wk.start&&d<=wk.end;
+  });
+  if(!bSess.length)return null;
+
+  // Chapters covered (unique)
+  var chapSet={};
+  bSess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
+  var chaps=Object.keys(chapSet);
+
+  // Homework sessions
+  var hwSess=bSess.filter(function(r){return r.homework&&r.homework.trim();});
+
+  // Unique subjects taught
+  var subjSet={};
+  bSess.forEach(function(r){if(r.subject)subjSet[r.subject]=true;});
+  var subjects=Object.keys(subjSet).sort();
+
+  // Total hours
+  var totalMins=bSess.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+
+  // Absences this week for this batch
+  var attRows=ATTENDANCE.filter(function(r){
+    var d=attDateToYMD(r.date);
+    return r.class===cls&&(board?r.syllabus===boardToSyl(board):true)&&d>=wk.start&&d<=wk.end;
+  });
+  var absentMap={};
+  attRows.forEach(function(r){
+    if(r.status!=='Present'){
+      var n=r.student_name||r.student_id||'Unknown';
+      absentMap[n]=(absentMap[n]||0)+1;
+    }
+  });
+  var absentList=Object.keys(absentMap).sort(function(a,b){return absentMap[b]-absentMap[a];});
+
+  var label='Class '+cls+(board?' ('+board+')':'');
+  var dateLabel=fmtShort(wk.start)+' – '+fmtShort(wk.end);
+
+  var lines=[];
+  lines.push('📚 *SEHR Academy — Weekly Update*');
+  lines.push('*'+label+' | '+dateLabel+'*');
+  lines.push('');
+  lines.push('🗓 Sessions this week: *'+bSess.length+'*  ('+hrsFmt(totalMins)+')');
+  lines.push('📖 Subjects: '+subjects.join(', '));
+  if(chaps.length){
+    lines.push('✅ Chapters covered: '+chaps.slice(0,5).join(', ')+(chaps.length>5?' + '+(chaps.length-5)+' more':''));
+  } else {
+    lines.push('✅ Chapters: Not tagged this week');
+  }
+  lines.push('📝 Homework given: *'+hwSess.length+' of '+bSess.length+' sessions*');
+  if(absentList.length){
+    var abParts=absentList.slice(0,5).map(function(n){return n+(absentMap[n]>1?' ('+absentMap[n]+'x)':'');});
+    lines.push('⚠️ Absent this week: '+abParts.join(', '));
+  } else if(attRows.length){
+    lines.push('✅ Attendance: Full attendance this week!');
+  }
+  lines.push('');
+  lines.push('Keep it up! 💪');
+  lines.push('— SEHR Academy');
+
+  return lines.join('\n');
+}
+
+function renderWABatchPanel(){
+  var wrap=g('waBatchWrap');
+  if(!wrap)return;
+  var wk=weekRangeForDate(CUR_DATE);
+
+  // Find all distinct class|board combos from all sessions this week OR all time
+  var batchSet={};
+  SESSIONS.forEach(function(r){
+    var d=sessDateToYMD(r.date);
+    if(d>=wk.start&&d<=wk.end){
+      var k=(r.class||'')+'|'+(r.board||'');
+      batchSet[k]={cls:r.class,board:r.board||''};
+    }
+  });
+  var batches=Object.values(batchSet).sort(function(a,b){
+    if(a.cls!==b.cls)return +a.cls-+b.cls;
+    return a.board.localeCompare(b.board);
+  });
+
+  if(!batches.length){wrap.innerHTML='';return;}
+
+  var cards=batches.map(function(b,i){
+    var label='Class '+b.cls+(b.board?' · '+b.board:'');
+    var cardId='wabatch-'+i;
+    return '<div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)">'+
+      '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg3);border-bottom:1.5px solid var(--border)">'+
+        '<div style="width:38px;height:38px;border-radius:8px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--li);flex-shrink:0">'+esc(b.cls)+'</div>'+
+        '<div style="flex:1;font-size:13px;font-weight:800;color:var(--text)">'+esc(label)+'</div>'+
+        '<button onclick="copyWABatch(\''+b.cls+'\',\''+esc(b.board)+'\',this)" '+
+          'style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;border:none;'+
+          'background:rgba(37,211,102,.12);color:#16a34a;font-family:var(--f);font-size:12px;font-weight:800;cursor:pointer;transition:all .14s;border:1.5px solid rgba(37,211,102,.25)">'+
+          '<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.1.546 4.073 1.5 5.785L0 24l6.388-1.673A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75A9.75 9.75 0 1121.75 12 9.76 9.76 0 0112 21.75z"/></svg>'+
+          'Copy Message'+
+        '</button>'+
+      '</div>'+
+      '<div id="'+cardId+'" style="display:none;padding:14px 16px;font-family:monospace;font-size:12px;line-height:1.7;color:var(--text2);white-space:pre-wrap;background:rgba(37,211,102,.03);border-bottom:1px solid var(--border)"></div>'+
+      '<div id="'+cardId+'-toast" style="display:none;padding:8px 16px;font-size:11px;font-weight:700;color:#16a34a;background:rgba(37,211,102,.08)">✓ Copied to clipboard!</div>'+
+    '</div>';
+  }).join('');
+
+  wrap.innerHTML=
+    '<div class="sec-hdr" style="margin-bottom:12px">'+
+      '<div class="sec-title">WhatsApp Batch Reports</div>'+
+      '<span style="font-size:11px;color:var(--text3)">Week of '+wk.start+'</span>'+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:10px">'+cards+'</div>';
+}
+
+function copyWABatch(cls, board, btn){
+  var wk=weekRangeForDate(CUR_DATE);
+  var text=generateBatchText(cls, board, wk);
+  if(!text){
+    btn.textContent='No sessions this week';
+    return;
+  }
+  // Find the preview div (sibling of btn's grandparent's next element)
+  var card=btn.closest('[style*="overflow:hidden"]')||btn.parentElement.parentElement;
+  var preview=card.querySelector('[id$="-toast"]')?card.querySelector('[id^="wabatch"]'):null;
+  // Show preview
+  var children=card.children;
+  if(children[1]){children[1].textContent=text;children[1].style.display='block';}
+  // Copy
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      if(children[2])children[2].style.display='block';
+      setTimeout(function(){if(children[2])children[2].style.display='none';},2500);
+    });
+  } else {
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');
+    document.body.removeChild(ta);
+    if(children[2]){children[2].style.display='block';setTimeout(function(){children[2].style.display='none';},2500);}
+  }
+}
+
 /* ══ OVERVIEW ══ */
 function renderOverview(data){
   var mins=data.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
@@ -1956,6 +2106,7 @@ function renderOverview(data){
   renderTeacherLoad(data);
   renderSubstituteAlerts(data);
   renderHeatmap(data);
+  renderWABatchPanel();
 
   g('overviewGrid').innerHTML=
     '<div>'+
