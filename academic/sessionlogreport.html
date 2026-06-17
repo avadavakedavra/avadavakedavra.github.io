@@ -1580,6 +1580,7 @@ function renderSubjectCards(data){
     ATTENDANCE.forEach(function(r){
       var d=attDateToYMD(r.date);
       if(!subjDateSet[d]||r.class!==s.cls)return;
+      if(s.board&&r.syllabus&&r.syllabus!==boardToSyl(s.board))return;
       var id=r.student_id||r.student_name||'?';
       if(!stuAbsMap[id])stuAbsMap[id]={name:r.student_name||id,present:0,absent:0};
       if(r.status==='Present')stuAbsMap[id].present++;else stuAbsMap[id].absent++;
