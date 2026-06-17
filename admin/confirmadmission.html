@@ -124,6 +124,34 @@ button,input,select{font-family:var(--f);cursor:pointer}
 .field-hint.show{display:block}
 .field-hint.err{color:var(--red)}
 
+/* ── Name search autocomplete ── */
+.search-wrap{position:relative}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--pale);pointer-events:none;display:flex}
+.search-icon svg{width:15px;height:15px}
+.finput-search{padding-left:38px!important}
+.search-spin{position:absolute;right:13px;top:50%;transform:translateY(-50%);display:none}
+.search-spin.active{display:block}
+.search-drop{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:var(--white);border:1.5px solid var(--lime);border-radius:8px;
+  box-shadow:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);
+  z-index:200;overflow:hidden;max-height:260px;overflow-y:auto;
+}
+.search-drop-empty{padding:14px 16px;font-size:13px;color:var(--pale);text-align:center}
+.sdrop-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;cursor:pointer;gap:10px;
+  border-bottom:1px solid var(--cream-2);transition:background .12s;
+}
+.sdrop-item:last-child{border-bottom:none}
+.sdrop-item:hover,.sdrop-item.focused{background:var(--lime-bg)}
+.sdrop-name{font-size:14px;font-weight:700;color:var(--ink);flex:1;line-height:1.2}
+.sdrop-name mark{background:transparent;color:var(--lime-3);font-weight:800}
+.sdrop-class{font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;
+  background:var(--cream-2);padding:3px 9px;border-radius:20px;border:1px solid var(--rule);display:inline-block}
+.search-divider{height:1px;background:var(--rule);margin:6px 0}
+.search-hint{padding:6px 14px 10px;font-size:11px;color:var(--pale);text-align:center}
+
 /* password toggle */
 .pw-wrap{position:relative}
 .pw-toggle{
@@ -516,7 +544,17 @@ button,input,select{font-family:var(--f);cursor:pointer}
         </div>
 
         <div class="fgroup">
-          <label class="flabel" for="inputId">Admission ID</label>
+          <label class="flabel" for="inputSearch">Search Student by Name</label>
+          <div class="search-wrap">
+            <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input type="text" id="inputSearch" class="finput finput-search" placeholder="Type a name…" autocomplete="off" spellcheck="false" />
+            <span class="search-spin" id="searchSpin"><svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity=".2"/><path d="M12 2a10 10 0 0 1 10 10" stroke="var(--lime)"/></svg></span>
+            <div class="search-drop hidden" id="searchDrop" role="listbox"></div>
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel" for="inputId">Admission ID <em>— or select above</em></label>
           <input type="text" id="inputId" class="finput" placeholder="e.g. fidha" autocomplete="username" spellcheck="false" />
           <div class="field-hint err" id="hintId">Please enter your admission ID</div>
         </div>
@@ -1150,6 +1188,121 @@ function maskAadhaar(a){
   const s=String(a).replace(/\s/g,'');
   return s.length>=4?'XXXX-XXXX-'+s.slice(-4):s;
 }
+
+/* ══════════════════════════
+   NAME SEARCH AUTOCOMPLETE
+══════════════════════════ */
+(function(){
+  const searchInp = $('inputSearch');
+  const drop      = $('searchDrop');
+  const spin      = $('searchSpin');
+  let debTimer    = null;
+  let focusIdx    = -1;
+  let results     = [];
+
+  function highlight(text, query){
+    if(!query) return text;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if(idx<0) return text;
+    return text.slice(0,idx)+'<mark>'+text.slice(idx,idx+query.length)+'</mark>'+text.slice(idx+query.length);
+  }
+
+  function renderDrop(items, query){
+    focusIdx = -1;
+    results  = items;
+    if(!items.length){
+      drop.innerHTML = `<div class="search-drop-empty">No students found for "${query}"</div>`;
+    } else {
+      drop.innerHTML = items.map((s,i)=>`
+        <div class="sdrop-item" role="option" data-idx="${i}" tabindex="-1">
+          <span class="sdrop-name">${highlight(s.name||s.full_name||'—', query)}</span>
+          <span class="sdrop-class">${s.class ? 'Class '+s.class : s.batch||'—'}</span>
+        </div>`).join('')
+        + `<div class="search-hint">↑↓ to navigate · Enter to select</div>`;
+      drop.querySelectorAll('.sdrop-item').forEach(el=>{
+        el.addEventListener('mousedown', e=>{
+          e.preventDefault();
+          selectStudent(parseInt(el.dataset.idx));
+        });
+      });
+    }
+    drop.classList.remove('hidden');
+  }
+
+  function selectStudent(idx){
+    const s = results[idx];
+    if(!s) return;
+    $('inputId').value = s.id || s.admission_no || '';
+    searchInp.value   = s.name || s.full_name || '';
+    closeDrop();
+    $('inputId').focus();
+    showToast('Selected: '+(s.name||s.full_name));
+  }
+
+  function closeDrop(){
+    drop.classList.add('hidden');
+    drop.innerHTML='';
+    focusIdx=-1;
+    results=[];
+  }
+
+  async function doSearch(q){
+    spin.classList.add('active');
+    try{
+      const res = await Promise.race([
+        fetch(API,{method:'POST',body:JSON.stringify({action:'searchStudents',query:q})}),
+        new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),8000))
+      ]);
+      const data = await res.json();
+      if(data.students && Array.isArray(data.students)){
+        renderDrop(data.students, q);
+      } else if(data.results && Array.isArray(data.results)){
+        renderDrop(data.results, q);
+      } else {
+        renderDrop([], q);
+      }
+    }catch(e){
+      drop.innerHTML=`<div class="search-drop-empty">Search unavailable</div>`;
+      drop.classList.remove('hidden');
+    }finally{
+      spin.classList.remove('active');
+    }
+  }
+
+  searchInp.addEventListener('input', ()=>{
+    const q = searchInp.value.trim();
+    clearTimeout(debTimer);
+    if(!q){ closeDrop(); return; }
+    debTimer = setTimeout(()=>doSearch(q), 280);
+  });
+
+  searchInp.addEventListener('keydown', e=>{
+    const items = drop.querySelectorAll('.sdrop-item');
+    if(!items.length) return;
+    if(e.key==='ArrowDown'){
+      e.preventDefault();
+      if(focusIdx>-1) items[focusIdx].classList.remove('focused');
+      focusIdx = Math.min(focusIdx+1, items.length-1);
+      items[focusIdx].classList.add('focused');
+      items[focusIdx].scrollIntoView({block:'nearest'});
+    } else if(e.key==='ArrowUp'){
+      e.preventDefault();
+      if(focusIdx>-1) items[focusIdx].classList.remove('focused');
+      focusIdx = Math.max(focusIdx-1, 0);
+      items[focusIdx].classList.add('focused');
+      items[focusIdx].scrollIntoView({block:'nearest'});
+    } else if(e.key==='Enter' && focusIdx>-1){
+      e.preventDefault();
+      selectStudent(focusIdx);
+    } else if(e.key==='Escape'){
+      closeDrop();
+    }
+  });
+
+  document.addEventListener('click', e=>{
+    if(!e.target.closest('.search-wrap')) closeDrop();
+  });
+})();
 </script>
 </body>
 </html>
