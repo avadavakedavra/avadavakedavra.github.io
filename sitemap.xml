@@ -4,137 +4,148 @@
   <!-- ── HOME ── -->
   <url>
     <loc>https://sehracademy.com/</loc>
-    <lastmod>2026-06-16</lastmod>
+    <lastmod>2026-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- ── ABOUT ── -->
   <url>
-    <loc>https://sehracademy.com/public/about</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/about</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- ── CLASS PAGES ── -->
   <url>
-    <loc>https://sehracademy.com/classes/class9</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/class9</loc>
+    <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/classes/class10</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/class10</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/classes/class10cbse</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/class10cbse</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/classes/class11</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/class11</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/classes/class12</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/class12</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- ── PROGRAMMES ── -->
   <url>
-    <loc>https://sehracademy.com/public/onetooneclasses</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/onetooneclasses</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/public/liveclasses</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/liveclasses</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- ── FEES ── -->
   <url>
-    <loc>https://sehracademy.com/public/tuitionfees</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/tuitionfees</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/public/sessionpricing</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/sessionpricing</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- ── RESOURCES ── -->
   <url>
-    <loc>https://sehracademy.com/academic/syllabus</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/syllabus</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/public/academiccalendar</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/academiccalendar</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/student/studyplan</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/studyplan</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/public/downloads</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/downloads</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- ── ENQUIRY ── -->
   <url>
-    <loc>https://sehracademy.com/public/enquirenow</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/enquirenow</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- ── INFO ── -->
   <url>
-    <loc>https://sehracademy.com/public/faq</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/faq</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/public/blog</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/blog</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sehracademy.com/public/careers</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/careers</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- ── STUDENT PORTAL ── -->
   <url>
-    <loc>https://sehracademy.com/student/studentlogin</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://sehracademy.com/studentlogin</loc>
+    <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
