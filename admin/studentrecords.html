@@ -211,6 +211,20 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 .photo-preview img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--rule)}
 .fsec-title{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-2);padding:12px 0 6px;border-bottom:1px solid var(--rule);margin-bottom:16px}
 
+/* QUICK PAY PANEL */
+.qp-panel{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:16px 18px;margin-bottom:18px;box-shadow:var(--sh-sm)}
+.qp-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.qp-sel-wrap{position:relative}
+.qp-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--white);border:1px solid var(--rule);border-radius:7px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:220px;overflow-y:auto;display:none}
+.qp-dropdown.open{display:block}
+.qp-opt{padding:9px 12px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--rule);color:var(--ink);transition:background .1s}
+.qp-opt:last-child{border-bottom:none}
+.qp-opt:hover,.qp-opt.sel{background:rgba(139,197,63,.08);color:var(--ink)}
+.qp-opt-name{font-weight:700}
+.qp-opt-meta{font-size:11px;color:var(--muted);margin-top:1px}
+.qp-info{padding:8px 12px;background:rgba(139,197,63,.07);border:1px solid rgba(139,197,63,.2);border-radius:6px;font-size:12px;color:var(--ink);margin-top:8px}
+.qp-info.hidden{display:none}
+
 /* PAYMENTS MODAL */
 #pmOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
 #pmOverlay.on{display:flex}
@@ -341,6 +355,48 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
     <div class="stat-card"><div class="stat-card-accent" style="background:var(--red)"></div><div class="stat-card-lbl">Fee Overdue</div><div class="stat-card-val v-red" id="statOverdue">—</div><div class="stat-card-sub">requires follow-up</div></div>
     <div class="stat-card"><div class="stat-card-accent" style="background:var(--lime)"></div><div class="stat-card-lbl">Total Collected</div><div class="stat-card-val v-grn" id="statCollected">—</div><div class="stat-card-sub">from active students</div></div>
     <div class="stat-card"><div class="stat-card-accent" style="background:var(--blue)"></div><div class="stat-card-lbl">Covered (Earned)</div><div class="stat-card-val v-blu" id="statCovered">—</div><div class="stat-card-sub" id="statCoveredSub">classes delivered</div></div>
+  </div>
+
+  <!-- Quick Add Payment -->
+  <div class="sec"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Record Payment</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="qp-panel" id="qpPanel">
+    <div class="qp-row">
+      <div class="fgroup" style="flex:2;min-width:160px">
+        <div class="flabel">Student</div>
+        <div class="qp-sel-wrap">
+          <input type="text" class="finput" id="qp_search" placeholder="Type name to search…" autocomplete="off" oninput="qpFilter()" onfocus="qpFilter()">
+          <div class="qp-dropdown" id="qpDropdown"></div>
+        </div>
+        <input type="hidden" id="qp_student_id">
+      </div>
+      <div class="fgroup" style="flex:1;min-width:100px">
+        <div class="flabel">Amount (₹)</div>
+        <input type="number" class="finput" id="qp_amount" placeholder="0" min="0">
+      </div>
+      <div class="fgroup" style="flex:1;min-width:100px">
+        <div class="flabel">Date</div>
+        <input type="date" class="finput" id="qp_date">
+      </div>
+      <div class="fgroup" style="flex:1;min-width:100px">
+        <div class="flabel">Mode</div>
+        <select class="finput" id="qp_mode">
+          <option value="Cash">Cash</option>
+          <option value="UPI">UPI</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+      </div>
+      <div class="fgroup" style="flex:1.5;min-width:120px">
+        <div class="flabel">Remarks</div>
+        <input type="text" class="finput" id="qp_remarks" placeholder="Optional note">
+      </div>
+      <div class="fgroup" style="flex:0;align-self:flex-end">
+        <button class="abt lime" id="qpSubmit" onclick="quickPaySubmit()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+          Record
+        </button>
+      </div>
+    </div>
+    <div id="qpSelectedInfo" class="qp-info hidden"></div>
   </div>
 
   <!-- Filter Bar + Table -->
@@ -1023,6 +1079,72 @@ function loadStudents(cb){
     })
     .catch(function(){loaderOff();toast('Refresh failed.',true);});
 }
+
+/* ── Quick Pay ── */
+var QP_STUDENT=null;
+function qpFilter(){
+  var q=g('qp_search').value.toLowerCase().trim();
+  var dd=g('qpDropdown');
+  if(!q){dd.classList.remove('open');return;}
+  var matches=S.filter(function(s){
+    return s.full_name.toLowerCase().indexOf(q)>-1||s.admission_no.toLowerCase().indexOf(q)>-1;
+  }).slice(0,8);
+  if(!matches.length){dd.innerHTML='<div class="qp-opt" style="color:var(--muted);font-style:italic">No students found</div>';dd.classList.add('open');return;}
+  dd.innerHTML=matches.map(function(s){
+    return '<div class="qp-opt" onclick="qpSelect(\''+s.id+'\')">'+
+      '<div class="qp-opt-name">'+esc(s.full_name)+'</div>'+
+      '<div class="qp-opt-meta">Class '+esc(s.class)+' · '+esc(s.syllabus)+''+
+        (s.status==='OVERDUE'?' · <span style="color:var(--red)">OVERDUE</span>':'')+
+      '</div></div>';
+  }).join('');
+  dd.classList.add('open');
+}
+function qpSelect(id){
+  var s=S.find(function(x){return x.id===id;});if(!s)return;
+  QP_STUDENT=s;
+  g('qp_search').value=s.full_name;
+  g('qp_student_id').value=s.id;
+  g('qpDropdown').classList.remove('open');
+  var info=g('qpSelectedInfo');
+  info.innerHTML='<strong>'+esc(s.full_name)+'</strong> · Class '+esc(s.class)+' '+esc(s.syllabus)+
+    ' · Paid: ₹'+fmtN(s.total_paid)+' · Balance: ₹'+fmtN(s.balance)+
+    (s.status==='OVERDUE'?' · <span style="color:var(--red);font-weight:700">OVERDUE</span>':'');
+  info.classList.remove('hidden');
+}
+function quickPaySubmit(){
+  if(!QP_STUDENT){toast('Select a student first.',true);return;}
+  var amt=parseFloat(g('qp_amount').value);
+  if(!amt||amt<=0){toast('Enter a valid amount.',true);return;}
+  var btn=g('qpSubmit');btn.disabled=true;btn.textContent='Recording…';
+  apiPost({
+    action:'addPayment',
+    payment:{
+      id:QP_STUDENT.id,
+      payment_date:g('qp_date').value,
+      amount_paid:amt,
+      mode:g('qp_mode').value,
+      remarks:g('qp_remarks').value.trim()
+    }
+  }).then(function(data){
+    btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Record';
+    if(data&&data.success){
+      toast('✅ Payment of ₹'+fmtN(amt)+' recorded for '+QP_STUDENT.full_name+'.');
+      g('qp_amount').value='';g('qp_remarks').value='';
+      QP_STUDENT=null;g('qp_search').value='';g('qp_student_id').value='';
+      g('qpSelectedInfo').classList.add('hidden');
+      loadStudents(function(){});
+    } else {toast(data&&data.message?data.message:'Failed to record payment.',true);}
+  }).catch(function(){
+    btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Record';
+    toast('Connection error.',true);
+  });
+}
+// Close quick-pay dropdown when clicking outside
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.qp-sel-wrap'))g('qpDropdown').classList.remove('open');
+});
+// Set today's date on quick-pay
+(function(){var today=new Date().toISOString().slice(0,10);if(g('qp_date'))g('qp_date').value=today;})();
 
 /* ── Wire listeners ── */
 g('btnAdd').addEventListener('click',openAdd);
