@@ -746,6 +746,7 @@ async function doLogin() {
         LOCAL_DATA = localJson;
         DATA = buildDataFromLocal(localJson, sid);
         currentTab = 'overview';
+        await fetchLiveData(sid);
         renderDashboard();
         return;
       } else if (storedHash) {
@@ -766,6 +767,7 @@ async function doLogin() {
     if (d.success) {
       DATA = d; LOCAL_DATA = null;
       currentTab = 'overview';
+      await fetchLiveData(sid);
       renderDashboard();
     } else {
       showErr(d.message || 'Login failed. Check your credentials.');
@@ -853,6 +855,68 @@ function buildDataFromLocal(json, sid) {
 }
 
 /* ═══════════════════════
+   LIVE DATA FETCH
+   Runs after login to pull real attendance
+   and homework records from the API.
+═══════════════════════ */
+async function fetchLiveData(studentId) {
+  if (!studentId) return;
+  try {
+    const [attRes, hwRes] = await Promise.all([
+      fetch(`${API_URL}?action=getAttendance`),
+      fetch(`${API_URL}?action=getHomeworkTracking`)
+    ]);
+    const attData = await attRes.json().catch(() => ({}));
+    const hwData  = await hwRes.json().catch(() => ({}));
+
+    if (attData.success && Array.isArray(attData.records)) {
+      DATA.attendance = processAttendance(attData.records, studentId);
+    }
+    if (hwData.success && Array.isArray(hwData.records)) {
+      // Filter to this student's homework
+      const sid = String(studentId).trim().toLowerCase();
+      DATA.homework_records = hwData.records.filter(r =>
+        String(r.student_id || '').trim().toLowerCase() === sid ||
+        String(r.student_name || '').trim().toLowerCase().includes(sid)
+      );
+    }
+  } catch (_) { /* silent fail — portal still works without live data */ }
+}
+
+function processAttendance(records, studentId) {
+  const sid = String(studentId).trim().toLowerCase();
+  const mine = records.filter(r =>
+    String(r.student_id || '').trim().toLowerCase() === sid
+  );
+
+  const total    = mine.length;
+  const attended = mine.filter(r => (r.status || '').trim() === 'Present').length;
+  const absent   = total - attended;
+  const pct      = total ? Math.round((attended / total) * 100) : 0;
+
+  // Monthly breakdown
+  const monthMap = {};
+  mine.forEach(r => {
+    const raw = r.date || '';
+    const d   = new Date(raw);
+    const key = isNaN(d.getTime()) ? (raw.slice(0,7) || 'Unknown') :
+                d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+    if (!monthMap[key]) monthMap[key] = { month: key, attended_classes: 0, total_classes: 0, _ts: d.getTime() || 0 };
+    monthMap[key].total_classes++;
+    if ((r.status || '').trim() === 'Present') monthMap[key].attended_classes++;
+  });
+  const monthly = Object.values(monthMap).sort((a, b) => a._ts - b._ts);
+
+  // Session-level records, newest first
+  const sessions = [...mine].sort((a, b) => {
+    const da = new Date(a.date || ''), db = new Date(b.date || '');
+    return db - da;
+  });
+
+  return { percentage: pct, attended, absent, total_classes: total, monthly, sessions };
+}
+
+/* ═══════════════════════
    DASHBOARD
 ═══════════════════════ */
 function renderDashboard() {
@@ -926,7 +990,8 @@ function renderDashboard() {
     { id: 'attendance', label: 'Attendance', icon: I.cal },
     { id: 'fees', label: 'Fees', icon: I.rupee },
     { id: 'syllabus', label: 'Syllabus', icon: I.book },
-    { id: 'assignments', label: 'Assignments', icon: I.clipboard },
+    { id: 'homework', label: 'Homework', icon: I.clipboard },
+    { id: 'assignments', label: 'Assignments', icon: I.book },
     { id: 'remarks', label: 'Remarks', icon: I.msg },
     { id: 'achievements', label: 'Achievements', icon: I.star },
   ];
@@ -951,6 +1016,7 @@ function renderDashboard() {
     attendance: renderAttendance,
     fees: renderFees,
     syllabus: renderSyllabus,
+    homework: renderHomework,
     assignments: renderAssignments,
     remarks: renderRemarks,
     achievements: renderAchievements,
@@ -1198,6 +1264,45 @@ function renderAttendance(container) {
     });
     container.appendChild(mCard);
   }
+
+  // Session-level log
+  if (a.sessions && a.sessions.length) {
+    const sCard = el('div', { className: 'card reveal' });
+    sCard.innerHTML = sectionHead('Session Log', `${a.sessions.length} sessions`);
+    const tbl = el('div', { style: 'overflow-x:auto' });
+    tbl.innerHTML = `
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead>
+          <tr style="background:var(--cream-2)">
+            <th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--cream-3)">Date</th>
+            <th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--cream-3)">Class</th>
+            <th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--cream-3)">Syllabus / Subject</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--cream-3)">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${a.sessions.map((s, i) => {
+            const present = (s.status || '').trim() === 'Present';
+            const rowBg = i % 2 === 0 ? 'var(--white)' : 'var(--cream-2)';
+            const dateStr = (() => {
+              const d = new Date(s.date || '');
+              return isNaN(d.getTime()) ? (s.date || '—') :
+                d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+            })();
+            return `<tr style="background:${rowBg}">
+              <td style="padding:9px 12px;color:var(--ink-2);border-bottom:1px solid var(--cream-3)">${dateStr}</td>
+              <td style="padding:9px 12px;font-weight:600;color:var(--ink);border-bottom:1px solid var(--cream-3)">${s.class || '—'}</td>
+              <td style="padding:9px 12px;color:var(--muted);border-bottom:1px solid var(--cream-3)">${s.syllabus || '—'}</td>
+              <td style="padding:9px 12px;text-align:center;border-bottom:1px solid var(--cream-3)">
+                <span class="chip ${present ? 'chip-lime' : 'chip-red'}">${present ? '✓ Present' : '✗ Absent'}</span>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+    sCard.appendChild(tbl);
+    container.appendChild(sCard);
+  }
 }
 
 /* ═══════════════════════
@@ -1369,6 +1474,105 @@ function renderAssignments(container) {
         <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
           ${asgn.tags.map(tag => `<span class="chip chip-muted">#${tag}</span>`).join('')}
         </div>` : ''}`;
+    container.appendChild(card);
+  });
+}
+
+/* ═══════════════════════
+   HOMEWORK TAB
+   Pulls live data from HomeworkTracking
+   sheet via getHomeworkTracking API.
+═══════════════════════ */
+function renderHomework(container) {
+  const records = DATA.homework_records || [];
+
+  if (!records.length) {
+    container.innerHTML = emptyState(I.clipboard,
+      DATA.homework_records === undefined
+        ? 'Homework data is loading. Please try again shortly.'
+        : 'No homework records found for your account.');
+    return;
+  }
+
+  // Summary stats
+  const subjects = [...new Set(records.map(r => r.subject || 'General'))];
+  const row = el('div', { className: 'card-grid-3 reveal' });
+  [
+    { label: 'Total Assigned', value: records.length, icon: I.clipboard, bg: 'var(--cream-2)', color: 'var(--ink)' },
+    { label: 'Subjects', value: subjects.length, icon: I.book, bg: 'var(--lime-bg)', color: 'var(--lime-3)' },
+    { label: 'Latest', value: (() => {
+        const sorted = [...records].sort((a,b) => new Date(b.hw_date||b.marked_date||'') - new Date(a.hw_date||a.marked_date||''));
+        const d = new Date(sorted[0]?.hw_date || sorted[0]?.marked_date || '');
+        return isNaN(d.getTime()) ? '—' : d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      })(), icon: I.cal, bg: 'rgba(37,99,235,.07)', color: 'var(--blue)' },
+  ].forEach(m => {
+    const c = el('div', { className: 'metric-card' });
+    c.innerHTML = `<div class="metric-icon-wrap" style="background:${m.bg}"><span style="color:${m.color}">${m.icon}</span></div>
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-value" style="color:${m.color}">${m.value}</div>`;
+    row.appendChild(c);
+  });
+  container.appendChild(row);
+
+  // Group by subject
+  const bySubject = {};
+  records.forEach(r => {
+    const subj = r.subject || 'General';
+    if (!bySubject[subj]) bySubject[subj] = [];
+    bySubject[subj].push(r);
+  });
+
+  const SUBJ_COLORS = [
+    { bg: 'var(--lime-bg)', border: 'rgba(139,197,63,.25)', label: 'var(--lime-3)', chip: 'chip-lime' },
+    { bg: 'var(--blb, #eff6ff)', border: 'rgba(37,99,235,.18)', label: 'var(--blue)', chip: 'chip-blue' },
+    { bg: 'rgba(217,119,6,.07)', border: 'rgba(217,119,6,.2)', label: 'var(--amb)', chip: 'chip-amb' },
+    { bg: 'rgba(124,58,237,.06)', border: 'rgba(124,58,237,.18)', label: '#6d28d9', chip: 'chip-muted' },
+    { bg: 'rgba(220,38,38,.05)', border: 'rgba(220,38,38,.18)', label: 'var(--red)', chip: 'chip-red' },
+  ];
+  let colorIdx = 0;
+
+  Object.entries(bySubject).forEach(([subj, items]) => {
+    const col = SUBJ_COLORS[colorIdx % SUBJ_COLORS.length];
+    colorIdx++;
+    const sorted = [...items].sort((a, b) =>
+      new Date(b.hw_date || b.marked_date || '') - new Date(a.hw_date || a.marked_date || ''));
+
+    const card = el('div', { className: 'card reveal' });
+    card.style.cssText = `border-top:3px solid ${col.label};`;
+
+    card.innerHTML = sectionHead(subj, `${items.length} assignment${items.length > 1 ? 's' : ''}`);
+
+    sorted.forEach(r => {
+      const hwDate = (() => {
+        const d = new Date(r.hw_date || '');
+        return isNaN(d.getTime()) ? (r.hw_date || '') :
+          d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      })();
+      const markedDate = (() => {
+        const d = new Date(r.marked_date || '');
+        return isNaN(d.getTime()) ? '' :
+          d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      })();
+
+      const row2 = el('div', {
+        style: `padding:12px 0;border-bottom:1px solid var(--cream-3);display:flex;flex-direction:column;gap:6px`
+      });
+      row2.innerHTML = `
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div style="font-size:14px;font-weight:700;color:var(--ink);line-height:1.4;flex:1">${r.homework || '(No description)'}</div>
+          ${hwDate ? `<span class="chip chip-muted" style="flex-shrink:0">${hwDate}</span>` : ''}
+        </div>
+        ${r.chapters ? `<div style="font-size:12px;color:var(--muted)"><strong style="color:var(--ink-2)">Chapters:</strong> ${r.chapters}</div>` : ''}
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          ${r.teacher ? `<span class="chip chip-muted">👤 ${r.teacher}</span>` : ''}
+          ${r.syllabus ? `<span class="chip chip-blue">${r.syllabus}</span>` : ''}
+          ${markedDate ? `<span class="chip chip-lime" style="font-size:10px">Marked ${markedDate}</span>` : ''}
+        </div>`;
+      card.appendChild(row2);
+    });
+
+    // remove border from last item
+    card.lastElementChild && card.lastElementChild.style && (card.lastElementChild.style.borderBottom = 'none');
     container.appendChild(card);
   });
 }
