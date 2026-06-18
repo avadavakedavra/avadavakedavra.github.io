@@ -3004,136 +3004,105 @@ function renderHomework(){
   var el=g('vHomework');
   el.innerHTML='<div class="loading-overlay"><div class="loading-ring"></div><div class="loading-txt">Loading homework records…</div></div>';
 
-  // Load from HomeworkTracking sheet + session log homework assignments
   var fc=parseCurCls();
   var p={action:'getHomeworkTracking',appkey:SESS_PASS};
   if(fc.cls) p.class=fc.cls;
 
-  // Run both in parallel: get tracking records + session homework list
-  var trackDone=false, sessDone=false;
-  var TRACK_RECS=[], SESS_HW=[];
-
-  function tryRender(){
-    if(!trackDone||!sessDone) return;
-    buildHWReport(el, TRACK_RECS, SESS_HW, fc);
-  }
-
   apiSess(p, function(data,err){
-    if(!err&&data&&data.success) TRACK_RECS=data.records||[];
-    trackDone=true; tryRender();
-  });
-
-  // Also get all session homework for the full assignment list
-  var sp={action:'getAllLogs',appkey:SESS_PASS};
-  apiSess(sp, function(data,err){
-    if(!err&&data&&data.success){
-      SESS_HW=(data.logs||[]).filter(function(r){
-        return r.homework&&r.homework.trim();
-      });
-      if(fc.cls)   SESS_HW=SESS_HW.filter(function(r){return r.class===fc.cls;});
-      if(fc.board) SESS_HW=SESS_HW.filter(function(r){return r.board===fc.board;});
-    }
-    sessDone=true; tryRender();
+    var recs=(!err&&data&&data.success)?(data.records||[]):[];
+    buildHWReport(el, recs, fc);
   });
 }
 
-function buildHWReport(el, tracks, sessHw, fc){
-  // Build a key for each unique homework assignment from session logs
-  // Key: class|board|subject|hw_date
-  var assignMap={};
-  sessHw.forEach(function(r){
-    var date=sessDateToYMD(r.date);
-    var key=r.class+'|'+r.board+'|'+r.subject+'|'+date;
-    if(!assignMap[key]) assignMap[key]={
-      key:key,class:r.class,board:r.board,stream:r.stream||'',
-      subject:r.subject,teacher:r.teacher_name,
-      hw_date:date,homework:r.homework,
-      chapters:(r.chapters||'').split(' | ').filter(Boolean)
-    };
-  });
+function buildHWReport(el, tracks, fc){
+  // Filter by current class/board selection
+  if(fc.cls) tracks=tracks.filter(function(r){return String(r.class)===String(fc.cls);});
+  if(fc.board) tracks=tracks.filter(function(r){return (r.syllabus==='STATE'?'Kerala State':r.syllabus)===fc.board;});
 
-  // Group tracking records by hw_date+class+subject
-  var trackMap={};
+  // Group tracking records by class|syllabus|subject|hw_date
+  var groupMap={};
   tracks.forEach(function(r){
-    var k=r.class+'|'+(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'|'+r.subject+'|'+r.hw_date;
-    if(!trackMap[k]) trackMap[k]=[];
-    trackMap[k].push(r);
+    var boardLabel=r.syllabus==='STATE'?'Kerala State':r.syllabus;
+    var k=r.class+'|'+r.syllabus+'|'+r.subject+'|'+r.hw_date;
+    if(!groupMap[k]) groupMap[k]={
+      key:k, class:r.class, syllabus:r.syllabus, board:boardLabel,
+      subject:r.subject, teacher:r.teacher||r.teacher_name||'',
+      hw_date:r.hw_date, marked_date:r.marked_date||'',
+      homework:r.homework||'', chapters:r.chapters||'',
+      received:[]
+    };
+    groupMap[k].received.push(r);
   });
 
-  var assignments=Object.values(assignMap).sort(function(a,b){
+  // For each group, find absent students from ATTENDANCE on hw_date
+  var assignments=Object.values(groupMap).sort(function(a,b){
     return b.hw_date.localeCompare(a.hw_date);
   });
 
+  assignments.forEach(function(a){
+    a.absent=ATTENDANCE.filter(function(r){
+      return attDateToYMD(r.date)===a.hw_date &&
+             String(r.class)===String(a.class) &&
+             r.syllabus===a.syllabus &&
+             r.status==='Absent';
+    });
+  });
+
   if(!assignments.length){
-    el.innerHTML=noDataMsg();
+    el.innerHTML='<div class="page-pad">'+noDataMsg()+'</div>';
     return;
   }
 
-  // Summary strip
   var totalAssign=assignments.length;
-  var totalTracked=Object.keys(trackMap).length;
-  var totalNd=tracks.length;
+  var totalReceived=tracks.length;
+  var totalAbsent=assignments.reduce(function(s,a){return s+a.absent.length;},0);
   var classSet=new Set(assignments.map(function(a){return a.class;}));
 
   var html=
     '<div class="hw-summary-strip" style="margin-bottom:16px">'+
     hwSumCard('📋',totalAssign,'Assignments','rgba(139,197,63,.1)')+
-    hwSumCard('✅',totalTracked,'Marked','rgba(79,142,247,.1)')+
-    hwSumCard('❌',totalNd,'Not Submitted','rgba(220,38,38,.08)')+
+    hwSumCard('✅',totalReceived,'Received Homework','rgba(79,142,247,.1)')+
+    hwSumCard('⚠️',totalAbsent,'Missed (Absent)','rgba(220,38,38,.08)')+
     hwSumCard('🎓',classSet.size,'Classes','rgba(167,139,250,.1)')+
     '</div>';
 
-  // View tabs: All / Not Submitted / Submitted
   html+='<div class="hwr-tabs">'+
     '<button class="hwr-tab on" onclick="setHWTab(\"all\",this)">All Assignments</button>'+
-    '<button class="hwr-tab" onclick="setHWTab(\"nd\",this)">Not Submitted</button>'+
-    '<button class="hwr-tab" onclick="setHWTab(\"done\",this)">Submitted</button>'+
+    '<button class="hwr-tab" onclick="setHWTab(\"missed\",this)">Missed Homework</button>'+
     '</div>';
 
   html+='<div id="hwTabContent">';
-  html+=buildHWTabContent(assignments, trackMap, 'all');
+  html+=buildHWTabContent(assignments, 'all');
   html+='</div>';
 
   el.innerHTML=html;
-  // Store for tab switching
   el._assignments=assignments;
-  el._trackMap=trackMap;
 }
 
-function buildHWTabContent(assignments, trackMap, tab){
-  window._hwGroupData={}; // reset global data map
+function buildHWTabContent(assignments, tab){
+  window._hwGroupData={};
   var html='';
-  assignments.forEach(function(a,gi){
-    var trackRecs=trackMap[a.key]||[];
-    var ndRecs=trackRecs; // all records in tracking are "not done"
+  assignments.forEach(function(a){
+    if(tab==='missed'&&!a.absent.length) return;
+
     var ic=SUBJ_ICONS[a.subject]||'📝';
     var today=new Date();
     var daysAgo=Math.floor((today-new Date(a.hw_date))/86400000);
     var dateLabel=daysAgo===0?'Today':daysAgo===1?'Yesterday':fmtShort(a.hw_date);
-    var marked=trackRecs.length>0;
-
-    // Tab filter
-    if(tab==='nd'&&!marked) return;
-    if(tab==='done'&&marked) return;
-
     var safeKey=a.key.replace(/[^a-zA-Z0-9]/g,'_');
+    var chapArr=(a.chapters||'').split(/[,|]/).map(function(s){return s.trim();}).filter(Boolean);
 
     html+='<div class="hwr-group" id="hwg-'+safeKey+'">';
-    // Group header
     html+='<div class="hwr-group-hd">';
     html+='<div class="hwr-group-ic">'+ic+'</div>';
     html+='<div class="hwr-group-info">'+
-      '<div class="hwr-group-title">'+esc(a.subject)+' &nbsp;·&nbsp; Class '+esc(a.class)+(a.stream?' '+esc(a.stream):'')+' &nbsp;·&nbsp; '+esc(a.board)+'</div>'+
-      '<div class="hwr-group-meta">'+esc(a.teacher)+' &nbsp;·&nbsp; Given: '+dateLabel+
-        (trackRecs.length?' &nbsp;·&nbsp; Marked: '+fmtShort(trackRecs[0].marked_date||''):'&nbsp;·&nbsp; <span style="color:var(--amber)">Not yet marked</span>')+
-      '</div>'+
+      '<div class="hwr-group-title">'+esc(a.subject)+' &nbsp;·&nbsp; Class '+esc(a.class)+' &nbsp;·&nbsp; '+esc(a.board)+'</div>'+
+      '<div class="hwr-group-meta">'+esc(a.teacher)+' &nbsp;·&nbsp; Given: '+dateLabel+' &nbsp;·&nbsp; Logged: '+fmtShort(a.marked_date)+'</div>'+
     '</div>';
     html+='<div class="hwr-group-pills">';
-    if(ndRecs.length) html+='<span class="badge badge-r">'+ndRecs.length+' not submitted</span>';
-    else if(marked)   html+='<span class="badge badge-g">All submitted</span>';
-    else              html+='<span class="badge badge-n">Not marked yet</span>';
+    html+='<span class="badge badge-g">'+a.received.length+' received</span>';
+    if(a.absent.length) html+='<span class="badge badge-r">'+a.absent.length+' missed</span>';
     html+='</div>';
-    // Action buttons
     html+='<div class="hwr-group-actions">'+
       '<button class="hwr-action-btn hwr-pdf-btn" onclick="printHWGroup(\''+safeKey+'\')">'+
         '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>'+
@@ -3148,62 +3117,55 @@ function buildHWTabContent(assignments, trackMap, tab){
     html+='<div style="padding:10px 16px;background:var(--bg2);border-left:1.5px solid var(--border);border-right:1.5px solid var(--border);border-top:none">'+
       '<div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Homework</div>'+
       '<div style="font-size:13px;color:var(--text);line-height:1.55;padding:8px 12px;background:var(--bg3);border-radius:6px;border-left:3px solid var(--li)">'+esc(a.homework)+'</div>'+
-      (a.chapters.length?'<div style="margin-top:6px;font-size:10px;color:var(--text3)">📖 '+esc(a.chapters.join(', '))+'</div>':'')+
+      (chapArr.length?'<div style="margin-top:6px;font-size:10px;color:var(--text3)">📖 '+esc(chapArr.join(', '))+'</div>':'')+
     '</div>';
 
-    // Student table
+    // Two-section table: Received + Missed
     html+='<div class="hwr-table-wrap">';
-    if(!marked){
-      html+='<div class="hwr-empty-group">No submission data yet. Use the Homework Tracker app to mark students.</div>';
-    } else {
-      html+='<table class="hwr-table"><thead><tr>'+
-        '<th>Student</th><th>Status</th><th>Class</th><th>Syllabus</th><th>Marked On</th>'+
-        '</tr></thead><tbody>';
-      ndRecs.forEach(function(r){
-        var ph=PHOTO_MAP[r.student_id]||'';
-        var av='<div class="hwr-stu-mn">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.student_name||r.full_name||'')+'</div>';
-        html+='<tr>'+
-          '<td>'+av+'<span style="font-weight:700;color:var(--red)">'+esc(r.student_name||r.full_name||'')+'</span></td>'+
-          '<td><span class="badge badge-r">Not Submitted</span></td>'+
-          '<td><span class="badge badge-g">'+esc(r.class)+'</span></td>'+
-          '<td><span class="badge badge-b">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</span></td>'+
-          '<td style="color:var(--text3)">'+fmtShort(r.marked_date||'')+'</td>'+
-          '</tr>';
+    html+='<table class="hwr-table"><thead><tr>'+
+      '<th>Student</th><th>Status</th><th>Syllabus</th>'+
+      '</tr></thead><tbody>';
+
+    a.received.forEach(function(r){
+      var ph=PHOTO_MAP[r.student_id]||'';
+      var av='<div class="hwr-stu-mn">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.student_name||'')+'</div>';
+      html+='<tr>'+
+        '<td style="display:flex;align-items:center;gap:6px">'+av+'<span style="font-weight:600">'+esc(r.student_name||r.student_id||'')+'</span></td>'+
+        '<td><span class="badge badge-g">Received</span></td>'+
+        '<td style="color:var(--text3)">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</td>'+
+      '</tr>';
+    });
+
+    if(a.absent.length){
+      html+='<tr><td colspan="3" style="padding:4px 12px;background:rgba(220,38,38,.04);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red);border-top:1.5px solid rgba(220,38,38,.15)">Absent — Missed Homework</td></tr>';
+      a.absent.forEach(function(r){
+        var ph=PHOTO_MAP[r.student_id]||r.photo||'';
+        var av='<div class="hwr-stu-mn" style="background:rgba(220,38,38,.15)">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name||r.student_name||'')+'</div>';
+        html+='<tr style="background:rgba(220,38,38,.03)">'+
+          '<td style="display:flex;align-items:center;gap:6px">'+av+'<span style="font-weight:700;color:var(--red)">'+esc(r.full_name||r.student_name||r.student_id||'')+'</span></td>'+
+          '<td><span class="badge badge-r">Absent</span></td>'+
+          '<td style="color:var(--text3)">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</td>'+
+        '</tr>';
       });
-      html+='</tbody></table>';
     }
+
+    html+='</tbody></table>';
     html+='</div>'; // end hwr-table-wrap
     html+='</div>'; // end hwr-group
 
-    // Store in global map (DOM doesn't exist yet at this point)
-    window._hwGroupData=window._hwGroupData||{};
-    window._hwGroupData[safeKey]={assignment:a,ndRecs:ndRecs};
+    window._hwGroupData[safeKey]={assignment:a,received:a.received,absent:a.absent};
   });
   return html||'<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-title">No records for this filter</div></div>';
 }
 
-// Store group data map globally for pdf/copy callbacks
 var HW_GROUP_DATA={};
-function buildHWReport_afterRender(assignments, trackMap){
-  assignments.forEach(function(a){
-    var safeKey=a.key.replace(/[^a-zA-Z0-9]/g,'_');
-    var trackRecs=trackMap[a.key]||[];
-    HW_GROUP_DATA[safeKey]={assignment:a,ndRecs:trackRecs};
-  });
-}
 
 function setHWTab(tab,btn){
   document.querySelectorAll('.hwr-tab').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   var hwEl=g('vHomework');
   if(!hwEl||!hwEl._assignments) return;
-  g('hwTabContent').innerHTML=buildHWTabContent(hwEl._assignments,hwEl._trackMap,tab);
-  // Re-store data
-  hwEl._assignments.forEach(function(a){
-    var sk=a.key.replace(/[^a-zA-Z0-9]/g,'_');
-    var el2=g('hwg-'+sk);
-    if(el2) el2._data={assignment:a,ndRecs:hwEl._trackMap[a.key]||[]};
-  });
+  g('hwTabContent').innerHTML=buildHWTabContent(hwEl._assignments,tab);
 }
 
 function getHWGroupData(safeKey){
@@ -3214,7 +3176,8 @@ function getHWGroupData(safeKey){
 function printHWGroup(safeKey){
   var d=getHWGroupData(safeKey);
   if(!d) return;
-  var a=d.assignment, ndRecs=d.ndRecs;
+  var a=d.assignment, received=d.received||[], absent=d.absent||[];
+  var chapArr=(a.chapters||'').split(/[,|]/).map(function(s){return s.trim();}).filter(Boolean);
   var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
 
   var html='<div class="hwr-print" style="display:block">';
@@ -3222,50 +3185,59 @@ function printHWGroup(safeKey){
   html+='<div class="hwr-pr-hdr">'+
     '<div><div class="hwr-pr-logo"><span>SEHR</span> ACADEMY</div>'+
     '<div style="font-size:9px;color:#7a7970;margin-top:2px">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'+
-    '<div class="hwr-pr-title">Homework Submission Report<br>Generated: '+issued+'</div>'+
+    '<div class="hwr-pr-title">Homework Tracking Report<br>Generated: '+issued+'</div>'+
   '</div>';
   html+='<div class="hwr-pr-band">'+
     '<div>'+
-      '<div class="hwr-pr-band-title"><span>'+esc(a.subject)+'</span> &nbsp;·&nbsp; Class '+esc(a.class)+(a.stream?' '+esc(a.stream):'')+'</div>'+
+      '<div class="hwr-pr-band-title"><span>'+esc(a.subject)+'</span> &nbsp;·&nbsp; Class '+esc(a.class)+'</div>'+
       '<div class="hwr-pr-band-meta">'+esc(a.board)+' &nbsp;·&nbsp; '+esc(a.teacher)+' &nbsp;·&nbsp; Given: '+fmtLong(a.hw_date)+'</div>'+
     '</div>'+
     '<div style="text-align:right">'+
-      '<div style="font-size:18px;font-weight:900;color:#8BC53F;line-height:1">'+ndRecs.length+'</div>'+
-      '<div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Not Submitted</div>'+
+      '<div style="font-size:18px;font-weight:900;color:#8BC53F;line-height:1">'+absent.length+'</div>'+
+      '<div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:2px">Missed</div>'+
     '</div>'+
   '</div>';
   html+='<div class="hwr-pr-hw-box">'+
     '<div class="hwr-pr-hw-label">Homework Assigned</div>'+
     '<div class="hwr-pr-hw-text">'+esc(a.homework)+'</div>'+
-    (a.chapters.length?'<div style="margin-top:4px;font-size:9px;color:#7a7970">📖 '+esc(a.chapters.join(', '))+'</div>':'')+
+    (chapArr.length?'<div style="margin-top:4px;font-size:9px;color:#7a7970">📖 '+esc(chapArr.join(', '))+'</div>':'')+
   '</div>';
 
   html+='<table class="hwr-pr-tbl"><thead><tr>'+
-    '<th></th><th>Student Name</th><th>Status</th><th>Syllabus</th><th>Marked On</th>'+
+    '<th></th><th>Student Name</th><th>Status</th><th>Syllabus</th>'+
     '</tr></thead><tbody>';
 
-  if(ndRecs.length){
-    ndRecs.forEach(function(r){
-      var ph=PHOTO_MAP[r.student_id]||'';
-      var av='<div class="hwr-pr-av">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.student_name||r.full_name||'')+'</div>';
+  received.forEach(function(r){
+    var ph=PHOTO_MAP[r.student_id]||'';
+    var av='<div class="hwr-pr-av">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.student_name||'')+'</div>';
+    html+='<tr class="done">'+
+      '<td>'+av+'</td>'+
+      '<td style="font-weight:600">'+esc(r.student_name||'')+'</td>'+
+      '<td><span style="font-size:8px;font-weight:800;background:#f0f7e3;color:#16a34a;padding:2px 7px;border-radius:8px;border:1px solid rgba(22,163,74,.2)">Received</span></td>'+
+      '<td style="font-size:9px;color:#7a7970">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</td>'+
+    '</tr>';
+  });
+
+  if(absent.length){
+    absent.forEach(function(r){
+      var ph=PHOTO_MAP[r.student_id]||r.photo||'';
+      var av='<div class="hwr-pr-av">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name||r.student_name||'')+'</div>';
       html+='<tr class="nd">'+
         '<td>'+av+'</td>'+
-        '<td style="font-weight:700;color:#dc2626">'+esc(r.student_name||r.full_name||'')+'</td>'+
-        '<td><span style="font-size:8px;font-weight:800;background:#fef2f2;color:#dc2626;padding:2px 7px;border-radius:8px;border:1px solid rgba(220,38,38,.2)">Not Submitted</span></td>'+
+        '<td style="font-weight:700;color:#dc2626">'+esc(r.full_name||r.student_name||'')+'</td>'+
+        '<td><span style="font-size:8px;font-weight:800;background:#fef2f2;color:#dc2626;padding:2px 7px;border-radius:8px;border:1px solid rgba(220,38,38,.2)">Absent · Missed</span></td>'+
         '<td style="font-size:9px;color:#7a7970">'+esc(r.syllabus==='STATE'?'Kerala State':r.syllabus)+'</td>'+
-        '<td style="font-size:9px;color:#7a7970">'+fmtShort(r.marked_date||'')+'</td>'+
       '</tr>';
     });
-  } else {
-    html+='<tr><td colspan="5" style="text-align:center;padding:16px;color:#7a7970;font-style:italic">All students submitted this homework.</td></tr>';
   }
+
   html+='</tbody></table>';
   html+='<div style="height:12px"></div>';
   html+='<div class="hwr-pr-footer"><div>SEHR Academy · Homework Report · '+fmtLong(a.hw_date)+'</div><div>sehracademy.com · +91 95394 09586</div></div>';
   html+='<div class="hwr-pr-bot-bar"></div></div>';
 
   g('hwPrintDoc').innerHTML=html;
-  g('printDoc').innerHTML=''; // clear main printDoc so only hw doc prints
+  g('printDoc').innerHTML='';
   setTimeout(function(){window.print();},80);
 }
 
@@ -3273,23 +3245,25 @@ function printHWGroup(safeKey){
 function copyHWGroup(safeKey,btn){
   var d=getHWGroupData(safeKey);
   if(!d) return;
-  var a=d.assignment, ndRecs=d.ndRecs;
+  var a=d.assignment, received=d.received||[], absent=d.absent||[];
+  var chapArr=(a.chapters||'').split(/[,|]/).map(function(s){return s.trim();}).filter(Boolean);
   var lines=[];
   lines.push('📋 SEHR Academy — Homework Report');
   lines.push('');
-  lines.push('📚 '+a.subject+' · Class '+a.class+(a.stream?' '+a.stream:'')+' · '+a.board);
+  lines.push('📚 '+a.subject+' · Class '+a.class+' · '+a.board);
   lines.push('👨‍🏫 '+a.teacher);
   lines.push('📅 Given: '+fmtLong(a.hw_date));
-  if(a.chapters.length) lines.push('📖 Chapters: '+a.chapters.join(', '));
+  if(chapArr.length) lines.push('📖 Chapters: '+chapArr.join(', '));
   lines.push('');
   lines.push('📝 Homework:');
   lines.push(a.homework);
   lines.push('');
-  if(ndRecs.length){
-    lines.push('❌ NOT SUBMITTED ('+ndRecs.length+'):');
-    ndRecs.forEach(function(r,i){lines.push('  '+(i+1)+'. '+r.student_name+' ('+r.syllabus+')');});
-  } else {
-    lines.push('✅ All students submitted this homework.');
+  lines.push('✅ Received ('+received.length+'):');
+  received.forEach(function(r,i){lines.push('  '+(i+1)+'. '+(r.student_name||''));});
+  if(absent.length){
+    lines.push('');
+    lines.push('⚠️ Absent — Missed Homework ('+absent.length+'):');
+    absent.forEach(function(r,i){lines.push('  '+(i+1)+'. '+(r.full_name||r.student_name||''));});
   }
   lines.push('');
   lines.push('— SEHR Academy');
