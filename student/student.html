@@ -869,25 +869,39 @@ async function fetchLiveData(studentId) {
     const attData = await attRes.json().catch(() => ({}));
     const hwData  = await hwRes.json().catch(() => ({}));
 
-    if (attData.success && Array.isArray(attData.records)) {
-      DATA.attendance = processAttendance(attData.records, studentId);
+    // Support both {success,records} and {data} response shapes
+    const attRecords = attData.records || attData.data || [];
+    if (Array.isArray(attRecords) && attRecords.length) {
+      DATA.attendance = processAttendance(attRecords, studentId);
     }
-    if (hwData.success && Array.isArray(hwData.records)) {
-      // Filter to this student's homework
+    const hwRecords = hwData.records || hwData.data || [];
+    if (Array.isArray(hwRecords) && hwRecords.length) {
       const sid = String(studentId).trim().toLowerCase();
-      DATA.homework_records = hwData.records.filter(r =>
+      // Homework is usually class-wide; show all if no student-specific match
+      let hw = hwRecords.filter(r =>
         String(r.student_id || '').trim().toLowerCase() === sid ||
         String(r.student_name || '').trim().toLowerCase().includes(sid)
       );
+      if (!hw.length) hw = hwRecords; // fallback: show all class homework
+      DATA.homework_records = hw;
     }
   } catch (_) { /* silent fail — portal still works without live data */ }
+  // Ensure homework_records is always an array after fetch attempt
+  if (DATA.homework_records === undefined) DATA.homework_records = [];
 }
 
 function processAttendance(records, studentId) {
   const sid = String(studentId).trim().toLowerCase();
-  const mine = records.filter(r =>
+  // Try matching by student_id first, then fall back to student_name
+  let mine = records.filter(r =>
     String(r.student_id || '').trim().toLowerCase() === sid
   );
+  if (!mine.length) {
+    mine = records.filter(r =>
+      String(r.student_name || '').trim().toLowerCase().includes(sid) ||
+      String(r.name || '').trim().toLowerCase().includes(sid)
+    );
+  }
 
   const total    = mine.length;
   const attended = mine.filter(r => (r.status || '').trim() === 'Present').length;
