@@ -38,7 +38,7 @@ export default function SchoolsPage() {
         <div style={{ marginBottom: '56px' }}>
           <div className="sdiv"><span className="sdiv-r"/><span className="sdiv-d"/><span className="sdiv-t">Closest to Vatanappally</span><span className="sdiv-r"/></div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '12px' }}>
-            {byDistance.slice(0, 9).map(s => <SchoolCard key={s.id} school={s} />)}
+            {byDistance.slice(0, 12).map(s => <SchoolCard key={s.id} school={s} />)}
           </div>
         </div>
 
