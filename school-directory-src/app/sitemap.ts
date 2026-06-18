@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { schools } from "@/app/data/schools";
+import { schools, towns } from "@/app/data/schools";
 
 export const dynamic = 'force-static';
 
@@ -24,5 +24,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/stream/commerce/`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${base}/stream/humanities/`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
     ...schoolRoutes,
+    ...towns.map(town => ({
+      url: `${base}/location/${town.toLowerCase().replace(/ /g, '-')}/`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
   ];
 }

@@ -26,7 +26,7 @@ export default async function BoardPage({ params }: { params: Promise<{ board: s
   const { board } = await params;
   const b = boardMap[board];
   if (!b) notFound();
-  const filtered = schools.filter(s => s.board.includes(b)).sort((a, x) => a.distanceFromVatanappally - x.distanceFromVatanappally);
+  const filtered = schools.filter(s => s.board.includes(b)).sort((a, x) => a.town.localeCompare(x.town));
 
   return (
     <>

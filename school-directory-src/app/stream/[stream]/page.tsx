@@ -26,7 +26,7 @@ export default async function StreamPage({ params }: { params: Promise<{ stream:
   const { stream } = await params;
   const s = streamMap[stream];
   if (!s) notFound();
-  const filtered = schools.filter(sc => sc.streams.includes(s)).sort((a, b) => a.distanceFromVatanappally - b.distanceFromVatanappally);
+  const filtered = schools.filter(sc => sc.streams.includes(s)).sort((a, b) => a.town.localeCompare(b.town));
 
   return (
     <>
