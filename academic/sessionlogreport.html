@@ -375,9 +375,12 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
   html,body{background:#fff!important;margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;display:block!important}
   body>*{display:none!important}
   .hwr-print{display:block!important;position:static!important}
-  #printDoc{display:block!important;position:static!important;left:auto!important;top:auto!important;width:100%!important;font-family:'Inter',Arial,sans-serif!important}
+  #printDoc{display:block!important;position:static!important;left:auto!important;top:auto!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
   #hwPrintDoc{display:block!important;position:static!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
   #progressPrintDoc{display:block!important;position:static!important;width:100%!important;font-family:'Open Sans',Arial,sans-serif!important}
+  /* suppress browser default link URL printing and nav */
+  a[href]::after{content:none!important}
+  nav,footer,.mobile-nav,.sidebar{display:none!important}
 }
 /* reuse existing pr- print styles */
 /* ══ PRINT DOCUMENT STYLES ══ */
@@ -478,6 +481,30 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .pr-footer-brand span{color:#8BC53F}
 .pr-footer-contact{font-size:7.5px;color:#b0ada4;text-align:right;line-height:1.8}
 .pr-bot-bar{background:#8BC53F;height:5px;width:100%}
+/* ── Print subject cards ── */
+.pr-subj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 32px 6px}
+.pr-subj-card{border:1.5px solid #e4dfd4;border-radius:8px;overflow:hidden;background:#fff;position:relative}
+.pr-subj-card-bar{height:4px;width:100%}
+.pr-subj-card-body{padding:10px 12px}
+.pr-subj-card-name{font-size:11px;font-weight:900;color:#1a1a18;margin-bottom:1px;letter-spacing:-.1px}
+.pr-subj-card-teacher{font-size:8px;color:#7a7970;margin-bottom:8px}
+.pr-subj-stats-row{display:flex;gap:0;border-top:1px solid #ede9e0;margin:0 -12px;padding:6px 12px 0}
+.pr-subj-stat{flex:1;text-align:center;border-right:1px solid #ede9e0}
+.pr-subj-stat:last-child{border-right:none}
+.pr-subj-stat-v{font-size:13px;font-weight:900;color:#1a1a18;line-height:1}
+.pr-subj-stat-l{font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#b0ada4;margin-top:2px}
+.pr-subj-prog-wrap{margin-top:8px}
+.pr-subj-prog-label{display:flex;justify-content:space-between;font-size:7.5px;font-weight:700;color:#7a7970;margin-bottom:3px}
+.pr-subj-prog-bar{height:5px;background:#ede9e0;border-radius:3px;overflow:hidden}
+.pr-subj-prog-fill{height:100%;border-radius:3px}
+.pr-subj-chapters{margin-top:6px;display:flex;flex-wrap:wrap;gap:2px}
+.pr-subj-hw{margin-top:6px;background:#fffbeb;border:1px solid rgba(217,119,6,.2);border-radius:4px;padding:4px 7px;font-size:7.5px;color:#92400e;line-height:1.4}
+.pr-subj-hw-lbl{font-weight:800;font-size:7px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1px;color:#d97706}
+.pr-absent-strip{padding:4px 32px 10px}
+.pr-absent-row{display:flex;align-items:center;gap:6px;padding:5px 10px;background:#fef2f2;border:1px solid rgba(220,38,38,.15);border-radius:6px;margin-bottom:4px}
+.pr-absent-cls{font-size:8px;font-weight:800;padding:2px 6px;background:#dc2626;color:#fff;border-radius:4px;flex-shrink:0}
+.pr-absent-names{font-size:9px;color:#dc2626;font-weight:600}
+.pr-absent-count{font-size:8px;color:#b91c1c;margin-left:auto;white-space:nowrap;font-weight:700}
 
 /* ══ CHAPTER VIEW (QuanticApp style) ══ */
 .pg-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start;overflow:visible}
@@ -2886,36 +2913,143 @@ function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
   var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
   var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
   var chapSet={};dayData.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){chapSet[c]=true;});});
-  var teachers=Array.from(new Set(dayData.map(function(r){return r.teacher_name;}))).join(', ');
+  var teacherSet=Array.from(new Set(dayData.map(function(r){return r.teacher_name;}))).join(', ');
   var attScope=ATTENDANCE.filter(function(r){if(attDateToYMD(r.date)!==CUR_DATE)return false;if(filterCls!=='ALL'&&r.class!==filterCls)return false;if(filterBoard&&filterBoard!=='ALL'&&r.syllabus!==boardToSyl(filterBoard))return false;return true;});
   var attP=attScope.filter(function(r){return r.status==='Present';}).length;
+  var attPct=attScope.length?Math.round(attP/attScope.length*100)+'%':'—';
   var boardLabel=filterBoard&&filterBoard!=='ALL'?' · '+filterBoard:'';
   var clsLabel=filterCls==='ALL'?'All Classes':('Class '+filterCls+(filterStream?' · '+filterStream:'')+boardLabel);
   var byClass={};dayData.forEach(function(r){var key=r.class+(r.stream?'|'+r.stream:'');if(!byClass[key])byClass[key]={class:r.class,stream:r.stream||'',sessions:[]};byClass[key].sessions.push(r);});
 
+  function getAccent(subj){
+    var k=Object.keys(SUBJ_PALETTE).find(function(k){return subj&&subj.toLowerCase().indexOf(k.toLowerCase())>-1;});
+    return (SUBJ_PALETTE[k||'']||{accent:'#8BC53F'}).accent;
+  }
+
   /* ── Header ── */
   var html='<div class="pr-doc"><div class="pr-top-bar"></div>';
   html+='<div class="pr-hdr">';
-  html+='<div><div class="pr-logo"><span>SEHR</span> ACADEMY</div><div class="pr-logo-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>';
-  html+='<div class="pr-hdr-r"><div class="pr-hdr-badge">Daily Academic Report</div><div class="pr-hdr-date">'+esc(clsLabel)+' · Generated '+issued+'</div></div>';
+  html+='<div><div class="pr-logo"><span>SEHR</span> ACADEMY</div><div class="pr-logo-sub">Vadanappally, Thrissur, Kerala · sehracademy.com · +91 95394 09586</div></div>';
+  html+='<div class="pr-hdr-r"><div class="pr-hdr-badge">Daily Academic Report</div><div class="pr-hdr-date">'+esc(clsLabel)+' &nbsp;·&nbsp; Generated '+issued+'</div></div>';
   html+='</div>';
 
   /* ── Dark date band with KPI boxes ── */
-  var attPct=attScope.length?Math.round(attP/attScope.length*100)+'%':'—';
   var dateParts=fmtLong(CUR_DATE).split(', ');
   html+='<div class="pr-date-band">';
-  html+='<div><div class="pr-date-big"><span>'+dateParts[0]+'</span>'+(dateParts.length>1?', '+dateParts.slice(1).join(', '):'')+'</div><div class="pr-date-sub">'+esc(clsLabel)+(teachers?' · '+esc(teachers):'')+'</div></div>';
+  html+='<div><div class="pr-date-big"><span>'+dateParts[0]+'</span>'+(dateParts.length>1?', '+dateParts.slice(1).join(', '):'')+'</div>';
+  html+='<div class="pr-date-sub">'+esc(clsLabel)+(teacherSet?' &nbsp;·&nbsp; '+esc(teacherSet):'')+'</div></div>';
   html+='<div class="pr-kpi-row">';
   html+='<div class="pr-kpi"><div class="pr-kpi-icon">📋</div><div class="pr-kpi-v">'+dayData.length+'</div><div class="pr-kpi-l">Sessions</div></div>';
-  html+='<div class="pr-kpi"><div class="pr-kpi-icon">⏱</div><div class="pr-kpi-v">'+hrsFmt(totalMins)+'</div><div class="pr-kpi-l">Hours Taught</div></div>';
+  html+='<div class="pr-kpi"><div class="pr-kpi-icon">⏱</div><div class="pr-kpi-v">'+hrsFmt(totalMins)+'</div><div class="pr-kpi-l">Taught</div></div>';
   html+='<div class="pr-kpi"><div class="pr-kpi-icon">📖</div><div class="pr-kpi-v">'+Object.keys(chapSet).length+'</div><div class="pr-kpi-l">Chapters</div></div>';
   html+='<div class="pr-kpi"><div class="pr-kpi-icon">👥</div><div class="pr-kpi-v">'+attPct+'</div><div class="pr-kpi-l">Attendance</div></div>';
   html+='</div></div>';
 
-  if(!Object.keys(byClass).length)html+='<div style="padding:32px;text-align:center;color:#7a7970;font-size:12px">No sessions on this date.</div>';
+  if(!Object.keys(byClass).length){
+    html+='<div style="padding:40px;text-align:center;color:#7a7970;font-size:13px">No sessions recorded on this date.</div>';
+    html+='<div class="pr-bot-bar"></div></div>';
+    g('printDoc').innerHTML=html;return;
+  }
 
-  /* ══ WHAT WAS TAUGHT ══ */
-  html+='<div class="pr-sec-rule"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">📚 What Was Taught</div></div>';
+  /* ══ SUBJECT CARDS ══ */
+  html+='<div class="pr-sec-rule"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">📚 Subject Summary</div></div>';
+  // Build per-subject data from today's sessions
+  var subjMap={};
+  dayData.forEach(function(r){
+    var key=r.class+'|'+r.board+'|'+r.subject;
+    if(!subjMap[key])subjMap[key]={class:r.class,board:r.board,subject:r.subject,mins:0,chaps:[],teachers:[],hw:[],topics:[],sessions:0};
+    var s=subjMap[key];
+    s.mins+=(+r.duration_mins||0);s.sessions++;
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){if(s.chaps.indexOf(c)===-1)s.chaps.push(c);});
+    if(r.teacher_name&&s.teachers.indexOf(r.teacher_name)===-1)s.teachers.push(r.teacher_name);
+    if(r.homework&&r.homework.trim()&&s.hw.indexOf(r.homework.trim())===-1)s.hw.push(r.homework.trim());
+    if(r.topics&&r.topics.trim()&&s.topics.indexOf(r.topics.trim())===-1)s.topics.push(r.topics.trim());
+  });
+  var subjKeys=Object.keys(subjMap).sort(function(a,b){
+    var sa=subjMap[a],sb=subjMap[b];
+    if(sa.class!==sb.class)return (+sa.class)-(+sb.class);
+    return sa.subject.localeCompare(sb.subject);
+  });
+  html+='<div class="pr-subj-grid">';
+  subjKeys.forEach(function(key){
+    var s=subjMap[key];
+    var accent=getAccent(s.subject);
+    var boardFull=s.board==='CBSE'?'CBSE':(s.board==='Kerala State'?'Kerala State':s.board);
+    var masterKey=s.class+'|'+boardFull+'|'+s.subject;
+    var master=MASTER_CHAPTERS[masterKey]||[];
+    var coveredSet={};
+    sessions.filter(function(r){return r.class===s.class&&r.board===s.board&&r.subject===s.subject;}).forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){coveredSet[c]=true;});});
+    var covered=Object.keys(coveredSet).length;
+    var total=master.length;
+    var pct=total?Math.round(covered/total*100):0;
+    var isCbse=boardFull==='CBSE';
+    var durStr=s.mins>=60?Math.floor(s.mins/60)+'h '+(s.mins%60?s.mins%60+'m':''):s.mins+'m';
+
+    html+='<div class="pr-subj-card">';
+    html+='<div class="pr-subj-card-bar" style="background:'+accent+'"></div>';
+    html+='<div class="pr-subj-card-body">';
+    // Name + class + board
+    html+='<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px">';
+    html+='<div class="pr-subj-card-name">'+esc(s.subject)+'</div>';
+    html+='<span style="font-size:7px;font-weight:800;padding:2px 5px;border-radius:3px;background:'+(isCbse?'#eff6ff':'#f0f7e3')+';color:'+(isCbse?'#2563eb':'#5e8a24')+'">'+esc(isCbse?'CBSE':'State')+'</span>';
+    html+='</div>';
+    html+='<div class="pr-subj-card-teacher">Class '+esc(s.class)+' &nbsp;·&nbsp; '+esc(s.teachers.join(', '))+'</div>';
+    // Stat row
+    html+='<div class="pr-subj-stats-row">';
+    html+='<div class="pr-subj-stat"><div class="pr-subj-stat-v">'+durStr+'</div><div class="pr-subj-stat-l">Today</div></div>';
+    html+='<div class="pr-subj-stat"><div class="pr-subj-stat-v">'+s.chaps.length+'</div><div class="pr-subj-stat-l">Chapters</div></div>';
+    html+='<div class="pr-subj-stat"><div class="pr-subj-stat-v">'+(s.hw.length?'✓':'—')+'</div><div class="pr-subj-stat-l">HW Given</div></div>';
+    if(total)html+='<div class="pr-subj-stat"><div class="pr-subj-stat-v" style="color:'+accent+'">'+pct+'%</div><div class="pr-subj-stat-l">Syllabus</div></div>';
+    html+='</div>';
+    // Chapters chips
+    if(s.chaps.length){
+      html+='<div class="pr-subj-chapters">';
+      s.chaps.forEach(function(c){html+='<span class="pr-chapter-chip">'+esc(c)+'</span>';});
+      html+='</div>';
+    }
+    // Topics
+    if(s.topics.length){
+      html+='<div style="margin-top:5px;font-size:7.5px;color:#4a4a46;line-height:1.4"><span style="font-weight:800;color:#7a7970;text-transform:uppercase;font-size:7px;letter-spacing:.08em">Topics </span>'+esc(s.topics.join(' · '))+'</div>';
+    }
+    // Syllabus progress bar
+    if(total){
+      html+='<div class="pr-subj-prog-wrap">';
+      html+='<div class="pr-subj-prog-label"><span>Syllabus Progress</span><span>'+covered+' / '+total+' chapters</span></div>';
+      html+='<div class="pr-subj-prog-bar"><div class="pr-subj-prog-fill" style="width:'+pct+'%;background:'+accent+'"></div></div>';
+      html+='</div>';
+    }
+    // Homework box
+    if(s.hw.length){
+      html+='<div class="pr-subj-hw"><div class="pr-subj-hw-lbl">📝 Homework</div>'+esc(s.hw.join(' | '))+'</div>';
+    }
+    html+='</div></div>'; // end card-body, card
+  });
+  html+='</div>'; // end grid
+
+  /* ══ ABSENT STUDENTS QUICK VIEW ══ */
+  var absentByClass=[];
+  Object.keys(byClass).sort().forEach(function(key){
+    var cls=byClass[key];
+    var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls.class&&(!filterBoard||filterBoard==='ALL'||r.syllabus===boardToSyl(filterBoard));});
+    var abList=attRows.filter(function(r){return r.status==='Absent';});
+    if(abList.length)absentByClass.push({cls:cls.class,stream:cls.stream,absent:abList});
+  });
+  if(absentByClass.length){
+    html+='<div class="pr-sec-rule"><div class="pr-sec-rule-line" style="background:#dc2626"></div><div class="pr-sec-rule-txt" style="color:#dc2626">⚠ Absent Today</div></div>';
+    html+='<div class="pr-absent-strip">';
+    absentByClass.forEach(function(g){
+      html+='<div class="pr-absent-row">';
+      html+='<span class="pr-absent-cls">'+esc(g.cls)+(g.stream?' '+esc(g.stream):'')+'</span>';
+      html+='<span class="pr-absent-names">'+g.absent.map(function(r){return esc(r.full_name);}).join(', ')+'</span>';
+      html+='<span class="pr-absent-count">'+g.absent.length+' absent</span>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+
+  /* ══ SESSION DETAIL ══ */
+  html+='<div class="pr-section-divider"></div>';
+  html+='<div class="pr-sec-rule" style="margin-top:14px"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">🗒 Session Detail</div></div>';
   Object.keys(byClass).sort().forEach(function(key){
     var cls=byClass[key];var sess=cls.sessions;
     var clsMins=sess.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
@@ -2932,23 +3066,20 @@ function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
       var chaps=(r.chapters||'').split(' | ').filter(Boolean);
       var dur=+r.duration_mins;
       var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60?dur%60+'m':''):dur+'m';
-      var accent=(SUBJ_PALETTE[Object.keys(SUBJ_PALETTE).find(function(k){return r.subject&&r.subject.toLowerCase().indexOf(k.toLowerCase())>-1;})||'']||{accent:'#8BC53F'}).accent;
+      var accent=getAccent(r.subject);
       html+='<div class="pr-sess-card">';
       html+='<div class="pr-sess-accent" style="background:'+accent+'"></div>';
       html+='<div class="pr-sess-body">';
-      /* top row */
       html+='<div class="pr-sess-top">';
       html+='<div><div class="pr-sess-teacher">'+esc(r.teacher_name)+'</div>';
       html+='<div class="pr-sess-time">'+esc(r.start_time)+' – '+esc(r.end_time)+'<span class="pr-sess-dur">'+durStr+'</span></div></div>';
       html+='</div>';
-      /* badges */
       html+='<div class="pr-badges"><span class="pr-badge pr-badge-b">'+esc(r.board)+'</span><span class="pr-badge pr-badge-a">'+esc(r.session_type)+'</span><span class="pr-badge pr-badge-n">'+esc(r.mode)+'</span></div>';
-      /* detail grid */
       html+='<div class="pr-det-grid">';
-      html+=prdet('Subject',esc(r.subject));
+      html+=prdet('Subject','<span style="font-weight:800;color:'+accent+'">'+esc(r.subject)+'</span>');
       if(chaps.length)html+=prdet('Chapters',chaps.map(function(c){return '<span class="pr-chapter-chip">'+esc(c)+'</span>';}).join(''));
-      html+=prdet('Topics',esc(r.topics||'—'));
-      if(r.homework&&r.homework.trim())html+=prdet('Homework','<div class="pr-hw-box">📝 Homework: '+esc(r.homework)+'</div>');
+      if(r.topics&&r.topics.trim())html+=prdet('Topics',esc(r.topics));
+      if(r.homework&&r.homework.trim())html+=prdet('Homework','<div class="pr-hw-box">📝 '+esc(r.homework)+'</div>');
       if(r.remarks&&r.remarks.trim())html+=prdet('Remarks',esc(r.remarks));
       html+='</div>';
       html+='</div></div>';
@@ -2956,45 +3087,9 @@ function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
     html+='</div>';
   });
 
-  /* ══ SYLLABUS PROGRESS ══ */
-  var progRows=[];
-  Object.keys(byClass).sort().forEach(function(key){
-    var cls=byClass[key];
-    var clsSess=cls.sessions;
-    /* collect unique board+subject combos taught today for this class */
-    var combos={};
-    clsSess.forEach(function(r){var k=r.board+'||'+r.subject;if(!combos[k])combos[k]={board:r.board,subject:r.subject};});
-    Object.keys(combos).forEach(function(ck){
-      var combo=combos[ck];
-      /* MASTER_CHAPTERS key uses 'CBSE' or 'Kerala State' as board */
-      var boardFull=combo.board==='CBSE'?'CBSE':(combo.board==='Kerala State'?'Kerala State':combo.board);
-      var masterKey=cls.class+'|'+boardFull+'|'+combo.subject;
-      var master=MASTER_CHAPTERS[masterKey]||[];
-      if(!master.length)return;
-      /* count unique chapters covered all-time for this class+board+subject */
-      var coveredSet={};
-      sessions.filter(function(r){return r.class===cls.class&&r.board===combo.board&&r.subject===combo.subject;}).forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){coveredSet[c]=true;});});
-      var covered=Object.keys(coveredSet).length;
-      var total=master.length;
-      var pct=total?Math.round(covered/total*100):0;
-      var isCbse=boardFull==='CBSE';
-      progRows.push('<div class="pr-prog-row">'+
-        '<div class="pr-prog-subj">'+esc(combo.subject)+'</div>'+
-        '<div><span class="pr-prog-board '+(isCbse?'pr-prog-board-cb':'pr-prog-board-st')+'">'+esc(sylLabel(isCbse?'CBSE':'STATE'))+'</span></div>'+
-        '<div class="pr-prog-bar-wrap"><div class="pr-prog-bar-fill" style="width:'+pct+'%"></div></div>'+
-        '<div class="pr-prog-count">'+covered+' / '+total+'</div>'+
-        '</div>');
-    });
-  });
-  if(progRows.length){
-    html+='<div class="pr-section-divider"></div>';
-    html+='<div class="pr-sec-rule" style="margin-top:14px"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">📈 Syllabus Progress</div></div>';
-    html+='<div class="pr-prog-wrap">'+progRows.join('')+'</div>';
-  }
-
   /* ══ ATTENDANCE ══ */
   html+='<div class="pr-section-divider"></div>';
-  html+='<div class="pr-sec-rule" style="margin-top:14px"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">👥 Attendance</div></div>';
+  html+='<div class="pr-sec-rule" style="margin-top:14px"><div class="pr-sec-rule-line"></div><div class="pr-sec-rule-txt">👥 Attendance Register</div></div>';
   Object.keys(byClass).sort().forEach(function(key){
     var cls=byClass[key];
     var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls.class&&(!filterBoard||filterBoard==='ALL'||r.syllabus===boardToSyl(filterBoard));});
@@ -3014,16 +3109,17 @@ function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
       html+='<span class="pr-att-board-lbl '+(syl==='STATE'?'pr-att-board-st':'pr-att-board-cb')+'">'+esc(sylLabel(syl))+'</span>';
       html+='<span class="pr-att-board-meta">'+sp+'/'+sr.length+' Present · '+pbarPct+'%</span></div>';
       html+='<div class="pr-att-pbar-wrap"><div class="pr-att-pbar-fill" style="width:'+pbarPct+'%"></div></div>';
-      html+='<table class="pr-att-tbl"><thead><tr><th></th><th>Name</th><th>Status</th></tr></thead><tbody>';
+      html+='<table class="pr-att-tbl"><thead><tr><th></th><th>Name</th><th>Overall Att.</th><th>Today</th></tr></thead><tbody>';
       sr.forEach(function(r){
         var ab=r.status==='Absent';
         var ph=PHOTO_MAP[r.student_id]||r.photo||'';
         var avStyle=ab?'style="background:#dc2626"':'';
         var av='<div class="pr-av" '+avStyle+'>'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
-        var pctBadge=(function(){var a=ATT_PCT[r.student_id];if(!a||!a.sessions)return '';var p=a.pct;var col=p>=75?'#16a34a':p>=50?'#d97706':'#dc2626';var bg=p>=75?'rgba(34,197,94,.1)':p>=50?'rgba(217,119,6,.1)':'rgba(220,38,38,.08)';return ' <span style="font-size:7px;font-weight:800;padding:1px 5px;border-radius:8px;background:'+bg+';color:'+col+'">'+p+'%</span>';})();
+        var overallPct=(function(){var a=ATT_PCT[r.student_id];if(!a||!a.sessions)return '—';var p=a.pct;var col=p>=75?'#16a34a':p>=50?'#d97706':'#dc2626';return '<span style="font-size:8px;font-weight:800;color:'+col+'">'+p+'%</span>';})();
         html+='<tr class="'+(ab?'pr-att-tbl-a':'pr-att-tbl-p')+'">';
         html+='<td>'+av+'</td>';
-        html+='<td style="font-weight:600;'+(ab?'color:#dc2626':'')+'">'+esc(r.full_name)+pctBadge+'</td>';
+        html+='<td style="font-weight:600;'+(ab?'color:#dc2626':'')+'">'+esc(r.full_name)+'</td>';
+        html+='<td style="text-align:center">'+overallPct+'</td>';
         html+='<td><span class="pr-att-badge '+(ab?'pr-att-badge-a':'pr-att-badge-p')+'">'+r.status+'</span></td>';
         html+='</tr>';
       });
@@ -3033,9 +3129,10 @@ function buildPrintDoc(sessions,filterCls,filterStream,filterBoard){
   });
 
   /* ── Footer ── */
-  html+='<div style="height:12px"></div>';
+  html+='<div style="height:14px"></div>';
   html+='<div class="pr-footer-band">';
-  html+='<div class="pr-footer-brand"><span>SEHR</span> ACADEMY</div>';
+  html+='<div><div class="pr-footer-brand"><span>SEHR</span> ACADEMY</div>';
+  html+='<div style="font-size:7px;color:#b0ada4;margin-top:2px">This report is auto-generated and confidential.</div></div>';
   html+='<div class="pr-footer-contact">sehracademy.com · +91 95394 09586 · +91 90377 89586<br>Priyadarshini Road, Ganeshamangalam, Vadanappally, Thrissur 680614</div>';
   html+='</div>';
   html+='<div class="pr-bot-bar"></div></div>';
