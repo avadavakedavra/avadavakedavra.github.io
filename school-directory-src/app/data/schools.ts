@@ -39,7 +39,7 @@ export const schools: School[] = [
     address: 'Anthikad, Thrissur, Kerala 680641',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 8,
+    distanceFromVatanappally: 9,
   },
   {
     id: 23, slug: 'sree-sai-vidya-peedhom-anthikad',
@@ -53,7 +53,7 @@ export const schools: School[] = [
     address: 'Anthikad, Thrissur, Kerala 680641',
     plusTwo: true,
     features: ['Computer Lab', 'Science Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 8.5,
+    distanceFromVatanappally: 9,
   },
 
   // ── CHAVAKKAD ────────────────────────────────────────────
@@ -164,7 +164,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 3.5,
+    distanceFromVatanappally: 2.5,
   },
   {
     id: 8, slug: 'national-hss-engandiyur',
@@ -177,7 +177,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 3,
+    distanceFromVatanappally: 2,
   },
   {
     id: 26, slug: 'st-thomas-hss-engandiyur',
@@ -190,7 +190,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Science Lab', 'Computer Lab', 'Library', 'Chapel', 'Sports Ground'],
-    distanceFromVatanappally: 3.5,
+    distanceFromVatanappally: 2.5,
   },
   {
     id: 27, slug: 'saraswathy-vidyanikethan-engandiyur',
@@ -203,7 +203,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Computer Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 4,
+    distanceFromVatanappally: 3,
   },
 
   // ── KANJANI ──────────────────────────────────────────────
@@ -218,7 +218,7 @@ export const schools: School[] = [
     address: 'Kanjani, Thrissur, Kerala 680614',
     plusTwo: false,
     features: ['Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 3,
+    distanceFromVatanappally: 4,
   },
   {
     id: 28, slug: 'bharatiya-vidya-bhavan-kanjani',
@@ -232,7 +232,7 @@ export const schools: School[] = [
     address: 'Kanjani, Thrissur, Kerala 680614',
     plusTwo: true,
     features: ['Computer Lab', 'Science Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 3.5,
+    distanceFromVatanappally: 4,
   },
 
   // ── KANDASSANKADAVU ──────────────────────────────────────
@@ -247,7 +247,7 @@ export const schools: School[] = [
     address: 'Kandassankadavu, Thrissur, Kerala 680613',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 7,
+    distanceFromVatanappally: 6,
   },
 
   // ── NATTIKA ──────────────────────────────────────────────
@@ -262,7 +262,7 @@ export const schools: School[] = [
     address: 'Nattika, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'Eco Club', 'NSS'],
-    distanceFromVatanappally: 6,
+    distanceFromVatanappally: 7,
   },
   {
     id: 12, slug: 'aided-hss-nattika',
@@ -275,7 +275,7 @@ export const schools: School[] = [
     address: 'Nattika, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Lab', 'Chapel', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 6.5,
+    distanceFromVatanappally: 7.5,
   },
 
   {
@@ -289,7 +289,7 @@ export const schools: School[] = [
     address: 'Nattika, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'Vocational Workshop', 'NSS'],
-    distanceFromVatanappally: 6,
+    distanceFromVatanappally: 7,
   },
   {
     id: 30, slug: 'sn-trust-hss-nattika',
@@ -302,7 +302,7 @@ export const schools: School[] = [
     address: 'Nattika, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 6.5,
+    distanceFromVatanappally: 7,
   },
   {
     id: 31, slug: 'model-hs-puthiyangadi',
@@ -315,7 +315,7 @@ export const schools: School[] = [
     address: 'Puthiyangadi, Nattika, Thrissur, Kerala 680566',
     plusTwo: false,
     features: ['Library', 'Sports Ground'],
-    distanceFromVatanappally: 7,
+    distanceFromVatanappally: 8,
   },
 
   // ── THALIKULAM ───────────────────────────────────────────
@@ -358,7 +358,7 @@ export const schools: School[] = [
     address: 'Edassery PO, Thalikulam, Thrissur, Kerala 680569',
     plusTwo: true,
     features: ['Computer Lab', 'Science Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 5.5,
+    distanceFromVatanappally: 5,
   },
   {
     id: 33, slug: 'blooming-buds-thalikulam',
@@ -387,7 +387,7 @@ export const schools: School[] = [
     address: 'Thrithalloor, Thrissur, Kerala 680619',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 2.5,
+    distanceFromVatanappally: 3.5,
   },
 
   {
@@ -401,7 +401,7 @@ export const schools: School[] = [
     address: 'Thrithalloor, Thrissur, Kerala 680619',
     plusTwo: true,
     features: ['Vocational Workshop', 'Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 2,
+    distanceFromVatanappally: 3,
   },
 
   // ── TRIPRAYAR (THRIPRAYAR) ───────────────────────────────
@@ -416,7 +416,7 @@ export const schools: School[] = [
     address: 'Triprayar, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Science Lab', 'Computer Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 9,
+    distanceFromVatanappally: 8,
   },
   {
     id: 17, slug: 'sacred-heart-hss-triprayar',
@@ -429,7 +429,7 @@ export const schools: School[] = [
     address: 'Triprayar, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Labs', 'Chapel', 'Sports Ground', 'Arts Club', 'Library', 'Computer Lab'],
-    distanceFromVatanappally: 9,
+    distanceFromVatanappally: 8,
   },
 
   {
@@ -444,7 +444,7 @@ export const schools: School[] = [
     address: 'Triprayar, Thrissur, Kerala 680566',
     plusTwo: true,
     features: ['Computer Lab', 'Science Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 9.5,
+    distanceFromVatanappally: 8.5,
   },
 
   // ── VALAPAD ──────────────────────────────────────────────
@@ -488,19 +488,6 @@ export const schools: School[] = [
     plusTwo: true,
     features: ['Computer Lab', 'Science Lab', 'Library', 'Sports Ground', 'NSS'],
     distanceFromVatanappally: 0,
-  },
-  {
-    id: 21, slug: 'snm-hss-moothakunnam',
-    name: 'SNM Higher Secondary School, Moothakunnam',
-    town: 'Vatanappally', district: 'Thrissur',
-    board: ['Kerala State'], streams: ['Science', 'Commerce'],
-    medium: 'Malayalam', type: 'Aided', level: 'Higher Secondary',
-    established: 1975, classes: '8-12',
-    description: 'SNM aided school in Moothakunnam near Vatanappally, with strong Science and Commerce streams producing many engineering and medical entrance qualifiers.',
-    address: 'Moothakunnam, Vatanappally, Thrissur, Kerala 680614',
-    plusTwo: true,
-    features: ['Science Lab', 'Computer Lab', 'Library'],
-    distanceFromVatanappally: 1,
   },
   {
     id: 36, slug: 'madar-english-school-vatanappally',
