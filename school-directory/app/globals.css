@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #1a1a18;
+  --lime: #8BC53F;
+  --lime-dark: #6da32e;
+  --cream: #f5f2eb;
+  --cream-2: #ede9df;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--cream); color: var(--ink); font-family: 'Open Sans', sans-serif; }
+
+.sehr-btn {
+  background: var(--lime);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background .2s;
+}
+.sehr-btn:hover { background: var(--lime-dark); }
+
+.chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: .04em;
+}
+.chip-cbse { background: #dbeafe; color: #1e40af; }
+.chip-kerala { background: #dcfce7; color: #166534; }
+.chip-icse { background: #ede9fe; color: #5b21b6; }
+.chip-science { background: #fef9c3; color: #713f12; }
+.chip-commerce { background: #e0f2fe; color: #0369a1; }
+.chip-humanities { background: #fce7f3; color: #9d174d; }
+.chip-vocational { background: #f3e8ff; color: #6b21a8; }
+
+.school-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e1d8;
+  transition: box-shadow .2s, transform .2s;
+  overflow: hidden;
+}
+.school-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.10); transform: translateY(-2px); }
+
+.section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
