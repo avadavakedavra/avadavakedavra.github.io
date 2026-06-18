@@ -1,3 +1,3 @@
 :HL["/school-directory/_next/static/chunks/0maawx678jlai.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&display=swap","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"stream","param":null,"prefetchHints":0,"slots":{"children":{"name":"stream","param":{"type":"d","key":"commerce","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"UWmZLhqQr3BW1iue1ffiH"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"stream","param":null,"prefetchHints":0,"slots":{"children":{"name":"stream","param":{"type":"d","key":"commerce","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"2z5x8jb-fgXFGv33OF88P"}
