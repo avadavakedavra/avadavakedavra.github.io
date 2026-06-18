@@ -12,7 +12,7 @@ export default function Home() {
   const cbse = schools.filter(s => s.board.includes('CBSE')).length;
   const kerala = schools.filter(s => s.board.includes('Kerala State')).length;
   const plusTwo = schools.filter(s => s.plusTwo).length;
-  const featured = schools.filter(s => s.plusTwo).slice(0, 6);
+  const featured = [...schools].filter(s => s.plusTwo).sort((a,b) => a.distanceFromVatanappally - b.distanceFromVatanappally).slice(0, 6);
 
   return (<>
     {/* Hero */}
