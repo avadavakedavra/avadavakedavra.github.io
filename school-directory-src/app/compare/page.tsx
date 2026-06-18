@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default function ComparePage() {
-  const top8 = [...schools].sort((a, b) => a.town.localeCompare(b.town)).slice(0, 8);
+  const top8 = [...schools].sort((a, b) => a.distanceFromVatanappally - b.distanceFromVatanappally).slice(0, 8);
   const streamCls = (s: string) => ({ Science: 'chip-science', Commerce: 'chip-commerce', Humanities: 'chip-humanities', Vocational: 'chip-vocational' }[s] || 'chip-type');
 
   return (
@@ -18,7 +18,7 @@ export default function ComparePage() {
           <h1 style={{ fontSize: 'clamp(28px,4vw,52px)', fontWeight: 800, letterSpacing: '-2px', color: '#fff', lineHeight: .95, marginBottom: '12px' }}>
             Compare schools <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--lime)' }}>side by side</em>
           </h1>
-          <p style={{ fontSize: '14px', color: 'rgba(255,255,255,.4)' }}>8 schools compared by board, streams, medium and type.</p>
+          <p style={{ fontSize: '14px', color: 'rgba(255,255,255,.4)' }}>8 closest schools to Vatanappally compared by board, streams, medium and type.</p>
         </div>
       </section>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 40px' }}>
@@ -26,7 +26,7 @@ export default function ComparePage() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
             <thead>
               <tr style={{ background: 'var(--ink)' }}>
-                {['School', 'Location', 'Board', 'Streams', 'Medium', 'Type'].map(h => (
+                {['School', 'Distance', 'Board', 'Streams', 'Medium', 'Type'].map(h => (
                   <th key={h} style={{ padding: '14px 16px', textAlign: h === 'School' ? 'left' : 'center', fontSize: '9px', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)' }}>{h}</th>
                 ))}
               </tr>
@@ -38,7 +38,7 @@ export default function ComparePage() {
                     <a href={`/schools/${s.slug}/`} style={{ fontSize: '13px', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-.2px', display: 'block', marginBottom: '3px' }}>{s.name}</a>
                     <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600 }}>{s.town}</span>
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'center', fontSize: '13px', fontWeight: 800, color: 'var(--lime-2)' }}>{s.town}</td>
+                  <td style={{ padding: '16px', textAlign: 'center', fontSize: '13px', fontWeight: 800, color: 'var(--lime-2)' }}>{s.distanceFromVatanappally} km</td>
                   <td style={{ padding: '16px', textAlign: 'center' }}>
                     {s.board.map(b => {
                       const cls = b === 'CBSE' ? 'chip-cbse' : 'chip-kerala';

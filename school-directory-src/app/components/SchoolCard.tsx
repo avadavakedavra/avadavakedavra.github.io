@@ -16,7 +16,7 @@ export default function SchoolCard({ school }: { school: School }) {
       <div style={{ padding: '20px 22px', flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
           <h3 style={{ fontSize: '14px', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-.2px', lineHeight: 1.35 }}>{school.name}</h3>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--pale)', whiteSpace: 'nowrap', flexShrink: 0 }}>{school.level}</span>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--pale)', whiteSpace: 'nowrap', flexShrink: 0 }}>{school.distanceFromVatanappally} km</span>
         </div>
         <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '12px', fontWeight: 600 }}>
           {school.town} · {school.type}
