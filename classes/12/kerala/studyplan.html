@@ -164,8 +164,11 @@ img{max-width:100%}
 .sched-head{padding:10px 14px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--c3)}
 .sched-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
 .sched-slot{display:flex;align-items:flex-start;gap:10px}
-.sched-time{font-size:10px;font-weight:700;color:var(--mu);white-space:nowrap;min-width:68px;padding-top:1px}
+.sched-time{font-size:10px;font-weight:700;color:var(--mu);white-space:nowrap;min-width:72px;padding-top:1px}
 .sched-task{font-size:12px;color:var(--ink2);line-height:1.5}
+.sched-sehr{background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.25);border-radius:3px;padding:1px 6px;font-size:9.5px;font-weight:700;color:var(--l3);display:inline-block;margin-left:4px;vertical-align:middle;letter-spacing:.03em}
+.sched-slot.sehr-slot .sched-task{color:var(--l3);font-weight:600}
+.sched-slot.sehr-slot .sched-time{color:var(--l2);font-weight:800}
 
 /* ── TIPS LIST ── */
 .tips-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0}
@@ -990,28 +993,119 @@ header#site-header .sh-toggle svg{display:block}
 
     <!-- DAILY SCHEDULE -->
     <h2 class="art-h2" id="daily-schedule">Recommended Daily Study Schedules</h2>
-    <p class="art-p">Different phases of the year need different daily rhythms. Here are two templates — one for the school-going phase (June to December) and one for the intensive revision phase (January to March):</p>
+    <p class="art-p">School runs from 8 AM to 5 PM, which makes evenings and early mornings your primary study windows. The schedules below are built around this reality — with separate plans for <strong>weekdays, Friday, Saturday and Sunday</strong>, reflecting the full week including tuition and online class slots.</p>
 
+    <div class="callout callout-li" style="margin-bottom:20px">
+      <strong>Why the early morning slot matters most:</strong> The hour before school (7–8 AM) is the most undisturbed and cognitively sharp time of the day for most students. Students who use it consistently for Maths problems or concept review pull measurably ahead by November — before revision season even starts.
+    </div>
+
+    <!-- Weekday with tuition -->
+    <h3 class="art-h3" style="margin-top:0">Weekday — Tuition Days (3 days/week)</h3>
     <div class="schedule-grid">
       <div class="sched-card">
-        <div class="sched-head" style="background:#f0fdf4;color:#16a34a">School Days — June to December</div>
+        <div class="sched-head" style="background:#f0f7e3;color:#5e8a24">Mon / Wed / Thu — School + Morning Tuition</div>
         <div class="sched-body">
-          <div class="sched-slot"><div class="sched-time">5:30 – 6:30 AM</div><div class="sched-task">Morning — Maths problems (1 hour, daily without exception)</div></div>
-          <div class="sched-slot"><div class="sched-time">7:00 – 2:30 PM</div><div class="sched-task">School — pay full attention in class; make topic notes during free periods</div></div>
-          <div class="sched-slot"><div class="sched-time">4:30 – 6:30 PM</div><div class="sched-task">Main study block — cover 1 chapter section per day, with textbook + notebook</div></div>
-          <div class="sched-slot"><div class="sched-time">7:00 – 8:30 PM</div><div class="sched-task">Quick revision — re-read today's notes + previous day's notes. Biology diagram practice.</div></div>
-          <div class="sched-slot"><div class="sched-time">9:00 PM</div><div class="sched-task">Sleep — consistent sleep is non-negotiable for memory consolidation</div></div>
+          <div class="sched-slot sehr-slot">
+            <div class="sched-time">7:00 – 8:00 AM</div>
+            <div class="sched-task">SEHR Academy morning session <span class="sched-sehr">SEHR</span><br><span style="font-size:11px;color:var(--mu);font-weight:400">Guided chapter teaching or problem-solving — expert-led, focused 1 hour</span></div>
+          </div>
+          <div class="sched-slot"><div class="sched-time">8:00 AM – 5:00 PM</div><div class="sched-task">School — note down any concepts your tutor covered this morning that connect to school lessons; it reinforces both</div></div>
+          <div class="sched-slot"><div class="sched-time">5:30 – 6:30 PM</div><div class="sched-task">Re-read the chapter covered in morning tuition — while it is still fresh. Write 3–5 key points from memory</div></div>
+          <div class="sched-slot"><div class="sched-time">6:30 – 8:00 PM</div><div class="sched-task">Self-study — second subject of the day. Maths problems or Biology reading (alternate daily)</div></div>
+          <div class="sched-slot"><div class="sched-time">8:00 – 9:00 PM</div><div class="sched-task">Homework, assignments. Keep CE project work updated — these marks cost zero exam stress</div></div>
+          <div class="sched-slot"><div class="sched-time">9:30 PM</div><div class="sched-task">Sleep — 7.5 hrs minimum for memory to consolidate what you learned today</div></div>
+        </div>
+      </div>
+
+      <div class="sched-card">
+        <div class="sched-head" style="background:#f5f2eb;color:#4a4a46">Tue / Non-Tuition Weekdays</div>
+        <div class="sched-body">
+          <div class="sched-slot"><div class="sched-time">6:30 – 8:00 AM</div><div class="sched-task">Morning self-study — Maths problems (30 min) + quick revision of yesterday's notes (30 min). Do this before opening your phone</div></div>
+          <div class="sched-slot"><div class="sched-time">8:00 AM – 5:00 PM</div><div class="sched-task">School — sit front, ask doubts in class. A doubt asked in school costs nothing. The same doubt ignored costs marks</div></div>
+          <div class="sched-slot"><div class="sched-time">5:30 – 7:30 PM</div><div class="sched-task">Main study block — 1 new chapter section + textbook questions. Alternate subjects daily (Physics → Chemistry → Biology → Maths)</div></div>
+          <div class="sched-slot"><div class="sched-time">7:30 – 8:30 PM</div><div class="sched-task">Biology diagram practice or Chemistry name-reaction list (10 minutes each, rotating)</div></div>
+          <div class="sched-slot"><div class="sched-time">9:00 PM</div><div class="sched-task">Wrap up — check tomorrow's schedule, pack bag, sleep by 9:30 PM</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Friday + Saturday -->
+    <h3 class="art-h3">Friday &amp; Saturday — Online Class Evenings</h3>
+    <div class="schedule-grid">
+      <div class="sched-card">
+        <div class="sched-head" style="background:#eff6ff;color:#2563eb">Friday — School + Online Class Evening</div>
+        <div class="sched-body">
+          <div class="sched-slot"><div class="sched-time">6:30 – 8:00 AM</div><div class="sched-task">Morning revision — review the week's weakest subject before school</div></div>
+          <div class="sched-slot"><div class="sched-time">8:00 AM – 5:00 PM</div><div class="sched-task">School</div></div>
+          <div class="sched-slot"><div class="sched-time">5:30 – 7:45 PM</div><div class="sched-task">Self-study + prepare questions — review the subject that tonight's online class covers; note down anything you are unclear on so you can ask in the live session</div></div>
+          <div class="sched-slot sehr-slot">
+            <div class="sched-time">8:00 – 9:00 PM</div>
+            <div class="sched-task">SEHR Academy online class <span class="sched-sehr">SEHR · Online</span><br><span style="font-size:11px;color:var(--mu);font-weight:400">Live 1-hour subject session — attend with notebook, ask doubts, don't just watch</span></div>
+          </div>
+          <div class="sched-slot"><div class="sched-time">9:00 – 9:30 PM</div><div class="sched-task">Write a 5-line summary of what was taught in the online class — this forces active recall and cements the lesson</div></div>
+        </div>
+      </div>
+
+      <div class="sched-card">
+        <div class="sched-head" style="background:#eff6ff;color:#2563eb">Saturday — Study Day + Online Class</div>
+        <div class="sched-body">
+          <div class="sched-slot"><div class="sched-time">6:30 – 9:00 AM</div><div class="sched-task">Extended morning block — Maths paper practice (1 full hour) or 2 chapters of Biology reading</div></div>
+          <div class="sched-slot"><div class="sched-time">9:30 AM – 12:30 PM</div><div class="sched-task">Deep study — focus on your hardest subject of the week. No quick subjects here; use this time for the chapters that need real effort</div></div>
+          <div class="sched-slot"><div class="sched-time">1:30 – 4:30 PM</div><div class="sched-task">Second study block — previous year question paper solving (pick 1 subject each Saturday, rotate weekly)</div></div>
+          <div class="sched-slot"><div class="sched-time">5:00 – 7:45 PM</div><div class="sched-task">Break + light review. Prepare for the evening online session — skim the chapter, note open questions</div></div>
+          <div class="sched-slot sehr-slot">
+            <div class="sched-time">8:00 – 9:00 PM</div>
+            <div class="sched-task">SEHR Academy online class <span class="sched-sehr">SEHR · Online</span><br><span style="font-size:11px;color:var(--mu);font-weight:400">Live 1-hour subject session — different subject from Friday's class</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sunday -->
+    <h3 class="art-h3">Sunday — Full-Day Classes</h3>
+    <div class="schedule-grid" style="grid-template-columns:1fr">
+      <div class="sched-card">
+        <div class="sched-head" style="background:#f0f7e3;color:#5e8a24">Sunday — SEHR Academy Full-Day Session (8 AM – 5 PM)</div>
+        <div class="sched-body">
+          <div class="sched-slot sehr-slot">
+            <div class="sched-time">8:00 AM – 5:00 PM</div>
+            <div class="sched-task">SEHR Academy Sunday full-day session <span class="sched-sehr">SEHR · Full Day</span><br><span style="font-size:11px;color:var(--mu);font-weight:400">Structured teaching across subjects — the equivalent of a full week of self-study, delivered in one focused day with expert guidance, doubt-clearing, and topic tests</span></div>
+          </div>
+          <div class="sched-slot"><div class="sched-time">5:30 – 7:00 PM</div><div class="sched-task">Evening wind-down — light review of what was covered today. Do not start new topics; let the day's learning settle. Re-read your notes from the morning session</div></div>
+          <div class="sched-slot"><div class="sched-time">7:00 – 8:00 PM</div><div class="sched-task">Weekly planning — mark what chapters you have completed this week, set targets for the coming week. Students who plan their week on Sunday consistently stay ahead of those who don't</div></div>
+          <div class="sched-slot"><div class="sched-time">9:00 PM</div><div class="sched-task">Early sleep — Monday school starts at 8 AM and a rested start to the week matters</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-am" style="margin-top:4px">
+      <strong>The weekly structure at a glance:</strong> 3 morning tuition sessions (7–8 AM) + 2 online evening classes (Fri &amp; Sat, 8–9 PM) + 1 full Sunday session = roughly <strong>12 hours of structured guided study every week</strong> in addition to school. Students who combine this with consistent self-study in the time blocks above have the most complete preparation structure available in Vadanappally.
+    </div>
+
+    <!-- Revision Phase -->
+    <h3 class="art-h3">January–February — Revision Phase Daily Schedule</h3>
+    <div class="schedule-grid">
+      <div class="sched-card">
+        <div class="sched-head" style="background:#fffbeb;color:#d97706">Weekdays — January &amp; February</div>
+        <div class="sched-body">
+          <div class="sched-slot sehr-slot">
+            <div class="sched-time">7:00 – 8:00 AM</div>
+            <div class="sched-task">SEHR morning session (tuition days) <span class="sched-sehr">SEHR</span> — mock test review or doubt-clearing on model exam mistakes</div>
+          </div>
+          <div class="sched-slot"><div class="sched-time">8:00 AM – 5:00 PM</div><div class="sched-task">School — January has model exams; use school prep periods productively</div></div>
+          <div class="sched-slot"><div class="sched-time">5:30 – 7:30 PM</div><div class="sched-task">Revision — chapter-wise previous year questions (not re-reading; only active practice)</div></div>
+          <div class="sched-slot"><div class="sched-time">8:00 – 9:00 PM</div><div class="sched-task">Formula/key-point revision cards — not new content, pure reinforcement. 20 min per subject in rotation</div></div>
         </div>
       </div>
       <div class="sched-card">
-        <div class="sched-head" style="background:#fffbeb;color:#d97706">Revision Phase — January &amp; February</div>
+        <div class="sched-head" style="background:#fffbeb;color:#d97706">Sundays — January &amp; February</div>
         <div class="sched-body">
-          <div class="sched-slot"><div class="sched-time">5:30 – 7:30 AM</div><div class="sched-task">Maths full paper (1 hour) or Physics numericals (1 hour)</div></div>
-          <div class="sched-slot"><div class="sched-time">8:00 – 10:30 AM</div><div class="sched-task">Chemistry — chapter revision with previous year questions</div></div>
-          <div class="sched-slot"><div class="sched-time">11:00 AM – 1:00 PM</div><div class="sched-task">Biology — diagram revision + chapter summary re-read</div></div>
-          <div class="sched-slot"><div class="sched-time">2:30 – 5:00 PM</div><div class="sched-task">Physics — chapter revision + numerical sets</div></div>
-          <div class="sched-slot"><div class="sched-time">5:30 – 7:00 PM</div><div class="sched-task">English or weakest subject of the week</div></div>
-          <div class="sched-slot"><div class="sched-time">8:00 – 9:30 PM</div><div class="sched-task">Formula/key-point review — not new learning, just reinforcement</div></div>
+          <div class="sched-slot sehr-slot">
+            <div class="sched-time">8:00 AM – 5:00 PM</div>
+            <div class="sched-task">SEHR Academy Sunday session <span class="sched-sehr">SEHR · Full Day</span> — by now focused on mock tests, question paper analysis, and targeted chapter revision based on model exam results</div>
+          </div>
+          <div class="sched-slot"><div class="sched-time">5:30 – 7:30 PM</div><div class="sched-task">Review the day's mock test results — mark every question you got wrong, identify if it was a concept gap or a silly error, fix accordingly</div></div>
+          <div class="sched-slot"><div class="sched-time">8:00 PM</div><div class="sched-task">Prepare the week's subject priority list — which chapters need the most attention this coming week based on today's performance</div></div>
         </div>
       </div>
     </div>
@@ -1036,20 +1130,21 @@ header#site-header .sh-toggle svg{display:block}
     <!-- TIPS -->
     <h2 class="art-h2" id="tips">Exam Strategy — Kerala DHSE Specific Tips</h2>
     <ul class="tips-list">
-      <li><span class="tip-num">1</span><span><strong>Kerala DHSE rewards structured answers.</strong> Long-answer questions (5 marks) are evaluated with a specific answer scheme. Write answers in the same logical order as the textbook presents concepts — the evaluator is cross-checking against a fixed key. Structured, sequential answers score higher than verbose but disorganised ones.</span></li>
-      <li><span class="tip-num">2</span><span><strong>Diagrams in Biology are mark-generators, not decorations.</strong> A well-labelled diagram in a 3-mark Biology question typically earns 1 full mark even if the written explanation is incomplete. Never write a Biology long answer without at least one diagram. Key diagrams: reproductive organs, DNA replication, lac operon, neuron, ecosystem pyramid, pollen grain TS.</span></li>
-      <li><span class="tip-num">3</span><span><strong>Show every step in Physics and Chemistry numericals.</strong> DHSE uses step-marking for numerical problems — each correct formula, substitution, and unit gets partial marks even if the final answer is wrong. A careless student who skips steps and gets the right answer can score less than a careful student who shows all steps and makes one arithmetic error.</span></li>
-      <li><span class="tip-num">4</span><span><strong>Use the reading time wisely.</strong> Each paper has 15 minutes of reading time before you can write. Read every question. Identify which 5-mark questions you are strongest in and plan your sequence. In Maths, scan for choice questions and decide which alternative to attempt before picking up your pen.</span></li>
-      <li><span class="tip-num">5</span><span><strong>Previous year papers are your most important resource.</strong> The Kerala DHSE question pattern is highly consistent year to year. Questions on specific topics (Kirchhoff's laws, Nernst equation, Mendelian genetics, integration by parts) appear repeatedly in different forms. Solving 5 years of papers tells you exactly what is guaranteed to come.</span></li>
-      <li><span class="tip-num">6</span><span><strong>Do not neglect English and score free marks.</strong> English Core in HSE is one of the most scoring papers — the reading comprehension, letter writing and grammar sections are highly predictable in format. Students who practise format-based questions for 30 minutes a week from October onwards regularly score 75+ out of 80 in the theory paper. Do not leave English preparation for the last week.</span></li>
+      <li><span class="tip-num">1</span><span><strong>Kerala DHSE rewards structured answers.</strong> Long-answer questions (5 marks) are evaluated with a specific answer scheme. Write answers in the same logical order as the textbook presents concepts — the evaluator is cross-checking against a fixed key. Structured, sequential answers score higher than verbose but disorganised ones. Practise this in tuition sessions — writing answers under teacher review is far more useful than writing them alone.</span></li>
+      <li><span class="tip-num">2</span><span><strong>Diagrams in Biology are mark-generators, not decorations.</strong> A well-labelled diagram in a 3-mark Biology question typically earns 1 full mark even if the written explanation is incomplete. Never write a Biology long answer without at least one diagram. Key diagrams: reproductive organs, DNA replication, lac operon, neuron, ecosystem pyramid, pollen grain TS. The Sunday full-day sessions are ideal for drilling diagram accuracy under supervision.</span></li>
+      <li><span class="tip-num">3</span><span><strong>Show every step in Physics and Chemistry numericals.</strong> DHSE uses step-marking for numerical problems — each correct formula, substitution, and unit gets partial marks even if the final answer is wrong. A careless student who skips steps and gets the right answer can score less than a careful student who shows all steps and makes one arithmetic error. Regular guided practice with a teacher spotting your shortcut habits eliminates this early.</span></li>
+      <li><span class="tip-num">4</span><span><strong>Use the reading time wisely.</strong> Each paper has 15 minutes of reading time before you can write. Read every question. Identify which 5-mark questions you are strongest in and plan your sequence. In Maths, scan for choice questions and decide which alternative to attempt before picking up your pen. Simulate this habit during every mock test you take.</span></li>
+      <li><span class="tip-num">5</span><span><strong>Previous year papers are your most important resource.</strong> The Kerala DHSE question pattern is highly consistent year to year. Questions on specific topics (Kirchhoff's laws, Nernst equation, Mendelian genetics, integration by parts) appear repeatedly in different forms. Solving 5 years of papers tells you exactly what is guaranteed to come. The online classes on Friday and Saturday evenings are particularly useful for working through previous year questions in real time with a teacher.</span></li>
+      <li><span class="tip-num">6</span><span><strong>Doubts left unresolved become marks lost.</strong> A doubt in Physics that lingers from August costs you a 5-mark question in March. The most common reason students underperform relative to their effort is uncleared doubts that quietly compound. Getting an hour of guided teaching every morning — before school, when the mind is fresh — is one of the most effective ways to prevent this.</span></li>
+      <li><span class="tip-num">7</span><span><strong>Do not neglect English and score free marks.</strong> English Core in HSE is one of the most scoring papers — the reading comprehension, letter writing and grammar sections are highly predictable in format. Students who practise format-based questions for 30 minutes a week from October onwards regularly score 75+ out of 80 in the theory paper. Do not leave English preparation for the last week.</span></li>
     </ul>
 
     <!-- BOTTOM CTA -->
     <div class="bottom-cta">
       <div class="bcta-inner">
         <div class="bcta-tag">Enrol at SEHR Academy · Vadanappally</div>
-        <h2 class="bcta-h">Need Help Following<br><em>This Study Plan?</em></h2>
-        <p class="bcta-p">SEHR Academy offers personalised one-on-one and small-group tuition for Kerala HSE Plus Two Science students in Physics, Chemistry, Biology and Mathematics. We track your chapter progress, set weekly targets, and prepare you for both DHSE board exams and NEET.</p>
+        <h2 class="bcta-h">The Schedules Above Work<br><em>Better With a Teacher</em></h2>
+        <p class="bcta-p">This study plan is designed to work for self-motivated students. But the students who consistently follow it without falling behind are the ones with structured guided sessions built into their week — not just motivation. SEHR Academy's morning sessions, Sunday full-day classes and live online sessions are designed to slot into exactly the time blocks described above.</p>
         <a href="https://sehracademy.com/enquirenow" class="bcta-btn">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="14" height="14"><path d="M22 16.92v3a2 2 0 01-1.37 1.89A19.72 19.72 0 0112 22a19.72 19.72 0 01-8.63-3.07 19.5 19.5 0 01-3.07-3.07A19.72 19.72 0 012 8a2 2 0 011.92-1.37h3a2 2 0 012 1.72 12.6 12.6 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 14a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.6 12.6 0 002.81.7A2 2 0 0122 16.92z"/></svg>
           Enquire Now — +91 95394 09586
