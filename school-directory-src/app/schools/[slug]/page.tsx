@@ -68,6 +68,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ slug: s
                 ['Established', String(school.established)],
                 ['Distance', `${school.distanceFromVatanappally} km from Vatanappally`],
                 ['Level', school.level],
+                ...(school.googleRating ? [['Google Rating', `★ ${school.googleRating.toFixed(1)} (${school.googleRatingCount} reviews)`]] : []),
               ].map(([label, value]) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--rule)', paddingBottom: '10px' }}>
                   <dt style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 600 }}>{label}</dt>

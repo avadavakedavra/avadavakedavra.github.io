@@ -18,9 +18,17 @@ export default function SchoolCard({ school }: { school: School }) {
           <h3 style={{ fontSize: '14px', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-.2px', lineHeight: 1.35 }}>{school.name}</h3>
           <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--pale)', whiteSpace: 'nowrap', flexShrink: 0 }}>{school.distanceFromVatanappally} km</span>
         </div>
-        <p style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '12px', fontWeight: 600 }}>
-          {school.town} · {school.type}
-        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <p style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 600, margin: 0 }}>
+            {school.town} · {school.type}
+          </p>
+          {school.googleRating && (
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', whiteSpace: 'nowrap' }}>
+              ★ {school.googleRating.toFixed(1)}
+              <span style={{ fontWeight: 400, color: 'var(--pale)', marginLeft: '2px' }}>({school.googleRatingCount})</span>
+            </span>
+          )}
+        </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '12px' }}>
           {school.board.map(boardChip)}
           {school.streams.map(streamChip)}
