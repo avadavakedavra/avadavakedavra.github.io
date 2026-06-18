@@ -164,7 +164,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 2.5,
+    distanceFromVatanappally: 6.5,
   },
   {
     id: 8, slug: 'national-hss-engandiyur',
@@ -177,7 +177,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 2,
+    distanceFromVatanappally: 6.5,
   },
   {
     id: 26, slug: 'st-thomas-hss-engandiyur',
@@ -190,7 +190,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Science Lab', 'Computer Lab', 'Library', 'Chapel', 'Sports Ground'],
-    distanceFromVatanappally: 2.5,
+    distanceFromVatanappally: 7,
   },
   {
     id: 27, slug: 'saraswathy-vidyanikethan-engandiyur',
@@ -203,7 +203,7 @@ export const schools: School[] = [
     address: 'Engandiyur, Thrissur, Kerala 680615',
     plusTwo: true,
     features: ['Computer Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 3,
+    distanceFromVatanappally: 7,
   },
 
   // ── KANJANI ──────────────────────────────────────────────
@@ -247,7 +247,7 @@ export const schools: School[] = [
     address: 'Kandassankadavu, Thrissur, Kerala 680613',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 6,
+    distanceFromVatanappally: 11,
   },
 
   // ── NATTIKA ──────────────────────────────────────────────
@@ -358,7 +358,7 @@ export const schools: School[] = [
     address: 'Edassery PO, Thalikulam, Thrissur, Kerala 680569',
     plusTwo: true,
     features: ['Computer Lab', 'Science Lab', 'Library', 'Sports Ground'],
-    distanceFromVatanappally: 5,
+    distanceFromVatanappally: 5.5,
   },
   {
     id: 33, slug: 'blooming-buds-thalikulam',
@@ -387,7 +387,7 @@ export const schools: School[] = [
     address: 'Thrithalloor, Thrissur, Kerala 680619',
     plusTwo: true,
     features: ['Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 3.5,
+    distanceFromVatanappally: 3,
   },
 
   {
@@ -401,7 +401,7 @@ export const schools: School[] = [
     address: 'Thrithalloor, Thrissur, Kerala 680619',
     plusTwo: true,
     features: ['Vocational Workshop', 'Science Lab', 'Library', 'Sports Ground', 'NSS'],
-    distanceFromVatanappally: 3,
+    distanceFromVatanappally: 2.5,
   },
 
   // ── TRIPRAYAR (THRIPRAYAR) ───────────────────────────────
@@ -493,7 +493,7 @@ export const schools: School[] = [
     id: 36, slug: 'madar-english-school-vatanappally',
     name: 'Madar English School, Vatanappally',
     town: 'Vatanappally', district: 'Thrissur',
-    board: ['Kerala State'], streams: ['Science', 'Commerce'],
+    board: ['CBSE'], streams: ['Science', 'Commerce'],
     medium: 'English', type: 'Unaided', level: 'Higher Secondary',
     established: 1988, classes: '1-12',
     description: 'Private English-medium school in Vatanappally offering Science and Commerce streams at Plus Two level, one of the key unaided schools in the panchayath.',

@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fboard\u002F[board]","\u002Flocation\u002F[town]","\u002Fschools\u002F[slug]","\u002Fstream\u002F[stream]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
