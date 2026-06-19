@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Records — SEHR Academy Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
+  --white:#fdfcfa;--ink:#1a1a18;--ink-2:#2e2e2b;--ink-3:#4a4a46;
+  --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+  --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;--lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+  --red:#dc2626;--red-bg:#fef2f2;--red-mid:#fca5a5;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-mid:#fde68a;
+  --blue:#2563eb;--blue-bg:#eff6ff;--blue-mid:#bfdbfe;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s var(--ease);opacity:0;pointer-events:none}
+#loader.on{opacity:1;pointer-events:all}
+#loader::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+.ld{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.ld-brand{font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:36px;display:flex;align-items:center;gap:10px}
+.ld-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.6)}50%{box-shadow:0 0 0 8px rgba(139,197,63,0)}}
+.ld-ring{position:relative;width:64px;height:64px;margin-bottom:32px}
+.ldr-track{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.07)}
+.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(139,197,63,.3);animation:rspin .9s linear infinite}
+.ldr-inner{position:absolute;inset:11px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(139,197,63,.4);animation:rspin .9s linear infinite reverse}
+.ldr-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px rgba(139,197,63,.6)}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ld-txt{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;animation:ltxt 1.8s ease-in-out infinite}
+@keyframes ltxt{0%,100%{opacity:.3}50%{opacity:.7}}
+.ld-bar{width:150px;height:1px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--lime-3),var(--lime),#a6dc52);animation:lfill 1.4s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes lfill{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
+
+/* LOGIN */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400}
+#loginWrap.gone{display:none}
+#loginWrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--rule)1px,transparent 1px),linear-gradient(90deg,var(--rule)1px,transparent 1px);background-size:48px 48px;opacity:.3}
+.lbox{position:relative;z-index:1;background:var(--white);border:1.5px solid var(--cream-3);border-left:4px solid var(--lime);border-radius:4px;width:100%;max-width:370px;box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 28px 22px;position:relative;overflow:hidden}
+.lbox-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.lbox-logo{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px;display:flex;align-items:center;gap:7px;position:relative;z-index:1}
+.lbox-logodot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
+.lbox-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1;position:relative;z-index:1}
+.lbox-sub{font-size:11px;color:rgba(255,255,255,.3);margin-top:4px;position:relative;z-index:1}
+.lbox-body{padding:24px 28px 28px}
+.lbox-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.lbox-label svg{width:11px;height:11px;color:var(--lime)}
+.lbox-input{width:100%;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.lbox-input::placeholder{color:var(--pale);font-weight:400}
+.lbox-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.lbox-btn:hover:not(:disabled){background:var(--lime-2)}
+.lbox-btn:disabled{opacity:.6;cursor:default}
+.lbox-btn svg{width:13px;height:13px}
+.lbox-err{display:none;margin-top:12px;padding:9px 12px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:4px;font-size:12px;font-weight:600;color:var(--red)}
+.lbox-err.on{display:block}
+
+/* APP */
+#app{display:none}
+#app.on{display:block}
+.wrap{max-width:1440px;margin:0 auto;padding:0 32px 80px}
+
+/* TOPBAR */
+.topbar{background:var(--ink);margin:0 -32px;padding:0 32px;position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%);pointer-events:none}
+.tb-bg{position:absolute;right:0;bottom:-28px;font-size:180px;font-weight:800;letter-spacing:-8px;color:rgba(255,255,255,.035);pointer-events:none;user-select:none;white-space:nowrap;line-height:1}
+.tb-inner{padding:40px 0 34px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;position:relative;z-index:1;flex-wrap:wrap}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tb-kicker-rule{width:22px;height:2px;background:var(--lime)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.9}
+.tb-title{font-size:clamp(28px,3.2vw,48px);font-weight:800;letter-spacing:-1.8px;color:#fff;line-height:.95;margin-bottom:8px}
+.tb-title i{font-style:italic;font-weight:400;color:var(--lime)}
+.tb-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.38)}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+.tb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.abt{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);font-family:var(--f);font-size:12px;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;transition:all .18s;white-space:nowrap}
+.abt:hover{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.25)}
+.abt.lime{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.abt.lime:hover{background:var(--lime-2)}
+.abt svg{width:13px;height:13px}
+
+/* SECTION DIVIDER */
+.sec{display:flex;align-items:center;gap:12px;margin:36px 0 18px}
+.sec-rule{flex:1;height:1px;background:var(--rule)}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.sec-txt{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
+
+/* STAT STRIP */
+.stat-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-top:24px;box-shadow:var(--sh-md)}
+.stat-card{background:var(--white);padding:20px 22px;position:relative;overflow:hidden;transition:background .15s}
+.stat-card:hover{background:var(--cream)}
+.stat-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px}
+.stat-card-lbl{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);margin-bottom:8px}
+.stat-card-val{font-size:clamp(17px,1.8vw,24px);font-weight:700;letter-spacing:-1px;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.stat-card-sub{font-size:10px;color:var(--muted)}
+.v-grn{color:var(--lime-2)}.v-red{color:var(--red)}.v-amb{color:var(--amber)}.v-blu{color:var(--blue)}.v-ink{color:var(--ink)}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.srch{position:relative;flex:1;min-width:180px;max-width:320px}
+.srch svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--pale);pointer-events:none}
+.srch input{width:100%;padding:10px 12px 10px 32px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:13px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s}
+.srch input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
+.srch input::placeholder{color:var(--pale)}
+.fsel{padding:10px 26px 10px 11px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink-2);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;cursor:pointer;outline:none;transition:border-color .18s}
+.fsel:focus{border-color:var(--lime)}
+.res-lbl{font-size:11px;color:var(--pale);white-space:nowrap;margin-left:auto}
+
+/* TABLE */
+.tbl-wrap{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;overflow:hidden;box-shadow:var(--sh)}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:var(--cream);border-bottom:2px solid var(--cream-3)}
+th{padding:10px 13px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;white-space:nowrap;user-select:none}
+td{padding:11px 13px;border-top:1px solid var(--rule);vertical-align:middle;white-space:nowrap}
+tbody tr:hover{background:var(--cream)}
+.av{width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid var(--rule);background:var(--cream-2);display:block}
+.av-init{width:36px;height:36px;border-radius:50%;background:var(--cream-2);border:1.5px solid var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(139,197,63,.6)}
+.scell{display:flex;align-items:center;gap:9px}
+.sname{font-weight:700;color:var(--ink);font-size:13px}
+.sadm{font-size:10px;color:var(--pale);margin-top:1px}
+.pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700}
+.pill .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pACTIVE{background:rgba(139,197,63,.12);color:var(--lime-2)}
+.pINACTIVE{background:var(--cream-2);color:var(--muted)}
+.pCLEARED{background:rgba(139,197,63,.12);color:var(--lime-2)}
+.pOVERDUE{background:rgba(220,38,38,.1);color:var(--red)}
+.pSCHOLARSHIP{background:var(--blue-bg);color:var(--blue)}
+.pPENDING,.pUPCOMING{background:var(--amber-bg);color:var(--amber)}
+.cls-badge{display:inline-flex;gap:4px;align-items:center}
+.syl-tag{display:inline-block;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700;background:var(--cream-2);color:var(--muted);letter-spacing:.05em}
+.syl-tag.STATE{background:var(--amber-bg);color:var(--amber)}
+.syl-tag.CBSE{background:var(--blue-bg);color:var(--blue)}
+.fee-bar-wrap{min-width:100px}
+.fee-bar-nums{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:3px}
+.fee-bar-track{height:5px;background:var(--cream-2);border-radius:3px;overflow:hidden}
+.fee-bar-fill{height:100%;border-radius:3px;transition:width .6s var(--ease)}
+.act-btns{display:flex;gap:5px;align-items:center}
+.ibtn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:3px;border:1px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:11px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:all .14s;white-space:nowrap}
+.ibtn:hover{border-color:var(--lime-mid);background:var(--lime-bg);color:var(--lime-2)}
+.ibtn.red:hover{border-color:var(--red-mid);background:var(--red-bg);color:var(--red)}
+.ibtn.pay:hover{border-color:var(--blue-mid);background:var(--blue-bg);color:var(--blue)}
+.ibtn svg{width:11px;height:11px}
+.del-confirm{display:flex;align-items:center;gap:6px;font-size:11px}
+.del-confirm .dc-msg{color:var(--red);font-weight:600}
+.dc-yes{padding:4px 10px;border:1px solid var(--red-mid);background:var(--red);color:#fff;border-radius:3px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer}
+.dc-no{padding:4px 10px;border:1px solid var(--cream-3);background:var(--white);color:var(--ink-2);border-radius:3px;font-family:var(--f);font-size:11px;font-weight:600;cursor:pointer}
+.tbl-foot{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--cream);border-top:1px solid var(--rule);font-size:11px;color:var(--pale);flex-wrap:wrap;gap:8px}
+.empty-row td{padding:52px 32px;text-align:center}
+.empty-ico{width:48px;height:48px;border-radius:50%;background:var(--cream);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.empty-ico svg{width:22px;height:22px;color:var(--pale)}
+.empty-h{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.empty-p{font-size:12px;color:var(--muted)}
+
+/* DRAWER */
+#drawerOverlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;opacity:0;pointer-events:none;transition:opacity .28s var(--ease);backdrop-filter:blur(2px)}
+#drawerOverlay.on{opacity:1;pointer-events:all}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:520px;max-width:100vw;background:var(--white);z-index:501;transform:translateX(100%);transition:transform .32s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.18)}
+#drawer.on{transform:translateX(0)}
+.drw-head{background:var(--ink);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;overflow:hidden}
+.drw-head::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.drw-head::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.drw-title{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px;position:relative;z-index:1}
+.drw-title span{color:var(--lime);font-style:italic;font-weight:400}
+.drw-close{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative;z-index:1;flex-shrink:0}
+.drw-close:hover{background:rgba(255,255,255,.18);color:#fff}
+.drw-close svg{width:14px;height:14px}
+.drw-tabs{display:flex;border-bottom:1px solid var(--rule);padding:0 24px;flex-shrink:0;background:var(--cream)}
+.drw-tab{padding:12px 16px;font-family:var(--f);font-size:12px;font-weight:700;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .16s;letter-spacing:.02em}
+.drw-tab.on{color:var(--lime-2);border-bottom-color:var(--lime)}
+.drw-tab:hover:not(.on){color:var(--ink-2)}
+.drw-body{flex:1;overflow-y:auto;padding:24px}
+.drw-foot{padding:16px 24px;border-top:1px solid var(--rule);display:flex;gap:8px;flex-shrink:0;background:var(--cream)}
+.drw-save{flex:1;padding:12px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;box-shadow:0 4px 12px rgba(139,197,63,.28)}
+.drw-save:hover{background:var(--lime-2)}
+.drw-save:disabled{opacity:.55;cursor:default}
+.drw-cancel{padding:12px 20px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);color:var(--ink-2);font-family:var(--f);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.drw-cancel:hover{border-color:var(--rule);background:var(--cream)}
+.tab-pane{display:none}
+.tab-pane.on{display:block}
+.fgroup{margin-bottom:18px}
+.fgroup:last-child{margin-bottom:0}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.flabel{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.flabel .req{color:var(--lime-2);font-size:12px;line-height:1}
+.finput{width:100%;padding:10px 12px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:13px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.finput:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.1);background:var(--white)}
+.finput::placeholder{color:var(--pale);font-weight:400}
+.finput.err{border-color:var(--red)}
+textarea.finput{resize:vertical;min-height:80px}
+select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer}
+.photo-preview{margin-top:8px;display:none}
+.photo-preview img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--rule)}
+.fsec-title{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-2);padding:12px 0 6px;border-bottom:1px solid var(--rule);margin-bottom:16px}
+
+/* QUICK PAY PANEL */
+.qp-panel{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:16px 18px;margin-bottom:18px;box-shadow:var(--sh-sm)}
+.qp-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.qp-sel-wrap{position:relative}
+.qp-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--white);border:1px solid var(--rule);border-radius:7px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:220px;overflow-y:auto;display:none}
+.qp-dropdown.open{display:block}
+.qp-opt{padding:9px 12px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--rule);color:var(--ink);transition:background .1s}
+.qp-opt:last-child{border-bottom:none}
+.qp-opt:hover,.qp-opt.sel{background:rgba(139,197,63,.08);color:var(--ink)}
+.qp-opt-name{font-weight:700}
+.qp-opt-meta{font-size:11px;color:var(--muted);margin-top:1px}
+.qp-info{padding:8px 12px;background:rgba(139,197,63,.07);border:1px solid rgba(139,197,63,.2);border-radius:6px;font-size:12px;color:var(--ink);margin-top:8px}
+.qp-info.hidden{display:none}
+
+/* PAYMENTS MODAL */
+#pmOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+#pmOverlay.on{display:flex}
+.pm-modal{background:var(--white);border-radius:8px;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+.pm-head{background:var(--ink);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;overflow:hidden}
+.pm-head::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.pm-head::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#60a5fa)}
+.pm-title{font-size:14px;font-weight:800;color:#fff;position:relative;z-index:1}
+.pm-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;position:relative;z-index:1}
+.pm-close{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative;z-index:1;flex-shrink:0}
+.pm-close:hover{background:rgba(255,255,255,.18);color:#fff}
+.pm-close svg{width:13px;height:13px}
+.pm-body{flex:1;overflow-y:auto;padding:20px}
+.pm-hist-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);margin-bottom:10px}
+.pm-tbl-wrap{border:1px solid var(--rule);border-radius:5px;overflow:hidden;margin-bottom:20px}
+.pm-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.pm-tbl th{padding:8px 12px;background:var(--cream);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;border-bottom:1px solid var(--rule)}
+.pm-tbl td{padding:10px 12px;border-top:1px solid var(--rule);color:var(--ink-2)}
+.pm-tbl tbody tr:hover{background:var(--cream)}
+.pm-empty{padding:28px;text-align:center;font-size:12px;color:var(--muted)}
+.pm-add-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;padding-top:4px;border-top:1px solid var(--rule)}
+.pm-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.pm-form-row.thirds{grid-template-columns:1fr 1fr 1fr}
+.pm-submit{width:100%;padding:11px;border:none;border-radius:4px;background:var(--blue);color:#fff;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;margin-top:4px}
+.pm-submit:hover{background:#1d4ed8}
+.pm-submit:disabled{opacity:.55;cursor:default}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink-2);color:#fff;padding:12px 20px;border-radius:5px;border-left:4px solid var(--lime);font-size:13px;font-weight:600;z-index:700;opacity:0;transition:all .3s var(--ease);white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{border-left-color:var(--red)}
+
+/* FOOTER */
+.foot{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-brand{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--ink-2)}
+.foot-brand span{color:var(--lime)}
+.foot-links{display:flex;gap:16px;font-size:11px}
+.foot-links a{color:var(--muted);text-decoration:none;transition:color .18s}
+.foot-links a:hover{color:var(--lime-2)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .wrap{padding:0 18px 64px}
+  .topbar{margin:0 -18px;padding:0 18px}
+  .tb-bg{display:none}
+  .stat-strip{grid-template-columns:repeat(2,1fr)}
+  #drawer{width:100vw}
+}
+@media(max-width:640px){
+  .wrap{padding:0 14px 56px}
+  .topbar{margin:0 -14px;padding:0 14px}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .srch{max-width:none}
+  .res-lbl{margin-left:0}
+  .frow{grid-template-columns:1fr}
+  .pm-form-row,.pm-form-row.thirds{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="ld">
+    <div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div>
+    <div class="ld-ring"><div class="ldr-track"></div><div class="ldr-spin"></div><div class="ldr-inner"></div><div class="ldr-dot"></div></div>
+    <div class="ld-txt">Loading student records</div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
+  </div>
+</div>
+
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-logo"><div class="lbox-logodot"></div>SEHR Academy</div>
+      <div class="lbox-title">Student Records</div>
+      <div class="lbox-sub">Admin access required</div>
+    </div>
+    <div class="lbox-body">
+      <form id="loginForm">
+        <div class="lbox-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Admin Password
+        </div>
+        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" id="loginBtn" class="lbox-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Access Records
+        </button>
+        <div class="lbox-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="tb-bg">RECORDS</div>
+    <div class="tb-inner">
+      <div>
+        <div class="tb-kicker"><div class="tb-kicker-rule"></div><span class="tb-kicker-txt">SEHR Academy &nbsp;·&nbsp; Admin Records</span></div>
+        <div class="tb-title">Student <i>Records</i></div>
+        <div class="tb-meta">
+          <span class="tb-sub" id="pageSub">—</span>
+          <span class="tb-pill">Live</span>
+        </div>
+      </div>
+      <div class="tb-actions">
+        <button class="abt lime" id="btnAdd">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>+ Add Student
+        </button>
+        <button class="abt" id="btnRefresh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Refresh
+        </button>
+        <button class="abt" id="btnLogout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Strip -->
+  <div class="stat-strip" id="statStrip">
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--lime)"></div><div class="stat-card-lbl">Total Students</div><div class="stat-card-val v-ink" id="statTotal">—</div><div class="stat-card-sub">all records</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--lime)"></div><div class="stat-card-lbl">Active</div><div class="stat-card-val v-grn" id="statActive">—</div><div class="stat-card-sub">currently enrolled</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--red)"></div><div class="stat-card-lbl">Fee Overdue</div><div class="stat-card-val v-red" id="statOverdue">—</div><div class="stat-card-sub">requires follow-up</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--lime)"></div><div class="stat-card-lbl">Total Collected</div><div class="stat-card-val v-grn" id="statCollected">—</div><div class="stat-card-sub">from active students</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--blue)"></div><div class="stat-card-lbl">Covered (Earned)</div><div class="stat-card-val v-blu" id="statCovered">—</div><div class="stat-card-sub" id="statCoveredSub">classes delivered</div></div>
+  </div>
+
+  <!-- Quick Add Payment -->
+  <div class="sec"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Record Payment</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+  <div class="qp-panel" id="qpPanel">
+    <div class="qp-row">
+      <div class="fgroup" style="flex:2;min-width:160px">
+        <div class="flabel">Student</div>
+        <div class="qp-sel-wrap">
+          <input type="text" class="finput" id="qp_search" placeholder="Type name to search…" autocomplete="off" oninput="qpFilter()" onfocus="qpFilter()">
+          <div class="qp-dropdown" id="qpDropdown"></div>
+        </div>
+        <input type="hidden" id="qp_student_id">
+      </div>
+      <div class="fgroup" style="flex:1;min-width:100px">
+        <div class="flabel">Amount (₹)</div>
+        <input type="number" class="finput" id="qp_amount" placeholder="0" min="0">
+      </div>
+      <div class="fgroup" style="flex:1;min-width:100px">
+        <div class="flabel">Date</div>
+        <input type="date" class="finput" id="qp_date">
+      </div>
+      <div class="fgroup" style="flex:1;min-width:100px">
+        <div class="flabel">Mode</div>
+        <select class="finput" id="qp_mode">
+          <option value="Cash">Cash</option>
+          <option value="UPI">UPI</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+      </div>
+      <div class="fgroup" style="flex:1.5;min-width:120px">
+        <div class="flabel">Remarks</div>
+        <input type="text" class="finput" id="qp_remarks" placeholder="Optional note">
+      </div>
+      <div class="fgroup" style="flex:0;align-self:flex-end">
+        <button class="abt lime" id="qpSubmit" onclick="quickPaySubmit()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+          Record
+        </button>
+      </div>
+    </div>
+    <div id="qpSelectedInfo" class="qp-info hidden"></div>
+  </div>
+
+  <!-- Filter Bar + Table -->
+  <div class="sec"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Student Records</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
+
+  <div class="toolbar">
+    <div class="srch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="searchInput" placeholder="Search name, admission no, ID…">
+    </div>
+    <select class="fsel" id="filterClass">
+      <option value="">All Classes</option>
+      <option value="9">Class 9</option>
+      <option value="10">Class 10</option>
+      <option value="11">Class 11</option>
+      <option value="12">Class 12</option>
+    </select>
+    <select class="fsel" id="filterStatus">
+      <option value="">All Status</option>
+      <option value="ACTIVE">Active</option>
+      <option value="INACTIVE">Inactive</option>
+    </select>
+    <select class="fsel" id="filterFee">
+      <option value="">All Fee Status</option>
+      <option value="CLEARED">Cleared</option>
+      <option value="OVERDUE">Overdue</option>
+      <option value="SCHOLARSHIP">Scholarship</option>
+    </select>
+    <span class="res-lbl" id="resLbl"></span>
+  </div>
+
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th></th>
+          <th>Student</th>
+          <th>Class</th>
+          <th>Status</th>
+          <th>Fee Progress</th>
+          <th style="text-align:center">Actions</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="tbl-foot">
+      <span id="tblLbl"></span>
+      <span style="font-size:10px;font-style:italic;color:var(--pale)">Admin view — all data visible</span>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span style="color:var(--pale)">Vatanappally, Thrissur</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
+</div>
+</div>
+
+<!-- Drawer overlay -->
+<div id="drawerOverlay"></div>
+
+<!-- Add/Edit Drawer -->
+<div id="drawer">
+  <div class="drw-head">
+    <div>
+      <div class="drw-title" id="drwTitle">Add Student</div>
+    </div>
+    <button class="drw-close" id="drwClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drw-tabs">
+    <button class="drw-tab on" data-tab="personal">Personal</button>
+    <button class="drw-tab" data-tab="academic">Academic</button>
+    <button class="drw-tab" data-tab="fees">Fees</button>
+  </div>
+  <div class="drw-body">
+    <!-- Personal Tab -->
+    <div class="tab-pane on" id="pane-personal">
+      <div class="fgroup">
+        <div class="flabel">Full Name <span class="req">*</span></div>
+        <input type="text" class="finput" id="f_full_name" placeholder="e.g. Ananya Krishna">
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Gender</div>
+          <select class="finput" id="f_gender">
+            <option value="">— Select —</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Birthday</div>
+          <input type="date" class="finput" id="f_birthday">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Parent Name</div>
+          <input type="text" class="finput" id="f_parent_name" placeholder="Parent / Guardian">
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Contact</div>
+          <input type="tel" class="finput" id="f_contact" placeholder="Phone number">
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Photo URL</div>
+        <input type="url" class="finput" id="f_photo" placeholder="https://…" oninput="previewPhoto(this.value)">
+        <div class="photo-preview" id="photoPreview">
+          <img id="photoPreviewImg" src="" alt="Preview">
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Tab -->
+    <div class="tab-pane" id="pane-academic">
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Student ID <span class="req">*</span></div>
+          <input type="text" class="finput" id="f_id" placeholder="e.g. ananya_k (no spaces)">
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Admission No <span class="req">*</span></div>
+          <input type="text" class="finput" id="f_admission_no" placeholder="e.g. 2024-001">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Class <span class="req">*</span></div>
+          <select class="finput" id="f_class">
+            <option value="">— Select —</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Syllabus <span class="req">*</span></div>
+          <select class="finput" id="f_syllabus">
+            <option value="">— Select —</option>
+            <option value="STATE">STATE</option>
+            <option value="CBSE">CBSE</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Admission Status <span class="req">*</span></div>
+          <select class="finput" id="f_admission_status">
+            <option value="">— Select —</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Joining Date</div>
+          <input type="date" class="finput" id="f_joining_date">
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">School Name</div>
+        <input type="text" class="finput" id="f_school_name" placeholder="School / College">
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Subjects</div>
+        <textarea class="finput" id="f_subjects" placeholder="Maths, Physics, Chemistry (comma-separated)"></textarea>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Current Academic Year</div>
+        <input type="text" class="finput" id="f_current_academic_year" placeholder="e.g. 2024-25">
+      </div>
+    </div>
+
+    <!-- Fees Tab -->
+    <div class="tab-pane" id="pane-fees">
+      <div class="fsec-title">Monthly Tuition</div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Monthly Fee (₹)</div>
+          <input type="number" class="finput" id="f_monthly_fee" placeholder="0">
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Effective Start</div>
+          <input type="date" class="finput" id="f_effective_start">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Total Months</div>
+          <input type="number" class="finput" id="f_total_months" placeholder="0">
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Total Fee (₹)</div>
+          <input type="number" class="finput" id="f_total_fee" placeholder="0">
+        </div>
+      </div>
+      <div class="fsec-title">Instalments</div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">Admission Amount (₹)</div>
+          <input type="number" class="finput" id="f_admission_amount" placeholder="0">
+        </div>
+        <div class="fgroup">
+          <div class="flabel">June Amount (₹)</div>
+          <input type="number" class="finput" id="f_june_amount" placeholder="0">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <div class="flabel">September Amount (₹)</div>
+          <input type="number" class="finput" id="f_september_amount" placeholder="0">
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Scholarship</div>
+          <input type="text" class="finput" id="f_scholarship" placeholder="e.g. 50% or None">
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Fees / Deposit (₹)</div>
+        <input type="number" class="finput" id="f_fees" placeholder="Security deposit amount">
+      </div>
+    </div>
+  </div>
+  <div class="drw-foot">
+    <button class="drw-save" id="drwSave">Save Student</button>
+    <button class="drw-cancel" id="drwCancel">Cancel</button>
+  </div>
+</div>
+
+<!-- Payments Modal -->
+<div id="pmOverlay">
+  <div class="pm-modal">
+    <div class="pm-head">
+      <div>
+        <div class="pm-title" id="pmTitle">Payment History</div>
+        <div class="pm-sub" id="pmSub"></div>
+      </div>
+      <button class="pm-close" id="pmClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="pm-body">
+      <div class="pm-hist-title">Payment History</div>
+      <div class="pm-tbl-wrap">
+        <table class="pm-tbl">
+          <thead><tr>
+            <th>Date</th><th>Amount</th><th>Mode</th><th>Remarks</th>
+          </tr></thead>
+          <tbody id="pmTbody"></tbody>
+        </table>
+      </div>
+      <div class="pm-add-title">Add Payment</div>
+      <form id="pmForm">
+        <div class="pm-form-row">
+          <div class="fgroup">
+            <div class="flabel">Date</div>
+            <input type="date" class="finput" id="pm_date">
+          </div>
+          <div class="fgroup">
+            <div class="flabel">Amount (₹)</div>
+            <input type="number" class="finput" id="pm_amount" placeholder="0" min="0">
+          </div>
+        </div>
+        <div class="pm-form-row">
+          <div class="fgroup">
+            <div class="flabel">Mode</div>
+            <select class="finput" id="pm_mode">
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+          </div>
+          <div class="fgroup">
+            <div class="flabel">Remarks</div>
+            <input type="text" class="finput" id="pm_remarks" placeholder="Optional note">
+          </div>
+        </div>
+        <button type="submit" class="pm-submit" id="pmSubmit">Record Payment</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+var API='https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
+var S=[],PASS='',EDIT_ID=null,PM_STUDENT=null;
+var FSEARCH='',FCLASS='',FSTATUS='',FFEE='';
+
+/* ── Helpers ── */
+function g(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function inits(n){return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);}
+function fmtDate(d){if(!d)return '—';var dt=new Date(d);return isNaN(dt.getTime())?String(d):dt.toLocaleDateString('en-IN');}
+function fmtN(n){return Number(n||0).toLocaleString('en-IN');}
+function pct(num,denom){return denom>0?Math.min(100,Math.round(num/denom*100)):0;}
+function loaderOn(){g('loader').classList.add('on');}
+function loaderOff(){g('loader').classList.remove('on');}
+var _toastT=null;
+function toast(msg,isErr){
+  var t=g('toast');t.textContent=msg;t.className='on'+(isErr?' err':'');
+  clearTimeout(_toastT);_toastT=setTimeout(function(){t.className='';},3200);
+}
+
+function norm(s){
+  return {
+    id:String(s.id||''),admission_no:String(s.admission_no||''),full_name:String(s.full_name||''),
+    gender:String(s.gender||''),class:String(s.class||''),syllabus:String(s.syllabus||''),
+    admission_status:String(s.admission_status||'').toUpperCase().trim(),
+    school_name:String(s.school_name||''),parent_name:String(s.parent_name||''),
+    contact:String(s.contact||''),joining_date:s.joining_date||'',birthday:s.birthday||'',
+    photo:String(s.photo||''),scholarship:String(s.scholarship||''),
+    fees:String(s.fees||''),subjects:String(s.subjects||''),
+    monthly_fee:Number(s.monthly_fee||0),effective_start:s.effective_start||'',
+    total_months:Number(s.total_months||0),total_fee:Number(s.total_fee||0),
+    admission_amount:Number(s.admission_amount||0),june_amount:Number(s.june_amount||0),
+    september_amount:Number(s.september_amount||0),total_paid:Number(s.total_paid||0),
+    balance:Number(s.balance||0),status:String(s.status||'').toUpperCase().trim(),
+    next_due:String(s.next_due||''),next_due_amount:Number(s.next_due_amount||0),
+    days_overdue:Math.abs(Number(s.days_overdue||0)),
+    current_academic_year:String(s.current_academic_year||''),
+    admission_paid:Number(s.admission_paid||0),june_paid:Number(s.june_paid||0),
+    september_paid:Number(s.september_paid||0),admission_pending:Number(s.admission_pending||0),
+    june_pending:Number(s.june_pending||0),september_pending:Number(s.september_pending||0),
+  };
+}
+
+/* ── API ── */
+function apiGet(action,extra){
+  var url=API+'?action='+action+'&password='+encodeURIComponent(PASS)+(extra||'');
+  return fetch(url).then(function(r){return r.json();});
+}
+function apiPost(body){
+  body.password=PASS;
+  return fetch(API,{method:'POST',body:JSON.stringify(body)}).then(function(r){return r.json();});
+}
+
+/* ── Login ── */
+g('loginForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var pass=g('passInput').value.trim();if(!pass)return;
+  var btn=g('loginBtn');btn.disabled=true;btn.textContent='Authenticating…';
+  g('loginErr').className='lbox-err';loaderOn();
+  fetch(API+'?action=studentList&password='+encodeURIComponent(pass))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(data&&data.error){
+        loaderOff();btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Access Records';
+        g('loginErr').textContent='Incorrect password.';g('loginErr').className='lbox-err on';return;
+      }
+      var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:Array.isArray(data.data)?data.data:[];
+      if(raw.length===0){console.warn('[StudentRecords] API returned 0 students. Raw response:',JSON.stringify(data));}
+      S=raw.map(norm);PASS=pass;
+      sessionStorage.setItem('sehr_admin_pass',pass);
+      g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();
+      init();
+      if(S.length===0){toast('⚠ API returned 0 students. Check Apps Script deployment.',true);}
+    })
+    .catch(function(){
+      loaderOff();btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Access Records';
+      g('loginErr').textContent='Connection error.';g('loginErr').className='lbox-err on';
+    });
+});
+
+/* ── Covered months helper ──
+   Counts completed class months from joining date up to (but not including)
+   current month. May (index 4) is a holiday and is never counted.          */
+function coveredMonths(joiningDate){
+  if(!joiningDate)return 0;
+  var join=new Date(joiningDate);
+  if(isNaN(join))return 0;
+  var now=new Date();
+  var y=join.getFullYear(),m=join.getMonth(); // 0-indexed
+  var nowY=now.getFullYear(),nowM=now.getMonth();
+  var count=0;
+  while(y<nowY||(y===nowY&&m<nowM)){
+    if(m!==4)count++; // skip May
+    m++;if(m>11){m=0;y++;}
+  }
+  return count;
+}
+
+/* ── Init ── */
+function init(){
+  var active=S.filter(function(s){return s.admission_status==='ACTIVE';});
+  var overdue=active.filter(function(s){return s.status==='OVERDUE';});
+  var collected=active.reduce(function(a,s){return a+s.total_paid;},0);
+  var covered=active.reduce(function(a,s){
+    var months=coveredMonths(s.joining_date||s.effective_start);
+    var earned=months*(s.monthly_fee||0);
+    // Only count up to what the student has actually paid
+    return a+Math.min(s.total_paid,earned);
+  },0);
+  g('statTotal').textContent=S.length;
+  g('statActive').textContent=active.length;
+  g('statOverdue').textContent=overdue.length;
+  g('statCollected').textContent='₹'+fmtN(collected);
+  g('statCovered').textContent='₹'+fmtN(covered);
+  g('statCoveredSub').textContent='paid for completed months';
+  g('pageSub').textContent=S.length+' students · Updated '+new Date().toLocaleTimeString('en-IN');
+  render();
+}
+
+/* ── Filters ── */
+function filtered(){
+  var q=FSEARCH.toLowerCase().trim();
+  return S.filter(function(s){
+    if(FCLASS&&s.class!==FCLASS)return false;
+    if(FSTATUS&&s.admission_status!==FSTATUS)return false;
+    if(FFEE&&s.status!==FFEE)return false;
+    if(q){var hay=(s.full_name+' '+s.id+' '+s.admission_no+' '+s.parent_name).toLowerCase();if(hay.indexOf(q)===-1)return false;}
+    return true;
+  });
+}
+
+/* ── Render Table ── */
+function render(){
+  var list=filtered();
+  var lbl='Showing '+list.length+' of '+S.length+' students';
+  g('resLbl').textContent=lbl;g('tblLbl').textContent=lbl;
+  var body=g('tbody');
+  if(!list.length){
+    body.innerHTML='<tr class="empty-row"><td colspan="6"><div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-h">No students found</div><p class="empty-p">Try adjusting filters or search.</p></td></tr>';
+    return;
+  }
+  body.innerHTML=list.map(function(s){
+    /* Avatar */
+    var av='';
+    if(s.photo){av='<img class="av" src="'+esc(s.photo)+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">';}
+    av+='<div class="av-init"'+(s.photo?' style="display:none"':'')+'>'+inits(s.full_name)+'</div>';
+
+    /* Class + Syllabus */
+    var clsLabel='Class '+esc(s.class||'—');
+    var sylCls=(s.syllabus==='STATE'||s.syllabus==='CBSE')?s.syllabus:'';
+    var clsCell='<div class="cls-badge">'+esc(s.class?'Class '+s.class:'—')+'<span class="syl-tag '+sylCls+'">'+esc(s.syllabus||'—')+'</span></div>';
+
+    /* Status */
+    var adSt=s.admission_status||'—';
+    var stBadge='<span class="pill p'+esc(adSt)+'"><span class="dot"></span>'+esc(adSt)+'</span>';
+
+    /* Fee bar */
+    var feePct=pct(s.total_paid,s.total_fee);
+    var barColor=s.status==='CLEARED'?'var(--lime)':s.status==='OVERDUE'?'var(--red)':s.status==='SCHOLARSHIP'?'var(--blue)':'var(--amber)';
+    var feeBadge=s.status?'<span class="pill p'+esc(s.status)+'" style="margin-left:4px"><span class="dot"></span>'+esc(s.status)+'</span>':'';
+    var feeCell='<div class="fee-bar-wrap">'
+      +'<div class="fee-bar-nums"><span>₹'+fmtN(s.total_paid)+'</span><span style="color:var(--pale)">/ ₹'+fmtN(s.total_fee)+'</span></div>'
+      +'<div class="fee-bar-track"><div class="fee-bar-fill" style="width:'+feePct+'%;background:'+barColor+'"></div></div>'
+      +'<div style="margin-top:3px;font-size:9px;color:var(--pale)">'+feePct+'% paid'+feeBadge+'</div>'
+      +'</div>';
+
+    /* Action buttons */
+    var acts='<div class="act-btns">'
+      +'<button class="ibtn" onclick="openEdit(\''+esc(s.id)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
+      +'<button class="ibtn pay" onclick="openPayments(\''+esc(s.id)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Payments</button>'
+      +'<button class="ibtn red" onclick="askDelete(this,\''+esc(s.id)+'\',\''+esc(s.full_name)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button>'
+      +'</div>';
+
+    return '<tr>'
+      +'<td>'+av+'</td>'
+      +'<td><div class="scell"><div><div class="sname">'+esc(s.full_name||'—')+'</div><div class="sadm">#'+esc(s.admission_no||'—')+' · '+esc(s.id||'—')+'</div></div></div></td>'
+      +'<td>'+clsCell+'</td>'
+      +'<td>'+stBadge+'</td>'
+      +'<td>'+feeCell+'</td>'
+      +'<td>'+acts+'</td>'
+      +'</tr>';
+  }).join('');
+}
+
+/* ── Delete Confirm ── */
+function askDelete(btn,id,name){
+  var td=btn.closest('td');
+  td.innerHTML='<div class="del-confirm">'
+    +'<span class="dc-msg">Delete <b>'+esc(name)+'</b>? This cannot be undone.</span>'
+    +'<button class="dc-yes" onclick="doDelete(\''+esc(id)+'\',this)">Yes, Delete</button>'
+    +'<button class="dc-no" onclick="render()">Cancel</button>'
+    +'</div>';
+}
+function doDelete(id,btn){
+  btn.disabled=true;btn.textContent='Deleting…';loaderOn();
+  apiPost({action:'deleteStudent',id:id})
+    .then(function(data){
+      loaderOff();
+      if(data&&data.success){
+        S=S.filter(function(s){return s.id!==id;});
+        init();toast('Student deleted.');
+      } else {render();toast(data&&data.message?data.message:'Delete failed.',true);}
+    })
+    .catch(function(){loaderOff();render();toast('Connection error.',true);});
+}
+
+/* ── Drawer ── */
+function openDrawer(){
+  g('drawerOverlay').classList.add('on');
+  g('drawer').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  g('drawerOverlay').classList.remove('on');
+  g('drawer').classList.remove('on');
+  document.body.style.overflow='';
+  EDIT_ID=null;
+}
+function switchTab(name){
+  document.querySelectorAll('.drw-tab').forEach(function(t){t.classList.toggle('on',t.dataset.tab===name);});
+  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.toggle('on',p.id==='pane-'+name);});
+}
+function setField(id,val){var el=g(id);if(el)el.value=val==null?'':val;}
+function getField(id){var el=g(id);return el?el.value.trim():'';}
+
+function openAdd(){
+  EDIT_ID=null;
+  g('drwTitle').innerHTML='Add Student';
+  var fields=['full_name','gender','birthday','photo','parent_name','contact','id','admission_no','class','syllabus','admission_status','joining_date','school_name','subjects','current_academic_year','monthly_fee','effective_start','total_months','total_fee','admission_amount','june_amount','september_amount','scholarship','fees'];
+  fields.forEach(function(f){setField('f_'+f,'');});
+  g('photoPreview').style.display='none';
+  switchTab('personal');
+  document.querySelectorAll('.finput.err').forEach(function(el){el.classList.remove('err');});
+  openDrawer();
+}
+
+function openEdit(id){
+  var s=S.find(function(x){return x.id===id;});if(!s)return;
+  EDIT_ID=id;
+  g('drwTitle').innerHTML='Edit Student — <span>'+esc(s.full_name)+'</span>';
+  setField('f_full_name',s.full_name);setField('f_gender',s.gender);
+  setField('f_birthday',s.birthday?isoDate(s.birthday):'');
+  setField('f_photo',s.photo);setField('f_parent_name',s.parent_name);
+  setField('f_contact',s.contact);setField('f_id',s.id);
+  setField('f_admission_no',s.admission_no);setField('f_class',s.class);
+  setField('f_syllabus',s.syllabus);setField('f_admission_status',titleCase(s.admission_status));
+  setField('f_joining_date',s.joining_date?isoDate(s.joining_date):'');
+  setField('f_school_name',s.school_name);setField('f_subjects',s.subjects);
+  setField('f_current_academic_year',s.current_academic_year);
+  setField('f_monthly_fee',s.monthly_fee||'');
+  setField('f_effective_start',s.effective_start?isoDate(s.effective_start):'');
+  setField('f_total_months',s.total_months||'');setField('f_total_fee',s.total_fee||'');
+  setField('f_admission_amount',s.admission_amount||'');setField('f_june_amount',s.june_amount||'');
+  setField('f_september_amount',s.september_amount||'');setField('f_scholarship',s.scholarship);
+  setField('f_fees',s.fees);
+  previewPhoto(s.photo);
+  switchTab('personal');
+  document.querySelectorAll('.finput.err').forEach(function(el){el.classList.remove('err');});
+  openDrawer();
+}
+
+function isoDate(d){
+  if(!d)return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(d))return d;
+  var dt=new Date(d);
+  if(isNaN(dt.getTime()))return '';
+  return dt.toISOString().slice(0,10);
+}
+function titleCase(s){if(!s)return '';return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();}
+
+function previewPhoto(url){
+  var prev=g('photoPreview'),img=g('photoPreviewImg');
+  if(url&&url.startsWith('http')){prev.style.display='block';img.src=url;}
+  else{prev.style.display='none';img.src='';}
+}
+
+function collectStudent(){
+  return {
+    full_name:getField('f_full_name'),gender:getField('f_gender'),birthday:getField('f_birthday'),
+    photo:getField('f_photo'),parent_name:getField('f_parent_name'),contact:getField('f_contact'),
+    id:getField('f_id'),admission_no:getField('f_admission_no'),class:getField('f_class'),
+    syllabus:getField('f_syllabus'),admission_status:getField('f_admission_status'),
+    joining_date:getField('f_joining_date'),school_name:getField('f_school_name'),
+    subjects:getField('f_subjects'),current_academic_year:getField('f_current_academic_year'),
+    monthly_fee:getField('f_monthly_fee'),effective_start:getField('f_effective_start'),
+    total_months:getField('f_total_months'),total_fee:getField('f_total_fee'),
+    admission_amount:getField('f_admission_amount'),june_amount:getField('f_june_amount'),
+    september_amount:getField('f_september_amount'),scholarship:getField('f_scholarship'),
+    fees:getField('f_fees'),
+  };
+}
+
+function validateStudent(s){
+  var errs=[];
+  function req(fid,label){if(!s[fid]){g('f_'+fid).classList.add('err');errs.push(label);}else{g('f_'+fid).classList.remove('err');}}
+  req('full_name','Full Name');req('id','Student ID');req('admission_no','Admission No');
+  req('class','Class');req('syllabus','Syllabus');req('admission_status','Admission Status');
+  return errs;
+}
+
+g('drwSave').addEventListener('click',function(){
+  var student=collectStudent();
+  var errs=validateStudent(student);
+  if(errs.length){toast('Please fill required fields: '+errs.join(', '),true);return;}
+  var saveBtn=g('drwSave');saveBtn.disabled=true;saveBtn.textContent='Saving…';loaderOn();
+  var body=EDIT_ID
+    ?{action:'updateStudent',id:EDIT_ID,student:student}
+    :{action:'addStudent',student:student};
+  apiPost(body)
+    .then(function(data){
+      loaderOff();saveBtn.disabled=false;saveBtn.textContent='Save Student';
+      if(data&&data.success){
+        closeDrawer();loadStudents(function(){toast(EDIT_ID?'Student updated.':'Student added.');});
+      } else {toast(data&&data.message?data.message:'Save failed.',true);}
+    })
+    .catch(function(){loaderOff();saveBtn.disabled=false;saveBtn.textContent='Save Student';toast('Connection error.',true);});
+});
+
+/* ── Payments ── */
+function openPayments(id){
+  var s=S.find(function(x){return x.id===id;});if(!s)return;
+  PM_STUDENT=s;
+  g('pmTitle').textContent=s.full_name;
+  g('pmSub').textContent='Class '+s.class+(s.syllabus?' · '+s.syllabus:'')+(s.admission_no?' · #'+s.admission_no:'');
+  var today=new Date().toISOString().slice(0,10);
+  g('pm_date').value=today;g('pm_amount').value='';g('pm_mode').value='Cash';g('pm_remarks').value='';
+  g('pmTbody').innerHTML='<tr><td colspan="4" class="pm-empty">Loading…</td></tr>';
+  g('pmOverlay').classList.add('on');
+  document.body.style.overflow='hidden';
+  loadPayments(id);
+}
+function closePm(){
+  g('pmOverlay').classList.remove('on');
+  document.body.style.overflow='';
+  PM_STUDENT=null;
+}
+function loadPayments(id){
+  apiGet('getPayments','&id='+encodeURIComponent(id))
+    .then(function(data){
+      var pmts=Array.isArray(data.payments)?data.payments:[];
+      if(!pmts.length){g('pmTbody').innerHTML='<tr><td colspan="4" class="pm-empty">No payments recorded yet.</td></tr>';return;}
+      var sorted=pmts.slice().sort(function(a,b){return new Date(b.payment_date||0)-new Date(a.payment_date||0);});
+      g('pmTbody').innerHTML=sorted.map(function(p){
+        return '<tr><td>'+esc(fmtDate(p.payment_date))+'</td>'
+          +'<td style="font-weight:700;color:var(--lime-2)">₹'+fmtN(p.amount_paid)+'</td>'
+          +'<td>'+esc(p.mode||'—')+'</td>'
+          +'<td style="color:var(--muted)">'+esc(p.remarks||'—')+'</td></tr>';
+      }).join('');
+    })
+    .catch(function(){g('pmTbody').innerHTML='<tr><td colspan="4" class="pm-empty" style="color:var(--red)">Error loading payments.</td></tr>';});
+}
+g('pmForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  if(!PM_STUDENT)return;
+  var amt=parseFloat(g('pm_amount').value);
+  if(!amt||amt<=0){toast('Enter a valid amount.',true);return;}
+  var sub=g('pmSubmit');sub.disabled=true;sub.textContent='Recording…';
+  apiPost({
+    action:'addPayment',
+    payment:{
+      id:PM_STUDENT.id,
+      payment_date:g('pm_date').value,
+      amount_paid:amt,
+      mode:g('pm_mode').value,
+      remarks:g('pm_remarks').value.trim(),
+    }
+  }).then(function(data){
+    sub.disabled=false;sub.textContent='Record Payment';
+    if(data&&data.success){
+      g('pm_amount').value='';g('pm_remarks').value='';
+      toast('Payment recorded.');
+      loadPayments(PM_STUDENT.id);
+      loadStudents(function(){});
+    } else {toast(data&&data.message?data.message:'Failed to record payment.',true);}
+  }).catch(function(){sub.disabled=false;sub.textContent='Record Payment';toast('Connection error.',true);});
+});
+
+/* ── Load Students ── */
+function loadStudents(cb){
+  loaderOn();
+  fetch(API+'?action=studentList&password='+encodeURIComponent(PASS))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:Array.isArray(data.data)?data.data:[];
+      S=raw.map(norm);loaderOff();init();if(cb)cb();
+      if(S.length===0){toast('⚠ 0 students returned — open browser console (F12) for details.',true);}
+    })
+    .catch(function(){loaderOff();toast('Refresh failed.',true);});
+}
+
+/* ── Quick Pay ── */
+var QP_STUDENT=null;
+function qpFilter(){
+  var q=g('qp_search').value.toLowerCase().trim();
+  var dd=g('qpDropdown');
+  if(!q){dd.classList.remove('open');return;}
+  var matches=S.filter(function(s){
+    return s.full_name.toLowerCase().indexOf(q)>-1||s.admission_no.toLowerCase().indexOf(q)>-1;
+  }).slice(0,8);
+  if(!matches.length){dd.innerHTML='<div class="qp-opt" style="color:var(--muted);font-style:italic">No students found</div>';dd.classList.add('open');return;}
+  dd.innerHTML=matches.map(function(s){
+    return '<div class="qp-opt" onclick="qpSelect(\''+s.id+'\')">'+
+      '<div class="qp-opt-name">'+esc(s.full_name)+'</div>'+
+      '<div class="qp-opt-meta">Class '+esc(s.class)+' · '+esc(s.syllabus)+''+
+        (s.status==='OVERDUE'?' · <span style="color:var(--red)">OVERDUE</span>':'')+
+      '</div></div>';
+  }).join('');
+  dd.classList.add('open');
+}
+function qpSelect(id){
+  var s=S.find(function(x){return x.id===id;});if(!s)return;
+  QP_STUDENT=s;
+  g('qp_search').value=s.full_name;
+  g('qp_student_id').value=s.id;
+  g('qpDropdown').classList.remove('open');
+  var info=g('qpSelectedInfo');
+  info.innerHTML='<strong>'+esc(s.full_name)+'</strong> · Class '+esc(s.class)+' '+esc(s.syllabus)+
+    ' · Paid: ₹'+fmtN(s.total_paid)+' · Balance: ₹'+fmtN(s.balance)+
+    (s.status==='OVERDUE'?' · <span style="color:var(--red);font-weight:700">OVERDUE</span>':'');
+  info.classList.remove('hidden');
+}
+function quickPaySubmit(){
+  if(!QP_STUDENT){toast('Select a student first.',true);return;}
+  var amt=parseFloat(g('qp_amount').value);
+  if(!amt||amt<=0){toast('Enter a valid amount.',true);return;}
+  var btn=g('qpSubmit');btn.disabled=true;btn.textContent='Recording…';
+  apiPost({
+    action:'addPayment',
+    payment:{
+      id:QP_STUDENT.id,
+      payment_date:g('qp_date').value,
+      amount_paid:amt,
+      mode:g('qp_mode').value,
+      remarks:g('qp_remarks').value.trim()
+    }
+  }).then(function(data){
+    btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Record';
+    if(data&&data.success){
+      toast('✅ Payment of ₹'+fmtN(amt)+' recorded for '+QP_STUDENT.full_name+'.');
+      g('qp_amount').value='';g('qp_remarks').value='';
+      QP_STUDENT=null;g('qp_search').value='';g('qp_student_id').value='';
+      g('qpSelectedInfo').classList.add('hidden');
+      loadStudents(function(){});
+    } else {toast(data&&data.message?data.message:'Failed to record payment.',true);}
+  }).catch(function(){
+    btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Record';
+    toast('Connection error.',true);
+  });
+}
+// Close quick-pay dropdown when clicking outside
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.qp-sel-wrap'))g('qpDropdown').classList.remove('open');
+});
+// Set today's date on quick-pay
+(function(){var today=new Date().toISOString().slice(0,10);if(g('qp_date'))g('qp_date').value=today;})();
+
+/* ── Wire listeners ── */
+g('btnAdd').addEventListener('click',openAdd);
+g('btnRefresh').addEventListener('click',function(){loadStudents(function(){toast('Refreshed.');});});
+g('btnLogout').addEventListener('click',function(){sessionStorage.removeItem('sehr_admin_pass');location.reload();});
+g('drwClose').addEventListener('click',closeDrawer);
+g('drwCancel').addEventListener('click',closeDrawer);
+g('drawerOverlay').addEventListener('click',closeDrawer);
+g('pmClose').addEventListener('click',closePm);
+g('pmOverlay').addEventListener('click',function(ev){if(ev.target===this)closePm();});
+document.querySelectorAll('.drw-tab').forEach(function(btn){
+  btn.addEventListener('click',function(){switchTab(this.dataset.tab);});
+});
+g('searchInput').addEventListener('input',function(){FSEARCH=this.value;render();});
+g('filterClass').addEventListener('change',function(){FCLASS=this.value;render();});
+g('filterStatus').addEventListener('change',function(){FSTATUS=this.value;render();});
+g('filterFee').addEventListener('change',function(){FFEE=this.value;render();});
+
+/* ── Auto-login from session ── */
+(function(){
+  var saved=sessionStorage.getItem('sehr_admin_pass');
+  if(saved){
+    PASS=saved;loaderOn();
+    fetch(API+'?action=studentList&password='+encodeURIComponent(saved))
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(data&&data.error){loaderOff();sessionStorage.removeItem('sehr_admin_pass');return;}
+        var raw=Array.isArray(data)?data:Array.isArray(data.students)?data.students:Array.isArray(data.data)?data.data:[];
+        S=raw.map(norm);g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();init();
+        if(S.length===0){toast('⚠ API returned 0 students. Check Apps Script deployment.',true);}
+      })
+      .catch(function(){loaderOff();});
+  }
+})();
+</script>
+</body>
+</html>

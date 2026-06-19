@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Salary Statement — SEHR Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18;--ink-2:#2e2e2b;--ink-3:#4a4a46;
+  --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+  --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
+  --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+  --red:#dc2626;--red-bg:#fef2f2;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-mid:#fde68a;--amber-dark:#92400e;
+  --blue:#2563eb;--blue-bg:#eff6ff;--blue-mid:#bfdbfe;
+  --f-head:'Montserrat',sans-serif;
+  --f:'Open Sans',sans-serif;
+  --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+  --mon-bg:#d8f3dc;--mon-fg:#1b5e3b;
+  --tue-bg:#dbeafe;--tue-fg:#1e3a8a;
+  --wed-bg:#fef3c7;--wed-fg:#78350f;
+  --thu-bg:#f3e8ff;--thu-fg:#4c1d95;
+  --fri-bg:#fee2e2;--fri-fg:#7f1d1d;
+  --sat-bg:#ede9fe;--sat-fg:#3730a3;
+  --sun-bg:#fce7f3;--sun-fg:#831843;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden}
+:focus-visible{outline:2px solid var(--lime);outline-offset:2px;border-radius:3px}
+
+.topbar{background:var(--ink);padding:0 40px;position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%);pointer-events:none}
+.tb-bg{position:absolute;right:0;bottom:-20px;font-family:var(--f-head);font-size:160px;font-weight:900;letter-spacing:-6px;color:rgba(255,255,255,.03);pointer-events:none;user-select:none;white-space:nowrap;line-height:1}
+.tb-inner{padding:38px 0 30px;display:flex;align-items:flex-end;gap:24px;position:relative;z-index:1;flex-wrap:wrap}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tb-kicker-rule{width:22px;height:2px;background:var(--lime)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);opacity:.9}
+.tb-title{font-family:var(--f-head);font-size:clamp(26px,3vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:.95;margin-bottom:8px}
+.tb-title i{font-style:italic;font-weight:400;color:var(--lime)}
+.tb-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.38)}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime)}
+
+.wrap{max-width:1100px;margin:0 auto;padding:32px 40px 80px}
+.sec{display:flex;align-items:center;gap:12px;margin:32px 0 16px}
+.sec-rule{flex:1;height:1px;background:var(--rule)}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.sec-txt{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pale);white-space:nowrap}
+
+.ctrl-card{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+.ctrl-card-head{background:var(--ink-2);padding:16px 24px;border-bottom:2px solid var(--lime)}
+.ctrl-card-head-title{font-family:var(--f-head);font-size:13px;font-weight:700;letter-spacing:.04em;color:#fff;text-transform:uppercase}
+.ctrl-card-body{padding:24px}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:20px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fi{padding:9px 12px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:13px;font-weight:500;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s;width:100%}
+.fi:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.fi::placeholder{color:var(--pale);font-weight:400}
+
+.mode-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.mode-btn{padding:8px 18px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .18s}
+.mode-btn.active{border-color:var(--lime);background:var(--lime-bg);color:var(--lime-3)}
+
+.cs-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.cs-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center}
+.cs-del{width:28px;height:28px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--pale);transition:all .15s;flex-shrink:0;line-height:1}
+.cs-del:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
+.add-cs-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px dashed var(--cream-3);border-radius:4px;background:transparent;font-family:var(--f);font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;margin-bottom:20px}
+.add-cs-btn:hover{border-color:var(--lime);color:var(--lime-3)}
+
+.days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:768px){.days-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){.days-grid{grid-template-columns:repeat(2,1fr)}}
+.day-card{border:1.5px solid var(--cream-3);border-radius:6px;background:var(--cream);overflow:hidden;transition:border-color .18s,box-shadow .18s}
+.day-card.active{border-color:var(--lime);box-shadow:0 0 0 2px rgba(139,197,63,.15)}
+.day-card-top{padding:10px 12px 8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.day-label{font-family:var(--f-head);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.day-card.active .day-label{color:var(--lime-3)}
+.day-short-txt{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-top:1px}
+.day-card.active .day-short-txt{color:var(--lime-2)}
+.day-time-wrap{padding:0 10px 10px;display:none}
+.day-card.active .day-time-wrap{display:block}
+.day-time{width:100%;padding:7px 8px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s}
+.day-time:focus{border-color:var(--lime)}
+.day-time::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer}
+.tog{position:relative;width:32px;height:18px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0;position:absolute}
+.tog-slider{position:absolute;inset:0;background:var(--cream-3);border-radius:18px;transition:.2s;cursor:pointer}
+.tog-slider::before{content:'';position:absolute;width:12px;height:12px;left:3px;top:3px;background:var(--pale);border-radius:50%;transition:.2s}
+.tog input:checked+.tog-slider{background:var(--lime)}
+.tog input:checked+.tog-slider::before{transform:translateX(14px);background:#fff}
+
+/* ── MINI CALENDAR ── */
+.mini-cal-wrap{margin-bottom:20px}
+.mini-cal-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.ml-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--muted)}
+.ml-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.mini-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.mini-dh{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pale);text-align:center;padding:4px 0 6px}
+
+/* every cell same min-height so grid is stable when editor opens */
+.mc-cell{border-radius:5px;padding:5px 4px 4px;display:flex;flex-direction:column;align-items:center;min-height:64px;position:relative;transition:box-shadow .15s}
+.mc-cell.clickable{cursor:pointer}
+.mc-cell.clickable:hover{box-shadow:0 0 0 2px var(--lime)}
+.mc-empty{background:transparent;pointer-events:none;min-height:64px}
+/* non-class days */
+.mc-other{background:var(--cream)}
+.mc-other:hover{background:var(--cream-2)}
+.mc-wknd{background:var(--cream-2)}
+.mc-wknd:hover{background:var(--cream-3)}
+/* scheduled states */
+.mc-s-full{border:1.5px solid var(--lime-mid);background:var(--lime-bg)}
+.mc-s-short{border:1.5px solid var(--amber-mid);background:var(--amber-bg)}
+.mc-s-absent{border:1.5px dashed var(--rule);background:var(--cream-2);opacity:.55}
+/* one-off */
+.mc-oneoff{border:1.5px solid var(--blue-mid);background:var(--blue-bg)}
+
+.mc-date{font-family:var(--f-head);font-size:12px;font-weight:700;line-height:1;text-align:center}
+.mc-other .mc-date,.mc-wknd .mc-date{color:var(--pale)}
+.mc-s-full .mc-date{color:var(--lime-3);font-weight:800}
+.mc-s-short .mc-date{color:var(--amber-dark);font-weight:800}
+.mc-s-absent .mc-date{color:var(--pale);text-decoration:line-through}
+.mc-oneoff .mc-date{color:var(--blue)}
+
+.mc-state-tag{font-size:7px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-top:2px;text-align:center}
+.mc-s-full .mc-state-tag{color:var(--lime-3)}
+.mc-s-short .mc-state-tag{color:var(--amber-dark)}
+.mc-oneoff .mc-state-tag{color:var(--blue)}
+
+.mc-time-disp{font-size:7.5px;font-weight:700;margin-top:2px;text-align:center;line-height:1.2;white-space:nowrap}
+.mc-s-full .mc-time-disp{color:var(--lime-3);opacity:.85}
+.mc-s-short .mc-time-disp{color:var(--amber-dark);opacity:.9}
+.mc-oneoff .mc-time-disp{color:var(--blue);opacity:.9}
+
+.mc-add-hint{font-size:7px;color:var(--pale);margin-top:3px;text-align:center}
+
+/* inline time editor */
+.mc-editor-wrap{width:100%;margin-top:4px;border-top:1px solid rgba(0,0,0,.07);padding-top:4px;display:none;flex-direction:column;gap:3px}
+.mc-editor-wrap.open{display:flex}
+.mc-time-lbl{font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mc-time-fi{width:100%;padding:3px 4px;border:1.5px solid var(--cream-3);border-radius:3px;font-family:var(--f);font-size:10px;font-weight:600;color:var(--ink);background:var(--white);outline:none}
+.mc-time-fi:focus{border-color:var(--lime)}
+.mc-time-fi::-webkit-calendar-picker-indicator{opacity:.4;width:10px}
+.mc-toggle-btn{font-size:8px;font-weight:700;color:var(--muted);cursor:pointer;text-align:center;padding:2px 0;margin-top:1px;letter-spacing:.04em}
+.mc-s-full .mc-toggle-btn{color:var(--lime-3)}
+.mc-s-short .mc-toggle-btn{color:var(--amber)}
+.mc-edit-link{font-size:7.5px;font-weight:700;color:var(--blue);cursor:pointer;margin-top:2px;text-align:center}
+.mc-remove-link{font-size:7.5px;font-weight:700;color:var(--red);cursor:pointer;margin-top:1px;text-align:center}
+
+/* ── POPUP ── */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.popup-overlay.hidden{display:none}
+.popup-box{background:var(--white);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.2);padding:26px;width:270px;position:relative}
+.popup-title{font-family:var(--f-head);font-size:14px;font-weight:800;color:var(--ink);margin-bottom:3px;letter-spacing:-.3px}
+.popup-sub{font-size:11px;color:var(--muted);margin-bottom:18px}
+.popup-fields{display:flex;flex-direction:column;gap:14px}
+.popup-actions{display:flex;gap:8px;margin-top:18px}
+.popup-btn{flex:1;padding:10px 0;border:none;border-radius:4px;font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.popup-btn.confirm{background:var(--lime);color:var(--ink)}
+.popup-btn.confirm:hover{background:var(--lime-2)}
+.popup-btn.cancel{background:var(--cream-2);color:var(--muted)}
+.popup-btn.cancel:hover{background:var(--cream-3)}
+.popup-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:var(--pale);cursor:pointer;line-height:1}
+.popup-close:hover{color:var(--ink)}
+
+/* ── NON-TEACHING ── */
+.nt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:20px}
+.nt-card{background:var(--cream);border:1.5px solid var(--cream-3);border-radius:6px;padding:14px 16px}
+.nt-card-title{font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.nt-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.ctrl-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--cream-3)}
+.month-nav{display:flex;align-items:center;gap:8px}
+.mnav-btn{width:30px;height:30px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);transition:all .15s;line-height:1}
+.mnav-btn:hover{border-color:var(--lime);color:var(--lime-3)}
+.mnav-display{font-family:var(--f-head);font-size:13px;font-weight:700;color:var(--ink);min-width:136px;text-align:center}
+.gen-btn{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:11px 28px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f-head);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .18s,box-shadow .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.gen-btn:hover{background:var(--lime-2)}
+.gen-btn:active{transform:scale(.98)}
+.gen-btn svg{width:14px;height:14px}
+
+.panel-flat{display:none}.panel-flat.show{display:block}
+.panel-hourly{display:none}.panel-hourly.show{display:block}
+
+/* ── INVOICE ── */
+.invoice-outer{background:var(--white);border:1.5px solid var(--cream-3);border-radius:6px;box-shadow:var(--sh-md);overflow:hidden}
+#invoice-content{padding:48px 52px}
+.empty-state{text-align:center;padding:72px 20px}
+.empty-ico{font-size:40px;opacity:.25;margin-bottom:16px}
+.empty-txt{font-family:var(--f-head);font-size:16px;font-weight:600;color:var(--pale)}
+.empty-sub{font-size:12px;color:var(--pale);margin-top:6px}
+
+.inv-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
+.inv-academy{font-family:var(--f-head);font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
+.inv-academy span{color:var(--lime)}
+.inv-tagline{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+.inv-meta{text-align:right}
+.inv-type{font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-3);margin-bottom:8px}
+.inv-num{font-size:12px;font-weight:600;color:var(--muted)}
+.inv-month{font-family:var(--f-head);font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.8px;margin-top:4px}
+.inv-issued{font-size:11px;color:var(--pale);margin-top:4px}
+.inv-info-row{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px;padding:18px 20px;background:var(--cream);border-radius:5px;border:1px solid var(--cream-3)}
+.inf-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.inf-val{font-family:var(--f-head);font-size:15px;font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.2px}
+.inf-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* Big calendar */
+.cal-section-title{font-family:var(--f-head);font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-bottom:12px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:18px}
+.cal-dh{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:5px 0 7px}
+.cal-cell{min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:5px 3px 4px;border-radius:4px;position:relative}
+.cal-cell.empty{background:transparent}
+.cal-cell.regular{background:var(--cream)}
+.cal-cell.wknd{background:var(--cream-2)}
+.cal-cell.absent-c{background:var(--cream-2);opacity:.38}
+/* one-off: blue */
+.cal-cell.oneoff-c{background:var(--blue-bg);border:1.5px solid var(--blue-mid)}
+.cal-cell.oneoff-c .cal-badge{background:var(--blue)}
+.cal-cell.oneoff-c .c-date{color:var(--blue)}
+.cal-cell.oneoff-c .c-time{color:var(--blue);opacity:.8}
+.cal-cell.oneoff-c .c-dur{color:var(--blue)}
+/* short: amber — standalone class, NOT combined with day colour */
+.cal-cell.short-c{background:var(--amber-bg);border:1.5px solid var(--amber-mid)}
+.cal-cell.short-c .cal-badge{background:var(--amber-dark)}
+.cal-cell.short-c .c-date{color:var(--amber-dark)}
+.cal-cell.short-c .c-time{color:var(--amber-dark);opacity:.85}
+.cal-cell.short-c .c-dur{color:var(--amber-dark)}
+/* day colour classes — only used for full scheduled sessions */
+.day-mon{background:var(--mon-bg)}.day-mon .cal-badge{background:var(--mon-fg)}.day-mon .c-date{color:var(--mon-fg)}.day-mon .c-time{color:var(--mon-fg);opacity:.75}.day-mon .c-dur{color:var(--mon-fg)}
+.day-tue{background:var(--tue-bg)}.day-tue .cal-badge{background:var(--tue-fg)}.day-tue .c-date{color:var(--tue-fg)}.day-tue .c-time{color:var(--tue-fg);opacity:.75}.day-tue .c-dur{color:var(--tue-fg)}
+.day-wed{background:var(--wed-bg)}.day-wed .cal-badge{background:var(--wed-fg)}.day-wed .c-date{color:var(--wed-fg)}.day-wed .c-time{color:var(--wed-fg);opacity:.75}.day-wed .c-dur{color:var(--wed-fg)}
+.day-thu{background:var(--thu-bg)}.day-thu .cal-badge{background:var(--thu-fg)}.day-thu .c-date{color:var(--thu-fg)}.day-thu .c-time{color:var(--thu-fg);opacity:.75}.day-thu .c-dur{color:var(--thu-fg)}
+.day-fri{background:var(--fri-bg)}.day-fri .cal-badge{background:var(--fri-fg)}.day-fri .c-date{color:var(--fri-fg)}.day-fri .c-time{color:var(--fri-fg);opacity:.75}.day-fri .c-dur{color:var(--fri-fg)}
+.day-sat{background:var(--sat-bg)}.day-sat .cal-badge{background:var(--sat-fg)}.day-sat .c-date{color:var(--sat-fg)}.day-sat .c-time{color:var(--sat-fg);opacity:.75}.day-sat .c-dur{color:var(--sat-fg)}
+.day-sun{background:var(--sun-bg)}.day-sun .cal-badge{background:var(--sun-fg)}.day-sun .c-date{color:var(--sun-fg)}.day-sun .c-time{color:var(--sun-fg);opacity:.75}.day-sun .c-dur{color:var(--sun-fg)}
+
+.c-date{font-family:var(--f-head);font-size:12px;font-weight:700;line-height:1}
+.regular .c-date,.wknd .c-date,.absent-c .c-date{color:var(--pale)}
+.absent-c .c-date{text-decoration:line-through}
+.c-time{font-size:7.5px;font-weight:600;text-align:center;line-height:1.3;margin-top:3px}
+.c-dur{font-family:var(--f-head);font-size:8px;font-weight:800;margin-top:2px}
+.cal-badge{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--pale)}
+
+.inv-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--rule)}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:600;color:var(--muted)}
+.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;border:1px solid transparent}
+
+.sum-table{width:100%;border-collapse:collapse;margin-bottom:16px}
+.sum-table th{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding:8px 12px;text-align:left}
+.sum-table td{font-size:13px;padding:11px 12px;border-bottom:1px solid var(--cream-2);color:var(--ink)}
+.sum-table tr:last-child td{border-bottom:none}
+.mono{font-family:var(--f-head);font-size:12px;font-weight:600}
+.sec-hdr-row td{background:var(--cream-2);font-family:var(--f-head);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:7px 12px;border-bottom:none}
+.sub-row td{background:var(--lime-bg);border-top:1px solid var(--lime-mid)!important;border-bottom:1px solid var(--lime-mid)!important}
+.sub-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-3)}
+.sub-amt{font-family:var(--f-head);font-size:14px;font-weight:800;color:var(--lime-3);text-align:right}
+.ded-row td{background:var(--red-bg);color:var(--red)}
+.ded-row .mono{color:var(--red)}
+.total-row td{background:var(--ink);color:#fff;border:none}
+.tot-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.5}
+.tot-amt{font-family:var(--f-head);font-size:26px;font-weight:900;color:var(--lime);text-align:right;letter-spacing:-1px}
+.inv-footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.inv-footer-note{font-size:12px;color:var(--muted);max-width:340px;line-height:1.6;font-style:italic}
+.inv-footer-brand{font-family:var(--f-head);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rule);text-align:right;line-height:2}
+
+.action-bar{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.act-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:4px;font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .18s;border:1.5px solid var(--cream-3);background:var(--white);color:var(--ink)}
+.act-btn:hover{background:var(--cream);border-color:var(--rule)}
+.act-btn svg{width:13px;height:13px}
+
+@media print{
+  .topbar,.ctrl-card,.sec,.action-bar,.popup-overlay{display:none!important}
+  body{background:#fff}
+  .wrap{padding:0;max-width:100%}
+  .invoice-outer{border:none;box-shadow:none;border-radius:0}
+  #invoice-content{padding:28px 36px}
+  .cal-cell,.total-row td,.sec-hdr-row td,.sub-row td,.ded-row td{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+}
+</style>
+</head>
+<body>
+
+<!-- POPUP -->
+<div class="popup-overlay hidden" id="popupOverlay">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup()">&times;</button>
+    <div class="popup-title" id="popupTitle">Add Session</div>
+    <div class="popup-sub" id="popupSub">Set time and duration for this date</div>
+    <div class="popup-fields">
+      <div class="fg"><label class="fl">Start Time</label><input class="fi" id="popupTime" type="time" value="10:00"></div>
+      <div class="fg"><label class="fl">Duration (hours)</label><input class="fi" id="popupDur" type="number" value="2" step="0.5" min="0.5"></div>
+    </div>
+    <div class="popup-actions">
+      <button class="popup-btn cancel" onclick="closePopup()">Cancel</button>
+      <button class="popup-btn confirm" onclick="confirmPopup()">Add Session</button>
+    </div>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="tb-bg">SEHR</div>
+  <div class="tb-inner">
+    <div>
+      <div class="tb-kicker"><div class="tb-kicker-rule"></div><div class="tb-kicker-txt">Sehr Academy &middot; Internal Tools</div></div>
+      <div class="tb-title">Teacher Salary <i>Statement</i></div>
+      <div class="tb-meta"><span class="tb-sub">Monthly Pay Breakdown</span><span class="tb-pill">Staff Payroll</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="sec"><div class="sec-dot"></div><div class="sec-txt">Teacher Details</div><div class="sec-rule"></div></div>
+
+  <div class="ctrl-card">
+    <div class="ctrl-card-head"><div class="ctrl-card-head-title">Payroll Configuration</div></div>
+    <div class="ctrl-card-body">
+
+      <div class="form-grid">
+        <div class="fg"><label class="fl">Teacher Name</label><input class="fi" id="teacherName" type="text" placeholder="e.g. Anitha Krishnan"></div>
+        <div class="fg"><label class="fl">Designation</label><input class="fi" id="teacherDesig" type="text" placeholder="e.g. Senior Faculty"></div>
+      </div>
+
+      <div class="sec" style="margin-top:0;margin-bottom:12px"><div class="sec-dot"></div><div class="sec-txt">Classes and Subjects (optional)</div><div class="sec-rule"></div></div>
+      <div class="cs-rows" id="csRows">
+        <div class="cs-row">
+          <input class="fi" type="text" placeholder="Class (e.g. Class 12 CBSE)">
+          <input class="fi" type="text" placeholder="Subject (e.g. Physics)">
+          <button class="cs-del" onclick="delCS(this)">&times;</button>
+        </div>
+      </div>
+      <button class="add-cs-btn" onclick="addCS()">+ Add Another Class / Subject</button>
+
+      <div class="sec" style="margin-top:4px;margin-bottom:12px"><div class="sec-dot"></div><div class="sec-txt">Payment Mode</div><div class="sec-rule"></div></div>
+      <div class="mode-row">
+        <button class="mode-btn active" id="modeFlat" onclick="setMode('flat')">Flat Monthly Salary</button>
+        <button class="mode-btn" id="modeHourly" onclick="setMode('hourly')">Per Hour (Session-based)</button>
+      </div>
+
+      <!-- FLAT -->
+      <div class="panel-flat show" id="panelFlat">
+        <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+          <div class="fg"><label class="fl">Monthly Salary (&#8377;)</label><input class="fi" id="flatSalary" type="number" value="15000" min="0"></div>
+        </div>
+      </div>
+
+      <!-- HOURLY -->
+      <div class="panel-hourly" id="panelHourly">
+        <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+          <div class="fg"><label class="fl">Rate / Hour (&#8377;)</label><input class="fi" id="ratePerHour" type="number" value="300" min="0" oninput="renderMiniCal()"></div>
+          <div class="fg"><label class="fl">Default Duration (hrs)</label><input class="fi" id="defaultHrs" type="number" value="2" step="0.5" min="0.5" oninput="renderMiniCal()"></div>
+          <div class="fg"><label class="fl">Short Session (hrs)</label><input class="fi" id="shortHrs" type="number" value="1" step="0.5" min="0.5" oninput="renderMiniCal()"></div>
+        </div>
+
+        <div class="sec" style="margin-top:0;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Weekly Schedule</div><div class="sec-rule"></div></div>
+        <div class="days-grid">
+          <div class="day-card" id="card-sun"><div class="day-card-top" onclick="toggleDay('sun')"><div><div class="day-label">Sunday</div><div class="day-short-txt">SUN</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sun" onchange="syncCard('sun');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sun" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+          <div class="day-card active" id="card-mon"><div class="day-card-top" onclick="toggleDay('mon')"><div><div class="day-label">Monday</div><div class="day-short-txt">MON</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-mon" checked onchange="syncCard('mon');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-mon" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+          <div class="day-card" id="card-tue"><div class="day-card-top" onclick="toggleDay('tue')"><div><div class="day-label">Tuesday</div><div class="day-short-txt">TUE</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-tue" onchange="syncCard('tue');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-tue" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+          <div class="day-card active" id="card-wed"><div class="day-card-top" onclick="toggleDay('wed')"><div><div class="day-label">Wednesday</div><div class="day-short-txt">WED</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-wed" checked onchange="syncCard('wed');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-wed" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+          <div class="day-card" id="card-thu"><div class="day-card-top" onclick="toggleDay('thu')"><div><div class="day-label">Thursday</div><div class="day-short-txt">THU</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-thu" onchange="syncCard('thu');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-thu" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+          <div class="day-card active" id="card-fri"><div class="day-card-top" onclick="toggleDay('fri')"><div><div class="day-label">Friday</div><div class="day-short-txt">FRI</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-fri" checked onchange="syncCard('fri');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-fri" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+          <div class="day-card" id="card-sat"><div class="day-card-top" onclick="toggleDay('sat')"><div><div class="day-label">Saturday</div><div class="day-short-txt">SAT</div></div><label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="tog-sat" onchange="syncCard('sat');renderMiniCal()"><span class="tog-slider"></span></label></div><div class="day-time-wrap"><input class="day-time" id="time-sat" type="time" value="10:00" onchange="renderMiniCal()"></div></div>
+        </div>
+
+        <div class="sec" style="margin-top:0;margin-bottom:12px"><div class="sec-dot"></div><div class="sec-txt">Session Calendar — Click any date to edit</div><div class="sec-rule"></div></div>
+        <div class="mini-cal-wrap">
+          <div class="mini-cal-legend">
+            <div class="ml-item"><div class="ml-dot" style="background:var(--lime-bg);border:1.5px solid var(--lime-mid)"></div>Full session</div>
+            <div class="ml-item"><div class="ml-dot" style="background:var(--amber-bg);border:1.5px solid var(--amber-mid)"></div>Short session</div>
+            <div class="ml-item"><div class="ml-dot" style="background:var(--cream-2);border:1.5px dashed var(--rule)"></div>Absent</div>
+            <div class="ml-item"><div class="ml-dot" style="background:var(--blue-bg);border:1.5px solid var(--blue-mid)"></div>One-off added</div>
+            <div class="ml-item" style="margin-left:auto;font-size:9px;color:var(--pale);font-style:italic">Scheduled dates: click to cycle state &bull; Other dates: click to add one-off</div>
+          </div>
+          <div class="mini-cal" id="miniCal"></div>
+        </div>
+      </div>
+
+      <!-- NON-TEACHING -->
+      <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Non-Teaching Hours</div><div class="sec-rule"></div></div>
+      <div class="nt-grid">
+        <div class="nt-card"><div class="nt-card-title">&#128193; Administrative / Office</div><div class="nt-fields"><div class="fg"><label class="fl">Hours</label><input class="fi" id="ntAdminHrs" type="number" value="0" min="0" step="0.5"></div><div class="fg"><label class="fl">Rate/hr (&#8377;)</label><input class="fi" id="ntAdminRate" type="number" value="150" min="0"></div></div></div>
+        <div class="nt-card"><div class="nt-card-title">&#128203; Exam Duty / Invigilation</div><div class="nt-fields"><div class="fg"><label class="fl">Hours</label><input class="fi" id="ntExamHrs" type="number" value="0" min="0" step="0.5"></div><div class="fg"><label class="fl">Rate/hr (&#8377;)</label><input class="fi" id="ntExamRate" type="number" value="150" min="0"></div></div></div>
+        <div class="nt-card"><div class="nt-card-title">&#128172; Counselling / Parent Meetings</div><div class="nt-fields"><div class="fg"><label class="fl">Hours</label><input class="fi" id="ntCounselHrs" type="number" value="0" min="0" step="0.5"></div><div class="fg"><label class="fl">Rate/hr (&#8377;)</label><input class="fi" id="ntCounselRate" type="number" value="150" min="0"></div></div></div>
+      </div>
+
+      <!-- DEDUCTIONS -->
+      <div class="sec" style="margin-top:4px;margin-bottom:14px"><div class="sec-dot"></div><div class="sec-txt">Deductions (optional)</div><div class="sec-rule"></div></div>
+      <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+        <div class="fg"><label class="fl">Deduction Label</label><input class="fi" id="deductLabel" type="text" placeholder="e.g. Advance recovered"></div>
+        <div class="fg"><label class="fl">Amount (&#8377;)</label><input class="fi" id="deductAmt" type="number" value="0" min="0"></div>
+      </div>
+
+      <div class="ctrl-bottom">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div class="fl">Billing Month</div>
+          <div class="month-nav">
+            <button class="mnav-btn" onclick="changeMonth(-1)">&#8249;</button>
+            <div class="mnav-display" id="monthDisplay"></div>
+            <button class="mnav-btn" onclick="changeMonth(1)">&#8250;</button>
+          </div>
+        </div>
+        <button class="gen-btn" onclick="generate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg>
+          Generate Statement
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-top:36px"><div class="sec-dot"></div><div class="sec-txt">Statement Preview</div><div class="sec-rule"></div></div>
+  <div class="invoice-outer">
+    <div id="invoice-content">
+      <div class="empty-state"><div class="empty-ico">&#128196;</div><div class="empty-txt">No statement generated yet</div><div class="empty-sub">Configure details above and click Generate Statement</div></div>
+    </div>
+  </div>
+  <div class="action-bar" id="actionBar" style="display:none">
+    <button class="act-btn" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Export PDF
+    </button>
+  </div>
+
+</div>
+
+<script>
+var MONTHS   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAY_KEYS = ['sun','mon','tue','wed','thu','fri','sat'];
+var DAY_CSS  = ['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
+var DAY_FG   = ['var(--sun-fg)','var(--mon-fg)','var(--tue-fg)','var(--wed-fg)','var(--thu-fg)','var(--fri-fg)','var(--sat-fg)'];
+var DAY_BG   = ['var(--sun-bg)','var(--mon-bg)','var(--tue-bg)','var(--wed-bg)','var(--thu-bg)','var(--fri-bg)','var(--sat-bg)'];
+var DAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+var dateStates  = {};  // key -> 'full'|'short'|'absent'
+var dateTimes   = {};  // key -> 'HH:MM' (per-date time override)
+var oneOffs     = {};  // key -> {time, hrs}
+var openEditorKey = null;
+var popupPendingKey = null;
+var payMode = 'flat';
+var billingYear, billingMonth;
+
+(function(){
+  var now = new Date();
+  billingYear  = now.getFullYear();
+  billingMonth = now.getMonth();
+  updateMonthDisplay();
+})();
+
+function updateMonthDisplay(){
+  document.getElementById('monthDisplay').textContent = MONTHS[billingMonth] + ' ' + billingYear;
+}
+
+function changeMonth(delta){
+  billingMonth += delta;
+  if(billingMonth > 11){ billingMonth = 0; billingYear++; }
+  if(billingMonth < 0) { billingMonth = 11; billingYear--; }
+  dateStates = {}; dateTimes = {}; oneOffs = {}; openEditorKey = null;
+  updateMonthDisplay();
+  if(payMode === 'hourly') renderMiniCal();
+}
+
+function setMode(m){
+  payMode = m;
+  document.getElementById('modeFlat').classList.toggle('active', m === 'flat');
+  document.getElementById('modeHourly').classList.toggle('active', m === 'hourly');
+  document.getElementById('panelFlat').classList.toggle('show', m === 'flat');
+  document.getElementById('panelHourly').classList.toggle('show', m === 'hourly');
+  if(m === 'hourly') renderMiniCal();
+}
+
+function toggleDay(key){
+  var cb = document.getElementById('tog-' + key);
+  cb.checked = !cb.checked;
+  syncCard(key);
+  if(payMode === 'hourly') renderMiniCal();
+}
+function syncCard(key){
+  var cb = document.getElementById('tog-' + key);
+  document.getElementById('card-' + key).classList.toggle('active', cb.checked);
+}
+
+function dateKey(y, mo, d){
+  return y + '-' + String(mo + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+}
+
+function getActiveDowTimes(){
+  var out = {};
+  for(var i = 0; i < DAY_KEYS.length; i++){
+    var cb = document.getElementById('tog-' + DAY_KEYS[i]);
+    if(cb && cb.checked){
+      var te = document.getElementById('time-' + DAY_KEYS[i]);
+      out[i] = (te && te.value) ? te.value : '10:00';
+    }
+  }
+  return out;
+}
+
+function cycleState(key){
+  var cur = dateStates[key] || 'full';
+  dateStates[key] = cur === 'full' ? 'short' : cur === 'short' ? 'absent' : 'full';
+  // if becoming absent, close any open editor for this key
+  if(dateStates[key] === 'absent' && openEditorKey === key) openEditorKey = null;
+  renderMiniCal();
+}
+
+function toggleEditor(key){
+  openEditorKey = (openEditorKey === key) ? null : key;
+  renderMiniCal();
+}
+
+function onTimeEditorChange(key, val){
+  dateTimes[key] = val;
+  // do NOT call renderMiniCal here to avoid losing focus mid-type
+}
+
+/* popup for non-scheduled dates */
+function openPopup(key, dow){
+  var dayNum = parseInt(key.split('-')[2]);
+  document.getElementById('popupTitle').textContent = DAY_FULL[dow] + ' ' + dayNum + ' ' + MONTHS[billingMonth];
+  document.getElementById('popupSub').textContent   = 'One-off session — set start time and duration';
+  var ex = oneOffs[key];
+  var defH = payMode === 'hourly' ? (parseFloat(document.getElementById('defaultHrs').value) || 2) : 2;
+  document.getElementById('popupTime').value = ex ? ex.time : '10:00';
+  document.getElementById('popupDur').value  = ex ? ex.hrs  : defH;
+  popupPendingKey = key;
+  document.getElementById('popupOverlay').classList.remove('hidden');
+}
+function closePopup(){
+  document.getElementById('popupOverlay').classList.add('hidden');
+  popupPendingKey = null;
+}
+function confirmPopup(){
+  if(!popupPendingKey) return;
+  var t = document.getElementById('popupTime').value || '10:00';
+  var h = parseFloat(document.getElementById('popupDur').value) || 2;
+  oneOffs[popupPendingKey] = {time: t, hrs: h};
+  closePopup();
+  renderMiniCal();
+}
+function removeOneOff(key){
+  delete oneOffs[key];
+  renderMiniCal();
+}
+document.getElementById('popupOverlay').addEventListener('click', function(e){
+  if(e.target === this) closePopup();
+});
+
+/* ── RENDER MINI CALENDAR ── */
+function renderMiniCal(){
+  var container = document.getElementById('miniCal');
+  if(!container) return;
+
+  var defHrs   = parseFloat(document.getElementById('defaultHrs').value) || 2;
+  var shortHrs = parseFloat(document.getElementById('shortHrs').value)   || 1;
+  var totalDays = new Date(billingYear, billingMonth + 1, 0).getDate();
+  var firstDOW  = new Date(billingYear, billingMonth, 1).getDay();
+  var adt = getActiveDowTimes();
+
+  var html = '';
+  var hdrs = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  for(var hi = 0; hi < 7; hi++) html += '<div class="mini-dh">' + hdrs[hi] + '</div>';
+  for(var ei = 0; ei < firstDOW; ei++) html += '<div class="mc-cell mc-empty"></div>';
+
+  for(var day = 1; day <= totalDays; day++){
+    var dow     = new Date(billingYear, billingMonth, day).getDay();
+    var key     = dateKey(billingYear, billingMonth, day);
+    var isCls   = adt.hasOwnProperty(dow);
+    var isOneOff= oneOffs.hasOwnProperty(key);
+
+    if(isCls){
+      var state    = dateStates[key] || 'full';
+      var dowTime  = adt[dow];
+      var dispTime = dateTimes[key] || dowTime;
+      var sessHrs  = state === 'short' ? shortHrs : defHrs;
+      var stateLabel = state === 'full' ? 'Full ' + sessHrs + 'h' : state === 'short' ? 'Short ' + sessHrs + 'h' : 'Absent';
+      var isEdOpen = (openEditorKey === key) && state !== 'absent';
+
+      html += '<div class="mc-cell mc-s-' + state + ' clickable" id="mcell-' + key + '">';
+      // top clickable area cycles state
+      html += '<div style="width:100%;display:flex;flex-direction:column;align-items:center;cursor:pointer" onclick="cycleState(\'' + key + '\')">';
+      html += '<div class="mc-date">' + day + '</div>';
+      html += '<div class="mc-state-tag">' + stateLabel + '</div>';
+      if(state !== 'absent') html += '<div class="mc-time-disp">' + fmt12(dispTime) + '</div>';
+      html += '</div>'; // close top area
+
+      if(state !== 'absent'){
+        // time editor
+        html += '<div class="mc-editor-wrap' + (isEdOpen ? ' open' : '') + '" id="med-' + key + '">';
+        html += '<div class="mc-time-lbl">Start time</div>';
+        html += '<input class="mc-time-fi" type="time" value="' + dispTime + '" '
+              + 'onchange="onTimeEditorChange(\'' + key + '\',this.value)" '
+              + 'onclick="event.stopPropagation()">';
+        html += '</div>';
+        // toggle button
+        html += '<div class="mc-toggle-btn" onclick="event.stopPropagation();toggleEditor(\'' + key + '\')">'
+              + (isEdOpen ? '&#9650; hide' : '&#9660; set time') + '</div>';
+      }
+      html += '</div>'; // close mc-cell
+
+    } else if(isOneOff){
+      var oo = oneOffs[key];
+      html += '<div class="mc-cell mc-oneoff clickable" id="mcell-' + key + '">';
+      html += '<div style="width:100%;display:flex;flex-direction:column;align-items:center">';
+      html += '<div class="mc-date">' + day + '</div>';
+      html += '<div class="mc-state-tag">+' + oo.hrs + 'h</div>';
+      html += '<div class="mc-time-disp">' + fmt12(oo.time) + '</div>';
+      html += '</div>';
+      html += '<div class="mc-edit-link" onclick="openPopup(\'' + key + '\',' + dow + ')">&#9998; edit</div>';
+      html += '<div class="mc-remove-link" onclick="removeOneOff(\'' + key + '\')">&#10005; remove</div>';
+      html += '</div>'; // close mc-cell
+
+    } else {
+      var isWknd = (dow === 0 || dow === 6);
+      html += '<div class="mc-cell ' + (isWknd ? 'mc-wknd' : 'mc-other') + ' clickable" '
+            + 'onclick="openPopup(\'' + key + '\',' + dow + ')" '
+            + 'title="Add one-off session">';
+      html += '<div class="mc-date">' + day + '</div>';
+      html += '<div class="mc-add-hint">+ add</div>';
+      html += '</div>';
+    }
+  }
+
+  container.innerHTML = html;
+}
+
+/* ── FORMAT HELPERS ── */
+function fmt12(t){
+  if(!t) return '';
+  var p = t.split(':'), h = parseInt(p[0]), m = p[1];
+  return (h % 12 || 12) + ':' + m + ' ' + (h >= 12 ? 'PM' : 'AM');
+}
+function fmtRange(t, hrs){
+  if(!t) return '';
+  var p = t.split(':'), h = parseInt(p[0]), m = parseInt(p[1]);
+  var sm = h * 60 + m;
+  var em = sm + Math.round(hrs * 60);
+  var eh = Math.floor(em / 60) % 24;
+  var erm = em % 60;
+  var pad = function(n){ return String(n).padStart(2,'0'); };
+  return fmt12(t) + '&ndash;' + fmt12(pad(eh) + ':' + pad(erm));
+}
+function rupee(n){ return '&#8377;' + n.toLocaleString('en-IN'); }
+
+/* ── CS ROWS ── */
+function addCS(){
+  var row = document.createElement('div');
+  row.className = 'cs-row';
+  row.innerHTML = '<input class="fi" type="text" placeholder="Class">'
+                + '<input class="fi" type="text" placeholder="Subject">'
+                + '<button class="cs-del" onclick="delCS(this)">&times;</button>';
+  document.getElementById('csRows').appendChild(row);
+}
+function delCS(btn){
+  var rows = document.querySelectorAll('#csRows .cs-row');
+  if(rows.length <= 1){
+    btn.closest('.cs-row').querySelectorAll('input').forEach(function(i){ i.value = ''; });
+    return;
+  }
+  btn.closest('.cs-row').remove();
+}
+
+/* ── GENERATE ── */
+function generate(){
+  var name  = document.getElementById('teacherName').value.trim() || 'Teacher';
+  var desig = document.getElementById('teacherDesig').value.trim();
+
+  var csItems = [];
+  document.querySelectorAll('#csRows .cs-row').forEach(function(row){
+    var ins = row.querySelectorAll('input');
+    var cls = ins[0].value.trim(), subj = ins[1].value.trim();
+    if(cls || subj) csItems.push({cls: cls, subj: subj});
+  });
+
+  var invNum = 'SA-PAY-' + billingYear + String(billingMonth + 1).padStart(2,'0') + '-' + Math.floor(Math.random() * 900 + 100);
+  var issued = new Date().toLocaleDateString('en-IN', {day:'numeric', month:'long', year:'numeric'});
+
+  /* non-teaching */
+  var ntDefs = [
+    {label:'Administrative / Office Work', icon:'&#128193;', hrsId:'ntAdminHrs',   rateId:'ntAdminRate'},
+    {label:'Exam Duty / Invigilation',      icon:'&#128203;', hrsId:'ntExamHrs',    rateId:'ntExamRate'},
+    {label:'Counselling / Parent Meetings', icon:'&#128172;', hrsId:'ntCounselHrs', rateId:'ntCounselRate'}
+  ];
+  var ntItems = [];
+  ntDefs.forEach(function(def){
+    var hrs  = parseFloat(document.getElementById(def.hrsId).value)  || 0;
+    var rate = parseFloat(document.getElementById(def.rateId).value) || 0;
+    if(hrs > 0) ntItems.push({label: def.label, icon: def.icon, hrs: hrs, rate: rate, amt: hrs * rate});
+  });
+  var ntTotal = ntItems.reduce(function(s, x){ return s + x.amt; }, 0);
+
+  var deductLabel = document.getElementById('deductLabel').value.trim();
+  var deductAmt   = parseFloat(document.getElementById('deductAmt').value) || 0;
+
+  var teachingTotal = 0;
+  var calHTML = '', legendHTML = '', tableRows = '';
+  var modeLabel = '', modeSubLabel = '';
+
+  /* ── FLAT ── */
+  if(payMode === 'flat'){
+    var flatSal = parseFloat(document.getElementById('flatSalary').value) || 0;
+    teachingTotal = flatSal;
+    modeLabel    = 'Flat Monthly';
+    modeSubLabel = rupee(flatSal) + ' / month';
+    tableRows += '<tr class="sec-hdr-row"><td colspan="5">Teaching</td></tr>'
+      + '<tr><td>Monthly Salary (Flat)</td>'
+      + '<td class="mono">&mdash;</td>'
+      + '<td class="mono" style="text-align:center">&mdash;</td>'
+      + '<td class="mono" style="text-align:center">&mdash;</td>'
+      + '<td class="mono" style="text-align:right">' + rupee(flatSal) + '</td></tr>';
+
+  /* ── HOURLY ── */
+  } else {
+    var hourRate = parseFloat(document.getElementById('ratePerHour').value) || 300;
+    var defHrs   = parseFloat(document.getElementById('defaultHrs').value)  || 2;
+    var shortH   = parseFloat(document.getElementById('shortHrs').value)    || 1;
+    modeLabel    = 'Per Hour';
+    modeSubLabel = rupee(hourRate) + ' / hr &bull; ' + defHrs + 'h full &bull; ' + shortH + 'h short';
+
+    var totalDays = new Date(billingYear, billingMonth + 1, 0).getDate();
+    var firstDOW  = new Date(billingYear, billingMonth, 1).getDay();
+    var adt = getActiveDowTimes();
+
+    /* build sessions map */
+    var sessions = {}; // key -> {day, dow, time, hrs, type, state}
+    for(var di = 1; di <= totalDays; di++){
+      var ddow = new Date(billingYear, billingMonth, di).getDay();
+      var dkey = dateKey(billingYear, billingMonth, di);
+      if(adt.hasOwnProperty(ddow)){
+        var st = dateStates[dkey] || 'full';
+        if(st !== 'absent'){
+          sessions[dkey] = {
+            day: di, dow: ddow,
+            time: dateTimes[dkey] || adt[ddow],
+            hrs: st === 'short' ? shortH : defHrs,
+            type: 'sched', state: st
+          };
+        }
+      } else if(oneOffs.hasOwnProperty(dkey)){
+        sessions[dkey] = {
+          day: di, dow: ddow,
+          time: oneOffs[dkey].time,
+          hrs: oneOffs[dkey].hrs,
+          type: 'oneoff', state: 'full'
+        };
+      }
+    }
+
+    /* big calendar */
+    var cells = [];
+    for(var ei2 = 0; ei2 < firstDOW; ei2++) cells.push({type:'empty'});
+    for(var cd = 1; cd <= totalDays; cd++){
+      var cdow = new Date(billingYear, billingMonth, cd).getDay();
+      var ckey = dateKey(billingYear, billingMonth, cd);
+      if(sessions[ckey]){
+        cells.push({type:'session', day:cd, dow:cdow, sess:sessions[ckey]});
+      } else {
+        var isAbs = adt.hasOwnProperty(cdow) && (dateStates[ckey] === 'absent');
+        cells.push({type: isAbs ? 'absent' : 'other', day:cd, dow:cdow});
+      }
+    }
+
+    var calHdrs = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    for(var ch = 0; ch < 7; ch++) calHTML += '<div class="cal-dh">' + calHdrs[ch] + '</div>';
+
+    cells.forEach(function(c){
+      if(c.type === 'empty'){
+        calHTML += '<div class="cal-cell empty"></div>';
+        return;
+      }
+      if(c.type === 'absent'){
+        calHTML += '<div class="cal-cell absent-c"><div class="c-date">' + c.day + '</div></div>';
+        return;
+      }
+      if(c.type === 'other'){
+        calHTML += '<div class="cal-cell ' + (c.dow===0||c.dow===6 ? 'wknd' : 'regular') + '">'
+                 + '<div class="c-date">' + c.day + '</div></div>';
+        return;
+      }
+      /* session cell */
+      var s = c.sess;
+      var cellCls;
+      if(s.type === 'oneoff'){
+        cellCls = 'cal-cell oneoff-c';
+      } else if(s.state === 'short'){
+        cellCls = 'cal-cell short-c';   // amber — NO day colour class mixed in
+      } else {
+        cellCls = 'cal-cell ' + DAY_CSS[c.dow]; // full session: day colour
+      }
+      calHTML += '<div class="' + cellCls + '">'
+               + '<span class="cal-badge"></span>'
+               + '<div class="c-date">' + c.day + '</div>'
+               + '<div class="c-time">' + fmtRange(s.time, s.hrs) + '</div>'
+               + '<div class="c-dur">' + s.hrs + 'h' + (s.type==='oneoff'?' *':'') + '</div>'
+               + '</div>';
+    });
+
+    /* legend */
+    for(var li = 0; li < DAY_KEYS.length; li++){
+      var togEl = document.getElementById('tog-' + DAY_KEYS[li]);
+      if(togEl && togEl.checked){
+        legendHTML += '<div class="leg-item">'
+          + '<div class="leg-dot" style="background:' + DAY_BG[li] + ';border-color:' + DAY_FG[li] + '"></div>'
+          + DAY_FULL[li] + '</div>';
+      }
+    }
+    var hasShort = Object.values(dateStates).some(function(s){ return s === 'short'; });
+    if(hasShort){
+      legendHTML += '<div class="leg-item"><div class="leg-dot" style="background:var(--amber-bg);border-color:var(--amber-dark)"></div>Short session (' + shortH + 'h)</div>';
+    }
+    if(Object.keys(oneOffs).length > 0){
+      legendHTML += '<div class="leg-item"><div class="leg-dot" style="background:var(--blue-bg);border-color:var(--blue)"></div>One-off session (*)</div>';
+    }
+
+    /* table rows */
+    tableRows += '<tr class="sec-hdr-row"><td colspan="5">Teaching Sessions</td></tr>';
+
+    var byDow = {};
+    var oRows = [];
+    Object.keys(sessions).sort().forEach(function(k){
+      var s = sessions[k];
+      if(s.type === 'sched'){
+        if(!byDow[s.dow]) byDow[s.dow] = [];
+        byDow[s.dow].push(s);
+      } else {
+        oRows.push(s);
+      }
+    });
+
+    Object.keys(byDow).map(Number).sort(function(a,b){return a-b;}).forEach(function(dow){
+      var arr      = byDow[dow];
+      var fullCnt  = arr.filter(function(s){ return s.state === 'full'; }).length;
+      var shortCnt = arr.filter(function(s){ return s.state === 'short'; }).length;
+      var totalH   = arr.reduce(function(s,x){ return s + x.hrs; }, 0);
+      var amt      = totalH * hourRate;
+      teachingTotal += amt;
+
+      /* show per-date time if any overrides exist for this DOW, else DOW default */
+      var timeSample = arr[0].time; // first session's actual time (may be overridden)
+      var allSameTime = arr.every(function(s){ return s.time === timeSample; });
+      var timeDisplay = allSameTime ? fmt12(timeSample) : 'varied';
+
+      /* hours breakdown string */
+      var hrsBreakdown;
+      if(fullCnt > 0 && shortCnt > 0){
+        hrsBreakdown = fullCnt + '&times;' + defHrs + 'h + ' + shortCnt + '&times;' + shortH + 'h = ' + totalH + 'h';
+      } else {
+        hrsBreakdown = totalH + ' hrs';
+      }
+
+      var detail = '';
+      if(fullCnt > 0 && shortCnt > 0) detail = fullCnt + ' full, ' + shortCnt + ' short';
+      else if(shortCnt > 0) detail = shortCnt + ' short';
+
+      tableRows += '<tr>'
+        + '<td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;'
+        + 'background:' + DAY_BG[dow] + ';border:1px solid ' + DAY_FG[dow] + ';margin-right:8px;vertical-align:middle"></span>'
+        + DAY_FULL[dow]
+        + (detail ? ' <span style="font-size:11px;color:var(--muted)">(' + detail + ')</span>' : '')
+        + '</td>'
+        + '<td class="mono">' + timeDisplay + '</td>'
+        + '<td class="mono" style="text-align:center">' + hrsBreakdown + '</td>'
+        + '<td class="mono" style="text-align:center">' + (fullCnt + shortCnt) + '</td>'
+        + '<td class="mono" style="text-align:right">' + rupee(amt) + '</td>'
+        + '</tr>';
+    });
+
+    if(oRows.length > 0){
+      tableRows += '<tr class="sec-hdr-row"><td colspan="5">One-off Sessions</td></tr>';
+      oRows.forEach(function(s){
+        var amt = s.hrs * hourRate;
+        teachingTotal += amt;
+        tableRows += '<tr>'
+          + '<td>' + DAY_FULL[s.dow] + ' ' + s.day + ' ' + MONTHS[billingMonth] + '</td>'
+          + '<td class="mono">' + fmt12(s.time) + '</td>'
+          + '<td class="mono" style="text-align:center">' + s.hrs + ' hrs</td>'
+          + '<td class="mono" style="text-align:center">1</td>'
+          + '<td class="mono" style="text-align:right">' + rupee(amt) + '</td>'
+          + '</tr>';
+      });
+    }
+  }
+
+  tableRows += '<tr class="sub-row"><td class="sub-label" colspan="4">Teaching Subtotal</td><td class="sub-amt">' + rupee(teachingTotal) + '</td></tr>';
+
+  if(ntItems.length > 0){
+    tableRows += '<tr class="sec-hdr-row"><td colspan="5">Non-Teaching</td></tr>';
+    ntItems.forEach(function(nt){
+      tableRows += '<tr>'
+        + '<td>' + nt.icon + ' ' + nt.label + '</td>'
+        + '<td class="mono">&mdash;</td>'
+        + '<td class="mono" style="text-align:center">' + nt.hrs + ' hrs</td>'
+        + '<td class="mono" style="text-align:center">' + rupee(nt.rate) + '/hr</td>'
+        + '<td class="mono" style="text-align:right">' + rupee(nt.amt) + '</td>'
+        + '</tr>';
+    });
+    tableRows += '<tr class="sub-row"><td class="sub-label" colspan="4">Non-Teaching Subtotal</td><td class="sub-amt">' + rupee(ntTotal) + '</td></tr>';
+  }
+
+  var gross = teachingTotal + ntTotal;
+  if(deductAmt > 0){
+    tableRows += '<tr class="sec-hdr-row"><td colspan="5">Deductions</td></tr>'
+      + '<tr class="ded-row">'
+      + '<td>' + (deductLabel || 'Deduction') + '</td>'
+      + '<td class="mono">&mdash;</td><td class="mono" style="text-align:center">&mdash;</td><td class="mono" style="text-align:center">&mdash;</td>'
+      + '<td class="mono" style="text-align:right">&minus; ' + rupee(deductAmt) + '</td>'
+      + '</tr>';
+  }
+
+  var net = gross - deductAmt;
+  tableRows += '<tr class="total-row">'
+    + '<td class="tot-label" colspan="4">' + (deductAmt > 0 ? 'Gross &minus; Deduction = Net Payable' : 'Total Payable') + '</td>'
+    + '<td class="tot-amt">' + rupee(net) + '</td>'
+    + '</tr>';
+
+  var teacherSubLines = csItems.map(function(x){
+    return [x.cls, x.subj].filter(Boolean).join(' &middot; ');
+  }).join('<br>');
+
+  var html = '<div class="inv-hdr">'
+    + '<div><div class="inv-academy">Sehr<span>.</span></div><div class="inv-tagline">Staff Salary Statement &middot; SEHR Academy</div></div>'
+    + '<div class="inv-meta">'
+    +   '<div class="inv-type">Salary Statement</div>'
+    +   '<div class="inv-num">' + invNum + '</div>'
+    +   '<div class="inv-month">' + MONTHS[billingMonth] + ' ' + billingYear + '</div>'
+    +   '<div class="inv-issued">Issued: ' + issued + '</div>'
+    + '</div></div>'
+    + '<div class="inv-info-row">'
+    +   '<div><div class="inf-title">Teacher</div>'
+    +     '<div class="inf-val">' + name + '</div>'
+    +     (desig ? '<div class="inf-sub">' + desig + '</div>' : '')
+    +     (teacherSubLines ? '<div class="inf-sub" style="margin-top:4px">' + teacherSubLines + '</div>' : '')
+    +   '</div>'
+    +   '<div><div class="inf-title">Payment Mode</div>'
+    +     '<div class="inf-val">' + modeLabel + '</div>'
+    +     '<div class="inf-sub">' + modeSubLabel + '</div>'
+    +   '</div>'
+    + '</div>';
+
+  if(calHTML){
+    html += '<div class="cal-section-title">' + MONTHS[billingMonth] + ' ' + billingYear + ' &mdash; Session Calendar</div>'
+          + '<div class="cal-grid">' + calHTML + '</div>';
+  }
+  if(legendHTML){
+    html += '<div class="inv-legend">' + legendHTML + '</div>';
+  }
+
+  html += '<table class="sum-table">'
+    + '<thead><tr>'
+    +   '<th>Description</th><th>Timing</th>'
+    +   '<th style="text-align:center">Hours</th>'
+    +   '<th style="text-align:center">Sessions</th>'
+    +   '<th style="text-align:right">Amount</th>'
+    + '</tr></thead>'
+    + '<tbody>' + tableRows + '</tbody></table>'
+    + '<div class="inv-footer">'
+    +   '<div class="inv-footer-note">This statement is issued by SEHR Academy for internal payroll records. Please verify and acknowledge receipt within 3 working days.</div>'
+    +   '<div class="inv-footer-brand">Sehr Academy<br>Thrissur, Kerala<br>sehracademy.com</div>'
+    + '</div>';
+
+  document.getElementById('invoice-content').innerHTML = html;
+  document.getElementById('actionBar').style.display = 'flex';
+  document.querySelector('.invoice-outer').scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>

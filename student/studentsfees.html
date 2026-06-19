@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Profile — SEHR Academy</title>
+<meta name="theme-color" content="#8BC53F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#f5f2eb; --cream-2:#ede9e0; --cream-3:#e4dfd4;
+  --white:#fdfcfa;
+  --ink:#1a1a18; --ink-2:#2e2e2b; --ink-3:#4a4a46;
+  --muted:#7a7970; --pale:#b0ada4; --rule:#d8d4cb;
+  --lime:#8BC53F; --lime-2:#72a530; --lime-3:#5e8a24;
+  --lime-bg:#f0f7e3; --lime-mid:#c8e48e;
+  --red:#dc2626; --red-bg:#fef2f2; --red-mid:#fca5a5;
+  --amber:#d97706; --amber-bg:#fffbeb; --amber-mid:#fde68a;
+  --blue:#2563eb; --blue-bg:#eff6ff; --blue-mid:#bfdbfe;
+  --purple:#7c3aed; --purple-bg:#f5f3ff;
+  --f:'Space Grotesk',sans-serif;
+  --fh:'Syne',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+  --sh-lg:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;overflow-x:hidden;min-height:100vh}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
+a{color:inherit;text-decoration:none}
+
+/* ─── LOADER ─── */
+#loader{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s var(--ease);opacity:0;pointer-events:none}
+#loader.on{opacity:1;pointer-events:all}
+#loader::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+.ld{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.ld-brand{font-family:var(--fh);font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:36px;display:flex;align-items:center;gap:10px}
+.ld-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.6)}50%{box-shadow:0 0 0 8px rgba(139,197,63,0)}}
+.ld-ring{position:relative;width:64px;height:64px;margin-bottom:32px}
+.ldr-track{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.07)}
+.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(139,197,63,.3);animation:rspin .9s linear infinite}
+.ldr-inner{position:absolute;inset:11px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(139,197,63,.4);animation:rspin .9s linear infinite reverse}
+.ldr-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px rgba(139,197,63,.6)}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ld-txt{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;animation:ltxt 1.8s ease-in-out infinite}
+@keyframes ltxt{0%,100%{opacity:.3}50%{opacity:.7}}
+.ld-bar{width:150px;height:1px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--lime-3),var(--lime),#a6dc52);animation:lfill 1.4s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes lfill{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
+
+/* ─── LOGIN ─── */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400}
+#loginWrap.gone{display:none}
+#loginWrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--rule)1px,transparent 1px),linear-gradient(90deg,var(--rule)1px,transparent 1px);background-size:48px 48px;opacity:.3}
+.lbox{position:relative;z-index:1;background:var(--white);border:1.5px solid var(--cream-3);border-left:4px solid var(--lime);border-radius:6px;width:100%;max-width:370px;box-shadow:var(--sh-lg);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 28px 22px;position:relative;overflow:hidden}
+.lbox-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
+.lbox-head::after{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.15),transparent 70%)}
+.lbox-logo{font-family:var(--fh);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px;display:flex;align-items:center;gap:7px;position:relative;z-index:1}
+.lbox-logodot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
+.lbox-title{font-family:var(--fh);font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1;position:relative;z-index:1}
+.lbox-sub{font-size:11px;color:rgba(255,255,255,.3);margin-top:4px;position:relative;z-index:1}
+.lbox-body{padding:24px 28px 28px}
+.lbox-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.lbox-label svg{width:11px;height:11px;color:var(--lime)}
+.lbox-input{width:100%;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.lbox-input::placeholder{color:var(--pale);font-weight:400}
+.lbox-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:4px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.lbox-btn:hover:not(:disabled){background:var(--lime-2)}
+.lbox-btn:disabled{opacity:.6;cursor:default}
+.lbox-btn svg{width:13px;height:13px}
+.lbox-err{display:none;margin-top:12px;padding:9px 12px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:4px;font-size:12px;font-weight:600;color:var(--red)}
+.lbox-err.on{display:block}
+
+/* ─── APP ─── */
+#app{display:none}
+#app.on{display:block}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--ink);position:relative;overflow:hidden;border-bottom:3px solid var(--lime)}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar::after{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 65%);pointer-events:none}
+.topbar-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px;position:relative;z-index:1}
+.topbar-brand{display:flex;align-items:center;gap:12px}
+.topbar-logo{font-family:var(--fh);font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.topbar-logo span{color:var(--lime)}
+.topbar-divider{width:1px;height:22px;background:rgba(255,255,255,.15)}
+.topbar-page{font-size:12px;color:rgba(255,255,255,.45);font-weight:500;letter-spacing:.02em}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.25);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
+.tb-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
+.logout-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);font-family:var(--f);font-size:11px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .18s}
+.logout-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+.logout-btn svg{width:12px;height:12px}
+
+/* ─── MAIN LAYOUT ─── */
+.main{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+
+/* ─── SELECTOR SECTION ─── */
+.selector-section{background:var(--white);border:1.5px solid var(--cream-3);border-radius:10px;padding:28px 32px;box-shadow:var(--sh-md);margin-bottom:28px;position:relative;overflow:hidden}
+.selector-section::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--lime),var(--lime-3))}
+.selector-kicker{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-2);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.selector-kicker::before{content:'';width:16px;height:2px;background:var(--lime)}
+.selector-title{font-family:var(--fh);font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.4px;margin-bottom:20px}
+.selector-row{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.sel-group{flex:1;min-width:180px}
+.sel-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.sel-label svg{width:12px;height:12px;color:var(--lime)}
+.sel-select{width:100%;padding:11px 36px 11px 14px;border:1.5px solid var(--cream-3);border-radius:6px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238BC53F' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .18s,box-shadow .18s,background .18s}
+.sel-select:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.12);background:var(--white)}
+.sel-select:disabled{color:var(--pale);cursor:default;opacity:.6}
+.sel-select option{font-weight:500}
+.sel-btn{padding:11px 24px;border:none;border-radius:6px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .18s,transform .12s;box-shadow:0 4px 12px rgba(139,197,63,.3);white-space:nowrap;align-self:flex-end}
+.sel-btn:hover:not(:disabled){background:var(--lime-2);transform:translateY(-1px)}
+.sel-btn:disabled{opacity:.5;cursor:default;transform:none}
+.sel-btn svg{width:14px;height:14px}
+
+/* ─── EMPTY STATE ─── */
+#emptyState{text-align:center;padding:64px 32px}
+.es-icon{width:72px;height:72px;border-radius:50%;background:var(--white);border:1.5px solid var(--cream-3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:var(--sh)}
+.es-icon svg{width:32px;height:32px;color:var(--lime-mid)}
+.es-title{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.es-sub{font-size:13px;color:var(--muted)}
+
+/* ─── PROFILE CARD ─── */
+#profileWrap{display:none}
+#profileWrap.on{display:block}
+
+/* Hero profile header */
+.profile-hero{background:var(--ink);border-radius:12px;padding:32px 36px;position:relative;overflow:hidden;margin-bottom:20px;box-shadow:var(--sh-lg)}
+.profile-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:36px 36px}
+.profile-hero::after{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.12),transparent 65%);pointer-events:none}
+.ph-top{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--lime),var(--lime-2),rgba(139,197,63,.3))}
+.ph-inner{position:relative;z-index:1;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.ph-avatar{width:84px;height:84px;border-radius:50%;border:3px solid rgba(139,197,63,.4);flex-shrink:0;background:rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:26px;font-weight:800;color:var(--lime)}
+.ph-avatar img{width:100%;height:100%;object-fit:cover}
+.ph-info{flex:1;min-width:0}
+.ph-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.ph-eyebrow::before{content:'';width:16px;height:2px;background:var(--lime)}
+.ph-name{font-family:var(--fh);font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1;margin-bottom:8px}
+.ph-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ph-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;border:1px solid}
+.ph-tag.cls{background:rgba(139,197,63,.15);border-color:rgba(139,197,63,.3);color:var(--lime)}
+.ph-tag.syl{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.3);color:#93c5fd}
+.ph-tag.sch{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+.ph-tag.gen{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.3);color:#c4b5fd}
+.ph-stats{display:flex;gap:0;margin-left:auto;flex-shrink:0}
+.ph-stat{padding:12px 20px;text-align:center;border-left:1px solid rgba(255,255,255,.1)}
+.ph-stat:first-child{border-left:none}
+.ph-stat-val{font-family:var(--fh);font-size:20px;font-weight:800;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.ph-stat-val.grn{color:var(--lime)}
+.ph-stat-val.red{color:#f87171}
+.ph-stat-val.amb{color:#fbbf24}
+.ph-stat-val.wht{color:#fff}
+.ph-stat-lbl{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+/* ─── STATUS BANNER ─── */
+.status-banner{border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600}
+.status-banner.ok{background:var(--lime-bg);border:1px solid rgba(139,197,63,.3);color:var(--lime-3)}
+.status-banner.warn{background:var(--amber-bg);border:1px solid var(--amber-mid);color:var(--amber)}
+.status-banner.danger{background:var(--red-bg);border:1px solid var(--red-mid);color:var(--red)}
+.status-banner svg{width:18px;height:18px;flex-shrink:0}
+.status-banner-amount{font-family:var(--fh);font-size:16px;font-weight:800;margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* ─── GRID LAYOUT ─── */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.profile-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.span-2{grid-column:span 2}
+
+/* ─── PANEL ─── */
+.panel{background:var(--white);border:1.5px solid var(--cream-3);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
+.panel-head{padding:16px 22px 13px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-title{font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.panel-title-dot{width:8px;height:8px;border-radius:50%}
+.panel-badge{padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em}
+.panel-body{padding:20px 22px}
+
+/* ─── INFO ROWS ─── */
+.info-row{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--rule);gap:16px}
+.info-row:last-child{border-bottom:none;padding-bottom:0}
+.info-row:first-child{padding-top:0}
+.info-key{font-size:11px;font-weight:600;color:var(--muted);flex-shrink:0;min-width:130px}
+.info-val{font-size:12px;font-weight:700;color:var(--ink);text-align:right;word-break:break-word}
+.info-val.grn{color:var(--lime-2)}
+.info-val.red{color:var(--red)}
+.info-val.amb{color:var(--amber)}
+.info-val.blu{color:var(--blue)}
+
+/* ─── FEE PROGRESS ─── */
+.fee-progress-wrap{padding:4px 0}
+.fpr-labels{display:flex;justify-content:space-between;font-size:10px;margin-bottom:6px}
+.fpr-collected{color:var(--lime-2);font-weight:700}
+.fpr-pending{color:var(--red);font-weight:700}
+.fpr-track{height:10px;background:var(--red-bg);border-radius:5px;overflow:hidden;margin-bottom:14px;position:relative}
+.fpr-fill{height:100%;background:linear-gradient(90deg,var(--lime-3),var(--lime));border-radius:5px;transition:width .9s var(--ease)}
+.fpr-amounts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:4px}
+.fpr-amt-cell{background:var(--cream);border-radius:6px;padding:12px 14px;text-align:center}
+.fpr-amt-val{font-family:var(--fh);font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:3px}
+.fpr-amt-val.grn{color:var(--lime-2)}
+.fpr-amt-val.red{color:var(--red)}
+.fpr-amt-val.ink{color:var(--ink)}
+.fpr-amt-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pale)}
+
+/* ─── SUBJECTS TABLE ─── */
+.subj-table{width:100%;border-collapse:collapse;font-size:12px}
+.subj-table th{padding:9px 14px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--pale);text-align:left;background:var(--cream);border-bottom:1px solid var(--rule)}
+.subj-table td{padding:11px 14px;border-top:1px solid var(--rule);vertical-align:middle}
+.subj-table tr:hover td{background:var(--cream)}
+.subj-num{font-size:10px;font-weight:700;color:var(--pale);width:32px}
+.subj-name{font-weight:600;color:var(--ink)}
+.subj-fee{font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime-2);text-align:right}
+.subj-total-row td{background:var(--ink);color:#fff;font-weight:700;border-top:2px solid var(--lime)}
+.subj-total-row .subj-name{color:#fff}
+.subj-total-row .subj-fee{color:var(--lime);font-family:var(--fh);font-size:14px}
+.subj-no-data{padding:24px;text-align:center;color:var(--muted);font-size:12px}
+
+/* ─── INSTALMENT TIMELINE ─── */
+.timeline{padding:4px 0}
+.tl-item{display:flex;gap:16px;margin-bottom:0;position:relative}
+.tl-item::before{content:'';position:absolute;left:15px;top:36px;bottom:-12px;width:2px;background:var(--rule)}
+.tl-item:last-child::before{display:none}
+.tl-icon{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:2px solid;position:relative;z-index:1;margin-top:4px}
+.tl-icon.paid{background:var(--lime-bg);border-color:var(--lime);color:var(--lime-2)}
+.tl-icon.overdue{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.tl-icon.upcoming{background:var(--amber-bg);border-color:var(--amber-mid);color:var(--amber)}
+.tl-icon.future{background:var(--cream-2);border-color:var(--rule);color:var(--pale)}
+.tl-icon svg{width:13px;height:13px}
+.tl-body{flex:1;padding:6px 0 24px}
+.tl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px}
+.tl-title{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--ink)}
+.tl-amount{font-family:var(--fh);font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.tl-amount.paid{color:var(--lime-2)}
+.tl-amount.overdue{color:var(--red)}
+.tl-amount.upcoming{color:var(--amber)}
+.tl-amount.future{color:var(--ink-3)}
+.tl-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tl-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.04em}
+.tl-badge.paid{background:var(--lime-bg);color:var(--lime-2)}
+.tl-badge.overdue{background:var(--red-bg);color:var(--red)}
+.tl-badge.upcoming{background:var(--amber-bg);color:var(--amber)}
+.tl-badge.future{background:var(--cream-2);color:var(--muted)}
+.tl-progress{margin-top:8px}
+.tl-prog-track{height:4px;background:var(--cream-2);border-radius:2px;overflow:hidden}
+.tl-prog-fill{height:100%;border-radius:2px;transition:width .8s var(--ease)}
+
+/* ─── CONTACT CARD ─── */
+.contact-chip{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--cream);border-radius:6px;margin-bottom:8px}
+.contact-chip:last-child{margin-bottom:0}
+.contact-chip-ico{width:32px;height:32px;border-radius:50%;background:var(--white);border:1.5px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-chip-ico svg{width:13px;height:13px;color:var(--lime-2)}
+.contact-chip-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale);margin-bottom:1px}
+.contact-chip-val{font-size:13px;font-weight:700;color:var(--ink)}
+.contact-chip-val a{color:var(--lime-2);transition:color .15s}
+.contact-chip-val a:hover{color:var(--lime-3);text-decoration:underline}
+
+/* ─── SCHOLARSHIP BANNER ─── */
+.scholarship-badge{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:var(--lime-bg);border:1px solid rgba(139,197,63,.3);border-radius:6px;font-size:12px;font-weight:700;color:var(--lime-3)}
+.scholarship-badge svg{width:14px;height:14px}
+
+/* ─── PRINT BUTTON ─── */
+.print-row{display:flex;justify-content:flex-end;gap:10px;margin-bottom:20px}
+.print-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:6px;border:1.5px solid var(--cream-3);background:var(--white);font-family:var(--f);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s;box-shadow:var(--sh)}
+.print-btn:hover{border-color:var(--lime);color:var(--lime-2);background:var(--lime-bg)}
+.print-btn svg{width:13px;height:13px}
+
+/* ─── FOOTER ─── */
+.foot{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-brand{font-family:var(--fh);font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--ink-2)}
+.foot-brand span{color:var(--lime)}
+.foot-links{display:flex;gap:16px;font-size:11px}
+.foot-links a{color:var(--muted);text-decoration:none;transition:color .18s}
+.foot-links a:hover{color:var(--lime-2)}
+.foot-note{font-size:10px;color:var(--pale);margin-top:6px;width:100%}
+
+/* ─── PRINT STYLES ─── */
+@media print {
+  .topbar,.selector-section,.print-row,.logout-btn{display:none!important}
+  body{background:#fff}
+  .profile-hero{background:#1a1a18;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .main{padding:0}
+  .panel{box-shadow:none;border-color:#e0ddd5}
+  #profileWrap{display:block!important}
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .main{padding:20px 18px 60px}
+  .profile-grid,.profile-grid-3{grid-template-columns:1fr 1fr}
+  .span-2{grid-column:span 2}
+  .ph-stats{margin-left:0;flex-direction:row;width:100%}
+  .ph-inner{flex-direction:column;align-items:flex-start}
+  .fpr-amounts{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .main{padding:16px 14px 56px}
+  .topbar-inner{padding:0 16px}
+  .selector-section{padding:20px 18px}
+  .selector-row{flex-direction:column;align-items:stretch}
+  .sel-btn{width:100%;justify-content:center}
+  .profile-grid,.profile-grid-3{grid-template-columns:1fr}
+  .span-2{grid-column:span 1}
+  .ph-stats{flex-wrap:wrap}
+  .ph-stat{flex:1;min-width:calc(50% - 1px)}
+  .fpr-amounts{grid-template-columns:1fr 1fr}
+  .profile-hero{padding:22px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld">
+    <div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div>
+    <div class="ld-ring"><div class="ldr-track"></div><div class="ldr-spin"></div><div class="ldr-inner"></div><div class="ldr-dot"></div></div>
+    <div class="ld-txt">Loading student data</div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-logo"><div class="lbox-logodot"></div>SEHR Academy</div>
+      <div class="lbox-title">Student Profiles</div>
+      <div class="lbox-sub">Admin access required</div>
+    </div>
+    <div class="lbox-body">
+      <form id="loginForm">
+        <div class="lbox-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Admin Password
+        </div>
+        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" id="loginBtn" class="lbox-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Access Profiles
+        </button>
+        <div class="lbox-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <div class="topbar-logo">SEHR <span>ACADEMY</span></div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-page">Student Profiles</div>
+      </div>
+      <div class="topbar-actions">
+        <span class="tb-pill" id="liveTag">Live Data</span>
+        <button class="logout-btn" id="btnLogout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- SELECTOR -->
+    <div class="selector-section">
+      <div class="selector-kicker">Student Lookup</div>
+      <div class="selector-title">Select Class & Student</div>
+      <div class="selector-row">
+        <div class="sel-group">
+          <div class="sel-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Class
+          </div>
+          <select class="sel-select" id="classSelect">
+            <option value="">— Select a class —</option>
+          </select>
+        </div>
+        <div class="sel-group">
+          <div class="sel-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Student Name
+          </div>
+          <select class="sel-select" id="studentSelect" disabled>
+            <option value="">— Select class first —</option>
+          </select>
+        </div>
+        <button class="sel-btn" id="viewBtn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          View Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState">
+      <div class="es-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="es-title">Select a student to view their profile</div>
+      <div class="es-sub">Choose a class, then pick a student name from the dropdown above</div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="profileWrap">
+
+      <!-- Print row -->
+      <div class="print-row">
+        <button class="print-btn" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print Profile
+        </button>
+      </div>
+
+      <!-- Hero -->
+      <div class="profile-hero">
+        <div class="ph-top"></div>
+        <div class="ph-inner">
+          <div class="ph-avatar" id="phAvatar">—</div>
+          <div class="ph-info">
+            <div class="ph-eyebrow" id="phAcYear">Academic Year 2025–26</div>
+            <div class="ph-name" id="phName">—</div>
+            <div class="ph-tags" id="phTags"></div>
+          </div>
+          <div class="ph-stats">
+            <div class="ph-stat">
+              <div class="ph-stat-val grn" id="phPaid">—</div>
+              <div class="ph-stat-lbl">Total Paid</div>
+            </div>
+            <div class="ph-stat">
+              <div class="ph-stat-val red" id="phBalance">—</div>
+              <div class="ph-stat-lbl">Balance Due</div>
+            </div>
+            <div class="ph-stat">
+              <div class="ph-stat-val amb" id="phTotal">—</div>
+              <div class="ph-stat-lbl">Total Fee</div>
+            </div>
+            <div class="ph-stat">
+              <div class="ph-stat-val wht" id="phCollRate">—</div>
+              <div class="ph-stat-lbl">Collected %</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status banner -->
+      <div id="statusBanner" class="status-banner ok" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="statusIcon"><circle cx="12" cy="12" r="10"/></svg>
+        <span id="statusText">—</span>
+        <span class="status-banner-amount" id="statusAmount"></span>
+      </div>
+
+      <!-- Row 1: Personal + Fee overview -->
+      <div class="profile-grid" style="margin-bottom:16px">
+
+        <!-- Personal Details -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="panel-title-dot" style="background:var(--lime)"></span>
+              Personal Details
+            </div>
+            <span class="panel-badge" style="background:var(--lime-bg);color:var(--lime-2)" id="pbAdmStatus">—</span>
+          </div>
+          <div class="panel-body">
+            <div class="info-row"><span class="info-key">Admission No.</span><span class="info-val blu" id="pdAdmNo">—</span></div>
+            <div class="info-row"><span class="info-key">Full Name</span><span class="info-val" id="pdName">—</span></div>
+            <div class="info-row"><span class="info-key">Class</span><span class="info-val" id="pdClass">—</span></div>
+            <div class="info-row"><span class="info-key">Syllabus</span><span class="info-val" id="pdSyllabus">—</span></div>
+            <div class="info-row"><span class="info-key">Gender</span><span class="info-val" id="pdGender">—</span></div>
+            <div class="info-row"><span class="info-key">School</span><span class="info-val" id="pdSchool">—</span></div>
+            <div class="info-row"><span class="info-key">Date of Joining</span><span class="info-val" id="pdJoining">—</span></div>
+            <div class="info-row"><span class="info-key">Academic Year</span><span class="info-val" id="pdAcYear">—</span></div>
+          </div>
+        </div>
+
+        <!-- Fee Overview -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="panel-title-dot" style="background:var(--blue)"></span>
+              Fee Overview
+            </div>
+            <span class="panel-badge" id="pbFeeStatus" style="background:var(--cream-2);color:var(--muted)">—</span>
+          </div>
+          <div class="panel-body">
+            <div class="fee-progress-wrap">
+              <div class="fpr-labels">
+                <span class="fpr-collected" id="fprCollectedPct">0% Paid</span>
+                <span class="fpr-pending" id="fprPendingPct">100% Remaining</span>
+              </div>
+              <div class="fpr-track"><div class="fpr-fill" id="fprFill" style="width:0%"></div></div>
+              <div class="fpr-amounts">
+                <div class="fpr-amt-cell">
+                  <div class="fpr-amt-val grn" id="faoPaid">—</div>
+                  <div class="fpr-amt-lbl">Paid</div>
+                </div>
+                <div class="fpr-amt-cell">
+                  <div class="fpr-amt-val red" id="faoBalance">—</div>
+                  <div class="fpr-amt-lbl">Balance</div>
+                </div>
+                <div class="fpr-amt-cell">
+                  <div class="fpr-amt-val ink" id="faoTotal">—</div>
+                  <div class="fpr-amt-lbl">Total Fee</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <div class="info-row"><span class="info-key">Monthly Fee</span><span class="info-val" id="foMonthly">—</span></div>
+              <div class="info-row"><span class="info-key">Total Months</span><span class="info-val" id="foMonths">—</span></div>
+              <div class="info-row"><span class="info-key">Next Due Date</span><span class="info-val amb" id="foNextDue">—</span></div>
+              <div class="info-row"><span class="info-key">Next Due Amount</span><span class="info-val amb" id="foNextAmt">—</span></div>
+              <div class="info-row"><span class="info-key">Days Overdue</span><span class="info-val red" id="foDaysOD">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Subjects -->
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="panel-title-dot" style="background:var(--purple)"></span>
+            Subjects Enrolled & Fee Breakdown
+          </div>
+          <span class="panel-badge" id="pbSubjectCount" style="background:var(--purple-bg);color:var(--purple)">—</span>
+        </div>
+        <div id="subjectsBody">
+          <div class="subj-no-data">No subject data available</div>
+        </div>
+      </div>
+
+      <!-- Row 3: Instalment Timeline + Contact -->
+      <div class="profile-grid" style="margin-bottom:16px">
+
+        <!-- Instalment Timeline -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="panel-title-dot" style="background:var(--amber)"></span>
+              Instalment Schedule
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="timeline" id="instalmentTimeline">
+              <!-- built by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact + Extra Info -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Contact -->
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">
+                <span class="panel-title-dot" style="background:var(--lime)"></span>
+                Parent / Contact
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="contact-chip">
+                <div class="contact-chip-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <div class="contact-chip-label">Parent Name</div>
+                  <div class="contact-chip-val" id="ctParent">—</div>
+                </div>
+              </div>
+              <div class="contact-chip">
+                <div class="contact-chip-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 5.95 5.95l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16.28z"/></svg>
+                </div>
+                <div>
+                  <div class="contact-chip-label">Contact Number</div>
+                  <div class="contact-chip-val" id="ctContact">—</div>
+                </div>
+              </div>
+              <div class="contact-chip" id="ctWhatsappChip" style="display:none">
+                <div class="contact-chip-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <div class="contact-chip-label">WhatsApp</div>
+                  <div class="contact-chip-val" id="ctWhatsapp">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scholarship / Extra -->
+          <div class="panel" id="extraPanel">
+            <div class="panel-head">
+              <div class="panel-title">
+                <span class="panel-title-dot" style="background:var(--blue)"></span>
+                Additional Info
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="scholarshipRow" style="margin-bottom:12px;display:none">
+                <div class="scholarship-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                  Scholarship: <span id="ctScholarship"></span>
+                </div>
+              </div>
+              <div class="info-row"><span class="info-key">Birthday</span><span class="info-val" id="ctBirthday">—</span></div>
+              <div class="info-row"><span class="info-key">Student ID</span><span class="info-val blu" id="ctStudentId">—</span></div>
+              <div class="info-row"><span class="info-key">Profile Link</span>
+                <span class="info-val"><a id="ctProfileLink" href="#" target="_blank" style="color:var(--lime-2);text-decoration:underline;font-size:11px">Open ↗</a></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /profileWrap -->
+
+    <footer class="foot">
+      <div>
+        <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+        <div class="foot-note">Confidential — for internal use only</div>
+      </div>
+      <div class="foot-links">
+        <span style="color:var(--pale)">Vatanappally, Thrissur</span>
+        <a href="https://wa.me/919539409586">+91 95394 09586</a>
+        <a href="/">sehracademy.com</a>
+      </div>
+    </footer>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
+var S = [];
+
+/* ── UTILS ── */
+function g(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtN(n){ return Number(n||0).toLocaleString('en-IN'); }
+function fmtRs(n){ return '₹' + fmtN(n); }
+function fmtDate(d){
+  if (!d) return '—';
+  var dt = new Date(d);
+  return isNaN(dt.getTime()) ? String(d) : dt.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+}
+function pct(num, denom){ return denom > 0 ? Math.round(num/denom*100) : 0; }
+function inits(n){ return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2); }
+function loaderOn(){ g('loader').classList.add('on'); }
+function loaderOff(){ g('loader').classList.remove('on'); }
+
+/* ── NORM ── */
+function norm(s){
+  return {
+    id:               String(s.id                || ''),
+    admission_no:     String(s.admission_no      || ''),
+    full_name:        String(s.full_name         || ''),
+    gender:           String(s.gender            || ''),
+    class:            String(s.class             || ''),
+    syllabus:         String(s.syllabus          || ''),
+    admission_status: String(s.admission_status  || '').toUpperCase().trim(),
+    school_name:      String(s.school_name       || ''),
+    parent_name:      String(s.parent_name       || ''),
+    contact:          String(s.contact           || ''),
+    joining_date:     s.joining_date             || '',
+    birthday:         s.birthday                 || '',
+    photo:            String(s.photo             || ''),
+    scholarship:      String(s.scholarship       || ''),
+    subjects:         String(s.subjects          || ''),
+    monthly_fee:      Number(s.monthly_fee       || 0),
+    total_months:     Number(s.total_months      || 0),
+    total_fee:        Number(s.total_fee         || 0),
+    admission_amount: Number(s.admission_amount  || 0),
+    june_amount:      Number(s.june_amount       || 0),
+    september_amount: Number(s.september_amount  || 0),
+    total_paid:       Number(s.total_paid        || 0),
+    balance:          Number(s.balance           || 0),
+    status:           String(s.status            || '').toUpperCase().trim(),
+    next_due:         String(s.next_due          || ''),
+    next_due_amount:  Number(s.next_due_amount   || 0),
+    days_overdue:     Math.abs(Number(s.days_overdue || 0)),
+    current_academic_year: String(s.current_academic_year || ''),
+    admission_paid:   Number(s.admission_paid    || 0),
+    june_paid:        Number(s.june_paid         || 0),
+    september_paid:   Number(s.september_paid    || 0),
+    admission_pending:Number(s.admission_pending || 0),
+    june_pending:     Number(s.june_pending      || 0),
+    september_pending:Number(s.september_pending || 0),
+  };
+}
+
+/* ── LOGIN ── */
+g('loginForm').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var pass = g('passInput').value.trim();
+  if (!pass) return;
+  var btn = g('loginBtn');
+  btn.disabled = true; btn.textContent = 'Authenticating…';
+  g('loginErr').className = 'lbox-err';
+  loaderOn();
+  fetch(API + '?action=studentList&password=' + encodeURIComponent(pass))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.error){
+        loaderOff(); btn.disabled=false; btn.textContent='Access Profiles';
+        g('loginErr').textContent = 'Incorrect password.';
+        g('loginErr').className = 'lbox-err on';
+        return;
+      }
+      var raw = Array.isArray(data) ? data : Array.isArray(data.students) ? data.students : [];
+      S = raw.map(norm);
+      sessionStorage.setItem('sehr_pass', pass);
+      g('loginWrap').classList.add('gone');
+      g('app').classList.add('on');
+      loaderOff();
+      initApp();
+    })
+    .catch(function(){
+      loaderOff(); btn.disabled=false; btn.textContent='Access Profiles';
+      g('loginErr').textContent = 'Connection error — check your network.';
+      g('loginErr').className = 'lbox-err on';
+    });
+});
+
+/* ── INIT APP ── */
+function initApp(){
+  buildClassDropdown();
+
+  g('classSelect').addEventListener('change', function(){
+    var cls = this.value;
+    g('profileWrap').classList.remove('on');
+    g('emptyState').style.display = 'block';
+    if (!cls){ g('studentSelect').disabled=true; g('studentSelect').innerHTML='<option value="">— Select class first —</option>'; g('viewBtn').disabled=true; return; }
+    buildStudentDropdown(cls);
+    g('studentSelect').disabled = false;
+    g('viewBtn').disabled = true;
+  });
+
+  g('studentSelect').addEventListener('change', function(){
+    g('viewBtn').disabled = !this.value;
+    if (!this.value){ g('profileWrap').classList.remove('on'); g('emptyState').style.display='block'; }
+  });
+
+  g('viewBtn').addEventListener('click', function(){
+    var id = g('studentSelect').value;
+    if (!id) return;
+    var student = S.find(function(s){ return s.id === id; });
+    if (student) renderProfile(student);
+  });
+
+  g('btnPrint').addEventListener('click', function(){ window.print(); });
+  g('btnLogout').addEventListener('click', function(){
+    sessionStorage.removeItem('sehr_pass');
+    location.reload();
+  });
+}
+
+/* ── CLASS DROPDOWN ── */
+function buildClassDropdown(){
+  var classes = [];
+  var seen = {};
+  S.forEach(function(s){
+    if (s.class && !seen[s.class]){ seen[s.class]=true; classes.push(s.class); }
+  });
+  classes.sort(function(a,b){
+    var na = parseInt(a)||0, nb = parseInt(b)||0;
+    return na !== nb ? na-nb : a.localeCompare(b);
+  });
+  var sel = g('classSelect');
+  sel.innerHTML = '<option value="">— Select a class —</option>';
+  classes.forEach(function(c){
+    var count = S.filter(function(s){ return s.class===c; }).length;
+    var opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = 'Class ' + c + '  (' + count + ' students)';
+    sel.appendChild(opt);
+  });
+}
+
+/* ── STUDENT DROPDOWN ── */
+function buildStudentDropdown(cls){
+  var students = S.filter(function(s){ return s.class===cls; })
+    .sort(function(a,b){ return a.full_name.localeCompare(b.full_name); });
+  var sel = g('studentSelect');
+  sel.innerHTML = '<option value="">— Select a student —</option>';
+  students.forEach(function(s){
+    var opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.full_name + (s.admission_no ? '  (#'+s.admission_no+')' : '');
+    sel.appendChild(opt);
+  });
+}
+
+/* ════════════════════════════════════
+   RENDER PROFILE
+════════════════════════════════════ */
+function renderProfile(s){
+  g('emptyState').style.display = 'none';
+  g('profileWrap').classList.add('on');
+
+  var collRate = pct(s.total_paid, s.total_fee);
+  var today = new Date();
+
+  /* ── HERO ── */
+  // Avatar
+  var av = g('phAvatar');
+  if (s.photo){
+    av.innerHTML = '<img src="'+esc(s.photo)+'" alt="" onerror="this.style.display=\'none\'">';
+    av.style.background = 'transparent';
+  } else {
+    av.textContent = inits(s.full_name);
+  }
+  // Academic year eyebrow
+  g('phAcYear').textContent = s.current_academic_year ? 'Academic Year ' + s.current_academic_year : 'Academic Year 2025–26';
+  g('phName').textContent = s.full_name || '—';
+  // Tags
+  var tags = '';
+  if (s.class)        tags += '<span class="ph-tag cls">Class ' + esc(s.class) + '</span>';
+  if (s.syllabus)     tags += '<span class="ph-tag syl">' + esc(s.syllabus) + '</span>';
+  if (s.school_name)  tags += '<span class="ph-tag sch">' + esc(s.school_name) + '</span>';
+  if (s.gender)       tags += '<span class="ph-tag gen">' + esc(s.gender) + '</span>';
+  g('phTags').innerHTML = tags;
+  // Hero stats
+  g('phPaid').textContent    = fmtRs(s.total_paid);
+  g('phBalance').textContent = fmtRs(s.balance);
+  g('phTotal').textContent   = fmtRs(s.total_fee);
+  g('phCollRate').textContent = collRate + '%';
+
+  /* ── STATUS BANNER ── */
+  var banner = g('statusBanner');
+  banner.style.display = 'flex';
+  var sIcon = g('statusIcon');
+  if (s.status === 'OVERDUE'){
+    banner.className = 'status-banner danger';
+    sIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+    g('statusText').textContent = 'Payment overdue — ' + s.days_overdue + ' day' + (s.days_overdue!==1?'s':'') + ' past due date. Immediate attention required.';
+    g('statusAmount').textContent = fmtRs(s.balance) + ' outstanding';
+  } else if (s.status === 'PENDING' || s.status === 'UPCOMING'){
+    banner.className = 'status-banner warn';
+    sIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+    g('statusText').textContent = s.next_due ? 'Next payment due on ' + fmtDate(s.next_due) : 'Payment pending.';
+    g('statusAmount').textContent = s.next_due_amount ? fmtRs(s.next_due_amount) + ' due' : '';
+  } else if (s.balance === 0){
+    banner.className = 'status-banner ok';
+    sIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/>';
+    g('statusText').textContent = 'All fees cleared. Account is up to date.';
+    g('statusAmount').textContent = '';
+  } else {
+    banner.className = 'status-banner ok';
+    sIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/>';
+    g('statusText').textContent = 'Fee status: ' + (s.status || 'OK');
+    g('statusAmount').textContent = '';
+  }
+
+  /* ── PERSONAL DETAILS ── */
+  g('pbAdmStatus').textContent = s.admission_status || '—';
+  g('pbAdmStatus').style.background = s.admission_status==='ACTIVE' ? 'var(--lime-bg)' : 'var(--cream-2)';
+  g('pbAdmStatus').style.color = s.admission_status==='ACTIVE' ? 'var(--lime-2)' : 'var(--muted)';
+  g('pdAdmNo').textContent  = s.admission_no ? '#' + s.admission_no : '—';
+  g('pdName').textContent   = s.full_name || '—';
+  g('pdClass').textContent  = s.class ? 'Class ' + s.class : '—';
+  g('pdSyllabus').textContent = s.syllabus || '—';
+  g('pdGender').textContent = s.gender || '—';
+  g('pdSchool').textContent = s.school_name || '—';
+  g('pdJoining').textContent = fmtDate(s.joining_date);
+  g('pdAcYear').textContent = s.current_academic_year || '2025–26';
+
+  /* ── FEE OVERVIEW ── */
+  var feeStatusMap = {OVERDUE:'OVERDUE',PENDING:'PENDING',PAID:'PAID',CLEARED:'CLEARED',UPCOMING:'UPCOMING'};
+  var badgeColor = {OVERDUE:['var(--red-bg)','var(--red)'],PAID:['var(--lime-bg)','var(--lime-2)'],CLEARED:['var(--lime-bg)','var(--lime-2)'],PENDING:['var(--amber-bg)','var(--amber)'],UPCOMING:['var(--amber-bg)','var(--amber)']};
+  var bc = badgeColor[s.status] || ['var(--cream-2)','var(--muted)'];
+  var pbf = g('pbFeeStatus');
+  pbf.textContent = s.status || '—';
+  pbf.style.background = bc[0]; pbf.style.color = bc[1];
+
+  g('fprFill').style.width = collRate + '%';
+  g('fprCollectedPct').textContent = collRate + '% Paid';
+  g('fprPendingPct').textContent   = (100-collRate) + '% Remaining';
+  g('faoPaid').textContent    = fmtRs(s.total_paid);
+  g('faoBalance').textContent = fmtRs(s.balance);
+  g('faoTotal').textContent   = fmtRs(s.total_fee);
+
+  g('foMonthly').textContent  = s.monthly_fee ? fmtRs(s.monthly_fee) + '/month' : '—';
+  g('foMonths').textContent   = s.total_months ? s.total_months + ' months' : '—';
+
+  if (s.next_due && s.next_due_amount > 0){
+    g('foNextDue').textContent = fmtDate(s.next_due);
+    g('foNextAmt').textContent = fmtRs(s.next_due_amount);
+    var dueD = new Date(s.next_due);
+    var isPast = dueD < today;
+    g('foNextDue').className = 'info-val ' + (isPast ? 'red' : 'amb');
+    g('foNextAmt').className = 'info-val ' + (isPast ? 'red' : 'amb');
+  } else {
+    g('foNextDue').textContent = s.balance === 0 ? 'All cleared' : '—';
+    g('foNextAmt').textContent = s.balance === 0 ? '—' : '—';
+    g('foNextDue').className = 'info-val grn';
+    g('foNextAmt').className = 'info-val';
+  }
+  g('foDaysOD').textContent = s.days_overdue > 0 ? s.days_overdue + ' days' : '—';
+  g('foDaysOD').className = 'info-val ' + (s.days_overdue > 0 ? 'red' : 'grn');
+
+  /* ── SUBJECTS TABLE ── */
+  renderSubjects(s);
+
+  /* ── INSTALMENT TIMELINE ── */
+  renderInstalments(s, today);
+
+  /* ── CONTACT ── */
+  g('ctParent').textContent  = s.parent_name || '—';
+  var contactNum = s.contact.replace(/\D/g,'');
+  if (contactNum){
+    g('ctContact').innerHTML = '<a href="tel:+91'+contactNum+'">'+esc(s.contact)+'</a>';
+    g('ctWhatsappChip').style.display = 'flex';
+    g('ctWhatsapp').innerHTML = '<a href="https://wa.me/91'+contactNum+'" target="_blank">Message on WhatsApp ↗</a>';
+  } else {
+    g('ctContact').textContent = '—';
+    g('ctWhatsappChip').style.display = 'none';
+  }
+
+  /* ── EXTRA ── */
+  if (s.scholarship && s.scholarship.toLowerCase() !== 'no' && s.scholarship.toLowerCase() !== 'none' && s.scholarship !== ''){
+    g('scholarshipRow').style.display = 'block';
+    g('ctScholarship').textContent = s.scholarship;
+  } else {
+    g('scholarshipRow').style.display = 'none';
+  }
+  g('ctBirthday').textContent  = fmtDate(s.birthday);
+  g('ctStudentId').textContent = s.id || '—';
+  var profileLink = g('ctProfileLink');
+  if (s.id){
+    profileLink.href = 'https://sehracademy.com/student?id=' + encodeURIComponent(s.id);
+    profileLink.style.display = 'inline';
+  } else {
+    profileLink.style.display = 'none';
+  }
+
+  // Scroll to profile
+  g('profileWrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── SUBJECTS TABLE RENDERER ── */
+function renderSubjects(s){
+  var rawSubjects = s.subjects || '';
+  var subjectList = rawSubjects.split(/[,;|\/\n]+/).map(function(x){ return x.trim(); }).filter(Boolean);
+  var pbsc = g('pbSubjectCount');
+  pbsc.textContent = subjectList.length + ' subject' + (subjectList.length!==1?'s':'');
+
+  if (!subjectList.length){
+    g('subjectsBody').innerHTML = '<div class="subj-no-data">No subject data available for this student.</div>';
+    return;
+  }
+
+  /* Try to compute per-subject fee.
+     If we have monthly_fee and subjects, divide equally.
+     Show total row with actual total_fee. */
+  var perSubjMonthly = subjectList.length > 0 && s.monthly_fee > 0
+    ? Math.round(s.monthly_fee / subjectList.length)
+    : 0;
+  var perSubjTotal = subjectList.length > 0 && s.total_fee > 0 && s.total_months > 0
+    ? Math.round((s.monthly_fee / subjectList.length) * s.total_months)
+    : 0;
+
+  var showFee = perSubjMonthly > 0;
+
+  var thead = '<thead><tr>'
+    + '<th class="subj-num">#</th>'
+    + '<th>Subject</th>'
+    + (showFee ? '<th style="text-align:right">Monthly Fee</th><th style="text-align:right">Annual Fee</th>' : '')
+    + '</tr></thead>';
+
+  var tbody = '<tbody>';
+  subjectList.forEach(function(subj, i){
+    tbody += '<tr>'
+      + '<td class="subj-num">'+(i+1)+'</td>'
+      + '<td class="subj-name">'+esc(subj)+'</td>'
+      + (showFee ? '<td class="subj-fee">'+fmtRs(perSubjMonthly)+'/mo</td><td class="subj-fee">'+fmtRs(perSubjTotal)+'</td>' : '')
+      + '</tr>';
+  });
+  // Total row
+  if (showFee){
+    tbody += '<tr class="subj-total-row">'
+      + '<td></td>'
+      + '<td class="subj-name">Total ('+subjectList.length+' subjects)</td>'
+      + '<td class="subj-fee">'+fmtRs(s.monthly_fee)+'/mo</td>'
+      + '<td class="subj-fee">'+fmtRs(s.total_fee)+'</td>'
+      + '</tr>';
+  }
+  tbody += '</tbody>';
+
+  g('subjectsBody').innerHTML = '<table class="subj-table">'+thead+tbody+'</table>';
+}
+
+/* ── INSTALMENT TIMELINE RENDERER ── */
+function renderInstalments(s, today){
+  /* Build instalment objects */
+  var instalments = [];
+
+  /* Admission */
+  instalments.push({
+    label:   'Admission Fee',
+    sublbl:  'One-time · at enrolment',
+    amount:  s.admission_amount,
+    paid:    s.admission_paid,
+    pending: s.admission_pending,
+    dueDate: s.joining_date || '',
+    type:    'admission'
+  });
+
+  /* June */
+  instalments.push({
+    label:   'June Instalment',
+    sublbl:  'Instalment 1 · Academic start',
+    amount:  s.june_amount,
+    paid:    s.june_paid,
+    pending: s.june_pending,
+    dueDate: '2025-06-01',
+    type:    'june'
+  });
+
+  /* September */
+  instalments.push({
+    label:   'September Instalment',
+    sublbl:  'Instalment 2 · Mid-year',
+    amount:  s.september_amount,
+    paid:    s.september_paid,
+    pending: s.september_pending,
+    dueDate: '2025-09-01',
+    type:    'september'
+  });
+
+  /* Monthly tuition (summarised) */
+  var monthlyTotal = s.monthly_fee * (s.total_months || 0);
+  var monthlyPaid  = s.total_paid - s.admission_paid - s.june_paid - s.september_paid;
+  if (monthlyPaid < 0) monthlyPaid = 0;
+  var monthlyPend  = monthlyTotal - monthlyPaid;
+  if (monthlyPend < 0) monthlyPend = 0;
+  if (s.monthly_fee > 0){
+    instalments.push({
+      label:   'Monthly Tuition',
+      sublbl:  fmtRs(s.monthly_fee) + '/mo × ' + (s.total_months||0) + ' months',
+      amount:  monthlyTotal,
+      paid:    monthlyPaid,
+      pending: monthlyPend,
+      dueDate: '',
+      type:    'monthly'
+    });
+  }
+
+  var html = '';
+  instalments.forEach(function(inst){
+    if (!inst.amount && inst.amount !== 0) return;
+
+    var dueD = inst.dueDate ? new Date(inst.dueDate) : null;
+    var isPast   = dueD && dueD < today;
+    var isToday  = dueD && dueD.toDateString() === today.toDateString();
+    var isWithin14 = dueD && !isPast && (dueD - today) <= 14*24*60*60*1000;
+
+    var stateClass, stateLbl;
+    if (inst.pending === 0 && inst.amount > 0){
+      stateClass = 'paid'; stateLbl = 'Cleared';
+    } else if (inst.pending > 0 && isPast){
+      stateClass = 'overdue'; stateLbl = 'Overdue';
+    } else if (inst.pending > 0 && isWithin14){
+      stateClass = 'upcoming'; stateLbl = 'Due Soon';
+    } else if (inst.pending > 0){
+      stateClass = 'future'; stateLbl = 'Upcoming';
+    } else {
+      stateClass = 'future'; stateLbl = '—';
+    }
+
+    // Icon SVG
+    var iconSvg;
+    if (stateClass === 'paid'){
+      iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else if (stateClass === 'overdue'){
+      iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+    } else if (stateClass === 'upcoming'){
+      iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+    } else {
+      iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
+    }
+
+    var amtDisplay = inst.pending > 0 ? fmtRs(inst.pending) : fmtRs(inst.amount);
+    var paidPct    = inst.amount > 0 ? pct(inst.paid, inst.amount) : 0;
+
+    html += '<div class="tl-item">'
+      + '<div class="tl-icon '+stateClass+'">'+iconSvg+'</div>'
+      + '<div class="tl-body">'
+      + '<div class="tl-header">'
+      + '<div>'
+      + '<div class="tl-title">'+esc(inst.label)+'</div>'
+      + '</div>'
+      + '<div class="tl-amount '+stateClass+'">'+amtDisplay+'</div>'
+      + '</div>'
+      + '<div class="tl-meta">'
+      + '<span>'+esc(inst.sublbl)+'</span>';
+
+    if (inst.dueDate){
+      html += '<span>Due: '+fmtDate(inst.dueDate)+'</span>';
+    }
+    html += '<span class="tl-badge '+stateClass+'">'+stateLbl+'</span>';
+    html += '</div>';
+
+    // Progress bar
+    if (inst.amount > 0 && inst.paid > 0 && inst.pending > 0){
+      html += '<div class="tl-progress">'
+        + '<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--pale);margin-bottom:4px">'
+        + '<span>Paid: '+fmtRs(inst.paid)+'</span><span>'+paidPct+'% collected</span>'
+        + '</div>'
+        + '<div class="tl-prog-track"><div class="tl-prog-fill" style="width:'+paidPct+'%;background:var(--lime)"></div></div>'
+        + '</div>';
+    } else if (inst.paid > 0 && inst.pending === 0){
+      html += '<div style="font-size:10px;color:var(--lime-2);margin-top:4px;font-weight:600">✓ Fully paid — '+fmtRs(inst.paid)+'</div>';
+    }
+
+    html += '</div></div>';
+  });
+
+  g('instalmentTimeline').innerHTML = html || '<div style="color:var(--muted);font-size:12px;padding:8px">No instalment data available.</div>';
+}
+
+</script>
+</body>
+</html>
