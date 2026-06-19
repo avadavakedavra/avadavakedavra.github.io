@@ -65,88 +65,6 @@ body {
   *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
 
-/* ══════════════════════════════════════
-   HEADER — matches sessionpricing.html
-══════════════════════════════════════ */
-.site-header {
-  background: var(--ink);
-  border-bottom: 3px solid var(--lime);
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  position: relative; /* changed: no sticky, no distraction */
-}
-
-.site-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
-
-.header-inner {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  position: relative;
-  z-index: 1;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  background: var(--lime);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.brand-mark svg {
-  width: 16px;
-  height: 16px;
-  color: var(--ink);
-}
-
-.brand-name {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: #fff;
-  line-height: 1;
-}
-
-.brand-name span { color: var(--lime); }
-
-.header-contact {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,.45);
-  text-decoration: none;
-  transition: color .15s;
-}
-
-.header-contact svg { width:14px; height:14px; color:var(--lime); flex-shrink:0; }
-.header-contact:hover { color: rgba(255,255,255,.8); }
 
 /* ══════════════════════════════════════
    PAGE WRAPPER
@@ -772,31 +690,6 @@ body {
 .trust-item svg { width:13px; height:13px; color:var(--lime); flex-shrink:0; }
 .trust-item strong { color: var(--ink-2); font-weight: 700; }
 
-/* ══════════════════════════════════════
-   FOOTER
-══════════════════════════════════════ */
-.foot {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.foot-brand { font-size:12px; font-weight:800; letter-spacing:.08em; color:var(--ink-2); }
-.foot-brand span { color:var(--lime); }
-
-.foot-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 11px;
-}
-
-.foot-links a { color:var(--muted); text-decoration:none; transition:color .15s; }
-.foot-links a:hover { color:var(--lime-2); }
-.foot-links span { color:var(--pale); }
 
 /* ══════════════════════════════════════
    LOADING SPINNER for submit
@@ -808,8 +701,7 @@ body {
    DESKTOP — centre and constrain
 ══════════════════════════════════════ */
 @media (min-width: 700px) {
-  .header-inner { height: 64px; }
-  .masthead { padding: 44px 0 40px; }
+.masthead { padding: 44px 0 40px; }
   .mast-h1 { font-size: 52px; letter-spacing: -2.5px; }
   .mast-desc { font-size: 14px; }
   .step-card-head { padding: 26px 28px 20px; }
@@ -818,29 +710,13 @@ body {
   .step-question { font-size: 22px; }
   .chip-grid { grid-template-columns: repeat(3, 1fr); }
   .trust-strip { flex-direction: row; flex-wrap: wrap; gap: 16px; }
-  .foot { flex-direction: row; align-items: center; justify-content: space-between; }
 }
 </style>
+<script src="/assets/nav.js" defer></script>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-   HEADER
-══════════════════════════════════════ -->
-<header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="https://sehracademy.com" aria-label="SEHR Academy home">
-      <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
-      <span class="brand-name">SEHR <span>ACADEMY</span></span>
-    </a>
-    <a class="header-contact" href="tel:+919539409586" aria-label="Call SEHR Academy">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.4 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 5.55 5.55l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      +91 95394 09586
-    </a>
-  </div>
-</header>
+<header id="site-header"></header>
 
 <!-- ══════════════════════════════════════
    PAGE
@@ -908,15 +784,8 @@ body {
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="foot">
-    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
-    <div class="foot-links">
-      <span>Vatanappally, Thrissur</span>
-      <a href="https://wa.me/919539409586">WhatsApp</a>
-      <a href="https://sehracademy.com">sehracademy.com</a>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
+  <script src="/assets/footer.js" defer></script>
 
 </div><!-- /page -->
 
