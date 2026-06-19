@@ -624,7 +624,8 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .sc-tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .sc-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;background:var(--bg4);color:var(--text3);white-space:nowrap}
 .sc-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px;margin-bottom:2px;line-height:1.2}
-.sc-meta{font-size:11px;color:var(--text3);margin-bottom:12px}
+.sc-meta{font-size:11px;color:var(--text3);margin-bottom:4px}
+.sc-teacher{font-size:10px;color:var(--text3);margin-bottom:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .sc-stat{background:var(--bg3);border-radius:7px;padding:7px 10px}
 .sc-stat-v{font-size:17px;font-weight:800;color:var(--text);line-height:1}
@@ -1574,14 +1575,23 @@ function renderSubjectCards(data){
   }
 
   // Build subject map: key = "class|board|subject"
+  // Use all-time class-filtered sessions (not period-filtered) so cards always appear
+  var fc=parseCurCls();
+  var allData=SESSIONS.filter(function(r){
+    if(fc.cls&&r.class!==fc.cls)return false;
+    if(fc.board&&r.board!==fc.board)return false;
+    return true;
+  });
   var subjMap={};
-  data.forEach(function(r){
+  allData.forEach(function(r){
     var key=(r.class||'')+'|'+(r.board||'')+'|'+(r.subject||'');
-    if(!subjMap[key])subjMap[key]={cls:r.class,board:r.board||'',subj:r.subject||'',sessions:0,mins:0,weekMins:0,chapSet:new Set()};
+    if(!subjMap[key])subjMap[key]={cls:r.class,board:r.board||'',subj:r.subject||'',sessions:0,mins:0,weekMins:0,chapSet:new Set(),teachers:new Set(),lastDate:''};
     var s=subjMap[key];
     s.sessions++;
     s.mins+=(+r.duration_mins||0);
     (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){s.chapSet.add(c);});
+    if(r.teacher_name&&r.teacher_name.trim())s.teachers.add(r.teacher_name.trim());
+    var d=sessDateToYMD(r.date);if(d&&d>s.lastDate)s.lastDate=d;
   });
   // Compute weekly mins separately (SESSIONS not filtered by period)
   SESSIONS.forEach(function(r){
@@ -1599,6 +1609,22 @@ function renderSubjectCards(data){
   });
 
   if(!keys.length){wrap.innerHTML='';return;}
+
+  // Pre-compute daysSince per key for gap-sort
+  var gapMap={};
+  keys.forEach(function(key){
+    var s=subjMap[key];
+    var lastDateStr=s.lastDate;
+    gapMap[key]=lastDateStr?Math.floor((new Date(CUR_DATE+'T00:00:00')-new Date(lastDateStr+'T00:00:00'))/86400000):null;
+  });
+  // Sort by gap: null (never) first, then daysSince descending, then original order
+  keys.sort(function(a,b){
+    var ga=gapMap[a],gb=gapMap[b];
+    if(ga===null&&gb===null)return 0;
+    if(ga===null)return -1;
+    if(gb===null)return 1;
+    return gb-ga;
+  });
 
   var cards=keys.map(function(key){
     var s=subjMap[key];
@@ -1634,26 +1660,25 @@ function renderSubjectCards(data){
         'Update Syllabus</button>';
     }
 
+    // Gap alert: days since last session for this subject
+    var subjectSessions = SESSIONS.filter(function(r){
+      return r.class===s.cls&&(r.board||'')===s.board&&(r.subject||'')===s.subj;
+    });
+    var lastDateStr = s.lastDate||'';
+    var daysSinceVal = gapMap[key];
+
     // Weekly target bar (Maths = 2h, others = 1h)
     var wkTarget=weekTarget(s.subj);
     var wkPct=Math.min(100,Math.round(s.weekMins/wkTarget*100));
     var wkMet=s.weekMins>=wkTarget;
     var wkColor=wkMet?'#16a34a':s.weekMins>0?'var(--amber)':'var(--red)';
+    var wkSessCount=subjectSessions.filter(function(r){var d=sessDateToYMD(r.date);return d&&d>=wk.start&&d<=wk.end;}).length;
     var weekBar=
       '<div class="sc-week-row">'+
-        '<span class="sc-week-lbl">This week</span>'+
+        '<span class="sc-week-lbl">This week · '+wkSessCount+'×</span>'+
         '<span class="sc-week-val" style="color:'+wkColor+'">'+hrsFmt(s.weekMins)+' / '+hrsFmt(wkTarget)+(wkMet?' ✓':'')+'</span>'+
       '</div>'+
       '<div class="sc-week-bar"><div class="sc-week-fill" style="width:'+wkPct+'%;background:'+wkColor+'"></div></div>';
-
-    // Gap alert: days since last session for this subject
-    var subjectSessions = SESSIONS.filter(function(r){
-      return r.class===s.cls&&(r.board||'')===s.board&&(r.subject||'')===s.subj;
-    });
-    var lastDateStr = subjectSessions.reduce(function(best,r){
-      var d=sessDateToYMD(r.date); return (d&&d>best)?d:best;
-    },'');
-    var daysSinceVal = lastDateStr ? Math.floor((new Date(CUR_DATE+'T00:00:00')-new Date(lastDateStr+'T00:00:00'))/86400000) : null;
     var gapHtml='';
     if(daysSinceVal===null){
       gapHtml='<span class="sc-gap-alert sc-gap-danger">⚠ Never taught</span>';
@@ -1702,17 +1727,31 @@ function renderSubjectCards(data){
       }).join('')+'<div style="font-size:10px;color:var(--text3);margin-top:5px">'+Object.keys(subjDateSet).length+' sessions tracked</div>'
       :'<div style="font-size:11px;color:var(--text3)">No attendance data</div>';
 
+    // Teacher names (max 2 + overflow)
+    var teacherArr=Array.from(s.teachers);
+    var teacherStr='';
+    if(teacherArr.length){
+      var shown=teacherArr.slice(0,2).join(', ');
+      if(teacherArr.length>2)shown+=' +' +(teacherArr.length-2)+' more';
+      teacherStr='<div class="sc-teacher">'+esc(shown)+'</div>';
+    }
+    // Meta: sessions + last date + total hours
+    var lastLabel=lastDateStr?'Last: '+fmtShort(lastDateStr):'No sessions';
+    var avgMins=s.sessions?Math.round(s.mins/s.sessions):0;
+    var metaLine=s.sessions+' session'+(s.sessions!==1?'s':'')+' · '+lastLabel+' · '+hrsFmt(s.mins)+' total';
+
     return '<div class="sc-card" style="--sc-accent:'+p.accent+';--sc-dim:'+p.dim+'">'+
       '<div class="sc-top">'+
         '<div class="sc-ic">'+p.ic+'</div>'+
         '<div class="sc-tags">'+tags+'</div>'+
       '</div>'+
       '<div class="sc-name">'+esc(s.subj||'Unknown')+'</div>'+
-      '<div class="sc-meta">'+s.sessions+' session'+(s.sessions!==1?'s':'')+'</div>'+
+      '<div class="sc-meta">'+metaLine+'</div>'+
+      teacherStr+
       gapHtml+
       '<div class="sc-stats" style="margin-top:8px">'+
-        '<div class="sc-stat"><div class="sc-stat-v">'+hrsFmt(s.mins)+'</div><div class="sc-stat-l">Total Hours</div></div>'+
-        '<div class="sc-stat"><div class="sc-stat-v" style="color:'+pctColor+'">'+pctStr+'</div><div class="sc-stat-l">Progress</div></div>'+
+        '<div class="sc-stat"><div class="sc-stat-v">'+hrsFmt(avgMins)+'</div><div class="sc-stat-l">Avg/Session</div></div>'+
+        '<div class="sc-stat"><div class="sc-stat-v" style="color:'+pctColor+'">'+pctStr+'</div><div class="sc-stat-l">Syllabus</div></div>'+
       '</div>'+
       weekBar+
       hwHtml+
@@ -1727,8 +1766,8 @@ function renderSubjectCards(data){
 
   wrap.innerHTML=
     '<div class="subj-cards-hdr">'+
-      '<div class="sec-title">Subject Breakdown</div>'+
-      '<span style="font-size:10px;color:var(--text3);font-weight:600">Week of '+wk.start+' · 1h/week target</span>'+
+      '<div class="sec-title">Subject Breakdown · '+keys.length+' subjects</div>'+
+      '<span style="font-size:10px;color:var(--text3);font-weight:600">sorted by gap</span>'+
     '</div>'+
     '<div class="subj-cards-grid">'+cards+'</div>';
 }
