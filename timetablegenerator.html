@@ -321,6 +321,7 @@
       <span class="day-toggle"><input type="checkbox" id="d3" value="3" checked><label for="d3"><span class="dck"></span>Thursday</label></span>
       <span class="day-toggle"><input type="checkbox" id="d4" value="4" checked><label for="d4"><span class="dck"></span>Friday</label></span>
       <span class="day-toggle"><input type="checkbox" id="d5" value="5"><label for="d5"><span class="dck"></span>Saturday</label></span>
+      <span class="day-toggle"><input type="checkbox" id="d6" value="6"><label for="d6"><span class="dck"></span>Sunday</label></span>
     </div>
     <div class="days-config" id="days-config"></div>
   </div>
@@ -357,7 +358,7 @@
 var SESSION_API = 'https://script.google.com/macros/s/AKfycbx-qC_S-wZnjvBW9LZGTU4Y36ZHMTVlgS__DIAl1ZZ404beOfAyJwwtGsv352UbiyOR/exec';
 var SESS_PASS   = 'sehr2026';
 
-var DAYS  = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var DAYS  = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 var MONTHS_S = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 var SUBJ_INFO = {
@@ -404,8 +405,8 @@ var ALL_SESSIONS = [];
 var SUBJECT_DATA = [];   // sorted array of subject stat objects
 var SORT_MODE    = 'gap';
 var LOAD_KEY     = '';   // "class|board" cache key to avoid redundant fetches
-var slotCounters = [1,1,1,1,1,1];
-var DEFAULT_SUBJECTS=["Physics","Mathematics","Chemistry","Mathematics","English","Mathematics"];
+var slotCounters = [1,1,1,1,1,1,1];
+var DEFAULT_SUBJECTS=["Physics","Mathematics","Chemistry","Mathematics","English","Mathematics","Biology"];
 
 // ─────────────────────────────────────────────
 //  UTILS
