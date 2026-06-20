@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEHR Academy — Fee Structure 2026–27</title>
+<meta name="description" content="Transparent fee structure and instant payment calculator for Class 9, 10, 11 & 12.">
+<meta name="theme-color" content="#8BC53F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   SEHR ACADEMY — FEE STRUCTURE
+   Aesthetic: Luxury editorial · Cream & charcoal
+   Accent: #8BC53F lime
+   Font: Open Sans
+═══════════════════════════════════════════════════ */
+
+:root {
+  --cream:    #f5f2eb;
+  --cream-2:  #ede9e0;
+  --cream-3:  #e4dfd4;
+  --white:    #fdfcfa;
+  --ink:      #1a1a18;
+  --ink-2:    #2e2e2b;
+  --ink-3:    #4a4a46;
+  --muted:    #7a7970;
+  --pale:     #b0ada4;
+  --rule:     #d8d4cb;
+  --lime:     #8BC53F;
+  --lime-2:   #72a530;
+  --lime-3:   #5e8a24;
+  --lime-bg:  #f0f7e3;
+  --lime-mid: #c8e48e;
+  --f: 'Open Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--f);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAV PLACEHOLDER ── */
+header#site-header { position: sticky; top: 0; z-index: 200; }
+
+/* ═══════════════════════════════════════
+   TOP BAND — full-width lime stripe
+═══════════════════════════════════════ */
+.top-band {
+  background: var(--lime);
+  height: 3px;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════
+   PAGE SHELL
+═══════════════════════════════════════ */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+/* ═══════════════════════════════════════
+   MASTHEAD — full width editorial header
+═══════════════════════════════════════ */
+
+/* hero banner behind masthead */
+.masthead-wrap {
+  background: var(--ink);
+  margin: 0 -40px;
+  padding: 0 40px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--lime);
+}
+
+/* grid lines */
+.masthead-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* lime radial glow top-right */
+.masthead-wrap::after {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.masthead {
+  padding: 60px 0 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* large decorative background text */
+.masthead-bg-text {
+  position: absolute;
+  right: -10px; bottom: -24px;
+  font-size: 200px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -8px;
+  color: rgba(255,255,255,.04);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.mast-left { position: relative; z-index: 1; }
+
+.mast-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mast-kicker-rule {
+  width: 28px;
+  height: 2px;
+  background: var(--lime);
+  flex-shrink: 0;
+}
+
+.mast-kicker-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  opacity: .9;
+}
+
+.mast-h1 {
+  font-size: clamp(44px, 5.5vw, 78px);
+  font-weight: 800;
+  line-height: .97;
+  letter-spacing: -3px;
+  color: #ffffff;
+  margin-bottom: 22px;
+}
+
+.mast-h1 .ital {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--lime);
+}
+
+.mast-desc {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,.5);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 28px;
+}
+
+/* trust badges row */
+.mast-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.mast-badge svg {
+  width: 12px; height: 12px;
+  color: var(--lime);
+  flex-shrink: 0;
+}
+
+/* right: stats column */
+.mast-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid rgba(255,255,255,.1);
+  padding-left: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.mast-stat {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.mast-stat:last-child { border-bottom: none; }
+
+.mast-stat-num {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.mast-stat-num .unit { font-size: 16px; color: var(--lime); font-weight: 700; }
+
+.mast-stat-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+
+/* ═══════════════════════════════════════
+   BENTO GRID
+   Left: tall calculator card + bottom hint
+   Right: narrow sticky summary
+═══════════════════════════════════════ */
+.bento {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 16px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+/* ─── CARD BASE ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════
+   CALCULATOR CARD
+═══════════════════════════════════════ */
+.calc-card {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1.5px solid var(--cream-3);
+  box-shadow: 0 2px 12px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+  /* left lime accent bar */
+  border-left: 4px solid var(--lime);
+}
+
+/* decorative large number watermark */
+.calc-card::before {
+  content: '₹';
+  position: absolute;
+  right: -20px;
+  top: -30px;
+  font-size: 280px;
+  font-weight: 800;
+  color: var(--cream-2);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+.calc-card-head {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.calc-card-sub {
+  font-size: 11px;
+  color: var(--pale);
+  margin-top: 3px;
+}
+
+.calc-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--lime-bg);
+  border: 1px solid var(--lime-mid);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.calc-tag svg { width: 11px; height: 11px; }
+
+.calc-body {
+  padding: 28px 32px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── FIELD ── */
+.f-group { margin-bottom: 22px; }
+
+.f-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.f-label svg { width: 11px; height: 11px; color: var(--lime); flex-shrink: 0; }
+
+.f-group select {
+  width: 100%;
+  padding: 13px 40px 13px 14px;
+  border: 1.5px solid var(--cream-3);
+  border-radius: 4px;
+  background: var(--cream);
+  font-family: var(--f);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.f-group select:hover  { border-color: var(--ink-3); background: var(--white); }
+.f-group select:focus  { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(139,197,63,.15); background: var(--white); }
+
+/* ── SESSION BADGE ── */
+.session-badge {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: var(--lime-bg);
+  border: 1px solid var(--lime-mid);
+  border-left: 3px solid var(--lime);
+  border-radius: 0 4px 4px 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lime-2);
+  margin-bottom: 22px;
+  animation: slideDown .22s var(--ease) both;
+}
+
+.session-badge.visible { display: flex; }
+.session-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* ── SUBJECTS ── */
+.subjects-section.subjects { display: none; }
+.subjects-section.subjects.visible {
+  display: block;
+  animation: slideDown .22s var(--ease) both;
+}
+
+.subj-hint {
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.subj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.subj-chip { position: relative; }
+.subj-chip input { position: absolute; opacity: 0; width: 0; height: 0; }
+.subj-chip input:focus-visible + label { outline: 2px solid var(--lime); outline-offset: 2px; }
+
+.subj-chip label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  user-select: none;
+  transition: all .18s;
+}
+
+.subj-chip label:hover {
+  border-color: var(--lime-mid);
+  background: var(--lime-bg);
+}
+
+.subj-chip input:checked + label {
+  border-color: var(--lime);
+  background: var(--lime-bg);
+  color: var(--lime-2);
+}
+
+.chk {
+  width: 16px; height: 16px;
+  border-radius: 3px;
+  border: 1.5px solid var(--rule);
+  background: var(--white);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s;
+}
+
+.subj-chip input:checked + label .chk {
+  background: var(--lime);
+  border-color: var(--lime);
+}
+
+.subj-chip input:checked + label .chk::after {
+  content: '';
+  width: 4px; height: 7px;
+  border: 2px solid var(--white);
+  border-top: none; border-left: none;
+  transform: rotate(45deg) translate(-.5px, -1px);
+  display: block;
+}
+
+.subj-ico {
+  width: 26px; height: 26px;
+  border-radius: 5px;
+  background: var(--cream-2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.subj-ico svg { width: 13px; height: 13px; color: var(--ink-3); }
+.subj-chip input:checked + label .subj-ico { background: rgba(139,197,63,.2); }
+.subj-chip input:checked + label .subj-ico svg { color: var(--lime-2); }
+
+/* ── PLAN BOX ── */
+.plan-box {
+  display: none;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--ink);
+  padding: 22px 26px;
+  margin-bottom: 22px;
+  animation: slideDown .22s var(--ease) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-box.visible { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+/* subtle green reflection */
+.plan-box::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: -40px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,197,63,.18), transparent 70%);
+  pointer-events: none;
+}
+
+.pb-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 6px;
+}
+
+.pb-amount {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: var(--white);
+  line-height: 1;
+}
+
+.pb-unit {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,.3);
+  margin-left: 4px;
+}
+
+.pb-badge {
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── DATE ROW ── */
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr .9fr;
+  gap: 8px;
+}
+
+/* ── ADMISSION BOX ── */
+.adm-box {
+  margin-top: 20px;
+  border-radius: 12px;
+  background: var(--ink);
+  border: 1px solid rgba(255,255,255,.06);
+  padding: 0;
+  animation: slideDown .25s var(--ease) both;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.1);
+}
+
+/* lime top accent */
+.adm-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--lime), var(--lime-2));
+  z-index: 2;
+}
+
+/* large decorative ₹ watermark */
+.adm-box::after {
+  content: '₹';
+  position: absolute;
+  right: -16px;
+  bottom: -24px;
+  font-size: 160px;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(255,255,255,.04);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.adm-box-inner {
+  padding: 22px 24px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.adm-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.adm-label::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--lime);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.adm-amount {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.adm-divider {
+  height: 1px;
+  background: rgba(255,255,255,.08);
+  margin: 16px 0 14px;
+}
+
+.adm-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.adm-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,.38);
+  font-style: italic;
+}
+
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(139,197,63,.15);
+  border: 1px solid rgba(139,197,63,.25);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--lime);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.adm-badge svg { width: 9px; height: 9px; }
+
+/* ── MONTH PILLS ── */
+.month-section { margin-top: 24px; }
+
+.month-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.month-hdr-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.month-hdr-rule { flex: 1; height: 1px; background: var(--rule); }
+
+.month-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.month-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--cream);
+  color: var(--pale);
+}
+
+.month-pill.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--ink);
+  font-weight: 700;
+  animation: pillIn .2s var(--ease) both;
+}
+
+/* ═══════════════════════════════════════
+   SUMMARY COLUMN (sticky)
+═══════════════════════════════════════ */
+.sum-col {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── EMPTY STATE ── */
+/* ── EMPTY STATE ── */
+.empty-card {
+  background: var(--white);
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.empty-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.empty-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+  flex-shrink: 0;
+}
+
+.empty-header-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pale);
+  letter-spacing: .04em;
+}
+
+.empty-hint {
+  padding: 12px 20px 16px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--pale);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.empty-hint svg { width: 11px; height: 11px; color: var(--lime); flex-shrink: 0; }
+
+/* skeleton cards */
+.skel-cards { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+
+.skel-card {
+  border-radius: 4px;
+  padding: 13px 14px 13px 17px;
+  border: 1px solid var(--rule);
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.skel-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 10px; bottom: 10px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+}
+
+.skel-card:nth-child(1)::before { background: var(--lime); }
+.skel-card:nth-child(2)::before { background: #5ba3f5; }
+.skel-card:nth-child(3)::before { background: #f0b429; }
+
+.skel-line {
+  height: 7px;
+  border-radius: 3px;
+  background: var(--rule);
+  margin-bottom: 7px;
+}
+
+.skel-line.short { width: 40%; }
+.skel-line.mid   { width: 60%; }
+
+.skel-amount {
+  height: 18px;
+  border-radius: 3px;
+  background: var(--cream-3);
+  width: 55%;
+  margin-top: 4px;
+}
+
+/* shimmer animation */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skel-line, .skel-amount {
+  background-size: 800px 100%;
+  animation: shimmer 2.2s ease-in-out infinite;
+}
+
+.skel-card:nth-child(1) .skel-line,
+.skel-card:nth-child(1) .skel-amount {
+  background-image: linear-gradient(90deg, var(--rule) 25%, #e8f5d0 50%, var(--rule) 75%);
+}
+
+.skel-card:nth-child(2) .skel-line,
+.skel-card:nth-child(2) .skel-amount {
+  background-image: linear-gradient(90deg, var(--rule) 25%, #deeeff 50%, var(--rule) 75%);
+  animation-delay: .25s;
+}
+
+.skel-card:nth-child(3) .skel-line,
+.skel-card:nth-child(3) .skel-amount {
+  background-image: linear-gradient(90deg, var(--rule) 25%, #fff4d0 50%, var(--rule) 75%);
+  animation-delay: .5s;
+}
+
+/* ── SUMMARY CARD ── */
+.sum-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  display: none;
+  animation: slideDown .3s var(--ease) both;
+}
+
+.sum-card.visible { display: block; }
+
+.sum-card-topline {
+  height: 3px;
+  background: var(--lime);
+}
+
+.sum-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sum-head-left {}
+
+.sum-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  margin-bottom: 3px;
+}
+
+.sum-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  color: var(--ink);
+}
+
+.sum-sub {
+  font-size: 11px;
+  color: var(--pale);
+  margin-top: 2px;
+}
+
+.sum-head-badge {
+  background: var(--ink);
+  color: var(--white);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* pay cards */
+#summaryContent { padding: 16px 20px 4px; }
+
+.pay-card {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 15px 16px 15px 20px;
+  margin-bottom: 8px;
+  background: var(--cream);
+  position: relative;
+  transition: border-color .18s, background .18s;
+  animation: slideDown .22s var(--ease) both;
+}
+
+.pay-card:hover { border-color: var(--cream-3); background: var(--white); }
+
+.pay-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 3px;
+  background: var(--rule);
+  border-radius: 0 2px 2px 0;
+}
+
+/* instalment number badge top-right */
+.pay-card::after {
+  content: attr(data-num);
+  position: absolute;
+  top: 13px; right: 14px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: var(--pale);
+  opacity: .7;
+}
+
+.pay-card.total-card::after { display: none; }
+
+.pay-card.total-card {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.pay-card.total-card:hover { background: var(--ink-2); border-color: var(--ink-2); }
+
+/* each instalment gets a faint tinted background + badge colour */
+.pay-card.first {
+  background: #f5fbee;
+  border-color: #ddf0bb;
+}
+.pay-card.first:hover { background: #eef8e4; }
+.pay-card.first::before  { background: var(--lime); }
+.pay-card.first::after   { color: var(--lime-2); opacity: 1; }
+
+.pay-card.second {
+  background: #f0f6ff;
+  border-color: #c5ddfb;
+}
+.pay-card.second:hover { background: #e6f0ff; }
+.pay-card.second::before { background: #5ba3f5; }
+.pay-card.second::after  { color: #3b82f6; opacity: 1; }
+
+.pay-card.third {
+  background: #fffbf0;
+  border-color: #f9e4a0;
+}
+.pay-card.third:hover { background: #fff8e6; }
+.pay-card.third::before { background: #f0b429; }
+.pay-card.third::after  { color: #c98a00; opacity: 1; }
+
+.pay-card.total-card::before { background: var(--lime); }
+
+.pc-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 2px;
+}
+
+.total-card .pc-label { color: rgba(255,255,255,.3); }
+
+.pc-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 3px;
+}
+
+.total-card .pc-title { color: rgba(255,255,255,.45); }
+
+.pc-months {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+.total-card .pc-months { color: rgba(255,255,255,.3); }
+
+.pc-amount {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.total-card .pc-amount { color: var(--white); }
+
+.due-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: #fef9e7;
+  color: #8a6508;
+  border: 1px solid #f5d96e;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-bottom: 4px;
+}
+
+.due-tag svg { width: 9px; height: 9px; }
+
+/* notes */
+.sum-notes {
+  margin: 4px 20px 18px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+.note-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 5px;
+  font-style: italic;
+}
+
+.note-row:last-child { margin-bottom: 0; }
+
+.note-dash {
+  color: var(--lime);
+  font-style: normal;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* WhatsApp */
+.wa-wrap { padding: 0 20px 20px; }
+
+.wa-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: #0a2e29;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.wa-cta:hover { background: #0d3a34; }
+
+.wa-cta:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+
+/* green sweep behind */
+.wa-cta::before {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,209,102,.12), transparent 70%);
+  pointer-events: none;
+}
+
+.wa-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #25d166;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+
+.wa-icon svg { width: 20px; height: 20px; fill: white; }
+
+.wa-body { flex: 1; position: relative; z-index: 1; }
+.wa-title { font-size: 13px; font-weight: 700; color: white; margin-bottom: 2px; }
+.wa-sub   { font-size: 11px; color: rgba(255,255,255,.4); }
+
+.wa-arr {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+
+.wa-arr svg { width: 12px; height: 12px; color: rgba(255,255,255,.45); }
+
+/* ═══════════════════════════════════════
+   HOW IT WORKS STRIP
+═══════════════════════════════════════ */
+.how {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--white);
+  position: relative;
+}
+
+/* connecting arrow between steps */
+.how-step {
+  padding: 28px 28px 28px 28px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+  transition: background .18s;
+}
+
+.how-step:last-child { border-right: none; }
+.how-step:hover { background: var(--cream); }
+
+/* arrow connector */
+.how-step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--lime);
+  font-weight: 700;
+  z-index: 2;
+  background: var(--white);
+  padding: 4px 2px;
+  line-height: 1;
+}
+
+.how-step:hover:not(:last-child)::after { background: var(--cream); }
+
+/* ── SECTION HEADER ── */
+.section-hdr {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 44px;
+  margin-bottom: 0;
+}
+
+.section-hdr-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.section-hdr-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--pale);
+  white-space: nowrap;
+}
+
+.section-hdr-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--lime);
+  flex-shrink: 0;
+}
+
+/* large background step number */
+.how-step-bg-num {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--cream-2);
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -3px;
+}
+
+.how-num {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--lime-2);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* coloured dot before step number */
+.how-num::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  flex-shrink: 0;
+}
+
+.how-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: -.3px;
+  position: relative;
+  z-index: 1;
+}
+
+.how-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+  max-width: 220px;
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.foot {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.foot-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--ink-2);
+}
+
+.foot-brand span { color: var(--lime); }
+
+.foot-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 11px;
+  color: var(--pale);
+}
+
+.foot-links a { color: var(--muted); text-decoration: none; transition: color .18s; }
+.foot-links a:hover { color: var(--lime-2); }
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pillIn {
+  from { opacity: 0; transform: scale(.75); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rotateSlow {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════
+   ACCESSIBILITY
+═══════════════════════════════════════ */
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — COMPREHENSIVE MOBILE FIX
+═══════════════════════════════════════ */
+
+/* ── 1060px: narrow desktop / large tablet ── */
+@media (max-width: 1060px) {
+  .bento { grid-template-columns: 1fr 340px; }
+}
+
+/* ── 900px: tablet / stacked ── */
+@media (max-width: 900px) {
+  .page { padding: 0 20px 64px; }
+
+  /* masthead */
+  .masthead-wrap { margin: 0 -20px; padding: 0 20px; }
+  .masthead { grid-template-columns: 1fr; gap: 0; padding: 40px 0 36px; }
+  .masthead-bg-text { font-size: 130px; bottom: -16px; }
+  .mast-h1 { font-size: 52px; letter-spacing: -2.5px; }
+  .mast-stats {
+    flex-direction: row;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-top: 24px;
+    margin-top: 28px;
+    gap: 0;
+  }
+  .mast-stat {
+    border-bottom: none;
+    padding: 0;
+    flex: 1;
+    border-right: 1px solid rgba(255,255,255,.08);
+    padding-right: 20px;
+    margin-right: 20px;
+  }
+  .mast-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+  .mast-stat-num { font-size: 30px; }
+
+  /* bento stack */
+  .bento { grid-template-columns: 1fr; gap: 16px; }
+  .sum-col { position: static; }
+
+  /* how-it-works stacks vertically */
+  .how { grid-template-columns: 1fr; }
+  .how-step { border-right: none; border-bottom: 1px solid var(--rule); padding: 22px 22px 22px 22px; }
+  .how-step:last-child { border-bottom: none; }
+  .how-step:not(:last-child)::after {
+    content: '↓';
+    right: auto; left: 22px;
+    top: auto; bottom: -14px;
+    transform: none;
+    background: var(--white);
+  }
+  .how-step-bg-num { font-size: 56px; top: 8px; right: 14px; }
+}
+
+/* ── 640px: mobile ── */
+@media (max-width: 640px) {
+  .page { padding: 0 16px 56px; }
+
+  /* masthead */
+  .masthead-wrap { margin: 0 -16px; padding: 0 16px; }
+  .masthead { padding: 32px 0 28px; }
+  .masthead-bg-text { display: none; }
+  .mast-h1 { font-size: 38px; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .mast-desc { font-size: 13px; margin-bottom: 20px; }
+  .mast-badges { gap: 6px; }
+  .mast-badge { font-size: 10px; padding: 6px 11px; }
+  .mast-stats { padding-top: 18px; margin-top: 20px; }
+  .mast-stat-num { font-size: 26px; letter-spacing: -1px; }
+  .mast-stat-lbl { font-size: 9px; }
+
+  /* calc card */
+  .calc-card-head { padding: 18px 18px 16px; flex-wrap: wrap; gap: 10px; }
+  .calc-card::before { display: none; }
+  .calc-body { padding: 18px 18px 22px; }
+
+  /* date row: 2-col then year full width */
+  .date-row { grid-template-columns: 1fr 1fr; }
+  .date-row select:last-child { grid-column: 1 / -1; }
+
+  /* subjects: single column */
+  .subj-grid { grid-template-columns: 1fr; gap: 7px; }
+
+  /* plan box smaller text on mobile */
+  .pb-amount { font-size: 34px; }
+
+  /* admission box */
+  .adm-box-inner { padding: 18px 18px 16px; }
+  .adm-amount { font-size: 40px; letter-spacing: -2px; }
+  .adm-badge { font-size: 9px; }
+
+  /* summary */
+  .sum-head { padding: 16px 16px 14px; }
+  .sum-title { font-size: 18px; }
+  #summaryContent { padding: 10px 14px 4px; }
+  .pay-card { padding: 13px 14px 13px 18px; }
+  .pc-amount { font-size: 26px; }
+  .sum-notes { margin: 4px 14px 16px; padding: 12px 14px; }
+  .wa-wrap { padding: 0 14px 14px; }
+  .wa-cta { padding: 14px 14px; }
+  .wa-title { font-size: 12px; }
+
+  /* empty state skeleton */
+  .skel-cards { padding: 0 10px 10px; }
+
+  /* how-it-works */
+  .how-step { padding: 18px 18px; }
+  .how-step-bg-num { font-size: 44px; }
+  .how-title { font-size: 14px; }
+
+  /* section header */
+  .section-hdr { margin-top: 32px; }
+
+  /* footer */
+  .foot { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 20px; margin-top: 36px; }
+  .foot-links { gap: 12px; }
+
+  /* facts hidden on mobile — replaced by masthead stats */
+  .facts { display: none; }
+}
+
+/* ── 420px: small phones ── */
+@media (max-width: 420px) {
+  .mast-h1 { font-size: 32px; letter-spacing: -1px; }
+  .mast-stat { margin-right: 14px; padding-right: 14px; }
+  .mast-stat-num { font-size: 22px; }
+  .adm-amount { font-size: 36px; }
+  .pb-amount { font-size: 30px; }
+  .subj-chip label { padding: 10px 12px; font-size: 12px; }
+  .mast-badges { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-band" aria-hidden="true" style="display:none"></div>
+
+<header id="site-header"></header>
+<script src="/assets/nav.js" defer></script>
+
+<div class="page">
+
+  <!-- ── MASTHEAD ── -->
+  <div class="masthead-wrap">
+    <div class="masthead-bg-text" aria-hidden="true">SEHR</div>
+    <header class="masthead" aria-labelledby="page-h1">
+      <div class="mast-left">
+        <div class="mast-kicker" aria-hidden="true">
+          <div class="mast-kicker-rule"></div>
+          <span class="mast-kicker-text">Fee Structure &nbsp;&middot;&nbsp; Academic Year 2026–27</span>
+        </div>
+        <h1 class="mast-h1" id="page-h1">
+          Honest fees.<br>
+          <span class="ital">No hidden costs.</span>
+        </h1>
+        <p class="mast-desc">
+          SEHR Academy provides focused, small-batch coaching for Class 9, 10, 11 &amp; 12 at
+          Vatanappally, Thrissur. Use the calculator below to generate your exact payment
+          schedule in seconds — no surprises, no registration charges.
+        </p>
+        <div class="mast-badges" aria-label="Academy highlights">
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Zero registration fee
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            3 easy instalments
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Small batches · Class 9–12
+          </span>
+          <span class="mast-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            NEET &amp; JEE Mains prep
+          </span>
+        </div>
+      </div>
+
+      <div class="mast-stats" role="list" aria-label="Key figures">
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num"><span class="unit">&#8377;</span>0</div>
+          <div class="mast-stat-lbl">Registration fee</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">3<span class="unit">x</span></div>
+          <div class="mast-stat-lbl">Instalments</div>
+        </div>
+        <div class="mast-stat" role="listitem">
+          <div class="mast-stat-num">100<span class="unit">%</span></div>
+          <div class="mast-stat-lbl">Transparent</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- ── BENTO GRID ── -->
+  <div class="bento">
+
+    <!-- LEFT: CALCULATOR -->
+    <div class="card calc-card" role="region" aria-label="Fee calculator">
+
+      <div class="calc-card-head">
+        <div>
+          <div class="calc-card-title">Fee Calculator</div>
+          <div class="calc-card-sub">SEHR Academy &nbsp;&middot;&nbsp; 2026–2027</div>
+        </div>
+        <div class="calc-tag" aria-label="May holiday month is not billed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          May excluded
+        </div>
+      </div>
+
+      <div class="calc-body">
+
+        <!-- session banner -->
+        <div class="session-badge" id="sessionInfo" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="sessionText"></span>
+        </div>
+
+        <!-- class -->
+        <div class="f-group">
+          <label class="f-label" for="classSelect">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+            Class
+          </label>
+          <select id="classSelect" aria-required="true">
+            <option value="">Select your class</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
+          </select>
+        </div>
+
+        <!-- subjects -->
+        <div class="subjects-section subjects" id="subjectSection" aria-hidden="true">
+          <fieldset style="border:none;padding:0">
+            <legend class="f-label" style="float:left;width:100%;display:flex;align-items:center;gap:7px;margin-bottom:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="width:11px;height:11px;color:var(--lime)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Subjects
+            </legend>
+            <p class="subj-hint" style="clear:both;margin-top:7px">&#8377;500 per subject &mdash; PCM bundle &#8377;1,000 &nbsp;&bull;&nbsp; PCM + Biology &#8377;1,500</p>
+            <div class="subj-grid" role="group" aria-label="Select subjects">
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-phy" value="Physics">
+                <label for="sub-phy">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                  </span>
+                  Physics
+                </label>
+              </div>
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-che" value="Chemistry">
+                <label for="sub-che">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6v11l3.5 6.5a1 1 0 0 1-.87 1.5H6.37a1 1 0 0 1-.87-1.5L9 14V3z"/><line x1="6" y1="8" x2="18" y2="8"/></svg>
+                  </span>
+                  Chemistry
+                </label>
+              </div>
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-mat" value="Mathematics">
+                <label for="sub-mat">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </span>
+                  Mathematics
+                </label>
+              </div>
+
+              <div class="subj-chip">
+                <input type="checkbox" id="sub-bio" value="Biology">
+                <label for="sub-bio">
+                  <span class="chk" aria-hidden="true"></span>
+                  <span class="subj-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </span>
+                  Biology
+                </label>
+              </div>
+
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- plan box -->
+        <div class="plan-box" id="monthlyBox" role="status" aria-live="polite">
+          <div>
+            <div class="pb-label">Monthly plan rate</div>
+            <span class="pb-amount" id="planAmount">&#8377;0</span>
+            <span class="pb-unit">/ month</span>
+          </div>
+          <div class="pb-badge" aria-hidden="true">Active plan</div>
+        </div>
+
+        <!-- date -->
+        <div class="f-group">
+          <span class="f-label" id="date-lbl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Date of Admission
+          </span>
+          <div class="date-row" role="group" aria-labelledby="date-lbl">
+            <select id="day"   aria-label="Day"></select>
+            <select id="month" aria-label="Month"></select>
+            <select id="year"  aria-label="Year"></select>
+          </div>
+        </div>
+
+        <!-- advance box -->
+        <div id="advanceBox" aria-live="polite"></div>
+
+        <!-- month pills -->
+        <div class="month-section" id="monthSection" style="display:none" aria-live="polite">
+          <div class="month-hdr" aria-hidden="true">
+            <span class="month-hdr-lbl">Months covered</span>
+            <div class="month-hdr-rule"></div>
+          </div>
+          <div class="month-pills" id="monthPills" role="list" aria-label="Covered months"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <div class="sum-col">
+
+      <!-- empty state -->
+      <div class="empty-card" id="emptyState" aria-label="Payment schedule preview — configure the calculator to populate">
+        <div class="empty-header">
+          <div class="empty-dot" aria-hidden="true"></div>
+          <span class="empty-header-text">Payment schedule</span>
+        </div>
+        <div class="empty-hint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          Configure the calculator to generate your breakdown
+        </div>
+        <div class="skel-cards" aria-hidden="true">
+          <div class="skel-card">
+            <div class="skel-line short"></div>
+            <div class="skel-line mid"></div>
+            <div class="skel-amount"></div>
+          </div>
+          <div class="skel-card">
+            <div class="skel-line short"></div>
+            <div class="skel-line mid"></div>
+            <div class="skel-amount"></div>
+          </div>
+          <div class="skel-card">
+            <div class="skel-line short"></div>
+            <div class="skel-line mid"></div>
+            <div class="skel-amount"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- summary -->
+      <div class="sum-card" id="summaryPanel" role="region" aria-label="Payment schedule" aria-live="polite">
+
+        <div class="sum-card-topline" aria-hidden="true"></div>
+
+        <div class="sum-head">
+          <div class="sum-head-left">
+            <div class="sum-eyebrow">Payment Breakdown</div>
+            <div class="sum-title">Your Schedule</div>
+            <div class="sum-sub">Academic Year 2026–27</div>
+          </div>
+          <div class="sum-head-badge" aria-hidden="true">2026–27</div>
+        </div>
+
+        <div id="summaryContent"></div>
+
+        <div class="sum-notes" role="note">
+          <div class="note-row"><span class="note-dash" aria-hidden="true">&mdash;</span>No admission or registration fee charged.</div>
+          <div class="note-row"><span class="note-dash" aria-hidden="true">&mdash;</span>May is a holiday month — not included in billing.</div>
+          <div class="note-row"><span class="note-dash" aria-hidden="true">&mdash;</span>Fees once paid are non-refundable.</div>
+        </div>
+
+        <div class="wa-wrap">
+          <a class="wa-cta" id="whatsappCTA" href="#" target="_blank" rel="noopener noreferrer" aria-label="Enquire about admission on WhatsApp">
+            <div class="wa-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div class="wa-body">
+              <div class="wa-title">Enquire about admission</div>
+              <div class="wa-sub" id="waSub">Chat with us on WhatsApp</div>
+            </div>
+            <div class="wa-arr" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div><!-- /bento -->
+
+  <!-- ── HOW IT WORKS ── -->
+  <div class="section-hdr" aria-hidden="true">
+    <div class="section-hdr-rule"></div>
+    <div class="section-hdr-dot"></div>
+    <div class="section-hdr-text">How it works</div>
+    <div class="section-hdr-dot"></div>
+    <div class="section-hdr-rule"></div>
+  </div>
+
+  <div class="how" role="list" aria-label="How to use the fee calculator">
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">01</div>
+      <div class="how-num">Step 01</div>
+      <div class="how-title">Pick your class</div>
+      <div class="how-desc">Select Class 9, 10, 11, or 12. The academic session dates fill automatically.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">02</div>
+      <div class="how-num">Step 02</div>
+      <div class="how-title">Choose subjects</div>
+      <div class="how-desc">For Class 11 &amp; 12, select subjects. PCM bundle ₹1,000/month — add Biology for ₹1,500/month.</div>
+    </div>
+
+    <div class="how-step" role="listitem">
+      <div class="how-step-bg-num" aria-hidden="true">03</div>
+      <div class="how-num">Step 03</div>
+      <div class="how-title">Get your schedule</div>
+      <div class="how-desc">Your full instalment plan appears instantly. Tap WhatsApp to confirm your admission.</div>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span>Vatanappally, Thrissur, Kerala</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<!-- ═══════════════════════════════════════════
+     FEE LOGIC — ZERO CHANGES FROM ORIGINAL
+═══════════════════════════════════════════ -->
+<script>
+let monthlyFee = 0;
+
+const classSelectEl    = document.getElementById("classSelect");
+const dayEl            = document.getElementById("day");
+const monthEl          = document.getElementById("month");
+const yearEl           = document.getElementById("year");
+const sessionInfoEl    = document.getElementById("sessionInfo");
+const sessionTextEl    = document.getElementById("sessionText");
+const subjectSectionEl = document.getElementById("subjectSection");
+const monthlyBoxEl     = document.getElementById("monthlyBox");
+const planAmountEl     = document.getElementById("planAmount");
+const advanceBoxEl     = document.getElementById("advanceBox");
+const monthPillsEl     = document.getElementById("monthPills");
+const monthSectionEl   = document.getElementById("monthSection");
+const summaryPanelEl   = document.getElementById("summaryPanel");
+const summaryContentEl = document.getElementById("summaryContent");
+const emptyStateEl     = document.getElementById("emptyState");
+
+populateDates();
+setTodayDefault();
+calculate();
+
+classSelectEl.addEventListener("change", updateClass);
+document.querySelectorAll("#subjectSection input[type='checkbox']").forEach(cb => cb.addEventListener("change", calculate));
+[dayEl, monthEl, yearEl].forEach(el => el.addEventListener("change", calculate));
+
+function populateDates() {
+  for (let i = 1; i <= 31; i++) dayEl.innerHTML += `<option value="${i}">${i}</option>`;
+  ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    .forEach((m, i) => monthEl.innerHTML += `<option value="${i}">${m}</option>`);
+  yearEl.innerHTML = `<option value="2026">2026</option>`;
+}
+
+function setTodayDefault() {
+  const today = new Date();
+  if (today.getFullYear() === 2026) {
+    dayEl.value   = today.getDate();
+    monthEl.value = today.getMonth();
+    yearEl.value  = 2026;
+  }
+}
+
+function updateClass() {
+  summaryPanelEl.classList.remove("visible");
+  emptyStateEl.style.display = "block";
+  advanceBoxEl.innerHTML = "";
+  monthlyBoxEl.classList.remove("visible");
+  monthSectionEl.style.display = "none";
+
+  if (classSelectEl.value === "12") {
+    sessionTextEl.textContent = "Academic Session: 1 March 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.add("visible");
+    subjectSectionEl.setAttribute("aria-hidden","false");
+  } else if (classSelectEl.value === "11") {
+    sessionTextEl.textContent = "Academic Session: 1 June 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.add("visible");
+    subjectSectionEl.setAttribute("aria-hidden","false");
+  } else if (classSelectEl.value === "10") {
+    sessionTextEl.textContent = "Academic Session: 1 April 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.remove("visible");
+    subjectSectionEl.setAttribute("aria-hidden","true");
+    monthlyFee = 1000;
+    planAmountEl.textContent = "₹1,000";
+    monthlyBoxEl.classList.add("visible");
+    calculate();
+  } else if (classSelectEl.value === "9") {
+    sessionTextEl.textContent = "Academic Session: 1 April 2026 – 31 March 2027";
+    sessionInfoEl.classList.add("visible");
+    subjectSectionEl.classList.remove("visible");
+    subjectSectionEl.setAttribute("aria-hidden","true");
+    monthlyFee = 1000;
+    planAmountEl.textContent = "₹1,000";
+    monthlyBoxEl.classList.add("visible");
+    calculate();
+  } else {
+    sessionInfoEl.classList.remove("visible");
+    subjectSectionEl.classList.remove("visible");
+    subjectSectionEl.setAttribute("aria-hidden","true");
+  }
+}
+
+function renderMonthPills(months) {
+  monthPillsEl.innerHTML = "";
+  months.forEach((m, i) => {
+    const pill = document.createElement("div");
+    pill.className = "month-pill active";
+    pill.style.animationDelay = (i * 0.03) + "s";
+    pill.innerText = m;
+    pill.setAttribute("role","listitem");
+    monthPillsEl.appendChild(pill);
+  });
+  monthSectionEl.style.display = months.length ? "block" : "none";
+}
+
+function calculate() {
+  if (!classSelectEl.value) return;
+
+  if (classSelectEl.value === "11" || classSelectEl.value === "12") {
+    const selected = [...document.querySelectorAll("#subjectSection input:checked")].map(x => x.value);
+    if (selected.length === 0) return;
+    const pcm = ["Physics","Chemistry","Mathematics"];
+    const hasPCM = pcm.every(s => selected.includes(s));
+    if (hasPCM && selected.length === 3)             monthlyFee = 1000;
+    else if (hasPCM && selected.includes("Biology")) monthlyFee = 1500;
+    else                                             monthlyFee = selected.length * 500;
+    planAmountEl.textContent = "₹" + monthlyFee.toLocaleString("en-IN");
+    monthlyBoxEl.classList.add("visible");
+  }
+
+  const m = +monthEl.value;
+  let startMonth;
+  if (classSelectEl.value === "12") startMonth = 2;
+  if (classSelectEl.value === "11") startMonth = 5;
+  if (classSelectEl.value === "10") startMonth = 3;
+  if (classSelectEl.value === "9")  startMonth = 3;
+
+  let effectiveMonth = Math.max(m, startMonth);
+  let end = new Date(2027, 2, 31);
+  let months = [], temp = new Date(2026, effectiveMonth, 1);
+  while (temp <= end) {
+    if (temp.getMonth() !== 4) months.push(temp.toLocaleString('default', { month: 'long' }));
+    temp.setMonth(temp.getMonth() + 1);
+  }
+
+  renderMonthPills(months);
+
+  const totalMonths = months.length;
+  const totalFee    = totalMonths * monthlyFee;
+
+  if (totalMonths <= 4) {
+    advanceBoxEl.innerHTML = `
+      <div class="adm-box">
+        <div class="adm-box-inner">
+          <div class="adm-label">Admission Payment &middot; Full Amount</div>
+          <div class="adm-amount">&#8377;${totalFee.toLocaleString("en-IN")}</div>
+          <div class="adm-divider"></div>
+          <div class="adm-footer">
+            <div class="adm-sub">Full amount due on admission date</div>
+            <div class="adm-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Due now
+            </div>
+          </div>
+        </div>
+      </div>`;
+    summaryPanelEl.classList.remove("visible");
+    emptyStateEl.style.display = "block";
+    updateWhatsApp(totalFee, classSelectEl.value);
+    return;
+  }
+
+  const admissionMonths = months.slice(0, 4);
+  const admissionAmount = admissionMonths.length * monthlyFee;
+  const remainingMonths = months.slice(4);
+
+  advanceBoxEl.innerHTML = `
+    <div class="adm-box">
+      <div class="adm-box-inner">
+        <div class="adm-label">Admission Payment &middot; 4 Month Advance</div>
+        <div class="adm-amount">&#8377;${admissionAmount.toLocaleString("en-IN")}</div>
+        <div class="adm-divider"></div>
+        <div class="adm-footer">
+          <div class="adm-sub">${admissionMonths.join(", ")}</div>
+          <div class="adm-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Due on admission
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  const calSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:9px;height:9px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+
+  let html = `
+    <div class="pay-card total-card">
+      <div class="pc-label">Total Academic Fee</div>
+      <div class="pc-months">${totalMonths} months covered</div>
+      <div class="pc-amount">&#8377;${totalFee.toLocaleString("en-IN")}</div>
+    </div>
+    <div class="pay-card first" data-num="01">
+      <div class="pc-label">Instalment 1</div>
+      <div class="pc-title">Due on Admission Date</div>
+      <div class="pc-months">${admissionMonths.join(", ")}</div>
+      <div class="pc-amount">&#8377;${admissionAmount.toLocaleString("en-IN")}</div>
+    </div>`;
+
+  if (effectiveMonth < 5) {
+    if (remainingMonths.length <= 4) {
+      html += `
+        <div class="pay-card second" data-num="02">
+          <div class="due-tag">${calSVG} Due 1 June 2026</div>
+          <div class="pc-label">Instalment 2</div>
+          <div class="pc-months">${remainingMonths.join(", ")}</div>
+          <div class="pc-amount">&#8377;${(remainingMonths.length * monthlyFee).toLocaleString("en-IN")}</div>
+        </div>`;
+    } else {
+      const juneBatch = remainingMonths.slice(0, 4);
+      const sepBatch  = remainingMonths.slice(4);
+      html += `
+        <div class="pay-card second" data-num="02">
+          <div class="due-tag">${calSVG} Due 1 June 2026</div>
+          <div class="pc-label">Instalment 2</div>
+          <div class="pc-months">${juneBatch.join(", ")}</div>
+          <div class="pc-amount">&#8377;${(juneBatch.length * monthlyFee).toLocaleString("en-IN")}</div>
+        </div>
+        <div class="pay-card third" data-num="03">
+          <div class="due-tag">${calSVG} Due 1 September 2026</div>
+          <div class="pc-label">Instalment 3</div>
+          <div class="pc-months">${sepBatch.join(", ")}</div>
+          <div class="pc-amount">&#8377;${(sepBatch.length * monthlyFee).toLocaleString("en-IN")}</div>
+        </div>`;
+    }
+  } else {
+    html += `
+      <div class="pay-card second" data-num="02">
+        <div class="due-tag">${calSVG} Due 1 September 2026</div>
+        <div class="pc-label">Instalment 2</div>
+        <div class="pc-months">${remainingMonths.join(", ")}</div>
+        <div class="pc-amount">&#8377;${(remainingMonths.length * monthlyFee).toLocaleString("en-IN")}</div>
+      </div>`;
+  }
+
+  summaryContentEl.innerHTML = html;
+  summaryPanelEl.classList.add("visible");
+  emptyStateEl.style.display = "none";
+
+  updateWhatsApp(totalFee, classSelectEl.value);
+}
+
+function updateWhatsApp(totalFee, cls) {
+  const subjects = [...document.querySelectorAll("#subjectSection input:checked")].map(x => x.value);
+  const subText  = subjects.length ? subjects.join(", ") : "all subjects";
+  const msg = `Hi SEHR Academy! I'd like to enquire about admission to Class ${cls}. I checked the fee calculator — total fee is ₹${totalFee.toLocaleString("en-IN")} for ${subText}. Please guide me on the next steps.`;
+  document.getElementById("whatsappCTA").href = "https://wa.me/919539409586?text=" + encodeURIComponent(msg);
+  document.getElementById("waSub").textContent = `Class ${cls} · ₹${monthlyFee.toLocaleString("en-IN")}/month`;
+}
+</script>
+<div id="site-footer"></div>
+<script src="/assets/footer.js" defer></script>
+
+</body>
+</html>

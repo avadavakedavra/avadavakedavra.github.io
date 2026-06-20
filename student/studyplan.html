@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sehr Academy | Study Dashboard</title>
+
+<!-- Fonts (same as student login) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --sehr-green:#8BC53F;
+  --ink:#0F172A;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --shadow:0 10px 25px rgba(0,0,0,0.06);
+  --radius:16px;
+  --maxw:1100px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Nunito,system-ui;
+  background:#f6f7fb;
+  color:var(--ink);
+}
+
+/* ===== LAYOUT ===== */
+
+main{
+  max-width:var(--maxw);
+  margin:30px auto;
+  padding:0 20px;
+}
+
+/* ===== CONTROLS ===== */
+select{
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-weight:700;
+}
+
+/* ===== DAY CARDS ===== */
+.plan-container{
+  margin-top:30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;
+}
+
+.day-card{
+  background:#ffffff;
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:var(--shadow);
+}
+
+.day-title{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+.yesterday{color:#d97706;}
+.today{color:#2563eb;}
+.tomorrow{color:#059669;}
+
+.chapter{
+  border-left:4px solid var(--border);
+  padding-left:12px;
+  margin-bottom:14px;
+}
+
+.subject{
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.title{
+  font-size:15px;
+  font-weight:600;
+}
+
+.meta{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.status{
+  display:inline-block;
+  margin-top:6px;
+  padding:4px 10px;
+  font-size:11px;
+  border-radius:999px;
+  font-weight:800;
+}
+
+.status.completed{
+  background:#dcfce7;
+  color:#166534;
+}
+.status.pending{
+  background:#ffffff;
+  border:1px solid var(--border);
+  color:#374151;
+}
+
+/* ===== SUBJECT WISE ===== */
+.subject-block{
+  background:#ffffff;
+  border-radius:18px;
+  padding:22px;
+  margin-top:26px;
+  box-shadow:var(--shadow);
+}
+
+.subject-heading{
+  font-family:Montserrat;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+
+.topic{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  margin-bottom:8px;
+}
+
+.topic.completed{
+  background:#dcfce7;
+  border-color:#86efac;
+  color:#065f46;
+}
+
+.topic.pending{
+  background:#ffffff;
+}
+
+.topic-index{
+  font-weight:900;
+  min-width:30px;
+  text-align:center;
+}
+/* ===== GAUGE TRACKER ===== */
+.gauge-grid{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+.gauge-card{
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.gauge-title{
+  font-family:Montserrat;
+  font-weight:900;
+  letter-spacing:0.1em;
+  font-size:14px;
+  margin-bottom:12px;
+}
+
+.gauge{
+  position:relative;
+  width:200px;
+  height:100px;
+  margin:10px auto 0;
+  overflow:hidden;
+}
+
+.gauge-bg{
+  width:200px;
+  height:100px;
+  border-radius:200px 200px 0 0;
+  background:
+    conic-gradient(
+      #ef4444 0deg 30deg,        /* LOW – small red */
+      #facc15 30deg 150deg,     /* MEDIUM – large yellow */
+      #22c55e 150deg 180deg     /* HIGH – small green */
+    );
+}
+
+.gauge-mask{
+  position:absolute;
+  top:14px;
+  left:14px;
+  width:172px;
+  height:86px;
+  background:#fff;
+  border-radius:200px 200px 0 0;
+}
+
+.needle{
+  position:absolute;
+  bottom:0;
+  left:50%;
+  width:4px;
+  height:90px;
+  background:#111827;
+  transform-origin:bottom center;
+  transform:rotate(-90deg);
+  transition:transform 0.8s ease;
+}
+
+.gauge-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  font-weight:800;
+  margin-top:8px;
+  padding:0 12px;
+}
+
+.gauge-percent{
+  margin-top:10px;
+  font-weight:900;
+  font-size:16px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px){
+  .container{
+    padding:10px 14px;
+  }
+  main{
+    padding:0 14px;
+    margin:20px auto;
+  }
+  select{
+    width:100%;
+    min-height:44px;
+    padding:12px 14px;
+  }
+  .plan-container{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .subject-block{
+    padding:16px;
+  }
+  .topic{
+    flex-wrap:wrap;
+    padding:10px 12px;
+    min-height:44px;
+  }
+  .gauge{
+    width:160px;
+    height:80px;
+  }
+  .gauge-bg,.gauge-mask+div{
+    width:160px;
+    height:80px;
+  }
+}
+</style>
+
+
+</head>
+
+<body>
+
+<main>
+
+<div style="background:#fff;padding:20px;border-radius:16px;box-shadow:var(--shadow);">
+  <label style="font-weight:800;">Select Student</label><br><br>
+  <select id="studentSelect">
+    <option value="">Select</option>
+  </select>
+</div>
+<h2 style="margin-top:50px;font-family:Montserrat;">
+  Subject Progress Tracker
+</h2>
+
+<div id="gaugeContainer" class="gauge-grid"></div>
+
+
+<div class="plan-container" id="dayCards"></div>
+
+<h2 style="margin-top:50px;font-family:Montserrat;">Subject-wise Topic Breakdown</h2>
+<div id="subjectWiseContainer"></div>
+
+</main>
+
+<script>
+const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjF9cHXk96gY7A66x-KNDIPOS6YC-zyVSV2f4PEx1tCCQruYGxMjGtoRH0Jz-z87CizRfCPypL802aXHqN44n2miYngScxqZDRPdoNvXzDseHLb8jGiBiBN_xqMEbFlBsuBrwLnxBNf_XvBQrDh-y668g33f_RcJu_8lVc4iapHj4azThHK-L03i-t3TiIIMS5Jv2QfnrgazKVpkJ48zw5jKJPzcvk4eCUtRmWdcWrYpJnshAVrO1hZXzDbV39gNeNlARqSmtto34K5-ppaY8Msui-62A&lib=MvGSsCthjbGW7s5xhObuf00FNOc6D1c8x";
+let ALL_DATA = [];
+
+/* ---------- LOAD DATA ---------- */
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => {
+    ALL_DATA = data;
+    populateStudents();
+  });
+
+/* ---------- STUDENT DROPDOWN ---------- */
+function populateStudents(){
+  const select = document.getElementById("studentSelect");
+  [...new Set(ALL_DATA.map(r => r.Student))].forEach(s => {
+    select.add(new Option(s, s));
+  });
+
+select.addEventListener("change", () => {
+  const rows = ALL_DATA.filter(r => r.Student === select.value);
+  renderDayCards(rows);
+  renderSubjectWise(rows);
+  renderGauges(rows); // ✅ ADD THIS LINE
+});
+}
+
+/* ---------- DAY CARDS ---------- */
+function renderDayCards(rows){
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const buckets = { yesterday:[], today:[], tomorrow:[] };
+
+  rows.forEach(r => {
+    if(!r.ExpectedDate) return;
+
+    const d = new Date(r.ExpectedDate);
+    d.setHours(0,0,0,0);
+    const diff = (d - today) / 86400000;
+
+    if(diff === -1) buckets.yesterday.push(r);
+    if(diff === 0) buckets.today.push(r);
+    if(diff === 1) buckets.tomorrow.push(r);
+  });
+
+  const container = document.getElementById("dayCards");
+  container.innerHTML = "";
+
+  const config = [
+    {key:"yesterday", label:"Yesterday", cls:"yesterday"},
+    {key:"today", label:"Today", cls:"today"},
+    {key:"tomorrow", label:"Tomorrow", cls:"tomorrow"}
+  ];
+
+  config.forEach(cfg => {
+    const card = document.createElement("div");
+    card.className = "day-card";
+    card.innerHTML = `<div class="day-title ${cfg.cls}">${cfg.label}</div>`;
+
+    if(buckets[cfg.key].length === 0){
+      card.innerHTML += `<div class="meta">No topics scheduled</div>`;
+    }
+
+    buckets[cfg.key].forEach(ch => {
+      card.innerHTML += `
+        <div class="chapter">
+          <div class="subject">${ch.Subject}</div>
+          <div class="title">${ch.Title}</div>
+          <div class="meta">Assigned by: ${ch["Assigned By"] || "-"}</div>
+          <span class="status ${ch.Status}">${ch.Status}</span>
+        </div>
+      `;
+    });
+
+    container.appendChild(card);
+  });
+}
+
+/* ---------- SUBJECT WISE ---------- */
+function renderSubjectWise(rows){
+  const container = document.getElementById("subjectWiseContainer");
+  container.innerHTML = "";
+
+  [...new Set(rows.map(r => r.Subject))].forEach(sub => {
+    const list = rows
+      .filter(r => r.Subject === sub)
+      .sort((a,b) => a.Index - b.Index);
+
+    const block = document.createElement("div");
+    block.className = "subject-block";
+    block.innerHTML = `<div class="subject-heading">${sub}</div>`;
+
+    list.forEach(t => {
+      block.innerHTML += `
+        <div class="topic ${t.Status}">
+          <div class="topic-index">${t.Index}</div>
+          <div>${t.Title}</div>
+          ${t.Status === "completed" ? "✔" : ""}
+        </div>
+      `;
+    });
+
+    container.appendChild(block);
+  });
+}
+/* ---------- SUBJECT GAUGES ---------- */
+function renderGauges(rows){
+  const container = document.getElementById("gaugeContainer");
+  container.innerHTML = "";
+
+  const subjects = [...new Set(rows.map(r => r.Subject))];
+
+  subjects.forEach(sub => {
+    const subRows = rows.filter(r => r.Subject === sub);
+    const total = subRows.length;
+    const completed = subRows.filter(r => r.Status === "completed").length;
+
+    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    // map 0–100% → -90° to +90°
+    const angle = -90 + (percent * 180) / 100;
+
+    const card = document.createElement("div");
+    card.className = "gauge-card";
+
+    card.innerHTML = `
+      <div class="gauge-title">${sub.toUpperCase()}</div>
+
+      <div class="gauge">
+        <div class="gauge-bg" style="
+          background: conic-gradient(
+            from 180deg,
+            #ef4444 0deg,
+            #f97316 180deg
+          );
+        "></div>
+        <div class="gauge-mask"></div>
+        <div class="needle" style="transform:rotate(${angle}deg)"></div>
+      </div>
+
+      <div class="gauge-labels">
+        <span>Low</span>
+        <span>Medium</span>
+        <span>High</span>
+      </div>
+
+      <div class="gauge-percent">${percent}% Completed</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+</script>
+
+</body>
+</html>

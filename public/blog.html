@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Study Resources &amp; Blog — Sehr Academy</title>
+  <meta name="description" content="Free study tips, exam strategies, and subject guides from Sehr Academy. Expert advice for Class 10-12 students preparing for boards, NEET, and JEE Mains." />
+  <meta property="og:title" content="Study Resources & Blog — Sehr Academy" />
+  <meta property="og:description" content="Study tips, exam strategies, and subject guides for Class 10-12, NEET & JEE prep from Sehr Academy's expert tutors." />
+  <meta property="og:url" content="https://sehracademy.com/blog" />
+  <meta property="og:image" content="https://sehracademy.com/logo.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Study Resources & Blog — Sehr Academy" />
+  <meta name="twitter:description" content="Expert study tips and exam strategies for Class 10-12, NEET & JEE." />
+  <meta name="twitter:image" content="https://sehracademy.com/logo.png" />
+  <link rel="canonical" href="https://sehracademy.com/blog" />
+  <meta name="theme-color" content="#8BC53F" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://sehracademy.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Study Resources", "item": "https://sehracademy.com/blog"}
+  ]
+}
+  </script>
+
+  <style>
+    :root {
+      --green: #8BC53F;
+      --black: #0b0f10;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --light: #f9fafb;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Montserrat", sans-serif;
+      background: #fff;
+      color: var(--black);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #f0f7e6 0%, #fff 55%);
+      padding: 64px 20px 48px;
+      text-align: center;
+    }
+    .section-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: var(--green); }
+    .hero p {
+      max-width: 580px;
+      margin: 0 auto 28px;
+      color: var(--gray);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    /* ===== MAIN ===== */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 20px;
+    }
+
+    /* ===== FILTER TABS ===== */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .ftab {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--light);
+      color: var(--gray);
+      transition: all .18s;
+    }
+    .ftab.active, .ftab:hover {
+      background: var(--green);
+      color: #000;
+      border-color: var(--green);
+    }
+
+    /* ===== ARTICLE GRID ===== */
+    .articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .article-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      transition: box-shadow .22s, transform .22s;
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card:hover {
+      box-shadow: 0 10px 32px rgba(0,0,0,.1);
+      transform: translateY(-4px);
+    }
+    .card-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+    }
+    .card-body {
+      padding: 20px 20px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 3px 10px;
+      background: #edf7d6;
+      color: #3a6611;
+    }
+    .card-body h3 {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .card-body p {
+      font-size: 13px;
+      color: var(--gray);
+      font-weight: 500;
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--gray);
+      font-weight: 600;
+    }
+    .read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--green);
+      transition: gap .18s;
+    }
+    .read-btn:hover { gap: 10px; }
+
+    /* ===== FEATURED ARTICLE ===== */
+    .featured {
+      border: 2px solid var(--green);
+      border-radius: 20px;
+      padding: 28px 24px;
+      background: linear-gradient(135deg, #f4fae9, #fff);
+      margin-bottom: 40px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 600px) { .featured { grid-template-columns: 1fr; } }
+    .featured-icon { font-size: 64px; text-align: center; }
+    .featured-badge {
+      display: inline-block;
+      background: var(--green);
+      color: #000;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 3px 10px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .featured h3 {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .featured p {
+      font-size: 14px;
+      color: var(--gray);
+      font-weight: 500;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+      font-family: "Montserrat", sans-serif;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--green);
+      color: #000;
+      box-shadow: 0 6px 20px rgba(139,197,63,.28);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    /* ===== SECTION HEADINGS ===== */
+    .section-heading {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--green);
+      display: inline-block;
+    }
+
+    /* ===== DOWNLOADS CTA ===== */
+    .downloads-cta {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .downloads-cta h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .downloads-cta p {
+      font-size: 14px;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    /* ===== CTA BAND ===== */
+    .cta-band {
+      background: linear-gradient(135deg, #edf7d6, #f0f7e6);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 52px 20px;
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-size: clamp(20px, 4vw, 28px);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .cta-band p {
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <header id="site-header"></header>
+  <script src="/assets/nav.js" defer></script>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="section-label">Study Resources</p>
+    <h1>Tips, strategies &amp; guides to help you <span>excel</span></h1>
+    <p>Expert advice from Sehr Academy tutors — study smarter, build stronger fundamentals, and prepare effectively for boards, NEET, and JEE Mains.</p>
+  </section>
+
+  <main class="main">
+
+    <!-- FEATURED -->
+    <div class="featured">
+      <div class="featured-icon" aria-hidden="true">🎯</div>
+      <div>
+        <span class="featured-badge">⭐ Featured Guide</span>
+        <h3>The Ultimate Revision Strategy for Class 12 Board Exams</h3>
+        <p>A week-by-week revision plan that covers all core subjects — Physics, Chemistry, Maths, and Biology. Learn how to prioritise high-weightage chapters, time your revisions, and avoid the most common mistakes.</p>
+        <a class="btn btn-primary" href="#board-prep">Read the Guide →</a>
+      </div>
+    </div>
+
+    <!-- EXAM STRATEGIES -->
+    <h2 class="section-heading" id="board-prep">Exam Strategies</h2>
+    <div class="articles">
+
+      <article class="article-card" data-cat="strategy">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#edf7d6,#c8e99a);">📐</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Strategy</span>
+            <span class="tag">Boards</span>
+            <span class="tag">Class 12</span>
+          </div>
+          <h3>How to Tackle MCQs Without Second-Guessing Yourself</h3>
+          <p>A systematic approach to multiple-choice questions that eliminates guessing. Learn the process of elimination, trap spotting, and confident answering under time pressure.</p>
+          <div class="card-meta">
+            <span>5 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-card" data-cat="strategy">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">⏱️</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Strategy</span>
+            <span class="tag">Time Management</span>
+          </div>
+          <h3>Time Management During Exams: The 3-Pass Method</h3>
+          <p>Learn the three-pass method used by top scorers — how to allocate time across sections, when to skip and come back, and how to maximise marks in the final 15 minutes.</p>
+          <div class="card-meta">
+            <span>4 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-card" data-cat="strategy">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#ede9fe,#c4b5fd);">🧠</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Strategy</span>
+            <span class="tag">Memory</span>
+          </div>
+          <h3>Active Recall vs. Passive Reading: Why Most Students Study Wrong</h3>
+          <p>Why re-reading textbooks doesn't work — and what science says about active recall, spaced repetition, and retrieval practice for long-term retention.</p>
+          <div class="card-meta">
+            <span>6 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- SUBJECT GUIDES -->
+    <h2 class="section-heading" style="margin-top:52px;" id="subjects">Subject Guides</h2>
+    <div class="articles">
+
+      <article class="article-card" data-cat="physics">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#dbeafe,#93c5fd);">⚡</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Physics</span>
+            <span class="tag">Class 11</span>
+            <span class="tag">JEE</span>
+          </div>
+          <h3>Kinematics Mastery: From Basics to JEE-Level Problems</h3>
+          <p>A step-by-step guide to kinematics — understanding equations of motion, graphs, projectile motion, and the types of problems that appear in JEE Mains and boards.</p>
+          <div class="card-meta">
+            <span>8 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-card" data-cat="chemistry">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#dcfce7,#86efac);">⚗️</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Chemistry</span>
+            <span class="tag">Organic</span>
+            <span class="tag">NEET</span>
+          </div>
+          <h3>Organic Chemistry: How to Remember Reactions Without Rote Learning</h3>
+          <p>Pattern-based approach to organic chemistry. Learn how to group reactions by mechanism (nucleophilic substitution, addition, elimination) so each new reaction feels familiar, not foreign.</p>
+          <div class="card-meta">
+            <span>7 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-card" data-cat="biology">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#fce7f3,#f9a8d4);">🧬</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Biology</span>
+            <span class="tag">NEET</span>
+            <span class="tag">Class 12</span>
+          </div>
+          <h3>High-Weightage NEET Biology Topics You Cannot Afford to Skip</h3>
+          <p>A focused list of the most frequently tested biology topics in NEET — genetics, human physiology, ecology, and plant biology — with study priority rankings from recent papers.</p>
+          <div class="card-meta">
+            <span>5 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-card" data-cat="maths">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#fff7ed,#fed7aa);">📊</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Maths</span>
+            <span class="tag">Class 12</span>
+            <span class="tag">Boards</span>
+          </div>
+          <h3>Integration Techniques: A Step-by-Step Approach for Board &amp; JEE</h3>
+          <p>When to use substitution, parts, partial fractions, and trigonometric identities. Includes worked examples and common traps that students fall into in exams.</p>
+          <div class="card-meta">
+            <span>9 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- STUDY HABITS -->
+    <h2 class="section-heading" style="margin-top:52px;" id="habits">Study Habits</h2>
+    <div class="articles">
+
+      <article class="article-card" data-cat="habits">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#f0fdf4,#bbf7d0);">🌙</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Habits</span>
+            <span class="tag">Wellbeing</span>
+          </div>
+          <h3>Why Sleep is Your Secret Study Weapon (And How to Protect It)</h3>
+          <p>The science of sleep and memory consolidation — why pulling all-nighters backfires, and how a consistent sleep schedule can actually improve your test scores.</p>
+          <div class="card-meta">
+            <span>4 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-card" data-cat="habits">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#fffbeb,#fef08a);">📓</div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Habits</span>
+            <span class="tag">Note-Taking</span>
+          </div>
+          <h3>How to Take Notes That Actually Help You Revise</h3>
+          <p>The Cornell method, mind maps, and the one-page summary technique — which works best for which subject, and how to review notes for maximum retention before exams.</p>
+          <div class="card-meta">
+            <span>5 min read</span>
+            <span class="read-btn">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- DOWNLOADS CTA -->
+    <div class="downloads-cta">
+      <div>
+        <h3>📥 Looking for free study materials?</h3>
+        <p>Download formula sheets, PYQ packs, chapter summaries, and mindmaps from our free library.</p>
+      </div>
+      <a class="btn btn-primary" href="/downloads">Go to Downloads →</a>
+    </div>
+
+  </main>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <h2>Ready to learn with expert guidance?</h2>
+    <p>Join Sehr Academy and get personalised coaching from tutors who care about your results.</p>
+    <a class="btn btn-primary" href="https://wa.me/919539409586" target="_blank" rel="noopener noreferrer">
+      📱 WhatsApp: +91 95394 09586
+    </a>
+  </div>
+
+  <div id="site-footer"></div>
+  <script src="/assets/footer.js" defer></script>
+
+</body>
+</html>
