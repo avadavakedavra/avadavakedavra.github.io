@@ -405,6 +405,7 @@ var SUBJECT_DATA = [];   // sorted array of subject stat objects
 var SORT_MODE    = 'gap';
 var LOAD_KEY     = '';   // "class|board" cache key to avoid redundant fetches
 var slotCounters = [1,1,1,1,1,1];
+var DEFAULT_SUBJECTS=["Physics","Mathematics","Chemistry","Mathematics","English","Mathematics"];
 
 // ─────────────────────────────────────────────
 //  UTILS
@@ -691,8 +692,6 @@ function showToast(msg){
 // ─────────────────────────────────────────────
 //  DAY ROWS
 // ─────────────────────────────────────────────
-var DEFAULT_SUBJECTS=["Physics","Mathematics","Chemistry","Mathematics","English","Mathematics"];
-
 function renderDayRows(){
   var cfg=g('days-config');cfg.innerHTML='';
   DAYS.forEach(function(_,i){
