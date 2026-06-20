@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timetable Generator · SEHR Academy</title>
+<style>
+  :root{
+    --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
+    --white:#fdfcfa;--ink:#1a1a18;--ink-2:#2e2e2b;--ink-3:#4a4a46;
+    --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+    --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
+    --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+    --red:#dc2626;--amb:#d97706;--blue:#2563eb;--grn:#16a34a;
+    --violet:#7c3aed;--pink:#db2777;
+    --grid-line:rgba(255,255,255,.06);
+    --r-sm:10px;--r-md:14px;--r-full:9999px;
+    --sh-1:0 1px 4px rgba(0,0,0,.06);
+    --sh-2:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.05);
+    --sh-lime:0 2px 12px rgba(139,197,63,.35);
+    --font-sans:'Segoe UI',system-ui,sans-serif;
+    --font-brand:'Segoe UI',system-ui,sans-serif;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-sans);background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+  /* ── TOP NAV ── */
+  .topbar{background:var(--ink);border-bottom:2px solid var(--lime);padding:14px 28px;display:flex;align-items:center;gap:12px}
+  .topbar .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .topbar .brand img{width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(139,197,63,.4)}
+  .topbar .sehr{font-weight:800;font-size:13px;letter-spacing:.18em;color:var(--lime)}
+  .topbar .dot{width:3px;height:3px;border-radius:50%;background:var(--lime);opacity:.6}
+  .topbar .acad{font-weight:800;font-size:13px;letter-spacing:.18em;color:rgba(255,255,255,.8)}
+  .topbar .sep{flex:1}
+  .topbar .pg{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+
+  /* ── BUILDER LAYOUT ── */
+  .wrap{max-width:900px;margin:0 auto;padding:36px 20px 60px}
+  .section-title{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+  /* ── CARD ── */
+  .card{background:var(--white);border:1.5px solid var(--cream-3);border-radius:var(--r-md);box-shadow:var(--sh-1);padding:24px 26px;margin-bottom:20px}
+  .card-head{font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-bottom:6px}
+  .card-sub{font-size:12px;color:var(--muted);margin-bottom:22px}
+
+  /* ── META ROW ── */
+  .meta-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:6px}
+  label.field{display:flex;flex-direction:column;gap:5px}
+  label.field .lbl{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  input[type=text],input[type=date],select{
+    width:100%;padding:9px 12px;border:1.5px solid var(--cream-3);border-radius:var(--r-sm);
+    background:var(--white);font-family:inherit;font-size:13px;font-weight:600;color:var(--ink);
+    outline:none;transition:border-color .15s,box-shadow .15s;appearance:none;-webkit-appearance:none;
+  }
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b0ada4' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:32px}
+  input:focus,select:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.18)}
+
+  /* ── DAY TOGGLES ── */
+  .day-toggles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+  .day-toggle input{position:absolute;opacity:0;width:0;height:0}
+  .day-toggle label{
+    display:flex;align-items:center;gap:7px;padding:8px 16px;border:1.5px solid var(--cream-3);
+    border-radius:var(--r-full);cursor:pointer;font-size:12px;font-weight:700;color:var(--muted);
+    background:var(--white);transition:all .15s var(--ease);user-select:none
+  }
+  .day-toggle input:checked + label{border-color:var(--lime);background:var(--lime-bg);color:var(--lime-3)}
+  .day-toggle label .dcheck{width:14px;height:14px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;transition:background .12s}
+  .day-toggle input:checked + label .dcheck{background:var(--lime);border-color:var(--lime);color:#fff}
+  .day-toggle label .dcheck::after{content:'✓';font-size:8px;font-weight:900;opacity:0;transition:opacity .12s}
+  .day-toggle input:checked + label .dcheck::after{opacity:1}
+
+  /* ── DAY ROWS ── */
+  .days-config{display:flex;flex-direction:column;gap:12px}
+  .day-row{display:grid;grid-template-columns:90px 1fr 140px 140px auto;gap:10px;align-items:center;
+    padding:14px 16px;border:1.5px solid var(--cream-3);border-radius:var(--r-sm);background:var(--cream);
+    transition:all .2s var(--ease)}
+  .day-row.active{background:var(--white);border-color:var(--lime-mid)}
+  .day-row.hidden{display:none}
+  .day-name{font-size:12px;font-weight:800;color:var(--ink-3);letter-spacing:.04em}
+  .day-date{font-size:10px;color:var(--muted);margin-top:2px}
+
+  .add-slot-btn{background:none;border:1.5px dashed var(--cream-3);border-radius:6px;padding:6px 10px;
+    font-size:11px;font-weight:700;color:var(--pale);cursor:pointer;transition:all .15s;white-space:nowrap}
+  .add-slot-btn:hover{border-color:var(--lime);color:var(--lime-2)}
+
+  .slots-list{display:flex;flex-direction:column;gap:8px;grid-column:1/-1;margin-top:4px}
+  .slot-item{display:grid;grid-template-columns:1fr 130px 130px auto;gap:8px;align-items:center}
+  .remove-slot{background:none;border:none;cursor:pointer;color:var(--pale);font-size:16px;line-height:1;padding:4px;transition:color .15s}
+  .remove-slot:hover{color:var(--red)}
+
+  /* ── PUBLISH BUTTON ── */
+  .pub-row{display:flex;justify-content:center;margin:28px 0 0}
+  .pub-btn{
+    display:inline-flex;align-items:center;gap:10px;padding:14px 36px;
+    background:var(--ink);color:#fff;border:none;border-radius:var(--r-sm);
+    font-family:inherit;font-size:14px;font-weight:800;letter-spacing:.04em;
+    cursor:pointer;box-shadow:var(--sh-2);transition:background .18s var(--ease)
+  }
+  .pub-btn:hover{background:var(--ink-2)}
+  .pub-btn svg{width:18px;height:18px}
+
+  /* ── PREVIEW SECTION ── */
+  #preview-wrap{margin-top:40px;display:none}
+  .preview-actions{display:flex;gap:10px;justify-content:flex-end;margin-bottom:14px;flex-wrap:wrap}
+  .act-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--r-sm);
+    font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;border:none;transition:all .15s}
+  .act-print{background:var(--ink);color:#fff}
+  .act-print:hover{background:var(--ink-2)}
+  .act-wa{background:var(--lime);color:var(--ink);box-shadow:var(--sh-lime)}
+  .act-wa:hover{background:var(--lime-2)}
+  .act-btn svg{width:14px;height:14px;fill:currentColor}
+
+  /* ── TIMETABLE SHEET (preview) ── */
+  .sheet{background:var(--white);border:1.5px solid var(--cream-3);border-radius:var(--r-sm);overflow:hidden;box-shadow:var(--sh-2)}
+  .head{position:relative;overflow:hidden;background:var(--ink);border-bottom:3px solid var(--lime);padding:28px 32px 26px}
+  .head::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:48px 48px}
+  .head::after{content:'';position:absolute;top:-140px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.16),transparent 65%)}
+  .head-wm{position:absolute;right:-6px;bottom:-46px;font-size:140px;font-weight:800;letter-spacing:-9px;color:rgba(255,255,255,.04);line-height:1;user-select:none;pointer-events:none}
+  .head-in{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .s-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .s-brand img{width:34px;height:34px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(139,197,63,.35)}
+  .s-brand .sehr{font-weight:800;font-size:14px;letter-spacing:.18em;color:var(--lime)}
+  .s-brand .dot{width:3px;height:3px;border-radius:50%;background:var(--lime);opacity:.6}
+  .s-brand .acad{font-weight:800;font-size:14px;letter-spacing:.18em;color:rgba(255,255,255,.85)}
+  .kicker{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .kicker .rule{width:24px;height:2px;background:var(--lime)}
+  .kicker .txt{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+  .h1{font-size:clamp(26px,4vw,42px);font-weight:800;letter-spacing:-2px;color:#fff;line-height:.95}
+  .h1 i{font-style:italic;font-weight:300;color:var(--lime)}
+  .head-meta{display:flex;flex-direction:column;gap:8px;align-items:flex-end;text-align:right}
+  .pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border:1px solid rgba(255,255,255,.12);border-radius:var(--r-full);background:rgba(255,255,255,.06);font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}
+  .pill .pdot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px rgba(139,197,63,.6)}
+  .wk-note{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.02em}
+  .tt-grid{display:grid}
+  .tt-day{position:relative;padding:22px 18px 24px;border-right:1px solid var(--rule);background:var(--white);transition:background .2s}
+  .tt-day:last-child{border-right:none}
+  .tt-day:hover{background:var(--cream)}
+  .tt-day::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent)}
+  .tt-dow{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--pale)}
+  .tt-date{font-size:11px;font-weight:700;color:var(--muted);margin-top:3px}
+  .tt-icon{width:40px;height:40px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:16px 0 12px;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-bd)}
+  .tt-icon svg{width:20px;height:20px}
+  .tt-subj-n{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .tt-subj{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1.1}
+  .tt-slots{display:flex;flex-direction:column;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+  .tt-slot{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted)}
+  .tt-slot svg{width:12px;height:12px;color:var(--pale);flex-shrink:0}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 32px;background:var(--cream);border-top:1.5px solid var(--cream-3)}
+  .foot .note{font-size:11px;color:var(--muted)}
+  .foot .note strong{color:var(--ink-2);font-weight:800}
+  .legend{display:flex;gap:12px;flex-wrap:wrap}
+  .leg{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted)}
+  .leg .sw{width:9px;height:9px;border-radius:2px}
+  .wa-link{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--r-sm);background:var(--lime);color:var(--ink);font-size:11px;font-weight:800;text-decoration:none;box-shadow:var(--sh-lime)}
+  .wa-link svg{width:13px;height:13px;fill:currentColor}
+
+  @media(max-width:640px){
+    .day-row{grid-template-columns:1fr 1fr;row-gap:8px}
+    .day-name{grid-column:1/-1}
+    .slot-item{grid-template-columns:1fr 1fr auto}
+    .slot-item .time-to{grid-column:1/2}
+  }
+  @media print{
+    .topbar,.wrap > :not(#preview-wrap),.preview-actions{display:none!important}
+    #preview-wrap{display:block!important}
+    body{background:#fff}
+    .sheet{box-shadow:none;border:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a class="brand" href="index.html">
+    <img src="logo.png" alt="SEHR Academy">
+    <span class="sehr">SEHR</span><span class="dot"></span><span class="acad">ACADEMY</span>
+  </a>
+  <span class="sep"></span>
+  <span class="pg">Timetable Generator</span>
+</div>
+
+<div class="wrap">
+
+  <!-- ── META CARD ── -->
+  <div class="card">
+    <div class="card-head">Timetable Details</div>
+    <div class="card-sub">Set the class, syllabus and week dates before configuring days.</div>
+    <div class="meta-row">
+      <label class="field">
+        <span class="lbl">Class</span>
+        <select id="meta-class">
+          <option>Class 8</option>
+          <option>Class 9</option>
+          <option selected>Class 10</option>
+          <option>Class 11</option>
+          <option>Class 12</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="lbl">Syllabus</span>
+        <select id="meta-syllabus">
+          <option selected>Kerala State Syllabus</option>
+          <option>CBSE</option>
+          <option>ICSE</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="lbl">Week Start (Monday)</span>
+        <input type="date" id="meta-date">
+      </label>
+      <label class="field">
+        <span class="lbl">WhatsApp Number</span>
+        <input type="text" id="meta-wa" placeholder="e.g. 919539409586" value="919539409586">
+      </label>
+    </div>
+  </div>
+
+  <!-- ── DAYS CARD ── -->
+  <div class="card">
+    <div class="card-head">Select Class Days</div>
+    <div class="card-sub">Toggle the days that have classes this week.</div>
+    <div class="day-toggles" id="day-toggles">
+      <span class="day-toggle"><input type="checkbox" id="d0" value="0" checked><label for="d0"><span class="dcheck"></span>Monday</label></span>
+      <span class="day-toggle"><input type="checkbox" id="d1" value="1" checked><label for="d1"><span class="dcheck"></span>Tuesday</label></span>
+      <span class="day-toggle"><input type="checkbox" id="d2" value="2" checked><label for="d2"><span class="dcheck"></span>Wednesday</label></span>
+      <span class="day-toggle"><input type="checkbox" id="d3" value="3" checked><label for="d3"><span class="dcheck"></span>Thursday</label></span>
+      <span class="day-toggle"><input type="checkbox" id="d4" value="4" checked><label for="d4"><span class="dcheck"></span>Friday</label></span>
+      <span class="day-toggle"><input type="checkbox" id="d5" value="5"><label for="d5"><span class="dcheck"></span>Saturday</label></span>
+    </div>
+
+    <div class="days-config" id="days-config">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <div class="pub-row">
+    <button class="pub-btn" onclick="buildPreview()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Generate Timetable
+    </button>
+  </div>
+
+  <!-- ── PREVIEW ── -->
+  <div id="preview-wrap">
+    <div class="section-title" style="margin-top:0">Preview</div>
+    <div class="preview-actions">
+      <button class="act-btn act-print" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save PDF
+      </button>
+      <button class="act-btn act-wa" id="wa-share-btn">
+        <svg viewBox="0 0 24 24"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        Share on WhatsApp
+      </button>
+    </div>
+    <div class="sheet" id="timetable-out"></div>
+  </div>
+
+</div>
+
+<script>
+// ── SUBJECT DATA ──────────────────────────────────────────────
+const SUBJECTS = {
+  "Physics":    {cat:"Science",   color:"blue",   accent:"var(--blue)",   accentBg:"rgba(37,99,235,.07)",   accentBd:"rgba(37,99,235,.18)",   icon:'<circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(120 12 12)"/>'},
+  "Chemistry":  {cat:"Science",   color:"violet", accent:"var(--violet)", accentBg:"rgba(124,58,237,.07)", accentBd:"rgba(124,58,237,.18)", icon:'<path d="M9 3h6"/><path d="M10 3v6.5L5.2 18a1.7 1.7 0 0 0 1.5 2.5h10.6A1.7 1.7 0 0 0 18.8 18L14 9.5V3"/><line x1="8" y1="14" x2="16" y2="14"/>'},
+  "Biology":    {cat:"Science",   color:"grn",    accent:"var(--grn)",    accentBg:"rgba(22,163,74,.07)",   accentBd:"rgba(22,163,74,.18)",   icon:'<path d="M12 2a9 9 0 0 1 0 18"/><path d="M12 2C6.5 2 3 6 3 12s3.5 10 9 10"/><path d="M12 8c0 4-3 6-3 8"/><path d="M12 8c0 4 3 6 3 8"/>'},
+  "Mathematics":{cat:"Core",     color:"lime",   accent:"var(--lime-2)", accentBg:"var(--lime-bg)",        accentBd:"var(--lime-mid)",       icon:'<path d="M19 5H9.5a3 3 0 0 0-2.94 3.6l2.38 11.9"/><line x1="6" y1="12" x2="15" y2="12"/>'},
+  "English":    {cat:"Language",  color:"pink",   accent:"var(--pink)",   accentBg:"rgba(219,39,119,.07)",  accentBd:"rgba(219,39,119,.18)",  icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'},
+  "Malayalam":  {cat:"Language",  color:"pink",   accent:"var(--pink)",   accentBg:"rgba(219,39,119,.07)",  accentBd:"rgba(219,39,119,.18)",  icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'},
+  "Hindi":      {cat:"Language",  color:"amb",    accent:"var(--amb)",    accentBg:"rgba(217,119,6,.07)",   accentBd:"rgba(217,119,6,.18)",   icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'},
+  "Social Science":{cat:"Social", color:"amb",    accent:"var(--amb)",    accentBg:"rgba(217,119,6,.07)",   accentBd:"rgba(217,119,6,.18)",   icon:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'},
+  "IT / Computers":{cat:"Technology",color:"blue",accent:"var(--blue)",   accentBg:"rgba(37,99,235,.07)",   accentBd:"rgba(37,99,235,.18)",   icon:'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'},
+  "Revision / Test":{cat:"Exam",  color:"red",    accent:"var(--red)",    accentBg:"rgba(220,38,38,.07)",   accentBd:"rgba(220,38,38,.18)",   icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'},
+};
+
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat"];
+
+// ── TIME OPTIONS ──────────────────────────────────────────────
+function timeOptions(selectedVal) {
+  const times = [];
+  for (let h = 6; h <= 22; h++) {
+    for (let m of [0,30]) {
+      if (h === 22 && m === 30) continue;
+      const ampm = h < 12 ? 'AM' : 'PM';
+      const h12 = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+      const label = `${h12}:${m === 0 ? '00' : m} ${ampm}`;
+      const val = `${String(h).padStart(2,'0')}:${m === 0 ? '00' : '30'}`;
+      times.push({val, label});
+    }
+  }
+  return times.map(t => `<option value="${t.val}"${t.val === selectedVal ? ' selected' : ''}>${t.label}</option>`).join('');
+}
+
+function subjectOptions(sel) {
+  return Object.keys(SUBJECTS).map(s => `<option${s===sel?' selected':''}>${s}</option>`).join('');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+function getMonday() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return d;
+}
+
+function isoDate(d) {
+  return d.toISOString().split('T')[0];
+}
+
+document.getElementById('meta-date').value = isoDate(getMonday());
+
+const DEFAULT_SUBJECTS = ["Physics","Mathematics","Chemistry","Mathematics","English","Mathematics"];
+
+function renderDayRows() {
+  const cfg = document.getElementById('days-config');
+  cfg.innerHTML = '';
+  DAYS.forEach((day, i) => {
+    const checked = document.getElementById('d'+i)?.checked;
+    const div = document.createElement('div');
+    div.className = 'day-row' + (checked ? ' active' : ' hidden');
+    div.id = 'row-' + i;
+    div.innerHTML = buildRowHTML(i, checked);
+    cfg.appendChild(div);
+  });
+}
+
+function buildRowHTML(i, active) {
+  const sub = DEFAULT_SUBJECTS[i] || "Mathematics";
+  return `
+    <div>
+      <div class="day-name">${DAYS[i]}</div>
+      <div class="day-date" id="row-date-${i}"></div>
+    </div>
+    <div class="slots-list" id="slots-${i}">
+      ${slotHTML(i, 0, sub, '17:00', '19:00')}
+    </div>
+    <div style="grid-column:1/-1;display:flex;justify-content:flex-end">
+      <button class="add-slot-btn" onclick="addSlot(${i})">+ Add another subject</button>
+    </div>
+  `;
+}
+
+let slotCounters = [1,1,1,1,1,1];
+
+function slotHTML(dayIdx, slotIdx, sub, from, to) {
+  return `<div class="slot-item" id="slot-${dayIdx}-${slotIdx}">
+    <select style="font-size:12px" onchange="updatePreviewLive()">${subjectOptions(sub)}</select>
+    <select class="time-from" style="font-size:12px" onchange="updatePreviewLive()">${timeOptions(from)}</select>
+    <select class="time-to" style="font-size:12px" onchange="updatePreviewLive()">${timeOptions(to)}</select>
+    <button class="remove-slot" title="Remove" onclick="removeSlot(this)">×</button>
+  </div>`;
+}
+
+function addSlot(i) {
+  const list = document.getElementById('slots-'+i);
+  const idx = slotCounters[i]++;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = slotHTML(i, idx, 'Mathematics', '17:00', '19:00');
+  list.appendChild(tmp.firstElementChild);
+}
+
+function removeSlot(btn) {
+  const item = btn.closest('.slot-item');
+  const list = item.closest('.slots-list');
+  if (list.children.length <= 1) return; // keep at least one
+  item.remove();
+}
+
+// Day toggle handler
+document.getElementById('day-toggles').addEventListener('change', e => {
+  const i = parseInt(e.target.value);
+  const row = document.getElementById('row-'+i);
+  if (!row) return;
+  if (e.target.checked) {
+    row.className = 'day-row active';
+    row.style.display = '';
+  } else {
+    row.className = 'day-row hidden';
+    row.style.display = 'none';
+  }
+  updateDates();
+});
+
+function updateDates() {
+  const base = new Date(document.getElementById('meta-date').value + 'T00:00:00');
+  const FMT = {day:'numeric',month:'long'};
+  DAYS.forEach((_, i) => {
+    const el = document.getElementById('row-date-'+i);
+    if (!el) return;
+    const d = new Date(base);
+    d.setDate(base.getDate() + i);
+    el.textContent = d.toLocaleDateString('en-IN', FMT);
+  });
+}
+
+document.getElementById('meta-date').addEventListener('change', updateDates);
+
+renderDayRows();
+updateDates();
+
+// ── BUILD PREVIEW ─────────────────────────────────────────────
+function fmt12(val) {
+  const [h,m] = val.split(':').map(Number);
+  const ampm = h < 12 ? 'AM' : 'PM';
+  const h12 = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+  return `${h12}:${m === 0 ? '00' : m} ${ampm}`;
+}
+
+function getWeekRange() {
+  const base = new Date(document.getElementById('meta-date').value + 'T00:00:00');
+  const activeDays = [];
+  DAYS.forEach((_, i) => {
+    if (document.getElementById('d'+i)?.checked) {
+      const d = new Date(base);
+      d.setDate(base.getDate() + i);
+      activeDays.push(d);
+    }
+  });
+  if (!activeDays.length) return '';
+  const first = activeDays[0];
+  const last = activeDays[activeDays.length-1];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  if (first.getMonth() === last.getMonth()) {
+    return `${days[first.getDay()]} ${first.getDate()} – ${days[last.getDay()]} ${last.getDate()} ${months[last.getMonth()]} ${last.getFullYear()}`;
+  }
+  return `${days[first.getDay()]} ${first.getDate()} ${months[first.getMonth()]} – ${days[last.getDay()]} ${last.getDate()} ${months[last.getMonth()]} ${last.getFullYear()}`;
+}
+
+function buildPreview() {
+  const cls = document.getElementById('meta-class').value;
+  const syl = document.getElementById('meta-syllabus').value;
+  const base = new Date(document.getElementById('meta-date').value + 'T00:00:00');
+  const wa = document.getElementById('meta-wa').value.trim();
+  const FMT_LONG = {day:'numeric',month:'long'};
+  const FMT_DOW = {weekday:'long'};
+
+  // Collect active days
+  const activeDays = [];
+  DAYS.forEach((dayName, i) => {
+    if (!document.getElementById('d'+i)?.checked) return;
+    const date = new Date(base);
+    date.setDate(base.getDate() + i);
+    const slots = [];
+    const list = document.getElementById('slots-'+i);
+    list?.querySelectorAll('.slot-item').forEach(item => {
+      const [subSel, fromSel, toSel] = item.querySelectorAll('select');
+      slots.push({sub: subSel.value, from: fromSel.value, to: toSel.value});
+    });
+    activeDays.push({dayName, dayIdx:i, date, slots});
+  });
+
+  if (!activeDays.length) {
+    alert('Please select at least one day.');
+    return;
+  }
+
+  // Gather unique subjects for legend
+  const usedSubjects = [];
+  activeDays.forEach(d => d.slots.forEach(s => { if (!usedSubjects.includes(s.sub)) usedSubjects.push(s.sub); }));
+
+  // Build grid cols
+  const cols = activeDays.length;
+
+  // Build day columns
+  const dayCols = activeDays.map(({dayName, date, slots}) => {
+    const info = SUBJECTS[slots[0]?.sub] || SUBJECTS["Mathematics"];
+    const accent = info.accent;
+    const bg = info.accentBg;
+    const bd = info.accentBd;
+    const icon = info.icon;
+    const dateStr = date.toLocaleDateString('en-IN', FMT_LONG);
+
+    const slotsHTML = slots.map(s => {
+      const si = SUBJECTS[s.sub] || info;
+      return `<div class="tt-slot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+        ${fmt12(s.from)} – ${fmt12(s.to)}${slots.length > 1 ? ` · ${s.sub}` : ''}
+      </div>`;
+    }).join('');
+
+    // If multiple subjects, show first one as main, list slots
+    const mainSub = slots[0]?.sub || 'Class';
+    const mainCat = (SUBJECTS[slots[0]?.sub] || {cat:''}).cat;
+
+    return `<div class="tt-day" style="--accent:${accent};--accent-bg:${bg};--accent-bd:${bd}">
+      <div class="tt-dow">${dayName}</div>
+      <div class="tt-date">${dateStr}</div>
+      <div class="tt-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>
+      </div>
+      <div class="tt-subj-n">${mainCat}</div>
+      <div class="tt-subj">${mainSub}</div>
+      <div class="tt-slots">${slotsHTML}</div>
+    </div>`;
+  }).join('');
+
+  // Legend
+  const legendHTML = usedSubjects.map(s => {
+    const info = SUBJECTS[s] || {};
+    return `<span class="leg"><span class="sw" style="background:${info.accent || '#888'}"></span>${s}</span>`;
+  }).join('');
+
+  // Time note
+  const allTimes = activeDays.flatMap(d => d.slots);
+  const minFrom = allTimes.map(s=>s.from).sort()[0];
+  const maxTo = allTimes.map(s=>s.to).sort().reverse()[0];
+  const timeNote = minFrom && maxTo ? `${fmt12(minFrom)} daily` : '5:00 PM daily';
+
+  const watermark = cls.replace('Class ','');
+  const weekRange = getWeekRange();
+
+  const html = `
+    <div class="head">
+      <div class="head-wm" aria-hidden="true">${watermark}</div>
+      <div class="head-in">
+        <div>
+          <div class="s-brand" style="margin-bottom:16px">
+            <img src="logo.png" alt="SEHR Academy">
+            <span class="sehr">SEHR</span><span class="dot"></span><span class="acad">ACADEMY</span>
+          </div>
+          <div class="kicker"><span class="rule"></span><span class="txt">${cls} · ${syl}</span></div>
+          <h1 class="h1">This week's <i>timetable</i></h1>
+        </div>
+        <div class="head-meta">
+          <div class="pill"><span class="pdot"></span>${weekRange}</div>
+          <div class="wk-note">${timeNote}</div>
+        </div>
+      </div>
+    </div>
+    <div class="tt-grid" style="grid-template-columns:repeat(${cols},1fr)">${dayCols}</div>
+    <div class="foot">
+      <div class="legend">${legendHTML}</div>
+      ${wa ? `<a class="wa-link" href="https://wa.me/${wa}" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        Doubts? Message us
+      </a>` : ''}
+    </div>`;
+
+  document.getElementById('timetable-out').innerHTML = html;
+  document.getElementById('preview-wrap').style.display = 'block';
+
+  // WhatsApp share
+  const waBtn = document.getElementById('wa-share-btn');
+  if (wa) {
+    const text = encodeURIComponent(`📅 *${cls} Timetable — ${weekRange}*\n\n` +
+      activeDays.map(d => `*${d.dayName}:* ${d.slots.map(s=>`${s.sub} (${fmt12(s.from)}–${fmt12(s.to)})`).join(', ')}`).join('\n') +
+      '\n\n_SEHR Academy_');
+    waBtn.onclick = () => window.open(`https://wa.me/${wa}?text=${text}`, '_blank');
+    waBtn.style.display = '';
+  } else {
+    waBtn.style.display = 'none';
+  }
+
+  document.getElementById('preview-wrap').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function updatePreviewLive() {
+  if (document.getElementById('preview-wrap').style.display !== 'none') buildPreview();
+}
+</script>
+</body>
+</html>
