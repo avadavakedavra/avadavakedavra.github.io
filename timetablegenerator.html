@@ -135,14 +135,13 @@
 
   /* ── DAY ROWS ── */
   .days-config{display:flex;flex-direction:column;gap:10px}
-  .day-row{padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:var(--r-sm);background:var(--cream);transition:all .2s}
+  .day-row{padding:14px 16px;border:1.5px solid var(--cream-3);border-radius:var(--r-sm);background:var(--cream);transition:all .2s;display:block}
   .day-row.active{background:var(--white);border-color:var(--lime-mid)}
-  .day-row.hidden{display:none}
-  .day-row-top{display:flex;align-items:center;gap:10px;margin-bottom:0}
-  .day-row-top.has-slots{margin-bottom:10px}
+  .day-row.hidden{display:none!important}
+  .day-row-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px}
   .day-name{font-size:12px;font-weight:800;color:var(--ink-3);min-width:80px}
-  .day-date-sm{font-size:10px;color:var(--muted)}
-  .slots-list{display:flex;flex-direction:column;gap:7px}
+  .day-date-sm{font-size:10px;color:var(--muted);flex:1}
+  .slots-list{display:flex;flex-direction:column;gap:8px}
   .slot-item{display:grid;grid-template-columns:1fr 120px 120px 28px;gap:7px;align-items:center}
   .remove-slot{background:none;border:none;cursor:pointer;color:var(--pale);font-size:18px;line-height:1;padding:0 4px;transition:color .12s;flex-shrink:0}
   .remove-slot:hover{color:var(--red)}
@@ -639,26 +638,47 @@ function buildCard(s, i){
 // ─────────────────────────────────────────────
 //  SCHEDULE SUBJECT (add to next open slot)
 // ─────────────────────────────────────────────
+function getSubjectSelects(list){
+  // Return only the first <select> (subject) from each slot item
+  return Array.from(list.querySelectorAll('.slot-item')).map(function(item){
+    return item.querySelector('select');
+  }).filter(Boolean);
+}
+
 function scheduleSubject(subj){
   for(var i=0;i<6;i++){
     var cb=g('d'+i);
     if(!cb||!cb.checked)continue;
     var list=g('slots-'+i);
     if(!list)continue;
-    // Check if this subject is already scheduled for this day
-    var alreadyThere=Array.from(list.querySelectorAll('select')).some(function(s){return s.value===subj;});
+
+    var subjSelects=getSubjectSelects(list);
+    // Check if already scheduled for this day (exact match on subject select value)
+    var alreadyThere=subjSelects.some(function(s){return s.value===subj;});
     if(alreadyThere)continue;
-    // Add slot with this subject
-    var idx=slotCounters[i]++;
-    var tmp=document.createElement('div');
-    tmp.innerHTML=slotHTML(i,idx,subj,'17:00','19:00');
-    list.appendChild(tmp.firstElementChild);
-    // Scroll to that day
-    g('row-'+i).scrollIntoView({behavior:'smooth',block:'center'});
-    showToast(subj+' added to '+DAYS[i]);
+
+    // If the day only has one slot with a "default" subject, replace it instead of appending
+    var defaults=['Physics','Chemistry','Biology','Mathematics','English','Malayalam','Hindi','Social Science'];
+    if(subjSelects.length===1&&defaults.indexOf(subjSelects[0].value)>-1){
+      subjSelects[0].value=subj;
+      // If browser didn't accept (subject not in options yet), rebuild the slot
+      if(subjSelects[0].value!==subj){
+        list.innerHTML=slotHTML(i,slotCounters[i]++,subj,'17:00','19:00');
+      }
+    } else {
+      // Append a new slot
+      var idx=slotCounters[i]++;
+      var tmp=document.createElement('div');
+      tmp.innerHTML=slotHTML(i,idx,subj,'17:00','19:00');
+      list.appendChild(tmp.firstElementChild);
+    }
+
+    var row=g('row-'+i);
+    if(row)row.scrollIntoView({behavior:'smooth',block:'center'});
+    showToast('✓ '+subj+' → '+DAYS[i]);
     return;
   }
-  showToast('All active days already have '+subj+' — toggle more days first.');
+  showToast('All active days already have '+subj+'. Uncheck a day and re-check it to reset, or remove a slot manually.');
 }
 
 function showToast(msg){
@@ -688,9 +708,10 @@ function renderDayRows(){
 
 function buildRowHTML(i){
   var sub=DEFAULT_SUBJECTS[i]||"Mathematics";
-  return '<div class="day-row-top has-slots">'+
-    '<div><div class="day-name">'+DAYS[i]+'</div><div class="day-date-sm" id="row-date-'+i+'"></div></div>'+
-    '<button class="add-slot-btn" style="margin-left:auto" onclick="addSlot('+i+')">+ subject</button>'+
+  return '<div class="day-row-hd">'+
+    '<div class="day-name">'+DAYS[i]+'</div>'+
+    '<div class="day-date-sm" id="row-date-'+i+'"></div>'+
+    '<button class="add-slot-btn" onclick="addSlot('+i+')">+ subject</button>'+
   '</div>'+
   '<div class="slots-list" id="slots-'+i+'">'+slotHTML(i,0,sub,'17:00','19:00')+'</div>';
 }
@@ -723,8 +744,7 @@ g('day-toggles').addEventListener('change',function(e){
   var i=parseInt(e.target.value);
   var row=g('row-'+i);
   if(!row)return;
-  if(e.target.checked){row.className='day-row active';row.style.display='';}
-  else{row.className='day-row hidden';row.style.display='none';}
+  row.className='day-row '+(e.target.checked?'active':'hidden');
   updateDates();
 });
 
