@@ -148,6 +148,11 @@
   .add-slot-btn{margin-left:auto;background:none;border:1.5px dashed var(--cream-3);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;color:var(--pale);cursor:pointer;transition:all .13s;white-space:nowrap;flex-shrink:0}
   .add-slot-btn:hover{border-color:var(--lime);color:var(--lime-2)}
 
+  /* ── LOAD INTEL BUTTON ── */
+  .load-intel-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:var(--ink);color:#fff;border:none;border-radius:var(--r-sm);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:background .16s}
+  .load-intel-btn:hover{background:var(--ink-2)}
+  .load-intel-btn svg{width:14px;height:14px}
+
   /* ── PUBLISH BUTTON ── */
   .pub-row{display:flex;justify-content:center;margin:24px 0 0}
   .pub-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 34px;background:var(--ink);color:#fff;border:none;border-radius:var(--r-sm);font-family:inherit;font-size:14px;font-weight:800;letter-spacing:.03em;cursor:pointer;box-shadow:var(--sh-2);transition:background .17s}
@@ -236,11 +241,11 @@
   <!-- ── META CARD ── -->
   <div class="card">
     <div class="card-head">Timetable Details</div>
-    <div class="card-sub">Select class and syllabus — subject insights will load automatically from session history.</div>
+    <div class="card-sub">Select class and syllabus, then load subject cards to see session gaps and plan the week.</div>
     <div class="meta-row">
       <label class="field">
         <span class="lbl">Class</span>
-        <select id="meta-class" onchange="onMetaChange()">
+        <select id="meta-class">
           <option value="8">Class 8</option>
           <option value="9">Class 9</option>
           <option value="10" selected>Class 10</option>
@@ -250,7 +255,7 @@
       </label>
       <label class="field">
         <span class="lbl">Syllabus</span>
-        <select id="meta-syllabus" onchange="onMetaChange()">
+        <select id="meta-syllabus">
           <option value="Kerala State">Kerala State Syllabus</option>
           <option value="CBSE">CBSE</option>
           <option value="ICSE">ICSE</option>
@@ -264,6 +269,12 @@
         <span class="lbl">WhatsApp Number</span>
         <input type="text" id="meta-wa" placeholder="e.g. 919539409586" value="919539409586">
       </label>
+    </div>
+    <div style="margin-top:16px">
+      <button class="load-intel-btn" onclick="loadIntelligence()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Load Subject Cards
+      </button>
     </div>
   </div>
 
@@ -444,23 +455,11 @@ function subjectOptions(sel){
 g('meta-date').value = getMonday();
 renderDayRows();
 updateDates();
-// Trigger initial load
-setTimeout(onMetaChange, 0);
-
-// ─────────────────────────────────────────────
-//  META CHANGE → fetch session data
-// ─────────────────────────────────────────────
-var fetchTimer = null;
-function onMetaChange(){
-  clearTimeout(fetchTimer);
-  fetchTimer = setTimeout(loadIntelligence, 200);
-}
 
 function loadIntelligence(){
   var cls   = g('meta-class').value;
   var board = g('meta-syllabus').value;
   var key   = cls+'|'+board;
-  if(key===LOAD_KEY && ALL_SESSIONS.length>0){renderIntelCards();return;}
 
   LOAD_KEY = key;
   g('intel-wrap').style.display = 'block';
