@@ -192,53 +192,63 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .act-btn svg{width:13px;height:13px}
 
 /* ════════════════════════════════════
-   INVOICE STYLES (billingfaizan match)
+   INVOICE STYLES
 ════════════════════════════════════ */
-.inv-top-bar{height:6px;background:var(--li)}
-.inv-logo{font-family:var(--f-head);font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
-.inv-logo span{color:var(--li)}
-.inv-logo-sub{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-top:7px}
-.inv-hdr-r{text-align:right}
-.inv-ref{font-size:10px;font-weight:600;color:var(--mu)}
-.inv-period{font-size:13px;font-weight:700;color:var(--ink);margin-top:2px}
+.inv-top-bar{height:5px;background:linear-gradient(90deg,#8BC53F,#72a530)}
+.inv-logo{font-family:var(--f-head);font-size:34px;font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:.9;text-transform:uppercase}
+.inv-logo span{color:#8BC53F}
+.inv-logo-sub{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:8px}
+.inv-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:28px 36px 24px;background:#1a1a18;border-bottom:3px solid #8BC53F;position:relative;overflow:hidden}
+.inv-hdr::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:40px 40px}
+.inv-hdr::after{content:'';position:absolute;top:-80px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.14),transparent 65%)}
+.inv-hdr-inner{position:relative;z-index:1}
+.inv-hdr-r{text-align:right;position:relative;z-index:1}
+.inv-period-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.06);font-size:11px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:8px;letter-spacing:.02em}
+.inv-period-dot{width:6px;height:6px;border-radius:50%;background:#8BC53F;flex-shrink:0;box-shadow:0 0 5px rgba(139,197,63,.6)}
+.inv-ref{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);line-height:1.7}
 
-.inv-stud{display:flex;align-items:center;justify-content:space-between;padding:14px 36px;background:var(--cream);border-bottom:1px solid var(--ru);flex-wrap:wrap;gap:10px}
-.inv-stud-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu)}
-.inv-stud-name{font-size:16px;font-weight:900;color:var(--ink);letter-spacing:-.3px;margin-top:2px}
-.inv-stud-sub{font-size:11px;color:var(--mu);margin-top:1px}
+.inv-stud{display:flex;align-items:center;justify-content:space-between;padding:16px 36px;background:var(--cream);border-bottom:2px solid var(--c3);flex-wrap:wrap;gap:12px}
+.inv-stud-kicker{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pa);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.inv-stud-badge{display:inline-flex;padding:2px 8px;border-radius:3px;background:var(--ink);color:#fff;font-size:8px;font-weight:800;letter-spacing:.08em}
+.inv-stud-name{font-size:18px;font-weight:900;color:var(--ink);letter-spacing:-.4px;line-height:1}
+.inv-stud-sub{font-size:11px;color:var(--mu);margin-top:3px}
 .inv-stud-r{text-align:right}
 
-.inv-title-area{padding:20px 36px 0}
-.inv-prog-title{font-size:30px;font-weight:900;color:var(--ink);letter-spacing:-1.2px;line-height:1;margin-bottom:4px}
-.inv-prog-sub{font-size:12px;font-weight:300;color:var(--mu);margin-bottom:14px}
-.inv-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-.inv-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:3px;font-size:11px;font-weight:700}
+.inv-title-area{padding:22px 36px 2px}
+.inv-prog-title{font-size:28px;font-weight:900;color:var(--ink);letter-spacing:-1.2px;line-height:1;margin-bottom:5px}
+.inv-prog-sub{font-size:11px;font-weight:500;color:var(--mu);margin-bottom:16px}
+.inv-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.inv-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:4px;font-size:11px;font-weight:700}
 
-.inv-summary-row{display:grid;border:1px solid var(--ru);border-radius:4px;overflow:hidden;margin:0 36px 22px}
-.inv-sr-cell{padding:10px 14px;border-right:1px solid var(--ru)}
-.inv-sr-cell:last-child{border-right:none}
-.inv-sr-label{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pa);margin-bottom:4px}
-.inv-sr-val{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-.2px}
+.inv-stats{display:grid;margin:0 36px 24px;gap:10px}
+.inv-stat-card{padding:12px 16px;border:1px solid var(--ru);border-radius:6px;background:var(--wh);position:relative;overflow:hidden}
+.inv-stat-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--li)}
+.inv-stat-card.accent::before{background:var(--li)}
+.inv-stat-label{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pa);margin-bottom:5px}
+.inv-stat-val{font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-.5px;line-height:1}
+.inv-stat-sub{font-size:9px;color:var(--mu);margin-top:3px}
 
-.inv-sec-head{display:flex;align-items:center;gap:8px;padding:0 36px;margin-bottom:10px;margin-top:4px}
-.inv-sec-rule{width:16px;height:2px;background:var(--li);flex-shrink:0}
-.inv-sec-txt{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--l2)}
+.inv-sec-head{display:flex;align-items:center;gap:10px;padding:18px 36px 10px;margin-top:4px}
+.inv-sec-rule{width:20px;height:2px;background:var(--li);flex-shrink:0}
+.inv-sec-txt{font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--l2)}
+.inv-sec-line{flex:1;height:1px;background:var(--ru)}
 
-.inv-mode-banner{margin:0 36px 6px;border-radius:4px;overflow:hidden}
+.inv-mode-banner{margin:0 36px 8px;border-radius:5px;overflow:hidden}
 .inv-mb-inner{display:flex;align-items:center;gap:12px;padding:10px 16px}
 .inv-mb-online{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.2)}
 .inv-mb-offline{background:var(--amb);border:1px solid var(--amm)}
-.inv-mode-tag{padding:3px 10px;border-radius:3px;font-size:10px;font-weight:800}
+.inv-mode-tag{padding:3px 10px;border-radius:3px;font-size:10px;font-weight:800;letter-spacing:.04em}
 .inv-mode-tag.on{background:var(--bl);color:#fff}
 .inv-mode-tag.off{background:var(--am);color:#fff}
 .inv-mb-text{font-size:11.5px;font-weight:700;color:var(--ink2)}
 .inv-mb-sub{font-size:10px;color:var(--mu);margin-left:auto}
 
-.inv-tt{margin:0 36px 8px;border:1px solid var(--ru);border-radius:4px;overflow:hidden}
-.inv-tt-head{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.2fr;background:var(--c2);border-bottom:1px solid var(--ru)}
-.inv-tt-head div{padding:8px 14px;font-size:8.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pa);border-right:1px solid var(--ru)}
+.inv-tt{margin:0 36px 10px;border:1px solid var(--ru);border-radius:5px;overflow:hidden}
+.inv-tt-head{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.2fr;background:var(--ink)}
+.inv-tt-head div{padding:9px 14px;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);border-right:1px solid rgba(255,255,255,.07)}
 .inv-tt-head div:last-child{border-right:none}
 .inv-tt-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.2fr;border-bottom:1px solid var(--ru)}
+.inv-tt-row:nth-child(even){background:var(--cream)}
 .inv-tt-row:last-child{border-bottom:none}
 .inv-tt-cell{padding:10px 14px;border-right:1px solid var(--ru);font-size:12px;color:var(--ink2);font-weight:600}
 .inv-tt-cell:last-child{border-right:none}
@@ -249,81 +259,82 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .inv-mode-dot.off::before{background:var(--am)}
 
 .inv-cal-wrap{margin:0 36px 22px}
-.inv-cal-grid{border:1px solid var(--ru);border-radius:4px;overflow:hidden}
+.inv-cal-grid{border:1px solid var(--ru);border-radius:5px;overflow:hidden}
 .inv-cal-head{display:grid;grid-template-columns:repeat(7,1fr);background:var(--ink)}
-.inv-cal-head div{padding:8px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);border-right:1px solid rgba(255,255,255,.07)}
+.inv-cal-head div{padding:9px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);border-right:1px solid rgba(255,255,255,.07)}
 .inv-cal-head div:last-child{border-right:none}
 .inv-cal-week{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--ru)}
 .inv-cal-week:first-of-type{border-top:none}
-.inv-cal-day{min-height:66px;padding:6px 7px;border-right:1px solid var(--ru);background:var(--wh)}
+.inv-cal-day{min-height:62px;padding:6px 7px;border-right:1px solid var(--ru);background:var(--wh)}
 .inv-cal-day:last-child{border-right:none}
 .inv-cal-day.empty{background:var(--cream)}
+.inv-cal-day.weekend{background:#fafaf8}
 .inv-cal-day.before{background:var(--cream);opacity:.5}
-.inv-day-num{font-size:12px;font-weight:700;color:var(--mu);line-height:1;margin-bottom:5px}
-.inv-cal-day.has-sess .inv-day-num{color:var(--ink);font-weight:900}
-.inv-cal-day.before .inv-day-num{color:var(--pa)}
+.inv-day-num{font-size:11px;font-weight:700;color:var(--pa);line-height:1;margin-bottom:4px}
+.inv-cal-day.has-sess .inv-day-num{color:var(--ink);font-weight:900;font-size:12px}
 .inv-cal-event{border-radius:3px;padding:2px 5px;font-size:8px;font-weight:700;line-height:1.4;margin-bottom:2px}
-.inv-ev-time{font-weight:400;opacity:.7;font-size:7.5px;display:block}
+.inv-ev-time{font-weight:400;opacity:.75;font-size:7.5px;display:block}
 
-.inv-sess-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 36px 22px}
-.inv-sess-group{border:1px solid var(--ru);border-radius:4px;overflow:hidden}
-.inv-sess-gh{padding:9px 14px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--ru);display:flex;align-items:center;gap:7px}
+.inv-sess-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 36px 22px}
+.inv-sess-group{border:1px solid var(--ru);border-radius:5px;overflow:hidden}
+.inv-sess-gh{padding:10px 14px;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--ru);display:flex;align-items:center;gap:7px}
 .inv-sess-gh.online{background:var(--blb);color:var(--bl)}
 .inv-sess-gh.offline{background:var(--amb);color:var(--am)}
-.inv-sess-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--ru);background:var(--cream)}
+.inv-sess-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--ru);background:var(--wh)}
+.inv-sess-item:nth-child(even){background:var(--cream)}
 .inv-sess-item:last-child{border-bottom:none}
 .inv-sess-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .inv-sess-subj{font-size:11px;font-weight:700;color:var(--ink)}
 .inv-sess-date{font-size:10px;color:var(--mu)}
-.inv-sess-dur{margin-left:auto;font-size:9.5px;font-weight:700;color:var(--pa);flex-shrink:0}
+.inv-sess-dur{margin-left:auto;font-size:10px;font-weight:800;color:var(--ink2);flex-shrink:0;background:var(--c2);padding:2px 7px;border-radius:3px}
 
-.inv-fee-wrap{margin:0 36px 14px;border:1px solid var(--ru);border-radius:4px;overflow:hidden}
+.inv-fee-wrap{margin:0 36px 16px;border:1px solid var(--ru);border-radius:5px;overflow:hidden}
 .inv-fee-table{width:100%;border-collapse:collapse}
-.inv-fee-table thead th{background:var(--c2);border-bottom:1px solid var(--ru);padding:9px 14px;font-size:8.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pa);text-align:left}
-.inv-fee-table thead th:last-child{text-align:right}
-.inv-fee-table tbody td{padding:10px 14px;border-bottom:1px solid var(--ru);font-size:12px;color:var(--ink2)}
+.inv-fee-table thead th{background:var(--ink);border-bottom:1px solid rgba(255,255,255,.08);padding:9px 14px;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:left}
+.inv-fee-table thead th:last-child{text-align:right;color:#8BC53F}
+.inv-fee-table tbody td{padding:11px 14px;border-bottom:1px solid var(--ru);font-size:12px;color:var(--ink2)}
+.inv-fee-table tbody tr:nth-child(even) td{background:var(--cream)}
 .inv-fee-table tbody tr:last-child td{border-bottom:none}
-.inv-fee-table tbody td:last-child{text-align:right;font-weight:700}
-.inv-row-num{color:var(--pa);font-size:10px}
-.inv-row-subj{font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:2px}
-.inv-row-dates{font-size:10.5px;color:var(--mu)}
+.inv-fee-table tbody td:last-child{text-align:right;font-weight:800;font-size:13px;color:var(--ink)}
+.inv-row-num{color:var(--pa);font-size:10px;width:28px}
+.inv-row-subj{font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:3px}
+.inv-row-dates{font-size:10px;color:var(--mu)}
 .inv-mode-bdg{padding:2px 7px;border-radius:3px;font-size:9px;font-weight:800}
 .inv-mode-bdg.on{background:var(--blb);color:var(--bl);border:1px solid var(--blm)}
 .inv-mode-bdg.off{background:var(--amb);color:var(--am);border:1px solid var(--amm)}
 
-.inv-totals{margin:0 36px 22px;border:1px solid var(--ru);border-radius:4px;overflow:hidden}
-.inv-tot-sh{padding:8px 16px;background:var(--c2);border-bottom:1px solid var(--ru);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pa)}
-.inv-tot-row{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-bottom:1px solid var(--ru);font-size:12.5px}
+.inv-totals{margin:0 36px 24px;border:1px solid var(--ru);border-radius:5px;overflow:hidden}
+.inv-tot-sh{padding:9px 16px;background:var(--ink2);border-bottom:1px solid rgba(255,255,255,.07);font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.inv-tot-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--ru);font-size:12.5px}
 .inv-tot-row:last-child{border-bottom:none}
 .inv-tot-row.subtotal{background:var(--cream);font-weight:700;font-size:13px}
-.inv-tot-row.grand{background:var(--ink);font-size:15px;font-weight:900}
-.inv-tot-row.grand .tl{color:rgba(255,255,255,.6)}
-.inv-tot-row.grand .tv{color:var(--li);font-size:20px;font-weight:900;letter-spacing:-.5px}
+.inv-tot-row.grand{background:var(--ink);font-size:15px;font-weight:900;padding:16px 20px}
+.inv-tot-row.grand .tl{color:rgba(255,255,255,.5);font-size:12px;font-weight:600}
+.inv-tot-row.grand .tv{color:#8BC53F;font-size:26px;font-weight:900;letter-spacing:-.8px}
 .tl{color:var(--mu);font-weight:600}
 .tv{font-weight:700;color:var(--ink)}
 
-.inv-pay{margin:0 36px 22px;display:grid;grid-template-columns:1fr 150px 1fr;gap:10px}
-.inv-pay-card{border:1px solid var(--ru);border-radius:4px;padding:13px 15px;background:var(--cream);display:flex;align-items:flex-start;gap:10px}
-.inv-pay-title{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:2px}
-.inv-pay-detail{font-size:11px;font-weight:700;color:var(--l2);font-family:monospace;margin-bottom:1px}
-.inv-pay-note{font-size:9.5px;color:var(--mu)}
-.inv-due-card{border:2px solid var(--li);border-radius:4px;background:rgba(139,197,63,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;text-align:center}
-.inv-due-label{font-size:8.5px;font-weight:700;letter-spacing:.14em;color:var(--l2);text-transform:uppercase;margin-bottom:4px}
-.inv-due-date{font-size:14px;font-weight:900;color:var(--ink);letter-spacing:-.3px}
-.inv-due-sub{font-size:9px;color:var(--mu);margin-top:3px}
+.inv-pay{margin:0 36px 22px;display:grid;grid-template-columns:1fr 160px 1fr;gap:10px}
+.inv-pay-card{border:1px solid var(--ru);border-radius:5px;padding:14px 16px;background:var(--cream);display:flex;align-items:flex-start;gap:12px}
+.inv-pay-icon{width:36px;height:36px;border-radius:8px;background:var(--wh);border:1px solid var(--c3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.inv-pay-icon svg{width:18px;height:18px}
+.inv-pay-title{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.inv-pay-detail{font-size:11px;font-weight:700;color:var(--l2);font-family:monospace;margin-bottom:2px;letter-spacing:.02em}
+.inv-pay-note{font-size:9px;color:var(--mu)}
+.inv-due-card{border:2px solid #8BC53F;border-radius:5px;background:rgba(139,197,63,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 12px;text-align:center;position:relative;overflow:hidden}
+.inv-due-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(139,197,63,.08),transparent 70%)}
+.inv-due-label{font-size:8px;font-weight:800;letter-spacing:.16em;color:var(--l2);text-transform:uppercase;margin-bottom:6px;position:relative}
+.inv-due-date{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.6px;line-height:1;position:relative}
+.inv-due-sub{font-size:9px;color:var(--mu);margin-top:5px;position:relative}
 
-.inv-footnotes{margin:0 36px 20px;padding:12px 16px;border:1px solid var(--ru);border-radius:4px;background:var(--cream);font-size:10px;color:var(--mu);line-height:1.85}
+.inv-footnotes{margin:0 36px 22px;padding:12px 16px;border:1px solid var(--ru);border-radius:5px;background:var(--cream);font-size:10px;color:var(--mu);line-height:1.9;border-left:3px solid var(--li)}
 .inv-footnotes strong{color:var(--ink2)}
-.inv-bottom{border-top:1px solid var(--ru);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;background:var(--cream)}
-.inv-bb-brand{font-size:13px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:6px}
-.inv-bb-brand span{color:var(--li)}
-.inv-bb-dot{width:4px;height:4px;border-radius:50%;background:var(--li);opacity:.6}
-.inv-bb-contact{font-size:10px;color:var(--mu);text-align:right;line-height:1.7}
-.inv-bot-bar{background:linear-gradient(90deg,var(--li),var(--l2));height:5px}
-
-/* ── PREMIUM INVOICE HEADER ── */
-.inv-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 36px 18px;border-bottom:1px solid var(--ru);position:relative;overflow:hidden}
-.inv-hdr::after{content:'';position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.06),transparent 65%);pointer-events:none}
+.inv-bottom{border-top:1px solid var(--ru);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;background:var(--ink)}
+.inv-bb-brand{font-size:14px;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;letter-spacing:-.2px}
+.inv-bb-brand span{color:#8BC53F}
+.inv-bb-dot{width:4px;height:4px;border-radius:50%;background:#8BC53F;opacity:.6}
+.inv-bb-contact{font-size:10px;color:rgba(255,255,255,.35);text-align:right;line-height:1.8}
+.inv-bot-bar{background:linear-gradient(90deg,#8BC53F,#72a530);height:5px}
 
 /* ── FORM FIELD FOCUS GLOW ── */
 .fi:hover{border-color:var(--ru);background:var(--wh)}
@@ -882,17 +893,21 @@ function generate() {
   if (modeSet.has('online'))  pillsHTML += '<span class="inv-pill" style="background:rgba(37,99,235,.08);color:#2563eb;border:1px solid rgba(37,99,235,.2)">⬤ Online · Google Meet</span>';
   if (modeSet.has('offline')) pillsHTML += '<span class="inv-pill" style="background:#fffbeb;color:#d97706;border:1px solid #fde68a">⬤ Offline · SEHR Centre</span>';
 
-  // ── Summary row cells ──
-  var srCols = [['Start Date', subjData.map(function(s){return fmtDateShort(parseDate(s.startVal));}).join(', '),'']];
-  srCols.push(['Total Sessions', totalSessions, '']);
-  srCols.push(['Total Hours', totalHrsAll + ' hrs', '']);
-  if (onlineTotal > 0)  srCols.push(['Online Total', '₹' + onlineTotal.toLocaleString('en-IN'), 'color:#2563eb']);
-  if (offlineTotal > 0) srCols.push(['Offline Total', '₹' + offlineTotal.toLocaleString('en-IN'), 'color:#d97706']);
-  srCols.push(['Grand Total', '₹' + grandTotal.toLocaleString('en-IN'), 'color:var(--l2)']);
+  // ── Summary stat cards ──
+  var srCols = [];
+  srCols.push({label:'Total Sessions', val:totalSessions, sub:totalSessions===1?'session':'sessions', color:'var(--ink)'});
+  srCols.push({label:'Total Hours', val:totalHrsAll + ' hrs', sub:subjData.length + ' subject' + (subjData.length===1?'':'s'), color:'var(--ink)'});
+  if (onlineTotal > 0)  srCols.push({label:'Online Total', val:'₹' + onlineTotal.toLocaleString('en-IN'), sub:'Google Meet', color:'#2563eb'});
+  if (offlineTotal > 0) srCols.push({label:'Offline Total', val:'₹' + offlineTotal.toLocaleString('en-IN'), sub:'SEHR Centre', color:'#d97706'});
+  srCols.push({label:'Amount Due', val:'₹' + grandTotal.toLocaleString('en-IN'), sub:period, color:'#5e8a24', accent:true});
 
-  var summaryHTML = '<div class="inv-summary-row" style="grid-template-columns:repeat(' + srCols.length + ',1fr)">';
+  var summaryHTML = '<div class="inv-stats" style="grid-template-columns:repeat(' + srCols.length + ',1fr)">';
   srCols.forEach(function(c) {
-    summaryHTML += '<div class="inv-sr-cell"><div class="inv-sr-label">' + c[0] + '</div><div class="inv-sr-val" style="' + c[2] + '">' + c[1] + '</div></div>';
+    summaryHTML += '<div class="inv-stat-card' + (c.accent?' accent':'') + '"' + (c.accent?' style="background:#f0f7e3;border-color:#c8e48e"':'') + '>';
+    summaryHTML += '<div class="inv-stat-label">' + c.label + '</div>';
+    summaryHTML += '<div class="inv-stat-val" style="color:' + c.color + '">' + c.val + '</div>';
+    summaryHTML += '<div class="inv-stat-sub">' + c.sub + '</div>';
+    summaryHTML += '</div>';
   });
   summaryHTML += '</div>';
 
@@ -991,10 +1006,12 @@ function generate() {
       calHTML += '<div class="inv-cal-week">';
       for (var wd=0; wd<7; wd++) {
         var cell = cells[w+wd];
+        var cellDow = wd; // column index 0=Sun,1=Mon,...,6=Sat
         if (cell.type==='empty') {
           calHTML += '<div class="inv-cal-day empty"></div>';
         } else if (cell.type==='session') {
-          calHTML += '<div class="inv-cal-day has-sess">';
+          var sessWknd = (cellDow===0||cellDow===6);
+          calHTML += '<div class="inv-cal-day has-sess' + (sessWknd?' weekend':'') + '">';
           calHTML += '<div class="inv-day-num">' + cell.day + '</div>';
           cell.events.forEach(function(ev) {
             var modeClass = ev.s.mode==='online'?'online':'offline';
@@ -1007,7 +1024,8 @@ function generate() {
           });
           calHTML += '</div>';
         } else {
-          calHTML += '<div class="inv-cal-day"><div class="inv-day-num">' + cell.day + '</div></div>';
+          var otherWknd = (cellDow===0||cellDow===6);
+          calHTML += '<div class="inv-cal-day' + (otherWknd?' weekend':'') + '"><div class="inv-day-num">' + cell.day + '</div></div>';
         }
       }
       calHTML += '</div>';
@@ -1113,74 +1131,87 @@ function generate() {
 
   // ── Payment section ──
   var dueStr = dueVal ? parseDate(dueVal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : 'Before first session';
+  var upiIconSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#2563eb"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>';
+  var waIconSVG  = '<svg viewBox="0 0 24 24" fill="#25d366" style="width:18px;height:18px"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>';
   var payHTML = '<div class="inv-pay">' +
-    '<div class="inv-pay-card"><div style="font-size:22px">💳</div><div><div class="inv-pay-title">GPay / PhonePe / UPI</div><div class="inv-pay-detail">avadavakedavra@okicici</div><div class="inv-pay-note">Pay to UPI ID · Any app</div></div></div>' +
+    '<div class="inv-pay-card"><div class="inv-pay-icon">' + upiIconSVG + '</div><div><div class="inv-pay-title">GPay / PhonePe / UPI</div><div class="inv-pay-detail">avadavakedavra@okicici</div><div class="inv-pay-note">Pay to UPI ID · works in any app</div></div></div>' +
     '<div class="inv-due-card"><div class="inv-due-label">Amount Due</div><div class="inv-due-date">₹' + grandTotal.toLocaleString('en-IN') + '</div><div class="inv-due-sub">Due: ' + dueStr + '</div></div>' +
-    '<div class="inv-pay-card"><div style="font-size:22px">💬</div><div><div class="inv-pay-title">WhatsApp Pay</div><div class="inv-pay-detail">+91 95394 09586</div><div class="inv-pay-note">Send to number · Any app</div></div></div>' +
+    '<div class="inv-pay-card"><div class="inv-pay-icon">' + waIconSVG + '</div><div><div class="inv-pay-title">WhatsApp Pay</div><div class="inv-pay-detail">+91 95394 09586</div><div class="inv-pay-note">Send to WhatsApp number</div></div></div>' +
     '</div>';
 
   // ── Footnotes ──
   var footHTML = '<div class="inv-footnotes">' +
-    '<strong>Full amount (₹' + grandTotal.toLocaleString('en-IN') + ')</strong> payable before classes commence. &nbsp;·&nbsp; ' +
-    '<strong>Online sessions recorded</strong> and shared within 24 hrs. &nbsp;·&nbsp; ' +
-    '<strong>Additional sessions</strong> billed at the same per-hour rates. &nbsp;·&nbsp; ' +
-    'Progress visible at <strong>sehracademy.com/student</strong>.' +
+    '① &nbsp;<strong>Full amount (₹' + grandTotal.toLocaleString('en-IN') + ')</strong> payable before classes commence. &nbsp;&nbsp;' +
+    '② &nbsp;<strong>Online sessions</strong> are recorded and shared within 24 hrs. &nbsp;&nbsp;' +
+    '③ &nbsp;<strong>Additional sessions</strong> billed at the same per-hour rates. &nbsp;&nbsp;' +
+    '④ &nbsp;Student progress visible at <strong>sehracademy.com/student</strong>.' +
     '</div>';
 
   // ── Assemble full invoice ──
   var html = '';
   html += '<div class="inv-top-bar"></div>';
 
-  // Header
+  // Header — dark SEHR brand style
   html += '<div class="inv-hdr">';
-  html += '<div><div class="inv-logo">Sehr<span>.</span></div><div class="inv-logo-sub">Session Billing &nbsp;&middot;&nbsp; SEHR Academy</div></div>';
-  html += '<div class="inv-hdr-r"><div class="inv-ref">Ref: ' + refNo + ' · ' + issued + '</div><div class="inv-period">' + period + '</div></div>';
+  html += '<div class="inv-hdr-inner">';
+  html += '<div class="inv-logo">Sehr<span>.</span></div>';
+  html += '<div class="inv-logo-sub">Session Billing &nbsp;&middot;&nbsp; SEHR Academy</div>';
+  html += '</div>';
+  html += '<div class="inv-hdr-r">';
+  html += '<div class="inv-period-pill"><span class="inv-period-dot"></span>' + period + '</div>';
+  html += '<div class="inv-ref">Ref&nbsp;&nbsp;' + refNo + '<br>Issued&nbsp;&nbsp;' + issued + '</div>';
+  html += '</div>';
   html += '</div>';
 
   // Student band
   html += '<div class="inv-stud">';
-  html += '<div><div class="inv-stud-label">Student · ' + cls + ' ' + board + '</div><div class="inv-stud-name">' + studentName + '</div>' + (contact?'<div class="inv-stud-sub">'+contact+'</div>':'') + '</div>';
-  if (parentName) html += '<div class="inv-stud-r"><div class="inv-stud-label">Parent / Guardian</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:2px">' + parentName + '</div></div>';
+  html += '<div><div class="inv-stud-kicker">Student &nbsp;<span class="inv-stud-badge">' + cls + ' · ' + board + '</span></div>';
+  html += '<div class="inv-stud-name">' + studentName + '</div>';
+  html += (contact?'<div class="inv-stud-sub">'+contact+'</div>':'') + '</div>';
+  if (parentName) html += '<div class="inv-stud-r"><div class="inv-stud-kicker" style="justify-content:flex-end">Parent / Guardian</div><div style="font-size:15px;font-weight:800;color:var(--ink);margin-top:4px;letter-spacing:-.2px">' + parentName + '</div></div>';
   html += '</div>';
 
   // Title area
   html += '<div class="inv-title-area">';
   html += '<div class="inv-prog-title">Individual Sessions</div>';
-  html += '<div class="inv-prog-sub">' + period + ' · ' + cls + ' ' + board + ' · ' + subjData.map(function(s){return s.name;}).join(' &amp; ') + '</div>';
+  html += '<div class="inv-prog-sub">' + period + ' &nbsp;·&nbsp; ' + cls + ' ' + board + ' &nbsp;·&nbsp; ' + subjData.map(function(s){return s.name;}).join(', ') + '</div>';
   html += '<div class="inv-pills">' + pillsHTML + '</div>';
   html += '</div>';
 
-  // Summary row
+  // Stats cards
   html += summaryHTML;
 
   // Timetable
-  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Weekly Timetable</div></div>';
+  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Weekly Timetable</div><div class="inv-sec-line"></div></div>';
   html += ttHTML;
 
   // Calendar
-  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Session Calendar</div></div>';
+  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Session Calendar</div><div class="inv-sec-line"></div></div>';
   html += calHTML;
 
   // Session list
   if (sessListHTML) {
-    html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Session Dates</div></div>';
+    html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Session Dates</div><div class="inv-sec-line"></div></div>';
     html += sessListHTML;
   }
 
   // Fee breakdown
-  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Fee Breakdown</div></div>';
-  html += '<div class="inv-fee-wrap"><table class="inv-fee-table"><thead><tr><th style="width:28px">#</th><th>Subject &amp; Mode</th><th>Session Dates</th><th>Hrs</th><th>Rate</th><th>Amount</th></tr></thead><tbody>' + feeRows + '</tbody></table></div>';
+  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Fee Breakdown</div><div class="inv-sec-line"></div></div>';
+  html += '<div class="inv-fee-wrap"><table class="inv-fee-table"><thead><tr><th style="width:28px">#</th><th>Subject &amp; Mode</th><th>Session Dates</th><th>Hrs</th><th>Rate / hr</th><th>Amount</th></tr></thead><tbody>' + feeRows + '</tbody></table></div>';
 
   // Totals
   html += totalsHTML;
 
   // Payment
-  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Payment Options</div></div>';
+  html += '<div class="inv-sec-head"><div class="inv-sec-rule"></div><div class="inv-sec-txt">Payment Options</div><div class="inv-sec-line"></div></div>';
   html += payHTML;
 
   // Footnotes + footer
   html += footHTML;
-  html += '<div class="inv-bottom"><div class="inv-bb-brand"><span>SEHR</span> ACADEMY</div><div class="inv-bb-contact">sehracademy.com &nbsp;·&nbsp; +91 95394 09586 &nbsp;·&nbsp; +91 90377 89586<br>Priyadarshini Road, Ganeshamangalam, Vadanappally, Thrissur 680614</div></div>';
+  html += '<div class="inv-bottom">';
+  html += '<div class="inv-bb-brand"><span>SEHR</span><span class="inv-bb-dot"></span>ACADEMY</div>';
+  html += '<div class="inv-bb-contact">sehracademy.com &nbsp;·&nbsp; +91 95394 09586 &nbsp;·&nbsp; +91 90377 89586<br>Priyadarshini Road, Ganeshamangalam, Vadanappally, Thrissur 680614</div>';
+  html += '</div>';
   html += '<div class="inv-bot-bar"></div>';
 
   // Write to screen preview
