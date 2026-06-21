@@ -878,13 +878,14 @@ function buildInfoGrid(active,all){
 function buildOverduePanel(overdue){
   g('overdueCountBig').textContent=overdue.length;
   if(!overdue.length){g('overdueList').innerHTML='<div class="overdue-empty">✓ All students are up to date</div>';return;}
-  var sorted=overdue.slice().sort(function(a,b){return b.balance-a.balance;});
+  var sorted=overdue.slice().sort(function(a,b){return b.next_due_amount-a.next_due_amount;});
   g('overdueList').innerHTML=sorted.map(function(s){
+    var dueAmt=s.next_due_amount>0?s.next_due_amount:s.balance;
     return '<div class="overdue-item">'
       +'<div style="display:flex;align-items:center;gap:9px">'
       +'<div class="overdue-init">'+inits(s.full_name)+'</div>'
       +'<div><div class="overdue-name">'+esc(s.full_name)+'</div><div class="overdue-cls">'+esc(s.class)+' · '+esc(s.school_name||'—')+'</div></div></div>'
-      +'<div style="text-align:right"><div class="overdue-amt">₹'+fmtN(s.balance)+'</div>'
+      +'<div style="text-align:right"><div class="overdue-amt">₹'+fmtN(dueAmt)+'</div>'
       +'<div class="overdue-days">'+(s.days_overdue>0?s.days_overdue+'d overdue':'due')+'</div></div>'
       +'</div>';
   }).join('');
