@@ -35,28 +35,39 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 /* ── TOPBAR ── */
 .topbar{background:var(--ink);padding:0 40px;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--li);overflow:hidden}
 .topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
-.tb-inner{padding:32px 0 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;position:relative;z-index:1}
+.topbar::after{content:'';position:absolute;top:-120px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.08),transparent 65%);pointer-events:none}
+.tb-inner{padding:28px 0 22px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;position:relative;z-index:1}
+.tb-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.tb-brand img{width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(139,197,63,.3)}
+.tb-brand-name{font-size:13px;font-weight:800;letter-spacing:.16em;color:var(--li)}
+.tb-brand-dot{width:3px;height:3px;border-radius:50%;background:var(--li);opacity:.5;margin:0 2px}
+.tb-brand-sub{font-size:13px;font-weight:800;letter-spacing:.16em;color:rgba(255,255,255,.7)}
 .tb-kicker{display:flex;align-items:center;gap:9px;margin-bottom:9px}
 .tb-kr{width:22px;height:2px;background:var(--li)}
 .tb-kt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--li);opacity:.9}
 .tb-h{font-size:clamp(24px,3vw,38px);font-weight:800;letter-spacing:-1.2px;color:#fff;line-height:.95;margin-bottom:6px}
 .tb-h i{font-style:italic;font-weight:300;color:var(--li)}
 .tb-sub{font-size:12px;color:rgba(255,255,255,.35)}
+.tb-back{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);font-size:11px;font-weight:700;text-decoration:none;transition:all .18s;flex-shrink:0;align-self:center}
+.tb-back:hover{border-color:rgba(139,197,63,.4);color:var(--li);background:rgba(139,197,63,.07)}
+.tb-back svg{width:13px;height:13px}
 
 /* ── LAYOUT ── */
 .wrap{max-width:1160px;margin:0 auto;padding:36px 40px 100px}
 
 /* ── SECTION DIVIDER ── */
 .sdiv{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
-.sdiv-dot{width:5px;height:5px;border-radius:50%;background:var(--li);flex-shrink:0}
-.sdiv-txt{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pa);white-space:nowrap}
-.sdiv-rule{flex:1;height:1px;background:var(--ru)}
+.sdiv-dot{width:6px;height:6px;border-radius:50%;background:var(--li);flex-shrink:0;box-shadow:0 0 8px rgba(139,197,63,.5)}
+.sdiv-txt{font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);white-space:nowrap}
+.sdiv-rule{flex:1;height:1px;background:linear-gradient(90deg,var(--ru),transparent)}
 
 /* ── CARD ── */
-.card{background:var(--wh);border:1.5px solid var(--c3);border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05)}
-.card-head{background:var(--ink2);padding:14px 22px;border-bottom:2px solid var(--li);display:flex;align-items:center;justify-content:space-between}
-.card-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff}
-.card-body{padding:22px}
+.card{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.04)}
+.card-head{background:var(--ink2);padding:14px 22px;border-bottom:2px solid var(--li);display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.card-head::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.card-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;position:relative;z-index:1;display:flex;align-items:center;gap:8px}
+.card-title-dot{width:6px;height:6px;border-radius:50%;background:var(--li);box-shadow:0 0 6px rgba(139,197,63,.6)}
+.card-body{padding:24px}
 
 /* ── FORM ELEMENTS ── */
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:18px}
@@ -69,15 +80,16 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 
 /* ── SUBJECT SECTION CARD ── */
 .subj-sections{display:flex;flex-direction:column;gap:16px}
-.subj-card{background:var(--wh);border:1.5px solid var(--c3);border-radius:8px;overflow:hidden;position:relative}
+.subj-card{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);animation:cardIn .25s ease both}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .subj-card-accent{height:4px}
 .subj-card-head{padding:14px 18px;background:var(--cream);border-bottom:1px solid var(--c3);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .subj-card-title{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
-.subj-card-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
-.btn-remove{background:none;border:none;cursor:pointer;color:var(--pa);padding:4px;border-radius:4px;display:flex;align-items:center;transition:all .15s;font-family:var(--f)}
+.subj-card-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.btn-remove{background:none;border:none;cursor:pointer;color:var(--pa);padding:5px 8px;border-radius:5px;display:flex;align-items:center;gap:5px;transition:all .15s;font-family:var(--f);font-size:11px;font-weight:700}
 .btn-remove:hover{color:var(--re);background:var(--rb)}
 .btn-remove svg{width:14px;height:14px}
-.subj-card-body{padding:18px}
+.subj-card-body{padding:20px}
 
 /* ── MODE TOGGLE ── */
 .mode-row{display:flex;gap:8px;margin-bottom:16px}
@@ -124,17 +136,18 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .dr-arrow{color:var(--li);font-weight:800;font-size:18px;padding-bottom:10px;flex-shrink:0}
 
 /* ── ADD SUBJECT BUTTON ── */
-.btn-add-subj{width:100%;padding:12px;border:2px dashed var(--ru);border-radius:8px;background:transparent;font-family:var(--f);font-size:13px;font-weight:700;color:var(--mu);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .18s;margin-top:4px}
-.btn-add-subj:hover{border-color:var(--li);color:var(--l3);background:var(--lb)}
+.btn-add-subj{width:100%;padding:14px;border:2px dashed var(--ru);border-radius:10px;background:transparent;font-family:var(--f);font-size:13px;font-weight:700;color:var(--mu);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:4px}
+.btn-add-subj:hover{border-color:var(--li);color:var(--l3);background:var(--lb);box-shadow:0 0 0 4px rgba(139,197,63,.06)}
 .btn-add-subj svg{width:14px;height:14px}
 
 /* ── GENERATE BUTTON ── */
-.gen-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding-top:18px;border-top:1px solid var(--c3);margin-top:4px}
-.gen-info{font-size:11px;color:var(--mu)}
-.btn-gen{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border:none;border-radius:6px;background:var(--li);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:800;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(139,197,63,.3)}
-.btn-gen:hover{background:var(--l2);box-shadow:0 6px 22px rgba(139,197,63,.4);transform:translateY(-1px)}
-.btn-gen:active{transform:none}
-.btn-gen svg{width:14px;height:14px}
+.gen-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 24px;background:var(--cream);border:1.5px solid var(--c3);border-radius:10px;margin-top:4px}
+.gen-info{font-size:11px;color:var(--mu);line-height:1.6}
+.gen-info strong{color:var(--ink2);font-weight:700}
+.btn-gen{display:inline-flex;align-items:center;gap:9px;padding:13px 30px;border:none;border-radius:7px;background:var(--li);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:800;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(139,197,63,.35),0 0 0 0 rgba(139,197,63,.4);flex-shrink:0}
+.btn-gen:hover{background:var(--l2);box-shadow:0 6px 24px rgba(139,197,63,.45);transform:translateY(-1px)}
+.btn-gen:active{transform:none;box-shadow:0 2px 8px rgba(139,197,63,.3)}
+.btn-gen svg{width:15px;height:15px}
 
 /* ── ERROR BANNER ── */
 .err-banner{background:var(--re);color:#fff;padding:11px 18px;border-radius:5px;font-size:13px;font-weight:700;margin-bottom:14px;display:none}
@@ -161,24 +174,27 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 
 /* ── PRINT SECTION ── */
 .print-wrap{margin-top:32px}
-.invoice-outer{background:var(--wh);border:1.5px solid var(--c3);border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.invoice-outer{background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.05)}
 #invContent{padding:52px 56px}
-.empty-state{text-align:center;padding:64px 20px}
-.es-ico{font-size:36px;opacity:.25;margin-bottom:12px}
-.es-txt{font-size:16px;font-weight:700;color:var(--pa);letter-spacing:-.3px}
-.es-sub{font-size:12px;color:var(--pa);margin-top:5px}
+.empty-state{text-align:center;padding:80px 20px}
+.es-icon-wrap{width:64px;height:64px;border-radius:14px;background:var(--cream);border:1.5px solid var(--c3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.es-icon-wrap svg{width:28px;height:28px;color:var(--pa)}
+.es-txt{font-size:17px;font-weight:800;color:var(--ink2);letter-spacing:-.4px}
+.es-sub{font-size:12px;color:var(--pa);margin-top:6px;line-height:1.6}
 
 /* ── ACTION BAR ── */
-.action-bar{display:flex;gap:9px;justify-content:flex-end;margin-top:14px}
-.act-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:5px;font-family:var(--f);font-size:12px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .18s;border:1.5px solid var(--c3);background:var(--wh);color:var(--ink)}
-.act-btn:hover{background:var(--cream);border-color:var(--ru)}
+.action-bar{display:flex;gap:9px;justify-content:flex-end;margin-top:14px;align-items:center}
+.action-bar-note{font-size:11px;color:var(--mu);margin-right:auto}
+.act-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:6px;font-family:var(--f);font-size:12px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .18s;border:1.5px solid var(--c3);background:var(--wh);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.act-btn:hover{background:var(--cream);border-color:var(--li);color:var(--l3)}
+.act-btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.act-btn.primary:hover{background:var(--ink2)}
 .act-btn svg{width:13px;height:13px}
 
 /* ════════════════════════════════════
    INVOICE STYLES (billingfaizan match)
 ════════════════════════════════════ */
 .inv-top-bar{height:6px;background:var(--li)}
-.inv-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 36px 18px;border-bottom:1px solid var(--ru)}
 .inv-logo{font-family:var(--f-head);font-size:32px;font-weight:900;letter-spacing:-1.5px;color:var(--ink);line-height:.95;text-transform:uppercase}
 .inv-logo span{color:var(--li)}
 .inv-logo-sub{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-top:7px}
@@ -298,11 +314,29 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 
 .inv-footnotes{margin:0 36px 20px;padding:12px 16px;border:1px solid var(--ru);border-radius:4px;background:var(--cream);font-size:10px;color:var(--mu);line-height:1.85}
 .inv-footnotes strong{color:var(--ink2)}
-.inv-bottom{border-top:1px solid var(--ru);padding:12px 36px;display:flex;align-items:center;justify-content:space-between}
-.inv-bb-brand{font-size:13px;font-weight:900;color:var(--ink)}
+.inv-bottom{border-top:1px solid var(--ru);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;background:var(--cream)}
+.inv-bb-brand{font-size:13px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:6px}
 .inv-bb-brand span{color:var(--li)}
+.inv-bb-dot{width:4px;height:4px;border-radius:50%;background:var(--li);opacity:.6}
 .inv-bb-contact{font-size:10px;color:var(--mu);text-align:right;line-height:1.7}
-.inv-bot-bar{background:var(--li);height:5px}
+.inv-bot-bar{background:linear-gradient(90deg,var(--li),var(--l2));height:5px}
+
+/* ── PREMIUM INVOICE HEADER ── */
+.inv-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 36px 18px;border-bottom:1px solid var(--ru);position:relative;overflow:hidden}
+.inv-hdr::after{content:'';position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.06),transparent 65%);pointer-events:none}
+
+/* ── FORM FIELD FOCUS GLOW ── */
+.fi:hover{border-color:var(--ru);background:var(--wh)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .topbar{padding:0 20px}
+  .wrap{padding:24px 16px 80px}
+  .gen-bar{flex-direction:column;align-items:stretch;text-align:center}
+  .btn-gen{justify-content:center}
+  .action-bar{flex-direction:column;align-items:stretch}
+  .act-btn{justify-content:center}
+}
 
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
@@ -341,10 +375,18 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 <div class="topbar">
   <div class="tb-inner">
     <div>
-      <div class="tb-kicker"><div class="tb-kr"></div><span class="tb-kt">SEHR Academy · Internal Tools</span></div>
+      <div class="tb-brand">
+        <img src="../assets/logo.png" alt="SEHR Academy" onerror="this.style.display='none'">
+        <span class="tb-brand-name">SEHR</span><span class="tb-brand-dot"></span><span class="tb-brand-sub">ACADEMY</span>
+      </div>
+      <div class="tb-kicker"><div class="tb-kr"></div><span class="tb-kt">Financial Tools · Internal Use</span></div>
       <div class="tb-h">Session Billing <i>Generator</i></div>
-      <div class="tb-sub">Multi-subject · Online &amp; Offline · Print-ready output</div>
+      <div class="tb-sub">Multi-subject · Online &amp; Offline · Print-ready statement</div>
     </div>
+    <a class="tb-back" href="../index.html">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Dashboard
+    </a>
   </div>
 </div>
 
@@ -353,7 +395,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
   <!-- Student Info -->
   <div class="sdiv"><div class="sdiv-dot"></div><div class="sdiv-txt">Student &amp; Parent Details</div><div class="sdiv-rule"></div></div>
   <div class="card">
-    <div class="card-head"><div class="card-title">Student Information</div></div>
+    <div class="card-head"><div class="card-title"><span class="card-title-dot"></span>Student Information</div></div>
     <div class="card-body">
       <div class="fgrid">
         <div class="fg"><label class="fl">Student Name</label><input class="fi" id="sName" type="text" placeholder="e.g. Arjun Nair"></div>
@@ -384,7 +426,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
   <div class="sdiv" style="margin-top:28px"><div class="sdiv-dot"></div><div class="sdiv-txt">Generate</div><div class="sdiv-rule"></div></div>
   <div id="errBanner" class="err-banner"></div>
   <div class="gen-bar">
-    <div class="gen-info">Fill in all sections, then generate the print-ready statement</div>
+    <div class="gen-info"><strong>Ready to generate?</strong><br>Fill in student details, add subjects, set dates and days.</div>
     <button class="btn-gen" onclick="generate()">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 12 11 14 15 10"/></svg>
       Generate Statement
@@ -397,14 +439,17 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
     <div class="invoice-outer">
       <div id="invContentScreen">
         <div class="empty-state">
-          <div class="es-ico">📋</div>
+          <div class="es-icon-wrap">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+          </div>
           <div class="es-txt">No statement generated yet</div>
-          <div class="es-sub">Configure subjects above and click Generate Statement</div>
+          <div class="es-sub">Configure student details and subjects above,<br>then click <strong style="color:var(--ink2)">Generate Statement</strong></div>
         </div>
       </div>
     </div>
     <div class="action-bar" id="actionBar" style="display:none">
-      <button class="act-btn" onclick="window.print()">
+      <span class="action-bar-note">Statement ready · Use your browser's Print dialog to save as PDF</span>
+      <button class="act-btn primary" onclick="window.print()">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print / Export PDF
       </button>
