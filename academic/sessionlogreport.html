@@ -1030,6 +1030,30 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 /* Shimmer loading states */
 .skel-line{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:400% 100%;animation:shimmer 1.2s ease infinite}
 
+/* ══ QUICK ACCESS HUB ══ */
+.hub-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:900px){.hub-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.hub-strip{grid-template-columns:repeat(2,1fr)}}
+.hub-card{
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);
+  padding:14px 12px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-align:center;transition:all .17s;position:relative;overflow:hidden;
+}
+.hub-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--hc-accent,var(--li));opacity:.7;transition:opacity .17s}
+.hub-card:hover{border-color:var(--hc-accent,var(--li));transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.09)}
+.hub-card:hover::before{opacity:1}
+.hub-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--hc-dim,var(--li-dim));border:1px solid var(--hc-bd,rgba(139,197,63,.2));flex-shrink:0}
+.hub-ic svg{width:18px;height:18px}
+.hub-name{font-size:11px;font-weight:800;color:var(--text);letter-spacing:-.1px;line-height:1.2}
+.hub-tag{font-size:9px;font-weight:700;color:var(--text3)}
+
+/* Sidebar tool links */
+.sb-tool-link{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:all .13s;user-select:none;border:1px solid transparent;text-decoration:none}
+.sb-tool-link:hover{background:var(--bg3)}
+.sb-tool-link .sb-item-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--bg3)}
+.sb-tool-link .sb-item-label{font-size:13px;font-weight:600;color:var(--text3)}
+.sb-tool-link:hover .sb-item-label{color:var(--text)}
+
 /* ══ HOMEWORK REPORT VIEW ══ */
 .hwr-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
 .hwr-filter-sel{padding:7px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .13s;outline:none}
@@ -1244,6 +1268,34 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="sb-section-label">Classes</div>
       <div id="sbClasses"><div class="loading-txt" style="padding:8px 10px;font-size:11px">Loading…</div></div>
     </div>
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-section-label">Quick Tools</div>
+      <a class="sb-tool-link" href="/timetablegenerator.html" target="_blank">
+        <div class="sb-item-icon">🗓</div>
+        <div class="sb-item-label">Timetable</div>
+      </a>
+      <a class="sb-tool-link" href="https://sehracademy.com/markattendance" target="_blank">
+        <div class="sb-item-icon">✅</div>
+        <div class="sb-item-label">Attendance</div>
+      </a>
+      <a class="sb-tool-link" href="https://sehracademy.com/sessionlog" target="_blank">
+        <div class="sb-item-icon">⏱</div>
+        <div class="sb-item-label">Log Session</div>
+      </a>
+      <a class="sb-tool-link" href="https://sehracademy.com/loghomework" target="_blank">
+        <div class="sb-item-icon">📋</div>
+        <div class="sb-item-label">Log Homework</div>
+      </a>
+      <a class="sb-tool-link" href="/admin/testbuilder.html" target="_blank">
+        <div class="sb-item-icon">🧪</div>
+        <div class="sb-item-label">Test Builder</div>
+      </a>
+      <a class="sb-tool-link" href="/teacher/teacherportal.html" target="_blank">
+        <div class="sb-item-icon">🏫</div>
+        <div class="sb-item-label">Teacher Portal</div>
+      </a>
+    </div>
   </aside>
   <main class="main" id="mainEl">
     <div class="loading-overlay" id="loadEl">
@@ -1251,6 +1303,51 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="loading-txt" id="loadTxt">Connecting to SEHR Academy…</div>
     </div>
     <div id="vOverview" class="page-pad hidden">
+      <!-- Quick Access Hub -->
+      <div class="hub-strip">
+        <a class="hub-card" href="/timetablegenerator.html" target="_blank" style="--hc-accent:#8BC53F;--hc-dim:rgba(139,197,63,.1);--hc-bd:rgba(139,197,63,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#8BC53F" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg>
+          </div>
+          <div class="hub-name">Timetable</div>
+          <div class="hub-tag">Generator</div>
+        </a>
+        <a class="hub-card" href="https://sehracademy.com/markattendance" target="_blank" style="--hc-accent:#8BC53F;--hc-dim:rgba(139,197,63,.1);--hc-bd:rgba(139,197,63,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#8BC53F" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14l2.5 2.5L16 11"/></svg>
+          </div>
+          <div class="hub-name">Mark Attendance</div>
+          <div class="hub-tag">Daily</div>
+        </a>
+        <a class="hub-card" href="https://sehracademy.com/sessionlog" target="_blank" style="--hc-accent:#d97706;--hc-dim:rgba(217,119,6,.08);--hc-bd:rgba(217,119,6,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+          </div>
+          <div class="hub-name">Log Session</div>
+          <div class="hub-tag">Per Session</div>
+        </a>
+        <a class="hub-card" href="https://sehracademy.com/loghomework" target="_blank" style="--hc-accent:#2563eb;--hc-dim:rgba(37,99,235,.08);--hc-bd:rgba(37,99,235,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>
+          </div>
+          <div class="hub-name">Log Homework</div>
+          <div class="hub-tag">Assignments</div>
+        </a>
+        <a class="hub-card" href="/admin/testbuilder.html" target="_blank" style="--hc-accent:#7c3aed;--hc-dim:rgba(124,58,237,.08);--hc-bd:rgba(124,58,237,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="11" y2="16"/><circle cx="17" cy="16" r="3"/><line x1="16" y1="16" x2="18" y2="16"/><line x1="17" y1="15" x2="17" y2="17"/></svg>
+          </div>
+          <div class="hub-name">Test Builder</div>
+          <div class="hub-tag">Create</div>
+        </a>
+        <a class="hub-card" href="/academic/testreport.html" target="_blank" style="--hc-accent:#0d9488;--hc-dim:rgba(13,148,136,.08);--hc-bd:rgba(13,148,136,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 14l4-5 3 3 3-4 4 6"/><rect x="2" y="2" width="20" height="20" rx="2"/></svg>
+          </div>
+          <div class="hub-name">Test Report</div>
+          <div class="hub-tag">Results</div>
+        </a>
+      </div>
       <div class="kpi-strip" id="kpiStrip"></div>
       <div id="subjCardsWrap" style="margin-bottom:20px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
