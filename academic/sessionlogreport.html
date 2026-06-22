@@ -1035,17 +1035,29 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 @media(max-width:900px){.hub-strip{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:480px){.hub-strip{grid-template-columns:repeat(2,1fr)}}
 .hub-card{
-  background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);
+  background:linear-gradient(135deg,var(--hc-dim,rgba(139,197,63,.1)) 0%,transparent 70%),var(--bg2);
+  border:1.5px solid var(--hc-bd,var(--border));border-radius:var(--r2);
   padding:14px 12px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;
   text-align:center;transition:all .17s;position:relative;overflow:hidden;
 }
-.hub-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--hc-accent,var(--li));opacity:.7;transition:opacity .17s}
-.hub-card:hover{border-color:var(--hc-accent,var(--li));transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.09)}
+.hub-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--hc-accent,var(--li));opacity:1;transition:opacity .17s}
+.hub-card:hover{border-color:var(--hc-accent,var(--li));transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
 .hub-card:hover::before{opacity:1}
 .hub-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--hc-dim,var(--li-dim));border:1px solid var(--hc-bd,rgba(139,197,63,.2));flex-shrink:0}
 .hub-ic svg{width:18px;height:18px}
 .hub-name{font-size:11px;font-weight:800;color:var(--text);letter-spacing:-.1px;line-height:1.2}
 .hub-tag{font-size:9px;font-weight:700;color:var(--text3)}
+
+/* ══ COLLAPSIBLE OVERVIEW SECTIONS ══ */
+.ov-section{margin-bottom:10px;border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;background:var(--bg2)}
+.ov-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border:none;background:transparent;cursor:pointer;font-family:var(--f);text-align:left;transition:background .13s}
+.ov-toggle:hover{background:var(--bg3)}
+.ov-toggle-title{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.1px}
+.ov-toggle-arrow{color:var(--text3);transition:transform .2s;flex-shrink:0}
+.ov-toggle[aria-expanded="true"] .ov-toggle-arrow{transform:rotate(180deg)}
+.ov-body{overflow:hidden;transition:max-height .25s var(--e1),opacity .2s}
+.ov-body.collapsed{max-height:0;opacity:0;pointer-events:none}
+.ov-body:not(.collapsed){max-height:9999px;opacity:1;padding:12px 14px 14px}
 
 /* Sidebar tool links */
 .sb-tool-link{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:all .13s;user-select:none;border:1px solid transparent;text-decoration:none}
@@ -1253,13 +1265,13 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         <span class="btn-lbl">Print All</span>
       </button>
-      <button class="tb-btn tb-btn-wa" onclick="sendWAAll()">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
-        <span class="btn-lbl">Daily WA</span>
+      <button class="tb-btn tb-btn-wa" id="btnDailyWA" onclick="sendWAAll(this)" title="Copy daily report text">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        <span class="btn-lbl">Copy Daily</span>
       </button>
-      <button class="tb-btn tb-btn-wa" onclick="sendWAWeekly()" title="Send weekly summary to all classes">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
-        <span class="btn-lbl">Weekly WA</span>
+      <button class="tb-btn tb-btn-wa" id="btnWeeklyWA" onclick="sendWAWeekly(this)" title="Copy weekly summary text">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        <span class="btn-lbl">Copy Weekly</span>
       </button>
     </div>
   </div>
@@ -1397,13 +1409,58 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         </a>
       </div>
       <div class="kpi-strip" id="kpiStrip"></div>
-      <div id="subjCardsWrap" style="margin-bottom:20px"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
-      <div id="teacherLoadWrap" style="margin-top:4px"></div>
-      <div id="substituteWrap" style="margin-top:20px"></div>
-      <div id="heatmapWrap" style="margin-top:20px"></div>
-      <div id="waBatchWrap" style="margin-top:20px"></div>
-      <div id="pendHWWrap" class="pend-hw-wrap" style="margin-top:20px"></div>
+
+      <div class="ov-section">
+        <button class="ov-toggle" onclick="toggleOvSection(this)" aria-expanded="false">
+          <span class="ov-toggle-title">Subject Overview</span>
+          <svg class="ov-toggle-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ov-body collapsed">
+          <div id="subjCardsWrap" style="margin-bottom:4px"></div>
+        </div>
+      </div>
+
+      <div class="ov-section">
+        <button class="ov-toggle" onclick="toggleOvSection(this)" aria-expanded="false">
+          <span class="ov-toggle-title">Class Breakdown &amp; Recent Sessions</span>
+          <svg class="ov-toggle-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ov-body collapsed">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
+        </div>
+      </div>
+
+      <div class="ov-section">
+        <button class="ov-toggle" onclick="toggleOvSection(this)" aria-expanded="false">
+          <span class="ov-toggle-title">Teacher Load &amp; Substitutes</span>
+          <svg class="ov-toggle-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ov-body collapsed">
+          <div id="teacherLoadWrap"></div>
+          <div id="substituteWrap" style="margin-top:16px"></div>
+        </div>
+      </div>
+
+      <div class="ov-section">
+        <button class="ov-toggle" onclick="toggleOvSection(this)" aria-expanded="false">
+          <span class="ov-toggle-title">Activity Heatmap &amp; Batch Reports</span>
+          <svg class="ov-toggle-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ov-body collapsed">
+          <div id="heatmapWrap"></div>
+          <div id="waBatchWrap" style="margin-top:16px"></div>
+        </div>
+      </div>
+
+      <div class="ov-section">
+        <button class="ov-toggle" onclick="toggleOvSection(this)" aria-expanded="false">
+          <span class="ov-toggle-title">Pending Homework</span>
+          <svg class="ov-toggle-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ov-body collapsed">
+          <div id="pendHWWrap" class="pend-hw-wrap"></div>
+        </div>
+      </div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
@@ -2501,9 +2558,9 @@ function renderDay(data){
       leftHtml+='<button class="cb-btn cb-btn-pdf" onclick="printClass(\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\',\''+b+'\')">'+
         '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>'+
         'PDF'+lbl+'</button>';
-      leftHtml+='<button class="cb-btn cb-btn-wa" onclick="sendWAClass(\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\',\''+b+'\')">'+
-        '<svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>'+
-        'WA'+lbl+'</button>';
+      leftHtml+='<button class="cb-btn cb-btn-wa" onclick="sendWAClass(this,\''+esc(cls.class)+'\',\''+esc(cls.stream)+'\',\''+b+'\')">'+
+        '<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" width="11" height="11"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'+
+        'Copy'+lbl+'</button>';
     });
     leftHtml+='</div></div><div class="cb-body">';
     sessions.forEach(function(r){
@@ -3372,7 +3429,34 @@ function printWithPageNums(){
   style.innerHTML='@page{margin:0;size:A4 portrait}@media print{.pr-page-num::before{content:counter(page) " / " counter(pages)}}';
   document.head.appendChild(style);
 }
-function sendWAClass(cls,stream,board){
+function toggleOvSection(btn){
+  var body=btn.nextElementSibling;
+  var expanded=btn.getAttribute('aria-expanded')==='true';
+  btn.setAttribute('aria-expanded',String(!expanded));
+  body.classList.toggle('collapsed',expanded);
+}
+
+function copyTextToClipboard(text,btn,label){
+  label=label||'Copy';
+  function showFeedback(){
+    if(!btn)return;
+    var lbl=btn.querySelector('.btn-lbl')||btn;
+    var orig=lbl.textContent;
+    lbl.textContent='Copied!';
+    btn.disabled=true;
+    setTimeout(function(){lbl.textContent=orig;btn.disabled=false;},2000);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(showFeedback,function(){
+      var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showFeedback();
+    });
+  } else {
+    var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showFeedback();
+  }
+}
+function sendWAClass(btn,cls,stream,board){
   var dayData=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!stream||r.stream===stream)&&(!board||board==='ALL'||r.board===board);});
   var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!board||board==='ALL'||r.syllabus===boardToSyl(board));});
   var label='Class '+cls+(stream?' · '+stream:'')+(board&&board!=='ALL'?' · '+board:'');
@@ -3381,9 +3465,9 @@ function sendWAClass(cls,stream,board){
     dayData.forEach(function(r){var chaps=(r.chapters||'').split(' | ').filter(Boolean);lines.push('');lines.push('👨‍🏫 '+r.teacher_name+' · '+r.subject+' ('+r.board+')');lines.push('🕐 '+r.start_time+' – '+r.end_time+' · '+r.mode);if(chaps.length)lines.push('📖 '+chaps.join(', '));if(r.topics)lines.push('💡 '+r.topics.substring(0,150)+(r.topics.length>150?'…':''));if(r.homework&&r.homework.trim())lines.push('📝 HW: '+r.homework.substring(0,120));});}
   if(attRows.length){var ap=attRows.filter(function(r){return r.status==='Present';}).length;var abList=attRows.filter(function(r){return r.status==='Absent';});lines.push('');lines.push('*Attendance*');lines.push('✅ Present: '+ap+' | ❌ Absent: '+(attRows.length-ap)+' | 📊 '+Math.round(ap/attRows.length*100)+'%');if(abList.length)lines.push('Absent: '+abList.map(function(r){return r.full_name;}).join(', '));}
   lines.push('');lines.push('_SEHR Academy_');
-  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+  copyTextToClipboard(lines.join('\n'),btn);
 }
-function sendWAAll(){
+function sendWAAll(btn){
   var dayData=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE;});
   var attDay=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE;});
   var totalMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
@@ -3393,7 +3477,7 @@ function sendWAAll(){
   var byClass={};dayData.forEach(function(r){var k=r.class+(r.stream?'|'+r.stream:'');if(!byClass[k])byClass[k]=[];byClass[k].push(r);});
   Object.keys(byClass).sort().forEach(function(key){var sessions=byClass[key];var r0=sessions[0];var label='Class '+r0.class+(r0.stream?' '+r0.stream:'');lines.push('');lines.push('*'+label+'*');sessions.forEach(function(r){var chaps=(r.chapters||'').split(' | ').filter(Boolean);lines.push('• '+r.teacher_name+' · '+r.subject+' · '+r.start_time+'-'+r.end_time);if(chaps.length)lines.push('  📖 '+chaps.join(', '));if(r.homework&&r.homework.trim())lines.push('  📝 HW assigned');});var att=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===r0.class;});if(att.length){var ap2=att.filter(function(r){return r.status==='Present';}).length;lines.push('  👥 '+ap2+'/'+att.length+' present');}});
   lines.push('');lines.push('_SEHR Academy_');
-  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+  copyTextToClipboard(lines.join('\n'),btn);
 }
 
 
@@ -3501,7 +3585,7 @@ function toggleStudentPanel(panelId, studentId, name, cls){
 }
 
 /* ══ BULK WEEKLY WHATSAPP ══ */
-function sendWAWeekly(){
+function sendWAWeekly(btn){
   var today=new Date(CUR_DATE);
   var from=new Date(today);from.setDate(today.getDate()-6);
   var fromYMD=from.getFullYear()+'-'+pad(from.getMonth()+1)+'-'+pad(from.getDate());
@@ -3538,7 +3622,7 @@ function sendWAWeekly(){
     lines.push('');
   });
   lines.push('_SEHR Academy_');
-  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+  copyTextToClipboard(lines.join('\n'),btn);
 }
 
 /* ══ SEARCH ══ */
