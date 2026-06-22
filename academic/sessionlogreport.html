@@ -891,7 +891,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 }
 .mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;cursor:pointer;border:none;background:transparent;font-family:var(--f);font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;transition:color .13s;border-radius:7px}
 .mob-nav-item.on{color:var(--li3)}
-.mob-nav-item .mob-icon{font-size:18px;line-height:1}
+.mob-nav-item .mob-icon{display:flex;align-items:center;justify-content:center;width:20px;height:20px}
 @media(max-width:768px){
   .main{padding-bottom:70px}
 }
@@ -1029,6 +1029,30 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 
 /* Shimmer loading states */
 .skel-line{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:400% 100%;animation:shimmer 1.2s ease infinite}
+
+/* ══ QUICK ACCESS HUB ══ */
+.hub-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:900px){.hub-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.hub-strip{grid-template-columns:repeat(2,1fr)}}
+.hub-card{
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);
+  padding:14px 12px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-align:center;transition:all .17s;position:relative;overflow:hidden;
+}
+.hub-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--hc-accent,var(--li));opacity:.7;transition:opacity .17s}
+.hub-card:hover{border-color:var(--hc-accent,var(--li));transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.09)}
+.hub-card:hover::before{opacity:1}
+.hub-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--hc-dim,var(--li-dim));border:1px solid var(--hc-bd,rgba(139,197,63,.2));flex-shrink:0}
+.hub-ic svg{width:18px;height:18px}
+.hub-name{font-size:11px;font-weight:800;color:var(--text);letter-spacing:-.1px;line-height:1.2}
+.hub-tag{font-size:9px;font-weight:700;color:var(--text3)}
+
+/* Sidebar tool links */
+.sb-tool-link{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:all .13s;user-select:none;border:1px solid transparent;text-decoration:none}
+.sb-tool-link:hover{background:var(--bg3)}
+.sb-tool-link .sb-item-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--bg3)}
+.sb-tool-link .sb-item-label{font-size:13px;font-weight:600;color:var(--text3)}
+.sb-tool-link:hover .sb-item-label{color:var(--text)}
 
 /* ══ HOMEWORK REPORT VIEW ══ */
 .hwr-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
@@ -1207,42 +1231,70 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
     <div class="sb-section">
       <div class="sb-section-label">Views</div>
       <div class="sb-item on" id="nav-overview" onclick="setView('overview',this)">
-        <div class="sb-item-icon">📊</div>
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
         <div class="sb-item-label">Overview</div>
       </div>
       <div class="sb-item" id="nav-day" onclick="setView('day',this)">
-        <div class="sb-item-icon">📅</div>
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <div class="sb-item-label">Day View</div>
       </div>
       <div class="sb-item" id="nav-progress" onclick="setView('progress',this)">
-        <div class="sb-item-icon">📈</div>
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div class="sb-item-label">Progress</div>
       </div>
       <div class="sb-item" id="nav-chapters" onclick="setView('chapters',this)">
-        <div class="sb-item-icon">📖</div>
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
         <div class="sb-item-label">Chapters</div>
       </div>
       <div class="sb-item" id="nav-teachers" onclick="setView('teachers',this)">
-        <div class="sb-item-icon">👨‍🏫</div>
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <div class="sb-item-label">Teachers</div>
       </div>
       <div class="sb-item" id="nav-homework" onclick="setView('homework',this)">
-        <div class="sb-item-icon">📝</div>
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="sb-item-label">Homework</div>
       </div>
     </div>
     <div class="sb-divider"></div>
     <div class="sb-section">
       <div class="sb-section-label">Period</div>
-      <div class="sb-item on sb-period" onclick="setPeriod('day',this)"><div class="sb-item-icon">1</div><div class="sb-item-label">Today</div></div>
-      <div class="sb-item sb-period" onclick="setPeriod('week',this)"><div class="sb-item-icon">7</div><div class="sb-item-label">This Week</div></div>
-      <div class="sb-item sb-period" onclick="setPeriod('month',this)"><div class="sb-item-icon">30</div><div class="sb-item-label">This Month</div></div>
-      <div class="sb-item sb-period" onclick="setPeriod('all',this)"><div class="sb-item-icon">∞</div><div class="sb-item-label">All Time</div></div>
+      <div class="sb-item on sb-period" onclick="setPeriod('day',this)"><div class="sb-item-icon" style="font-size:10px;font-weight:800;color:var(--text3)">1D</div><div class="sb-item-label">Today</div></div>
+      <div class="sb-item sb-period" onclick="setPeriod('week',this)"><div class="sb-item-icon" style="font-size:10px;font-weight:800;color:var(--text3)">7D</div><div class="sb-item-label">This Week</div></div>
+      <div class="sb-item sb-period" onclick="setPeriod('month',this)"><div class="sb-item-icon" style="font-size:10px;font-weight:800;color:var(--text3)">30D</div><div class="sb-item-label">This Month</div></div>
+      <div class="sb-item sb-period" onclick="setPeriod('all',this)"><div class="sb-item-icon" style="font-size:10px;font-weight:800;color:var(--text3)">All</div><div class="sb-item-label">All Time</div></div>
     </div>
     <div class="sb-divider"></div>
     <div class="sb-section">
       <div class="sb-section-label">Classes</div>
       <div id="sbClasses"><div class="loading-txt" style="padding:8px 10px;font-size:11px">Loading…</div></div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-section">
+      <div class="sb-section-label">Quick Tools</div>
+      <a class="sb-tool-link" href="/timetablegenerator.html" target="_blank">
+        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg></div>
+        <div class="sb-item-label">Timetable</div>
+      </a>
+      <a class="sb-tool-link" href="https://sehracademy.com/markattendance" target="_blank">
+        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14l2.5 2.5L16 11"/></svg></div>
+        <div class="sb-item-label">Attendance</div>
+      </a>
+      <a class="sb-tool-link" href="https://sehracademy.com/sessionlog" target="_blank">
+        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
+        <div class="sb-item-label">Log Session</div>
+      </a>
+      <a class="sb-tool-link" href="https://sehracademy.com/loghomework" target="_blank">
+        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div class="sb-item-label">Log Homework</div>
+      </a>
+      <a class="sb-tool-link" href="/admin/testbuilder.html" target="_blank">
+        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="11" y2="16"/></svg></div>
+        <div class="sb-item-label">Test Builder</div>
+      </a>
+      <a class="sb-tool-link" href="/teacher/teacherportal.html" target="_blank">
+        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="sb-item-label">Teacher Portal</div>
+      </a>
     </div>
   </aside>
   <main class="main" id="mainEl">
@@ -1251,6 +1303,51 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="loading-txt" id="loadTxt">Connecting to SEHR Academy…</div>
     </div>
     <div id="vOverview" class="page-pad hidden">
+      <!-- Quick Access Hub -->
+      <div class="hub-strip">
+        <a class="hub-card" href="/timetablegenerator.html" target="_blank" style="--hc-accent:#8BC53F;--hc-dim:rgba(139,197,63,.1);--hc-bd:rgba(139,197,63,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#8BC53F" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg>
+          </div>
+          <div class="hub-name">Timetable</div>
+          <div class="hub-tag">Generator</div>
+        </a>
+        <a class="hub-card" href="https://sehracademy.com/markattendance" target="_blank" style="--hc-accent:#8BC53F;--hc-dim:rgba(139,197,63,.1);--hc-bd:rgba(139,197,63,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#8BC53F" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14l2.5 2.5L16 11"/></svg>
+          </div>
+          <div class="hub-name">Mark Attendance</div>
+          <div class="hub-tag">Daily</div>
+        </a>
+        <a class="hub-card" href="https://sehracademy.com/sessionlog" target="_blank" style="--hc-accent:#d97706;--hc-dim:rgba(217,119,6,.08);--hc-bd:rgba(217,119,6,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+          </div>
+          <div class="hub-name">Log Session</div>
+          <div class="hub-tag">Per Session</div>
+        </a>
+        <a class="hub-card" href="https://sehracademy.com/loghomework" target="_blank" style="--hc-accent:#2563eb;--hc-dim:rgba(37,99,235,.08);--hc-bd:rgba(37,99,235,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>
+          </div>
+          <div class="hub-name">Log Homework</div>
+          <div class="hub-tag">Assignments</div>
+        </a>
+        <a class="hub-card" href="/admin/testbuilder.html" target="_blank" style="--hc-accent:#7c3aed;--hc-dim:rgba(124,58,237,.08);--hc-bd:rgba(124,58,237,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="11" y2="16"/><circle cx="17" cy="16" r="3"/><line x1="16" y1="16" x2="18" y2="16"/><line x1="17" y1="15" x2="17" y2="17"/></svg>
+          </div>
+          <div class="hub-name">Test Builder</div>
+          <div class="hub-tag">Create</div>
+        </a>
+        <a class="hub-card" href="/academic/testreport.html" target="_blank" style="--hc-accent:#0d9488;--hc-dim:rgba(13,148,136,.08);--hc-bd:rgba(13,148,136,.2)">
+          <div class="hub-ic">
+            <svg fill="none" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 14l4-5 3 3 3-4 4 6"/><rect x="2" y="2" width="20" height="20" rx="2"/></svg>
+          </div>
+          <div class="hub-name">Test Report</div>
+          <div class="hub-tag">Results</div>
+        </a>
+      </div>
       <div class="kpi-strip" id="kpiStrip"></div>
       <div id="subjCardsWrap" style="margin-bottom:20px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="overviewGrid"></div>
@@ -1268,11 +1365,11 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 </div>
 
 <nav class="mobile-nav" id="mobileNav">
-  <button class="mob-nav-item on" onclick="mobNav('overview',this)"><span class="mob-icon">📊</span>Overview</button>
-  <button class="mob-nav-item" onclick="mobNav('day',this)"><span class="mob-icon">📅</span>Day</button>
-  <button class="mob-nav-item" onclick="mobNav('progress',this)"><span class="mob-icon">📈</span>Progress</button>
-  <button class="mob-nav-item" onclick="mobNav('homework',this)"><span class="mob-icon">📝</span>Homework</button>
-  <button class="mob-nav-item" onclick="mobNav('chapters',this)"><span class="mob-icon">📖</span>Chapters</button>
+  <button class="mob-nav-item on" onclick="mobNav('overview',this)"><span class="mob-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>Overview</button>
+  <button class="mob-nav-item" onclick="mobNav('day',this)"><span class="mob-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Day</button>
+  <button class="mob-nav-item" onclick="mobNav('progress',this)"><span class="mob-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>Progress</button>
+  <button class="mob-nav-item" onclick="mobNav('homework',this)"><span class="mob-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>Homework</button>
+  <button class="mob-nav-item" onclick="mobNav('chapters',this)"><span class="mob-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>Chapters</button>
 </nav>
 
 <div id="printDoc"></div>
@@ -1519,7 +1616,7 @@ function noDataMsg(){
   if(CUR_PERIOD==='day'&&CUR_CLS!=='ALL') hint='Try switching to <b>Week</b> or <b>All Time</b> in the sidebar.';
   else if(CUR_PERIOD==='day') hint='No sessions were logged today. Select a different date from the calendar.';
   else if(CUR_CLS!=='ALL') hint='Try selecting <b>All Classes</b> or a different period.';
-  return emptyState('📋',cls+'No data '+period,'No sessions logged for this combination.',hint);
+  return emptyState('<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',cls+'No data '+period,'No sessions logged for this combination.',hint);
 }
 
 /* ══ SUBJECT CARD ACCENTS ══ */
@@ -2140,13 +2237,21 @@ function renderOverview(data){
   var attP=attDay.filter(function(r){return r.status==='Present';}).length;
   var attPct=attDay.length?Math.round(attP/attDay.length*100):null;
 
+  var kpiSVG={
+    sessions:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+    time:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
+    chapters:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    teachers:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    homework:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+    attendance:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>'
+  };
   g('kpiStrip').innerHTML=
-    kpiCard('📚',data.length,'Sessions','var(--li)','var(--li-dim)','sessions')+
-    kpiCard('⏱',hrsFmt(mins),'Teaching Time','var(--blue)','var(--blue-dim)','mins')+
-    kpiCard('📖',Object.keys(chapSet).length,'Chapters Covered','var(--purple)','var(--purple-dim)','chapters')+
-    kpiCard('👨‍🏫',teachers,'Active Teachers','var(--teal)','var(--teal-dim)','')+
-    kpiCard('📝',hw,'With Homework','var(--amber)','var(--amber-dim)','hw')+
-    (attDay.length?kpiCard('👥',attPct!==null?attPct+'%':'—','Attendance','var(--li)','var(--li-dim)',''):'');
+    kpiCard(kpiSVG.sessions,data.length,'Sessions','var(--li)','var(--li-dim)','sessions')+
+    kpiCard(kpiSVG.time,hrsFmt(mins),'Teaching Time','var(--blue)','var(--blue-dim)','mins')+
+    kpiCard(kpiSVG.chapters,Object.keys(chapSet).length,'Chapters Covered','var(--purple)','var(--purple-dim)','chapters')+
+    kpiCard(kpiSVG.teachers,teachers,'Active Teachers','var(--teal)','var(--teal-dim)','')+
+    kpiCard(kpiSVG.homework,hw,'With Homework','var(--amber)','var(--amber-dim)','hw')+
+    (attDay.length?kpiCard(kpiSVG.attendance,attPct!==null?attPct+'%':'—','Attendance','var(--li)','var(--li-dim)',''):'');
 
   // Subject cards
   renderSubjectCards(data);
@@ -2274,7 +2379,7 @@ function renderDay(data){
     ? (function(){var fc=parseCurCls();return SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE&&(!fc.cls||r.class===fc.cls)&&(!fc.board||r.board===fc.board);});}())
     : data;
   if(!dayData.length){
-    el.innerHTML=emptyState('📋',
+    el.innerHTML=emptyState('<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
       CUR_PERIOD==='day'?'No sessions on '+fmtShort(CUR_DATE):'No sessions found',
       'No sessions were logged for this selection.',
       'Try selecting a different date from the calendar, or switch to <b>Week</b> or <b>All Time</b> in the sidebar.');
@@ -3195,8 +3300,8 @@ function sendWAAll(){
 
 /* ══ SEARCH ══ */
 var SEARCH_TERM = '';
-var SUBJ_ICONS = {"Mathematics": "\ud83d\udcd0", "Physics": "\u26a1", "Chemistry": "\ud83e\uddea", "Biology": "\ud83c\udf3f", "English": "\ud83d\udcda", "Social Science": "\ud83c\udf0d", "Hindi": "\ud83d\udd24", "Malayalam": "\ud83d\udd24", "IT": "\ud83d\udcbb", "Computer Science": "\ud83d\udcbb", "Accountancy": "\ud83d\udcd2", "Business Studies": "\ud83d\udcca", "Economics": "\ud83d\udcb9", "Informatics Practices": "\ud83d\udda5\ufe0f", "Science": "\ud83d\udd2c"};
-var BOARD_ICONS = {"CBSE": "\ud83c\udf93", "Kerala State": "\ud83c\udfdb\ufe0f", "NEET Prep": "\ud83c\udfe5", "JEE Prep": "\u2699\ufe0f"};
+var SUBJ_ICONS = {"Mathematics":"Mth","Physics":"Phy","Chemistry":"Chem","Biology":"Bio","English":"Eng","Social Science":"SSt","Hindi":"Hnd","Malayalam":"Mal","IT":"IT","Computer Science":"CS","Accountancy":"Acc","Business Studies":"BSt","Economics":"Eco","Informatics Practices":"IP","Science":"Sci"};
+var BOARD_ICONS = {"CBSE":"CB","Kerala State":"KL","NEET Prep":"NT","JEE Prep":"JEE"};
 function applySearch(){
   var term = g('searchBox').value.trim().toLowerCase();
   SEARCH_TERM = term;
