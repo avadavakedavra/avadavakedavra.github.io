@@ -1163,6 +1163,50 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .pgpr-footer{border-top:1px solid #d8d4cb;padding:8px 28px;display:flex;justify-content:space-between;font-size:8px;color:#b0ada4;margin-top:14px}
 .pgpr-bot-bar{height:4px;background:#8BC53F}
 
+/* ── SUBJECT GAP ALERT BANNER ── */
+.gap-alert-bar{
+  background:var(--bg2);border:1.5px solid rgba(220,38,38,.25);border-radius:var(--r2);
+  padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;
+  animation:fadeUp .3s var(--e1);
+}
+.gap-alert-icon{width:32px;height:32px;border-radius:8px;background:var(--red-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gap-alert-title{font-size:12px;font-weight:800;color:var(--red);margin-bottom:4px}
+.gap-alert-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.gap-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid rgba(220,38,38,.2);background:var(--red-dim);color:var(--red)}
+.gap-chip.gap-warn{background:var(--amber-dim);color:var(--amber);border-color:rgba(217,119,6,.2)}
+
+/* ── TEACHER STREAK BADGE ── */
+.streak-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(251,191,36,.1);color:#d97706;border:1px solid rgba(217,119,6,.2)}
+.streak-badge.hot{background:rgba(239,68,68,.08);color:var(--red);border-color:rgba(220,38,38,.2)}
+.streak-badge.streak0{background:var(--bg4);color:var(--text3);border-color:var(--border)}
+
+/* ── STUDENT DRILL-DOWN ── */
+.student-row-clickable{cursor:pointer;transition:background .12s}
+.student-row-clickable:hover td{background:rgba(139,197,63,.06)!important}
+.student-panel-row td{padding:0!important;border-bottom:1.5px solid var(--border)}
+.student-panel{padding:14px 16px;background:var(--bg3);display:none}
+.student-panel.open{display:block;animation:fadeUp .18s var(--e1)}
+.sp-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.sp-name{font-size:13px;font-weight:800;color:var(--text)}
+.sp-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;margin-left:auto;padding:2px 6px;border-radius:4px;transition:color .12s}
+.sp-close:hover{color:var(--red)}
+.sp-section-lbl{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;margin-top:10px}
+.sp-att-grid{display:flex;flex-wrap:wrap;gap:4px}
+.sp-att-dot{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;title:attr(title)}
+.sp-att-p{background:rgba(139,197,63,.15);color:var(--li3)}
+.sp-att-a{background:var(--red-dim);color:var(--red)}
+
+/* ── PENDING HOMEWORK SECTION ── */
+.pend-hw-wrap{margin-bottom:20px}
+.pend-hw-list{display:flex;flex-direction:column;gap:6px}
+.pend-hw-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);transition:border-color .14s}
+.pend-hw-row:hover{border-color:rgba(217,119,6,.35)}
+.pend-hw-cls{font-size:11px;font-weight:800;color:var(--text);min-width:60px}
+.pend-hw-subj{font-size:11px;color:var(--text3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pend-hw-text{font-size:11px;color:var(--text2);flex:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pend-hw-age{font-size:10px;font-weight:700;color:var(--amber);white-space:nowrap}
+.pend-hw-age.old{color:var(--red)}
+
 /* Progress print select */
 #pgPrintClsSel option{font-family:'Open Sans',sans-serif;font-weight:700}
 </style>
@@ -1211,7 +1255,11 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       </button>
       <button class="tb-btn tb-btn-wa" onclick="sendWAAll()">
         <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
-        <span class="btn-lbl">WhatsApp</span>
+        <span class="btn-lbl">Daily WA</span>
+      </button>
+      <button class="tb-btn tb-btn-wa" onclick="sendWAWeekly()" title="Send weekly summary to all classes">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
+        <span class="btn-lbl">Weekly WA</span>
       </button>
     </div>
   </div>
@@ -1355,6 +1403,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div id="substituteWrap" style="margin-top:20px"></div>
       <div id="heatmapWrap" style="margin-top:20px"></div>
       <div id="waBatchWrap" style="margin-top:20px"></div>
+      <div id="pendHWWrap" class="pend-hw-wrap" style="margin-top:20px"></div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
@@ -2326,6 +2375,43 @@ function renderOverview(data){
     }).join('')+
     '</tbody></table></div>'+
     '</div>';
+
+  // Pending homework tracker
+  renderPendingHW();
+}
+
+function renderPendingHW(){
+  var wrap=g('pendHWWrap');
+  if(!wrap)return;
+  var today=new Date(todayYMD());
+  var cutoff=new Date(today);cutoff.setDate(today.getDate()-14);
+  var cutoffYMD=cutoff.getFullYear()+'-'+pad(cutoff.getMonth()+1)+'-'+pad(cutoff.getDate());
+
+  // Sessions in last 14 days that had homework assigned
+  var pending=SESSIONS.filter(function(r){
+    var d=sessDateToYMD(r.date);
+    return d>=cutoffYMD && d<todayYMD() && r.homework && r.homework.trim();
+  }).sort(function(a,b){return sessDateToYMD(a.date).localeCompare(sessDateToYMD(b.date));});
+
+  if(!pending.length){wrap.innerHTML='';return;}
+
+  var rows=pending.map(function(r){
+    var d=sessDateToYMD(r.date);
+    var ageDays=Math.floor((today-new Date(d))/86400000);
+    var ageLabel=ageDays===0?'Today':ageDays===1?'Yesterday':ageDays+'d ago';
+    var ageClass=ageDays>5?'old':'';
+    return '<div class="pend-hw-row">'+
+      '<span class="pend-hw-cls">Cls '+esc(r.class)+'</span>'+
+      '<span class="pend-hw-subj">'+esc(r.subject)+'</span>'+
+      '<span class="pend-hw-text">'+esc(r.homework)+'</span>'+
+      '<span class="pend-hw-age '+ageClass+'">'+ageLabel+'</span>'+
+    '</div>';
+  }).join('');
+
+  wrap.innerHTML=
+    '<div class="sec-hdr"><div class="sec-title">Homework Follow-up</div>'+
+    '<span style="font-size:11px;color:var(--text3)">'+pending.length+' assignment'+(pending.length>1?'s':'')+' in last 14 days</span></div>'+
+    '<div class="pend-hw-list">'+rows+'</div>';
 }
 
 function getWeeklyData(field){
@@ -2478,15 +2564,20 @@ function renderDay(data){
         var ab=r.status==='Absent';
         var ph=PHOTO_MAP[r.student_id]||r.photo||'';
         var av='<div class="att-photo'+(ab?' ab-av':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
-        rightHtml+='<tr class="'+(ab?'att-ab':'')+'"><td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+pctPill(r.student_id)+'</td>'+
-          '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span></td></tr>';
+        var panelId='sp-'+r.student_id.replace(/[^a-zA-Z0-9]/g,'_');
+        rightHtml+='<tr class="'+(ab?'att-ab ':'')+' student-row-clickable" onclick="toggleStudentPanel(\''+panelId+'\',\''+esc(r.student_id)+'\',\''+esc(r.full_name)+'\',\''+esc(r.class)+'\')">'+
+          '<td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+pctPill(r.student_id)+'</td>'+
+          '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span>'+
+          '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-left:5px;opacity:.4"><polyline points="6 9 12 15 18 9"/></svg></td></tr>'+
+          '<tr class="student-panel-row"><td colspan="2"><div class="student-panel" id="'+panelId+'"></div></td></tr>';
       });
       rightHtml+='</table></div>';
     });
     rightHtml+='</div>';
   });
 
-  el.innerHTML='<div class="day-grid"><div>'+leftHtml+'</div><div class="right-panel">'+rightHtml+'</div></div>';
+  var gapBanner=buildGapAlertBanner();
+  el.innerHTML=gapBanner+'<div class="day-grid"><div>'+leftHtml+'</div><div class="right-panel">'+rightHtml+'</div></div>';
 }
 function sdet(k,v){return '<div class="sess-det-k">'+k+'</div><div class="sess-det-v">'+v+'</div>';}
 function switchAttBoard(btn,panelId){
@@ -2926,8 +3017,17 @@ function renderTeachers(data){
       var t=map[tid];
       var hwRate=t.sessions?Math.round(t.hw/t.sessions*100):0;
       var hwCol=hwRate>=70?'#16a34a':hwRate>=40?'var(--amber)':'var(--red)';
+      var streak=computeStreak(tid);
+      var streakCls=streak>=7?'hot':streak===0?'streak0':'';
+      var streakLabel=streak===0?'No recent sessions':streak===1?'1 day streak':streak+' day streak';
       return '<div class="teacher-card tr-clickable" onclick="SEL_TEACHER=\''+tid+'\';renderAll()">'+
-        '<div class="teacher-av">'+mn(t.name)+'</div>'+
+        '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">'+
+          '<div class="teacher-av" style="margin-bottom:0">'+mn(t.name)+'</div>'+
+          '<span class="streak-badge '+streakCls+'">'+
+            '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'+
+            streakLabel+
+          '</span>'+
+        '</div>'+
         '<div class="teacher-name">'+esc(t.name)+'</div>'+
         '<div class="teacher-role">Classes: '+Array.from(t.classes).sort().join(', ')+'</div>'+
         '<div class="teacher-stats">'+
@@ -3297,6 +3397,149 @@ function sendWAAll(){
 }
 
 
+
+/* ══ STREAK TRACKER ══ */
+function computeStreak(teacherId){
+  var dateSet=new Set(
+    SESSIONS.filter(function(r){return r.teacher_id===teacherId;})
+      .map(function(r){return sessDateToYMD(r.date);}).filter(Boolean)
+  );
+  if(!dateSet.size) return 0;
+  var streak=0;
+  var cur=new Date(todayYMD());
+  for(var i=0;i<365;i++){
+    var d=cur.getFullYear()+'-'+pad(cur.getMonth()+1)+'-'+pad(cur.getDate());
+    if(dateSet.has(d)){streak++;}
+    else if(streak>0){break;}
+    cur.setDate(cur.getDate()-1);
+  }
+  return streak;
+}
+
+/* ══ SUBJECT GAP ALERTS ══ */
+function computeSubjectGaps(){
+  var fc=parseCurCls();
+  var allSess=SESSIONS.filter(function(r){
+    if(fc.cls&&r.class!==fc.cls)return false;
+    if(fc.board&&r.board!==fc.board)return false;
+    return true;
+  });
+  var lastTaught={};
+  allSess.forEach(function(r){
+    var d=sessDateToYMD(r.date);
+    if(d&&(!lastTaught[r.subject]||d>lastTaught[r.subject]))lastTaught[r.subject]=d;
+  });
+  var today=todayYMD();
+  return Object.keys(lastTaught).map(function(subj){
+    var days=Math.floor((new Date(today)-new Date(lastTaught[subj]))/86400000);
+    return {subj:subj,days:days,last:lastTaught[subj]};
+  }).filter(function(g){return g.days>=7;}).sort(function(a,b){return b.days-a.days;});
+}
+
+function buildGapAlertBanner(){
+  var gaps=computeSubjectGaps();
+  if(!gaps.length) return '';
+  var chips=gaps.map(function(g){
+    var cls=g.days>=14?'':'gap-warn';
+    return '<span class="gap-chip '+cls+'">'+esc(g.subj)+' · '+g.days+'d</span>';
+  }).join('');
+  return '<div class="gap-alert-bar">'+
+    '<div class="gap-alert-icon"><svg width="15" height="15" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>'+
+    '<div style="flex:1">'+
+      '<div class="gap-alert-title">Subject Gap Alert</div>'+
+      '<div style="font-size:11px;color:var(--text3)">These subjects have not been taught in 7+ days for the selected class.</div>'+
+      '<div class="gap-alert-chips">'+chips+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ══ STUDENT DRILL-DOWN ══ */
+function toggleStudentPanel(panelId, studentId, name, cls){
+  var panel=g(panelId);
+  if(!panel)return;
+  var isOpen=panel.classList.contains('open');
+  // Close all panels first
+  document.querySelectorAll('.student-panel.open').forEach(function(p){p.classList.remove('open');p.innerHTML='';});
+  if(isOpen)return;
+  // Build panel content
+  var attHistory=ATTENDANCE.filter(function(r){return r.student_id===studentId;})
+    .sort(function(a,b){return attDateToYMD(b.date).localeCompare(attDateToYMD(a.date));})
+    .slice(0,30);
+  var total=attHistory.length;
+  var present=attHistory.filter(function(r){return r.status==='Present';}).length;
+  var pct=total?Math.round(present/total*100):null;
+  var dots=attHistory.map(function(r){
+    var isP=r.status==='Present';
+    var d=attDateToYMD(r.date);
+    return '<div class="sp-att-dot '+(isP?'sp-att-p':'sp-att-a')+'" title="'+d+' · '+r.status+'">'+(isP?'P':'A')+'</div>';
+  }).join('');
+  // Recent class sessions
+  var clsSess=SESSIONS.filter(function(r){return r.class===cls;})
+    .sort(function(a,b){return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));})
+    .slice(0,5);
+  var sessRows=clsSess.map(function(r){
+    return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text3)">'+
+      '<span style="font-weight:700;color:var(--text)">'+fmtShort(sessDateToYMD(r.date))+'</span>'+
+      '<span>'+esc(r.subject)+'</span>'+
+      (r.homework&&r.homework.trim()?'<span style="color:var(--amber);font-weight:700;margin-left:auto">HW</span>':'<span style="margin-left:auto"></span>')+
+    '</div>';
+  }).join('');
+  panel.innerHTML=
+    '<div class="sp-hdr">'+
+      '<div class="sp-name">'+esc(name)+'</div>'+
+      (pct!==null?'<span class="badge '+(pct>=75?'badge-g':pct>=50?'badge-a':'badge-r')+'">'+pct+'% attendance</span>':'')+
+      '<button class="sp-close" onclick="event.stopPropagation();this.closest(\'.student-panel\').classList.remove(\'open\');this.closest(\'.student-panel\').innerHTML=\'\'">✕</button>'+
+    '</div>'+
+    (attHistory.length?
+      '<div class="sp-section-lbl">Attendance history (last '+total+' records · '+present+' present)</div>'+
+      '<div class="sp-att-grid">'+dots+'</div>':
+      '<div style="font-size:11px;color:var(--text3);margin-bottom:8px">No attendance records found.</div>')+
+    (clsSess.length?
+      '<div class="sp-section-lbl">Recent sessions — Class '+esc(cls)+'</div>'+
+      '<div>'+sessRows+'</div>':'');
+  panel.classList.add('open');
+}
+
+/* ══ BULK WEEKLY WHATSAPP ══ */
+function sendWAWeekly(){
+  var today=new Date(CUR_DATE);
+  var from=new Date(today);from.setDate(today.getDate()-6);
+  var fromYMD=from.getFullYear()+'-'+pad(from.getMonth()+1)+'-'+pad(from.getDate());
+  var weekSess=SESSIONS.filter(function(r){var d=sessDateToYMD(r.date);return d>=fromYMD&&d<=CUR_DATE;});
+  if(!weekSess.length){alert('No sessions found for this week.');return;}
+
+  var byClass={};
+  weekSess.forEach(function(r){
+    if(!byClass[r.class])byClass[r.class]={sessions:[],subjects:new Set(),mins:0,hw:0,chapters:new Set()};
+    var c=byClass[r.class];
+    c.sessions.push(r);c.subjects.add(r.subject);c.mins+=(+r.duration_mins||0);
+    if(r.homework&&r.homework.trim())c.hw++;
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(ch){c.chapters.add(ch);});
+  });
+
+  var fromFmt=fmtShort(fromYMD),toFmt=fmtShort(CUR_DATE);
+  var totalSess=weekSess.length;
+  var totalMins=weekSess.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var lines=['*SEHR Academy — Weekly Summary*',fromFmt+' to '+toFmt,'','*Overall: '+totalSess+' sessions · '+hrsFmt(totalMins)+'*',''];
+
+  Object.keys(byClass).sort(function(a,b){return +a - +b;}).forEach(function(cls){
+    var c=byClass[cls];
+    lines.push('*Class '+cls+'*');
+    lines.push('Sessions: '+c.sessions.length+' · Time: '+hrsFmt(c.mins));
+    lines.push('Subjects: '+Array.from(c.subjects).join(', '));
+    lines.push('Chapters: '+c.chapters.size);
+    if(c.hw)lines.push('Homework assigned: '+c.hw+' time'+(c.hw>1?'s':''));
+    // Absentees this week for this class
+    var weekAtt=ATTENDANCE.filter(function(r){var d=attDateToYMD(r.date);return d>=fromYMD&&d<=CUR_DATE&&r.class===cls;});
+    if(weekAtt.length){
+      var weekP=weekAtt.filter(function(r){return r.status==='Present';}).length;
+      lines.push('Attendance: '+weekP+'/'+weekAtt.length+' ('+Math.round(weekP/weekAtt.length*100)+'%)');
+    }
+    lines.push('');
+  });
+  lines.push('_SEHR Academy_');
+  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+}
 
 /* ══ SEARCH ══ */
 var SEARCH_TERM = '';
