@@ -1133,10 +1133,11 @@ function generate() {
   var dueStr = dueVal ? parseDate(dueVal).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : 'Before first session';
   var upiIconSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#2563eb"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>';
   var waIconSVG  = '<svg viewBox="0 0 24 24" fill="#25d366" style="width:18px;height:18px"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>';
+  var bankIconSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#0d9488"><line x1="12" y1="2" x2="12" y2="6"/><path d="M3 10h18M5 10V20m4-10v10m4-10v10m4-10v10M3 20h18M3 6l9-4 9 4"/></svg>';
   var payHTML = '<div class="inv-pay">' +
-    '<div class="inv-pay-card"><div class="inv-pay-icon">' + upiIconSVG + '</div><div><div class="inv-pay-title">GPay / PhonePe / UPI</div><div class="inv-pay-detail">avadavakedavra@okicici</div><div class="inv-pay-note">Pay to UPI ID · works in any app</div></div></div>' +
+    '<div class="inv-pay-card"><div class="inv-pay-icon">' + upiIconSVG + '</div><div><div class="inv-pay-title">GPay / PhonePe / UPI</div><div class="inv-pay-detail">sehracademy@sib</div><div class="inv-pay-note">South Indian Bank · works in any UPI app</div></div></div>' +
     '<div class="inv-due-card"><div class="inv-due-label">Amount Due</div><div class="inv-due-date">₹' + grandTotal.toLocaleString('en-IN') + '</div><div class="inv-due-sub">Due: ' + dueStr + '</div></div>' +
-    '<div class="inv-pay-card"><div class="inv-pay-icon">' + waIconSVG + '</div><div><div class="inv-pay-title">WhatsApp Pay</div><div class="inv-pay-detail">+91 95394 09586</div><div class="inv-pay-note">Send to WhatsApp number</div></div></div>' +
+    '<div class="inv-pay-card"><div class="inv-pay-icon">' + bankIconSVG + '</div><div><div class="inv-pay-title">Bank Transfer (NEFT/IMPS)</div><div class="inv-pay-detail">0317073000042446</div><div class="inv-pay-note">IFSC: SIBL0000317 · South Indian Bank, Vadanappally · A/c: SEHR ACADEMY</div></div></div>' +
     '</div>';
 
   // ── Footnotes ──
