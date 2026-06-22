@@ -770,7 +770,13 @@ function goHome(){STUDS=[];ABSENT={};CLS=null;BOARD=null;g('stuList').innerHTML=
 function sendTicket(id){
   var txt=g(id).value.trim();if(!txt){g(id).focus();return;}
   var msg='*SEHR Academy — Teacher Ticket*\n\nFrom: *'+(T?T.name:'Teacher')+'*'+(CLS?' (Class '+CLS+(BOARD?'/'+BOARD:'')+')':'')+'\nDate: '+TODAY_DSP+'\n\n*Issue:*\n'+txt;
-  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(msg).then(function(){alert('Message copied! Paste into WhatsApp to send.');});
+  } else {
+    var ta=document.createElement('textarea');ta.value=msg;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+    alert('Message copied! Paste into WhatsApp to send.');
+  }
 }
 
 function tapBoard(el,board){
