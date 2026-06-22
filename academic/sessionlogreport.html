@@ -1048,6 +1048,35 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .hub-name{font-size:11px;font-weight:800;color:var(--text);letter-spacing:-.1px;line-height:1.2}
 .hub-tag{font-size:9px;font-weight:700;color:var(--text3)}
 
+/* ══ SUBJECT CONTINUITY VIEW ══ */
+.sv-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.sv-sel{padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;outline:none;transition:border-color .13s}
+.sv-sel:focus{border-color:var(--li)}
+.sv-empty{padding:32px 0;text-align:center;font-size:13px;color:var(--text3);font-style:italic}
+.sv-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:900px){.sv-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.sv-cards{grid-template-columns:1fr}}
+.sv-stat-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px}
+.sv-stat-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.sv-stat-value{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.5px}
+.sv-stat-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.sv-section-hd{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.sv-section-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+.sv-teacher-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);margin-bottom:8px}
+.sv-teacher-av{width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--li3);flex-shrink:0}
+.sv-teacher-name{font-size:13px;font-weight:800;color:var(--text);flex:1}
+.sv-teacher-meta{font-size:11px;color:var(--text3)}
+.sv-chapter-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);margin-bottom:6px}
+.sv-chapter-name{font-size:12px;font-weight:700;color:var(--text);flex:1}
+.sv-chapter-hrs{font-size:11px;font-weight:700;color:var(--li3);white-space:nowrap}
+.sv-chapter-date{font-size:10px;color:var(--text3);white-space:nowrap}
+.sv-session-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 14px;margin-bottom:8px}
+.sv-session-hd{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.sv-session-date{font-size:11px;font-weight:800;color:var(--text3)}
+.sv-session-teacher{font-size:12px;font-weight:800;color:var(--text)}
+.sv-session-time{font-size:11px;color:var(--text3);margin-left:auto}
+.sv-hw-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--amber)}
+
 /* ══ COLLAPSIBLE OVERVIEW SECTIONS ══ */
 .ov-section{margin-bottom:10px;border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;background:var(--bg2)}
 .ov-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border:none;background:transparent;cursor:pointer;font-family:var(--f);text-align:left;transition:background .13s}
@@ -1314,6 +1343,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="sb-item-label">Homework</div>
       </div>
+      <div class="sb-item" id="nav-subject" onclick="setView('subject',this)">
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="10" y1="9" x2="16" y2="9"/><line x1="10" y1="13" x2="14" y2="13"/></svg></div>
+        <div class="sb-item-label">Subject</div>
+      </div>
     </div>
     <div class="sb-divider"></div>
     <div class="sb-section">
@@ -1467,6 +1500,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
     <div id="vChapters" class="page-pad hidden"></div>
     <div id="vTeachers" class="page-pad hidden"></div>
     <div id="vHomework" class="page-pad hidden"></div>
+    <div id="vSubject" class="page-pad hidden"></div>
   </main>
 </div>
 
@@ -1667,8 +1701,8 @@ function setView(v,btn){
   CUR_VIEW=v;
   document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
-  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework'].forEach(function(id){g(id).classList.add('hidden');});
-  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker'};
+  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject'].forEach(function(id){g(id).classList.add('hidden');});
+  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity'};
   // Show/hide progress print button
   var pgPrintBtn=g('pgPrintBtn');
   if(pgPrintBtn) pgPrintBtn.style.display=(v==='progress'?'inline-flex':'none');
@@ -1707,6 +1741,7 @@ function renderAll(){
   else if(CUR_VIEW==='chapters')  renderChapters(data);
   else if(CUR_VIEW==='teachers')  renderTeachers(data);
   else if(CUR_VIEW==='homework')   renderHomework();
+  else if(CUR_VIEW==='subject')    renderSubjectView();
   buildPrintDoc(data,'ALL','','ALL');
 }
 
@@ -2640,8 +2675,8 @@ function sdet(k,v){return '<div class="sess-det-k">'+k+'</div><div class="sess-d
 function switchAttBoard(btn,panelId){
   var block=btn.closest('.att-block');
   block.querySelectorAll('.att-board-tab').forEach(function(b){b.classList.remove('on');});
-  // (replaced by getElementsByTagName loop above)
   btn.classList.add('on');
+  block.querySelectorAll('[id^="att-syl-"]').forEach(function(p){p.style.display='none';});
   var panel=g(panelId);if(panel)panel.style.display='block';
 }
 
@@ -3623,6 +3658,165 @@ function sendWAWeekly(btn){
   });
   lines.push('_SEHR Academy_');
   copyTextToClipboard(lines.join('\n'),btn);
+}
+
+/* ══ SUBJECT CONTINUITY VIEW ══ */
+var SV_CLS = null;
+var SV_SUBJ = null;
+
+function renderSubjectView(){
+  var el=g('vSubject');
+  var fc=parseCurCls();
+
+  // Build class list from all sessions
+  var clsSet={};
+  SESSIONS.forEach(function(r){
+    var key=r.class+(r.board?'|'+r.board:'');
+    if(!clsSet[key])clsSet[key]={cls:r.class,board:r.board||null};
+  });
+  var clsList=Object.values(clsSet).sort(function(a,b){return (+a.cls||0)-(+b.cls||0)||(a.board||'').localeCompare(b.board||'');});
+
+  // Default SV_CLS to current filter
+  if(!SV_CLS){
+    if(fc.cls) SV_CLS=fc.cls+(fc.board?'|'+fc.board:'');
+    else if(clsList.length) SV_CLS=clsList[0].cls+(clsList[0].board?'|'+clsList[0].board:'');
+  }
+
+  // Build subject list for selected class
+  var svFc=SV_CLS?(function(){var p=SV_CLS.split('|');return {cls:p[0],board:p[1]||null};}()):fc;
+  var subjSet=new Set();
+  SESSIONS.forEach(function(r){
+    if(svFc.cls&&r.class!==svFc.cls)return;
+    if(svFc.board&&r.board!==svFc.board)return;
+    if(r.subject)subjSet.add(r.subject);
+  });
+  var subjList=Array.from(subjSet).sort();
+  if(!SV_SUBJ||!subjSet.has(SV_SUBJ))SV_SUBJ=subjList[0]||null;
+
+  // Filters bar
+  var clsOpts=clsList.map(function(c){
+    var v=c.cls+(c.board?'|'+c.board:'');
+    return '<option value="'+esc(v)+'"'+(SV_CLS===v?' selected':'')+'>Class '+esc(c.cls)+(c.board?' · '+esc(c.board):'')+'</option>';
+  }).join('');
+  var subjOpts=subjList.map(function(s){
+    return '<option value="'+esc(s)+'"'+(SV_SUBJ===s?' selected':'')+'>'+esc(s)+'</option>';
+  }).join('');
+
+  var html='<div class="sv-filters">'+
+    '<select class="sv-sel" onchange="SV_CLS=this.value;SV_SUBJ=null;renderSubjectView()">'+clsOpts+'</select>'+
+    (subjList.length?'<select class="sv-sel" onchange="SV_SUBJ=this.value;renderSubjectView()">'+subjOpts+'</select>':'<span style="font-size:12px;color:var(--text3)">No subjects found</span>')+
+  '</div>';
+
+  if(!SV_SUBJ||!subjList.length){
+    el.innerHTML=html+'<div class="sv-empty">Select a class and subject to see continuity details.</div>';
+    return;
+  }
+
+  // Filter sessions for this class+subject (ALL TIME, no period filter)
+  var sessions=SESSIONS.filter(function(r){
+    if(svFc.cls&&r.class!==svFc.cls)return false;
+    if(svFc.board&&r.board!==svFc.board)return false;
+    return r.subject===SV_SUBJ;
+  }).sort(function(a,b){return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));});
+
+  if(!sessions.length){
+    el.innerHTML=html+'<div class="sv-empty">No sessions found for '+esc(SV_SUBJ)+' in this class.</div>';
+    return;
+  }
+
+  var totalMins=sessions.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var firstDate=sessions[sessions.length-1];
+  var lastDate=sessions[0];
+  var daysSpan=Math.round((new Date(sessDateToYMD(lastDate.date))-new Date(sessDateToYMD(firstDate.date)))/86400000)+1;
+
+  // --- KPI cards ---
+  html+='<div class="sv-cards">'+
+    '<div class="sv-stat-card"><div class="sv-stat-label">Total Sessions</div><div class="sv-stat-value">'+sessions.length+'</div><div class="sv-stat-sub">Over '+daysSpan+' day'+( daysSpan!==1?'s':'')+'</div></div>'+
+    '<div class="sv-stat-card"><div class="sv-stat-label">Teaching Time</div><div class="sv-stat-value">'+hrsFmt(totalMins)+'</div><div class="sv-stat-sub">'+Math.round(totalMins/60*10)/10+' hrs total</div></div>'+
+    '<div class="sv-stat-card"><div class="sv-stat-label">Last Taught</div><div class="sv-stat-value" style="font-size:16px">'+fmtShort(sessDateToYMD(lastDate.date))+'</div><div class="sv-stat-sub">by '+esc(lastDate.teacher_name)+'</div></div>'+
+  '</div>';
+
+  // --- Teachers ---
+  var teacherMap={};
+  sessions.forEach(function(r){
+    if(!teacherMap[r.teacher_id])teacherMap[r.teacher_id]={name:r.teacher_name,sessions:0,mins:0};
+    teacherMap[r.teacher_id].sessions++;
+    teacherMap[r.teacher_id].mins+=(+r.duration_mins||0);
+  });
+  var teachers=Object.values(teacherMap).sort(function(a,b){return b.mins-a.mins;});
+  html+='<div class="sv-section-hd">Teachers</div>';
+  teachers.forEach(function(t){
+    var initials=t.name.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase();
+    html+='<div class="sv-teacher-row">'+
+      '<div class="sv-teacher-av">'+esc(initials)+'</div>'+
+      '<div style="flex:1"><div class="sv-teacher-name">'+esc(t.name)+'</div><div class="sv-teacher-meta">'+t.sessions+' session'+(t.sessions!==1?'s':'')+' · '+hrsFmt(t.mins)+'</div></div>'+
+      '<div style="font-size:12px;font-weight:800;color:var(--li3)">'+hrsFmt(t.mins)+'</div>'+
+    '</div>';
+  });
+
+  // --- Chapters ---
+  var chapMap={};
+  sessions.forEach(function(r){
+    var mins=+r.duration_mins||0;
+    var chaps=(r.chapters||'').split(' | ').filter(Boolean);
+    var minsPer=chaps.length?Math.round(mins/chaps.length):0;
+    chaps.forEach(function(c){
+      if(!chapMap[c])chapMap[c]={mins:0,lastDate:''};
+      chapMap[c].mins+=minsPer;
+      var d=sessDateToYMD(r.date);
+      if(!chapMap[c].lastDate||d>chapMap[c].lastDate)chapMap[c].lastDate=d;
+    });
+  });
+  var chaps=Object.keys(chapMap).sort(function(a,b){return chapMap[b].mins-chapMap[a].mins;});
+  html+='<div class="sv-section-hd">Chapters Covered ('+chaps.length+')</div>';
+  if(chaps.length){
+    chaps.forEach(function(c){
+      html+='<div class="sv-chapter-row">'+
+        '<div class="sv-chapter-name">'+esc(c)+'</div>'+
+        '<div class="sv-chapter-date">Last: '+fmtShort(chapMap[c].lastDate)+'</div>'+
+        '<div class="sv-chapter-hrs">'+hrsFmt(chapMap[c].mins)+'</div>'+
+      '</div>';
+    });
+  } else {
+    html+='<div style="font-size:12px;color:var(--text3);font-style:italic;padding:8px 0">No chapters logged yet.</div>';
+  }
+
+  // --- Pending Homework ---
+  var hwSessions=sessions.filter(function(r){return r.homework&&r.homework.trim();});
+  if(hwSessions.length){
+    html+='<div class="sv-section-hd">Homework Assigned ('+hwSessions.length+')</div>';
+    hwSessions.slice(0,15).forEach(function(r){
+      var d=sessDateToYMD(r.date);
+      html+='<div class="sv-session-card">'+
+        '<div class="sv-session-hd">'+
+          '<span class="sv-session-date">'+fmtShort(d)+'</span>'+
+          '<span class="sv-session-teacher">'+esc(r.teacher_name)+'</span>'+
+          '<span class="sv-hw-chip"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="10" height="10"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>HW</span>'+
+        '</div>'+
+        '<div style="font-size:12px;color:var(--text2)">'+esc(r.homework)+'</div>'+
+      '</div>';
+    });
+  }
+
+  // --- Recent Sessions ---
+  html+='<div class="sv-section-hd">Recent Sessions</div>';
+  sessions.slice(0,10).forEach(function(r){
+    var d=sessDateToYMD(r.date);
+    var chaps=(r.chapters||'').split(' | ').filter(Boolean);
+    html+='<div class="sv-session-card">'+
+      '<div class="sv-session-hd">'+
+        '<span class="sv-session-date">'+fmtShort(d)+'</span>'+
+        '<span class="sv-session-teacher">'+esc(r.teacher_name)+'</span>'+
+        '<span class="sv-session-time">'+r.start_time+' – '+r.end_time+' · '+hrsFmt(+r.duration_mins||0)+'</span>'+
+      '</div>'+
+      (chaps.length?'<div style="font-size:11px;color:var(--text3);margin-bottom:4px">Chapters: '+chaps.map(function(c){return '<span style="background:var(--bg3);padding:1px 6px;border-radius:4px;margin-right:3px">'+esc(c)+'</span>';}).join('')+'</div>':'')+
+      (r.topics?'<div style="font-size:12px;color:var(--text2);margin-bottom:3px">'+esc(r.topics.substring(0,200))+'</div>':'')+
+      (r.homework&&r.homework.trim()?'<div class="sv-hw-chip" style="margin-top:4px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="10" height="10"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>HW: '+esc(r.homework.substring(0,120))+'</div>':'')+
+      (r.remarks?'<div style="font-size:11px;color:var(--text3);margin-top:3px;font-style:italic">Remarks: '+esc(r.remarks)+'</div>':'')+
+    '</div>';
+  });
+
+  el.innerHTML=html;
 }
 
 /* ══ SEARCH ══ */
