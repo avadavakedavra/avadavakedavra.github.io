@@ -3436,8 +3436,7 @@ function toggleOvSection(btn){
   body.classList.toggle('collapsed',expanded);
 }
 
-function copyTextToClipboard(text,btn,label){
-  label=label||'Copy';
+function copyTextToClipboard(text,btn){
   function showFeedback(){
     if(!btn)return;
     var lbl=btn.querySelector('.btn-lbl')||btn;
@@ -3456,6 +3455,7 @@ function copyTextToClipboard(text,btn,label){
     document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showFeedback();
   }
 }
+
 function sendWAClass(btn,cls,stream,board){
   var dayData=SESSIONS.filter(function(r){return sessDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!stream||r.stream===stream)&&(!board||board==='ALL'||r.board===board);});
   var attRows=ATTENDANCE.filter(function(r){return attDateToYMD(r.date)===CUR_DATE&&r.class===cls&&(!board||board==='ALL'||r.syllabus===boardToSyl(board));});
