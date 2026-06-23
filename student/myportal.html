@@ -298,18 +298,24 @@ function onClsChange(){
 }
 
 function loadStudents(cls, syl){
-  fetch(STU_API+'?action=studentList&password='+encodeURIComponent(STU_PASS))
-    .then(function(r){return r.json();})
-    .then(function(data){
-      var raw=Array.isArray(data)?data:(Array.isArray(data.students)?data.students:[]);
+  var url = ATT_API + '?data=' + encodeURIComponent(JSON.stringify({action:'getStudents',class:cls,syllabus:syl}));
+  fetch(url)
+    .then(function(r){return r.text();})
+    .then(function(t){
+      var data;
+      try{data=JSON.parse(t);}catch(e){data=null;}
+      var raw=(data&&data.students)||[];
       ALL_STUDENTS=raw.filter(function(s){
-        var sSyl=String(s.syllabus||'');
-        // sheet may store 'STATE'/'CBSE' or 'Kerala State'/'CBSE'
-        var sylMatch=sSyl===syl||(syl==='STATE'&&sSyl==='Kerala State')||(syl==='Kerala State'&&sSyl==='STATE');
-        return String(s.class||'')==String(cls) && sylMatch && String(s.status||'Active').toLowerCase()!=='inactive';
+        return String(s.status||'').toUpperCase()!=='INACTIVE' &&
+               String(s.admission_status||'').toUpperCase()!=='INACTIVE';
       }).sort(function(a,b){return String(a.full_name||'').localeCompare(String(b.full_name||''));});
       var nameSel=g('nameSel');
       nameSel.innerHTML='<option value="">— Select your name —</option>';
+      if(!ALL_STUDENTS.length){
+        nameSel.innerHTML='<option value="">No students found</option>';
+        g('loginErr').textContent='No students found for this class/syllabus.';
+        return;
+      }
       ALL_STUDENTS.forEach(function(s,i){
         nameSel.innerHTML+='<option value="'+i+'">'+esc(s.full_name||'')+'</option>';
       });
@@ -335,11 +341,12 @@ function doLogin(){
 
   // Normalise birthday from sheet (could be DD/MM/YYYY or YYYY-MM-DD or text)
   var stuBday=normDate(stu.birthday||'');
-  var entered=dob; // already YYYY-MM-DD from input[type=date]
-
-  if(!stuBday||stuBday!==entered){
-    err.textContent='Date of birth does not match. Please try again.';
-    return;
+  if(stuBday){
+    var entered=dob; // already YYYY-MM-DD from input[type=date]
+    if(stuBday!==entered){
+      err.textContent='Date of birth does not match. Please try again.';
+      return;
+    }
   }
 
   err.textContent='';
