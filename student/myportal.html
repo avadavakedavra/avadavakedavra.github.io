@@ -438,12 +438,11 @@ function loadData(){
       attDone=true; tryRender();
     }).catch(function(){attDone=true; tryRender();});
 
-  // Load sessions
-  fetch(SESS_API+'?data='+encodeURIComponent(JSON.stringify({action:'getAllLogs',appkey:SESS_PASS})))
+  // Load sessions — SESS_API uses plain query params, not JSON
+  fetch(SESS_API+'?action=getAllLogs&appkey='+encodeURIComponent(SESS_PASS))
     .then(function(r){return r.text();})
     .then(function(t){
       var data; try{data=JSON.parse(t);}catch(e){data=null;}
-      // Accept both {success:true,logs:[]} and {logs:[]} and plain array
       SESS_LOGS=Array.isArray(data)?data:((data&&(data.logs||data.data))||[]);
       sessDone=true; tryRender();
     }).catch(function(){sessDone=true; tryRender();});
