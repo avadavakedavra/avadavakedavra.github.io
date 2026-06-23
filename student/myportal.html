@@ -440,9 +440,11 @@ function loadData(){
 
   // Load sessions
   fetch(SESS_API+'?data='+encodeURIComponent(JSON.stringify({action:'getAllLogs',appkey:SESS_PASS})))
-    .then(function(r){return r.json();})
-    .then(function(data){
-      SESS_LOGS=(data&&data.success&&data.logs)||[];
+    .then(function(r){return r.text();})
+    .then(function(t){
+      var data; try{data=JSON.parse(t);}catch(e){data=null;}
+      // Accept both {success:true,logs:[]} and {logs:[]} and plain array
+      SESS_LOGS=Array.isArray(data)?data:((data&&(data.logs||data.data))||[]);
       sessDone=true; tryRender();
     }).catch(function(){sessDone=true; tryRender();});
 }
@@ -472,15 +474,23 @@ function renderHome(){
   var sylCode=board==='Kerala State'?'STATE':'CBSE';
 
   var myAtt=ATT_RECORDS.filter(function(r){return String(r.student_id)===String(sid);});
+
+  // Match sessions: class + (any board variant)
   var mySess=SESS_LOGS.filter(function(r){
-    return String(r.class||'')==cls && (r.board===board||r.board===sylCode);
+    if(String(r.class||'')!==cls) return false;
+    var rb=String(r.board||'').toUpperCase().trim();
+    return rb===board.toUpperCase()||rb===sylCode.toUpperCase()||rb===''||
+           (sylCode==='STATE'&&(rb==='KERALA STATE'||rb==='KERALA'))||
+           (sylCode==='CBSE'&&rb==='CBSE');
   });
 
+  // Debug info (shown in subtitle until we confirm data flows correctly)
+  var debugInfo=' ['+SESS_LOGS.length+' logs, '+mySess.length+' matched, '+myAtt.length+' att]';
   var subjFromStu=(CUR_STUDENT.subjects||'').split(/[,;]/).map(function(s){return s.trim();}).filter(Boolean);
   var subjFromSess=Array.from(new Set(mySess.map(function(r){return r.subject||'';})).values()).filter(Boolean);
   var allSubjs=Array.from(new Set(subjFromStu.concat(subjFromSess))).filter(Boolean).sort();
 
-  g('homeSubtitle').textContent='Class '+cls+' · '+sylLabel(syl)+' · '+allSubjs.length+' subject'+(allSubjs.length!==1?'s':'');
+  g('homeSubtitle').textContent='Class '+cls+' · '+sylLabel(syl)+' · '+allSubjs.length+' subject'+(allSubjs.length!==1?'s':'')+debugInfo;
 
   if(!allSubjs.length){
     g('homeSummary').innerHTML='';
