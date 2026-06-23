@@ -146,11 +146,40 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--li);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── SUMMARY BANNER ── */
+.summary-banner{background:linear-gradient(135deg,#1a2e0a,#0d4f3c);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+.sum-stat{text-align:center;flex:1;min-width:80px}
+.sum-stat-val{font-size:22px;font-weight:900;color:#fff;line-height:1;letter-spacing:-1px}
+.sum-stat-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.sum-divider{width:1px;height:40px;background:rgba(255,255,255,.1);flex-shrink:0}
+
+/* ── MONTH BAR MINI ── */
+.month-bars{display:flex;gap:3px;align-items:flex-end;height:28px;padding:0 0 2px}
+.month-bar{flex:1;border-radius:2px 2px 0 0;min-height:3px;background:rgba(139,197,63,.3)}
+.month-bar.fill{background:var(--li)}
+
+/* ── PENDING HW BANNER ── */
+.hw-pending-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:12px;color:#92400e;font-weight:600}
+.hw-pending-icon{font-size:18px;flex-shrink:0}
+
+/* ── MONTHLY HOURS CHART ── */
+.month-chart{padding:14px 18px}
+.month-chart-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.month-chart-lbl{font-size:10px;font-weight:700;color:var(--text3);width:32px;text-align:right;flex-shrink:0}
+.month-chart-bar-wrap{flex:1;height:14px;background:var(--bg3);border-radius:3px;overflow:hidden;position:relative}
+.month-chart-bar{height:14px;border-radius:3px;background:linear-gradient(90deg,var(--li),var(--li2));min-width:3px;transition:width .5s}
+.month-chart-bar.absent{background:rgba(220,38,38,.4)}
+.month-chart-val{font-size:10px;font-weight:700;color:var(--text3);width:28px;flex-shrink:0}
+
+/* ── ABSENT STREAK WARNING ── */
+.streak-warn{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.18);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:11px;color:#991b1b;font-weight:600;margin-bottom:14px}
+
 @media(max-width:600px){
   .app-body{padding:16px}
   .kpi-row{grid-template-columns:repeat(2,1fr)}
   .topbar{padding:0 16px}
   .batch-grid{grid-template-columns:1fr}
+  .summary-banner{gap:16px}
 }
 </style>
 </head>
@@ -234,6 +263,8 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
         <div class="page-title">My <em>Classes</em></div>
         <div class="page-sub" id="homeSubtitle"></div>
       </div>
+      <div id="homeSummary"></div>
+      <div id="homePendingHw"></div>
       <div id="batchGrid" class="batch-grid"></div>
     </div>
 
@@ -351,6 +382,9 @@ function doLogin(){
 
   err.textContent='';
   CUR_STUDENT=stu;
+  // getStudents doesn't return class/syllabus — take them from the login form
+  CUR_STUDENT.class=g('clsSel').value;
+  CUR_STUDENT.syllabus=CUR_STUDENT.syllabus||g('sylSel').value;
   bootApp();
 }
 
@@ -434,44 +468,93 @@ function renderHome(){
   var sid=CUR_STUDENT.id;
   var cls=String(CUR_STUDENT.class||'');
   var syl=CUR_STUDENT.syllabus||'';
-  var board=sylToBoard(syl); // 'Kerala State' or 'CBSE'
+  var board=sylToBoard(syl);
   var sylCode=board==='Kerala State'?'STATE':'CBSE';
 
-  // My attendance records
-  var myAtt=ATT_RECORDS.filter(function(r){return r.student_id===sid;});
-
-  // My sessions (class+board match — sessions store board as 'Kerala State'/'CBSE')
+  var myAtt=ATT_RECORDS.filter(function(r){return String(r.student_id)===String(sid);});
   var mySess=SESS_LOGS.filter(function(r){
     return String(r.class||'')==cls && (r.board===board||r.board===sylCode);
   });
 
-  // Get subjects from student record + session data
   var subjFromStu=(CUR_STUDENT.subjects||'').split(/[,;]/).map(function(s){return s.trim();}).filter(Boolean);
   var subjFromSess=Array.from(new Set(mySess.map(function(r){return r.subject||'';})).values()).filter(Boolean);
   var allSubjs=Array.from(new Set(subjFromStu.concat(subjFromSess))).filter(Boolean).sort();
-  if(!allSubjs.length) allSubjs=subjFromSess;
 
   g('homeSubtitle').textContent='Class '+cls+' · '+sylLabel(syl)+' · '+allSubjs.length+' subject'+(allSubjs.length!==1?'s':'');
 
   if(!allSubjs.length){
+    g('homeSummary').innerHTML='';
+    g('homePendingHw').innerHTML='';
     g('batchGrid').innerHTML='<div class="no-batches"><div class="no-batches-ico">📚</div><div class="no-batches-title">No subjects found</div><div>Check back after your class sessions are recorded.</div></div>';
     return;
   }
 
+  // Overall stats for the summary banner
+  var totalSessAll=mySess.length;
+  var totalMinsAll=mySess.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var presentAll=myAtt.filter(function(r){return r.status==='Present';}).length;
+  var totalAttAll=myAtt.length||totalSessAll;
+  var overallPct=pct(presentAll,totalAttAll);
+  var chaptersAll=[];
+  mySess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){if(chaptersAll.indexOf(c)===-1)chaptersAll.push(c);});});
+
+  // Monthly hours (last 6 months)
+  var monthMap={};
+  mySess.forEach(function(r){
+    var d=sessDateToYMD(r.date);if(!d)return;
+    var key=d.slice(0,7);
+    monthMap[key]=(monthMap[key]||0)+(+r.duration_mins||0);
+  });
+  var monthKeys=Object.keys(monthMap).sort().slice(-6);
+  var maxMins=monthKeys.reduce(function(a,k){return Math.max(a,monthMap[k]);},1);
+
+  var summaryHtml='<div class="summary-banner">';
+  summaryHtml+='<div class="sum-stat"><div class="sum-stat-val">'+overallPct+'%</div><div class="sum-stat-lbl">Overall Attendance</div></div>';
+  summaryHtml+='<div class="sum-divider"></div>';
+  summaryHtml+='<div class="sum-stat"><div class="sum-stat-val">'+presentAll+'/'+totalAttAll+'</div><div class="sum-stat-lbl">Sessions Present</div></div>';
+  summaryHtml+='<div class="sum-divider"></div>';
+  summaryHtml+='<div class="sum-stat"><div class="sum-stat-val">'+hrsFmt(totalMinsAll)+'</div><div class="sum-stat-lbl">Total Class Hours</div></div>';
+  summaryHtml+='<div class="sum-divider"></div>';
+  summaryHtml+='<div class="sum-stat"><div class="sum-stat-val">'+chaptersAll.length+'</div><div class="sum-stat-lbl">Chapters Covered</div></div>';
+  if(monthKeys.length){
+    summaryHtml+='<div class="sum-divider"></div>';
+    summaryHtml+='<div class="sum-stat" style="min-width:80px"><div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Monthly Hours</div>';
+    summaryHtml+='<div class="month-bars">';
+    monthKeys.forEach(function(k){
+      var h=Math.round((monthMap[k]/maxMins)*100);
+      var mon=MONTHS_S[parseInt(k.slice(5))-1];
+      summaryHtml+='<div class="month-bar fill" style="height:'+Math.max(h,6)+'%" title="'+mon+': '+hrsFmt(monthMap[k])+'"></div>';
+    });
+    summaryHtml+='</div></div>';
+  }
+  summaryHtml+='</div>';
+  g('homeSummary').innerHTML=summaryHtml;
+
+  // Pending homework banner
+  var pendingHw=mySess.filter(function(r){return (r.homework||'').trim();});
+  if(pendingHw.length){
+    var hwHtml='<div class="hw-pending-banner"><div class="hw-pending-icon">✏️</div>';
+    hwHtml+='<div><strong>'+pendingHw.length+' homework assignment'+(pendingHw.length>1?'s':'')+' given</strong> — tap a subject to review pending tasks.</div></div>';
+    g('homePendingHw').innerHTML=hwHtml;
+  } else {
+    g('homePendingHw').innerHTML='';
+  }
+
+  // Subject cards
   var html='';
   allSubjs.forEach(function(subj){
     var sessSub=mySess.filter(function(r){return r.subject===subj;});
     var totalMins=sessSub.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
     var totalSess=sessSub.length;
-
-    // My attendance for sessions of this subject
-    var sessSubDates=Array.from(new Set(sessSub.map(function(r){return sessDateToYMD(r.date);})));
+    var sessSubDates=sessSub.map(function(r){return sessDateToYMD(r.date);});
     var myAttSub=myAtt.filter(function(r){return sessSubDates.indexOf(attDateToYMD(r.date))>-1;});
     var present=myAttSub.filter(function(r){return r.status==='Present';}).length;
     var total=myAttSub.length||sessSubDates.length;
     var attPct=pct(present,total);
+    var hwCount=sessSub.filter(function(r){return (r.homework||'').trim();}).length;
+    var chapCount=[];
+    sessSub.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){if(chapCount.indexOf(c)===-1)chapCount.push(c);});});
 
-    // Attendance ring color
     var ringColor=attPct>=75?'#8BC53F':attPct>=50?'#f59e0b':'#dc2626';
     var circumf=2*Math.PI*16;
     var dash=circumf*(attPct/100);
@@ -487,8 +570,8 @@ function renderHome(){
     html+='<div class="batch-card-meta">'+totalSess+' session'+(totalSess!==1?'s':'')+' · '+hrsFmt(totalMins)+'</div>';
     html+='<div class="batch-card-stats">';
     html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+present+'</div><div class="batch-card-stat-lbl">Present</div></div>';
-    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+totalSess+'</div><div class="batch-card-stat-lbl">Sessions</div></div>';
-    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+hrsFmt(totalMins)+'</div><div class="batch-card-stat-lbl">Hours</div></div>';
+    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+chapCount.length+'</div><div class="batch-card-stat-lbl">Chapters</div></div>';
+    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+(hwCount||'—')+'</div><div class="batch-card-stat-lbl">Homework</div></div>';
     html+='</div>';
     html+='</div></div>';
   });
@@ -546,7 +629,24 @@ function showDetail(subj){
   // Unique teachers
   var teachers=Array.from(new Set(mySess.map(function(r){return r.teacher_name||'';})).values()).filter(Boolean);
 
-  // Colour for attendance
+  // Consecutive absences (from most recent sessions)
+  var sortedDates=sessDateSet.slice().sort();
+  var consAbsent=0;
+  for(var ci=sortedDates.length-1;ci>=0;ci--){
+    if(attMap[sortedDates[ci]]==='Absent') consAbsent++;
+    else break;
+  }
+
+  // Monthly attendance breakdown
+  var monthAttMap={};
+  sessDateSet.forEach(function(d){
+    var key=d.slice(0,7);
+    if(!monthAttMap[key]) monthAttMap[key]={p:0,t:0};
+    monthAttMap[key].t++;
+    if(attMap[d]==='Present') monthAttMap[key].p++;
+  });
+  var monthKeys=Object.keys(monthAttMap).sort();
+
   var attColor=attPct>=75?'var(--li)':attPct>=50?'var(--amber)':'var(--red)';
   var attBadge=attPct>=75?'badge-g':attPct>=50?'badge-a':'badge-r';
 
@@ -558,41 +658,66 @@ function showDetail(subj){
   html+='<div class="detail-hdr-info">';
   html+='<div class="detail-hdr-title">'+esc(subj)+'</div>';
   html+='<div class="detail-hdr-meta">Class '+esc(cls)+' · '+esc(sylLabel(syl))+(teachers.length?' · '+esc(teachers.join(', ')):'')+'</div>';
-  html+='<div class="detail-hdr-badges"><span class="badge '+attBadge+'">'+attPct+'% Attendance</span><span class="badge badge-b">'+mySess.length+' Sessions</span><span class="badge badge-n">'+allChapters.length+' Chapter'+(allChapters.length!==1?'s':'')+'</span></div>';
+  html+='<div class="detail-hdr-badges"><span class="badge '+attBadge+'">'+attPct+'% Attendance</span><span class="badge badge-b">'+mySess.length+' Sessions</span><span class="badge badge-n">'+allChapters.length+' Chapter'+(allChapters.length!==1?'s':'')+'</span>'+(hwSess.length?'<span class="badge badge-a">'+hwSess.length+' Homework</span>':'')+'</div>';
   html+='</div></div>';
 
   // KPIs
   html+='<div class="kpi-row">';
-  html+=kpi(present+'/'+total,'Classes Attended','Out of '+total+' sessions');
-  html+=kpi(hrsFmt(minsAttended),'Hours Present',hrsFmt(totalMins)+' total');
+  html+=kpi(present+'/'+total,'Classes Attended','out of '+total+' sessions');
+  html+=kpi(hrsFmt(minsAttended),'Hours Present',hrsFmt(totalMins)+' total class time');
   html+=kpi(attPct+'%','Attendance Rate',attPct>=75?'✓ Good standing':attPct>=50?'Needs improvement':'Below minimum');
   html+=kpi(allChapters.length,'Chapters Covered','across '+mySess.length+' sessions');
-  html+=kpi(hwSess.length,'Homework Given','to follow up');
+  html+=kpi(hwSess.length||'—','Homework Assigned','check below for details');
   html+='</div>';
 
-  // Attendance progress bar
+  // Consecutive absence warning
+  if(consAbsent>=2){
+    html+='<div class="streak-warn">⚠️ You were absent for the last '+consAbsent+' consecutive sessions. Please inform your teacher.</div>';
+  }
+
+  // Attendance section
   html+='<div class="section-card">';
   html+='<div class="section-hd"><span style="font-size:16px">📅</span><span class="section-hd-title">Attendance</span><span class="section-hd-count">'+present+' / '+total+'</span></div>';
   html+='<div style="padding:14px 18px 6px">';
-  html+='<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px"><span>'+present+' Present</span><span style="color:'+attColor+'">'+attPct+'%</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px"><span>'+present+' Present · '+(total-present)+' Absent</span><span style="color:'+attColor+'">'+attPct+'%</span></div>';
   html+='<div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:'+attPct+'%;background:'+attColor+'"></div></div>';
-  html+='<div style="font-size:10px;color:var(--text3);margin-top:8px">Minimum required: 75% · '+(attPct>=75?'<span style="color:var(--li)">You meet the requirement ✓</span>':'<span style="color:var(--red)">You need '+(Math.ceil((0.75*total-present)/(1-0.75)))+' more attended sessions</span>')+'</div>';
+  var sessNeeded=Math.max(0,Math.ceil((0.75*total-present)/(1-0.75)));
+  html+='<div style="font-size:10px;color:var(--text3);margin-top:8px">Minimum required: 75% · '+(attPct>=75?'<span style="color:var(--li)">You meet the requirement ✓</span>':'<span style="color:var(--red)">Attend '+sessNeeded+' more consecutive sessions to reach 75%</span>')+'</div>';
   html+='</div>';
 
   // Calendar dots
   if(sessDateSet.length){
     html+='<div class="att-cal">';
-    sessDateSet.slice().sort().forEach(function(d){
+    sortedDates.forEach(function(d){
       var status=attMap[d]||'Present';
       var cls2=status==='Present'?'present':'absent';
       var p=d.split('-');
-      html+='<div class="att-dot '+cls2+'" title="'+d+' — '+status+'">';
+      html+='<div class="att-dot '+cls2+'" title="'+fmtShort(d)+' — '+status+'">';
       html+='<span>'+parseInt(p[2])+'</span><span class="att-dot-date">'+MONTHS_S[parseInt(p[1])-1]+'</span>';
       html+='</div>';
     });
     html+='</div>';
   }
   html+='</div>';
+
+  // Monthly breakdown
+  if(monthKeys.length>1){
+    html+='<div class="section-card">';
+    html+='<div class="section-hd"><span style="font-size:16px">📊</span><span class="section-hd-title">Monthly Breakdown</span></div>';
+    html+='<div class="month-chart">';
+    monthKeys.forEach(function(k){
+      var mv=monthAttMap[k];
+      var mp=pct(mv.p,mv.t);
+      var color=mp>=75?'var(--li)':mp>=50?'var(--amber)':'var(--red)';
+      var mon=MONTHS_S[parseInt(k.slice(5))-1]+' '+k.slice(0,4);
+      html+='<div class="month-chart-row">';
+      html+='<div class="month-chart-lbl">'+MONTHS_S[parseInt(k.slice(5))-1]+'</div>';
+      html+='<div class="month-chart-bar-wrap"><div class="month-chart-bar" style="width:'+mp+'%;background:'+color+'"></div></div>';
+      html+='<div class="month-chart-val" style="color:'+color+'">'+mp+'%</div>';
+      html+='</div>';
+    });
+    html+='</div></div>';
+  }
 
   // Chapters
   if(allChapters.length){
@@ -606,7 +731,7 @@ function showDetail(subj){
   // Homework
   if(hwSess.length){
     html+='<div class="section-card">';
-    html+='<div class="section-hd"><span style="font-size:16px">✏️</span><span class="section-hd-title">Homework</span><span class="section-hd-count">'+hwSess.length+'</span></div>';
+    html+='<div class="section-hd"><span style="font-size:16px">✏️</span><span class="section-hd-title">Homework Assigned</span><span class="section-hd-count">'+hwSess.length+'</span></div>';
     hwSess.forEach(function(r){
       html+='<div class="hw-item">';
       html+='<div class="hw-date-badge">'+fmtShort(sessDateToYMD(r.date))+'</div>';
@@ -617,6 +742,12 @@ function showDetail(subj){
     html+='</div>';
   }
 
+  // Exam results placeholder
+  html+='<div class="section-card">';
+  html+='<div class="section-hd"><span style="font-size:16px">🏆</span><span class="section-hd-title">Exam Results</span><span class="section-hd-count" style="color:var(--text3)">Coming Soon</span></div>';
+  html+='<div style="padding:20px 18px;font-size:12px;color:var(--text3);font-style:italic">Exam results will appear here once recorded by your teacher.</div>';
+  html+='</div>';
+
   // Session timeline
   html+='<div class="section-card">';
   html+='<div class="section-hd"><span style="font-size:16px">📋</span><span class="section-hd-title">Session History</span><span class="section-hd-count">'+mySess.length+'</span></div>';
@@ -625,13 +756,13 @@ function showDetail(subj){
     mySess.forEach(function(r){
       var d=sessDateToYMD(r.date);
       var p=d.split('-');
-      var dur=+r.duration_mins;var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60?dur%60+'m':''):dur+'m';
+      var dur=+r.duration_mins;var durStr=dur>=60?Math.floor(dur/60)+'h'+(dur%60?' '+dur%60+'m':''):dur+'m';
       var chaps=(r.chapters||'').split(' | ').filter(Boolean);
       var attended=attMap[d];
       html+='<div class="sess-row">';
       html+='<div class="sess-date-col"><div class="sess-date-d">'+parseInt(p[2])+'</div><div class="sess-date-m">'+MONTHS_S[parseInt(p[1])-1]+'</div></div>';
       html+='<div class="sess-body">';
-      html+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><div class="sess-teacher">'+esc(r.teacher_name||'')+'</div>';
+      html+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><div class="sess-teacher">'+esc(r.teacher_name||'Teacher')+'</div>';
       if(attended) html+='<span class="badge '+(attended==='Present'?'badge-g':'badge-r')+'" style="font-size:9px">'+attended+'</span>';
       html+='</div>';
       if(r.topics) html+='<div class="sess-topics">'+esc(r.topics)+'</div>';
