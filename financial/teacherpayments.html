@@ -499,7 +499,7 @@ select.form-inp{cursor:pointer}
     <div><label class="form-lbl">Amount (auto)</label><input class="form-inp" id="ses_amount" type="number" readonly></div>
   </div>
   <div id="rateHint" class="rate-hint" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="rateHintTxt"></span></div>
-  <div class="form-row"><label class="form-lbl">Notes</label><input class="form-inp" id="ses_notes" placeholder="Remarks..."></div>
+  <div class="form-row"><label class="form-lbl">Syllabus</label><select class="form-inp" id="ses_notes"><option value="">— Select —</option><option value="STATE">Kerala State</option><option value="CBSE">CBSE</option></select></div>
   </div><div class="modal-foot"><button class="btn-cancel" onclick="closeModal('modalSession')">Cancel</button><button class="btn-submit" id="submitSession" onclick="submitSession()">Add Session</button></div></div>
 </div>
 
@@ -529,6 +529,7 @@ select.form-inp{cursor:pointer}
     <option value="PM" selected>PM</option>
   </select>
 </div></div><div><label class="form-lbl">Duration *</label><select class="form-inp" id="bk_dur"><option value="0.5">0.5 hr</option><option value="1" selected>1 hr</option><option value="1.5">1.5 hrs</option><option value="2">2 hrs</option><option value="2.5">2.5 hrs</option><option value="3">3 hrs</option></select></div><div><label class="form-lbl">Rate (Rs/hr) <span style="color:var(--teal)">auto</span></label><input class="form-inp" id="bk_rate" type="number" placeholder="300"></div></div>
+  <div class="form-row"><label class="form-lbl">Syllabus</label><select class="form-inp" id="bk_notes"><option value="">— Select —</option><option value="STATE">Kerala State</option><option value="CBSE">CBSE</option></select></div>
   <div id="bkPreviewWrap" style="display:none"><label class="form-lbl">Preview — uncheck to skip</label><div class="bulk-preview" id="bkList"></div><div class="bulk-count" id="bkCount"></div></div>
   </div><div class="modal-foot"><button class="btn-cancel" onclick="closeModal('modalBulk')">Cancel</button><button class="btn-submit" id="submitBulk" onclick="submitBulk()">Schedule All</button></div></div>
 </div>
@@ -1061,7 +1062,7 @@ function openEditSess(ev,sid){
   SUBJECT_OPTS.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;if(s===r.subject)o.selected=true;g('ses_subject').appendChild(o);});
   g('ses_mode').value=r.mode||'Offline';g('ses_dur').value=r.duration_hrs||'1';
   g('ses_rate').value=r.rate_per_hr||'';g('ses_amount').value=r.amount||'';
-  g('ses_status').value=r.status||'Scheduled';g('ses_notes').value=r.notes||'';
+  g('ses_status').value=r.status||'Scheduled';g('ses_notes').value=r.notes||'';if(g('ses_notes').tagName==='SELECT'){var sn=g('ses_notes');var nv=String(r.notes||'').toUpperCase().indexOf('STATE')>-1?'STATE':String(r.notes||'').toUpperCase().indexOf('CBSE')>-1?'CBSE':'';sn.value=nv;}
   g('rateHint').style.display='none';openModal('modalSession');
 }
 function onSesFieldChange(){
@@ -1204,7 +1205,7 @@ function submitBulk(){
   var btn=g('submitBulk');btn.disabled=true;btn.textContent='Scheduling...';
   var rate=parseFloat(g('bk_rate').value)||0,dur=parseFloat(g('bk_dur').value)||1,time=g('bk_time').value.trim();
   var sessions=checked.map(function(date){
-    return{teacher_id:tid,date:date,start_time:time,duration:dur,'class':cls,subject:subj,mode:mode,rate:rate,amount:parseFloat((dur*rate).toFixed(2)),status:'Scheduled',notes:''};
+    var bkSyl=g('bk_notes')?g('bk_notes').value:'';return{teacher_id:tid,date:date,start_time:time,duration:dur,'class':cls,subject:subj,mode:mode,rate:rate,amount:parseFloat((dur*rate).toFixed(2)),status:'Scheduled',notes:bkSyl};
   });
   var params='action=addSessionBatch&password='+encodeURIComponent(PASSWORD)+'&sessions='+encodeURIComponent(JSON.stringify(sessions));
   fetch(API+'?'+params).then(function(r){return r.json();}).then(function(data){

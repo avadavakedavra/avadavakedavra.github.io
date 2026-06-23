@@ -4911,9 +4911,18 @@ document.addEventListener('click',function(e){if(!g('dpWrap').contains(e.target)
 /* ══ DAILY BRIEFING ══ */
 function parseSylFromNotes(notes){
   if(!notes) return '';
-  var n=notes.toUpperCase();
+  var n=notes.toUpperCase().trim();
+  if(n==='CBSE') return 'CBSE';
+  if(n==='STATE') return 'STATE';
+  // fallback for legacy free-text notes
   if(n.indexOf('CBSE')>-1) return 'CBSE';
-  if(n.indexOf('STATE')>-1||n.indexOf('KERALA')>-1) return 'State';
+  if(n.indexOf('STATE')>-1||n.indexOf('KERALA')>-1) return 'STATE';
+  return '';
+}
+function sylToBoard(syl){
+  // map schedule syllabus code → academic session board label
+  if(syl==='CBSE') return 'CBSE';
+  if(syl==='STATE') return 'Kerala State';
   return '';
 }
 
@@ -4997,30 +5006,31 @@ function renderBriefing(){
     var dur=sch.duration?sch.duration+'hr':'';
     var notes=String(sch.notes||'');
 
-    // Last 3 sessions of same class+subject from academic log
+    var board=sylToBoard(syl);
+
+    // Last 3 sessions of same class+subject+board from academic log
     var history=SESSIONS.filter(function(r){
-      return r.class===cls && r.subject===subj && sessDateToYMD(r.date)<todayYMD;
+      return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<todayYMD;
     }).sort(function(a,b){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,3);
 
-    // Pending homework: sessions with homework that hasn't been followed up
-    // (show homeworks from last 14 sessions of this class, that have hw text)
+    // Pending homework for this class+board
     var hwSessions=SESSIONS.filter(function(r){
-      return r.class===cls && (r.homework||'').trim()!=='';
+      return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
     }).sort(function(a,b){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,6);
 
-    // Expected students: avg attendance over last 10 sessions of this class
+    // Expected students: avg attendance filtered by class+board (syllabus)
     var attHistory=ATTENDANCE.filter(function(r){
-      return r.class===cls && attDateToYMD(r.date)<todayYMD;
+      return r.class===cls && (!board||(r.syllabus&&r.syllabus===boardToSyl(board))) && attDateToYMD(r.date)<todayYMD;
     });
     var attDates=Array.from(new Set(attHistory.map(function(r){return attDateToYMD(r.date);}))).sort().slice(-10);
-    var avgAtt=0, totalAtt=ATTENDANCE.filter(function(r){return r.class===cls&&attDates.indexOf(attDateToYMD(r.date))>-1&&r.status==='Present';}).length;
-    var totalStu=ATTENDANCE.filter(function(r){return r.class===cls&&attDates.indexOf(attDateToYMD(r.date))>-1;}).length;
+    var totalAtt=attHistory.filter(function(r){return attDates.indexOf(attDateToYMD(r.date))>-1&&r.status==='Present';}).length;
+    var totalStu=attHistory.filter(function(r){return attDates.indexOf(attDateToYMD(r.date))>-1;}).length;
     var avgPct=totalStu>0?Math.round(totalAtt/totalStu*100):0;
-    var totalEnrolled=Array.from(new Set(ATTENDANCE.filter(function(r){return r.class===cls;}).map(function(r){return r.student_id;}))).length;
+    var totalEnrolled=Array.from(new Set(ATTENDANCE.filter(function(r){return r.class===cls&&(!board||(r.syllabus&&r.syllabus===boardToSyl(board)));}).map(function(r){return r.student_id;}))).length;
 
     html+='<div class="brief-card" id="brief-card-'+idx+'">';
 
@@ -5028,12 +5038,11 @@ function renderBriefing(){
     html+='<div class="brief-card-hdr">'+
       '<div style="flex:1">'+
         '<div class="brief-card-teacher">'+esc(teacherName)+'</div>'+
-        '<div class="brief-card-meta">Class '+esc(cls)+' · '+esc(subj)+(time?' · '+esc(time):'')+(dur?' ('+esc(dur)+')':'')+(mode?' · '+esc(mode):'')+'</div>'+
+        '<div class="brief-card-meta">Class '+esc(cls)+(syl?' · '+esc(syl==='STATE'?'Kerala State':'CBSE'):'')+' · '+esc(subj)+(time?' · '+esc(time):'')+(dur?' ('+esc(dur)+')':'')+(mode?' · '+esc(mode):'')+'</div>'+
         '<div class="brief-card-badges">'+
-          (syl?'<span class="badge badge-b">'+esc(syl)+'</span>':'')+
+          (syl?'<span class="badge badge-b">'+(syl==='STATE'?'Kerala State':'CBSE')+'</span>':'')+
           '<span class="badge badge-n">Class '+esc(cls)+'</span>'+
           (mode?'<span class="badge badge-a">'+esc(mode)+'</span>':'')+
-          (notes&&notes!==syl?'<span style="font-size:10px;color:var(--text3);font-style:italic">'+esc(notes)+'</span>':'')+
         '</div>'+
       '</div>'+
       '<button class="brief-card-copy" onclick="copyTeacherBrief('+idx+')">'+
@@ -5140,14 +5149,15 @@ function buildTeacherBriefText(idx){
   var mode=String(sch.mode||'');
   var todayYMD=CUR_DATE;
 
+  var board=sylToBoard(syl);
   var history=SESSIONS.filter(function(r){
-    return r.class===cls && r.subject===subj && sessDateToYMD(r.date)<todayYMD;
+    return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<todayYMD;
   }).sort(function(a,b){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
   }).slice(0,3);
 
   var hwSessions=SESSIONS.filter(function(r){
-    return r.class===cls && (r.homework||'').trim()!=='';
+    return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
   }).sort(function(a,b){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
   }).slice(0,4);
@@ -5157,7 +5167,8 @@ function buildTeacherBriefText(idx){
   lines.push(fmtLong(todayYMD));
   lines.push('');
   lines.push('*Teacher:* '+teacherName);
-  lines.push('*Class '+cls+' · '+subj+(syl?' ('+syl+')':'')+'*');
+  var boardLabel=syl==='STATE'?'Kerala State':syl==='CBSE'?'CBSE':'';
+  lines.push('*Class '+cls+(boardLabel?' · '+boardLabel:'')+' · '+subj+'*');
   if(time) lines.push('*Time:* '+time+(dur?' · '+dur:'')+(mode?' · '+mode:''));
   lines.push('');
 
