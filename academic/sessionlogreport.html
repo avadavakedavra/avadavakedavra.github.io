@@ -5166,9 +5166,9 @@ function renderBriefing(){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,3);
 
-    // Pending homework for this class+board+subject
+    // Pending homework for this class+board (all subjects)
     var hwSessions=SESSIONS.filter(function(r){
-      return r.class===cls && r.subject===subj && (!board||r.board===board) && (r.homework||'').trim()!=='';
+      return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
     }).sort(function(a,b){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,6);
@@ -5314,7 +5314,7 @@ function buildTeacherBriefText(idx){
   }).slice(0,3);
 
   var hwSessions=SESSIONS.filter(function(r){
-    return r.class===cls && r.subject===subj && (!board||r.board===board) && (r.homework||'').trim()!=='';
+    return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
   }).sort(function(a,b){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
   }).slice(0,4);
