@@ -4996,8 +4996,9 @@ function renderBriefing(){
 
   scheduled.forEach(function(sch,idx){
     var teacherRec=PAY_TEACHERS.filter(function(t){return t.teacher_id===sch.teacher_id;})[0];
-    var teacherName=teacherRec?teacherRec.name:(sch.teacher_name||sch.teacher_id||'Unknown Teacher');
-    var teacherContact=teacherRec?(teacherRec.contact||''):'';
+    var teacherName=teacherRec?(teacherRec.full_name||teacherRec.name||''):(sch.teacher_name||'');
+    if(!teacherName) teacherName=sch.teacher_id||'Unknown Teacher';
+    var teacherContact=teacherRec?(teacherRec.contact_whatsapp||teacherRec.contact||''):'';
     var cls=String(sch.class||'');
     var subj=String(sch.subject||'');
     var syl=parseSylFromNotes(sch.notes);
@@ -5140,7 +5141,8 @@ function buildTeacherBriefText(idx){
   var sch=scheduled[idx];
   if(!sch) return '';
   var teacherRec=PAY_TEACHERS.filter(function(t){return t.teacher_id===sch.teacher_id;})[0];
-  var teacherName=teacherRec?teacherRec.name:(sch.teacher_name||sch.teacher_id||'Teacher');
+  var teacherName=teacherRec?(teacherRec.full_name||teacherRec.name||''):(sch.teacher_name||'');
+  if(!teacherName) teacherName=sch.teacher_id||'Teacher';
   var cls=String(sch.class||'');
   var subj=String(sch.subject||'');
   var syl=parseSylFromNotes(sch.notes);
