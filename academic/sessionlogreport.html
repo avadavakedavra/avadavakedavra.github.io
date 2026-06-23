@@ -1472,6 +1472,50 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 
 /* ── Table header uppercase more compact ── */
 .data-table th{font-size:8.5px;letter-spacing:.16em}
+/* ══ DAILY BRIEFING ══ */
+.brief-connect{max-width:420px;margin:48px auto;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:32px}
+.brief-connect-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:6px}
+.brief-connect-sub{font-size:12px;color:var(--text3);margin-bottom:24px}
+.brief-connect-inp{width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:var(--f);font-size:13px;outline:none}
+.brief-connect-inp:focus{border-color:var(--li)}
+.brief-connect-btn{margin-top:10px;width:100%;padding:10px;background:var(--li);color:#fff;border:none;border-radius:8px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer}
+.brief-connect-err{margin-top:8px;font-size:11px;color:var(--red);min-height:16px}
+.brief-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.brief-hdr-title{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;color:var(--text);letter-spacing:-.3px;line-height:1.1}
+.brief-hdr-meta{font-size:11px;color:var(--text3);margin-top:5px;font-weight:600}
+.brief-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.brief-reload-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.brief-reload-btn:hover{border-color:var(--li);color:var(--li)}
+.brief-copy-all-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--li);border-radius:8px;background:rgba(139,197,63,.1);color:var(--li);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.brief-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden}
+.brief-card-hdr{padding:16px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brief-card-teacher{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px}
+.brief-card-meta{font-size:11px;color:var(--text3);margin-top:3px;font-weight:600}
+.brief-card-badges{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.brief-card-copy{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg3);color:var(--text3);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;flex-shrink:0;align-self:flex-start}
+.brief-card-copy:hover{border-color:var(--li);color:var(--li)}
+.brief-section{padding:14px 18px;border-bottom:1px solid var(--border)}
+.brief-section:last-child{border-bottom:none}
+.brief-section-label{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.brief-hist-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.brief-hist-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.brief-hist-date{font-size:10px;font-weight:700;color:var(--text3);white-space:nowrap;min-width:54px}
+.brief-hist-body{flex:1}
+.brief-hist-teacher{font-size:11px;font-weight:700;color:var(--text2)}
+.brief-hist-topics{font-size:11px;color:var(--text3);margin-top:2px}
+.brief-hist-chapters{font-size:10px;color:var(--text3);margin-top:2px;font-style:italic}
+.brief-hw-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;padding:8px 10px;border-radius:8px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.15)}
+.brief-hw-item:last-child{margin-bottom:0}
+.brief-hw-date{font-size:10px;font-weight:700;color:var(--amber);white-space:nowrap;padding-top:1px}
+.brief-hw-text{font-size:11px;color:var(--text2);flex:1}
+.brief-students-wrap{display:flex;align-items:center;gap:16px}
+.brief-students-count{font-size:32px;font-weight:900;color:var(--li);line-height:1}
+.brief-students-label{font-size:11px;color:var(--text3);font-weight:600}
+.brief-students-detail{font-size:10px;color:var(--text3);margin-top:2px}
+.brief-no-sched{text-align:center;padding:56px 24px;color:var(--text3)}
+.brief-no-sched-title{font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px}
+.brief-no-sched-sub{font-size:12px}
+@media print{.brief-connect,.brief-actions,.brief-card-copy,.brief-reload-btn,.brief-copy-all-btn{display:none!important}}
 </style>
 </head>
 <body>
@@ -1575,6 +1619,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="sb-item" id="nav-subject" onclick="setView('subject',this)">
         <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="10" y1="9" x2="16" y2="9"/><line x1="10" y1="13" x2="14" y2="13"/></svg></div>
         <div class="sb-item-label">Subject</div>
+      </div>
+      <div class="sb-item" id="nav-briefing" onclick="setView('briefing',this)">
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+        <div class="sb-item-label">Daily Brief</div>
       </div>
     </div>
     <div class="sb-divider"></div>
@@ -1694,6 +1742,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
     <div id="vTeachers" class="page-pad hidden"></div>
     <div id="vHomework" class="page-pad hidden"></div>
     <div id="vSubject" class="page-pad hidden"></div>
+    <div id="vBriefing" class="page-pad hidden"></div>
   </main>
 </div>
 
@@ -1720,8 +1769,12 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 /* ══ CONFIG ══ */
 var SESSION_API = 'https://script.google.com/macros/s/AKfycbx-qC_S-wZnjvBW9LZGTU4Y36ZHMTVlgS__DIAl1ZZ404beOfAyJwwtGsv352UbiyOR/exec';
 var ATT_API     = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
+var PAY_API     = 'https://script.google.com/macros/s/AKfycbyRQ4RUhG6AudtPkKQYoC05nvwSyEN2b85Ben6G5RY24AzF5BLMddFuyCaagF1EtRiqLg/exec';
 var SESS_PASS   = 'sehr2026';
 var WA_NUM      = '919539409586';
+var PAY_SCHED   = [];
+var PAY_TEACHERS= [];
+var PAY_LOADED  = false;
 
 /* ══ STATE ══ */
 var SESSIONS        = [];
@@ -1911,8 +1964,8 @@ function setView(v,btn){
   CUR_VIEW=v;
   document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
-  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject'].forEach(function(id){g(id).classList.add('hidden');});
-  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity'};
+  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject','vBriefing'].forEach(function(id){g(id).classList.add('hidden');});
+  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity',briefing:'Daily Briefing'};
   // Show/hide progress print button
   var pgPrintBtn=g('pgPrintBtn');
   if(pgPrintBtn) pgPrintBtn.style.display=(v==='progress'?'inline-flex':'none');
@@ -1952,6 +2005,7 @@ function renderAll(){
   else if(CUR_VIEW==='teachers')  renderTeachers(data);
   else if(CUR_VIEW==='homework')   renderHomework();
   else if(CUR_VIEW==='subject')    renderSubjectView();
+  else if(CUR_VIEW==='briefing')   renderBriefing();
   buildPrintDoc(data,'ALL','','ALL');
 }
 
@@ -3031,7 +3085,7 @@ function renderDay(data){
     }
     var ap=attRows.filter(function(r){return r.status==='Present';}).length;
     var aa=attRows.length-ap;
-    var syls=Array.from(new Set(attRows.map(function(r){return r.syllabus;}))).sort(function(a,b){return a==='STATE'?-1:b==='STATE'?1:a.localeCompare(b);});
+    var multiSyl=Array.from(new Set(attRows.map(function(r){return r.syllabus;}))).length>1;
     rightHtml+='<div class="att-block"><div class="att-hd">'+
       '<div class="att-title">Class '+esc(cls.class)+' Attendance</div>'+
       '<span class="badge badge-g">'+ap+' P</span>'+
@@ -3039,31 +3093,25 @@ function renderDay(data){
       '<span class="badge badge-n" style="margin-left:auto">'+Math.round(ap/attRows.length*100)+'%</span>'+
       '</div>';
 
-    if(syls.length>1){
-      rightHtml+='<div class="att-board-tabs">';
-      syls.forEach(function(s,si){rightHtml+='<button class="att-board-tab'+(si===0?' on':'')+'" onclick="switchAttBoard(this,\'att-syl-'+_safeKey+'-'+si+'\')">'+esc(sylLabel(s))+'</button>';});
-      rightHtml+='</div>';
-    }
-    syls.forEach(function(syl,si){
-      var sr=attRows.filter(function(r){return r.syllabus===syl;});
-      var sp=sr.filter(function(r){return r.status==='Present';}).length;
-      rightHtml+='<div id="att-syl-'+_safeKey+'-'+si+'"'+(si>0&&syls.length>1?' style="display:none"':'')+'>';
-      rightHtml+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text3)">'+esc(sylLabel(syl))+' · '+sp+'/'+sr.length+' present</div>';
-      rightHtml+='<table class="att-table">';
-      sr.forEach(function(r){
-        var ab=r.status==='Absent';
-        var ph=PHOTO_MAP[r.student_id]||r.photo||'';
-        var av='<div class="att-photo'+(ab?' ab-av':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
-        var panelId='sp-'+r.student_id.replace(/[^a-zA-Z0-9]/g,'_');
-        rightHtml+='<tr class="'+(ab?'att-ab ':'')+' student-row-clickable" onclick="toggleStudentPanel(\''+panelId+'\',\''+esc(r.student_id)+'\',\''+esc(r.full_name)+'\',\''+esc(r.class)+'\')">'+
-          '<td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+pctPill(r.student_id)+'</td>'+
-          '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span>'+
-          '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-left:5px;opacity:.4"><polyline points="6 9 12 15 18 9"/></svg></td></tr>'+
-          '<tr class="student-panel-row"><td colspan="2"><div class="student-panel" id="'+panelId+'"></div></td></tr>';
-      });
-      rightHtml+='</table></div>';
+    // Unified list — sort Present first then Absent, alphabetical within each group
+    var sorted=attRows.slice().sort(function(a,b){
+      if(a.status===b.status)return a.full_name.localeCompare(b.full_name);
+      return a.status==='Present'?-1:1;
     });
-    rightHtml+='</div>';
+    rightHtml+='<table class="att-table">';
+    sorted.forEach(function(r){
+      var ab=r.status==='Absent';
+      var ph=PHOTO_MAP[r.student_id]||r.photo||'';
+      var av='<div class="att-photo'+(ab?' ab-av':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
+      var panelId='sp-'+r.student_id.replace(/[^a-zA-Z0-9]/g,'_');
+      var sylBadge=multiSyl?'<span class="badge badge-n" style="font-size:9px;padding:2px 5px;margin-left:3px">'+esc(sylLabel(r.syllabus))+'</span>':'';
+      rightHtml+='<tr class="'+(ab?'att-ab ':'')+' student-row-clickable" onclick="toggleStudentPanel(\''+panelId+'\',\''+esc(r.student_id)+'\',\''+esc(r.full_name)+'\',\''+esc(r.class)+'\')">'+
+        '<td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+sylBadge+pctPill(r.student_id)+'</td>'+
+        '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span>'+
+        '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-left:5px;opacity:.4"><polyline points="6 9 12 15 18 9"/></svg></td></tr>'+
+        '<tr class="student-panel-row"><td colspan="2"><div class="student-panel" id="'+panelId+'"></div></td></tr>';
+    });
+    rightHtml+='</table></div>';
   });
 
   var gapBanner=buildGapAlertBanner();
@@ -4859,6 +4907,312 @@ function renderDP(){
 function selectDate(d){CUR_DATE=d;updateDPDisp();renderDP();g('dpDrop').classList.remove('open');g('dpDisp').style.borderColor='';renderAll();}
 function updateDPDisp(){g('dpTxt').textContent=CUR_DATE?fmtShort(CUR_DATE):'Today';}
 document.addEventListener('click',function(e){if(!g('dpWrap').contains(e.target)){g('dpDrop').classList.remove('open');g('dpDisp').style.borderColor='';}});
+
+/* ══ DAILY BRIEFING ══ */
+function parseSylFromNotes(notes){
+  if(!notes) return '';
+  var n=notes.toUpperCase();
+  if(n.indexOf('CBSE')>-1) return 'CBSE';
+  if(n.indexOf('STATE')>-1||n.indexOf('KERALA')>-1) return 'State';
+  return '';
+}
+
+function loadPaySchedule(pass, onDone, onErr){
+  fetch(PAY_API+'?action=getData&password='+encodeURIComponent(pass))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!d||!d.sessions){onErr('Invalid password or no data.');return;}
+      PAY_SCHED=Array.isArray(d.sessions)?d.sessions:[];
+      PAY_TEACHERS=Array.isArray(d.teachers)?d.teachers:[];
+      PAY_LOADED=true;
+      try{sessionStorage.setItem('brief_pass',pass);}catch(e){}
+      onDone();
+    })
+    .catch(function(){onErr('Network error. Check your connection.');});
+}
+
+function briefTodayDDMMYYYY(){
+  var n=new Date();
+  return pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+n.getFullYear();
+}
+
+function renderBriefing(){
+  var el=g('vBriefing');
+  if(!el) return;
+
+  if(!PAY_LOADED){
+    var savedPass='';
+    try{savedPass=sessionStorage.getItem('brief_pass')||'';}catch(e){}
+    el.innerHTML='<div class="brief-connect">'+
+      '<div class="brief-connect-title">Daily <em>Briefing</em></div>'+
+      '<div class="brief-connect-sub">Connect to the schedule system to load today\'s planned classes, session history and pending homework for each teacher.</div>'+
+      '<label style="font-size:11px;font-weight:700;color:var(--text3);display:block;margin-bottom:6px">Schedule Password</label>'+
+      '<input class="brief-connect-inp" id="briefPassInp" type="password" placeholder="Enter schedule password" value="'+esc(savedPass)+'">'+
+      '<button class="brief-connect-btn" onclick="briefConnect()">Load Today\'s Schedule</button>'+
+      '<div class="brief-connect-err" id="briefConnErr"></div>'+
+    '</div>';
+    return;
+  }
+
+  var todayStr=briefTodayDDMMYYYY();
+  var scheduled=PAY_SCHED.filter(function(r){
+    return r.date_ddmmyyyy===todayStr && String(r.status||'').toLowerCase()==='scheduled';
+  }).sort(function(a,b){
+    return String(a.start_time||'').localeCompare(String(b.start_time||''));
+  });
+
+  var todayYMD=CUR_DATE; // already in YYYY-MM-DD
+
+  var html='<div class="brief-hdr">'+
+    '<div>'+
+      '<div class="brief-hdr-title">Daily <em>Briefing</em></div>'+
+      '<div class="brief-hdr-meta">'+fmtLong(todayYMD)+' · '+scheduled.length+' class'+(scheduled.length!==1?'es':'')+' scheduled</div>'+
+    '</div>'+
+    '<div class="brief-actions">'+
+      '<button class="brief-reload-btn" onclick="briefReload()">'+
+        '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg> Refresh'+
+      '</button>'+
+      (scheduled.length?'<button class="brief-copy-all-btn" onclick="copyAllBriefs()">Copy All Briefs</button>':'')+''+
+    '</div>'+
+  '</div>';
+
+  if(!scheduled.length){
+    html+='<div class="brief-no-sched">'+
+      '<div class="brief-no-sched-title">No classes scheduled for today</div>'+
+      '<div class="brief-no-sched-sub">Add sessions in the schedule system or check another date.</div>'+
+    '</div>';
+    el.innerHTML=html;
+    return;
+  }
+
+  scheduled.forEach(function(sch,idx){
+    var teacherRec=PAY_TEACHERS.filter(function(t){return t.teacher_id===sch.teacher_id;})[0];
+    var teacherName=teacherRec?teacherRec.name:(sch.teacher_name||sch.teacher_id||'Unknown Teacher');
+    var teacherContact=teacherRec?(teacherRec.contact||''):'';
+    var cls=String(sch.class||'');
+    var subj=String(sch.subject||'');
+    var syl=parseSylFromNotes(sch.notes);
+    var mode=String(sch.mode||'');
+    var time=String(sch.start_time||'');
+    var dur=sch.duration?sch.duration+'hr':'';
+    var notes=String(sch.notes||'');
+
+    // Last 3 sessions of same class+subject from academic log
+    var history=SESSIONS.filter(function(r){
+      return r.class===cls && r.subject===subj && sessDateToYMD(r.date)<todayYMD;
+    }).sort(function(a,b){
+      return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
+    }).slice(0,3);
+
+    // Pending homework: sessions with homework that hasn't been followed up
+    // (show homeworks from last 14 sessions of this class, that have hw text)
+    var hwSessions=SESSIONS.filter(function(r){
+      return r.class===cls && (r.homework||'').trim()!=='';
+    }).sort(function(a,b){
+      return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
+    }).slice(0,6);
+
+    // Expected students: avg attendance over last 10 sessions of this class
+    var attHistory=ATTENDANCE.filter(function(r){
+      return r.class===cls && attDateToYMD(r.date)<todayYMD;
+    });
+    var attDates=Array.from(new Set(attHistory.map(function(r){return attDateToYMD(r.date);}))).sort().slice(-10);
+    var avgAtt=0, totalAtt=ATTENDANCE.filter(function(r){return r.class===cls&&attDates.indexOf(attDateToYMD(r.date))>-1&&r.status==='Present';}).length;
+    var totalStu=ATTENDANCE.filter(function(r){return r.class===cls&&attDates.indexOf(attDateToYMD(r.date))>-1;}).length;
+    var avgPct=totalStu>0?Math.round(totalAtt/totalStu*100):0;
+    var totalEnrolled=Array.from(new Set(ATTENDANCE.filter(function(r){return r.class===cls;}).map(function(r){return r.student_id;}))).length;
+
+    html+='<div class="brief-card" id="brief-card-'+idx+'">';
+
+    // Header
+    html+='<div class="brief-card-hdr">'+
+      '<div style="flex:1">'+
+        '<div class="brief-card-teacher">'+esc(teacherName)+'</div>'+
+        '<div class="brief-card-meta">Class '+esc(cls)+' · '+esc(subj)+(time?' · '+esc(time):'')+(dur?' ('+esc(dur)+')':'')+(mode?' · '+esc(mode):'')+'</div>'+
+        '<div class="brief-card-badges">'+
+          (syl?'<span class="badge badge-b">'+esc(syl)+'</span>':'')+
+          '<span class="badge badge-n">Class '+esc(cls)+'</span>'+
+          (mode?'<span class="badge badge-a">'+esc(mode)+'</span>':'')+
+          (notes&&notes!==syl?'<span style="font-size:10px;color:var(--text3);font-style:italic">'+esc(notes)+'</span>':'')+
+        '</div>'+
+      '</div>'+
+      '<button class="brief-card-copy" onclick="copyTeacherBrief('+idx+')">'+
+        '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'+
+        'Copy Brief'+
+      '</button>'+
+    '</div>';
+
+    // Expected students
+    if(totalEnrolled>0){
+      html+='<div class="brief-section">'+
+        '<div class="brief-section-label">Expected Students</div>'+
+        '<div class="brief-students-wrap">'+
+          '<div class="brief-students-count">'+totalEnrolled+'</div>'+
+          '<div>'+
+            '<div class="brief-students-label">enrolled in Class '+esc(cls)+'</div>'+
+            (avgPct>0?'<div class="brief-students-detail">Avg attendance last '+attDates.length+' sessions: '+avgPct+'%</div>':'')+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }
+
+    // Session history
+    html+='<div class="brief-section">'+
+      '<div class="brief-section-label">Last '+(history.length?history.length:0)+' Session'+(history.length!==1?'s':'')+' — '+esc(subj)+' Class '+esc(cls)+'</div>';
+    if(history.length){
+      history.forEach(function(r){
+        var chaps=(r.chapters||'').split(' | ').filter(Boolean);
+        html+='<div class="brief-hist-row">'+
+          '<div class="brief-hist-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
+          '<div class="brief-hist-body">'+
+            '<div class="brief-hist-teacher">'+esc(r.teacher_name||'')+'</div>'+
+            (r.topics?'<div class="brief-hist-topics">'+esc(r.topics)+'</div>':'')+
+            (chaps.length?'<div class="brief-hist-chapters">'+chaps.join(', ')+'</div>':'')+
+          '</div>'+
+        '</div>';
+      });
+    } else {
+      html+='<div style="font-size:12px;color:var(--text3);font-style:italic">No prior sessions recorded for this subject and class.</div>';
+    }
+    html+='</div>';
+
+    // Pending homework
+    if(hwSessions.length){
+      html+='<div class="brief-section">'+
+        '<div class="brief-section-label">Pending Homework to Follow Up</div>';
+      hwSessions.forEach(function(r){
+        html+='<div class="brief-hw-item">'+
+          '<div class="brief-hw-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
+          '<div class="brief-hw-text">'+esc(r.homework)+'</div>'+
+        '</div>';
+      });
+      html+='</div>';
+    }
+
+    html+='</div>'; // end brief-card
+  });
+
+  el.innerHTML=html;
+  window._briefScheduled=scheduled;
+}
+
+function briefConnect(){
+  var inp=g('briefPassInp');
+  var errEl=g('briefConnErr');
+  if(!inp) return;
+  var pass=(inp.value||'').trim();
+  if(!pass){errEl.textContent='Enter the schedule password.';return;}
+  errEl.textContent='Loading…';
+  loadPaySchedule(pass, function(){
+    errEl.textContent='';
+    renderBriefing();
+  }, function(msg){
+    errEl.textContent=msg;
+  });
+}
+
+function briefReload(){
+  PAY_LOADED=false;
+  PAY_SCHED=[];
+  PAY_TEACHERS=[];
+  var savedPass='';
+  try{savedPass=sessionStorage.getItem('brief_pass')||'';}catch(e){}
+  if(savedPass){
+    var el=g('vBriefing');
+    if(el) el.innerHTML='<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px">Refreshing schedule…</div>';
+    loadPaySchedule(savedPass, function(){renderBriefing();}, function(msg){renderBriefing();});
+  } else {
+    renderBriefing();
+  }
+}
+
+function buildTeacherBriefText(idx){
+  var scheduled=window._briefScheduled||[];
+  var sch=scheduled[idx];
+  if(!sch) return '';
+  var teacherRec=PAY_TEACHERS.filter(function(t){return t.teacher_id===sch.teacher_id;})[0];
+  var teacherName=teacherRec?teacherRec.name:(sch.teacher_name||sch.teacher_id||'Teacher');
+  var cls=String(sch.class||'');
+  var subj=String(sch.subject||'');
+  var syl=parseSylFromNotes(sch.notes);
+  var time=String(sch.start_time||'');
+  var dur=sch.duration?sch.duration+'hr':'';
+  var mode=String(sch.mode||'');
+  var todayYMD=CUR_DATE;
+
+  var history=SESSIONS.filter(function(r){
+    return r.class===cls && r.subject===subj && sessDateToYMD(r.date)<todayYMD;
+  }).sort(function(a,b){
+    return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
+  }).slice(0,3);
+
+  var hwSessions=SESSIONS.filter(function(r){
+    return r.class===cls && (r.homework||'').trim()!=='';
+  }).sort(function(a,b){
+    return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
+  }).slice(0,4);
+
+  var lines=[];
+  lines.push('*SEHR Academy — Daily Briefing*');
+  lines.push(fmtLong(todayYMD));
+  lines.push('');
+  lines.push('*Teacher:* '+teacherName);
+  lines.push('*Class '+cls+' · '+subj+(syl?' ('+syl+')':'')+'*');
+  if(time) lines.push('*Time:* '+time+(dur?' · '+dur:'')+(mode?' · '+mode:''));
+  lines.push('');
+
+  if(history.length){
+    lines.push('*Recent Sessions ('+subj+' · Class '+cls+'):*');
+    history.forEach(function(r){
+      lines.push('• '+fmtShort(sessDateToYMD(r.date))+' — '+(r.teacher_name||'')+(r.topics?' | '+r.topics:''));
+      if(r.chapters&&r.chapters.trim()) lines.push('  Chapters: '+r.chapters.replace(/ \| /g,', '));
+    });
+    lines.push('');
+  }
+
+  if(hwSessions.length){
+    lines.push('*Pending Homework to Check:*');
+    hwSessions.forEach(function(r){
+      lines.push('• ['+fmtShort(sessDateToYMD(r.date))+'] '+r.homework);
+    });
+    lines.push('');
+  }
+
+  lines.push('Please ensure syllabus continuity and collect pending homework submissions.');
+  return lines.join('\n');
+}
+
+function copyTeacherBrief(idx){
+  var text=buildTeacherBriefText(idx);
+  if(!text) return;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){briefToast('Brief copied!');}).catch(function(){_copyFallback(text);});
+  } else {_copyFallback(text);}
+}
+
+function copyAllBriefs(){
+  var scheduled=window._briefScheduled||[];
+  if(!scheduled.length) return;
+  var all=scheduled.map(function(_,i){return buildTeacherBriefText(i);}).join('\n\n---\n\n');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(all).then(function(){briefToast('All briefs copied!');}).catch(function(){_copyFallback(all);});
+  } else {_copyFallback(all);}
+}
+
+function _copyFallback(text){
+  var ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');briefToast('Copied!');}catch(e){briefToast('Copy failed');}
+  document.body.removeChild(ta);
+}
+
+function briefToast(msg){
+  var t=document.getElementById('briefToastEl');
+  if(!t){t=document.createElement('div');t.id='briefToastEl';t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;z-index:9999;pointer-events:none;transition:opacity .3s';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._tid);t._tid=setTimeout(function(){t.style.opacity='0';},2000);
+}
 
 init();
 
