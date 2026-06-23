@@ -1278,6 +1278,200 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 
 /* Progress print select */
 #pgPrintClsSel option{font-family:'Open Sans',sans-serif;font-weight:700}
+
+/* ══════════════════════════════════════════════════════════
+   PREMIUM REDESIGN — SEHR Academy Academic Dashboard
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Dark Sidebar ── */
+.sidebar{background:#0f1117;border-right:1px solid rgba(255,255,255,.055);overflow-y:auto}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+/* Sidebar brand */
+.sb-brand{padding:16px 20px 14px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;display:flex;align-items:center;gap:10px}
+.sb-brand-logo{font-family:'Open Sans',sans-serif;font-size:16px;font-weight:900;color:#fff;letter-spacing:-1.2px;line-height:1}
+.sb-brand-logo span{color:var(--li)}
+.sb-brand-sub{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:3px}
+
+/* Sidebar sections */
+.sb-section-label{color:rgba(255,255,255,.2);letter-spacing:.2em;font-size:8.5px}
+
+/* Sidebar items */
+.sb-item:hover{background:rgba(255,255,255,.055);border-color:transparent}
+.sb-item.on{background:linear-gradient(90deg,rgba(139,197,63,.14),rgba(139,197,63,.05));border-color:rgba(139,197,63,.22);box-shadow:inset 0 0 0 1px rgba(139,197,63,.1)}
+.sb-item-icon{background:rgba(255,255,255,.065);color:rgba(255,255,255,.35)}
+.sb-item.on .sb-item-icon{background:rgba(139,197,63,.22);color:var(--li)}
+.sb-item-icon svg{stroke:currentColor}
+.sb-item-label{color:rgba(255,255,255,.4);font-weight:600}
+.sb-item.on .sb-item-label{color:var(--li);font-weight:700}
+.sb-item-count{background:rgba(255,255,255,.07);color:rgba(255,255,255,.25)}
+.sb-item.on .sb-item-count{background:rgba(139,197,63,.15);color:var(--li)}
+
+/* Sidebar class list */
+.sb-class-item:hover{background:rgba(255,255,255,.055);border-color:transparent}
+.sb-class-item.on{background:rgba(139,197,63,.1);border-color:rgba(139,197,63,.22)}
+.sb-class-num{background:rgba(255,255,255,.065);color:rgba(255,255,255,.35)}
+.sb-class-item.on .sb-class-num{background:var(--li);color:#111}
+.sb-class-name{color:rgba(255,255,255,.42)}
+.sb-class-item.on .sb-class-name{color:#fff;font-weight:700}
+.sb-class-meta{color:rgba(255,255,255,.2)}
+.sb-at-tag{background:rgba(255,255,255,.06);color:rgba(255,255,255,.18);opacity:1;border:none}
+.sb-class-bar{background:rgba(255,255,255,.07)}
+
+/* Sidebar divider */
+.sb-divider{background:rgba(255,255,255,.06)}
+
+/* Period items */
+.sb-period .sb-item-icon{font-size:10px!important;font-weight:800!important;color:rgba(255,255,255,.3)!important;background:rgba(255,255,255,.06)}
+.sb-item.on.sb-period .sb-item-icon{color:var(--li)!important;background:rgba(139,197,63,.18)}
+
+/* Tool links */
+.sb-tool-link{border-radius:8px;text-decoration:none}
+.sb-tool-link:hover{background:rgba(255,255,255,.055)}
+.sb-tool-link .sb-item-icon{background:rgba(255,255,255,.065)}
+.sb-tool-link .sb-item-label{color:rgba(255,255,255,.35)}
+.sb-tool-link:hover .sb-item-label{color:rgba(255,255,255,.65)}
+.sb-tool-link:hover .sb-item-icon{background:rgba(255,255,255,.1)}
+
+/* Compact quick links at sidebar bottom */
+.sb-quick-links{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px 14px}
+.sb-ql{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);text-decoration:none;transition:all .15s;flex-shrink:0;cursor:pointer}
+.sb-ql:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.12)}
+.sb-ql svg{stroke:rgba(255,255,255,.4);width:14px;height:14px;transition:stroke .15s}
+.sb-ql:hover svg{stroke:rgba(255,255,255,.75)}
+
+/* ── Premium cards ── */
+.kpi-card{border-radius:14px;border-width:1px;box-shadow:0 1px 2px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);padding:18px 20px}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.09)}
+.kpi-val{font-size:30px}
+
+.class-block{border-radius:14px;border-width:1px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.03)}
+.class-block:hover{box-shadow:0 6px 22px rgba(139,197,63,.09),0 1px 4px rgba(0,0,0,.06)}
+
+.teacher-card{border-radius:14px;border-width:1px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.03)}
+.pg-block{border-radius:14px;border-width:1px}
+.hw-card{border-radius:12px}
+.alert-card{border-radius:14px;border-width:1px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.03)}
+.data-table-wrap{border-radius:14px;border-width:1px}
+.att-block{border-radius:14px;border-width:1px}
+.hw-summary-card{border-radius:12px;border-width:1px}
+.pg-side-card{border-radius:14px;border-width:1px}
+.tp-cls-card{border-radius:14px;border-width:1px}
+.tl-card{border-radius:14px;border-width:1px}
+.hw-group{background:transparent}
+.sc-card{border-radius:14px;border-width:1px}
+.ch-list-wrap{border-radius:0 0 14px 14px;border-width:1px}
+
+/* ── Hub strip premium ── */
+.hub-card{border-radius:14px;padding:18px 12px 16px;border-width:1px;transition:all .18s var(--e1)}
+.hub-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.14)}
+.hub-ic{border-radius:10px;border-width:1px}
+.hub-name{font-size:12px}
+
+/* ── Overview masthead ── */
+.ov-masthead{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px}
+.ov-masthead-left{}
+.ov-masthead-title{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;color:var(--text);letter-spacing:-.5px;line-height:1.1}
+.ov-masthead-title em{color:var(--li3);font-style:italic}
+.ov-masthead-date{font-size:11px;color:var(--text3);margin-top:4px;font-weight:600;letter-spacing:.02em}
+.ov-masthead-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:var(--li-dim);border:1.5px solid rgba(139,197,63,.22);font-size:11px;font-weight:800;color:var(--li3)}
+.ov-masthead-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--li);animation:pulse 2s ease infinite}
+
+/* ── Hub section header ── */
+.hub-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hub-section-label{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px}
+.hub-section-label::before{content:'';width:3px;height:12px;background:var(--li);border-radius:2px}
+
+/* ── View context bar (inside topbar, dark) ── */
+.view-ctx{display:flex;align-items:center;gap:8px;padding:8px 20px 0;flex-wrap:wrap}
+.view-ctx-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45)}
+.view-ctx-chip.active{background:rgba(139,197,63,.15);border-color:rgba(139,197,63,.3);color:var(--li)}
+.view-ctx-sep{color:rgba(255,255,255,.2);font-size:11px}
+
+/* ── Filter bar refinement ── */
+.filter-bar{background:rgba(245,242,235,.97)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;border-bottom-width:1px;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.fbar-tab{border-radius:7px;font-size:11px;padding:5px 11px}
+.fbar-tab.on{box-shadow:0 2px 8px rgba(139,197,63,.2)}
+
+/* ── Topbar refinement ── */
+.topbar{background:#0c0c0b}
+.tb-logo-wrap{border-right-color:rgba(255,255,255,.06)}
+
+/* ── Section titles ── */
+.sec-title{font-size:14px;font-weight:800}
+
+/* ── Better empty state ── */
+.empty-state{padding:48px 20px}
+
+/* ── Alert grid responsive ── */
+@media(max-width:700px){.alert-grid{grid-template-columns:1fr}}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  .sb-quick-links{display:none}
+  .ov-masthead-title{font-size:20px}
+}
+
+/* ── Alert card headers refinement ── */
+.alert-card-hd{background:var(--bg2);border-bottom-color:var(--border)}
+.alert-card{transition:box-shadow .18s}
+.alert-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+
+/* ── CB header cleaner ── */
+.cb-header{border-radius:var(--r2) var(--r2) 0 0}
+.class-block{border-left-width:0}
+.class-block:hover{border-left-width:0}
+
+/* ── Teacher card avatars ── */
+.teacher-av{background:var(--li);color:#111;font-size:15px}
+
+/* ── Better loading ring ── */
+.loading-ring{width:32px;height:32px;border-width:2.5px}
+
+/* ── KPI icon fill ── */
+.kpi-icon svg{opacity:.85}
+
+/* ── Sidebar active item glow removed (cleaner) ── */
+.sb-item.on{box-shadow:none}
+
+/* ── Progress ring glow ── */
+.pg-cls-band{border-radius:var(--r2) var(--r2) 0 0}
+.pg-block{overflow:hidden}
+
+/* ── Horizontal section dividers ── */
+.hub-section-hdr{padding-bottom:2px}
+.hub-section-label{color:var(--text3)}
+
+/* ── Cleaner topbar layout ── */
+.tb-logo{font-size:20px}
+.tb-btn{font-size:10px;padding:6px 12px}
+.tb-btn-primary{padding:7px 14px}
+
+/* ── Day view header ── */
+.day-view-header-serif{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);letter-spacing:-.3px;line-height:1.1}
+
+/* ── Right panel sticky on scroll ── */
+@media(min-width:1001px){
+  .right-panel{position:sticky;top:0;max-height:calc(100vh - 60px);overflow-y:auto}
+  .right-panel::-webkit-scrollbar{width:3px}
+  .right-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+}
+
+/* ── Subject continuity view ── */
+.sv-stat-card{border-radius:12px;border-width:1px}
+.sv-teacher-row{border-radius:10px;border-width:1px}
+.sv-chapter-row{border-radius:10px;border-width:1px}
+.sv-session-card{border-radius:12px;border-width:1px}
+
+/* ── Better empty states ── */
+.empty-icon{opacity:.15;margin-bottom:16px}
+.empty-title{font-size:17px;font-weight:800;letter-spacing:-.2px}
+
+/* ── Homework cards ── */
+.hw-summary-strip{margin-bottom:24px}
+
+/* ── Table header uppercase more compact ── */
+.data-table th{font-size:8.5px;letter-spacing:.16em}
 </style>
 </head>
 <body>
@@ -1287,7 +1481,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
   <div class="tb-logo-wrap">
     <div>
       <div class="tb-logo">SEHR<span class="dot">.</span></div>
-      <div class="tb-logo-sub">Academic Dashboard</div>
+      <div class="tb-logo-sub">Academic</div>
     </div>
   </div>
   <div class="tb-center">
@@ -1295,6 +1489,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="tb-page-title" id="tbPageTitle">Overview</div>
       <div class="tb-page-sub" id="tbPageSub">Loading data…</div>
     </div>
+    <div id="ctxBarInner" style="display:flex;align-items:center;gap:6px;margin-left:8px"></div>
   </div>
   <div class="tb-search-wrap">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1345,6 +1540,12 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 <!-- APP BODY -->
 <div class="app-body">
   <aside class="sidebar">
+    <div class="sb-brand">
+      <div>
+        <div class="sb-brand-logo">SEHR<span>.</span></div>
+        <div class="sb-brand-sub">Academic Dashboard</div>
+      </div>
+    </div>
     <div class="sb-section">
       <div class="sb-section-label">Views</div>
       <div class="sb-item on" id="nav-overview" onclick="setView('overview',this)">
@@ -1390,31 +1591,30 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div id="sbClasses"><div class="loading-txt" style="padding:8px 10px;font-size:11px">Loading…</div></div>
     </div>
     <div class="sb-divider"></div>
-    <div class="sb-section">
+    <div style="padding:14px 20px 4px">
       <div class="sb-section-label">Quick Tools</div>
-      <a class="sb-tool-link" href="/timetablegenerator.html" target="_blank">
-        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg></div>
-        <div class="sb-item-label">Timetable</div>
+    </div>
+    <div class="sb-quick-links">
+      <a class="sb-ql" href="/timetablegenerator.html" target="_blank" title="Timetable Generator">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg>
       </a>
-      <a class="sb-tool-link" href="https://sehracademy.com/markattendance" target="_blank">
-        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14l2.5 2.5L16 11"/></svg></div>
-        <div class="sb-item-label">Attendance</div>
+      <a class="sb-ql" href="https://sehracademy.com/markattendance" target="_blank" title="Mark Attendance">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14l2.5 2.5L16 11"/></svg>
       </a>
-      <a class="sb-tool-link" href="https://sehracademy.com/sessionlog" target="_blank">
-        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
-        <div class="sb-item-label">Log Session</div>
+      <a class="sb-ql" href="https://sehracademy.com/sessionlog" target="_blank" title="Log Session">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
       </a>
-      <a class="sb-tool-link" href="https://sehracademy.com/loghomework" target="_blank">
-        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-        <div class="sb-item-label">Log Homework</div>
+      <a class="sb-ql" href="https://sehracademy.com/loghomework" target="_blank" title="Log Homework">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       </a>
-      <a class="sb-tool-link" href="/admin/testbuilder.html" target="_blank">
-        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="11" y2="16"/></svg></div>
-        <div class="sb-item-label">Test Builder</div>
+      <a class="sb-ql" href="/admin/testbuilder.html" target="_blank" title="Test Builder">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="11" y2="16"/></svg>
       </a>
-      <a class="sb-tool-link" href="/teacher/teacherportal.html" target="_blank">
-        <div class="sb-item-icon"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <div class="sb-item-label">Teacher Portal</div>
+      <a class="sb-ql" href="/teacher/teacherportal.html" target="_blank" title="Teacher Portal">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </a>
+      <a class="sb-ql" href="/academic/testreport.html" target="_blank" title="Test Report">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 14l4-5 3 3 3-4 4 6"/><rect x="2" y="2" width="20" height="20" rx="2"/></svg>
       </a>
     </div>
   </aside>
@@ -1424,7 +1624,17 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="loading-txt" id="loadTxt">Connecting to SEHR Academy…</div>
     </div>
     <div id="vOverview" class="page-pad hidden">
+      <div class="ov-masthead">
+        <div class="ov-masthead-left">
+          <div class="ov-masthead-title">Academic <em>Control Centre</em></div>
+          <div class="ov-masthead-date" id="ovMastheadDate">Loading…</div>
+        </div>
+        <div class="ov-masthead-badge" id="ovMastheadBadge">Live</div>
+      </div>
       <!-- Quick Access Hub -->
+      <div class="hub-section-hdr">
+        <div class="hub-section-label">Quick Access</div>
+      </div>
       <div class="hub-strip">
         <a class="hub-card" href="/timetablegenerator.html" target="_blank" style="--hc-accent:#8BC53F;--hc-dim:rgba(139,197,63,.1);--hc-bd:rgba(139,197,63,.2)">
           <div class="hub-ic">
@@ -1469,8 +1679,14 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
           <div class="hub-tag">Results</div>
         </a>
       </div>
+      <div class="hub-section-hdr" style="margin-top:20px">
+        <div class="hub-section-label">Today at a Glance</div>
+      </div>
       <div class="kpi-strip" id="kpiStrip"></div>
-      <div id="alertDashboard" style="margin-top:16px"></div>
+      <div class="hub-section-hdr" style="margin-top:8px">
+        <div class="hub-section-label">Alerts &amp; Action Items</div>
+      </div>
+      <div id="alertDashboard"></div>
     </div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
@@ -1596,11 +1812,15 @@ function finishInit(){
   buildSbClasses();
   var totalSess=SESSIONS.length,totalAtt=ATTENDANCE.length;
   g('tbPageSub').textContent=totalSess+' sessions · '+totalAtt+' attendance records';
+  // Update overview masthead date
+  var mdEl=g('ovMastheadDate');
+  if(mdEl){var n=new Date();mdEl.textContent=n.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
   // Pre-load master chapters so subject cards are ready on overview
   loadMasterChapters(function(){
     if(CUR_VIEW==='overview') renderAll();
   });
   setView('overview',g('nav-overview'));
+  updateCtxBar();
 }
 
 /* ══ SIDEBAR CLASSES ══ */
@@ -1660,7 +1880,19 @@ function setClsFilt(cls,el){
   CUR_CLS=cls;
   document.querySelectorAll('.sb-class-item').forEach(function(b){b.classList.remove('on');});
   el.classList.add('on');
+  updateCtxBar();
   renderAll();
+}
+
+/* ══ CONTEXT BAR ══ */
+function updateCtxBar(){
+  var el=g('ctxBarInner');if(!el)return;
+  var periodLabels={day:'Today',week:'This Week',month:'This Month',all:'All Time'};
+  var pLabel=periodLabels[CUR_PERIOD]||CUR_PERIOD;
+  var clsLabel=CUR_CLS==='ALL'?'All Classes':('Class '+CUR_CLS.replace('|',' '));
+  el.innerHTML='<span class="view-ctx-chip active">'+esc(pLabel)+'</span>'+
+    '<span class="view-ctx-sep">·</span>'+
+    '<span class="view-ctx-chip">'+esc(clsLabel)+'</span>';
 }
 
 /* ══ PERIOD / VIEW ══ */
@@ -1670,6 +1902,7 @@ function setPeriod(p,btn){
   btn.classList.add('on');
   var labels={day:'Today',week:'This Week',month:'This Month',all:'All Time'};
   var badge=g('tbPeriodBadge');if(badge)badge.textContent=labels[p]||p;
+  updateCtxBar();
   renderAll();
 }
 
@@ -2490,6 +2723,13 @@ function buildAlertDashboard(el){
 
   // ── Build HTML ──
   var hasAlerts=(gaps.length||lowAtt.length||missingStudents.length||overload.length||noHWTeachers.length||pendingHW.length||hwConsecMissers.length);
+  // Update masthead badge
+  var totalAlerts=gaps.length+lowAtt.length+missingStudents.length+overload.length+noHWTeachers.length+pendingHW.length+hwConsecMissers.length;
+  var badge=g('ovMastheadBadge');
+  if(badge){
+    if(totalAlerts>0){badge.innerHTML=totalAlerts+' Alert'+(totalAlerts>1?'s':'');badge.style.background='rgba(220,38,38,.1)';badge.style.borderColor='rgba(220,38,38,.25)';badge.style.color='var(--red)';}
+    else{badge.innerHTML='All Clear';badge.style.background='rgba(139,197,63,.1)';badge.style.borderColor='rgba(139,197,63,.25)';badge.style.color='var(--li3)';}
+  }
 
   var SVG_WARN='<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
   var SVG_CHECK='<svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -2827,7 +3067,21 @@ function renderDay(data){
   });
 
   var gapBanner=buildGapAlertBanner();
-  el.innerHTML=gapBanner+'<div class="day-grid"><div>'+leftHtml+'</div><div class="right-panel">'+rightHtml+'</div></div>';
+  var totalDayMins=dayData.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var dayClasses=Object.keys(byClass).length;
+  var dayTeachers=Array.from(new Set(dayData.map(function(r){return r.teacher_id;}))).length;
+  var dayViewHdr='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">'+
+    '<div>'+
+      '<div style="font-family:\'DM Serif Display\',serif;font-size:22px;font-weight:400;color:var(--text);letter-spacing:-.3px;line-height:1.1">'+esc(fmtLong(CUR_DATE))+'</div>'+
+      '<div style="font-size:11px;color:var(--text3);margin-top:4px;font-weight:600">'+dayData.length+' session'+(dayData.length!==1?'s':'')+' · '+hrsFmt(totalDayMins)+' · '+dayTeachers+' teacher'+(dayTeachers!==1?'s':'')+' · '+dayClasses+' class'+(dayClasses!==1?'es':'')+'</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
+      '<span class="badge badge-g" style="font-size:11px;padding:4px 10px">'+dayClasses+' Classes</span>'+
+      '<span class="badge badge-b" style="font-size:11px;padding:4px 10px">'+dayTeachers+' Teachers</span>'+
+      '<span class="badge badge-n" style="font-size:11px;padding:4px 10px">'+hrsFmt(totalDayMins)+'</span>'+
+    '</div>'+
+  '</div>';
+  el.innerHTML=dayViewHdr+gapBanner+'<div class="day-grid"><div>'+leftHtml+'</div><div class="right-panel">'+rightHtml+'</div></div>';
 }
 function sdet(k,v){return '<div class="sess-det-k">'+k+'</div><div class="sess-det-v">'+v+'</div>';}
 function switchAttBoard(btn,panelId){
