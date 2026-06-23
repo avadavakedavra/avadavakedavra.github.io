@@ -182,7 +182,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
         <label class="login-lbl">Syllabus</label>
         <select class="login-inp" id="sylSel" onchange="onClsChange()" disabled>
           <option value="">— Select Syllabus —</option>
-          <option value="Kerala State">Kerala State</option>
+          <option value="STATE">Kerala State</option>
           <option value="CBSE">CBSE</option>
         </select>
       </div>
@@ -268,6 +268,11 @@ var ATT_RECORDS=[];
 var SESS_LOGS=[];
 var DATA_LOADED=false;
 
+// normalize syllabus code to board name used in session logs
+function sylToBoard(s){return (s==='STATE'||s==='Kerala State')?'Kerala State':'CBSE';}
+// display label for UI
+function sylLabel(s){return (s==='STATE'||s==='Kerala State')?'Kerala State':s;}
+
 var MONTHS_S=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var SUBJ_ICONS={
   'Mathematics':'📐','Physics':'⚡','Chemistry':'🧪','Biology':'🌿',
@@ -298,7 +303,10 @@ function loadStudents(cls, syl){
     .then(function(data){
       var raw=Array.isArray(data)?data:(Array.isArray(data.students)?data.students:[]);
       ALL_STUDENTS=raw.filter(function(s){
-        return String(s.class||'')==String(cls) && String(s.syllabus||'')==syl && String(s.status||'Active').toLowerCase()!=='inactive';
+        var sSyl=String(s.syllabus||'');
+        // sheet may store 'STATE'/'CBSE' or 'Kerala State'/'CBSE'
+        var sylMatch=sSyl===syl||(syl==='STATE'&&sSyl==='Kerala State')||(syl==='Kerala State'&&sSyl==='STATE');
+        return String(s.class||'')==String(cls) && sylMatch && String(s.status||'Active').toLowerCase()!=='inactive';
       }).sort(function(a,b){return String(a.full_name||'').localeCompare(String(b.full_name||''));});
       var nameSel=g('nameSel');
       nameSel.innerHTML='<option value="">— Select your name —</option>';
@@ -360,7 +368,7 @@ function bootApp(){
 
   // Topbar
   g('topbarName').textContent=CUR_STUDENT.full_name||'Student';
-  g('topbarCls').textContent='Class '+CUR_STUDENT.class+' · '+(CUR_STUDENT.syllabus||'');
+  g('topbarCls').textContent='Class '+CUR_STUDENT.class+' · '+sylLabel(CUR_STUDENT.syllabus||'');
   var ph=CUR_STUDENT.photo;
   if(ph&&ph.startsWith('http')){
     g('topbarAv').innerHTML='<img class="topbar-avatar" src="'+ph+'" alt="">';
@@ -419,13 +427,13 @@ function renderHome(){
   var sid=CUR_STUDENT.id;
   var cls=String(CUR_STUDENT.class||'');
   var syl=CUR_STUDENT.syllabus||'';
-  var board=syl; // e.g. 'Kerala State' or 'CBSE'
+  var board=sylToBoard(syl); // 'Kerala State' or 'CBSE'
+  var sylCode=board==='Kerala State'?'STATE':'CBSE';
 
   // My attendance records
   var myAtt=ATT_RECORDS.filter(function(r){return r.student_id===sid;});
 
-  // My sessions (class+syllabus match)
-  var sylCode=syl==='Kerala State'?'STATE':'CBSE';
+  // My sessions (class+board match — sessions store board as 'Kerala State'/'CBSE')
   var mySess=SESS_LOGS.filter(function(r){
     return String(r.class||'')==cls && (r.board===board||r.board===sylCode);
   });
@@ -436,7 +444,7 @@ function renderHome(){
   var allSubjs=Array.from(new Set(subjFromStu.concat(subjFromSess))).filter(Boolean).sort();
   if(!allSubjs.length) allSubjs=subjFromSess;
 
-  g('homeSubtitle').textContent='Class '+cls+' · '+syl+' · '+allSubjs.length+' subject'+(allSubjs.length!==1?'s':'');
+  g('homeSubtitle').textContent='Class '+cls+' · '+sylLabel(syl)+' · '+allSubjs.length+' subject'+(allSubjs.length!==1?'s':'');
 
   if(!allSubjs.length){
     g('batchGrid').innerHTML='<div class="no-batches"><div class="no-batches-ico">📚</div><div class="no-batches-title">No subjects found</div><div>Check back after your class sessions are recorded.</div></div>';
@@ -497,8 +505,8 @@ function showDetail(subj){
   var sid=CUR_STUDENT.id;
   var cls=String(CUR_STUDENT.class||'');
   var syl=CUR_STUDENT.syllabus||'';
-  var board=syl;
-  var sylCode=syl==='Kerala State'?'STATE':'CBSE';
+  var board=sylToBoard(syl);
+  var sylCode=board==='Kerala State'?'STATE':'CBSE';
 
   var mySess=SESS_LOGS.filter(function(r){
     return String(r.class||'')==cls && r.subject===subj &&
@@ -542,7 +550,7 @@ function showDetail(subj){
   html+='<div class="detail-hdr-icon">'+subjIcon(subj)+'</div>';
   html+='<div class="detail-hdr-info">';
   html+='<div class="detail-hdr-title">'+esc(subj)+'</div>';
-  html+='<div class="detail-hdr-meta">Class '+esc(cls)+' · '+esc(syl)+(teachers.length?' · '+esc(teachers.join(', ')):'')+'</div>';
+  html+='<div class="detail-hdr-meta">Class '+esc(cls)+' · '+esc(sylLabel(syl))+(teachers.length?' · '+esc(teachers.join(', ')):'')+'</div>';
   html+='<div class="detail-hdr-badges"><span class="badge '+attBadge+'">'+attPct+'% Attendance</span><span class="badge badge-b">'+mySess.length+' Sessions</span><span class="badge badge-n">'+allChapters.length+' Chapter'+(allChapters.length!==1?'s':'')+'</span></div>';
   html+='</div></div>';
 
