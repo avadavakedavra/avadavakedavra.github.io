@@ -1472,6 +1472,24 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 
 /* ── Table header uppercase more compact ── */
 .data-table th{font-size:8.5px;letter-spacing:.16em}
+/* ══ HOMEWORK OVERVIEW ══ */
+.hw-ov-sel-bar{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.hw-ov-sel{padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);font-family:var(--f);font-size:12px;font-weight:600;cursor:pointer;outline:none}
+.hw-ov-sel:focus{border-color:var(--li)}
+.hw-ov-back{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.hw-ov-back:hover{border-color:var(--li);color:var(--li)}
+.hw-ov-block{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:16px;overflow:hidden}
+.hw-ov-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap}
+.hw-ov-title{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.2px}
+.hw-ov-meta{font-size:11px;color:var(--text3);margin-top:3px;font-weight:600}
+.hw-ov-detail-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1px solid var(--border);border-radius:7px;background:var(--bg3);color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap}
+.hw-ov-detail-btn:hover{border-color:var(--li);color:var(--li)}
+.hw-ov-table{width:100%;border-collapse:collapse}
+.hw-ov-table th{padding:7px 16px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);background:var(--bg3);text-align:left;border-bottom:1px solid var(--border)}
+.hw-ov-table td{padding:8px 16px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)}
+.hw-ov-table tr:last-child td{border-bottom:none}
+.hw-ov-table tr:hover td{background:var(--bg3)}
+.hw-ov-rank-worst{background:rgba(220,38,38,.04)}
 /* ══ DAILY BRIEFING ══ */
 .brief-connect{max-width:420px;margin:48px auto;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:32px}
 .brief-connect-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:6px}
@@ -1775,6 +1793,7 @@ var WA_NUM      = '919539409586';
 var PAY_SCHED   = [];
 var PAY_TEACHERS= [];
 var PAY_LOADED  = false;
+var HW_SEL      = ''; // '' = overview, 'cls|board' = detail
 
 /* ══ STATE ══ */
 var SESSIONS        = [];
@@ -4338,37 +4357,168 @@ function renderHomework(){
   var el=g('vHomework');
   el.innerHTML='<div class="loading-overlay"><div class="loading-ring"></div><div class="loading-txt">Loading homework records…</div></div>';
 
-  // Load from HomeworkTracking sheet + session log homework assignments
-  var fc=parseCurCls();
-  var p={action:'getHomeworkTracking',appkey:SESS_PASS};
-  if(fc.cls) p.class=fc.cls;
-
-  // Run both in parallel: get tracking records + session homework list
   var trackDone=false, sessDone=false;
   var TRACK_RECS=[], SESS_HW=[];
 
   function tryRender(){
     if(!trackDone||!sessDone) return;
-    buildHWReport(el, TRACK_RECS, SESS_HW, fc);
+    buildHWPage(el, TRACK_RECS, SESS_HW);
   }
 
-  apiSess(p, function(data,err){
+  apiSess({action:'getHomeworkTracking',appkey:SESS_PASS}, function(data,err){
     if(!err&&data&&data.success) TRACK_RECS=data.records||[];
     trackDone=true; tryRender();
   });
 
-  // Also get all session homework for the full assignment list
-  var sp={action:'getAllLogs',appkey:SESS_PASS};
-  apiSess(sp, function(data,err){
+  apiSess({action:'getAllLogs',appkey:SESS_PASS}, function(data,err){
     if(!err&&data&&data.success){
-      SESS_HW=(data.logs||[]).filter(function(r){
-        return r.homework&&r.homework.trim();
-      });
-      if(fc.cls)   SESS_HW=SESS_HW.filter(function(r){return r.class===fc.cls;});
-      if(fc.board) SESS_HW=SESS_HW.filter(function(r){return r.board===fc.board;});
+      SESS_HW=(data.logs||[]).filter(function(r){return r.homework&&r.homework.trim();});
     }
     sessDone=true; tryRender();
   });
+}
+
+function buildHWPage(el, tracks, sessHw){
+  // Build class+board options from session homework data
+  var cbOptions=[];
+  var cbSeen={};
+  sessHw.forEach(function(r){
+    var k=r.class+'|'+r.board;
+    if(!cbSeen[k]){cbSeen[k]=true;cbOptions.push({cls:r.class,board:r.board,k:k});}
+  });
+  cbOptions.sort(function(a,b){return a.cls.localeCompare(b.cls)||a.board.localeCompare(b.board);});
+
+  // Selector bar
+  var selHtml='<div class="hw-ov-sel-bar">';
+  selHtml+='<span class="hw-ov-sel-label">Homework for:</span>';
+  selHtml+='<select class="hw-ov-sel" id="hwClsSel" onchange="onHWSelChange(this.value)">';
+  selHtml+='<option value="">All Classes — Overview</option>';
+  cbOptions.forEach(function(o){
+    selHtml+='<option value="'+esc(o.k)+'"'+(HW_SEL===o.k?' selected':'')+'>Class '+esc(o.cls)+' · '+esc(o.board)+'</option>';
+  });
+  selHtml+='</select>';
+  selHtml+='</div>';
+
+  if(!HW_SEL){
+    // Overview mode
+    el.innerHTML=selHtml+buildHWOverview(tracks, sessHw);
+  } else {
+    // Detail mode for selected class+board
+    var parts=HW_SEL.split('|');
+    var fc={cls:parts[0],board:parts[1]||null};
+    var filtSessHw=sessHw.filter(function(r){return r.class===fc.cls&&(!fc.board||r.board===fc.board);});
+    var filtTracks=tracks.filter(function(r){
+      var board=r.syllabus==='STATE'?'Kerala State':r.syllabus;
+      return r.class===fc.cls&&(!fc.board||board===fc.board);
+    });
+    var detailEl=document.createElement('div');
+    detailEl.innerHTML=selHtml;
+    buildHWReport(detailEl, filtTracks, filtSessHw, fc);
+    el.innerHTML=detailEl.innerHTML;
+    // Restore stored data (for pdf/copy callbacks)
+    el._assignments=detailEl._assignments;
+    el._trackMap=detailEl._trackMap;
+  }
+}
+
+function onHWSelChange(val){
+  HW_SEL=val;
+  renderHomework();
+}
+
+function buildHWOverview(tracks, sessHw){
+  // Build assignment counts per class+board
+  var cbMap={};
+  sessHw.forEach(function(r){
+    var k=r.class+'|'+r.board;
+    if(!cbMap[k]) cbMap[k]={cls:r.class,board:r.board,assignKeys:{}};
+    var date=sessDateToYMD(r.date);
+    cbMap[k].assignKeys[r.subject+'|'+date]=true;
+  });
+
+  // Group tracks by class+board
+  var tracksByCB={};
+  tracks.forEach(function(r){
+    var board=r.syllabus==='STATE'?'Kerala State':r.syllabus;
+    var k=r.class+'|'+board;
+    if(!tracksByCB[k]) tracksByCB[k]=[];
+    tracksByCB[k].push(r);
+  });
+
+  var keys=Object.keys(cbMap).sort(function(a,b){
+    var ca=cbMap[a],cb2=cbMap[b];
+    return ca.cls.localeCompare(cb2.cls)||ca.board.localeCompare(cb2.board);
+  });
+
+  if(!keys.length) return noDataMsg();
+
+  var html='';
+  keys.forEach(function(k){
+    var cb=cbMap[k];
+    var totalAssign=Object.keys(cb.assignKeys).length;
+    var clsTracks=tracksByCB[k]||[];
+    var sylCode=cb.board==='Kerala State'?'STATE':'CBSE';
+
+    // Enrolled students from ATTENDANCE
+    var enrolled={};
+    ATTENDANCE.forEach(function(r){
+      if(r.class===cb.cls&&r.syllabus===sylCode&&r.full_name){
+        if(!enrolled[r.student_id]) enrolled[r.student_id]=r.full_name;
+      }
+    });
+
+    // Not-submitted counts per student
+    var notSub={};
+    clsTracks.forEach(function(r){
+      if(!notSub[r.student_id]) notSub[r.student_id]={name:r.student_name||r.full_name||'',count:0};
+      notSub[r.student_id].count++;
+    });
+
+    // Build student list
+    var students=[];
+    var allIds=Object.assign({},enrolled);
+    Object.keys(notSub).forEach(function(sid){if(!allIds[sid])allIds[sid]=notSub[sid].name;});
+    Object.keys(allIds).forEach(function(sid){
+      var ns=notSub[sid]?notSub[sid].count:0;
+      var rate=totalAssign>0?Math.max(0,Math.round((1-ns/totalAssign)*100)):100;
+      students.push({id:sid,name:allIds[sid]||'Unknown',notSub:ns,rate:rate});
+    });
+    // Sort ascending by rate (worst performers first)
+    students.sort(function(a,b){return a.rate-b.rate||a.name.localeCompare(b.name);});
+
+    var avgRate=students.length?Math.round(students.reduce(function(s,st){return s+st.rate;},0)/students.length):100;
+    var tracked=clsTracks.length>0;
+
+    html+='<div class="hw-ov-block">';
+    html+='<div class="hw-ov-hd">';
+    html+='<div><div class="hw-ov-title">Class '+esc(cb.cls)+' &nbsp;·&nbsp; '+esc(cb.board)+'</div>'+
+      '<div class="hw-ov-meta">'+totalAssign+' assignment'+(totalAssign!==1?'s':'')+
+      (tracked?' · Avg completion: <strong style="color:var(--li)">'+avgRate+'%</strong>':' · No submission data yet')+
+      '</div></div>';
+    html+='<button class="hw-ov-detail-btn" onclick="onHWSelChange(\''+esc(k)+'\')">View Homework ›</button>';
+    html+='</div>';
+
+    if(students.length){
+      html+='<table class="hw-ov-table">';
+      html+='<thead><tr><th>#</th><th>Student</th><th>Not Submitted</th><th>Completion Rate</th></tr></thead><tbody>';
+      students.forEach(function(st,i){
+        var rateColor=st.rate<50?'var(--red)':st.rate<75?'var(--amber)':'var(--li)';
+        var rowCls=st.rate<60?' class="hw-ov-rank-worst"':'';
+        html+='<tr'+rowCls+'>';
+        html+='<td style="font-size:10px;font-weight:800;color:var(--text3);width:28px">'+(i+1)+'</td>';
+        html+='<td style="font-weight:700">'+esc(st.name)+'</td>';
+        html+='<td>'+(st.notSub>0?'<span class="badge badge-r">'+st.notSub+'</span>':'<span class="badge badge-g">0</span>')+'</td>';
+        html+='<td><span style="font-weight:800;font-size:13px;color:'+rateColor+'">'+st.rate+'%</span></td>';
+        html+='</tr>';
+      });
+      html+='</tbody></table>';
+    } else {
+      html+='<div style="padding:14px 18px;font-size:12px;color:var(--text3);font-style:italic">No student data found. Ensure attendance is marked for this class.</div>';
+    }
+    html+='</div>';
+  });
+
+  return html;
 }
 
 function buildHWReport(el, tracks, sessHw, fc){
@@ -5164,34 +5314,37 @@ function buildTeacherBriefText(idx){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
   }).slice(0,4);
 
+  var sep='─────────────────';
   var lines=[];
-  lines.push('*SEHR Academy — Daily Briefing*');
-  lines.push(fmtLong(todayYMD));
+  lines.push('📋 *SEHR Academy — Daily Briefing*');
+  lines.push('_'+fmtLong(todayYMD)+'_');
+  lines.push(sep);
   lines.push('');
-  lines.push('*Teacher:* '+teacherName);
+  lines.push('👤 *Teacher:* '+teacherName);
   var boardLabel=syl==='STATE'?'Kerala State':syl==='CBSE'?'CBSE':'';
-  lines.push('*Class '+cls+(boardLabel?' · '+boardLabel:'')+' · '+subj+'*');
-  if(time) lines.push('*Time:* '+time+(dur?' · '+dur:'')+(mode?' · '+mode:''));
+  lines.push('📚 *Class '+cls+(boardLabel?' · '+boardLabel:'')+' · '+subj+'*');
+  if(time) lines.push('🕐 *Time:* '+time+(dur?' ('+dur+')':'')+(mode?' · '+mode:''));
   lines.push('');
 
   if(history.length){
-    lines.push('*Recent Sessions ('+subj+' · Class '+cls+'):*');
+    lines.push('📖 *Recent Sessions — '+subj+', Class '+cls+':*');
     history.forEach(function(r){
       lines.push('• '+fmtShort(sessDateToYMD(r.date))+' — '+(r.teacher_name||'')+(r.topics?' | '+r.topics:''));
-      if(r.chapters&&r.chapters.trim()) lines.push('  Chapters: '+r.chapters.replace(/ \| /g,', '));
+      if(r.chapters&&r.chapters.trim()) lines.push('  _Chapters: '+r.chapters.replace(/ \| /g,', ')+'_');
     });
     lines.push('');
   }
 
   if(hwSessions.length){
-    lines.push('*Pending Homework to Check:*');
+    lines.push('✏️ *Pending Homework to Follow Up:*');
     hwSessions.forEach(function(r){
-      lines.push('• ['+fmtShort(sessDateToYMD(r.date))+'] '+r.homework);
+      lines.push('• '+fmtShort(sessDateToYMD(r.date))+' — '+r.homework);
     });
     lines.push('');
   }
 
-  lines.push('Please ensure syllabus continuity and collect pending homework submissions.');
+  lines.push(sep);
+  lines.push('_Please ensure syllabus continuity and collect pending homework submissions._');
   return lines.join('\n');
 }
 
