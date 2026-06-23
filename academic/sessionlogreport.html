@@ -3031,7 +3031,7 @@ function renderDay(data){
     }
     var ap=attRows.filter(function(r){return r.status==='Present';}).length;
     var aa=attRows.length-ap;
-    var syls=Array.from(new Set(attRows.map(function(r){return r.syllabus;}))).sort(function(a,b){return a==='STATE'?-1:b==='STATE'?1:a.localeCompare(b);});
+    var multiSyl=Array.from(new Set(attRows.map(function(r){return r.syllabus;}))).length>1;
     rightHtml+='<div class="att-block"><div class="att-hd">'+
       '<div class="att-title">Class '+esc(cls.class)+' Attendance</div>'+
       '<span class="badge badge-g">'+ap+' P</span>'+
@@ -3039,31 +3039,25 @@ function renderDay(data){
       '<span class="badge badge-n" style="margin-left:auto">'+Math.round(ap/attRows.length*100)+'%</span>'+
       '</div>';
 
-    if(syls.length>1){
-      rightHtml+='<div class="att-board-tabs">';
-      syls.forEach(function(s,si){rightHtml+='<button class="att-board-tab'+(si===0?' on':'')+'" onclick="switchAttBoard(this,\'att-syl-'+_safeKey+'-'+si+'\')">'+esc(sylLabel(s))+'</button>';});
-      rightHtml+='</div>';
-    }
-    syls.forEach(function(syl,si){
-      var sr=attRows.filter(function(r){return r.syllabus===syl;});
-      var sp=sr.filter(function(r){return r.status==='Present';}).length;
-      rightHtml+='<div id="att-syl-'+_safeKey+'-'+si+'"'+(si>0&&syls.length>1?' style="display:none"':'')+'>';
-      rightHtml+='<div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text3)">'+esc(sylLabel(syl))+' · '+sp+'/'+sr.length+' present</div>';
-      rightHtml+='<table class="att-table">';
-      sr.forEach(function(r){
-        var ab=r.status==='Absent';
-        var ph=PHOTO_MAP[r.student_id]||r.photo||'';
-        var av='<div class="att-photo'+(ab?' ab-av':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
-        var panelId='sp-'+r.student_id.replace(/[^a-zA-Z0-9]/g,'_');
-        rightHtml+='<tr class="'+(ab?'att-ab ':'')+' student-row-clickable" onclick="toggleStudentPanel(\''+panelId+'\',\''+esc(r.student_id)+'\',\''+esc(r.full_name)+'\',\''+esc(r.class)+'\')">'+
-          '<td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+pctPill(r.student_id)+'</td>'+
-          '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span>'+
-          '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-left:5px;opacity:.4"><polyline points="6 9 12 15 18 9"/></svg></td></tr>'+
-          '<tr class="student-panel-row"><td colspan="2"><div class="student-panel" id="'+panelId+'"></div></td></tr>';
-      });
-      rightHtml+='</table></div>';
+    // Unified list — sort Present first then Absent, alphabetical within each group
+    var sorted=attRows.slice().sort(function(a,b){
+      if(a.status===b.status)return a.full_name.localeCompare(b.full_name);
+      return a.status==='Present'?-1:1;
     });
-    rightHtml+='</div>';
+    rightHtml+='<table class="att-table">';
+    sorted.forEach(function(r){
+      var ab=r.status==='Absent';
+      var ph=PHOTO_MAP[r.student_id]||r.photo||'';
+      var av='<div class="att-photo'+(ab?' ab-av':'')+'">'+(ph?'<img src="'+ph+'" alt="">':'')+mn(r.full_name)+'</div>';
+      var panelId='sp-'+r.student_id.replace(/[^a-zA-Z0-9]/g,'_');
+      var sylBadge=multiSyl?'<span class="badge badge-n" style="font-size:9px;padding:2px 5px;margin-left:3px">'+esc(sylLabel(r.syllabus))+'</span>':'';
+      rightHtml+='<tr class="'+(ab?'att-ab ':'')+' student-row-clickable" onclick="toggleStudentPanel(\''+panelId+'\',\''+esc(r.student_id)+'\',\''+esc(r.full_name)+'\',\''+esc(r.class)+'\')">'+
+        '<td>'+av+'<span class="att-name">'+esc(r.full_name)+'</span>'+sylBadge+pctPill(r.student_id)+'</td>'+
+        '<td style="text-align:right"><span class="badge '+(ab?'badge-r':'badge-g')+'">'+(ab?'Absent':'Present')+'</span>'+
+        '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-left:5px;opacity:.4"><polyline points="6 9 12 15 18 9"/></svg></td></tr>'+
+        '<tr class="student-panel-row"><td colspan="2"><div class="student-panel" id="'+panelId+'"></div></td></tr>';
+    });
+    rightHtml+='</table></div>';
   });
 
   var gapBanner=buildGapAlertBanner();
