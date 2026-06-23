@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SEHR Academy — Student Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -13,7 +13,7 @@
   --red:#dc2626;--amber:#f59e0b;--blue:#3b82f6;--teal:#0d9488;--purple:#8b5cf6;
   --bg:#f9f9f7;--bg2:#fff;--bg3:#f3f3f0;--border:#e8e8e3;
   --text:#1a1a18;--text2:#3a3a36;--text3:#7a7970;
-  --f:'Inter',sans-serif;--radius:14px;
+  --f:'Open Sans',sans-serif;--radius:14px;
 }
 body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100vh}
 
@@ -21,7 +21,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#f0f9e8 0%,#e8f5f0 50%,#f5f0ff 100%)}
 .login-card{background:#fff;border-radius:24px;box-shadow:0 4px 6px rgba(0,0,0,.04),0 20px 60px rgba(0,0,0,.08);width:100%;max-width:420px;overflow:hidden}
 .login-brand{background:linear-gradient(135deg,#1a2e0a,#0d4f3c);padding:32px;text-align:center}
-.login-brand-logo{font-family:'DM Serif Display',serif;font-size:28px;color:#fff;letter-spacing:-1px}
+.login-brand-logo{font-family:'Open Sans',sans-serif;font-weight:800;font-size:30px;color:#fff;letter-spacing:2px;text-transform:uppercase}
 .login-brand-logo span{color:var(--li)}
 .login-brand-sub{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);margin-top:4px;text-transform:uppercase;letter-spacing:.12em}
 .login-body{padding:32px}
@@ -45,7 +45,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
 .topbar-inner{display:flex;align-items:center;gap:12px;height:58px;max-width:1100px;margin:0 auto}
 .topbar-back{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;padding:6px 10px;border-radius:8px;transition:all .15s;border:none;background:none;font-family:var(--f)}
 .topbar-back:hover{background:var(--bg3);color:var(--text)}
-.topbar-logo{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);letter-spacing:-.5px;flex:1}
+.topbar-logo{font-family:'Open Sans',sans-serif;font-weight:800;font-size:17px;color:var(--text);letter-spacing:2px;text-transform:uppercase;flex:1}
 .topbar-logo span{color:var(--li)}
 .topbar-user{display:flex;align-items:center;gap:10px}
 .topbar-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--li-dim)}
@@ -57,7 +57,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
 
 /* ── HOME / BATCHES VIEW ── */
 .page-hdr{margin-bottom:24px}
-.page-title{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;color:var(--text);letter-spacing:-.3px}
+.page-title{font-family:'Open Sans',sans-serif;font-weight:800;font-size:26px;font-weight:400;color:var(--text);letter-spacing:-.3px}
 .page-sub{font-size:12px;color:var(--text3);margin-top:4px;font-weight:600}
 
 .batch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
@@ -102,7 +102,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
 .detail-hdr{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:20px;display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .detail-hdr-icon{width:52px;height:52px;border-radius:12px;background:var(--li-dim);color:var(--li);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
 .detail-hdr-info{flex:1}
-.detail-hdr-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text);letter-spacing:-.3px}
+.detail-hdr-title{font-family:'Open Sans',sans-serif;font-weight:800;font-size:22px;font-weight:400;color:var(--text);letter-spacing:-.3px}
 .detail-hdr-meta{font-size:12px;color:var(--text3);margin-top:4px;font-weight:600}
 .detail-hdr-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
@@ -152,11 +152,33 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100v
 .prog-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
 .prog-bar-fill{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--li),var(--li2));transition:width .6s}
 
-/* ── STATS ── */
+/* ── HOMEWORK STATS ── */
+.hw-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:14px 18px}
+.hw-stat-box{background:#fff;padding:12px 10px;text-align:center}
+.hw-stat-val{font-size:20px;font-weight:800;line-height:1}
+.hw-stat-lbl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:4px}
+
+/* ── ATTENDANCE VISUAL ── */
+.att-summary{display:flex;align-items:center;gap:18px;padding:16px 18px;flex-wrap:wrap}
+.att-big-ring{flex-shrink:0}
+.att-detail-col{flex:1;min-width:160px}
+.att-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.att-bar-label{font-size:11px;font-weight:600;color:var(--text3);width:60px;flex-shrink:0}
+.att-bar-track{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.att-bar-fill{height:8px;border-radius:4px}
+.att-bar-val{font-size:11px;font-weight:800;width:28px;text-align:right;flex-shrink:0}
+.att-status-msg{font-size:11px;font-weight:600;padding:7px 10px;border-radius:7px;margin-top:4px}
+.att-status-ok{background:rgba(139,197,63,.1);color:#3a6000}
+.att-status-warn{background:rgba(245,158,11,.1);color:#7a3f00}
+.att-status-bad{background:rgba(220,38,38,.08);color:#991b1b}
+
+/* ── HW ITEMS ── */
 .hw-item{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
 .hw-item:last-child{border-bottom:none}
 .hw-date-badge{font-size:9px;font-weight:700;color:var(--amber);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);padding:3px 7px;border-radius:6px;white-space:nowrap;flex-shrink:0;margin-top:1px}
 .hw-text{font-size:12px;color:var(--text2);flex:1}
+.hw-status-done{display:inline-block;font-size:9px;font-weight:700;background:rgba(139,197,63,.12);color:#3a6000;border:1px solid rgba(139,197,63,.25);padding:2px 7px;border-radius:10px;margin-top:4px}
+.hw-status-miss{display:inline-block;font-size:9px;font-weight:700;background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.18);padding:2px 7px;border-radius:10px;margin-top:4px}
 
 /* loading */
 .loading-wrap{text-align:center;padding:48px 24px;color:var(--text3)}
@@ -315,6 +337,7 @@ var ALL_STUDENTS=[];
 var CUR_STUDENT=null;
 var ATT_RECORDS=[];
 var SESS_LOGS=[];
+var HW_TRACK=[];   // not-submitted homework records from getHomeworkTracking
 var DATA_LOADED=false;
 
 // normalize syllabus code to board name used in session logs
@@ -440,13 +463,22 @@ function bootApp(){
 }
 
 function loadData(){
-  var attDone=false, sessDone=false;
+  var attDone=false, sessDone=false, hwDone=false;
 
   function tryRender(){
-    if(!attDone||!sessDone) return;
+    if(!attDone||!sessDone||!hwDone) return;
     DATA_LOADED=true;
     renderHome();
   }
+
+  // Load homework tracking (not-submitted records)
+  fetch(SESS_API+'?action=getHomeworkTracking&appkey='+encodeURIComponent(SESS_PASS))
+    .then(function(r){return r.text();})
+    .then(function(t){
+      var data; try{data=JSON.parse(t);}catch(e){data=null;}
+      HW_TRACK=(data&&data.success&&data.records)||[];
+      hwDone=true; tryRender();
+    }).catch(function(){hwDone=true; tryRender();});
 
   // Load attendance
   fetch(ATT_API+'?data='+encodeURIComponent(JSON.stringify({action:'getAttendance'})))
@@ -724,8 +756,21 @@ function showDetail(subj){
   });
   var monthKeys=Object.keys(monthAttMap).sort();
 
+  // Homework tracking stats for this student + subject
+  var myHWMissed=HW_TRACK.filter(function(r){
+    return String(r.student_id)===String(sid)&&String(r.class||'')===cls;
+  });
+  var hwGiven=hwSess.length;
+  var hwMissed=myHWMissed.length;
+  var hwSubmitted=Math.max(0,hwGiven-hwMissed);
+  var hwSubmitPct=pct(hwSubmitted,hwGiven);
+  // Build a set of missed hw dates
+  var missedDates={};
+  myHWMissed.forEach(function(r){missedDates[sessDateToYMD(r.hw_date||r.date||'')]=true;});
+
   var attColor=attPct>=75?'var(--li)':attPct>=50?'var(--amber)':'var(--red)';
   var attBadge=attPct>=75?'badge-g':attPct>=50?'badge-a':'badge-r';
+  var sessNeeded=Math.max(0,Math.ceil((0.75*total-present)/(1-0.75)));
 
   var html='';
 
@@ -735,16 +780,16 @@ function showDetail(subj){
   html+='<div class="detail-hdr-info">';
   html+='<div class="detail-hdr-title">'+esc(subj)+'</div>';
   html+='<div class="detail-hdr-meta">Class '+esc(cls)+' · '+esc(sylLabel(syl))+(teachers.length?' · '+esc(teachers.join(', ')):'')+'</div>';
-  html+='<div class="detail-hdr-badges"><span class="badge '+attBadge+'">'+attPct+'% Attendance</span><span class="badge badge-b">'+mySess.length+' Sessions</span><span class="badge badge-n">'+allChapters.length+' Chapter'+(allChapters.length!==1?'s':'')+'</span>'+(hwSess.length?'<span class="badge badge-a">'+hwSess.length+' Homework</span>':'')+'</div>';
+  html+='<div class="detail-hdr-badges"><span class="badge '+attBadge+'">'+attPct+'% Attendance</span><span class="badge badge-b">'+mySess.length+' Sessions</span><span class="badge badge-n">'+allChapters.length+' Chapter'+(allChapters.length!==1?'s':'')+'</span>'+(hwGiven?'<span class="badge badge-a">'+hwGiven+' Homework</span>':'')+'</div>';
   html+='</div></div>';
 
   // KPIs
   html+='<div class="kpi-row">';
   html+=kpi(present+'/'+total,'Classes Attended','out of '+total+' sessions');
-  html+=kpi(hrsFmt(minsAttended),'Hours Present',hrsFmt(totalMins)+' total class time');
-  html+=kpi(attPct+'%','Attendance Rate',attPct>=75?'✓ Good standing':attPct>=50?'Needs improvement':'Below minimum');
-  html+=kpi(allChapters.length,'Chapters Covered','across '+mySess.length+' sessions');
-  html+=kpi(hwSess.length||'—','Homework Assigned','check below for details');
+  html+=kpi(hrsFmt(minsAttended),'Hours Present',hrsFmt(totalMins)+' total');
+  html+=kpi(attPct+'%','Attendance','min 75% required');
+  html+=kpi(allChapters.length,'Chapters','covered so far');
+  html+=kpi(hrsFmt(totalMins-minsAttended),'Hours Missed','due to absences');
   html+='</div>';
 
   // Consecutive absence warning
@@ -752,51 +797,56 @@ function showDetail(subj){
     html+='<div class="streak-warn">⚠️ You were absent for the last '+consAbsent+' consecutive sessions. Please inform your teacher.</div>';
   }
 
-  // Attendance section
+  // ── ATTENDANCE SECTION ──
   html+='<div class="section-card">';
   html+='<div class="section-hd"><span style="font-size:16px">📅</span><span class="section-hd-title">Attendance</span><span class="section-hd-count">'+present+' / '+total+'</span></div>';
-  html+='<div style="padding:14px 18px 6px">';
-  html+='<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px"><span>'+present+' Present · '+(total-present)+' Absent</span><span style="color:'+attColor+'">'+attPct+'%</span></div>';
-  html+='<div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:'+attPct+'%;background:'+attColor+'"></div></div>';
-  var sessNeeded=Math.max(0,Math.ceil((0.75*total-present)/(1-0.75)));
-  html+='<div style="font-size:10px;color:var(--text3);margin-top:8px">Minimum required: 75% · '+(attPct>=75?'<span style="color:var(--li)">You meet the requirement ✓</span>':'<span style="color:var(--red)">Attend '+sessNeeded+' more consecutive sessions to reach 75%</span>')+'</div>';
+
+  // Big ring + bar breakdown
+  var bigR=44,bigC=2*Math.PI*bigR,bigDash=(attPct/100)*bigC;
+  html+='<div class="att-summary">';
+  html+='<div class="att-big-ring">';
+  html+='<svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="'+bigR+'" fill="none" stroke="var(--border)" stroke-width="8"/><circle cx="55" cy="55" r="'+bigR+'" fill="none" stroke="'+attColor+'" stroke-width="8" stroke-dasharray="'+bigDash.toFixed(1)+' '+bigC.toFixed(1)+'" stroke-dashoffset="'+bigC/4+'" stroke-linecap="round"/><text x="55" y="50" text-anchor="middle" font-size="22" font-weight="800" fill="'+attColor+'" font-family="Open Sans">'+attPct+'%</text><text x="55" y="66" text-anchor="middle" font-size="10" font-weight="600" fill="#7a7970" font-family="Open Sans">attendance</text></svg>';
   html+='</div>';
+  html+='<div class="att-detail-col">';
+  html+='<div class="att-bar-row"><span class="att-bar-label">Present</span><div class="att-bar-track"><div class="att-bar-fill" style="width:'+pct(present,total)+'%;background:var(--li)"></div></div><span class="att-bar-val" style="color:var(--li)">'+present+'</span></div>';
+  html+='<div class="att-bar-row"><span class="att-bar-label">Absent</span><div class="att-bar-track"><div class="att-bar-fill" style="width:'+pct(total-present,total)+'%;background:var(--red)"></div></div><span class="att-bar-val" style="color:var(--red)">'+(total-present)+'</span></div>';
+  html+='<div class="att-bar-row"><span class="att-bar-label">Target</span><div class="att-bar-track"><div class="att-bar-fill" style="width:75%;background:var(--amber);opacity:.6"></div></div><span class="att-bar-val" style="color:var(--amber)">75%</span></div>';
+  if(attPct>=75){
+    html+='<div class="att-status-msg att-status-ok">✓ You meet the 75% requirement</div>';
+  } else {
+    html+='<div class="att-status-msg att-status-bad">Need '+sessNeeded+' more consecutive sessions to reach 75%</div>';
+  }
+  html+='</div></div>';
 
   // Calendar dots
-  if(sessDateSet.length){
-    html+='<div class="att-cal">';
+  if(sortedDates.length){
+    html+='<div class="att-cal" style="padding:0 18px 16px">';
     sortedDates.forEach(function(d){
       var status=attMap[d]||'Present';
       var cls2=status==='Present'?'present':'absent';
-      var p=d.split('-');
+      var p2=d.split('-');
       html+='<div class="att-dot '+cls2+'" title="'+fmtShort(d)+' — '+status+'">';
-      html+='<span>'+parseInt(p[2])+'</span><span class="att-dot-date">'+MONTHS_S[parseInt(p[1])-1]+'</span>';
+      html+='<span>'+parseInt(p2[2])+'</span><span class="att-dot-date">'+MONTHS_S[parseInt(p2[1])-1]+'</span>';
       html+='</div>';
     });
     html+='</div>';
   }
-  html+='</div>';
 
   // Monthly breakdown
   if(monthKeys.length>1){
-    html+='<div class="section-card">';
-    html+='<div class="section-hd"><span style="font-size:16px">📊</span><span class="section-hd-title">Monthly Breakdown</span></div>';
-    html+='<div class="month-chart">';
+    html+='<div style="border-top:1px solid var(--border)"><div class="month-chart">';
     monthKeys.forEach(function(k){
-      var mv=monthAttMap[k];
-      var mp=pct(mv.p,mv.t);
+      var mv=monthAttMap[k];var mp=pct(mv.p,mv.t);
       var color=mp>=75?'var(--li)':mp>=50?'var(--amber)':'var(--red)';
-      var mon=MONTHS_S[parseInt(k.slice(5))-1]+' '+k.slice(0,4);
-      html+='<div class="month-chart-row">';
-      html+='<div class="month-chart-lbl">'+MONTHS_S[parseInt(k.slice(5))-1]+'</div>';
+      html+='<div class="month-chart-row"><div class="month-chart-lbl">'+MONTHS_S[parseInt(k.slice(5))-1]+'</div>';
       html+='<div class="month-chart-bar-wrap"><div class="month-chart-bar" style="width:'+mp+'%;background:'+color+'"></div></div>';
-      html+='<div class="month-chart-val" style="color:'+color+'">'+mp+'%</div>';
-      html+='</div>';
+      html+='<div class="month-chart-val" style="color:'+color+'">'+mp+'%</div></div>';
     });
     html+='</div></div>';
   }
+  html+='</div>';
 
-  // Chapters
+  // ── CHAPTERS ──
   if(allChapters.length){
     html+='<div class="section-card">';
     html+='<div class="section-hd"><span style="font-size:16px">📖</span><span class="section-hd-title">Chapters Covered</span><span class="section-hd-count">'+allChapters.length+'</span></div>';
@@ -805,15 +855,30 @@ function showDetail(subj){
     html+='</div></div>';
   }
 
-  // Homework
-  if(hwSess.length){
+  // ── HOMEWORK STATS ──
+  if(hwGiven){
     html+='<div class="section-card">';
-    html+='<div class="section-hd"><span style="font-size:16px">✏️</span><span class="section-hd-title">Homework Assigned</span><span class="section-hd-count">'+hwSess.length+'</span></div>';
+    html+='<div class="section-hd"><span style="font-size:16px">✏️</span><span class="section-hd-title">Homework</span><span class="section-hd-count">'+hwGiven+' assigned</span></div>';
+    // Stats row
+    html+='<div class="hw-stats-row">';
+    html+='<div class="hw-stat-box"><div class="hw-stat-val" style="color:var(--text)">'+hwGiven+'</div><div class="hw-stat-lbl">Given</div></div>';
+    html+='<div class="hw-stat-box"><div class="hw-stat-val" style="color:var(--li)">'+hwSubmitted+'</div><div class="hw-stat-lbl">Submitted</div></div>';
+    html+='<div class="hw-stat-box"><div class="hw-stat-val" style="color:var(--red)">'+hwMissed+'</div><div class="hw-stat-lbl">Missed</div></div>';
+    html+='</div>';
+    // Submission progress bar
+    html+='<div style="padding:0 18px 14px">';
+    html+='<div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--text3);margin-bottom:5px"><span>Submission rate</span><span style="color:'+(hwSubmitPct>=80?'var(--li)':hwSubmitPct>=50?'var(--amber)':'var(--red)')+'">'+hwSubmitPct+'%</span></div>';
+    html+='<div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:'+hwSubmitPct+'%;background:'+(hwSubmitPct>=80?'var(--li)':hwSubmitPct>=50?'var(--amber)':'var(--red)')+'"></div></div>';
+    html+='</div>';
+    // Individual items
     hwSess.forEach(function(r){
+      var d=sessDateToYMD(r.date);
+      var isMissed=missedDates[d];
       html+='<div class="hw-item">';
-      html+='<div class="hw-date-badge">'+fmtShort(sessDateToYMD(r.date))+'</div>';
+      html+='<div class="hw-date-badge">'+fmtShort(d)+'</div>';
       html+='<div class="hw-text"><div>'+esc(r.homework)+'</div>';
       if(r.teacher_name) html+='<div style="font-size:10px;color:var(--text3);margin-top:3px">👤 '+esc(r.teacher_name)+'</div>';
+      html+='<div>'+(isMissed?'<span class="hw-status-miss">Not submitted</span>':'<span class="hw-status-done">Submitted ✓</span>')+'</div>';
       html+='</div></div>';
     });
     html+='</div>';
