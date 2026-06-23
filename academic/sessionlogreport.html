@@ -5166,9 +5166,9 @@ function renderBriefing(){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,3);
 
-    // Pending homework for this class+board
+    // Pending homework for this class+board+subject
     var hwSessions=SESSIONS.filter(function(r){
-      return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
+      return r.class===cls && r.subject===subj && (!board||r.board===board) && (r.homework||'').trim()!=='';
     }).sort(function(a,b){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,6);
@@ -5241,9 +5241,14 @@ function renderBriefing(){
       html+='<div class="brief-section">'+
         '<div class="brief-section-label">Pending Homework to Follow Up</div>';
       hwSessions.forEach(function(r){
+        var chaps=(r.chapters||'').split(' | ').filter(Boolean);
         html+='<div class="brief-hw-item">'+
           '<div class="brief-hw-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
-          '<div class="brief-hw-text">'+esc(r.homework)+'</div>'+
+          '<div class="brief-hw-text">'+
+            esc(r.homework)+
+            '<div style="margin-top:4px;font-size:10px;color:var(--text3)">'+
+              (r.teacher_name?'👤 '+esc(r.teacher_name):'')+(chaps.length?' &nbsp;·&nbsp; 📖 '+esc(chaps.join(', ')):'')+'</div>'+
+          '</div>'+
         '</div>';
       });
       html+='</div>';
@@ -5309,7 +5314,7 @@ function buildTeacherBriefText(idx){
   }).slice(0,3);
 
   var hwSessions=SESSIONS.filter(function(r){
-    return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
+    return r.class===cls && r.subject===subj && (!board||r.board===board) && (r.homework||'').trim()!=='';
   }).sort(function(a,b){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
   }).slice(0,4);
@@ -5338,7 +5343,12 @@ function buildTeacherBriefText(idx){
   if(hwSessions.length){
     lines.push('✏️ *Pending Homework to Follow Up:*');
     hwSessions.forEach(function(r){
+      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
       lines.push('• '+fmtShort(sessDateToYMD(r.date))+' — '+r.homework);
+      var meta=[];
+      if(r.teacher_name) meta.push('👤 '+r.teacher_name);
+      if(chaps.length) meta.push('📖 '+chaps.join(', '));
+      if(meta.length) lines.push('  _'+meta.join(' · ')+'_');
     });
     lines.push('');
   }
