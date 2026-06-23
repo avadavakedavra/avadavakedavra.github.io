@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEHR Academy — Student Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --li:#8BC53F;--li2:#a3d55a;--li-dim:rgba(139,197,63,.15);
+  --red:#dc2626;--amber:#f59e0b;--blue:#3b82f6;--teal:#0d9488;--purple:#8b5cf6;
+  --bg:#f9f9f7;--bg2:#fff;--bg3:#f3f3f0;--border:#e8e8e3;
+  --text:#1a1a18;--text2:#3a3a36;--text3:#7a7970;
+  --f:'Inter',sans-serif;--radius:14px;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#f0f9e8 0%,#e8f5f0 50%,#f5f0ff 100%)}
+.login-card{background:#fff;border-radius:24px;box-shadow:0 4px 6px rgba(0,0,0,.04),0 20px 60px rgba(0,0,0,.08);width:100%;max-width:420px;overflow:hidden}
+.login-brand{background:linear-gradient(135deg,#1a2e0a,#0d4f3c);padding:32px;text-align:center}
+.login-brand-logo{font-family:'DM Serif Display',serif;font-size:28px;color:#fff;letter-spacing:-1px}
+.login-brand-logo span{color:var(--li)}
+.login-brand-sub{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);margin-top:4px;text-transform:uppercase;letter-spacing:.12em}
+.login-body{padding:32px}
+.login-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--text3);margin-bottom:24px}
+.login-field{margin-bottom:16px}
+.login-lbl{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px}
+.login-inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--f);font-size:14px;color:var(--text);outline:none;background:#fff;transition:border-color .15s}
+.login-inp:focus{border-color:var(--li)}
+.login-inp:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed}
+.login-btn{width:100%;padding:13px;background:var(--li);color:#fff;border:none;border-radius:10px;font-family:var(--f);font-size:14px;font-weight:800;cursor:pointer;margin-top:8px;transition:opacity .15s}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-btn:not(:disabled):hover{opacity:.88}
+.login-err{margin-top:10px;font-size:12px;color:var(--red);min-height:18px;text-align:center}
+.login-hint{margin-top:12px;font-size:11px;color:var(--text3);text-align:center}
+
+/* ── APP SHELL ── */
+#app{display:none}
+#app.on{display:block}
+.topbar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px}
+.topbar-inner{display:flex;align-items:center;gap:12px;height:58px;max-width:1100px;margin:0 auto}
+.topbar-back{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;padding:6px 10px;border-radius:8px;transition:all .15s;border:none;background:none;font-family:var(--f)}
+.topbar-back:hover{background:var(--bg3);color:var(--text)}
+.topbar-logo{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);letter-spacing:-.5px;flex:1}
+.topbar-logo span{color:var(--li)}
+.topbar-user{display:flex;align-items:center;gap:10px}
+.topbar-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--li-dim)}
+.topbar-avatar-init{width:36px;height:36px;border-radius:50%;background:var(--li-dim);color:var(--li);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid rgba(139,197,63,.25)}
+.topbar-name{font-size:13px;font-weight:700;color:var(--text)}
+.topbar-cls{font-size:10px;color:var(--text3);margin-top:1px}
+
+.app-body{max-width:1100px;margin:0 auto;padding:28px 24px}
+
+/* ── HOME / BATCHES VIEW ── */
+.page-hdr{margin-bottom:24px}
+.page-title{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;color:var(--text);letter-spacing:-.3px}
+.page-sub{font-size:12px;color:var(--text3);margin-top:4px;font-weight:600}
+
+.batch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.batch-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:0;overflow:hidden;cursor:pointer;transition:all .2s;position:relative}
+.batch-card:hover{border-color:var(--li);box-shadow:0 4px 20px rgba(139,197,63,.15);transform:translateY(-2px)}
+.batch-card-banner{height:7px;background:linear-gradient(90deg,var(--li),var(--li2))}
+.batch-card-body{padding:18px}
+.batch-card-icon{width:40px;height:40px;border-radius:10px;background:var(--li-dim);color:var(--li);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.batch-card-subj{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.2px}
+.batch-card-meta{font-size:11px;color:var(--text3);margin-top:3px;font-weight:600}
+.batch-card-stats{display:flex;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.batch-card-stat{flex:1;text-align:center}
+.batch-card-stat-val{font-size:18px;font-weight:900;color:var(--li);line-height:1}
+.batch-card-stat-lbl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.batch-card-att{position:absolute;top:16px;right:16px}
+.batch-card-att-ring{width:44px;height:44px}
+
+.no-batches{text-align:center;padding:60px 24px;color:var(--text3)}
+.no-batches-ico{font-size:40px;margin-bottom:12px;opacity:.4}
+.no-batches-title{font-size:16px;font-weight:700;color:var(--text2);margin-bottom:6px}
+
+/* ── SUBJECT DETAIL VIEW ── */
+.detail-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--text3);cursor:pointer;margin-bottom:20px;padding:6px 10px 6px 8px;border-radius:8px;border:1px solid var(--border);background:#fff;transition:all .15s}
+.detail-back:hover{border-color:var(--li);color:var(--li)}
+.detail-hdr{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:20px;display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.detail-hdr-icon{width:52px;height:52px;border-radius:12px;background:var(--li-dim);color:var(--li);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.detail-hdr-info{flex:1}
+.detail-hdr-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text);letter-spacing:-.3px}
+.detail-hdr-meta{font-size:12px;color:var(--text3);margin-top:4px;font-weight:600}
+.detail-hdr-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.badge-g{background:rgba(139,197,63,.12);color:#4a7a00;border:1px solid rgba(139,197,63,.25)}
+.badge-b{background:rgba(59,130,246,.1);color:#1d4ed8;border:1px solid rgba(59,130,246,.2)}
+.badge-a{background:rgba(245,158,11,.1);color:#92400e;border:1px solid rgba(245,158,11,.2)}
+.badge-r{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.15)}
+.badge-n{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.kpi-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.kpi-val{font-size:28px;font-weight:900;color:var(--li);line-height:1;letter-spacing:-1px}
+.kpi-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:5px}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:3px}
+
+.section-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+.section-hd{padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.section-hd-title{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.1px}
+.section-hd-count{font-size:10px;font-weight:700;background:var(--bg3);color:var(--text3);padding:2px 7px;border-radius:10px;margin-left:auto}
+
+/* attendance calendar dots */
+.att-cal{display:flex;flex-wrap:wrap;gap:5px;padding:16px 18px}
+.att-dot{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:default;position:relative}
+.att-dot.present{background:rgba(139,197,63,.15);color:#4a7a00;border:1px solid rgba(139,197,63,.3)}
+.att-dot.absent{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2)}
+.att-dot.future{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+.att-dot-date{font-size:7px;display:block;font-weight:600}
+
+/* chapters list */
+.chap-list{padding:14px 18px;display:flex;flex-wrap:wrap;gap:7px}
+.chap-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(139,197,63,.1);color:#3a5a00;border:1px solid rgba(139,197,63,.2)}
+
+/* session timeline */
+.sess-timeline{padding:4px 0}
+.sess-row{display:flex;gap:12px;align-items:flex-start;padding:12px 18px;border-bottom:1px solid var(--border)}
+.sess-row:last-child{border-bottom:none}
+.sess-date-col{text-align:center;flex-shrink:0;width:44px}
+.sess-date-d{font-size:18px;font-weight:900;color:var(--li);line-height:1}
+.sess-date-m{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.sess-body{flex:1}
+.sess-teacher{font-size:12px;font-weight:700;color:var(--text2)}
+.sess-topics{font-size:11px;color:var(--text3);margin-top:3px}
+.sess-hw{font-size:11px;color:var(--amber);margin-top:4px;padding:5px 8px;background:rgba(245,158,11,.07);border-radius:6px;border-left:2px solid var(--amber)}
+.sess-dur{font-size:10px;font-weight:700;color:var(--text3);background:var(--bg3);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+
+/* progress bar */
+.prog-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
+.prog-bar-fill{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--li),var(--li2));transition:width .6s}
+
+/* ── STATS ── */
+.hw-item{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
+.hw-item:last-child{border-bottom:none}
+.hw-date-badge{font-size:9px;font-weight:700;color:var(--amber);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);padding:3px 7px;border-radius:6px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.hw-text{font-size:12px;color:var(--text2);flex:1}
+
+/* loading */
+.loading-wrap{text-align:center;padding:48px 24px;color:var(--text3)}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--li);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:600px){
+  .app-body{padding:16px}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .topbar{padding:0 16px}
+  .batch-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-brand-logo">SEHR<span>.</span></div>
+      <div class="login-brand-sub">Student Portal</div>
+    </div>
+    <div class="login-body">
+      <div class="login-title">Welcome Back</div>
+      <div class="login-sub">Select your class and sign in with your date of birth</div>
+
+      <div class="login-field">
+        <label class="login-lbl">Class</label>
+        <select class="login-inp" id="clsSel" onchange="onClsChange()">
+          <option value="">— Select Class —</option>
+          <option value="9">Class 9</option>
+          <option value="10">Class 10</option>
+          <option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+      </div>
+
+      <div class="login-field">
+        <label class="login-lbl">Syllabus</label>
+        <select class="login-inp" id="sylSel" onchange="onClsChange()" disabled>
+          <option value="">— Select Syllabus —</option>
+          <option value="Kerala State">Kerala State</option>
+          <option value="CBSE">CBSE</option>
+        </select>
+      </div>
+
+      <div class="login-field">
+        <label class="login-lbl">Your Name</label>
+        <select class="login-inp" id="nameSel" disabled>
+          <option value="">— Select your name —</option>
+        </select>
+      </div>
+
+      <div class="login-field">
+        <label class="login-lbl">Date of Birth (Password)</label>
+        <input class="login-inp" id="dobInp" type="date" disabled>
+      </div>
+
+      <button class="login-btn" id="loginBtn" onclick="doLogin()" disabled>Sign In</button>
+      <div class="login-err" id="loginErr"></div>
+      <div class="login-hint">Your date of birth is your password</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div id="topbarBack" style="display:none">
+        <button class="topbar-back" onclick="showHome()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          My Classes
+        </button>
+      </div>
+      <div class="topbar-logo">SEHR<span>.</span></div>
+      <div class="topbar-user">
+        <div id="topbarAv"></div>
+        <div>
+          <div class="topbar-name" id="topbarName"></div>
+          <div class="topbar-cls" id="topbarCls"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- HOME VIEW -->
+    <div id="vHome">
+      <div class="page-hdr">
+        <div class="page-title">My <em>Classes</em></div>
+        <div class="page-sub" id="homeSubtitle"></div>
+      </div>
+      <div id="batchGrid" class="batch-grid"></div>
+    </div>
+
+    <!-- SUBJECT DETAIL VIEW -->
+    <div id="vDetail" style="display:none">
+      <button class="detail-back" onclick="showHome()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to My Classes
+      </button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var g=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function mn(n){return String(n||'?').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);}
+function pad(n){return String(n).padStart(2,'0');}
+
+var STU_API = 'https://script.google.com/macros/s/AKfycbzlQp_92V9H6NXLl79-0nZwqhDlS5JzdTnKsjnOhNA8PFhx5PqrdQwKM9xu3I0FNINERw/exec';
+var ATT_API = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
+var SESS_API= 'https://script.google.com/macros/s/AKfycbx-qC_S-wZnjvBW9LZGTU4Y36ZHMTVlgS__DIAl1ZZ404beOfAyJwwtGsv352UbiyOR/exec';
+var SESS_PASS='sehr2026';
+
+// Internal password used to fetch student list
+var STU_PASS='sehr2026';
+
+var ALL_STUDENTS=[];
+var CUR_STUDENT=null;
+var ATT_RECORDS=[];
+var SESS_LOGS=[];
+var DATA_LOADED=false;
+
+var MONTHS_S=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var SUBJ_ICONS={
+  'Mathematics':'📐','Physics':'⚡','Chemistry':'🧪','Biology':'🌿',
+  'Social Science':'🌍','English':'📖','Malayalam':'📝','Hindi':'🇮🇳',
+  'Computer Science':'💻','Economics':'📊','Commerce':'💼','History':'🏛️',
+  'Geography':'🗺️','Political Science':'⚖️','Accountancy':'🧮',
+  'Business Studies':'📈','Physical Education':'🏃','Music':'🎵','Art':'🎨'
+};
+function subjIcon(s){return SUBJ_ICONS[s]||'📚';}
+
+// ── LOGIN FLOW ──────────────────────────────────────────────────────
+function onClsChange(){
+  var cls=g('clsSel').value, syl=g('sylSel').value;
+  var sylSel=g('sylSel'), nameSel=g('nameSel'), dobInp=g('dobInp'), btn=g('loginBtn');
+  sylSel.disabled=!cls;
+  if(!cls){nameSel.disabled=true;dobInp.disabled=true;btn.disabled=true;return;}
+  if(!syl){nameSel.disabled=true;dobInp.disabled=true;btn.disabled=true;return;}
+  // Load students
+  nameSel.innerHTML='<option value="">Loading…</option>';
+  nameSel.disabled=true; dobInp.disabled=true; btn.disabled=true;
+  g('loginErr').textContent='';
+  loadStudents(cls, syl);
+}
+
+function loadStudents(cls, syl){
+  fetch(STU_API+'?action=studentList&password='+encodeURIComponent(STU_PASS))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var raw=Array.isArray(data)?data:(Array.isArray(data.students)?data.students:[]);
+      ALL_STUDENTS=raw.filter(function(s){
+        return String(s.class||'')==String(cls) && String(s.syllabus||'')==syl && String(s.status||'Active').toLowerCase()!=='inactive';
+      }).sort(function(a,b){return String(a.full_name||'').localeCompare(String(b.full_name||''));});
+      var nameSel=g('nameSel');
+      nameSel.innerHTML='<option value="">— Select your name —</option>';
+      ALL_STUDENTS.forEach(function(s,i){
+        nameSel.innerHTML+='<option value="'+i+'">'+esc(s.full_name||'')+'</option>';
+      });
+      nameSel.disabled=false;
+      nameSel.onchange=function(){
+        g('dobInp').disabled=!nameSel.value;
+        g('loginBtn').disabled=!nameSel.value;
+        g('dobInp').value='';
+      };
+    })
+    .catch(function(){
+      g('loginErr').textContent='Could not load student list. Try again.';
+    });
+}
+
+function doLogin(){
+  var idx=parseInt(g('nameSel').value);
+  var dob=g('dobInp').value; // YYYY-MM-DD
+  var err=g('loginErr');
+  if(!dob){err.textContent='Please enter your date of birth.';return;}
+  var stu=ALL_STUDENTS[idx];
+  if(!stu){err.textContent='Please select your name.';return;}
+
+  // Normalise birthday from sheet (could be DD/MM/YYYY or YYYY-MM-DD or text)
+  var stuBday=normDate(stu.birthday||'');
+  var entered=dob; // already YYYY-MM-DD from input[type=date]
+
+  if(!stuBday||stuBday!==entered){
+    err.textContent='Date of birth does not match. Please try again.';
+    return;
+  }
+
+  err.textContent='';
+  CUR_STUDENT=stu;
+  bootApp();
+}
+
+function normDate(d){
+  if(!d) return '';
+  d=String(d).trim();
+  // DD/MM/YYYY
+  var m=d.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m) return m[3]+'-'+pad(m[2])+'-'+pad(m[1]);
+  // YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  // Try Date parse
+  var dt=new Date(d);
+  if(!isNaN(dt.getTime())) return dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());
+  return '';
+}
+
+// ── BOOT ─────────────────────────────────────────────────────────────
+function bootApp(){
+  g('loginWrap').style.display='none';
+  g('app').style.display='block';
+
+  // Topbar
+  g('topbarName').textContent=CUR_STUDENT.full_name||'Student';
+  g('topbarCls').textContent='Class '+CUR_STUDENT.class+' · '+(CUR_STUDENT.syllabus||'');
+  var ph=CUR_STUDENT.photo;
+  if(ph&&ph.startsWith('http')){
+    g('topbarAv').innerHTML='<img class="topbar-avatar" src="'+ph+'" alt="">';
+  } else {
+    g('topbarAv').innerHTML='<div class="topbar-avatar-init">'+mn(CUR_STUDENT.full_name)+'</div>';
+  }
+
+  g('batchGrid').innerHTML='<div class="loading-wrap"><div class="spinner"></div><div>Loading your classes…</div></div>';
+  loadData();
+}
+
+function loadData(){
+  var attDone=false, sessDone=false;
+
+  function tryRender(){
+    if(!attDone||!sessDone) return;
+    DATA_LOADED=true;
+    renderHome();
+  }
+
+  // Load attendance
+  fetch(ATT_API+'?data='+encodeURIComponent(JSON.stringify({action:'getAttendance'})))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      ATT_RECORDS=(data&&data.records)||[];
+      attDone=true; tryRender();
+    }).catch(function(){attDone=true; tryRender();});
+
+  // Load sessions
+  fetch(SESS_API+'?data='+encodeURIComponent(JSON.stringify({action:'getAllLogs',appkey:SESS_PASS})))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      SESS_LOGS=(data&&data.success&&data.logs)||[];
+      sessDone=true; tryRender();
+    }).catch(function(){sessDone=true; tryRender();});
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────
+function sessDateToYMD(d){
+  if(!d) return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  var m=d.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m) return m[3]+'-'+pad(m[2])+'-'+pad(m[1]);
+  var dt=new Date(d);
+  if(!isNaN(dt.getTime())) return dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());
+  return '';
+}
+function attDateToYMD(d){return sessDateToYMD(d);}
+function fmtShort(ymd){if(!ymd) return '';var p=ymd.split('-');return p[2]+' '+MONTHS_S[parseInt(p[1])-1];}
+function fmtLong(ymd){if(!ymd) return '';var p=ymd.split('-');var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var dt=new Date(ymd);return days[dt.getDay()]+', '+p[2]+' '+MONTHS_S[parseInt(p[1])-1]+' '+p[0];}
+function hrsFmt(mins){if(!mins) return '0h';var h=Math.floor(mins/60),m=mins%60;return h+'h'+(m?' '+m+'m':'');}
+function pct(a,b){return b>0?Math.round(a/b*100):0;}
+
+// ── HOME VIEW ─────────────────────────────────────────────────────────
+function renderHome(){
+  var sid=CUR_STUDENT.id;
+  var cls=String(CUR_STUDENT.class||'');
+  var syl=CUR_STUDENT.syllabus||'';
+  var board=syl; // e.g. 'Kerala State' or 'CBSE'
+
+  // My attendance records
+  var myAtt=ATT_RECORDS.filter(function(r){return r.student_id===sid;});
+
+  // My sessions (class+syllabus match)
+  var sylCode=syl==='Kerala State'?'STATE':'CBSE';
+  var mySess=SESS_LOGS.filter(function(r){
+    return String(r.class||'')==cls && (r.board===board||r.board===sylCode);
+  });
+
+  // Get subjects from student record + session data
+  var subjFromStu=(CUR_STUDENT.subjects||'').split(/[,;]/).map(function(s){return s.trim();}).filter(Boolean);
+  var subjFromSess=Array.from(new Set(mySess.map(function(r){return r.subject||'';})).values()).filter(Boolean);
+  var allSubjs=Array.from(new Set(subjFromStu.concat(subjFromSess))).filter(Boolean).sort();
+  if(!allSubjs.length) allSubjs=subjFromSess;
+
+  g('homeSubtitle').textContent='Class '+cls+' · '+syl+' · '+allSubjs.length+' subject'+(allSubjs.length!==1?'s':'');
+
+  if(!allSubjs.length){
+    g('batchGrid').innerHTML='<div class="no-batches"><div class="no-batches-ico">📚</div><div class="no-batches-title">No subjects found</div><div>Check back after your class sessions are recorded.</div></div>';
+    return;
+  }
+
+  var html='';
+  allSubjs.forEach(function(subj){
+    var sessSub=mySess.filter(function(r){return r.subject===subj;});
+    var totalMins=sessSub.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+    var totalSess=sessSub.length;
+
+    // My attendance for sessions of this subject
+    var sessSubDates=Array.from(new Set(sessSub.map(function(r){return sessDateToYMD(r.date);})));
+    var myAttSub=myAtt.filter(function(r){return sessSubDates.indexOf(attDateToYMD(r.date))>-1;});
+    var present=myAttSub.filter(function(r){return r.status==='Present';}).length;
+    var total=myAttSub.length||sessSubDates.length;
+    var attPct=pct(present,total);
+
+    // Attendance ring color
+    var ringColor=attPct>=75?'#8BC53F':attPct>=50?'#f59e0b':'#dc2626';
+    var circumf=2*Math.PI*16;
+    var dash=circumf*(attPct/100);
+
+    html+='<div class="batch-card" onclick="showDetail(\''+esc(subj)+'\')">';
+    html+='<div class="batch-card-banner"></div>';
+    html+='<div class="batch-card-body">';
+    html+='<div class="batch-card-att">';
+    html+='<svg class="batch-card-att-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#e8e8e3" stroke-width="3"/><circle cx="20" cy="20" r="16" fill="none" stroke="'+ringColor+'" stroke-width="3" stroke-dasharray="'+dash.toFixed(1)+' '+circumf.toFixed(1)+'" stroke-dashoffset="'+circumf/4+'" stroke-linecap="round"/><text x="20" y="24" text-anchor="middle" font-size="9" font-weight="800" fill="'+ringColor+'" font-family="Inter">'+attPct+'%</text></svg>';
+    html+='</div>';
+    html+='<div class="batch-card-icon">'+subjIcon(subj)+'</div>';
+    html+='<div class="batch-card-subj">'+esc(subj)+'</div>';
+    html+='<div class="batch-card-meta">'+totalSess+' session'+(totalSess!==1?'s':'')+' · '+hrsFmt(totalMins)+'</div>';
+    html+='<div class="batch-card-stats">';
+    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+present+'</div><div class="batch-card-stat-lbl">Present</div></div>';
+    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+totalSess+'</div><div class="batch-card-stat-lbl">Sessions</div></div>';
+    html+='<div class="batch-card-stat"><div class="batch-card-stat-val">'+hrsFmt(totalMins)+'</div><div class="batch-card-stat-lbl">Hours</div></div>';
+    html+='</div>';
+    html+='</div></div>';
+  });
+
+  g('batchGrid').innerHTML=html;
+  g('vHome').style.display='block';
+}
+
+function showHome(){
+  g('vDetail').style.display='none';
+  g('vHome').style.display='block';
+  g('topbarBack').style.display='none';
+}
+
+// ── SUBJECT DETAIL ────────────────────────────────────────────────────
+function showDetail(subj){
+  g('vHome').style.display='none';
+  g('vDetail').style.display='block';
+  g('topbarBack').style.display='block';
+
+  var sid=CUR_STUDENT.id;
+  var cls=String(CUR_STUDENT.class||'');
+  var syl=CUR_STUDENT.syllabus||'';
+  var board=syl;
+  var sylCode=syl==='Kerala State'?'STATE':'CBSE';
+
+  var mySess=SESS_LOGS.filter(function(r){
+    return String(r.class||'')==cls && r.subject===subj &&
+      (r.board===board||r.board===sylCode);
+  }).sort(function(a,b){return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));});
+
+  var totalMins=mySess.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+
+  // Attendance for this subject
+  var sessDateSet=Array.from(new Set(mySess.map(function(r){return sessDateToYMD(r.date);})));
+  var myAtt=ATT_RECORDS.filter(function(r){return r.student_id===sid;});
+  var myAttSub=myAtt.filter(function(r){return sessDateSet.indexOf(attDateToYMD(r.date))>-1;});
+  var attMap={};
+  myAttSub.forEach(function(r){attMap[attDateToYMD(r.date)]=r.status;});
+  var present=myAttSub.filter(function(r){return r.status==='Present';}).length;
+  var total=Math.max(myAttSub.length,sessDateSet.length);
+  var attPct=pct(present,total);
+
+  // Hours attended (only sessions where present)
+  var presentDates=new Set(myAttSub.filter(function(r){return r.status==='Present';}).map(function(r){return attDateToYMD(r.date);}));
+  var minsAttended=mySess.filter(function(r){return presentDates.has(sessDateToYMD(r.date));}).reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+
+  // Chapters covered
+  var allChapters=[];
+  mySess.forEach(function(r){(r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){if(allChapters.indexOf(c)===-1) allChapters.push(c);});});
+
+  // Homework
+  var hwSess=mySess.filter(function(r){return (r.homework||'').trim();});
+
+  // Unique teachers
+  var teachers=Array.from(new Set(mySess.map(function(r){return r.teacher_name||'';})).values()).filter(Boolean);
+
+  // Colour for attendance
+  var attColor=attPct>=75?'var(--li)':attPct>=50?'var(--amber)':'var(--red)';
+  var attBadge=attPct>=75?'badge-g':attPct>=50?'badge-a':'badge-r';
+
+  var html='';
+
+  // Header
+  html+='<div class="detail-hdr">';
+  html+='<div class="detail-hdr-icon">'+subjIcon(subj)+'</div>';
+  html+='<div class="detail-hdr-info">';
+  html+='<div class="detail-hdr-title">'+esc(subj)+'</div>';
+  html+='<div class="detail-hdr-meta">Class '+esc(cls)+' · '+esc(syl)+(teachers.length?' · '+esc(teachers.join(', ')):'')+'</div>';
+  html+='<div class="detail-hdr-badges"><span class="badge '+attBadge+'">'+attPct+'% Attendance</span><span class="badge badge-b">'+mySess.length+' Sessions</span><span class="badge badge-n">'+allChapters.length+' Chapter'+(allChapters.length!==1?'s':'')+'</span></div>';
+  html+='</div></div>';
+
+  // KPIs
+  html+='<div class="kpi-row">';
+  html+=kpi(present+'/'+total,'Classes Attended','Out of '+total+' sessions');
+  html+=kpi(hrsFmt(minsAttended),'Hours Present',hrsFmt(totalMins)+' total');
+  html+=kpi(attPct+'%','Attendance Rate',attPct>=75?'✓ Good standing':attPct>=50?'Needs improvement':'Below minimum');
+  html+=kpi(allChapters.length,'Chapters Covered','across '+mySess.length+' sessions');
+  html+=kpi(hwSess.length,'Homework Given','to follow up');
+  html+='</div>';
+
+  // Attendance progress bar
+  html+='<div class="section-card">';
+  html+='<div class="section-hd"><span style="font-size:16px">📅</span><span class="section-hd-title">Attendance</span><span class="section-hd-count">'+present+' / '+total+'</span></div>';
+  html+='<div style="padding:14px 18px 6px">';
+  html+='<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px"><span>'+present+' Present</span><span style="color:'+attColor+'">'+attPct+'%</span></div>';
+  html+='<div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:'+attPct+'%;background:'+attColor+'"></div></div>';
+  html+='<div style="font-size:10px;color:var(--text3);margin-top:8px">Minimum required: 75% · '+(attPct>=75?'<span style="color:var(--li)">You meet the requirement ✓</span>':'<span style="color:var(--red)">You need '+(Math.ceil((0.75*total-present)/(1-0.75)))+' more attended sessions</span>')+'</div>';
+  html+='</div>';
+
+  // Calendar dots
+  if(sessDateSet.length){
+    html+='<div class="att-cal">';
+    sessDateSet.slice().sort().forEach(function(d){
+      var status=attMap[d]||'Present';
+      var cls2=status==='Present'?'present':'absent';
+      var p=d.split('-');
+      html+='<div class="att-dot '+cls2+'" title="'+d+' — '+status+'">';
+      html+='<span>'+parseInt(p[2])+'</span><span class="att-dot-date">'+MONTHS_S[parseInt(p[1])-1]+'</span>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  html+='</div>';
+
+  // Chapters
+  if(allChapters.length){
+    html+='<div class="section-card">';
+    html+='<div class="section-hd"><span style="font-size:16px">📖</span><span class="section-hd-title">Chapters Covered</span><span class="section-hd-count">'+allChapters.length+'</span></div>';
+    html+='<div class="chap-list">';
+    allChapters.forEach(function(c){html+='<span class="chap-chip">'+esc(c)+'</span>';});
+    html+='</div></div>';
+  }
+
+  // Homework
+  if(hwSess.length){
+    html+='<div class="section-card">';
+    html+='<div class="section-hd"><span style="font-size:16px">✏️</span><span class="section-hd-title">Homework</span><span class="section-hd-count">'+hwSess.length+'</span></div>';
+    hwSess.forEach(function(r){
+      html+='<div class="hw-item">';
+      html+='<div class="hw-date-badge">'+fmtShort(sessDateToYMD(r.date))+'</div>';
+      html+='<div class="hw-text"><div>'+esc(r.homework)+'</div>';
+      if(r.teacher_name) html+='<div style="font-size:10px;color:var(--text3);margin-top:3px">👤 '+esc(r.teacher_name)+'</div>';
+      html+='</div></div>';
+    });
+    html+='</div>';
+  }
+
+  // Session timeline
+  html+='<div class="section-card">';
+  html+='<div class="section-hd"><span style="font-size:16px">📋</span><span class="section-hd-title">Session History</span><span class="section-hd-count">'+mySess.length+'</span></div>';
+  if(mySess.length){
+    html+='<div class="sess-timeline">';
+    mySess.forEach(function(r){
+      var d=sessDateToYMD(r.date);
+      var p=d.split('-');
+      var dur=+r.duration_mins;var durStr=dur>=60?Math.floor(dur/60)+'h '+(dur%60?dur%60+'m':''):dur+'m';
+      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
+      var attended=attMap[d];
+      html+='<div class="sess-row">';
+      html+='<div class="sess-date-col"><div class="sess-date-d">'+parseInt(p[2])+'</div><div class="sess-date-m">'+MONTHS_S[parseInt(p[1])-1]+'</div></div>';
+      html+='<div class="sess-body">';
+      html+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><div class="sess-teacher">'+esc(r.teacher_name||'')+'</div>';
+      if(attended) html+='<span class="badge '+(attended==='Present'?'badge-g':'badge-r')+'" style="font-size:9px">'+attended+'</span>';
+      html+='</div>';
+      if(r.topics) html+='<div class="sess-topics">'+esc(r.topics)+'</div>';
+      if(chaps.length) html+='<div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px">'+chaps.map(function(c){return '<span class="chap-chip" style="font-size:10px;padding:3px 8px">'+esc(c)+'</span>';}).join('')+'</div>';
+      if(r.homework&&r.homework.trim()) html+='<div class="sess-hw">📝 '+esc(r.homework)+'</div>';
+      html+='</div>';
+      html+='<div class="sess-dur">'+durStr+'</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  } else {
+    html+='<div style="padding:18px;font-size:12px;color:var(--text3);font-style:italic">No sessions recorded yet.</div>';
+  }
+  html+='</div>';
+
+  g('detailContent').innerHTML=html;
+}
+
+function kpi(val,lbl,sub){
+  return '<div class="kpi-box"><div class="kpi-val">'+esc(val)+'</div><div class="kpi-lbl">'+esc(lbl)+'</div>'+(sub?'<div class="kpi-sub">'+esc(sub)+'</div>':'')+'</div>';
+}
+</script>
+</body>
+</html>
