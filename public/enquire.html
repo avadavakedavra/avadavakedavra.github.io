@@ -1608,7 +1608,7 @@ $('upd_submitBtn').addEventListener('click', async function() {
   };
 
   try {
-    await fetch(ATT_API, {
+    await fetch(SHEETS_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
