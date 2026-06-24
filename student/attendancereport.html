@@ -48,8 +48,9 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 .btn-icon{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;border:none;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
 .btn-print-all{background:var(--li);color:var(--ink);box-shadow:0 3px 12px rgba(139,197,63,.3)}
 .btn-print-all:hover{background:var(--l2)}
-.btn-wa-all{background:rgba(37,211,102,.1);color:#128c3e;border:1.5px solid rgba(37,211,102,.25)!important;border-style:solid}
-.btn-wa-all:hover{background:rgba(37,211,102,.2)}
+.btn-copy-all{background:var(--cr);color:var(--ink);border:1.5px solid var(--ru)!important}
+.btn-copy-all:hover{border-color:var(--lm)!important;color:var(--l3)}
+.btn-copy-all.copied{background:rgba(139,197,63,.12)!important;border-color:rgba(139,197,63,.3)!important;color:var(--l3)!important}
 .btn-icon svg{width:13px;height:13px;flex-shrink:0}
 
 /* ── CONTROLS ── */
@@ -238,9 +239,9 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print Report
       </button>
-      <button class="btn-icon btn-wa-all" onclick="sendWaAll()">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>
-        WhatsApp Summary
+      <button class="btn-icon btn-copy-all" id="btnCopyAll" onclick="copyAttSummary(this)">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        <span class="btn-lbl">Copy Summary</span>
       </button>
     </div>
   </div>
@@ -775,25 +776,22 @@ function sendWaClass(cls){
   window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(waMsg(rows,cls)),'_blank');
 }
 
-function sendWaAll(){
+function buildAttSummaryText(){
   var rows=ALL_RECORDS.filter(function(r){
     if(r.date!==CUR_DATE) return false;
-    if(CUR_CLS!=='ALL'&&r.class!==CUR_CLS) return false;
     if(CUR_BOARD!=='ALL'&&r.syllabus!==CUR_BOARD) return false;
     return true;
   });
-  if(!rows.length){alert('No data for this selection');return;}
+  if(!rows.length) return null;
   var total=rows.length, present=rows.filter(function(r){return r.status==='Present';}).length;
   var absent=total-present, pct=total?Math.round(present/total*100):0;
   var lines=[];
-  lines.push('*SEHR Academy — Full Attendance Report*');
+  lines.push('*SEHR Academy — Attendance Update*');
   lines.push('📅 '+fmtLong(CUR_DATE));
   lines.push('');
-  lines.push('*Overall*');
-  lines.push('👥 Total:   '+total);
+  lines.push('👥 Total strength: '+total);
   lines.push('✅ Present: '+present);
-  lines.push('❌ Absent:  '+absent);
-  lines.push('📊 Rate:    '+pct+'%');
+  lines.push('❌ Absent: '+absent+' | 📊 '+pct+'%');
   var clsList=ALL_CLASSES.filter(function(c){return rows.some(function(r){return r.class===c;});});
   clsList.forEach(function(cls){
     var cr=rows.filter(function(r){return r.class===cls;});
@@ -801,12 +799,37 @@ function sendWaAll(){
     var abList=cr.filter(function(r){return r.status==='Absent';});
     lines.push('');
     lines.push('*Class '+cls+'* — '+cp+'/'+cr.length);
-    if(abList.length) abList.forEach(function(r){ lines.push('  ❌ '+r.full_name+(r.syllabus?' ('+r.syllabus+')':'')); });
+    if(abList.length) abList.forEach(function(r){ lines.push('  ❌ '+r.full_name); });
     else lines.push('  ✅ All present');
   });
   lines.push('');
-  lines.push('_SEHR Academy Attendance System_');
-  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(lines.join('\n')),'_blank');
+  lines.push('_SEHR Academy_');
+  return lines.join('\n');
+}
+
+function copyAttSummary(btn){
+  if(!CUR_DATE){alert('Select a date first');return;}
+  var text=buildAttSummaryText();
+  if(!text){alert('No data for this date');return;}
+  var lbl=btn.querySelector('.btn-lbl');
+  function done(){
+    btn.classList.add('copied');
+    lbl.textContent='Copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); lbl.textContent='Copy Summary'; },2000);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      var ta=document.createElement('textarea');
+      ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); done();
+    });
+  } else {
+    var ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }
 }
 
 init();
