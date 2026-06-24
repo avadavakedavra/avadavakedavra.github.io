@@ -2,1638 +2,729 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enquire About Admission — SEHR Academy | Vatanappally, Thrissur</title>
-<meta name="description" content="Enquire about admission at SEHR Academy. Small-batch tuition for Class 10, 11, 12 — NEET & JEE Mains. Vatanappally, Thrissur, Kerala.">
-<meta property="og:title" content="Enquire About Admission — SEHR Academy">
-<meta property="og:description" content="Fill in this quick form — we'll get back to you on WhatsApp within a few hours.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Join SEHR Academy — Admission Enquiry</title>
+<meta name="description" content="Quick admission enquiry for SEHR Academy. Takes about 2 minutes.">
+<meta property="og:title" content="Join SEHR Academy">
+<meta property="og:description" content="Fill in a few details and we'll reach out on WhatsApp.">
 <meta property="og:url" content="https://sehracademy.com/enquire">
 <meta property="og:image" content="https://sehracademy.com/logo.png">
-<meta property="og:type" content="website">
 <link rel="canonical" href="https://sehracademy.com/enquire">
-<meta name="theme-color" content="#8BC53F">
 <link rel="icon" type="image/png" href="/logo.png">
-
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://sehracademy.com/"},{"@type":"ListItem","position":2,"name":"Enquire","item":"https://sehracademy.com/enquire"}]}
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#08080f">
 
 <header id="site-header"></header>
 <script src="/assets/nav.js" defer></script>
 <div id="site-footer"></div>
 <script src="/assets/footer.js" defer></script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
-/* ═══════════════════════════════════════════════
-   SEHR ACADEMY — ENQUIRY PAGE
-   Design system: cream · charcoal · lime #8BC53F
-   Font: Open Sans  |  Mobile-first
-═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --cream:      #f5f2eb;
-  --cream-2:    #ede9e0;
-  --cream-3:    #e4dfd4;
-  --white:      #fdfcfa;
-  --ink:        #1a1a18;
-  --ink-2:      #2e2e2b;
-  --ink-3:      #4a4a46;
-  --muted:      #7a7970;
-  --pale:       #b0ada4;
-  --rule:       #d8d4cb;
-  --lime:       #8BC53F;
-  --lime-2:     #72a530;
-  --lime-3:     #5e8a24;
-  --lime-bg:    #f0f7e3;
-  --lime-mid:   #c8e48e;
-  --red:        #dc2626;
-  --red-bg:     #fef2f2;
-  --f: 'Open Sans', sans-serif;
-  --ease: cubic-bezier(.22,1,.36,1);
+  --lime:    #8BC53F;
+  --lime-d:  #6ea52e;
+  --purple:  #7C3AED;
+  --blue:    #3B82F6;
+  --amber:   #F59E0B;
+  --bg:      #08080f;
+  --surf:    rgba(255,255,255,0.06);
+  --surf-h:  rgba(255,255,255,0.10);
+  --bdr:     rgba(255,255,255,0.12);
+  --text:    #f0f0f0;
+  --muted:   rgba(255,255,255,0.42);
+  --f:       'Inter', sans-serif;
+  --ease:    cubic-bezier(0.22,1,0.36,1);
 }
 
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html { -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
-
-body {
-  font-family: var(--f);
-  background: var(--cream);
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
+html { -webkit-font-smoothing: antialiased; }
+body { font-family: var(--f); background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 a { text-decoration: none; color: inherit; }
 header#site-header { position: sticky; top: 0; z-index: 200; }
-:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px; }
 
-/* ═══════════ BREADCRUMB ═══════════ */
-.bc { background: var(--white); border-bottom: 1px solid var(--cream-3); }
-.bc-in {
-  max-width: 1120px; margin: 0 auto; padding: 9px 20px;
-  display: flex; align-items: center; gap: 7px;
-  font-size: 11px; color: var(--pale); font-weight: 600;
-}
-.bc-in a { color: var(--lime-2); }
-.bc-sep { color: var(--rule); }
+/* ORBS */
+.orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.22; }
+.orb-1 { width: 520px; height: 520px; background: var(--lime);   top: -140px; left: -120px; animation: o1 20s ease-in-out infinite; }
+.orb-2 { width: 620px; height: 620px; background: var(--purple); bottom: -180px; right: -120px; animation: o2 25s ease-in-out infinite; }
+.orb-3 { width: 380px; height: 380px; background: var(--blue);   top: 35%; right: 5%; animation: o3 17s ease-in-out infinite; }
+@keyframes o1 { 0%,100%{transform:translate(0,0) scale(1)}  40%{transform:translate(60px,50px) scale(1.1)}  75%{transform:translate(-20px,80px) scale(0.95)} }
+@keyframes o2 { 0%,100%{transform:translate(0,0) scale(1)}  35%{transform:translate(-60px,-50px) scale(1.08)} 70%{transform:translate(40px,-20px) scale(1.1)} }
+@keyframes o3 { 0%,100%{transform:translate(0,0) scale(1)}  50%{transform:translate(-70px,60px) scale(1.15)} }
 
-/* ═══════════ MASTHEAD ═══════════ */
-.masthead-wrap {
-  background: var(--ink);
-  position: relative; overflow: hidden;
-  border-bottom: 3px solid var(--lime);
-}
-.masthead-wrap::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
-.masthead-wrap::after {
-  content: '';
-  position: absolute;
-  top: -120px; right: -120px;
-  width: 520px; height: 520px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(139,197,63,.18) 0%, transparent 65%);
-  pointer-events: none;
-}
-.masthead-bg-text {
-  position: absolute;
-  right: -10px; bottom: -24px;
-  font-size: 160px; font-weight: 800;
-  line-height: 1; letter-spacing: -8px;
-  color: rgba(255,255,255,.04);
-  pointer-events: none; user-select: none;
-  white-space: nowrap; z-index: 0;
-}
-.masthead {
-  max-width: 1120px; margin: 0 auto;
-  padding: 48px 20px 44px;
+/* WELCOME */
+.welcome {
+  min-height: calc(100vh - 64px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 24px;
   position: relative; z-index: 1;
 }
-.mast-kicker {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
-}
-.mast-kicker-rule { width: 28px; height: 2px; background: var(--lime); flex-shrink: 0; }
-.mast-kicker-text {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--lime); opacity: .9;
-}
-.mast-h1 {
-  font-size: clamp(34px, 6vw, 68px);
-  font-weight: 800; line-height: .97;
-  letter-spacing: -2px; color: #fff;
-  margin-bottom: 18px;
-}
-.mast-h1 .ital { font-style: italic; font-weight: 300; color: var(--lime); }
-.mast-desc {
-  font-size: 14px; color: rgba(255,255,255,.5);
-  line-height: 1.75; max-width: 460px; margin-bottom: 24px;
-}
-.mast-badges { display: flex; flex-wrap: wrap; gap: 8px; }
-.mast-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 999px; padding: 7px 14px;
-  font-size: 11px; font-weight: 600;
-  color: rgba(255,255,255,.65);
-}
-.mast-badge-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--lime); flex-shrink: 0;
-}
-
-/* ═══════════ PAGE SHELL ═══════════ */
-.page {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 36px 20px 80px;
-}
-
-/* ═══════════ LAYOUT ═══════════ */
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 24px;
-  align-items: start;
-}
-@media (max-width: 760px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { order: -1; }
-}
-
-/* ═══════════ FORM CARD ═══════════ */
-.form-card {
-  background: var(--white);
-  border: 1.5px solid var(--rule);
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
-}
-
-.form-card-header {
-  background: var(--lime-bg);
-  border-bottom: 1px solid #d6eeb2;
-  padding: 16px 22px;
-  display: flex; align-items: center; gap: 12px;
-}
-.form-card-header-icon {
-  width: 34px; height: 34px; border-radius: 6px;
-  background: var(--lime);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.form-card-header-icon svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.form-card-header-title { font-size: 13px; font-weight: 800; color: var(--ink); }
-.form-card-header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-
-.form-body { padding: 24px 22px; }
-
-/* Section divider inside form */
-.form-sec {
-  display: flex; align-items: center; gap: 10px;
-  margin: 24px 0 18px;
-}
-.form-sec-rule { flex: 1; height: 1px; background: var(--cream-3); }
-.form-sec-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
-.form-sec-lbl {
-  font-size: 9px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--muted); white-space: nowrap;
-}
-
-/* Fields */
-.field { margin-bottom: 16px; }
-.field-label {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 5px;
-}
-.field-label-txt {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3);
-}
-.req { color: var(--red); margin-left: 2px; }
-.opt { font-size: 10px; font-weight: 600; color: var(--pale); text-transform: none; letter-spacing: 0; }
-
-.input, .sel, .ta {
-  width: 100%;
-  background: var(--cream);
-  border: 1.5px solid var(--rule);
-  border-radius: 4px;
-  padding: 10px 13px;
-  font-family: var(--f);
-  font-size: 14px; color: var(--ink);
-  outline: none;
-  transition: border-color .16s, box-shadow .16s, background .16s;
-  -webkit-appearance: none;
-}
-.input::placeholder, .ta::placeholder { color: var(--pale); }
-.input:focus, .sel:focus, .ta:focus {
-  border-color: var(--lime);
-  background: var(--white);
-  box-shadow: 0 0 0 3px rgba(139,197,63,.13);
-}
-.input.err, .sel.err, .ta.err {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(220,38,38,.09);
-}
-
-.sel {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b0ada4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 13px;
-  padding-right: 34px; cursor: pointer;
-}
-
-.ta { resize: vertical; min-height: 84px; line-height: 1.55; }
-
-.ferr { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 4px; display: none; }
-.ferr.show { display: block; }
-
-/* Three-col row for DOB */
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-@media (max-width: 420px) { .row3 { grid-template-columns: 1fr; } }
-
-/* Two-col row */
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
-
-/* ═══════════ SESSION TYPE TOGGLE ═══════════ */
-.session-toggle {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 4px;
-}
-.sess-radio { display: none; }
-.sess-lbl {
-  display: flex; flex-direction: column; align-items: center; gap: 7px;
-  background: var(--cream); border: 1.5px solid var(--rule);
-  border-radius: 6px; padding: 14px 12px;
-  font-size: 12px; font-weight: 700; color: var(--ink-3);
-  cursor: pointer; text-align: center;
-  transition: border-color .15s, background .15s, color .15s;
-  user-select: none; position: relative;
-}
-.sess-lbl:hover { border-color: var(--lime-mid); background: var(--lime-bg); }
-.sess-radio:checked + .sess-lbl {
-  border-color: var(--lime); background: var(--lime-bg); color: var(--lime-3);
-  box-shadow: 0 0 0 3px rgba(139,197,63,.13);
-}
-.sess-icon {
-  width: 36px; height: 36px; border-radius: 8px;
-  background: rgba(139,197,63,.12);
-  display: flex; align-items: center; justify-content: center;
-  transition: background .15s;
-}
-.sess-radio:checked + .sess-lbl .sess-icon { background: rgba(139,197,63,.25); }
-.sess-icon svg { width: 18px; height: 18px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.sess-sub { font-size: 10px; font-weight: 500; color: var(--muted); margin-top: 2px; line-height: 1.35; }
-.sess-radio:checked + .sess-lbl .sess-sub { color: var(--lime-3); opacity: .8; }
-.sess-check {
-  position: absolute; top: 8px; right: 8px;
-  width: 16px; height: 16px; border-radius: 50%;
-  border: 1.5px solid var(--rule); background: var(--white);
-  display: flex; align-items: center; justify-content: center;
-  transition: background .14s, border-color .14s;
-}
-.sess-radio:checked + .sess-lbl .sess-check {
-  background: var(--lime); border-color: var(--lime);
-}
-.sess-check svg { width: 8px; height: 8px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .12s; }
-.sess-radio:checked + .sess-lbl .sess-check svg { opacity: 1; }
-
-/* ═══════════ SUBJECT CHECKBOXES ═══════════ */
-.subj-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 8px;
-}
-.subj-select-all {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; font-weight: 700; color: var(--lime-2);
-  cursor: pointer; user-select: none;
-  background: none; border: none; padding: 0;
-  font-family: var(--f);
-}
-.subj-select-all:hover { color: var(--lime-3); }
-.subj-select-all svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-
-.subj-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 7px;
-}
-.subj-chk { display: none; }
-.subj-lbl {
-  display: flex; align-items: center; gap: 7px;
-  background: var(--cream); border: 1.5px solid var(--rule);
-  border-radius: 4px; padding: 8px 10px;
-  font-size: 12px; font-weight: 600; color: var(--ink-3);
-  cursor: pointer;
-  transition: border-color .15s, background .15s, color .15s;
-  user-select: none;
-}
-.subj-lbl:hover { border-color: var(--lime-mid); background: var(--lime-bg); }
-.subj-chk:checked + .subj-lbl {
-  border-color: var(--lime); background: var(--lime-bg); color: var(--lime-3);
-}
-.subj-tick {
-  width: 15px; height: 15px; border-radius: 3px;
-  border: 1.5px solid var(--rule); background: var(--white);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  transition: background .14s, border-color .14s;
-}
-.subj-chk:checked + .subj-lbl .subj-tick { background: var(--lime); border-color: var(--lime); }
-.subj-tick svg { width: 9px; height: 9px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .12s; }
-.subj-chk:checked + .subj-lbl .subj-tick svg { opacity: 1; }
-.subj-hint { font-size: 11px; color: var(--red); font-weight: 600; margin-top: 6px; display: none; }
-.subj-hint.show { display: block; }
-
-/* Note pill for subject section */
-.subj-note {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: var(--lime-bg); border: 1px solid var(--lime-mid);
-  border-radius: 3px; padding: 4px 8px; margin-bottom: 10px;
-  font-size: 10px; font-weight: 700; color: var(--lime-3);
-}
-.subj-note svg { width: 10px; height: 10px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-/* Submit button */
-.btn-submit {
-  width: 100%;
-  background: var(--lime); border: none; border-radius: 4px;
-  padding: 13px 20px; margin-top: 20px;
-  font-family: var(--f); font-size: 13px; font-weight: 800;
-  color: var(--ink); cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  box-shadow: 0 4px 14px rgba(139,197,63,.3);
-  transition: background .16s, box-shadow .16s, transform .12s;
-  letter-spacing: .2px;
-}
-.btn-submit:hover { background: var(--lime-2); box-shadow: 0 6px 20px rgba(139,197,63,.38); transform: translateY(-1px); }
-.btn-submit:active { transform: translateY(0); }
-.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-.btn-submit svg { width: 16px; height: 16px; flex-shrink: 0; }
-.spin { animation: spinAnim .75s linear infinite; }
-@keyframes spinAnim { to { transform: rotate(360deg); } }
-
-.form-note { text-align: center; font-size: 11px; color: var(--pale); font-weight: 600; margin-top: 10px; }
-
-/* ═══════════ SUCCESS STATE ═══════════ */
-.success-state { display: none; text-align: center; padding: 40px 20px; }
-.success-state.show { display: block; animation: fadeUp .45s var(--ease); }
-@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-.success-icon {
-  width: 60px; height: 60px; border-radius: 50%;
-  background: var(--lime-bg); border: 2px solid var(--lime-mid);
-  display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
-}
-.success-icon svg { width: 26px; height: 26px; stroke: var(--lime-2); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.success-title { font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 10px; }
-.success-body { font-size: 13px; color: var(--ink-3); line-height: 1.65; margin-bottom: 22px; }
-.wa-btn-green {
+.welcome-inner { text-align: center; max-width: 580px; }
+.w-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: #25D366; color: #fff; border-radius: 4px;
-  padding: 11px 20px; font-size: 13px; font-weight: 800;
-  transition: opacity .16s;
+  background: rgba(139,197,63,0.1); border: 1px solid rgba(139,197,63,0.28);
+  border-radius: 999px; padding: 6px 16px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--lime); margin-bottom: 28px;
 }
-.wa-btn-green:hover { opacity: .88; color: #fff; }
-.wa-btn-green svg { width: 17px; height: 17px; fill: #fff; }
+.w-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.75)} }
 
-/* ═══════════ SIDEBAR ═══════════ */
-.sidebar { display: flex; flex-direction: column; gap: 14px; }
+.w-h1 {
+  font-size: clamp(40px,9vw,80px);
+  font-weight: 900; line-height: 1.0; letter-spacing: -3px;
+  color: #fff; margin-bottom: 20px;
+}
+.w-h1 em { font-style: italic; font-weight: 300; color: var(--lime); }
+.w-sub { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 36px; max-width: 400px; margin-left: auto; margin-right: auto; }
 
-@media (max-width: 760px) {
-  .sidebar {
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 12px;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .sidebar::-webkit-scrollbar { display: none; }
-  .side-card { min-width: 240px; flex-shrink: 0; }
-}
+.w-feats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-bottom: 40px; }
+.w-feat { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.w-feat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
 
-.side-card {
-  background: var(--white);
-  border: 1.5px solid var(--rule);
-  border-radius: 4px;
-  padding: 18px 20px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+.btn-start {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--lime); color: #08080f;
+  border: none; border-radius: 999px;
+  padding: 17px 38px;
+  font-family: var(--f); font-size: 15px; font-weight: 800;
+  cursor: pointer; letter-spacing: 0.01em;
+  box-shadow: 0 8px 32px rgba(139,197,63,0.38);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.side-card-title {
-  font-size: 11px; font-weight: 800;
-  letter-spacing: .08em; text-transform: uppercase;
-  color: var(--ink-2); margin-bottom: 14px;
-  display: flex; align-items: center; gap: 7px;
-}
-.side-card-title svg { width: 14px; height: 14px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(139,197,63,0.52); }
+.btn-start:active { transform: translateY(0); }
+.btn-start svg { width: 18px; height: 18px; transition: transform 0.2s; flex-shrink: 0; }
+.btn-start:hover svg { transform: translateX(4px); }
+.w-time { margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.22); font-weight: 500; }
 
-/* Contact rows */
-.c-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 11px; }
-.c-row:last-child { margin-bottom: 0; }
-.c-ico {
-  width: 30px; height: 30px; border-radius: 6px;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+/* FORM AREA */
+.form-area {
+  min-height: calc(100vh - 64px);
+  display: flex; flex-direction: column;
+  position: relative; z-index: 1;
 }
-.c-ico.wa { background: #e8f9ee; }
-.c-ico.ph { background: #e8f0fb; }
-.c-ico.lo { background: var(--lime-bg); }
-.c-ico svg { width: 14px; height: 14px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.c-ico.wa svg { stroke: #25D366; }
-.c-ico.ph svg { stroke: #4285F4; }
-.c-ico.lo svg { stroke: var(--lime-2); }
-.c-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-.c-val { font-size: 12px; font-weight: 700; color: var(--ink); margin-top: 1px; }
-.c-val a { color: var(--ink); transition: color .14s; }
-.c-val a:hover { color: var(--lime-2); }
+.prog-wrap {
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid var(--bdr);
+  position: sticky; top: 64px; z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.prog-bar { height: 3px; background: rgba(255,255,255,0.07); }
+.prog-fill {
+  height: 100%; background: linear-gradient(90deg,var(--lime),#b4e058);
+  transition: width 0.5s var(--ease);
+  border-radius: 0 3px 3px 0;
+}
+.prog-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 20px;
+}
+.prog-step { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.prog-pct { font-size: 11px; font-weight: 800; color: var(--lime); }
+.btn-back {
+  background: none; border: none; color: var(--muted);
+  font-family: var(--f); font-size: 12px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 5px;
+  padding: 0; transition: color 0.15s;
+}
+.btn-back:hover { color: var(--text); }
+.btn-back svg { width: 14px; height: 14px; }
 
-/* Feature list */
-.feat-list { list-style: none; }
-.feat-list li {
-  display: flex; align-items: flex-start; gap: 8px;
-  font-size: 12px; color: var(--ink-3); font-weight: 500;
-  padding: 5px 0; border-bottom: 1px solid var(--cream-2);
+.form-inner {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 32px 24px 52px;
 }
-.feat-list li:last-child { border-bottom: none; }
-.feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); flex-shrink: 0; margin-top: 5px; }
+.step-panel { width: 100%; max-width: 580px; }
 
-/* Timing rows */
-.t-row {
-  font-size: 12px; color: var(--ink-3); font-weight: 600;
-  padding: 5px 0; display: flex; align-items: center; gap: 7px;
-  border-bottom: 1px solid var(--cream-2);
-}
-.t-row:last-child { border-bottom: none; }
-.t-row svg { width: 12px; height: 12px; stroke: var(--lime-2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.step-num { font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); margin-bottom: 14px; opacity: 0.8; }
+.step-q { font-size: clamp(28px,6vw,46px); font-weight: 900; line-height: 1.12; letter-spacing: -1.5px; color: #fff; margin-bottom: 8px; }
+.step-hint { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 30px; font-weight: 400; }
+.step-hint.opt::before { content: 'Optional — '; color: rgba(139,197,63,0.65); font-weight: 600; }
 
-/* ═══════════ BOTTOM WA STRIP ═══════════ */
-.wa-strip {
-  background: var(--ink);
-  border-radius: 4px;
-  padding: 20px 22px;
-  display: flex; align-items: center; gap: 16px;
-  margin-top: 28px; flex-wrap: wrap;
-  position: relative; overflow: hidden;
+/* Text / tel / date input */
+.step-input {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 2.5px solid rgba(255,255,255,0.18);
+  padding: 12px 0; font-family: var(--f);
+  font-size: clamp(18px,4vw,26px); font-weight: 600;
+  color: #fff; outline: none; caret-color: var(--lime);
+  transition: border-color 0.2s; color-scheme: dark;
 }
-.wa-strip::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-  background-size: 36px 36px; pointer-events: none;
-}
-.wa-strip-body { flex: 1; min-width: 160px; position: relative; z-index: 1; }
-.wa-strip-title { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
-.wa-strip-sub { font-size: 11px; color: rgba(255,255,255,.5); }
-.wa-strip-btn {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: #25D366; color: #fff; border-radius: 4px;
-  padding: 10px 18px; font-size: 12px; font-weight: 800;
-  white-space: nowrap; position: relative; z-index: 1;
-  transition: opacity .16s;
-}
-.wa-strip-btn:hover { opacity: .88; color: #fff; }
-.wa-strip-btn svg { width: 15px; height: 15px; fill: #fff; }
+.step-input::placeholder { color: rgba(255,255,255,0.18); font-weight: 400; }
+.step-input:focus { border-bottom-color: var(--lime); }
+.step-input.err { border-bottom-color: #f87171; }
 
-/* ═══════════ SECTION HEADER ═══════════ */
-.sec-hdr {
-  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
-}
-.sec-hdr-rule { flex: 1; height: 1px; background: var(--rule); }
-.sec-hdr-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
-.sec-hdr-txt {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--muted); white-space: nowrap;
-}
+.step-err { font-size: 12px; color: #f87171; font-weight: 600; margin-top: 8px; display: none; }
+.step-err.show { display: block; }
 
-/* ═══════════ REVEAL ═══════════ */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
-.reveal.in { opacity: 1; transform: none; }
+/* Textarea */
+.step-ta {
+  width: 100%; background: var(--surf); border: 1.5px solid var(--bdr);
+  border-radius: 14px; padding: 16px 18px;
+  font-family: var(--f); font-size: 16px; font-weight: 500;
+  color: #fff; outline: none; resize: none; min-height: 120px;
+  transition: border-color 0.2s; caret-color: var(--lime); color-scheme: dark;
+}
+.step-ta::placeholder { color: rgba(255,255,255,0.18); }
+.step-ta:focus { border-color: rgba(139,197,63,0.45); }
 
-/* ═══════════ PAGE TAB SWITCHER ═══════════ */
-.page-tabs {
-  display: flex; gap: 0;
-  background: var(--white);
-  border: 1.5px solid var(--rule);
-  border-radius: 4px; padding: 4px;
-  margin-bottom: 24px;
-  width: fit-content;
-}
-.page-tab {
-  padding: 9px 18px; border-radius: 3px;
-  border: none; background: none;
-  font-family: var(--f); font-size: 12px; font-weight: 700;
-  color: var(--muted); cursor: pointer;
-  transition: background .15s, color .15s;
-  white-space: nowrap; letter-spacing: .03em;
-}
-.page-tab.active { background: var(--lime); color: var(--ink); box-shadow: 0 1px 4px rgba(139,197,63,.3); }
-.page-tab:not(.active):hover { color: var(--ink-2); background: var(--cream-2); }
+/* Option cards */
+.opt-grid { display: grid; gap: 10px; margin-bottom: 8px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g4 { grid-template-columns: 1fr 1fr; }
+@media(min-width:460px){ .g4 { grid-template-columns:repeat(4,1fr); } }
+@media(min-width:460px){ .g3 { grid-template-columns:repeat(3,1fr); } }
 
-/* ═══════════ UPDATE PANEL ═══════════ */
-.upd-loading {
-  text-align: center; padding: 24px 20px;
-  font-size: 12px; color: var(--muted); font-weight: 600;
+.opt-card {
+  background: var(--surf); border: 1.5px solid var(--bdr);
+  border-radius: 14px; padding: 16px 12px;
+  cursor: pointer; text-align: center;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  position: relative; user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.student-photo-wrap {
-  display: flex; align-items: center; gap: 16px;
-  padding: 16px 22px;
-  background: var(--cream);
-  border-bottom: 1px solid var(--rule);
+.opt-card:hover { background: var(--surf-h); border-color: rgba(255,255,255,0.2); }
+.opt-card:active { transform: scale(0.97); }
+.opt-card.sel {
+  background: rgba(139,197,63,0.1); border-color: var(--lime);
+  box-shadow: 0 0 0 3px rgba(139,197,63,0.14), 0 4px 20px rgba(139,197,63,0.1);
 }
-.student-photo {
-  width: 72px; height: 72px; border-radius: 50%;
-  border: 2.5px solid var(--lime); overflow: hidden;
-  flex-shrink: 0; background: var(--lime-bg);
+.opt-icon { font-size: 26px; font-weight: 900; color: rgba(255,255,255,0.55); margin-bottom: 6px; display: block; line-height: 1.1; }
+.opt-card.sel .opt-icon { color: var(--lime); }
+.opt-lbl { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
+.opt-card.sel .opt-lbl { color: var(--lime); }
+.opt-sub { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 400; line-height: 1.35; }
+.opt-chk {
+  position: absolute; top: 8px; right: 8px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--lime);
   display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0);
+  transition: opacity 0.15s, transform 0.18s var(--ease);
 }
-.student-photo img { width: 100%; height: 100%; object-fit: cover; }
-.student-photo-initials { font-size: 22px; font-weight: 800; color: var(--lime-2); }
-.student-photo-name { font-size: 14px; font-weight: 800; color: var(--ink); }
-.student-photo-meta { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 2px; }
-.upd-success-state { display: none; text-align: center; padding: 40px 20px; }
-.upd-success-state.show { display: block; animation: fadeUp .45s var(--ease); }
-.btn-outline {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: none; border: 1.5px solid var(--rule);
-  border-radius: 4px; padding: 10px 18px; margin-top: 12px;
-  font-family: var(--f); font-size: 12px; font-weight: 700;
-  color: var(--ink-3); cursor: pointer;
-  transition: border-color .15s, color .15s;
+.opt-card.sel .opt-chk { opacity: 1; transform: scale(1); }
+.opt-chk svg { width: 10px; height: 10px; stroke: #08080f; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Actions */
+.step-actions { display: flex; gap: 12px; align-items: center; margin-top: 28px; flex-wrap: wrap; }
+.btn-cont {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--lime); color: #08080f;
+  border: none; border-radius: 999px; padding: 14px 28px;
+  font-family: var(--f); font-size: 14px; font-weight: 800;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(139,197,63,0.3);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
 }
-.btn-outline:hover { border-color: var(--lime-2); color: var(--lime-2); }
+.btn-cont:hover { background: #9fd44a; transform: translateY(-1px); box-shadow: 0 6px 28px rgba(139,197,63,0.42); }
+.btn-cont:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-cont svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn-skip { background: none; border: none; color: var(--muted); font-family: var(--f); font-size: 13px; font-weight: 600; cursor: pointer; padding: 10px 4px; transition: color 0.15s; }
+.btn-skip:hover { color: var(--text); }
+.key-hint { font-size: 11px; color: rgba(255,255,255,0.18); margin-left: auto; font-weight: 500; }
+.key-hint kbd { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 2px 6px; font-family: var(--f); font-size: 10px; }
+@media(max-width:480px){ .key-hint { display:none; } }
+
+/* Animations */
+@keyframes sIn    { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:none} }
+@keyframes sOut   { from{opacity:1;transform:none} to{opacity:0;transform:translateY(-32px)} }
+@keyframes sInB   { from{opacity:0;transform:translateY(-32px)} to{opacity:1;transform:none} }
+@keyframes sOutB  { from{opacity:1;transform:none} to{opacity:0;transform:translateY(36px)} }
+.a-in   { animation: sIn  0.42s var(--ease) both; }
+.a-out  { animation: sOut 0.22s ease-in both; }
+.a-in-b { animation: sInB 0.42s var(--ease) both; }
+.a-out-b{ animation: sOutB 0.22s ease-in both; }
+
+/* Summary */
+.sum-grid { background: var(--surf); border: 1.5px solid var(--bdr); border-radius: 16px; overflow: hidden; margin-bottom: 24px; }
+.sum-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid var(--bdr); cursor: pointer; transition: background 0.15s; }
+.sum-row:last-child { border-bottom: none; }
+.sum-row:hover { background: var(--surf-h); }
+.sum-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); min-width: 100px; flex-shrink: 0; }
+.sum-val { font-size: 14px; font-weight: 600; color: #fff; flex: 1; }
+.sum-edit { font-size: 11px; color: var(--lime); font-weight: 700; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+.sum-row:hover .sum-edit { opacity: 1; }
+
+/* Success */
+.success-area {
+  min-height: calc(100vh - 64px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 24px; position: relative; z-index: 1; text-align: center;
+}
+.success-inner { max-width: 460px; }
+.suc-icon {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: rgba(139,197,63,0.1); border: 2px solid rgba(139,197,63,0.35);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  animation: pop 0.55s var(--ease);
+}
+@keyframes pop { from{opacity:0;transform:scale(0.4)} to{opacity:1;transform:scale(1)} }
+.suc-icon svg { width: 38px; height: 38px; stroke: var(--lime); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.suc-h { font-size: clamp(30px,7vw,52px); font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 14px; }
+.suc-p { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 32px; }
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: #25D366; color: #fff; border-radius: 999px;
+  padding: 15px 30px; font-family: var(--f); font-size: 14px; font-weight: 800;
+  border: none; cursor: pointer; text-decoration: none;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.32);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-wa:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,0.48); color: #fff; }
+.btn-wa svg { width: 18px; height: 18px; fill: #fff; }
+.suc-note { margin-top: 16px; font-size: 12px; color: rgba(255,255,255,0.2); }
+
+/* Confetti */
+.confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
+.confetto { position: absolute; top: -12px; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .orb, .w-badge-dot { animation: none !important; }
+  .a-in,.a-out,.a-in-b,.a-out-b { animation: none !important; opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
 
 <div id="nav-placeholder"></div>
 
-<!-- BREADCRUMB -->
-<div class="bc">
-  <div class="bc-in">
-    <a href="/">Home</a><span class="bc-sep"> › </span>
-    <span>Enquire</span>
-  </div>
+<div class="orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
 </div>
 
-<!-- MASTHEAD -->
-<div class="masthead-wrap">
-  <div class="masthead-bg-text" aria-hidden="true">ENQUIRE</div>
-  <div class="masthead">
-    <div class="mast-kicker">
-      <div class="mast-kicker-rule"></div>
-      <span class="mast-kicker-text">Admission Enquiry</span>
+<!-- WELCOME -->
+<section class="welcome" id="welcome">
+  <div class="welcome-inner">
+    <div class="w-badge"><span class="w-badge-dot"></span>SEHR Academy · Vatanappally</div>
+    <h1 class="w-h1">Start your<br><em>journey</em> with us</h1>
+    <p class="w-sub">Answer a few quick questions and we'll reach out on WhatsApp with batch details.</p>
+    <div class="w-feats">
+      <span class="w-feat"><span class="w-feat-dot"></span>Small batches</span>
+      <span class="w-feat"><span class="w-feat-dot"></span>CBSE &amp; State Board</span>
+      <span class="w-feat"><span class="w-feat-dot"></span>No registration fee</span>
+      <span class="w-feat"><span class="w-feat-dot"></span>Online &amp; offline</span>
     </div>
-    <h1 class="mast-h1">Find the <span class="ital">right batch</span><br>for you</h1>
-    <p class="mast-desc">Fill in the form below and we'll get back on WhatsApp — usually within a few hours. No registration fee. No commitment yet.</p>
-    <div class="mast-badges">
-      <span class="mast-badge"><span class="mast-badge-dot"></span>No registration fee</span>
-      <span class="mast-badge"><span class="mast-badge-dot"></span>Small batches</span>
-      <span class="mast-badge"><span class="mast-badge-dot"></span>CBSE &amp; State Board</span>
-      <span class="mast-badge"><span class="mast-badge-dot"></span>Offline + Online</span>
+    <button class="btn-start" id="startBtn">
+      Let's Begin
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="w-time">Takes about 2 minutes</div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-area" id="formArea" style="display:none">
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-meta">
+      <button class="btn-back" id="btnBack" style="visibility:hidden">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back
+      </button>
+      <span class="prog-step" id="progStep">Step 1 of 11</span>
+      <span class="prog-pct" id="progPct">0%</span>
     </div>
   </div>
-</div>
-
-<!-- PAGE -->
-<div class="page">
-
-  <!-- TAB SWITCHER -->
-  <div class="page-tabs reveal">
-    <button class="page-tab active" id="tab-enquiry" type="button">Admission Enquiry</button>
-    <button class="page-tab" id="tab-update" type="button">Update My Details</button>
+  <div class="form-inner">
+    <div class="step-panel" id="stepPanel"></div>
   </div>
+</section>
 
-  <div class="sec-hdr reveal">
-    <div class="sec-hdr-rule"></div>
-    <div class="sec-hdr-dot"></div>
-    <div class="sec-hdr-txt" id="sec-hdr-txt">Fill the form</div>
-    <div class="sec-hdr-dot"></div>
-    <div class="sec-hdr-rule"></div>
-  </div>
-
-  <div class="layout">
-
-    <!-- ═══ FORM CARD ═══ -->
-    <div class="form-card reveal" id="panel-enquiry" style="transition-delay:.05s">
-
-      <div class="form-card-header">
-        <div class="form-card-header-icon">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div>
-          <div class="form-card-header-title">Admission Enquiry Form</div>
-          <div class="form-card-header-sub">Takes less than 3 minutes</div>
-        </div>
-      </div>
-
-      <div class="form-body">
-        <div id="enquiryForm">
-
-          <!-- ── SECTION: Student Info ── -->
-          <div class="field">
-            <div class="field-label">
-              <span class="field-label-txt">Student's full name <span class="req">*</span></span>
-            </div>
-            <input type="text" class="input" id="f_name" placeholder="e.g. Ayesha Rauf" autocomplete="name">
-            <div class="ferr" id="e_name">Please enter the student's name.</div>
-          </div>
-
-          <!-- Date of Birth -->
-          <div class="field">
-            <div class="field-label">
-              <span class="field-label-txt">Date of birth <span class="req">*</span></span>
-            </div>
-            <div class="row3">
-              <div>
-                <select class="sel" id="f_dob_day">
-                  <option value="">Day</option>
-                </select>
-              </div>
-              <div>
-                <select class="sel" id="f_dob_month">
-                  <option value="">Month</option>
-                  <option value="01">January</option>
-                  <option value="02">February</option>
-                  <option value="03">March</option>
-                  <option value="04">April</option>
-                  <option value="05">May</option>
-                  <option value="06">June</option>
-                  <option value="07">July</option>
-                  <option value="08">August</option>
-                  <option value="09">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
-                </select>
-              </div>
-              <div>
-                <select class="sel" id="f_dob_year">
-                  <option value="">Year</option>
-                </select>
-              </div>
-            </div>
-            <div class="ferr" id="e_dob">Please select a complete date of birth.</div>
-          </div>
-
-          <div class="row2">
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Class <span class="req">*</span></span></div>
-              <select class="sel" id="f_class">
-                <option value="">Select class</option>
-                <option>Class 9</option>
-                <option>Class 10</option>
-                <option>Class 11</option>
-                <option>Class 12</option>
-                <option>NEET Repeater</option>
-              </select>
-              <div class="ferr" id="e_class">Please select a class.</div>
-            </div>
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Syllabus <span class="req">*</span></span></div>
-              <select class="sel" id="f_syllabus">
-                <option value="">Select syllabus</option>
-                <option>CBSE</option>
-                <option>Kerala State Board</option>
-                <option>ICSE</option>
-              </select>
-              <div class="ferr" id="e_syllabus">Please select a syllabus.</div>
-            </div>
-          </div>
-
-          <!-- ── Subjects (dynamic, shown after class+syllabus) ── -->
-          <div class="field" id="f_subjectWrap" style="display:none">
-            <div class="field-label">
-              <span class="field-label-txt">Subjects needed <span class="req">*</span></span>
-            </div>
-            <div class="subj-note">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              All subjects pre-selected — uncheck any you don't need
-            </div>
-            <div class="subj-header">
-              <span></span>
-              <button type="button" class="subj-select-all" id="btn_selAll">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Select all
-              </button>
-            </div>
-            <div class="subj-grid" id="f_subjectGrid"></div>
-            <div class="subj-hint" id="e_subjects">Please select at least one subject.</div>
-          </div>
-
-          <!-- ── Session Type ── -->
-          <div class="field" id="f_sessionWrap">
-            <div class="field-label">
-              <span class="field-label-txt">Session type <span class="req">*</span></span>
-            </div>
-            <div class="session-toggle">
-              <div>
-                <input type="radio" class="sess-radio" name="session_type" id="sess_group" value="Group Session">
-                <label class="sess-lbl" for="sess_group">
-                  <span class="sess-check"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
-                  <span class="sess-icon">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                  </span>
-                  Group Session
-                  <span class="sess-sub">Shared batch · More affordable</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" class="sess-radio" name="session_type" id="sess_individual" value="Individual Session">
-                <label class="sess-lbl" for="sess_individual">
-                  <span class="sess-check"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
-                  <span class="sess-icon">
-                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  </span>
-                  Individual Session
-                  <span class="sess-sub">1-on-1 · Personalised pace</span>
-                </label>
-              </div>
-            </div>
-            <div class="ferr" id="e_session">Please select a session type.</div>
-          </div>
-
-          <!-- ── SECTION: Contact Details ── -->
-          <div class="form-sec">
-            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
-            <span class="form-sec-lbl">Contact details</span>
-            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
-          </div>
-
-          <div class="row2">
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Parent / Guardian name <span class="req">*</span></span></div>
-              <input type="text" class="input" id="f_parent" placeholder="e.g. Mohammed Rauf">
-              <div class="ferr" id="e_parent">Please enter a parent name.</div>
-            </div>
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">WhatsApp number <span class="req">*</span></span></div>
-              <input type="tel" class="input" id="f_wa" placeholder="10-digit number" maxlength="15" inputmode="numeric">
-              <div class="ferr" id="e_wa">Please enter a valid 10-digit number.</div>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span class="field-label-txt">School name <span class="req">*</span></span></div>
-            <input type="text" class="input" id="f_school" placeholder="e.g. Govt. HSS Vatanappally">
-            <div class="ferr" id="e_school">Please enter the school name.</div>
-          </div>
-
-          <!-- ── SECTION: Location ── -->
-          <div class="form-sec">
-            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
-            <span class="form-sec-lbl">Location</span>
-            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span class="field-label-txt">House / Building name <span class="req">*</span></span></div>
-            <input type="text" class="input" id="f_house" placeholder="e.g. Salman Manzil, Rauf Bhavan">
-            <div class="ferr" id="e_house">Please enter your house / building name.</div>
-          </div>
-
-          <div class="row2">
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Street / Area <span class="req">*</span></span></div>
-              <input type="text" class="input" id="f_street" placeholder="e.g. Vatanappally, Chavakkad">
-              <div class="ferr" id="e_street">Please enter your street or area.</div>
-            </div>
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">PIN code <span class="req">*</span></span></div>
-              <input type="text" class="input" id="f_pin" placeholder="e.g. 680614" maxlength="6" inputmode="numeric">
-              <div class="ferr" id="e_pin">Please enter a valid 6-digit PIN code.</div>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span class="field-label-txt">District <span class="req">*</span></span></div>
-            <select class="sel" id="f_district">
-              <option value="">Select district</option>
-              <option>Thrissur</option>
-              <option>Ernakulam</option>
-              <option>Malappuram</option>
-              <option>Palakkad</option>
-              <option>Kozhikode</option>
-              <option>Kannur</option>
-              <option>Kasaragod</option>
-              <option>Wayanad</option>
-              <option>Idukki</option>
-              <option>Pathanamthitta</option>
-              <option>Alappuzha</option>
-              <option>Kottayam</option>
-              <option>Kollam</option>
-              <option>Thiruvananthapuram</option>
-              <option>Other (outside Kerala)</option>
-            </select>
-            <div class="ferr" id="e_district">Please select a district.</div>
-          </div>
-
-          <!-- ── SECTION: Additional Info ── -->
-          <div class="form-sec">
-            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
-            <span class="form-sec-lbl">Additional info</span>
-            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
-          </div>
-
-          <div class="field">
-            <div class="field-label">
-              <span class="field-label-txt">How did you hear about us?</span>
-              <span class="opt">Optional</span>
-            </div>
-            <select class="sel" id="f_source">
-              <option value="">Select one</option>
-              <option>Word of mouth / friend</option>
-              <option>Google Search</option>
-              <option>Instagram / Facebook</option>
-              <option>Flyer / notice board</option>
-              <option>Existing student referral</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <div class="field-label">
-              <span class="field-label-txt">Anything else you'd like us to know?</span>
-              <span class="opt">Optional</span>
-            </div>
-            <textarea class="ta" id="f_msg" placeholder="e.g. Looking for weekend batches, questions about NEET prep…"></textarea>
-          </div>
-
-          <!-- Submit -->
-          <button class="btn-submit" id="submitBtn" type="button">
-            <svg id="btn_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 2L11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/>
-            </svg>
-            <span id="btn_text">Submit Enquiry</span>
-          </button>
-          <p class="form-note">We reply on WhatsApp — usually within a few hours on school days.</p>
-
-        </div><!-- /enquiryForm -->
-
-        <!-- SUCCESS -->
-        <div class="success-state" id="successState">
-          <div class="success-icon">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="success-title">Enquiry received!</div>
-          <p class="success-body">We've got your details and will reach out on WhatsApp to confirm the batch, timing, and next steps.<br><br>Or tap below to chat right now.</p>
-          <a class="wa-btn-green" href="#" id="successWaLink" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Chat on WhatsApp now
-          </a>
-        </div>
-
-      </div><!-- /form-body -->
-    </div><!-- /form-card -->
-
-    <!-- ═══ UPDATE MY DETAILS CARD ═══ -->
-    <div class="form-card" id="panel-update" style="display:none">
-
-      <div class="form-card-header">
-        <div class="form-card-header-icon">
-          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </div>
-        <div>
-          <div class="form-card-header-title">Update My Details</div>
-          <div class="form-card-header-sub">Correct or fill in missing information</div>
-        </div>
-      </div>
-
-      <!-- Step 1: class + name selection -->
-      <div class="form-body" id="upd-step1">
-
-        <div class="field">
-          <div class="field-label">
-            <span class="field-label-txt">Your class <span class="req">*</span></span>
-          </div>
-          <select class="sel" id="upd_class">
-            <option value="">Select class</option>
-            <option value="9">Class 9</option>
-            <option value="10">Class 10</option>
-            <option value="11">Class 11</option>
-            <option value="12">Class 12</option>
-          </select>
-          <div class="ferr" id="upd_e_class">Please select your class.</div>
-        </div>
-
-        <div class="field" id="upd_name_wrap" style="display:none">
-          <div class="field-label">
-            <span class="field-label-txt">Your name <span class="req">*</span></span>
-          </div>
-          <select class="sel" id="upd_name">
-            <option value="">Select your name</option>
-          </select>
-          <div class="ferr" id="upd_e_name">Please select your name.</div>
-        </div>
-
-        <div id="upd_loading" class="upd-loading" style="display:none">Loading students…</div>
-
-      </div><!-- /upd-step1 -->
-
-      <!-- Profile edit form: hidden until student selected -->
-      <div id="upd-profile" style="display:none">
-
-        <div class="student-photo-wrap">
-          <div class="student-photo" id="upd_photo_wrap">
-            <span class="student-photo-initials" id="upd_photo_initials">?</span>
-          </div>
-          <div>
-            <div class="student-photo-name" id="upd_photo_name"></div>
-            <div class="student-photo-meta" id="upd_photo_meta"></div>
-          </div>
-        </div>
-
-        <div class="form-body">
-
-          <div class="form-sec">
-            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
-            <span class="form-sec-lbl">Personal details</span>
-            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span class="field-label-txt">Full name <span class="req">*</span></span></div>
-            <input type="text" class="input" id="upd_full_name" autocomplete="name">
-            <div class="ferr" id="upd_e_full_name">Please enter your full name.</div>
-          </div>
-
-          <div class="row2">
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Gender <span class="req">*</span></span></div>
-              <select class="sel" id="upd_gender">
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <div class="ferr" id="upd_e_gender">Please select a gender.</div>
-            </div>
-            <div class="field">
-              <div class="field-label">
-                <span class="field-label-txt">Birthday</span>
-                <span class="opt">Optional</span>
-              </div>
-              <input type="date" class="input" id="upd_birthday" style="color-scheme:light">
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span class="field-label-txt">Syllabus <span class="req">*</span></span></div>
-            <select class="sel" id="upd_syllabus">
-              <option value="">Select</option>
-              <option value="CBSE">CBSE</option>
-              <option value="Kerala State Board">Kerala State Board</option>
-              <option value="ICSE">ICSE</option>
-            </select>
-            <div class="ferr" id="upd_e_syllabus">Please select a syllabus.</div>
-          </div>
-
-          <div class="field">
-            <div class="field-label"><span class="field-label-txt">School name <span class="req">*</span></span></div>
-            <input type="text" class="input" id="upd_school_name" placeholder="e.g. Govt. HSS Vatanappally">
-            <div class="ferr" id="upd_e_school_name">Please enter the school name.</div>
-          </div>
-
-          <div class="form-sec">
-            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
-            <span class="form-sec-lbl">Contact details</span>
-            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
-          </div>
-
-          <div class="row2">
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Parent / Guardian name <span class="req">*</span></span></div>
-              <input type="text" class="input" id="upd_parent_name">
-              <div class="ferr" id="upd_e_parent_name">Please enter a parent name.</div>
-            </div>
-            <div class="field">
-              <div class="field-label"><span class="field-label-txt">Contact number <span class="req">*</span></span></div>
-              <input type="tel" class="input" id="upd_contact" inputmode="numeric" maxlength="15">
-              <div class="ferr" id="upd_e_contact">Please enter a valid contact number.</div>
-            </div>
-          </div>
-
-          <div class="form-sec">
-            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
-            <span class="form-sec-lbl">Photo</span>
-            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
-          </div>
-
-          <div class="field">
-            <div class="field-label">
-              <span class="field-label-txt">Photo URL</span>
-              <span class="opt">Optional</span>
-            </div>
-            <input type="url" class="input" id="upd_photo" placeholder="https://…">
-          </div>
-
-          <button class="btn-submit" id="upd_submitBtn" type="button">
-            <svg id="upd_btn_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-            </svg>
-            <span id="upd_btn_text">Submit Update</span>
-          </button>
-          <p class="form-note">Your update will be reviewed by the admin before it takes effect.</p>
-
-        </div><!-- /form-body -->
-      </div><!-- /upd-profile -->
-
-      <!-- Confirmation -->
-      <div class="form-body upd-success-state" id="upd-success">
-        <div class="success-icon">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="success-title">Details submitted for review</div>
-        <p class="success-body">Thank you — your details have been submitted for review.<br>The admin will verify and update your record shortly.</p>
-        <button type="button" class="btn-outline" id="upd_resetBtn">Update another student</button>
-      </div>
-
-    </div><!-- /panel-update -->
-
-    <!-- ═══ SIDEBAR ═══ -->
-    <div class="sidebar">
-
-      <div class="side-card reveal" style="transition-delay:.1s">
-        <div class="side-card-title">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 10.5 19.79 19.79 0 0 1 1.67 1.87 2 2 0 0 1 3.66 0h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 7.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 15.5c.013.47.012.94 0 1.41v.01z"/></svg>
-          Contact us
-        </div>
-        <div class="c-row">
-          <div class="c-ico wa"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-          <div><div class="c-lbl">WhatsApp</div><div class="c-val"><a href="https://wa.me/919539409586" target="_blank" rel="noopener noreferrer">+91 95394 09586</a></div></div>
-        </div>
-        <div class="c-row">
-          <div class="c-ico ph"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 10.5 19.79 19.79 0 0 1 1.67 1.87 2 2 0 0 1 3.66 0h3a2 2 0 0 1 2 1.72"/></svg></div>
-          <div><div class="c-lbl">Phone</div><div class="c-val"><a href="tel:+919037789586">+91 90377 89586</a></div></div>
-        </div>
-        <div class="c-row">
-          <div class="c-ico lo"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div><div class="c-lbl">Address</div><div class="c-val" style="font-weight:600;color:var(--ink-3);line-height:1.5">447A, Priyadarshini Road<br>Vatanappally, Thrissur 680614</div></div>
-        </div>
-      </div>
-
-      <div class="side-card reveal" style="transition-delay:.15s">
-        <div class="side-card-title">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Why SEHR Academy
-        </div>
-        <ul class="feat-list">
-          <li><span class="feat-dot"></span>Small batches — tutors know every student</li>
-          <li><span class="feat-dot"></span>Concept-first, not rote learning</li>
-          <li><span class="feat-dot"></span>CBSE &amp; Kerala State Board</li>
-          <li><span class="feat-dot"></span>NEET &amp; JEE Mains prep</li>
-          <li><span class="feat-dot"></span>Offline + live online classes</li>
-          <li><span class="feat-dot"></span>No registration fee charged</li>
-        </ul>
-      </div>
-
-      <div class="side-card reveal" style="transition-delay:.2s">
-        <div class="side-card-title">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Class timings
-        </div>
-        <div class="t-row"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>5–6 days a week, 1 rest day</div>
-        <div class="t-row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Min. 2 hours per session</div>
-        <div class="t-row"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Timings confirmed on WhatsApp</div>
-      </div>
-
-    </div><!-- /sidebar -->
-
-  </div><!-- /layout -->
-
-  <!-- WA STRIP -->
-  <div class="wa-strip reveal" style="transition-delay:.22s">
-    <div class="wa-strip-body">
-      <div class="wa-strip-title">Prefer to just message us?</div>
-      <div class="wa-strip-sub">Chat on WhatsApp — we'll sort out the batch in a few messages.</div>
-    </div>
-    <a class="wa-strip-btn" href="https://wa.me/919539409586?text=Hi%2C+I%27m+interested+in+admission+at+Sehr+Academy." target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp us now
+<!-- SUCCESS -->
+<section class="success-area" id="successArea" style="display:none">
+  <div class="success-inner">
+    <div class="suc-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2 class="suc-h">You're all set!</h2>
+    <p class="suc-p">We've received your details and will reach out on WhatsApp to confirm the batch, timing, and next steps.</p>
+    <a class="btn-wa" id="waLink" href="#" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
     </a>
+    <div class="suc-note">We reply on WhatsApp — usually within a few hours on school days.</div>
   </div>
-
-</div><!-- /page -->
+</section>
 
 <div id="footer-placeholder"></div>
 
 <script>
-/* ══════════════════════════════
-   CONFIG
-══════════════════════════════ */
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby-e5-57UCSlzOgoLOPMPe-3G0FIdL1Yf-MZgrO_rEqN_Yy8CogB2EbHFogY8UozRE0/exec';
+var SHEETS_URL = 'https://script.google.com/macros/s/AKfycby-e5-57UCSlzOgoLOPMPe-3G0FIdL1Yf-MZgrO_rEqN_Yy8CogB2EbHFogY8UozRE0/exec';
 
-/* ══════════════════════════════
-   SUBJECT MAP — keyed by "Class|Syllabus"
-   NEET Repeater is syllabus-agnostic
-══════════════════════════════ */
-const SUBJ_MAP = {
-  // ── Class 9 ──
-  'Class 9|CBSE':              ['Mathematics','Science','English','Social Science','Hindi','Sanskrit / French (optional)'],
-  'Class 9|Kerala State Board':['Mathematics','Science','English','Social Science','Malayalam / Hindi','IT (optional)'],
-  'Class 9|ICSE':              ['Mathematics','Science','English','History & Civics','Geography','Hindi / Malayalam'],
-
-  // ── Class 10 ──
-  'Class 10|CBSE':              ['Mathematics','Science','English','Social Science','Hindi','Information Technology (optional)'],
-  'Class 10|Kerala State Board':['Mathematics','Science','English','Social Science','Malayalam / Hindi','IT (optional)'],
-  'Class 10|ICSE':              ['Mathematics','Science','English','History & Civics','Geography','Hindi / Malayalam'],
-
-  // ── Class 11 ──
-  'Class 11|CBSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Accountancy'],
-  'Class 11|Kerala State Board':['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Commerce'],
-  'Class 11|ICSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
-
-  // ── Class 12 ──
-  'Class 12|CBSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Accountancy'],
-  'Class 12|Kerala State Board':['Physics','Chemistry','Mathematics','Biology','English','Computer Science','Economics','Commerce'],
-  'Class 12|ICSE':              ['Physics','Chemistry','Mathematics','Biology','English','Computer Science'],
-
-  // ── NEET Repeater (syllabus-independent) ──
-  'NEET Repeater|CBSE':              ['Physics','Chemistry','Biology'],
-  'NEET Repeater|Kerala State Board':['Physics','Chemistry','Biology'],
-  'NEET Repeater|ICSE':              ['Physics','Chemistry','Biology'],
-};
-
-/* ── DOB dropdowns setup ── */
-(function setupDOB() {
-  const dayEl = document.getElementById('f_dob_day');
-  const yearEl = document.getElementById('f_dob_year');
-  for (let d = 1; d <= 31; d++) {
-    const o = document.createElement('option');
-    o.value = String(d).padStart(2,'0');
-    o.textContent = d;
-    dayEl.appendChild(o);
+var STEPS = [
+  {
+    id: 'student_name', type: 'text',
+    q: "What is the student's full name?",
+    hint: "Enter the name as it appears on school records.",
+    placeholder: 'Full name',
+    validate: function(v){ return v.trim().length >= 2 ? null : 'Please enter a valid name.'; }
+  },
+  {
+    id: 'class', type: 'cards', cols: 4,
+    q: "Which class?",
+    hint: "Select the class for the upcoming academic year.",
+    options: [
+      { value:'Class 9',  label:'Class 9',  icon:'9' },
+      { value:'Class 10', label:'Class 10', icon:'10' },
+      { value:'Class 11', label:'Class 11', icon:'11' },
+      { value:'Class 12', label:'Class 12', icon:'12' }
+    ]
+  },
+  {
+    id: 'syllabus', type: 'cards', cols: 3,
+    q: "Which board / syllabus?",
+    hint: "Select the board the student's school follows.",
+    options: [
+      { value:'CBSE',               label:'CBSE',         sub:'Central Board' },
+      { value:'Kerala State Board', label:'Kerala State', sub:'State Board' },
+      { value:'ICSE',               label:'ICSE',         sub:'Council Board' }
+    ]
+  },
+  {
+    id: 'gender', type: 'cards', cols: 2,
+    q: "Gender",
+    hint: "",
+    options: [
+      { value:'Male',   label:'Male' },
+      { value:'Female', label:'Female' }
+    ]
+  },
+  {
+    id: 'dob', type: 'date', optional: true,
+    q: "Date of birth",
+    hint: "This helps us personalise records.",
+    validate: function(){ return null; }
+  },
+  {
+    id: 'school', type: 'text',
+    q: "Which school does the student attend?",
+    hint: "Enter the full school name.",
+    placeholder: 'School name',
+    validate: function(v){ return v.trim().length >= 2 ? null : 'Please enter the school name.'; }
+  },
+  {
+    id: 'session_type', type: 'cards', cols: 2,
+    q: "How would the student prefer to attend?",
+    hint: "Timing details can be confirmed on WhatsApp.",
+    options: [
+      { value:'Group Session',      label:'Group Session',      sub:'Shared batch \xb7 More affordable' },
+      { value:'Individual Session', label:'Individual Session', sub:'1-on-1 \xb7 Personalised pace' }
+    ]
+  },
+  {
+    id: 'parent_name', type: 'text',
+    q: "Parent or guardian’s name?",
+    hint: "The person we'll contact on WhatsApp.",
+    placeholder: 'Parent / guardian name',
+    validate: function(v){ return v.trim().length >= 2 ? null : 'Please enter a name.'; }
+  },
+  {
+    id: 'whatsapp', type: 'tel',
+    q: "WhatsApp number?",
+    hint: "We'll reply on this number. 10 digits, no spaces.",
+    placeholder: '10-digit mobile number',
+    validate: function(v){ return v.replace(/\D/g,'').length >= 10 ? null : 'Please enter a valid 10-digit number.'; }
+  },
+  {
+    id: 'source', type: 'cards', cols: 2, optional: true,
+    q: "How did you find us?",
+    hint: "Helps us understand where students discover SEHR Academy.",
+    options: [
+      { value:'Word of mouth / friend',    label:'Word of mouth' },
+      { value:'Google Search',             label:'Google Search' },
+      { value:'Instagram / Facebook',      label:'Social media' },
+      { value:'Flyer / notice board',      label:'Flyer / notice' },
+      { value:'Existing student referral', label:'Student referral' },
+      { value:'Other',                     label:'Other' }
+    ]
+  },
+  {
+    id: 'message', type: 'textarea', optional: true,
+    q: "Anything else to tell us?",
+    hint: "Questions, preferred timing, special requirements...",
+    placeholder: 'E.g. Looking for weekend batches, questions about NEET prep…'
   }
-  for (let y = 2030; y >= 1990; y--) {
-    const o = document.createElement('option');
-    o.value = y;
-    o.textContent = y;
-    yearEl.appendChild(o);
-  }
-})();
+];
 
-const $ = id => document.getElementById(id);
+var TOTAL = STEPS.length;
+var cur = 0;
+var ans = {};
 
-/* ── Rebuild subjects when class OR syllabus changes ── */
-function rebuildSubjects() {
-  const cls = $('f_class').value;
-  const syl = $('f_syllabus').value;
-  const wrap = $('f_subjectWrap');
-  const grid = $('f_subjectGrid');
+function $$(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  if (!cls || !syl) { wrap.style.display = 'none'; return; }
+$$('startBtn').addEventListener('click', function(){
+  $$('welcome').style.display = 'none';
+  $$('formArea').style.display = 'flex';
+  renderStep(0, false);
+});
 
-  // NEET Repeater always same subjects regardless of syllabus
-  const key = SUBJ_MAP[cls + '|' + syl]
-    ? cls + '|' + syl
-    : null;
+$$('btnBack').addEventListener('click', function(){
+  if(cur > 0) goTo(cur - 1, true);
+});
 
-  if (!key) { wrap.style.display = 'none'; return; }
-
-  const subjects = SUBJ_MAP[key];
-  grid.innerHTML = subjects.map(s => {
-    const id = 'sc_' + s.replace(/\W/g,'_');
-    return `<div>
-      <input type="checkbox" class="subj-chk" id="${id}" value="${s}" checked>
-      <label class="subj-lbl" for="${id}">
-        <span class="subj-tick"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></span>
-        ${s}
-      </label>
-    </div>`;
-  }).join('');
-
-  wrap.style.display = 'block';
-  updateSelectAllBtn();
-
-  // Wire up "select all" button reactivity
-  grid.querySelectorAll('.subj-chk').forEach(chk => {
-    chk.addEventListener('change', updateSelectAllBtn);
-  });
+function goTo(idx, back){
+  var p = $$('stepPanel');
+  p.classList.remove('a-in','a-out','a-in-b','a-out-b');
+  p.classList.add(back ? 'a-out-b' : 'a-out');
+  setTimeout(function(){ renderStep(idx, back); }, 210);
 }
 
-function updateSelectAllBtn() {
-  const all = document.querySelectorAll('#f_subjectGrid .subj-chk');
-  const checked = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
-  const btn = $('btn_selAll');
-  if (all.length === checked.length) {
-    btn.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> All selected`;
-  } else {
-    btn.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Select all`;
-  }
-}
+function renderStep(idx, back){
+  if(idx >= TOTAL){ showSummary(); return; }
+  cur = idx;
+  var s = STEPS[idx];
+  var p = $$('stepPanel');
 
-$('btn_selAll').addEventListener('click', function() {
-  const all = document.querySelectorAll('#f_subjectGrid .subj-chk');
-  const checked = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
-  const shouldCheck = all.length !== checked.length;
-  all.forEach(c => { c.checked = shouldCheck; });
-  updateSelectAllBtn();
-  $('e_subjects').classList.remove('show');
-});
+  var pct = Math.round((idx / TOTAL) * 100);
+  $$('progFill').style.width = pct + '%';
+  $$('progPct').textContent = pct + '%';
+  $$('progStep').textContent = 'Step ' + (idx+1) + ' of ' + TOTAL;
+  $$('btnBack').style.visibility = idx > 0 ? 'visible' : 'hidden';
 
-$('f_class').addEventListener('change', function() {
-  clearErr('f_class');
-  rebuildSubjects();
-});
-$('f_syllabus').addEventListener('change', function() {
-  clearErr('f_syllabus');
-  rebuildSubjects();
-});
+  var h = '';
+  h += '<div class="step-num">' + pad(idx+1) + ' / ' + pad(TOTAL) + '</div>';
+  h += '<div class="step-q">' + s.q + '</div>';
+  if(s.hint) h += '<div class="step-hint' + (s.optional ? ' opt' : '') + '">' + s.hint + '</div>';
 
-/* ── Validation helpers ── */
-function showErr(fieldId, errId) {
-  const f = $(fieldId), e = $(errId || 'e_' + fieldId.replace('f_',''));
-  if (f) f.classList.add('err');
-  if (e) e.classList.add('show');
-}
-function clearErr(fieldId) {
-  const f = $(fieldId);
-  const e = document.getElementById('e_' + fieldId.replace('f_',''));
-  if (f) f.classList.remove('err');
-  if (e) e.classList.remove('show');
-}
-
-['f_name','f_class','f_syllabus','f_parent','f_wa','f_school',
- 'f_house','f_street','f_pin','f_district',
- 'f_dob_day','f_dob_month','f_dob_year'].forEach(id => {
-  const el = $(id);
-  if (el) el.addEventListener('input', () => clearErr(id));
-  if (el) el.addEventListener('change', () => clearErr(id));
-});
-
-/* ── Submit ── */
-$('submitBtn').addEventListener('click', async function() {
-  let ok = true;
-
-  const name      = $('f_name').value.trim();
-  const dobDay    = $('f_dob_day').value;
-  const dobMonth  = $('f_dob_month').value;
-  const dobYear   = $('f_dob_year').value;
-  const cls       = $('f_class').value;
-  const syl       = $('f_syllabus').value;
-  const parent    = $('f_parent').value.trim();
-  const wa        = $('f_wa').value.trim().replace(/\D/g,'');
-  const school    = $('f_school').value.trim();
-  const house     = $('f_house').value.trim();
-  const street    = $('f_street').value.trim();
-  const pin       = $('f_pin').value.trim().replace(/\D/g,'');
-  const district  = $('f_district').value;
-  const source    = $('f_source').value;
-  const msg       = $('f_msg').value.trim();
-  const sessionEl = document.querySelector('input[name="session_type"]:checked');
-  const session   = sessionEl ? sessionEl.value : '';
-  const subjEls   = document.querySelectorAll('#f_subjectGrid .subj-chk:checked');
-  const subjects  = Array.from(subjEls).map(c => c.value).join(', ');
-
-  if (!name)                             { showErr('f_name','e_name');       ok = false; }
-  if (!dobDay || !dobMonth || !dobYear)  { showErr('f_dob_day','e_dob'); showErr('f_dob_month','e_dob'); showErr('f_dob_year','e_dob'); $('e_dob').classList.add('show'); ok = false; }
-  if (!cls)                              { showErr('f_class','e_class');      ok = false; }
-  if (!syl)                              { showErr('f_syllabus','e_syllabus');ok = false; }
-  if (!parent)                           { showErr('f_parent','e_parent');    ok = false; }
-  if (!wa || wa.length < 10)             { showErr('f_wa','e_wa');            ok = false; }
-  if (!school)                           { showErr('f_school','e_school');    ok = false; }
-  if (!house)                            { showErr('f_house','e_house');      ok = false; }
-  if (!street)                           { showErr('f_street','e_street');    ok = false; }
-  if (!pin || pin.length !== 6)          { showErr('f_pin','e_pin');          ok = false; }
-  if (!district)                         { showErr('f_district','e_district');ok = false; }
-  if (!session)                          { $('e_session').classList.add('show'); ok = false; }
-  else                                   { $('e_session').classList.remove('show'); }
-
-  // Subjects: only required if class+syllabus combo exists
-  const subjectKey = cls + '|' + syl;
-  if (SUBJ_MAP[subjectKey] && subjEls.length === 0) {
-    $('e_subjects').classList.add('show'); ok = false;
-  } else {
-    $('e_subjects').classList.remove('show');
-  }
-
-  if (!ok) {
-    // Scroll to first error
-    const firstErr = document.querySelector('.input.err, .sel.err, .ferr.show, .subj-hint.show');
-    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-
-  const dob = dobYear + '-' + dobMonth + '-' + dobDay;
-  const address = [house, street, district, pin].filter(Boolean).join(', ');
-
-  /* Loading state */
-  const btn = $('submitBtn');
-  btn.disabled = true;
-  $('btn_text').textContent = 'Sending…';
-  $('btn_icon').style.animation = 'spinAnim .75s linear infinite';
-
-  /* Build WA prefill message */
-  let waMsg = '*New Admission Enquiry — SEHR Academy*\n\n';
-  waMsg += '👤 *Student:* ' + name + '\n';
-  waMsg += '🎂 *Date of Birth:* ' + dobDay + '/' + dobMonth + '/' + dobYear + '\n';
-  waMsg += '📚 *Class:* ' + cls + ' (' + syl + ')\n';
-  if (subjects) waMsg += '📖 *Subjects:* ' + subjects + '\n';
-  waMsg += '🎓 *Session Type:* ' + session + '\n';
-  waMsg += '👨‍👩‍👧 *Parent:* ' + parent + '\n';
-  waMsg += '📞 *WhatsApp:* ' + wa + '\n';
-  waMsg += '🏫 *School:* ' + school + '\n';
-  waMsg += '📍 *Address:* ' + address + '\n';
-  if (source) waMsg += '🔍 *Source:* ' + source + '\n';
-  if (msg)    waMsg += '💬 *Message:* ' + msg + '\n';
-  waMsg += '\n_Submitted via sehracademy.com/enquire_';
-
-  /* Send to Google Sheets */
-  const payload = {
-    timestamp:    new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-    student_name: name,
-    dob:          dob,
-    class:        cls,
-    syllabus:     syl,
-    subjects:     subjects,
-    session_type: session,
-    parent_name:  parent,
-    whatsapp:     wa,
-    school:       school,
-    address:      address,
-    house:        house,
-    street:       street,
-    district:     district,
-    pin:          pin,
-    source:       source,
-    message:      msg,
-  };
-
-  if (SHEETS_URL && SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
-    try {
-      await fetch(SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } catch(e) { /* Silent fail */ }
-  }
-
-  $('successWaLink').href = 'https://wa.me/919539409586?text=' + encodeURIComponent(waMsg);
-
-  setTimeout(() => {
-    $('enquiryForm').style.display = 'none';
-    $('successState').classList.add('show');
-    window.open('https://wa.me/919539409586?text=' + encodeURIComponent(waMsg), '_blank');
-  }, 600);
-});
-
-/* ── Scroll reveal ── */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
-}, { threshold: 0.06 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ══════════════════════════════
-   UPDATE MY DETAILS
-══════════════════════════════ */
-const ATT_API = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
-let allStudents = [];
-let selectedStudent = null;
-
-/* ── Tab switching ── */
-$('tab-enquiry').addEventListener('click', function() {
-  $('tab-enquiry').classList.add('active');
-  $('tab-update').classList.remove('active');
-  $('panel-enquiry').style.display = '';
-  $('panel-update').style.display = 'none';
-  $('sec-hdr-txt').textContent = 'Fill the form';
-});
-
-$('tab-update').addEventListener('click', function() {
-  $('tab-update').classList.add('active');
-  $('tab-enquiry').classList.remove('active');
-  $('panel-enquiry').style.display = 'none';
-  $('panel-update').style.display = '';
-  $('sec-hdr-txt').textContent = 'Find your record';
-  if (allStudents.length === 0) loadStudents();
-});
-
-/* ── Load all students from ATT_API ── */
-async function loadStudents() {
-  $('upd_loading').style.display = 'block';
-  try {
-    const url = ATT_API + '?data=' + encodeURIComponent(JSON.stringify({ action: 'getStudents' }));
-    const res = await fetch(url);
-    const data = await res.json();
-    allStudents = Array.isArray(data) ? data : (data.students || data.data || []);
-  } catch (err) {
-    allStudents = [];
-  }
-  $('upd_loading').style.display = 'none';
-  const cls = $('upd_class').value;
-  if (cls) populateNames(cls);
-}
-
-/* ── Class change → filter names ── */
-$('upd_class').addEventListener('change', function() {
-  const cls = this.value;
-  $('upd_class').classList.remove('err');
-  $('upd_e_class').classList.remove('show');
-  $('upd-profile').style.display = 'none';
-  selectedStudent = null;
-  if (!cls) {
-    $('upd_name_wrap').style.display = 'none';
-    return;
-  }
-  if (allStudents.length === 0) {
-    loadStudents();
-    return;
-  }
-  populateNames(cls);
-});
-
-function populateNames(cls) {
-  const filtered = allStudents.filter(function(s) {
-    return String(s.class) === String(cls);
-  });
-  const sel = $('upd_name');
-  sel.innerHTML = '<option value="">Select your name</option>';
-  filtered.slice().sort(function(a, b) {
-    return (a.full_name || '').localeCompare(b.full_name || '');
-  }).forEach(function(s) {
-    const o = document.createElement('option');
-    o.value = s.id || s.admission_no || '';
-    o.textContent = s.full_name || '';
-    sel.appendChild(o);
-  });
-  if (filtered.length === 0) {
-    $('upd_e_name').textContent = 'No students found for this class.';
-    $('upd_e_name').classList.add('show');
-    $('upd_name_wrap').style.display = 'none';
-  } else {
-    $('upd_e_name').textContent = 'Please select your name.';
-    $('upd_e_name').classList.remove('show');
-    $('upd_name_wrap').style.display = 'block';
-  }
-  $('upd-profile').style.display = 'none';
-  selectedStudent = null;
-}
-
-/* ── Name change → prefill ── */
-$('upd_name').addEventListener('change', function() {
-  const val = this.value;
-  $('upd_name').classList.remove('err');
-  $('upd_e_name').classList.remove('show');
-  if (!val) {
-    $('upd-profile').style.display = 'none';
-    selectedStudent = null;
-    return;
-  }
-  const student = allStudents.find(function(s) {
-    return String(s.id) === String(val) || String(s.admission_no) === String(val);
-  });
-  if (!student) return;
-  selectedStudent = student;
-  prefillProfile(student);
-});
-
-function getInitials(name) {
-  if (!name) return '?';
-  const parts = name.trim().split(/\s+/);
-  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  return name.trim()[0].toUpperCase();
-}
-
-function prefillProfile(s) {
-  const photoWrap = $('upd_photo_wrap');
-  if (s.photo) {
-    photoWrap.innerHTML = '<img src="' + s.photo + '" alt="' + (s.full_name || '') + '">';
-  } else {
-    photoWrap.innerHTML = '<span class="student-photo-initials">' + getInitials(s.full_name) + '</span>';
-  }
-  $('upd_photo_name').textContent = s.full_name || '';
-  $('upd_photo_meta').textContent = 'Class ' + (s.class || '') + (s.syllabus ? ' \xb7 ' + s.syllabus : '');
-
-  $('upd_full_name').value  = s.full_name   || '';
-  $('upd_gender').value     = s.gender      || '';
-  $('upd_syllabus').value   = s.syllabus    || '';
-  $('upd_school_name').value = s.school_name || '';
-  $('upd_parent_name').value = s.parent_name || '';
-  $('upd_contact').value    = s.contact     || '';
-  $('upd_photo').value      = s.photo       || '';
-
-  let bday = s.birthday || '';
-  if (bday) {
-    const dmyMatch = bday.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-    if (dmyMatch) {
-      bday = dmyMatch[3] + '-' + dmyMatch[2].padStart(2, '0') + '-' + dmyMatch[1].padStart(2, '0');
+  if(s.type === 'text' || s.type === 'tel'){
+    var v = esc(ans[s.id] || '');
+    h += '<input class="step-input" id="sInput" type="' + s.type + '" placeholder="' + esc(s.placeholder||'') + '" value="' + v + '" inputmode="' + (s.type==='tel'?'numeric':'text') + '" autocomplete="off">';
+    h += '<div class="step-err" id="sErr"></div>';
+    h += '<div class="step-actions">';
+    h += '<button class="btn-cont" id="sCont">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>';
+    if(s.optional) h += '<button class="btn-skip" id="sSkip">Skip</button>';
+    h += '<span class="key-hint">Press <kbd>Enter</kbd></span>';
+    h += '</div>';
+  } else if(s.type === 'date'){
+    h += '<input class="step-input" id="sInput" type="date" value="' + esc(ans[s.id]||'') + '">';
+    h += '<div class="step-err" id="sErr"></div>';
+    h += '<div class="step-actions">';
+    h += '<button class="btn-cont" id="sCont">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>';
+    if(s.optional) h += '<button class="btn-skip" id="sSkip">Skip</button>';
+    h += '</div>';
+  } else if(s.type === 'textarea'){
+    h += '<textarea class="step-ta" id="sInput" placeholder="' + esc(s.placeholder||'') + '">' + esc(ans[s.id]||'') + '</textarea>';
+    h += '<div class="step-actions">';
+    h += '<button class="btn-cont" id="sCont">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>';
+    if(s.optional) h += '<button class="btn-skip" id="sSkip">Skip</button>';
+    h += '</div>';
+  } else if(s.type === 'cards'){
+    var gc = 'g' + (s.cols || 2);
+    h += '<div class="opt-grid ' + gc + '">';
+    s.options.forEach(function(o){
+      var sel = ans[s.id] === o.value ? ' sel' : '';
+      h += '<div class="opt-card' + sel + '" data-val="' + esc(o.value) + '">';
+      if(o.icon) h += '<span class="opt-icon">' + o.icon + '</span>';
+      h += '<div class="opt-lbl">' + o.label + '</div>';
+      if(o.sub) h += '<div class="opt-sub">' + o.sub + '</div>';
+      h += '<div class="opt-chk"><svg viewBox="0 0 10 8"><polyline points="1 4 4 7 9 1"/></svg></div>';
+      h += '</div>';
+    });
+    h += '</div>';
+    if(s.optional){
+      h += '<div class="step-actions"><button class="btn-skip" id="sSkip">Skip this question</button></div>';
     }
   }
-  $('upd_birthday').value = bday;
 
-  ['upd_full_name','upd_gender','upd_syllabus','upd_school_name','upd_parent_name','upd_contact'].forEach(function(id) {
-    $(id).classList.remove('err');
-  });
-  ['upd_e_full_name','upd_e_gender','upd_e_syllabus','upd_e_school_name','upd_e_parent_name','upd_e_contact'].forEach(function(id) {
-    $(id).classList.remove('show');
+  p.innerHTML = h;
+  p.classList.remove('a-in','a-out','a-in-b','a-out-b');
+  void p.offsetWidth;
+  p.classList.add(back ? 'a-in-b' : 'a-in');
+
+  // Focus input
+  setTimeout(function(){ var i=$$('sInput'); if(i) i.focus(); }, 380);
+
+  // Card clicks
+  p.querySelectorAll('.opt-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      p.querySelectorAll('.opt-card').forEach(function(c){ c.classList.remove('sel'); });
+      card.classList.add('sel');
+      ans[STEPS[cur].id] = card.getAttribute('data-val');
+      setTimeout(function(){ advance(); }, 320);
+    });
   });
 
-  $('upd_submitBtn').disabled = false;
-  $('upd_btn_text').textContent = 'Submit Update';
-  $('upd_btn_icon').style.animation = '';
-  $('upd-success').classList.remove('show');
-  $('upd-profile').style.display = 'block';
+  // Continue
+  var btnC = $$('sCont');
+  if(btnC) btnC.addEventListener('click', advance);
+
+  // Skip
+  var btnSk = $$('sSkip');
+  if(btnSk) btnSk.addEventListener('click', function(){
+    ans[STEPS[cur].id] = '';
+    goTo(cur + 1, false);
+  });
+
+  // Enter key
+  var inp = $$('sInput');
+  if(inp && s.type !== 'textarea'){
+    inp.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); advance(); }
+    });
+  }
 }
 
-/* ── Validate update form ── */
-function validateUpdateForm() {
-  let ok = true;
-  const checks = [
-    { id: 'upd_full_name',   errId: 'upd_e_full_name',   test: function(v) { return v.trim().length > 0; } },
-    { id: 'upd_gender',      errId: 'upd_e_gender',      test: function(v) { return v !== ''; } },
-    { id: 'upd_syllabus',    errId: 'upd_e_syllabus',    test: function(v) { return v !== ''; } },
-    { id: 'upd_school_name', errId: 'upd_e_school_name', test: function(v) { return v.trim().length > 0; } },
-    { id: 'upd_parent_name', errId: 'upd_e_parent_name', test: function(v) { return v.trim().length > 0; } },
-    { id: 'upd_contact',     errId: 'upd_e_contact',     test: function(v) { return v.trim().replace(/\D/g, '').length >= 10; } },
+function advance(){
+  var s = STEPS[cur];
+  if(s.type === 'cards'){
+    if(!ans[s.id] && !s.optional) return;
+    goTo(cur + 1, false); return;
+  }
+  var inp = $$('sInput');
+  if(!inp){ goTo(cur + 1, false); return; }
+  var val = inp.value;
+  var err = s.validate ? s.validate(val) : null;
+  if(err && !s.optional){
+    var eEl = $$('sErr');
+    if(eEl){ eEl.textContent = err; eEl.classList.add('show'); inp.classList.add('err'); }
+    return;
+  }
+  ans[s.id] = val;
+  goTo(cur + 1, false);
+}
+
+function pad(n){ return n < 10 ? '0' + n : '' + n; }
+
+function showSummary(){
+  var p = $$('stepPanel');
+  $$('progFill').style.width = '100%';
+  $$('progPct').textContent = '100%';
+  $$('progStep').textContent = 'Almost done!';
+  $$('btnBack').style.visibility = 'visible';
+
+  var fields = [
+    {label:'Student name', id:'student_name'},
+    {label:'Class',        id:'class'},
+    {label:'Syllabus',     id:'syllabus'},
+    {label:'Gender',       id:'gender'},
+    {label:'Date of birth',id:'dob'},
+    {label:'School',       id:'school'},
+    {label:'Session',      id:'session_type'},
+    {label:'Parent name',  id:'parent_name'},
+    {label:'WhatsApp',     id:'whatsapp'},
+    {label:'Source',       id:'source'},
+    {label:'Message',      id:'message'}
   ];
-  checks.forEach(function(c) {
-    const el  = $(c.id);
-    const err = $(c.errId);
-    if (!c.test(el.value)) {
-      el.classList.add('err');
-      err.classList.add('show');
-      ok = false;
-    } else {
-      el.classList.remove('err');
-      err.classList.remove('show');
-    }
+
+  var h = '';
+  h += '<div class="step-num">Review</div>';
+  h += '<div class="step-q">Does everything look right?</div>';
+  h += '<div class="step-hint">Tap any row to edit.</div>';
+  h += '<div class="sum-grid">';
+  fields.forEach(function(f){
+    var v = ans[f.id] || '';
+    if(!v) return;
+    var si = STEPS.findIndex(function(s){ return s.id === f.id; });
+    h += '<div class="sum-row" data-si="' + si + '">';
+    h += '<span class="sum-lbl">' + f.label + '</span>';
+    h += '<span class="sum-val">' + esc(v) + '</span>';
+    h += '<span class="sum-edit">Edit</span>';
+    h += '</div>';
   });
-  return ok;
+  h += '</div>';
+  h += '<button class="btn-cont" id="sBtnSubmit" style="width:100%;justify-content:center;border-radius:14px;padding:16px 24px;">';
+  h += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M22 2L11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>';
+  h += '<span id="sBtnTxt">Submit Enquiry</span></button>';
+
+  p.innerHTML = h;
+  p.classList.remove('a-in','a-out','a-in-b','a-out-b');
+  void p.offsetWidth;
+  p.classList.add('a-in');
+
+  p.querySelectorAll('.sum-row').forEach(function(row){
+    row.addEventListener('click', function(){
+      var idx = parseInt(row.getAttribute('data-si'), 10);
+      if(!isNaN(idx)) goTo(idx, true);
+    });
+  });
+
+  $$('sBtnSubmit').addEventListener('click', submitForm);
 }
 
-/* ── Submit update ── */
-$('upd_submitBtn').addEventListener('click', async function() {
-  if (!selectedStudent) return;
-  if (!validateUpdateForm()) {
-    const firstErr = document.querySelector('#panel-update .input.err, #panel-update .sel.err, #panel-update .ferr.show');
-    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-
-  const btn = $('upd_submitBtn');
+async function submitForm(){
+  var btn = $$('sBtnSubmit');
+  var txt = $$('sBtnTxt');
   btn.disabled = true;
-  $('upd_btn_text').textContent = 'Sending…';
-  $('upd_btn_icon').style.animation = 'spinAnim .75s linear infinite';
+  txt.textContent = 'Sending…';
 
-  const payload = {
-    action:       'submitProfileUpdate',
-    student_id:   selectedStudent.id          || '',
-    admission_no: selectedStudent.admission_no || '',
-    full_name:    $('upd_full_name').value.trim(),
-    gender:       $('upd_gender').value,
-    syllabus:     $('upd_syllabus').value,
-    birthday:     $('upd_birthday').value,
-    school_name:  $('upd_school_name').value.trim(),
-    parent_name:  $('upd_parent_name').value.trim(),
-    contact:      $('upd_contact').value.trim(),
-    photo:        $('upd_photo').value.trim(),
+  var wa = (ans.whatsapp || '').replace(/\D/g,'');
+  var payload = {
+    timestamp:    new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'}),
+    student_name: ans.student_name || '',
+    dob:          ans.dob          || '',
+    class:        ans.class        || '',
+    syllabus:     ans.syllabus     || '',
+    subjects:     '',
+    session_type: ans.session_type || '',
+    parent_name:  ans.parent_name  || '',
+    whatsapp:     wa,
+    school:       ans.school       || '',
+    gender:       ans.gender       || '',
+    source:       ans.source       || '',
+    message:      ans.message      || '',
+    address: '', house: '', street: '', district: '', pin: ''
   };
 
   try {
     await fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
     });
-  } catch (err) { /* Silent fail */ }
+  } catch(e){ /* silent */ }
 
-  setTimeout(function() {
-    $('upd-profile').style.display = 'none';
-    $('upd-success').classList.add('show');
-  }, 500);
-});
+  var waMsg = 'Hi SEHR Academy!\n\nNew admission enquiry:\n'
+    + 'Student: ' + (ans.student_name||'') + '\n'
+    + 'Class: '   + (ans.class||'')        + ' (' + (ans.syllabus||'') + ')\n'
+    + 'Session: ' + (ans.session_type||'') + '\n'
+    + 'Parent: '  + (ans.parent_name||'')  + '\n'
+    + 'WhatsApp: '+ wa + '\n'
+    + 'School: '  + (ans.school||'')       + '\n'
+    + (ans.message ? 'Message: ' + ans.message + '\n' : '')
+    + '\nSubmitted via sehracademy.com/enquire';
 
-/* ── Reset → update another ── */
-$('upd_resetBtn').addEventListener('click', function() {
-  $('upd-success').classList.remove('show');
-  $('upd_class').value = '';
-  $('upd_name_wrap').style.display = 'none';
-  $('upd_name').innerHTML = '<option value="">Select your name</option>';
-  $('upd-profile').style.display = 'none';
-  selectedStudent = null;
-  $('upd_submitBtn').disabled = false;
-  $('upd_btn_text').textContent = 'Submit Update';
-  $('upd_btn_icon').style.animation = '';
-});
+  $$('waLink').href = 'https://wa.me/919539409586?text=' + encodeURIComponent(waMsg);
+
+  $$('formArea').style.display = 'none';
+  $$('successArea').style.display = 'flex';
+  confetti();
+  setTimeout(function(){
+    window.open('https://wa.me/919539409586?text=' + encodeURIComponent(waMsg), '_blank');
+  }, 700);
+}
+
+function confetti(){
+  var wrap = document.createElement('div');
+  wrap.className = 'confetti-wrap';
+  document.body.appendChild(wrap);
+  var cols = ['#8BC53F','#7C3AED','#F59E0B','#3B82F6','#EC4899','#ffffff'];
+  for(var i = 0; i < 90; i++){
+    (function(i){
+      setTimeout(function(){
+        var c = document.createElement('div');
+        c.className = 'confetto';
+        c.style.cssText = 'left:' + (Math.random()*100) + 'vw;'
+          + 'width:' + (5+Math.random()*8) + 'px;'
+          + 'height:' + (5+Math.random()*8) + 'px;'
+          + 'background:' + cols[Math.floor(Math.random()*cols.length)] + ';'
+          + 'border-radius:' + (Math.random()>0.5?'50%':'3px') + ';'
+          + 'animation-duration:' + (1.4+Math.random()*1.8) + 's;';
+        wrap.appendChild(c);
+        setTimeout(function(){ c.remove(); }, 3200);
+      }, i * 28);
+    })(i);
+  }
+  setTimeout(function(){ wrap.remove(); }, 5500);
+}
 </script>
 
 </body>
