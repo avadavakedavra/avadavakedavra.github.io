@@ -524,6 +524,59 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 /* ═══════════ REVEAL ═══════════ */
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
 .reveal.in { opacity: 1; transform: none; }
+
+/* ═══════════ PAGE TAB SWITCHER ═══════════ */
+.page-tabs {
+  display: flex; gap: 0;
+  background: var(--white);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px; padding: 4px;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+.page-tab {
+  padding: 9px 18px; border-radius: 3px;
+  border: none; background: none;
+  font-family: var(--f); font-size: 12px; font-weight: 700;
+  color: var(--muted); cursor: pointer;
+  transition: background .15s, color .15s;
+  white-space: nowrap; letter-spacing: .03em;
+}
+.page-tab.active { background: var(--lime); color: var(--ink); box-shadow: 0 1px 4px rgba(139,197,63,.3); }
+.page-tab:not(.active):hover { color: var(--ink-2); background: var(--cream-2); }
+
+/* ═══════════ UPDATE PANEL ═══════════ */
+.upd-loading {
+  text-align: center; padding: 24px 20px;
+  font-size: 12px; color: var(--muted); font-weight: 600;
+}
+.student-photo-wrap {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 22px;
+  background: var(--cream);
+  border-bottom: 1px solid var(--rule);
+}
+.student-photo {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: 2.5px solid var(--lime); overflow: hidden;
+  flex-shrink: 0; background: var(--lime-bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.student-photo img { width: 100%; height: 100%; object-fit: cover; }
+.student-photo-initials { font-size: 22px; font-weight: 800; color: var(--lime-2); }
+.student-photo-name { font-size: 14px; font-weight: 800; color: var(--ink); }
+.student-photo-meta { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+.upd-success-state { display: none; text-align: center; padding: 40px 20px; }
+.upd-success-state.show { display: block; animation: fadeUp .45s var(--ease); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: none; border: 1.5px solid var(--rule);
+  border-radius: 4px; padding: 10px 18px; margin-top: 12px;
+  font-family: var(--f); font-size: 12px; font-weight: 700;
+  color: var(--ink-3); cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.btn-outline:hover { border-color: var(--lime-2); color: var(--lime-2); }
 </style>
 </head>
 <body>
@@ -560,10 +613,16 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 <!-- PAGE -->
 <div class="page">
 
+  <!-- TAB SWITCHER -->
+  <div class="page-tabs reveal">
+    <button class="page-tab active" id="tab-enquiry" type="button">Admission Enquiry</button>
+    <button class="page-tab" id="tab-update" type="button">Update My Details</button>
+  </div>
+
   <div class="sec-hdr reveal">
     <div class="sec-hdr-rule"></div>
     <div class="sec-hdr-dot"></div>
-    <div class="sec-hdr-txt">Fill the form</div>
+    <div class="sec-hdr-txt" id="sec-hdr-txt">Fill the form</div>
     <div class="sec-hdr-dot"></div>
     <div class="sec-hdr-rule"></div>
   </div>
@@ -571,7 +630,7 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
   <div class="layout">
 
     <!-- ═══ FORM CARD ═══ -->
-    <div class="form-card reveal" style="transition-delay:.05s">
+    <div class="form-card reveal" id="panel-enquiry" style="transition-delay:.05s">
 
       <div class="form-card-header">
         <div class="form-card-header-icon">
@@ -841,6 +900,171 @@ header#site-header { position: sticky; top: 0; z-index: 200; }
 
       </div><!-- /form-body -->
     </div><!-- /form-card -->
+
+    <!-- ═══ UPDATE MY DETAILS CARD ═══ -->
+    <div class="form-card" id="panel-update" style="display:none">
+
+      <div class="form-card-header">
+        <div class="form-card-header-icon">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div>
+          <div class="form-card-header-title">Update My Details</div>
+          <div class="form-card-header-sub">Correct or fill in missing information</div>
+        </div>
+      </div>
+
+      <!-- Step 1: class + name selection -->
+      <div class="form-body" id="upd-step1">
+
+        <div class="field">
+          <div class="field-label">
+            <span class="field-label-txt">Your class <span class="req">*</span></span>
+          </div>
+          <select class="sel" id="upd_class">
+            <option value="">Select class</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
+          </select>
+          <div class="ferr" id="upd_e_class">Please select your class.</div>
+        </div>
+
+        <div class="field" id="upd_name_wrap" style="display:none">
+          <div class="field-label">
+            <span class="field-label-txt">Your name <span class="req">*</span></span>
+          </div>
+          <select class="sel" id="upd_name">
+            <option value="">Select your name</option>
+          </select>
+          <div class="ferr" id="upd_e_name">Please select your name.</div>
+        </div>
+
+        <div id="upd_loading" class="upd-loading" style="display:none">Loading students…</div>
+
+      </div><!-- /upd-step1 -->
+
+      <!-- Profile edit form: hidden until student selected -->
+      <div id="upd-profile" style="display:none">
+
+        <div class="student-photo-wrap">
+          <div class="student-photo" id="upd_photo_wrap">
+            <span class="student-photo-initials" id="upd_photo_initials">?</span>
+          </div>
+          <div>
+            <div class="student-photo-name" id="upd_photo_name"></div>
+            <div class="student-photo-meta" id="upd_photo_meta"></div>
+          </div>
+        </div>
+
+        <div class="form-body">
+
+          <div class="form-sec">
+            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
+            <span class="form-sec-lbl">Personal details</span>
+            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span class="field-label-txt">Full name <span class="req">*</span></span></div>
+            <input type="text" class="input" id="upd_full_name" autocomplete="name">
+            <div class="ferr" id="upd_e_full_name">Please enter your full name.</div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Gender <span class="req">*</span></span></div>
+              <select class="sel" id="upd_gender">
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="ferr" id="upd_e_gender">Please select a gender.</div>
+            </div>
+            <div class="field">
+              <div class="field-label">
+                <span class="field-label-txt">Birthday</span>
+                <span class="opt">Optional</span>
+              </div>
+              <input type="date" class="input" id="upd_birthday" style="color-scheme:light">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span class="field-label-txt">Syllabus <span class="req">*</span></span></div>
+            <select class="sel" id="upd_syllabus">
+              <option value="">Select</option>
+              <option value="CBSE">CBSE</option>
+              <option value="Kerala State Board">Kerala State Board</option>
+              <option value="ICSE">ICSE</option>
+            </select>
+            <div class="ferr" id="upd_e_syllabus">Please select a syllabus.</div>
+          </div>
+
+          <div class="field">
+            <div class="field-label"><span class="field-label-txt">School name <span class="req">*</span></span></div>
+            <input type="text" class="input" id="upd_school_name" placeholder="e.g. Govt. HSS Vatanappally">
+            <div class="ferr" id="upd_e_school_name">Please enter the school name.</div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
+            <span class="form-sec-lbl">Contact details</span>
+            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Parent / Guardian name <span class="req">*</span></span></div>
+              <input type="text" class="input" id="upd_parent_name">
+              <div class="ferr" id="upd_e_parent_name">Please enter a parent name.</div>
+            </div>
+            <div class="field">
+              <div class="field-label"><span class="field-label-txt">Contact number <span class="req">*</span></span></div>
+              <input type="tel" class="input" id="upd_contact" inputmode="numeric" maxlength="15">
+              <div class="ferr" id="upd_e_contact">Please enter a valid contact number.</div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-rule"></div><div class="form-sec-dot"></div>
+            <span class="form-sec-lbl">Photo</span>
+            <div class="form-sec-dot"></div><div class="form-sec-rule"></div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <span class="field-label-txt">Photo URL</span>
+              <span class="opt">Optional</span>
+            </div>
+            <input type="url" class="input" id="upd_photo" placeholder="https://…">
+          </div>
+
+          <button class="btn-submit" id="upd_submitBtn" type="button">
+            <svg id="upd_btn_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span id="upd_btn_text">Submit Update</span>
+          </button>
+          <p class="form-note">Your update will be reviewed by the admin before it takes effect.</p>
+
+        </div><!-- /form-body -->
+      </div><!-- /upd-profile -->
+
+      <!-- Confirmation -->
+      <div class="form-body upd-success-state" id="upd-success">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="success-title">Details submitted for review</div>
+        <p class="success-body">Thank you — your details have been submitted for review.<br>The admin will verify and update your record shortly.</p>
+        <button type="button" class="btn-outline" id="upd_resetBtn">Update another student</button>
+      </div>
+
+    </div><!-- /panel-update -->
 
     <!-- ═══ SIDEBAR ═══ -->
     <div class="sidebar">
@@ -1176,6 +1400,240 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
 }, { threshold: 0.06 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ══════════════════════════════
+   UPDATE MY DETAILS
+══════════════════════════════ */
+const ATT_API = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
+let allStudents = [];
+let selectedStudent = null;
+
+/* ── Tab switching ── */
+$('tab-enquiry').addEventListener('click', function() {
+  $('tab-enquiry').classList.add('active');
+  $('tab-update').classList.remove('active');
+  $('panel-enquiry').style.display = '';
+  $('panel-update').style.display = 'none';
+  $('sec-hdr-txt').textContent = 'Fill the form';
+});
+
+$('tab-update').addEventListener('click', function() {
+  $('tab-update').classList.add('active');
+  $('tab-enquiry').classList.remove('active');
+  $('panel-enquiry').style.display = 'none';
+  $('panel-update').style.display = '';
+  $('sec-hdr-txt').textContent = 'Find your record';
+  if (allStudents.length === 0) loadStudents();
+});
+
+/* ── Load all students from ATT_API ── */
+async function loadStudents() {
+  $('upd_loading').style.display = 'block';
+  try {
+    const url = ATT_API + '?data=' + encodeURIComponent(JSON.stringify({ action: 'getStudents' }));
+    const res = await fetch(url);
+    const data = await res.json();
+    allStudents = Array.isArray(data) ? data : (data.students || data.data || []);
+  } catch (err) {
+    allStudents = [];
+  }
+  $('upd_loading').style.display = 'none';
+  const cls = $('upd_class').value;
+  if (cls) populateNames(cls);
+}
+
+/* ── Class change → filter names ── */
+$('upd_class').addEventListener('change', function() {
+  const cls = this.value;
+  $('upd_class').classList.remove('err');
+  $('upd_e_class').classList.remove('show');
+  $('upd-profile').style.display = 'none';
+  selectedStudent = null;
+  if (!cls) {
+    $('upd_name_wrap').style.display = 'none';
+    return;
+  }
+  if (allStudents.length === 0) {
+    loadStudents();
+    return;
+  }
+  populateNames(cls);
+});
+
+function populateNames(cls) {
+  const filtered = allStudents.filter(function(s) {
+    return String(s.class) === String(cls);
+  });
+  const sel = $('upd_name');
+  sel.innerHTML = '<option value="">Select your name</option>';
+  filtered.slice().sort(function(a, b) {
+    return (a.full_name || '').localeCompare(b.full_name || '');
+  }).forEach(function(s) {
+    const o = document.createElement('option');
+    o.value = s.id || s.admission_no || '';
+    o.textContent = s.full_name || '';
+    sel.appendChild(o);
+  });
+  if (filtered.length === 0) {
+    $('upd_e_name').textContent = 'No students found for this class.';
+    $('upd_e_name').classList.add('show');
+    $('upd_name_wrap').style.display = 'none';
+  } else {
+    $('upd_e_name').textContent = 'Please select your name.';
+    $('upd_e_name').classList.remove('show');
+    $('upd_name_wrap').style.display = 'block';
+  }
+  $('upd-profile').style.display = 'none';
+  selectedStudent = null;
+}
+
+/* ── Name change → prefill ── */
+$('upd_name').addEventListener('change', function() {
+  const val = this.value;
+  $('upd_name').classList.remove('err');
+  $('upd_e_name').classList.remove('show');
+  if (!val) {
+    $('upd-profile').style.display = 'none';
+    selectedStudent = null;
+    return;
+  }
+  const student = allStudents.find(function(s) {
+    return String(s.id) === String(val) || String(s.admission_no) === String(val);
+  });
+  if (!student) return;
+  selectedStudent = student;
+  prefillProfile(student);
+});
+
+function getInitials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return name.trim()[0].toUpperCase();
+}
+
+function prefillProfile(s) {
+  const photoWrap = $('upd_photo_wrap');
+  if (s.photo) {
+    photoWrap.innerHTML = '<img src="' + s.photo + '" alt="' + (s.full_name || '') + '">';
+  } else {
+    photoWrap.innerHTML = '<span class="student-photo-initials">' + getInitials(s.full_name) + '</span>';
+  }
+  $('upd_photo_name').textContent = s.full_name || '';
+  $('upd_photo_meta').textContent = 'Class ' + (s.class || '') + (s.syllabus ? ' \xb7 ' + s.syllabus : '');
+
+  $('upd_full_name').value  = s.full_name   || '';
+  $('upd_gender').value     = s.gender      || '';
+  $('upd_syllabus').value   = s.syllabus    || '';
+  $('upd_school_name').value = s.school_name || '';
+  $('upd_parent_name').value = s.parent_name || '';
+  $('upd_contact').value    = s.contact     || '';
+  $('upd_photo').value      = s.photo       || '';
+
+  let bday = s.birthday || '';
+  if (bday) {
+    const dmyMatch = bday.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (dmyMatch) {
+      bday = dmyMatch[3] + '-' + dmyMatch[2].padStart(2, '0') + '-' + dmyMatch[1].padStart(2, '0');
+    }
+  }
+  $('upd_birthday').value = bday;
+
+  ['upd_full_name','upd_gender','upd_syllabus','upd_school_name','upd_parent_name','upd_contact'].forEach(function(id) {
+    $(id).classList.remove('err');
+  });
+  ['upd_e_full_name','upd_e_gender','upd_e_syllabus','upd_e_school_name','upd_e_parent_name','upd_e_contact'].forEach(function(id) {
+    $(id).classList.remove('show');
+  });
+
+  $('upd_submitBtn').disabled = false;
+  $('upd_btn_text').textContent = 'Submit Update';
+  $('upd_btn_icon').style.animation = '';
+  $('upd-success').classList.remove('show');
+  $('upd-profile').style.display = 'block';
+}
+
+/* ── Validate update form ── */
+function validateUpdateForm() {
+  let ok = true;
+  const checks = [
+    { id: 'upd_full_name',   errId: 'upd_e_full_name',   test: function(v) { return v.trim().length > 0; } },
+    { id: 'upd_gender',      errId: 'upd_e_gender',      test: function(v) { return v !== ''; } },
+    { id: 'upd_syllabus',    errId: 'upd_e_syllabus',    test: function(v) { return v !== ''; } },
+    { id: 'upd_school_name', errId: 'upd_e_school_name', test: function(v) { return v.trim().length > 0; } },
+    { id: 'upd_parent_name', errId: 'upd_e_parent_name', test: function(v) { return v.trim().length > 0; } },
+    { id: 'upd_contact',     errId: 'upd_e_contact',     test: function(v) { return v.trim().replace(/\D/g, '').length >= 10; } },
+  ];
+  checks.forEach(function(c) {
+    const el  = $(c.id);
+    const err = $(c.errId);
+    if (!c.test(el.value)) {
+      el.classList.add('err');
+      err.classList.add('show');
+      ok = false;
+    } else {
+      el.classList.remove('err');
+      err.classList.remove('show');
+    }
+  });
+  return ok;
+}
+
+/* ── Submit update ── */
+$('upd_submitBtn').addEventListener('click', async function() {
+  if (!selectedStudent) return;
+  if (!validateUpdateForm()) {
+    const firstErr = document.querySelector('#panel-update .input.err, #panel-update .sel.err, #panel-update .ferr.show');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const btn = $('upd_submitBtn');
+  btn.disabled = true;
+  $('upd_btn_text').textContent = 'Sending…';
+  $('upd_btn_icon').style.animation = 'spinAnim .75s linear infinite';
+
+  const payload = {
+    action:       'submitProfileUpdate',
+    student_id:   selectedStudent.id          || '',
+    admission_no: selectedStudent.admission_no || '',
+    full_name:    $('upd_full_name').value.trim(),
+    gender:       $('upd_gender').value,
+    syllabus:     $('upd_syllabus').value,
+    birthday:     $('upd_birthday').value,
+    school_name:  $('upd_school_name').value.trim(),
+    parent_name:  $('upd_parent_name').value.trim(),
+    contact:      $('upd_contact').value.trim(),
+    photo:        $('upd_photo').value.trim(),
+  };
+
+  try {
+    await fetch(ATT_API, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) { /* Silent fail */ }
+
+  setTimeout(function() {
+    $('upd-profile').style.display = 'none';
+    $('upd-success').classList.add('show');
+  }, 500);
+});
+
+/* ── Reset → update another ── */
+$('upd_resetBtn').addEventListener('click', function() {
+  $('upd-success').classList.remove('show');
+  $('upd_class').value = '';
+  $('upd_name_wrap').style.display = 'none';
+  $('upd_name').innerHTML = '<option value="">Select your name</option>';
+  $('upd-profile').style.display = 'none';
+  selectedStudent = null;
+  $('upd_submitBtn').disabled = false;
+  $('upd_btn_text').textContent = 'Submit Update';
+  $('upd_btn_icon').style.animation = '';
+});
 </script>
 
 </body>
