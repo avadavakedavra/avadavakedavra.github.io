@@ -1,26 +1,25 @@
-/**
- * SEHR Academy — Admission Enquiry Form Handler
- * ─────────────────────────────────────────────
+/*
+ * SEHR Academy - Admission Enquiry Form Handler
+ *
  * Also handles the "Update My Details" profile update staging flow.
  * Profile updates are written to a separate "ProfileUpdateRequests" tab
- * in THIS spreadsheet for admin review — the live students sheet is
+ * in THIS spreadsheet for admin review. The live students sheet is
  * never touched by this script.
  *
  * Student data for the update form is fetched client-side directly from
- * the Attendance API (ATT_API) — this script only receives and stores
+ * the Attendance API (ATT_API). This script only receives and stores
  * the submitted updates.
  *
- * DEPLOYMENT (do once, or after any change):
- *   Deploy → Manage Deployments → edit → New version → Deploy
- *   (keeps the same URL used in enquire.html as SHEETS_URL)
+ * DEPLOYMENT: Deploy > Manage Deployments > edit > New version > Deploy
+ * (keeps the same URL used in enquire.html as SHEETS_URL)
  */
 
-const SHEET_ID   = '16QHTB--vee9R9epWrr3yhD9XDo7GpF7nsKol9A4XWco';
-const SHEET_NAME = 'Enquiries';
-const NOTIFY_EMAIL = '';   // optional: your email for new-enquiry alerts
+var SHEET_ID   = '16QHTB--vee9R9epWrr3yhD9XDo7GpF7nsKol9A4XWco';
+var SHEET_NAME = 'Enquiries';
+var NOTIFY_EMAIL = '';   // optional: your email for new-enquiry alerts
 
-/* ─── Enquiry columns ─── */
-const COLUMNS = [
+/* --- Enquiry columns --- */
+var COLUMNS = [
   { header: 'Timestamp',        key: 'timestamp',    width: 160 },
   { header: 'Student Name',     key: 'student_name', width: 160 },
   { header: 'Date of Birth',    key: 'dob',          width: 110 },
@@ -41,29 +40,29 @@ const COLUMNS = [
   { header: 'Status',           key: '_status',      width: 120 },
 ];
 
-const NUM_COLS = COLUMNS.length;
+var NUM_COLS = COLUMNS.length;
 
-/* ─── Profile update staging columns ─── */
-const PROFILE_UPDATE_SHEET   = 'ProfileUpdateRequests';
-const PROFILE_UPDATE_HEADERS = [
+/* --- Profile update staging columns --- */
+var PROFILE_UPDATE_SHEET   = 'ProfileUpdateRequests';
+var PROFILE_UPDATE_HEADERS = [
   'Timestamp', 'Student ID', 'Admission No', 'Full Name', 'Gender',
   'Syllabus', 'Birthday', 'School Name', 'Parent Name', 'Contact',
-  'Photo URL', 'Status',
+  'Photo URL', 'Status'
 ];
-const PROFILE_UPDATE_KEYS = [
+var PROFILE_UPDATE_KEYS = [
   'timestamp', 'student_id', 'admission_no', 'full_name', 'gender',
   'syllabus', 'birthday', 'school_name', 'parent_name', 'contact',
-  'photo', 'status',
+  'photo', 'status'
 ];
-const PROFILE_UPDATE_WIDTHS = [160, 100, 120, 180, 90, 150, 110, 200, 160, 130, 240, 140];
+var PROFILE_UPDATE_WIDTHS = [160, 100, 120, 180, 90, 150, 110, 200, 160, 130, 240, 140];
 
-/* ═══════════════════════════════════════════════
+/* ==============================================
    ROUTING
-═══════════════════════════════════════════════ */
+============================================== */
 
 function doPost(e) {
   try {
-    const data = JSON.parse(e.postData.contents);
+    var data = JSON.parse(e.postData.contents);
 
     if (data.action === 'submitProfileUpdate') {
       return submitProfileUpdate(data);
@@ -88,28 +87,28 @@ function jsonOut(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-/* ═══════════════════════════════════════════════
+/* ==============================================
    ADMISSION ENQUIRY
-═══════════════════════════════════════════════ */
+============================================== */
 
 function appendEnquiryRow(data) {
-  const ss    = SpreadsheetApp.openById(SHEET_ID);
-  let   sheet = ss.getSheetByName(SHEET_NAME);
+  var ss    = SpreadsheetApp.openById(SHEET_ID);
+  var sheet = ss.getSheetByName(SHEET_NAME);
 
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
     createEnquiryHeaderRow(sheet);
   } else {
-    const existingHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var existingHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
     if (existingHeaders[0] === 'Timestamp' && existingHeaders.length !== NUM_COLS) {
       Logger.log('Header count mismatch (' + existingHeaders.length + ' vs ' + NUM_COLS + ').');
     }
   }
 
-  const timestamp = data.timestamp
+  var timestamp = data.timestamp
     || new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-  const rowValues = COLUMNS.map(function(col) {
+  var rowValues = COLUMNS.map(function(col) {
     if (col.key === '_status')   return 'New';
     if (col.key === 'timestamp') return timestamp;
     return data[col.key] || '';
@@ -117,23 +116,23 @@ function appendEnquiryRow(data) {
 
   sheet.appendRow(rowValues);
 
-  const lastRow  = sheet.getLastRow();
-  const rowRange = sheet.getRange(lastRow, 1, 1, NUM_COLS);
+  var lastRow  = sheet.getLastRow();
+  var rowRange = sheet.getRange(lastRow, 1, 1, NUM_COLS);
   rowRange.setBackground(lastRow % 2 === 0 ? '#f5f2eb' : '#fdfcfa');
   rowRange.setVerticalAlignment('middle');
 
-  const statusCol  = COLUMNS.findIndex(function(c) { return c.key === '_status'; }) + 1;
-  const statusCell = sheet.getRange(lastRow, statusCol);
-  const rule = SpreadsheetApp.newDataValidation()
+  var statusCol  = COLUMNS.findIndex(function(c) { return c.key === '_status'; }) + 1;
+  var statusCell = sheet.getRange(lastRow, statusCol);
+  var rule = SpreadsheetApp.newDataValidation()
     .requireValueInList(['New', 'Contacted', 'Enrolled', 'Not interested'], true)
     .build();
   statusCell.setDataValidation(rule);
   styleStatusCell(statusCell, 'New');
 
-  const sessionCol = COLUMNS.findIndex(function(c) { return c.key === 'session_type'; }) + 1;
+  var sessionCol = COLUMNS.findIndex(function(c) { return c.key === 'session_type'; }) + 1;
   if (sessionCol > 0) {
-    const sessionCell = sheet.getRange(lastRow, sessionCol);
-    const sessionVal  = data.session_type || '';
+    var sessionCell = sheet.getRange(lastRow, sessionCol);
+    var sessionVal  = data.session_type || '';
     if (sessionVal === 'Individual Session') {
       sessionCell.setBackground('#e8f0fb').setFontColor('#1a56db').setFontWeight('bold');
     } else if (sessionVal === 'Group Session') {
@@ -143,9 +142,9 @@ function appendEnquiryRow(data) {
 }
 
 function createEnquiryHeaderRow(sheet) {
-  const headers = COLUMNS.map(function(c) { return c.header; });
+  var headers = COLUMNS.map(function(c) { return c.header; });
   sheet.appendRow(headers);
-  const headerRange = sheet.getRange(1, 1, 1, NUM_COLS);
+  var headerRange = sheet.getRange(1, 1, 1, NUM_COLS);
   headerRange.setFontWeight('bold');
   headerRange.setBackground('#1a1a18');
   headerRange.setFontColor('#8BC53F');
@@ -157,35 +156,35 @@ function createEnquiryHeaderRow(sheet) {
 }
 
 function styleStatusCell(cell, value) {
-  const styles = {
+  var styles = {
     'New':            { bg: '#f0f7e3', fg: '#3b6d11' },
     'Contacted':      { bg: '#fff7e6', fg: '#92400e' },
     'Enrolled':       { bg: '#e8f9ee', fg: '#065f46' },
-    'Not interested': { bg: '#fef2f2', fg: '#991b1b' },
+    'Not interested': { bg: '#fef2f2', fg: '#991b1b' }
   };
-  const s = styles[value] || styles['New'];
+  var s = styles[value] || styles['New'];
   cell.setBackground(s.bg).setFontColor(s.fg).setFontWeight('bold');
 }
 
 function onEdit(e) {
-  const sheet = e.range.getSheet();
+  var sheet = e.range.getSheet();
   if (sheet.getName() !== SHEET_NAME) return;
-  const statusCol = COLUMNS.findIndex(function(c) { return c.key === '_status'; }) + 1;
+  var statusCol = COLUMNS.findIndex(function(c) { return c.key === '_status'; }) + 1;
   if (e.range.getColumn() !== statusCol || e.range.getRow() < 2) return;
   styleStatusCell(e.range, e.range.getValue());
 }
 
-/* ═══════════════════════════════════════════════
-   PROFILE UPDATE (staging — no live sheet writes)
-═══════════════════════════════════════════════ */
+/* ==============================================
+   PROFILE UPDATE (staging only, no live sheet writes)
+============================================== */
 
 function submitProfileUpdate(data) {
-  const ss    = SpreadsheetApp.openById(SHEET_ID);
-  let   sheet = ss.getSheetByName(PROFILE_UPDATE_SHEET);
+  var ss    = SpreadsheetApp.openById(SHEET_ID);
+  var sheet = ss.getSheetByName(PROFILE_UPDATE_SHEET);
 
   if (!sheet) {
     sheet = ss.insertSheet(PROFILE_UPDATE_SHEET);
-    const hdr = sheet.getRange(1, 1, 1, PROFILE_UPDATE_HEADERS.length);
+    var hdr = sheet.getRange(1, 1, 1, PROFILE_UPDATE_HEADERS.length);
     hdr.setNumberFormat('@STRING@');
     hdr.setValues([PROFILE_UPDATE_HEADERS]);
     hdr.setFontWeight('bold');
@@ -198,8 +197,8 @@ function submitProfileUpdate(data) {
     });
   }
 
-  const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-  const rowValues = [[
+  var timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  var rowValues = [[
     timestamp,
     data.student_id   || '',
     data.admission_no || '',
@@ -211,19 +210,19 @@ function submitProfileUpdate(data) {
     data.parent_name  || '',
     data.contact      || '',
     data.photo        || '',
-    'PENDING REVIEW',
+    'PENDING REVIEW'
   ]];
 
-  const newRow = sheet.getLastRow() + 1;
-  const range  = sheet.getRange(newRow, 1, 1, PROFILE_UPDATE_HEADERS.length);
+  var newRow = sheet.getLastRow() + 1;
+  var range  = sheet.getRange(newRow, 1, 1, PROFILE_UPDATE_HEADERS.length);
   range.setNumberFormat('@STRING@');
   range.setValues(rowValues);
   range.setBackground(newRow % 2 === 0 ? '#f5f2eb' : '#fdfcfa');
   range.setVerticalAlignment('middle');
 
-  const statusCol  = PROFILE_UPDATE_KEYS.indexOf('status') + 1;
-  const statusCell = sheet.getRange(newRow, statusCol);
-  const rule = SpreadsheetApp.newDataValidation()
+  var statusCol  = PROFILE_UPDATE_KEYS.indexOf('status') + 1;
+  var statusCell = sheet.getRange(newRow, statusCol);
+  var rule = SpreadsheetApp.newDataValidation()
     .requireValueInList(['PENDING REVIEW', 'REVIEWED', 'APPLIED', 'REJECTED'], true)
     .build();
   statusCell.setDataValidation(rule);
@@ -232,13 +231,13 @@ function submitProfileUpdate(data) {
   return jsonOut({ success: true });
 }
 
-/* ═══════════════════════════════════════════════
+/* ==============================================
    UTILITIES
-═══════════════════════════════════════════════ */
+============================================== */
 
 function initSheet() {
-  const ss    = SpreadsheetApp.openById(SHEET_ID);
-  let   sheet = ss.getSheetByName(SHEET_NAME);
+  var ss    = SpreadsheetApp.openById(SHEET_ID);
+  var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
   }
@@ -246,14 +245,14 @@ function initSheet() {
     createEnquiryHeaderRow(sheet);
     SpreadsheetApp.getUi().alert('Header row created on "' + SHEET_NAME + '".');
   } else {
-    SpreadsheetApp.getUi().alert('Sheet already has content — headers were NOT overwritten.');
+    SpreadsheetApp.getUi().alert('Sheet already has content - headers were NOT overwritten.');
   }
 }
 
 function sendEmailAlert(data) {
   if (!NOTIFY_EMAIL) return;
-  const subject = 'New Enquiry — ' + (data.student_name || 'Unknown') + ' | SEHR Academy';
-  const body =
+  var subject = 'New Enquiry - ' + (data.student_name || 'Unknown') + ' | SEHR Academy';
+  var body =
     'New admission enquiry received:\n\n' +
     'Student:       ' + (data.student_name || '') + '\n' +
     'Date of Birth: ' + (data.dob          || '') + '\n' +
