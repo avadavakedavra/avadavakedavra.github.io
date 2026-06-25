@@ -5161,7 +5161,7 @@ function renderBriefing(){
 
     // Last 3 sessions of same class+subject+board from academic log
     var history=SESSIONS.filter(function(r){
-      return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<todayYMD;
+      return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<=todayYMD;
     }).sort(function(a,b){
       return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
     }).slice(0,3);
@@ -5308,7 +5308,7 @@ function buildTeacherBriefText(idx){
 
   var board=sylToBoard(syl);
   var history=SESSIONS.filter(function(r){
-    return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<todayYMD;
+    return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<=todayYMD;
   }).sort(function(a,b){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
   }).slice(0,3);
