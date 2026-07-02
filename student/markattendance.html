@@ -151,6 +151,20 @@ body::before{
   padding:4px 12px;border-radius:20px;margin-bottom:10px;position:relative;z-index:1;
 }
 .pg-date::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--li);animation:pulse 2s ease infinite}
+.pg-date-picker{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--li-dim);border:1px solid rgba(139,197,63,.2);
+  border-radius:20px;padding:5px 14px 5px 12px;margin-bottom:10px;
+  position:relative;z-index:1;
+}
+.pg-date-picker::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--li);animation:pulse 2s ease infinite;flex-shrink:0}
+.pg-date-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--li)}
+.pg-date-input{
+  background:transparent;border:none;color:var(--li);font-family:var(--f);
+  font-size:12px;font-weight:700;outline:none;cursor:pointer;color-scheme:dark;
+  -webkit-appearance:none;padding:0;
+}
+.pg-date-input::-webkit-calendar-picker-indicator{filter:invert(70%) sepia(70%) saturate(500%) hue-rotate(50deg);cursor:pointer}
 .pg-title{font-size:26px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1;margin-bottom:4px;position:relative;z-index:1}
 .pg-title em{color:var(--li);font-style:italic}
 .pg-sub{font-size:12px;color:var(--text4);position:relative;z-index:1}
@@ -411,7 +425,10 @@ body::before{
 <!-- S2: CLASS SELECTION -->
 <div class="scr" id="s2">
   <div class="pg-hero">
-    <div class="pg-date" id="heroDate"></div>
+    <div class="pg-date-picker">
+      <label class="pg-date-lbl" for="dateInput">Date</label>
+      <input type="date" class="pg-date-input" id="dateInput">
+    </div>
     <div class="pg-title">Select <em>Class</em></div>
     <div class="pg-sub" id="s2sub">Choose the class you want to mark</div>
   </div>
@@ -528,18 +545,35 @@ var API = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r
 var WA  = '919539409586';
 var MULTI_BOARD = ['9','10','11','12'];
 
-var T=null,STUDS=[],ABSENT={},CLS=null,BOARD=null,TODAY_YMD='',TODAY_DSP='';
+var T=null,STUDS=[],ABSENT={},CLS=null,BOARD=null,TODAY_YMD='',SEL_YMD='',SEL_DSP='';
+
+function ymdToDate(ymd){var p=ymd.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function fmtDisp(ymd){return ymdToDate(ymd).toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function fmtShort(ymd){return ymdToDate(ymd).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+function updDateDisplays(){
+  SEL_DSP=fmtDisp(SEL_YMD);
+  var sh=fmtShort(SEL_YMD);
+  ['s3Date','s4Date'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.textContent=sh;
+  });
+  document.getElementById('barD').textContent=SEL_DSP;
+}
+function onDateChange(){
+  var v=g('dateInput').value;
+  if(!v)return;
+  if(v>TODAY_YMD){v=TODAY_YMD;g('dateInput').value=v;}
+  SEL_YMD=v;updDateDisplays();
+}
 
 !function(){
   var d=new Date(),p=function(n){return String(n).padStart(2,'0');};
   TODAY_YMD=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
-  TODAY_DSP=d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  var sh=d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-  ['heroDate','s3Date','s4Date'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el)el.textContent=sh;
-  });
-  document.getElementById('barD').textContent=TODAY_DSP;
+  SEL_YMD=TODAY_YMD;
+  updDateDisplays();
+  var di=document.getElementById('dateInput');
+  di.value=TODAY_YMD;di.max=TODAY_YMD;
+  di.addEventListener('change',onDateChange);
 }();
 
 function g(id){return document.getElementById(id);}
@@ -652,7 +686,7 @@ function openStudentList(backLbl,backScr){
 
 function loadStudents(){
   showSkel();
-  api({action:'checkAttendance',date:TODAY_YMD,class:CLS,syllabus:BOARD||''},function(chk,err){
+  api({action:'checkAttendance',date:SEL_YMD,class:CLS,syllabus:BOARD||''},function(chk,err){
     if(err){fetchStudents();return;}
     if(chk&&chk.exists){showAlready(chk);return;}
     fetchStudents();
@@ -735,7 +769,7 @@ function doSubmit(){
   var btn=g('btnSub');btn.disabled=true;
   btn.innerHTML='<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(15,15,13,.25);border-top-color:#0f0f0d;border-radius:50%;animation:spin .6s linear infinite"></span> Saving…';
   var recs=STUDS.map(function(s){return{student_id:s.id,full_name:s.full_name,syllabus:s.syllabus,status:ABSENT[s.id]?'Absent':'Present'};});
-  api({action:'markAttendance',date:TODAY_YMD,class:CLS,syllabus:BOARD||'',teacher_id:T.id,overwrite:false,records:recs},function(data,err){
+  api({action:'markAttendance',date:SEL_YMD,class:CLS,syllabus:BOARD||'',teacher_id:T.id,overwrite:false,records:recs},function(data,err){
     btn.disabled=false;
     btn.innerHTML='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Submit';
     if(err){alert('Error: '+err);return;}
@@ -757,7 +791,7 @@ function goBackFromAlready(){STUDS=[];ABSENT={};CLS=null;BOARD=null;g('stuList')
 function showConfirm(data){
   g('bar').classList.remove('on');
   var board=BOARD?' ('+BOARD+')':'';
-  g('cfSub').textContent='Class '+CLS+board+' · '+TODAY_DSP;
+  g('cfSub').textContent='Class '+CLS+board+' · '+SEL_DSP;
   g('cfT').textContent=data.total;g('cfP').textContent=data.present;g('cfA').textContent=data.absent;
   if(data.absentNames&&data.absentNames.length){
     g('abT').textContent=data.absentNames.length+' Absent Today';
@@ -769,7 +803,7 @@ function showConfirm(data){
 function goHome(){STUDS=[];ABSENT={};CLS=null;BOARD=null;g('stuList').innerHTML='';goTo('s2','l');}
 function sendTicket(id){
   var txt=g(id).value.trim();if(!txt){g(id).focus();return;}
-  var msg='*SEHR Academy — Teacher Ticket*\n\nFrom: *'+(T?T.name:'Teacher')+'*'+(CLS?' (Class '+CLS+(BOARD?'/'+BOARD:'')+')':'')+'\nDate: '+TODAY_DSP+'\n\n*Issue:*\n'+txt;
+  var msg='*SEHR Academy — Teacher Ticket*\n\nFrom: *'+(T?T.name:'Teacher')+'*'+(CLS?' (Class '+CLS+(BOARD?'/'+BOARD:'')+')':'')+'\nDate: '+SEL_DSP+'\n\n*Issue:*\n'+txt;
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(msg).then(function(){alert('Message copied! Paste into WhatsApp to send.');});
   } else {
