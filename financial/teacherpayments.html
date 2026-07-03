@@ -263,6 +263,8 @@ a{text-decoration:none;color:inherit}
 .sact-cancel:hover{background:var(--red);color:#fff}
 .sact-absent{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-mid)}
 .sact-absent:hover{background:var(--amber);color:#fff}
+.sact-dup{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-mid)}
+.sact-dup:hover{background:var(--purple);color:#fff}
 .pay-row{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;border-radius:5px;margin-bottom:2px}
 .pay-row:nth-child(odd){background:var(--cream)}
 .pay-date{font-size:10px;color:var(--muted);flex-shrink:0}
@@ -500,7 +502,7 @@ select.form-inp{cursor:pointer}
   </div>
   <div id="rateHint" class="rate-hint" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="rateHintTxt"></span></div>
   <div class="form-row"><label class="form-lbl">Syllabus</label><select class="form-inp" id="ses_notes"><option value="">— Select —</option><option value="STATE">Kerala State</option><option value="CBSE">CBSE</option></select></div>
-  </div><div class="modal-foot"><button class="btn-cancel" onclick="closeModal('modalSession')">Cancel</button><button class="btn-submit" id="submitSession" onclick="submitSession()">Add Session</button></div></div>
+  </div><div class="modal-foot"><button class="btn-cancel" onclick="closeModal('modalSession')">Cancel</button><button class="btn-submit" id="submitSessionAgain" style="background:var(--blue);color:#fff" onclick="submitSession(true)">Save &amp; Add Another</button><button class="btn-submit" id="submitSession" onclick="submitSession()">Add Session</button></div></div>
 </div>
 
 <!-- BULK SCHEDULE MODAL -->
@@ -881,15 +883,15 @@ function renderTeachers(){
       var si=SUBJECTS.indexOf(r.subject);var barCol=si>=0?SCOLS[si%SCOLS.length]:'var(--teal)';
       var mchip='<span class="chip '+(r.mode==='Online'?'chip-on':'chip-off')+'">'+esc(r.mode||'Off')+'</span>';
       var cchip='<span class="chip chip-cls">Cl.'+esc(r['class']||'')+'</span>';
-      var acts='';
+      var acts='<div class="sess-acts">'
+        +'<button class="sact sact-dup" onclick="openDuplicateSess(event,\''+esc(r.session_id)+'\')">Duplicate</button>';
       if(st==='scheduled'){
-        acts='<div class="sess-acts">'
-          +'<button class="sact sact-done" onclick="markSt(event,\''+esc(r.session_id)+'\',\'Completed\')">Done</button>'
+        acts+='<button class="sact sact-done" onclick="markSt(event,\''+esc(r.session_id)+'\',\'Completed\')">Done</button>'
           +'<button class="sact sact-edit" onclick="openEditSess(event,\''+esc(r.session_id)+'\')">Edit</button>'
           +'<button class="sact sact-absent" onclick="markSt(event,\''+esc(r.session_id)+'\',\'Absent\')">Absent</button>'
-          +'<button class="sact sact-cancel" onclick="markSt(event,\''+esc(r.session_id)+'\',\'Cancelled\')">Cancel</button>'
-          +'</div>';
+          +'<button class="sact sact-cancel" onclick="markSt(event,\''+esc(r.session_id)+'\',\'Cancelled\')">Cancel</button>';
       }
+      acts+='</div>';
       return '<div class="sess-row"><div class="sess-bar" style="background:'+barCol+'"></div>'
         +'<div class="sess-info"><div class="sess-name">'+esc(r.subject||'Session')+'</div>'
         +'<div class="sess-meta">'+esc(r.date_ddmmyyyy||'--')+(r.start_time?' '+esc(r.start_time):'')+' '+cchip+' '+mchip+'</div></div>'
@@ -994,6 +996,7 @@ function renderSessions(){
       acts+='<button onclick="markSt(event,\''+esc(r.session_id)+'\',\'Absent\')" style="padding:3px 7px;border-radius:4px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-mid);font-size:9px;font-weight:700;cursor:pointer;font-family:var(--f)">Absent</button>';
       acts+='<button onclick="openEditSess(event,\''+esc(r.session_id)+'\')" style="padding:3px 7px;border-radius:4px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-mid);font-size:9px;font-weight:700;cursor:pointer;font-family:var(--f)">Edit</button>';
     }
+    acts+='<button onclick="openDuplicateSess(event,\''+esc(r.session_id)+'\')" style="padding:3px 7px;border-radius:4px;background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-mid);font-size:9px;font-weight:700;cursor:pointer;font-family:var(--f)">Dup</button>';
     acts+='</div>';
     return '<tr>'
       +'<td style="font-weight:700">'+esc(r.date_ddmmyyyy||'--')+(r.start_time?'<br><span style="color:var(--muted);font-size:10px;font-weight:400">'+esc(r.start_time)+'</span>':'')+'</td>'
@@ -1045,6 +1048,7 @@ function openEditTeacher(ev,tid){
 /* SESSION MODAL */
 function openAddSession(preTid){
   g('modalSessionTitle').textContent='Add Session';g('ses_id').value='';g('submitSession').textContent='Add Session';
+  g('submitSessionAgain').style.display='';
   clearForm('modalSession');g('ses_date').value=today();g('ses_status').value='Scheduled';
   populateDropdowns();if(preTid)g('ses_teacher').value=preTid;
   g('rateHint').style.display='none';g('ses_amount').value='';setTimePickerValue('ses','7:00 PM');
@@ -1054,6 +1058,7 @@ function openEditSess(ev,sid){
   ev.stopPropagation();
   var r=SESSIONS.filter(function(x){return x.session_id===sid;})[0];if(!r)return;
   g('modalSessionTitle').textContent='Edit Session';g('ses_id').value=sid;g('submitSession').textContent='Save Session';
+  g('submitSessionAgain').style.display='none';
   populateDropdowns();
   g('ses_teacher').value=r.teacher_id||'';g('ses_date').value=r.date_ddmmyyyy||'';
   g('ses_time').value=r.start_time||'';setTimePickerValue('ses',r.start_time||'');g('ses_class').value=r['class']||'';
@@ -1063,6 +1068,26 @@ function openEditSess(ev,sid){
   g('ses_mode').value=r.mode||'Offline';g('ses_dur').value=r.duration_hrs||'1';
   g('ses_rate').value=r.rate_per_hr||'';g('ses_amount').value=r.amount||'';
   g('ses_status').value=r.status||'Scheduled';g('ses_notes').value=r.notes||'';if(g('ses_notes').tagName==='SELECT'){var sn=g('ses_notes');var nv=String(r.notes||'').toUpperCase().indexOf('STATE')>-1?'STATE':String(r.notes||'').toUpperCase().indexOf('CBSE')>-1?'CBSE':'';sn.value=nv;}
+  g('rateHint').style.display='none';openModal('modalSession');
+}
+/* Duplicate an existing session into a fresh Add Session form, one week later, ready to submit again */
+function openDuplicateSess(ev,sid){
+  ev.stopPropagation();
+  var r=SESSIONS.filter(function(x){return x.session_id===sid;})[0];if(!r)return;
+  g('modalSessionTitle').textContent='Add Session';g('ses_id').value='';g('submitSession').textContent='Add Session';
+  g('submitSessionAgain').style.display='';
+  populateDropdowns();
+  g('ses_teacher').value=r.teacher_id||'';
+  var d=parseDate(r.date_ddmmyyyy);
+  if(d){d.setDate(d.getDate()+7);g('ses_date').value=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();}
+  else{g('ses_date').value=today();}
+  g('ses_time').value=r.start_time||'';setTimePickerValue('ses',r.start_time||'');g('ses_class').value=r['class']||'';
+  g('ses_subject').innerHTML='<option value="">Select subject</option>';
+  SUBJECT_OPTS.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;if(s===r.subject)o.selected=true;g('ses_subject').appendChild(o);});
+  g('ses_mode').value=r.mode||'Offline';g('ses_dur').value=r.duration_hrs||'1';
+  g('ses_rate').value=r.rate_per_hr||'';g('ses_amount').value=r.amount||'';
+  g('ses_status').value='Scheduled';
+  g('ses_notes').value=r.notes||'';if(g('ses_notes').tagName==='SELECT'){var sn=g('ses_notes');var nv=String(r.notes||'').toUpperCase().indexOf('STATE')>-1?'STATE':String(r.notes||'').toUpperCase().indexOf('CBSE')>-1?'CBSE':'';sn.value=nv;}
   g('rateHint').style.display='none';openModal('modalSession');
 }
 function onSesFieldChange(){
@@ -1173,7 +1198,7 @@ function submitTeacher(){
   apiPost(params,function(){refreshAndClose('modalTeacher');},'errTeacher','submitTeacher',isEdit?'Save Changes':'Add Teacher');
 }
 
-function submitSession(){
+function submitSession(again){
   var tid=g('ses_teacher').value,date=g('ses_date').value.trim(),dur=g('ses_dur').value,cls=g('ses_class').value;
   if(!tid||!date||!cls){var e=g('errSession');e.textContent='Teacher, date and class are required.';e.className='form-err on';return;}
   var isEdit=!!g('ses_id').value;
@@ -1192,7 +1217,17 @@ function submitSession(){
     +'&status='+encodeURIComponent(g('ses_status').value)
     +'&notes='+encodeURIComponent(g('ses_notes').value.trim());
   var params=isEdit?'action=updateSession&id='+encodeURIComponent(g('ses_id').value)+'&'+base:'action=addSession&'+base;
-  apiPost(params,function(){refreshAndClose('modalSession');},'errSession','submitSession',isEdit?'Save Session':'Add Session');
+  if(again&&!isEdit){
+    apiPost(params,function(){
+      fetch(API+'?action=getData&password='+encodeURIComponent(PASSWORD)).then(function(r){return r.json();}).then(function(d){
+        loadData(d);init();showToast('Session added — ready for the next one');
+        var d2=parseDate(date);
+        if(d2){d2.setDate(d2.getDate()+7);g('ses_date').value=String(d2.getDate()).padStart(2,'0')+'/'+String(d2.getMonth()+1).padStart(2,'0')+'/'+d2.getFullYear();}
+      });
+    },'errSession','submitSessionAgain','Save & Add Another');
+  }else{
+    apiPost(params,function(){refreshAndClose('modalSession');},'errSession','submitSession',isEdit?'Save Session':'Add Session');
+  }
 }
 
 function submitBulk(){
