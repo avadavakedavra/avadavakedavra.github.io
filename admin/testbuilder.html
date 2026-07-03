@@ -639,6 +639,11 @@ function apiCall(p,cb){
   }).join('&');
   apiFetch(url,cb);
 }
+function apiPost(p,cb){
+  fetch(TEST_API,{method:'POST',body:JSON.stringify(p)}).then(function(r){return r.text();}).then(function(t){
+    try{cb(JSON.parse(t),null);}catch(e){cb(null,'Parse error');}
+  }).catch(function(e){cb(null,e.message);});
+}
 function closeModal(id){g(id).classList.remove('on');}
 document.addEventListener('click',function(e){
   if(e.target.classList.contains('modal-bg'))e.target.classList.remove('on');
@@ -1054,7 +1059,7 @@ function saveTest(auto){
   g('saveSpin').classList.add('on');
   g('saveLbl').textContent='Saving…';
   var qs=QUESTIONS.map(function(q){return{question:q.question,options:q.options,correct:q.correct};});
-  apiCall({
+  var payload={
     action:'saveTest',appkey:ADMIN_PASS,
     test_id:g('tId').value.trim(),
     test_name:g('tName').value.trim(),
@@ -1064,7 +1069,10 @@ function saveTest(auto){
     duration_mins:g('tDur').value,
     active:g('tActive').classList.contains('on')?'yes':'no',
     questions_json:JSON.stringify(qs)
-  },function(data,err){
+  };
+  // Large tests (many questions / unicode symbols) overflow the URL length
+  // limit on a GET request, so POST the payload as a JSON body instead.
+  apiPost(payload,function(data,err){
     g('saveBtn').disabled=false;
     g('saveSpin').classList.remove('on');
     g('saveLbl').textContent='Save';
