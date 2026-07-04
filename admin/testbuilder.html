@@ -639,6 +639,28 @@ function apiCall(p,cb){
   }).join('&');
   apiFetch(url,cb);
 }
+/* Google Apps Script web-app GET requests silently fail once the query
+   string gets too long — a large questions_json payload with lots of
+   Unicode symbols (θ, °, ², ³, ×, − in a trig/math quiz, for example)
+   can blow a ~40-question test past 9,000+ encoded characters on its
+   own. For big payloads, POST the same params as a form body instead:
+   Apps Script populates e.parameter identically for POST bodies, so a
+   doPost that delegates to the same logic as doGet (the pattern this
+   project already uses in attendance-script-full.gs) picks it up with
+   no query-length limit. Falls back to the original GET automatically
+   if the backend has no doPost wired up, so this can't regress
+   anything that already works.*/
+function apiCallSmart(p,cb){
+  var qs=Object.keys(p).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(p[k]);}).join('&');
+  if((TEST_API+'?'+qs).length<6000){apiFetch(TEST_API+'?'+qs,cb);return;}
+  fetch(TEST_API,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:qs})
+    .then(function(r){return r.text();})
+    .then(function(t){
+      try{cb(JSON.parse(t),null);}
+      catch(e){apiFetch(TEST_API+'?'+qs,cb);} // backend has no doPost yet — fall back to GET
+    })
+    .catch(function(){apiFetch(TEST_API+'?'+qs,cb);});
+}
 function closeModal(id){g(id).classList.remove('on');}
 document.addEventListener('click',function(e){
   if(e.target.classList.contains('modal-bg'))e.target.classList.remove('on');
@@ -1091,7 +1113,7 @@ function saveTest(auto){
   g('saveSpin').classList.add('on');
   g('saveLbl').textContent='Saving…';
   var qs=QUESTIONS.map(function(q){return{question:q.question,options:q.options,correct:q.correct};});
-  apiCall({
+  apiCallSmart({
     action:'saveTest',appkey:ADMIN_PASS,
     test_id:g('tId').value.trim(),
     test_name:g('tName').value.trim(),
