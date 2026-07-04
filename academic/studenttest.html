@@ -1225,7 +1225,20 @@ function doSubmit(auto){
   g("submittingTitle").textContent=auto?"Time is up! Submitting...":"Submitting your answers...";
   var timeTaken=Math.round((Date.now()-new Date(START_TIME).getTime())/1000);
   var answersArr=QUESTIONS.map(function(q,i){
-    return{q_ref:q.q_ref,selected:ANSWERS[i]!==undefined?ANSWERS[i]:null,skipped:!!SKIPPED[i],opt_map:q.opt_map||null};
+    var sel=ANSWERS[i]!==undefined?ANSWERS[i]:null;
+    return{
+      q_ref:q.q_ref,
+      selected:sel,
+      skipped:!!SKIPPED[i],
+      opt_map:q.opt_map||null,
+      // Plain-text fields so the stored answer never depends on decoding an
+      // index against a shuffle map — the exact question number, the exact
+      // question asked, and the exact option text the student picked are
+      // all right here, unambiguous even read straight off the sheet.
+      question_no:i+1,
+      question_text:q.question,
+      selected_text:(sel!==null&&q.options&&q.options[sel]!==undefined)?q.options[sel]:null
+    };
   });
   var p={
     action:'submitTest',
