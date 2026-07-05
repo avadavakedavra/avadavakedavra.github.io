@@ -131,9 +131,10 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 .cls-btns{display:flex;gap:6px;flex-shrink:0}
 .btn-cls-pdf{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:5px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:11px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .15s}
 .btn-cls-pdf:hover{border-color:var(--li);color:var(--l2)}
-.btn-cls-wa{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:5px;border:1.5px solid rgba(37,211,102,.3);background:rgba(37,211,102,.07);font-family:var(--f);font-size:11px;font-weight:700;color:#128c3e;cursor:pointer;transition:all .15s}
-.btn-cls-wa:hover{background:rgba(37,211,102,.16)}
-.btn-cls-pdf svg,.btn-cls-wa svg{width:12px;height:12px;flex-shrink:0}
+.btn-cls-copy{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:5px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;transition:all .15s}
+.btn-cls-copy:hover{border-color:var(--lm);color:var(--l3)}
+.btn-cls-copy.copied{background:rgba(139,197,63,.12);border-color:rgba(139,197,63,.3);color:var(--l3)}
+.btn-cls-pdf svg,.btn-cls-copy svg{width:12px;height:12px;flex-shrink:0}
 
 .cls-body{padding:16px}
 
@@ -296,7 +297,6 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 
 <script>
 var API     = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
-var WA_NUM  = '919539409586';
 var MONTHS  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var MONTHS_S= ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var DAYS_S  = ['Su','Mo','Tu','We','Th','Fr','Sa'];
@@ -600,8 +600,8 @@ function render(){
     html+='<div class="cls-btns">'
       +'<button class="btn-cls-pdf" onclick="doPrintClass(\''+cls+'\')">'
       +'<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>PDF</button>'
-      +'<button class="btn-cls-wa" onclick="sendWaClass(\''+cls+'\')">'
-      +'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45z"/></svg>WhatsApp</button>'
+      +'<button class="btn-cls-copy" onclick="copyClassSummary(\''+cls+'\',this)">'
+      +'<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span class="btn-lbl">Copy</span></button>'
       +'</div>';
     html+='</div>';
 
@@ -738,8 +738,8 @@ function doPrintClass(cls){
   window.print();
 }
 
-/* ── WHATSAPP ── */
-function waMsg(rows, cls){
+/* ── CLASS SUMMARY (copy to clipboard) ── */
+function buildClassSummaryText(rows, cls){
   var present=rows.filter(function(r){return r.status==='Present';});
   var absent =rows.filter(function(r){return r.status==='Absent';});
   var pct=rows.length?Math.round(present.length/rows.length*100):0;
@@ -768,12 +768,31 @@ function waMsg(rows, cls){
   return lines.join('\n');
 }
 
-function sendWaClass(cls){
+function copyClassSummary(cls,btn){
   var rows=ALL_RECORDS.filter(function(r){
     return r.date===CUR_DATE && r.class===cls && (CUR_BOARD==='ALL'||r.syllabus===CUR_BOARD);
   });
   if(!rows.length){alert('No data for Class '+cls);return;}
-  window.open('https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(waMsg(rows,cls)),'_blank');
+  var text=buildClassSummaryText(rows,cls);
+  var lbl=btn.querySelector('.btn-lbl');
+  function done(){
+    btn.classList.add('copied');
+    lbl.textContent='Copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); lbl.textContent='Copy'; },2000);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      var ta=document.createElement('textarea');
+      ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); done();
+    });
+  } else {
+    var ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }
 }
 
 function buildAttSummaryText(){
