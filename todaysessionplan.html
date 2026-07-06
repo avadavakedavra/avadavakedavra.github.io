@@ -445,6 +445,9 @@ function renderSheet(data){
   var rowsHTML = sessions.map(function(s){
     var info = subjInfo(s.subject);
     var dur = s.toMin - s.fromMin;
+    // Row headline = class/student/batch (from notes); Subject becomes the inside tag.
+    var headline = s.notes || s.subject;
+    var tagLabel = s.notes ? s.subject : info.cat;
     return '<div class="tl-row">'+
       '<div class="tl-time">'+
         '<div class="tl-from">'+minsTo12(s.fromMin)+'</div>'+
@@ -455,10 +458,9 @@ function renderSheet(data){
       '<div class="tl-card" style="--accent:'+info.accent+';--accent-bg:'+info.dim+'">'+
         '<div class="tl-card-top">'+
           '<div class="tl-icon">'+info.emoji+'</div>'+
-          '<div class="tl-subj">'+escHTML(s.subject)+'</div>'+
-          '<div class="tl-cat">'+info.cat+'</div>'+
+          '<div class="tl-subj">'+escHTML(headline)+'</div>'+
+          '<div class="tl-cat">'+escHTML(tagLabel)+'</div>'+
         '</div>'+
-        (s.notes?'<div class="tl-notes">'+escHTML(s.notes)+'</div>':'')+
       '</div>'+
     '</div>';
   }).join('');
