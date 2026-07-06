@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today's Session Plan · SEHR Academy</title>
+<style>
+  :root{
+    --cream:#f5f2eb;--cream-2:#ede9e0;--cream-3:#e4dfd4;
+    --white:#fdfcfa;--ink:#1a1a18;--ink-2:#2e2e2b;--ink-3:#4a4a46;
+    --muted:#7a7970;--pale:#b0ada4;--rule:#d8d4cb;
+    --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
+    --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+    --red:#dc2626;--red-dim:rgba(220,38,38,.08);
+    --amb:#d97706;--amb-dim:rgba(217,119,6,.1);
+    --blue:#2563eb;--blue-dim:rgba(37,99,235,.07);
+    --grn:#16a34a;--grn-dim:rgba(22,163,74,.08);
+    --violet:#7c3aed;--pink:#db2777;
+    --grid-line:rgba(255,255,255,.06);
+    --r-sm:10px;--r-md:14px;--r-full:9999px;
+    --sh-1:0 1px 4px rgba(0,0,0,.06);
+    --sh-2:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.05);
+    --sh-lime:0 2px 12px rgba(139,197,63,.35);
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Open Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ── TOP NAV ── */
+  .topbar{background:var(--ink);border-bottom:2px solid var(--lime);padding:14px 28px;display:flex;align-items:center;gap:12px}
+  .topbar .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .topbar .brand img{width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(139,197,63,.4)}
+  .topbar .sehr{font-weight:800;font-size:13px;letter-spacing:.18em;color:var(--lime)}
+  .topbar .dot{width:3px;height:3px;border-radius:50%;background:var(--lime);opacity:.6}
+  .topbar .acad{font-weight:800;font-size:13px;letter-spacing:.18em;color:rgba(255,255,255,.8)}
+  .topbar .sep{flex:1}
+  .topbar .pg{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+
+  /* ── LAYOUT ── */
+  .wrap{max-width:820px;margin:0 auto;padding:32px 20px 60px}
+  .section-title{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+  /* ── CARD ── */
+  .card{background:var(--white);border:1.5px solid var(--cream-3);border-radius:var(--r-md);box-shadow:var(--sh-1);padding:22px 24px;margin-bottom:18px}
+  .card-head{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-bottom:4px}
+  .card-sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+
+  /* ── STEPS ── */
+  .steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+  .step{display:flex;gap:12px;align-items:flex-start}
+  .step-n{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--lime-bg);color:var(--lime-3);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .step-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+  .step-d{font-size:12px;color:var(--muted);line-height:1.5}
+
+  /* ── PROMPT BOX ── */
+  .prompt-box{background:var(--cream);border:1.5px solid var(--cream-3);border-radius:var(--r-sm);padding:14px 16px;margin-top:4px}
+  .prompt-box-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .prompt-box pre{font-family:'SFMono-Regular',Consolas,Menlo,monospace;font-size:11.5px;line-height:1.7;color:var(--ink-3);white-space:pre-wrap;word-break:break-word}
+  .copy-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--r-sm);border:1.5px solid var(--cream-3);background:var(--white);font-family:inherit;font-size:10.5px;font-weight:800;color:var(--muted);cursor:pointer;transition:all .14s}
+  .copy-btn:hover{border-color:var(--lime);color:var(--lime-3);background:var(--lime-bg)}
+  .copy-btn svg{width:11px;height:11px}
+  .copy-btn.done{border-color:var(--lime);color:var(--lime-3);background:var(--lime-bg)}
+
+  /* ── TEXTAREA ── */
+  textarea#schedule-input{
+    width:100%;min-height:280px;padding:14px 16px;border:1.5px solid var(--cream-3);border-radius:var(--r-sm);
+    background:var(--white);font-family:'SFMono-Regular',Consolas,Menlo,monospace;font-size:12.5px;line-height:1.7;
+    color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;resize:vertical;
+  }
+  textarea#schedule-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.15)}
+  .ta-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .ghost-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--r-sm);border:1.5px solid var(--cream-3);background:var(--white);font-family:inherit;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;transition:all .14s}
+  .ghost-btn:hover{border-color:var(--lime);color:var(--lime-3);background:var(--lime-bg)}
+  .ghost-btn svg{width:13px;height:13px}
+
+  /* ── WARNING ── */
+  .warn-box{display:none;background:var(--amb-dim);border:1px solid rgba(217,119,6,.2);border-radius:var(--r-sm);padding:11px 14px;font-size:11.5px;color:var(--amb);margin-top:12px;line-height:1.6}
+
+  /* ── PUBLISH BUTTON ── */
+  .pub-row{display:flex;justify-content:center;margin:24px 0 0}
+  .pub-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 34px;background:var(--ink);color:#fff;border:none;border-radius:var(--r-sm);font-family:inherit;font-size:14px;font-weight:800;letter-spacing:.03em;cursor:pointer;box-shadow:var(--sh-2);transition:background .17s}
+  .pub-btn:hover{background:var(--ink-2)}
+  .pub-btn svg{width:17px;height:17px}
+
+  /* ── PREVIEW ── */
+  #preview-wrap{margin-top:36px;display:none}
+  .preview-actions{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+  .act-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-sm);font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;border:none;transition:all .14s}
+  .act-print{background:var(--ink);color:#fff}
+  .act-print:hover{background:var(--ink-2)}
+  .act-btn svg{width:13px;height:13px}
+  .pdf-hint{font-size:10.5px;color:var(--muted)}
+
+  /* ── SHEET ── */
+  .sheet{background:var(--white);border:1.5px solid var(--cream-3);border-radius:var(--r-sm);overflow:hidden;box-shadow:var(--sh-2)}
+  .head{position:relative;overflow:hidden;background:var(--ink);border-bottom:3px solid var(--lime);padding:26px 30px 24px}
+  .head::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:48px 48px}
+  .head::after{content:'';position:absolute;top:-140px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.16),transparent 65%)}
+  .head-in{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .s-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .s-brand img{width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(139,197,63,.35)}
+  .s-brand .sehr{font-weight:800;font-size:13px;letter-spacing:.18em;color:var(--lime)}
+  .s-brand .dot{width:3px;height:3px;border-radius:50%;background:var(--lime);opacity:.6}
+  .s-brand .acad{font-weight:800;font-size:13px;letter-spacing:.18em;color:rgba(255,255,255,.85)}
+  .kicker{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .kicker .rule{width:22px;height:2px;background:var(--lime)}
+  .kicker .txt{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+  .h1{font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-2px;color:#fff;line-height:1}
+  .h1 i{font-style:italic;font-weight:300;color:var(--lime)}
+  .head-meta{display:flex;flex-direction:column;gap:7px;align-items:flex-end;text-align:right}
+  .pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border:1px solid rgba(255,255,255,.12);border-radius:var(--r-full);background:rgba(255,255,255,.06);font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}
+  .pill .pdot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px rgba(139,197,63,.6)}
+
+  /* Timeline */
+  .tl-wrap{padding:26px 30px 28px}
+  .tl-row{display:grid;grid-template-columns:82px 20px 1fr;column-gap:2px}
+  .tl-time{padding-top:2px;text-align:right;padding-right:6px}
+  .tl-from{font-size:13px;font-weight:800;color:var(--ink)}
+  .tl-to{font-size:10.5px;font-weight:700;color:var(--pale)}
+  .tl-dur{font-size:9.5px;font-weight:700;color:var(--muted);margin-top:3px;letter-spacing:.03em}
+  .tl-rail{display:flex;flex-direction:column;align-items:center}
+  .tl-dot{width:11px;height:11px;border-radius:50%;margin-top:3px;flex-shrink:0;box-shadow:0 0 0 3px var(--white),0 0 0 4px var(--cream-3)}
+  .tl-line{flex:1;width:2px;background:var(--rule);margin-top:2px;min-height:16px}
+  .tl-row:last-child .tl-line{display:none}
+  .tl-card{background:var(--cream);border-radius:var(--r-sm);border-left:3px solid var(--accent);padding:12px 16px;margin-bottom:16px}
+  .tl-card-top{display:flex;align-items:center;gap:9px;margin-bottom:3px;flex-wrap:wrap}
+  .tl-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--accent-bg);flex-shrink:0}
+  .tl-subj{font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.3px}
+  .tl-cat{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-bg);padding:2px 7px;border-radius:5px;margin-left:auto}
+  .tl-notes{font-size:12px;color:var(--ink-3);line-height:1.55;padding-left:35px}
+
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 30px;background:var(--cream);border-top:1.5px solid var(--cream-3)}
+  .foot .note{font-size:11px;color:var(--muted)}
+
+  .empty-state{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
+
+  @media print{
+    .topbar,.wrap>:not(#preview-wrap),.preview-actions{display:none!important}
+    #preview-wrap{display:block!important;margin-top:0}
+    body{background:#fff}
+    .sheet{box-shadow:none;border:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a class="brand" href="index.html">
+    <img src="logo.png" alt="SEHR Academy">
+    <span class="sehr">SEHR</span><span class="dot"></span><span class="acad">ACADEMY</span>
+  </a>
+  <span class="sep"></span>
+  <span class="pg">Today's Session Plan</span>
+</div>
+
+<div class="wrap">
+
+  <!-- ── HOW IT WORKS ── -->
+  <div class="card">
+    <div class="card-head">Generate Today's Session Plan</div>
+    <div class="card-sub">Ask an AI assistant (ChatGPT, Claude, etc.) to write your session schedule in a fixed text format, paste the result below, and get a printable PDF timetable.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div>
+          <div class="step-t">Copy the prompt</div>
+          <div class="step-d">Copy the template prompt below and send it to your AI assistant, describing today's plan in your own words.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div>
+          <div class="step-t">Paste the AI's reply</div>
+          <div class="step-d">Paste the plain-text schedule it returns into the box further down — no editing needed.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div>
+          <div class="step-t">Generate & export</div>
+          <div class="step-d">Click Generate to preview the timetable, then Print / Save as PDF to export it.</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-box-hd">
+        <span>AI prompt template</span>
+        <button class="copy-btn" id="copy-prompt-btn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copy-prompt-label">Copy prompt</span>
+        </button>
+      </div>
+      <pre id="ai-prompt-text">Create today's class/study session plan for [describe: e.g. "Class 10 Kerala Syllabus student, revising for a Physics test"]. Reply using ONLY this exact plain-text format, with nothing before or after it:
+
+Date: &lt;e.g. 6 July 2026&gt;
+Student: &lt;name, omit this line if not applicable&gt;
+Class: &lt;e.g. Class 10 - Kerala State, omit if not applicable&gt;
+Title: &lt;short title, omit if not applicable&gt;
+
+&lt;start time&gt;-&lt;end time&gt; | &lt;Subject&gt; | &lt;topic / notes&gt;
+&lt;start time&gt;-&lt;end time&gt; | &lt;Subject&gt; | &lt;topic / notes&gt;
+...
+
+Use times like 09:00-10:00 (24-hour) or 9:00 AM-10:00 AM, one session per line, sorted in time order. Do not add any commentary.</pre>
+    </div>
+  </div>
+
+  <!-- ── PASTE SCHEDULE ── -->
+  <div class="card">
+    <div class="card-head">Paste Your Schedule</div>
+    <div class="card-sub">Paste the AI's reply here — or type it yourself using the same format.</div>
+    <textarea id="schedule-input" placeholder="Date: 6 July 2026
+Student: Aparna S
+Class: Class 10 - Kerala State
+Title: Physics Revision Day
+
+09:00-10:00 | Physics | Chapter 4 - Laws of Motion, numericals
+10:15-11:15 | Mathematics | Trigonometric identities practice
+11:30-12:15 | Chemistry | Periodic table trends
+14:00-15:00 | English | Grammar - tenses
+15:15-16:00 | Revision | Quick recap of physics numericals"></textarea>
+    <div class="ta-actions">
+      <button class="ghost-btn" onclick="loadExample()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Load example
+      </button>
+      <button class="ghost-btn" onclick="clearInput()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Clear
+      </button>
+    </div>
+    <div class="warn-box" id="warn-box"></div>
+  </div>
+
+  <div class="pub-row">
+    <button class="pub-btn" onclick="generate()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Generate Timetable
+    </button>
+  </div>
+
+  <!-- ── PREVIEW ── -->
+  <div id="preview-wrap">
+    <div class="section-title" style="margin-top:0">Preview</div>
+    <div class="preview-actions">
+      <span class="pdf-hint">In the print dialog, choose "Save as PDF" as the destination.</span>
+      <button class="act-btn act-print" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+    <div class="sheet" id="timetable-out"></div>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  SUBJECT STYLING
+// ─────────────────────────────────────────────
+var SUBJ_INFO = {
+  "Physics":         {cat:"Science",  emoji:"⚡", accent:"#2563eb", dim:"rgba(37,99,235,.09)"},
+  "Chemistry":       {cat:"Science",  emoji:"🧪", accent:"#7c3aed", dim:"rgba(124,58,237,.09)"},
+  "Biology":         {cat:"Science",  emoji:"🌿", accent:"#16a34a", dim:"rgba(22,163,74,.09)"},
+  "Mathematics":     {cat:"Core",     emoji:"📐", accent:"#72a530", dim:"#f0f7e3"},
+  "English":         {cat:"Language", emoji:"📚", accent:"#db2777", dim:"rgba(219,39,119,.08)"},
+  "Malayalam":       {cat:"Language", emoji:"🔤", accent:"#db2777", dim:"rgba(219,39,119,.08)"},
+  "Hindi":           {cat:"Language", emoji:"🔤", accent:"#d97706", dim:"rgba(217,119,6,.09)"},
+  "Social Science":  {cat:"Social",   emoji:"🌍", accent:"#d97706", dim:"rgba(217,119,6,.09)"},
+  "IT":              {cat:"Tech",     emoji:"💻", accent:"#2563eb", dim:"rgba(37,99,235,.09)"},
+  "Computer Science":{cat:"Tech",     emoji:"💻", accent:"#2563eb", dim:"rgba(37,99,235,.09)"},
+  "Accountancy":     {cat:"Commerce", emoji:"📒", accent:"#d97706", dim:"rgba(217,119,6,.09)"},
+  "Business Studies":{cat:"Commerce", emoji:"📊", accent:"#16a34a", dim:"rgba(22,163,74,.09)"},
+  "Economics":       {cat:"Commerce", emoji:"📈", accent:"#72a530", dim:"#f0f7e3"},
+  "Revision":        {cat:"Exam",     emoji:"📋", accent:"#dc2626", dim:"rgba(220,38,38,.08)"},
+  "Test":            {cat:"Exam",     emoji:"📋", accent:"#dc2626", dim:"rgba(220,38,38,.08)"},
+};
+function subjInfo(name){
+  if(SUBJ_INFO[name]) return SUBJ_INFO[name];
+  for(var k in SUBJ_INFO){if(name&&name.toLowerCase().indexOf(k.toLowerCase())>-1) return SUBJ_INFO[k];}
+  return {cat:"Subject",emoji:"📖",accent:"#72a530",dim:"#f0f7e3"};
+}
+
+// ─────────────────────────────────────────────
+//  UTILS
+// ─────────────────────────────────────────────
+function g(id){return document.getElementById(id);}
+function pad(n){return String(n).padStart(2,'0');}
+function escHTML(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+function parseTimeToken(tok){
+  tok = (tok||'').trim();
+  var m = tok.match(/^(\d{1,2})(?::([0-5]\d))?\s*([AaPp][Mm])?$/);
+  if(!m) return null;
+  var h = parseInt(m[1],10), min = m[2]?parseInt(m[2],10):0;
+  var ap = m[3] ? m[3].toLowerCase() : null;
+  if(ap){
+    if(h<1||h>12) return null;
+    if(ap==='am'){ if(h===12) h=0; }
+    else { if(h!==12) h+=12; }
+  }
+  if(h<0||h>23||min<0||min>59) return null;
+  return h*60+min;
+}
+function minsTo12(mins){
+  mins = ((mins%1440)+1440)%1440;
+  var h=Math.floor(mins/60), m=mins%60;
+  var ap = h<12?'AM':'PM';
+  var h12 = h%12===0?12:h%12;
+  return h12+':'+pad(m)+' '+ap;
+}
+function hrsFmt(mins){
+  if(mins<=0) return '';
+  var h=Math.floor(mins/60), m=mins%60;
+  return h?(h+'h'+(m?' '+m+'m':'')):(m+'m');
+}
+
+// ─────────────────────────────────────────────
+//  PARSE SCHEDULE TEXT
+// ─────────────────────────────────────────────
+function parseSchedule(text){
+  var meta = {title:'', date:'', student:'', class:''};
+  var sessions = [];
+  var warnings = [];
+
+  var lines = (text||'').split(/\r?\n/);
+  lines.forEach(function(raw){
+    var line = raw.trim();
+    if(!line) return;
+
+    var metaMatch = line.match(/^(date|student|class|title)\s*:\s*(.+)$/i);
+    if(metaMatch){
+      meta[metaMatch[1].toLowerCase()] = metaMatch[2].trim();
+      return;
+    }
+
+    if(line.indexOf('|') === -1){
+      warnings.push(line);
+      return;
+    }
+
+    var parts = line.split('|').map(function(p){return p.trim();});
+    var timePart = parts[0];
+    var timeMatch = timePart.match(/^(.+?)\s*[-–]\s*(.+)$/);
+    var fromMin = timeMatch ? parseTimeToken(timeMatch[1]) : null;
+    var toMin   = timeMatch ? parseTimeToken(timeMatch[2]) : null;
+    var subject = parts[1];
+
+    if(fromMin===null || toMin===null || !subject){
+      warnings.push(line);
+      return;
+    }
+
+    sessions.push({
+      fromMin: fromMin,
+      toMin: toMin,
+      subject: subject,
+      notes: parts.slice(2).join(' — ')
+    });
+  });
+
+  sessions.sort(function(a,b){return a.fromMin-b.fromMin;});
+  return {meta:meta, sessions:sessions, warnings:warnings};
+}
+
+// ─────────────────────────────────────────────
+//  EXAMPLE / CLEAR
+// ─────────────────────────────────────────────
+var EXAMPLE = 'Date: 6 July 2026\nStudent: Aparna S\nClass: Class 10 - Kerala State\nTitle: Physics Revision Day\n\n09:00-10:00 | Physics | Chapter 4 - Laws of Motion, numericals\n10:15-11:15 | Mathematics | Trigonometric identities practice\n11:30-12:15 | Chemistry | Periodic table trends\n14:00-15:00 | English | Grammar - tenses\n15:15-16:00 | Revision | Quick recap of physics numericals';
+
+function loadExample(){
+  g('schedule-input').value = EXAMPLE;
+}
+function clearInput(){
+  g('schedule-input').value = '';
+  g('warn-box').style.display = 'none';
+  g('preview-wrap').style.display = 'none';
+}
+
+// ─────────────────────────────────────────────
+//  COPY PROMPT
+// ─────────────────────────────────────────────
+function copyPrompt(){
+  var text = g('ai-prompt-text').textContent;
+  var done = function(){
+    var btn = g('copy-prompt-btn');
+    var label = g('copy-prompt-label');
+    btn.classList.add('done');
+    label.textContent = 'Copied!';
+    setTimeout(function(){btn.classList.remove('done');label.textContent='Copy prompt';},1800);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){fallbackCopy(text,done);});
+  } else {
+    fallbackCopy(text,done);
+  }
+}
+function fallbackCopy(text,cb){
+  var ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+  if(cb)cb();
+}
+
+// ─────────────────────────────────────────────
+//  GENERATE / RENDER
+// ─────────────────────────────────────────────
+function generate(){
+  var raw = g('schedule-input').value;
+  var data = parseSchedule(raw);
+
+  var warnBox = g('warn-box');
+  if(data.warnings.length){
+    warnBox.style.display='block';
+    warnBox.innerHTML = '⚠ '+data.warnings.length+' line(s) could not be read and were skipped:<br>'+
+      data.warnings.map(function(w){return '&middot; '+escHTML(w);}).join('<br>');
+  } else {
+    warnBox.style.display='none';
+  }
+
+  if(!data.sessions.length){
+    alert('No valid sessions found. Make sure each session line looks like:\n09:00-10:00 | Subject | Notes');
+    return;
+  }
+
+  renderSheet(data);
+  g('preview-wrap').style.display='block';
+  g('preview-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderSheet(data){
+  var meta = data.meta;
+  var sessions = data.sessions;
+
+  var totalMins = sessions.reduce(function(a,s){return a + Math.max(0, s.toMin - s.fromMin);},0);
+
+  var rowsHTML = sessions.map(function(s){
+    var info = subjInfo(s.subject);
+    var dur = s.toMin - s.fromMin;
+    return '<div class="tl-row">'+
+      '<div class="tl-time">'+
+        '<div class="tl-from">'+minsTo12(s.fromMin)+'</div>'+
+        '<div class="tl-to">'+minsTo12(s.toMin)+'</div>'+
+        (dur>0?'<div class="tl-dur">'+hrsFmt(dur)+'</div>':'')+
+      '</div>'+
+      '<div class="tl-rail"><div class="tl-dot" style="background:'+info.accent+'"></div><div class="tl-line"></div></div>'+
+      '<div class="tl-card" style="--accent:'+info.accent+';--accent-bg:'+info.dim+'">'+
+        '<div class="tl-card-top">'+
+          '<div class="tl-icon">'+info.emoji+'</div>'+
+          '<div class="tl-subj">'+escHTML(s.subject)+'</div>'+
+          '<div class="tl-cat">'+info.cat+'</div>'+
+        '</div>'+
+        (s.notes?'<div class="tl-notes">'+escHTML(s.notes)+'</div>':'')+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  var kickerParts=[];
+  if(meta.class) kickerParts.push(meta.class);
+  if(meta.student) kickerParts.push(meta.student);
+  var kickerHTML = kickerParts.length ? '<div class="kicker"><span class="rule"></span><span class="txt">'+escHTML(kickerParts.join(' · '))+'</span></div>' : '';
+
+  var title = meta.title || "Today's session plan";
+
+  var metaPills = '<div class="pill"><span class="pdot"></span>'+(meta.date?escHTML(meta.date):'Today')+'</div>'+
+    '<div class="pill">'+sessions.length+' session'+(sessions.length===1?'':'s')+(totalMins?' · '+hrsFmt(totalMins):'')+'</div>';
+
+  g('timetable-out').innerHTML =
+    '<div class="head">'+
+      '<div class="head-in">'+
+        '<div>'+
+          '<div class="s-brand">'+
+            '<img src="logo.png" alt="SEHR Academy">'+
+            '<span class="sehr">SEHR</span><span class="dot"></span><span class="acad">ACADEMY</span>'+
+          '</div>'+
+          kickerHTML+
+          '<h1 class="h1">'+escHTML(title.split(' ')[0])+' <i>'+escHTML(title.split(' ').slice(1).join(' '))+'</i></h1>'+
+        '</div>'+
+        '<div class="head-meta">'+metaPills+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="tl-wrap">'+rowsHTML+'</div>'+
+    '<div class="foot">'+
+      '<div class="note">Generated with SEHR Academy\'s Today\'s Session Plan tool</div>'+
+    '</div>';
+}
+</script>
+</body>
+</html>
