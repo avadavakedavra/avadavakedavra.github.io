@@ -31,6 +31,10 @@
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  /* Force background colors to survive "Save as PDF" even with the browser's
+     Background Graphics option off (its default) — needed for the dark
+     masthead in the exported sheet below. */
+  html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
   body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height:100vh;position:relative;isolation:isolate}
   body::before{
     content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.045;mix-blend-mode:multiply;
@@ -142,40 +146,44 @@
   .pdf-hint{font-size:10.5px;color:var(--muted)}
 
   /* ── SHEET (exported/printed document) ──
-     Deliberately light + border-based rather than filled-background:
-     Chrome's "Save as PDF" ships with Background Graphics OFF by default,
-     which silently strips background-color/-image. A dark filled header
-     would print as a blank white box with invisible white text. Borders,
-     text color and box-shadow are unaffected, so the whole document is
-     built on those instead — it looks identical on screen and on paper. */
+     The dark masthead below uses print-color-adjust:exact (set globally
+     on html, near the top of this file) to force Chrome/Safari to keep
+     background colors when printing/saving as PDF — without it, Chrome's
+     "Save as PDF" ships with Background Graphics OFF by default and would
+     silently strip the dark fill, leaving invisible white-on-white text. */
   .sheet{background:var(--white);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-3);border:1px solid var(--cream-3)}
-  .sheet-topbar{height:6px;background:linear-gradient(90deg,var(--lime-3),var(--lime) 45%,var(--lime-mid));border-bottom:1px solid var(--lime-3)}
 
-  .mh{position:relative;overflow:hidden;padding:34px 36px 28px;border-bottom:1.5px solid var(--rule)}
-  .mh-wm{position:absolute;z-index:0;right:8px;top:-26px;font-family:var(--sans);font-weight:800;font-size:160px;line-height:1;color:rgba(26,26,24,.032);pointer-events:none;user-select:none}
+  .mh{position:relative;overflow:hidden;padding:36px 36px 30px;background:var(--ink);border-bottom:3px solid var(--lime)}
+  .mh::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.045)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045)1px,transparent 1px);
+    background-size:36px 36px;pointer-events:none;
+  }
+  .mh::after{content:'';position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.18),transparent 65%);pointer-events:none}
+  .mh-wm{position:absolute;z-index:0;right:6px;bottom:-42px;font-family:var(--sans);font-weight:800;font-size:150px;letter-spacing:-6px;line-height:1;color:rgba(255,255,255,.045);pointer-events:none;user-select:none}
   .mh-brand-row{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
   .mh-brand{display:flex;align-items:center;gap:10px}
-  .mh-brand img{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--lime-mid)}
-  .mh-brand .sehr{font-weight:800;font-size:13px;letter-spacing:.17em;color:var(--ink)}
-  .mh-brand .dot{width:3px;height:3px;border-radius:50%;background:var(--lime-3)}
-  .mh-brand .acad{font-weight:600;font-size:13px;letter-spacing:.17em;color:var(--muted)}
-  .mh-doc-id{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);border:1.3px solid var(--cream-3);padding:6px 13px;border-radius:var(--r-full)}
-  .mh-doc-id .pdot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px rgba(139,197,63,.5)}
+  .mh-brand img{width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(139,197,63,.4)}
+  .mh-brand .sehr{font-weight:800;font-size:13px;letter-spacing:.17em;color:var(--lime)}
+  .mh-brand .dot{width:3px;height:3px;border-radius:50%;background:var(--lime);opacity:.7}
+  .mh-brand .acad{font-weight:800;font-size:13px;letter-spacing:.17em;color:rgba(255,255,255,.85)}
+  .mh-doc-id{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);border:1.3px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);padding:6px 13px;border-radius:var(--r-full)}
+  .mh-doc-id .pdot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px rgba(139,197,63,.6)}
 
   .mh-main{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:26px;flex-wrap:wrap}
   .mh-kicker{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
   .mh-kicker .rule{width:20px;height:3px;border-radius:2px;background:var(--lime)}
-  .mh-kicker .txt{font-size:10.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--lime-3)}
-  .mh-title{font-family:var(--sans);font-weight:800;font-size:clamp(28px,4.4vw,42px);letter-spacing:-1.2px;color:var(--ink);line-height:1.03;margin-bottom:15px}
-  .mh-title .accent{color:var(--lime-3)}
+  .mh-kicker .txt{font-size:10.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--lime)}
+  .mh-title{font-family:var(--sans);font-weight:800;font-size:clamp(28px,4.4vw,42px);letter-spacing:-1.2px;color:#fff;line-height:1.03;margin-bottom:15px}
+  .mh-title .accent{color:var(--lime)}
   .mh-chips{display:flex;flex-wrap:wrap;gap:7px}
-  .mh-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r-full);border:1.3px solid var(--cream-3);font-size:11px;font-weight:700;color:var(--ink-3)}
+  .mh-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r-full);border:1.3px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);font-size:11px;font-weight:700;color:rgba(255,255,255,.75)}
   .mh-chip .cdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
   .mh-stats{display:flex;gap:10px;flex-shrink:0}
-  .stat-tile{min-width:80px;text-align:center;padding:11px 14px;border:1.3px solid var(--cream-3);border-radius:var(--r-sm);background:var(--cream)}
-  .stat-num{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1}
-  .stat-lbl{font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+  .stat-tile{min-width:80px;text-align:center;padding:11px 14px;border:1.3px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);border-radius:var(--r-sm)}
+  .stat-num{font-size:19px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1}
+  .stat-lbl{font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:5px}
 
   /* Plan rows */
   .plan{padding:6px 36px 4px}
@@ -591,7 +599,6 @@ function renderSheet(data){
     : escHTML(title);
 
   g('timetable-out').innerHTML =
-    '<div class="sheet-topbar"></div>'+
     '<div class="mh">'+
       '<div class="mh-wm">'+escHTML(title.trim().charAt(0).toUpperCase()||'S')+'</div>'+
       '<div class="mh-brand-row">'+
