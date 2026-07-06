@@ -112,6 +112,9 @@
   .head-meta{display:flex;flex-direction:column;gap:7px;align-items:flex-end;text-align:right}
   .pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border:1px solid rgba(255,255,255,.12);border-radius:var(--r-full);background:rgba(255,255,255,.06);font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}
   .pill .pdot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px rgba(139,197,63,.6)}
+  .subj-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .subj-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:var(--r-full);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:11px;font-weight:700;color:rgba(255,255,255,.75)}
+  .subj-chip .cdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
   /* Timeline */
   .tl-wrap{padding:26px 30px 28px}
@@ -460,12 +463,24 @@ function renderSheet(data){
     '</div>';
   }).join('');
 
-  var kickerParts=[];
-  if(meta.class) kickerParts.push(meta.class);
-  if(meta.student) kickerParts.push(meta.student);
+  // Title = individual student name, else class name, else custom title/fallback.
+  var title, usedField;
+  if(meta.student){ title = meta.student; usedField = 'student'; }
+  else if(meta.class){ title = meta.class; usedField = 'class'; }
+  else { title = meta.title || "Today's Session Plan"; usedField = 'title'; }
+
+  var kickerParts = [];
+  if(usedField!=='class' && meta.class) kickerParts.push(meta.class);
+  if(usedField!=='title' && meta.title) kickerParts.push(meta.title);
   var kickerHTML = kickerParts.length ? '<div class="kicker"><span class="rule"></span><span class="txt">'+escHTML(kickerParts.join(' · '))+'</span></div>' : '';
 
-  var title = meta.title || "Today's session plan";
+  // Unique subjects covered today, shown inside the title block.
+  var seen = {}, uniqueSubjects = [];
+  sessions.forEach(function(s){ if(!seen[s.subject]){ seen[s.subject]=1; uniqueSubjects.push(s.subject); } });
+  var chipsHTML = '<div class="subj-chips">'+uniqueSubjects.map(function(su){
+    var info = subjInfo(su);
+    return '<span class="subj-chip"><span class="cdot" style="background:'+info.accent+'"></span>'+escHTML(su)+'</span>';
+  }).join('')+'</div>';
 
   var metaPills = '<div class="pill"><span class="pdot"></span>'+(meta.date?escHTML(meta.date):'Today')+'</div>'+
     '<div class="pill">'+sessions.length+' session'+(sessions.length===1?'':'s')+(totalMins?' · '+hrsFmt(totalMins):'')+'</div>';
@@ -480,6 +495,7 @@ function renderSheet(data){
           '</div>'+
           kickerHTML+
           '<h1 class="h1">'+escHTML(title.split(' ')[0])+' <i>'+escHTML(title.split(' ').slice(1).join(' '))+'</i></h1>'+
+          chipsHTML+
         '</div>'+
         '<div class="head-meta">'+metaPills+'</div>'+
       '</div>'+
