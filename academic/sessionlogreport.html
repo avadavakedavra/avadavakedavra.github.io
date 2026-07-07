@@ -1585,6 +1585,27 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .ar-dd-day.empty{color:transparent;cursor:default;pointer-events:none}
 .ar-dd-day.today{box-shadow:0 0 0 1.5px var(--li) inset}
 
+/* Dims the KPI strip / class blocks behind the open calendar so the
+   floating dropdown reads clearly as an overlay instead of appearing
+   to hide the stats underneath it. */
+.ar-cal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(1.5px);z-index:150}
+.ar-cal-backdrop.on{display:block}
+
+.ar-view-tabs{display:flex;gap:8px;margin-bottom:14px}
+.ar-view-tab{padding:8px 18px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--text3);transition:all .15s}
+.ar-view-tab:hover{border-color:var(--li);color:var(--li3)}
+.ar-view-tab.on{background:var(--li);border-color:var(--li);color:#1a1a18}
+
+.ar-month-sel{padding:7px 13px;border:1.5px solid var(--border);border-radius:7px;background:var(--bg);font-family:var(--f);font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer;min-width:190px;outline:none}
+.ar-month-sel:hover{border-color:var(--li)}
+
+.ar-hist-table{width:100%;border-collapse:collapse}
+.ar-hist-table th{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:8px 10px;background:var(--bg3);border-bottom:1px solid var(--border);text-align:left}
+.ar-hist-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);vertical-align:middle}
+.ar-hist-table tr:last-child td{border-bottom:none}
+.ar-hist-table tr.low td{background:var(--red-dim)}
+.ar-hist-table tr.low td:first-child{color:var(--red)}
+
 .ar-kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 @media(max-width:900px){.ar-kpi-strip{grid-template-columns:repeat(2,1fr)}}
 
@@ -5477,6 +5498,13 @@ var AR_CAL_YEAR, AR_CAL_MONTH;
 var AR_AVAIL_DATES = [];
 var AR_ALL_CLASSES = [];
 
+/* history sub-tab state */
+var AR_VIEW         = 'daily';
+var AR_HIST_CLS     = 'ALL';
+var AR_HIST_BOARD   = 'ALL';
+var AR_HIST_MONTH   = 'ALL';  // 'ALL' = entire history, else 'YYYY-MM'
+var AR_AVAIL_MONTHS = [];
+
 var AR_ICONS = {
   print:'<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
   copy:'<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
@@ -5499,33 +5527,58 @@ function arMount(){
         '<button class="ar-btn" id="arCopyAllBtn" onclick="arCopyAttSummary(this)">'+AR_ICONS.copy+'<span class="ar-btn-lbl">Copy Summary</span></button>'+
       '</div>'+
     '</div>'+
-    '<div class="ar-controls">'+
-      '<div class="ar-date-wrap" id="arDateWrap">'+
-        '<div class="ar-date-display" id="arDateDisplay" onclick="arToggleCalendar()">'+
-          AR_ICONS.calendar+'<span id="arDateDisplayTxt">Select date</span><span class="ar-date-arrow">▾</span>'+
-        '</div>'+
-        '<div class="ar-date-dropdown" id="arDateDropdown">'+
-          '<div class="ar-dd-head"><button class="ar-dd-nav" onclick="arCalPrev()">‹</button><span id="arCalLabel"></span><button class="ar-dd-nav" onclick="arCalNext()">›</button></div>'+
-          '<div class="ar-dd-cal" id="arCalGrid"></div>'+
-        '</div>'+
-      '</div>'+
-      '<div class="ar-ctrl-sep"></div>'+
-      '<div class="ar-tabs" id="arClsTabs"></div>'+
-      '<div class="ar-ctrl-sep"></div>'+
-      '<div class="ar-tabs">'+
-        '<button class="ar-tab on" id="arBtAll" onclick="arSetBoard(\'ALL\')">All Boards</button>'+
-        '<button class="ar-tab" id="arBtState" onclick="arSetBoard(\'STATE\')">Kerala State</button>'+
-        '<button class="ar-tab" id="arBtCbse" onclick="arSetBoard(\'CBSE\')">CBSE</button>'+
-      '</div>'+
+    '<div class="ar-view-tabs">'+
+      '<button class="ar-view-tab on" id="arVtDaily" onclick="arSetView(\'daily\')">Daily Attendance</button>'+
+      '<button class="ar-view-tab" id="arVtHistory" onclick="arSetView(\'history\')">Attendance History</button>'+
     '</div>'+
-    '<div class="ar-kpi-strip" id="arKpiStrip"></div>'+
-    '<div id="arClassBlocks"></div>';
+    '<div id="arDailyView">'+
+      '<div class="ar-controls">'+
+        '<div class="ar-date-wrap" id="arDateWrap">'+
+          '<div class="ar-date-display" id="arDateDisplay" onclick="arToggleCalendar()">'+
+            AR_ICONS.calendar+'<span id="arDateDisplayTxt">Select date</span><span class="ar-date-arrow">▾</span>'+
+          '</div>'+
+          '<div class="ar-date-dropdown" id="arDateDropdown">'+
+            '<div class="ar-dd-head"><button class="ar-dd-nav" onclick="arCalPrev()">‹</button><span id="arCalLabel"></span><button class="ar-dd-nav" onclick="arCalNext()">›</button></div>'+
+            '<div class="ar-dd-cal" id="arCalGrid"></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="ar-ctrl-sep"></div>'+
+        '<div class="ar-tabs" id="arClsTabs"></div>'+
+        '<div class="ar-ctrl-sep"></div>'+
+        '<div class="ar-tabs">'+
+          '<button class="ar-tab on" id="arBtAll" onclick="arSetBoard(\'ALL\')">All Boards</button>'+
+          '<button class="ar-tab" id="arBtState" onclick="arSetBoard(\'STATE\')">Kerala State</button>'+
+          '<button class="ar-tab" id="arBtCbse" onclick="arSetBoard(\'CBSE\')">CBSE</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ar-kpi-strip" id="arKpiStrip"></div>'+
+      '<div id="arClassBlocks"></div>'+
+    '</div>'+
+    '<div id="arHistoryView" style="display:none">'+
+      '<div class="ar-controls">'+
+        '<span class="fbar-label">Month</span>'+
+        '<select class="ar-month-sel" id="arHistMonthSel" onchange="arOnHistMonthChange()"><option value="ALL">All Time (Entire History)</option></select>'+
+        '<div class="ar-ctrl-sep"></div>'+
+        '<div class="ar-tabs" id="arHistClsTabs"></div>'+
+        '<div class="ar-ctrl-sep"></div>'+
+        '<div class="ar-tabs">'+
+          '<button class="ar-tab on" id="arHbtAll" onclick="arSetHistBoard(\'ALL\')">All Boards</button>'+
+          '<button class="ar-tab" id="arHbtState" onclick="arSetHistBoard(\'STATE\')">Kerala State</button>'+
+          '<button class="ar-tab" id="arHbtCbse" onclick="arSetHistBoard(\'CBSE\')">CBSE</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ar-kpi-strip" id="arHistKpiStrip"></div>'+
+      '<div id="arHistBlocks"></div>'+
+    '</div>';
+
+  if(!g('arCalBackdrop')){
+    document.body.insertAdjacentHTML('beforeend','<div class="ar-cal-backdrop" id="arCalBackdrop" onclick="arCloseCalendar()"></div>');
+  }
 
   document.addEventListener('click', function(e){
     var wrap=g('arDateWrap');
-    if(wrap && AR_INITED && !wrap.contains(e.target)){
-      g('arDateDropdown').classList.remove('open');
-      g('arDateDisplay').classList.remove('open');
+    if(wrap && AR_INITED && !wrap.contains(e.target) && e.target!==g('arCalBackdrop')){
+      arCloseCalendar();
     }
   });
 }
@@ -5552,9 +5605,22 @@ function renderAttendanceReport(){
   }
 
   arBuildClsTabs();
+  arBuildHistClsTabs();
+  arBuildMonthOptions();
   arUpdateDateDisplay();
   arRenderCalendar();
   arRenderBody();
+  if(AR_VIEW==='history') arRenderHistory();
+}
+
+/* ── VIEW SWITCH (Daily / History) ── */
+function arSetView(view){
+  AR_VIEW=view;
+  g('arVtDaily').classList.toggle('on', view==='daily');
+  g('arVtHistory').classList.toggle('on', view==='history');
+  g('arDailyView').style.display   = view==='daily'   ? '' : 'none';
+  g('arHistoryView').style.display = view==='history' ? '' : 'none';
+  if(view==='history') arRenderHistory();
 }
 
 function arBuildClsTabs(){
@@ -5579,10 +5645,17 @@ function arSetBoard(board){
 }
 
 function arToggleCalendar(){
-  var dd=g('arDateDropdown'), disp=g('arDateDisplay');
+  var dd=g('arDateDropdown'), disp=g('arDateDisplay'), bd=g('arCalBackdrop');
   var open=dd.classList.toggle('open');
   disp.classList.toggle('open',open);
+  if(bd) bd.classList.toggle('on',open);
   if(open) arRenderCalendar();
+}
+function arCloseCalendar(){
+  var dd=g('arDateDropdown'), disp=g('arDateDisplay'), bd=g('arCalBackdrop');
+  if(dd) dd.classList.remove('open');
+  if(disp) disp.classList.remove('open');
+  if(bd) bd.classList.remove('on');
 }
 function arCalPrev(){AR_CAL_MONTH--;if(AR_CAL_MONTH<0){AR_CAL_MONTH=11;AR_CAL_YEAR--;}arRenderCalendar();}
 function arCalNext(){AR_CAL_MONTH++;if(AR_CAL_MONTH>11){AR_CAL_MONTH=0;AR_CAL_YEAR++;}arRenderCalendar();}
@@ -5618,8 +5691,7 @@ function arSelectDate(d){
   AR_CUR_DATE=d;
   arUpdateDateDisplay();
   arRenderCalendar();
-  g('arDateDropdown').classList.remove('open');
-  g('arDateDisplay').classList.remove('open');
+  arCloseCalendar();
   arRenderBody();
 }
 function arUpdateDateDisplay(){
@@ -5751,6 +5823,7 @@ function arBuildPrintDoc(rows, classes, singleCls){
   g('printDoc').innerHTML=html;
 }
 function arDoPrintAll(){
+  if(AR_VIEW==='history'){ arDoPrintHistoryAll(); return; }
   var rows=ATTENDANCE.filter(function(r){
     if(attDateToYMD(r.date)!==AR_CUR_DATE)return false;
     if(AR_CUR_BOARD!=='ALL'&&r.syllabus!==AR_CUR_BOARD)return false;
@@ -5829,6 +5902,7 @@ function arBuildAttSummaryText(){
   return lines.join('\n');
 }
 function arCopyAttSummary(btn){
+  if(AR_VIEW==='history'){ arCopyLowAttendanceAll(btn); return; }
   if(!AR_CUR_DATE){alert('Select a date first');return;}
   var text=arBuildAttSummaryText();
   if(!text){alert('No data for this date');return;}
@@ -5852,6 +5926,226 @@ function arCopyFallback(text,cb){
   try{document.execCommand('copy');}catch(e){}
   document.body.removeChild(ta);
   if(cb)cb();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ATTENDANCE HISTORY (sub-tab of the Attendance Report tab)
+   Cumulative attendance percentage per student, filterable by class
+   and by month (or entire history), with its own PDF export and a
+   copy-to-clipboard message listing students under 50% attendance.
+   ══════════════════════════════════════════════════════════════════ */
+function arMonthLabel(m){
+  var p=m.split('-');
+  return MONTHS[+p[1]-1]+' '+p[0];
+}
+
+function arBuildMonthOptions(){
+  var set={};
+  ATTENDANCE.forEach(function(r){ var d=attDateToYMD(r.date); if(d) set[d.slice(0,7)]=true; });
+  AR_AVAIL_MONTHS=Object.keys(set).sort().reverse();
+  var sel=g('arHistMonthSel');
+  var opts='<option value="ALL">All Time (Entire History)</option>';
+  AR_AVAIL_MONTHS.forEach(function(m){ opts+='<option value="'+m+'">'+arMonthLabel(m)+'</option>'; });
+  sel.innerHTML=opts;
+  var curYM=NOW.getFullYear()+'-'+pad(NOW.getMonth()+1);
+  AR_HIST_MONTH = AR_AVAIL_MONTHS.indexOf(curYM)>-1 ? curYM : 'ALL';
+  sel.value=AR_HIST_MONTH;
+}
+function arOnHistMonthChange(){
+  AR_HIST_MONTH=g('arHistMonthSel').value;
+  arRenderHistory();
+}
+
+function arBuildHistClsTabs(){
+  var html='<button class="ar-tab'+(AR_HIST_CLS==='ALL'?' on':'')+'" onclick="arSetHistCls(\'ALL\',this)">All Classes</button>';
+  AR_ALL_CLASSES.forEach(function(c){
+    html+='<button class="ar-tab'+(c===AR_HIST_CLS?' on':'')+'" onclick="arSetHistCls(\''+c+'\',this)">Class '+esc(c)+'</button>';
+  });
+  g('arHistClsTabs').innerHTML=html;
+}
+function arSetHistCls(cls,btn){
+  AR_HIST_CLS=cls;
+  document.querySelectorAll('#arHistClsTabs .ar-tab').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  arRenderHistory();
+}
+function arSetHistBoard(board){
+  AR_HIST_BOARD=board;
+  g('arHbtAll').classList.toggle('on',board==='ALL');
+  g('arHbtState').classList.toggle('on',board==='STATE');
+  g('arHbtCbse').classList.toggle('on',board==='CBSE');
+  arRenderHistory();
+}
+
+function arComputeHistoryStats(cls,board,month){
+  var recs=ATTENDANCE.filter(function(r){
+    if(cls!=='ALL' && r.class!==cls) return false;
+    if(board!=='ALL' && r.syllabus!==board) return false;
+    if(month!=='ALL'){
+      var d=attDateToYMD(r.date);
+      if(!d || d.slice(0,7)!==month) return false;
+    }
+    return true;
+  });
+  var map={};
+  recs.forEach(function(r){
+    if(!map[r.student_id]) map[r.student_id]={id:r.student_id,name:resolveName(r),cls:r.class,syllabus:r.syllabus,sessions:0,present:0};
+    map[r.student_id].sessions++;
+    if(r.status==='Present') map[r.student_id].present++;
+  });
+  return Object.keys(map).map(function(k){
+    var a=map[k];
+    a.pct=a.sessions?Math.round(a.present/a.sessions*100):0;
+    return a;
+  });
+}
+
+function arRenderHistory(){
+  var stats=arComputeHistoryStats(AR_HIST_CLS,AR_HIST_BOARD,AR_HIST_MONTH);
+  var monthLbl=AR_HIST_MONTH==='ALL'?'All Time (Entire History)':arMonthLabel(AR_HIST_MONTH);
+
+  if(!stats.length){
+    g('arHistKpiStrip').innerHTML='';
+    g('arHistBlocks').innerHTML=emptyState('📈','No attendance data','No records found for this selection.','');
+    return;
+  }
+
+  var avgPct=Math.round(stats.reduce(function(s,a){return s+a.pct;},0)/stats.length);
+  var below50=stats.filter(function(a){return a.pct<50;}).length;
+
+  g('arHistKpiStrip').innerHTML=
+    kpiCard(AR_ICONS.people,stats.length,'Students','var(--li)','var(--li-dim)','')+
+    kpiCard(AR_ICONS.percent,avgPct+'%','Avg. Attendance','var(--blue)','var(--blue-dim)','')+
+    kpiCard(AR_ICONS.cross,below50,'Below 50%','var(--red)','var(--red-dim)','')+
+    kpiCard(AR_ICONS.calendar,monthLbl,'Period','var(--li)','var(--li-dim)','');
+
+  var classes = AR_HIST_CLS==='ALL'
+    ? AR_ALL_CLASSES.filter(function(c){return stats.some(function(a){return a.cls===c;});})
+    : [AR_HIST_CLS];
+
+  var html='';
+  classes.forEach(function(cls){
+    var cstats=stats.filter(function(a){return a.cls===cls;});
+    if(!cstats.length) return;
+    var cAvg=Math.round(cstats.reduce(function(s,a){return s+a.pct;},0)/cstats.length);
+    var cLow=cstats.filter(function(a){return a.pct<50;}).length;
+    var syls=Array.from(new Set(cstats.map(function(a){return a.syllabus;}))).sort(function(a,b){
+      if(a==='STATE')return -1;if(b==='STATE')return 1;return (a||'').localeCompare(b||'');
+    });
+
+    html+='<div class="att-block">';
+    html+='<div class="att-hd">';
+    html+='<div class="att-title">Class '+esc(cls)+' <span style="font-weight:400;color:var(--text3);font-size:11px">· '+monthLbl+' · '+cstats.length+' student'+(cstats.length>1?'s':'')+'</span></div>';
+    html+='<span class="badge badge-b">'+cAvg+'% avg</span>';
+    if(cLow) html+='<span class="badge badge-r">'+cLow+' below 50%</span>';
+    html+='<button class="ar-icon-btn" onclick="arDoPrintHistoryClass(\''+cls+'\')" title="Print Class '+esc(cls)+'">'+AR_ICONS.print+'PDF</button>';
+    html+='<button class="ar-icon-btn" onclick="arCopyLowAttendance(\''+cls+'\',this)" title="Copy low-attendance list">'+AR_ICONS.copy+'<span class="ar-btn-lbl">Copy &lt;50%</span></button>';
+    html+='</div>';
+
+    html+='<div class="ar-cls-body">';
+    syls.forEach(function(syl){
+      var srows=cstats.filter(function(a){return a.syllabus===syl;}).sort(function(a,b){return a.name.localeCompare(b.name);});
+      html+='<div class="ar-board-section">';
+      html+='<div class="ar-board-tag '+(syl==='STATE'?'st':'cb')+'"><span class="ar-board-dot"></span>'+esc(sylLabel(syl))+'</div>';
+      html+='<table class="ar-hist-table"><thead><tr><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      srows.forEach(function(a){
+        html+='<tr'+(a.pct<50?' class="low"':'')+'>'
+          +'<td style="font-weight:600">'+esc(a.name)+'</td>'
+          +'<td>'+a.sessions+'</td>'
+          +'<td>'+a.present+'</td>'
+          +'<td><span class="pct-pill-sm" style="background:'+pctBg(a.pct)+';color:'+pctColor(a.pct)+'">'+a.pct+'%</span></td>'
+          +'</tr>';
+      });
+      html+='</tbody></table></div>';
+    });
+    html+='</div></div>';
+  });
+
+  g('arHistBlocks').innerHTML=html;
+}
+
+/* ── HISTORY: PRINT (PDF) ── */
+function arBuildHistoryPrintDoc(stats, classes, singleCls){
+  var monthLbl=AR_HIST_MONTH==='ALL'?'All Time (Entire History)':arMonthLabel(AR_HIST_MONTH);
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var avgPct=stats.length?Math.round(stats.reduce(function(s,a){return s+a.pct;},0)/stats.length):0;
+  var below50=stats.filter(function(a){return a.pct<50;}).length;
+  var html='<div class="ar-pr-doc">';
+  html+='<div class="ar-pr-lh"><div><div class="ar-pr-brand">SEHR <span>ACADEMY</span></div><div class="ar-pr-brand-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'+
+    '<div><div class="ar-pr-r-title">Attendance History Report</div><div class="ar-pr-r-sub">'+(singleCls?'Class '+esc(singleCls)+' · ':'')+monthLbl+'</div><div class="ar-pr-r-sub">Generated: '+issued+'</div></div></div>';
+  html+='<div class="ar-pr-stripe"></div>';
+  html+='<div class="ar-pr-summary">'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv">'+stats.length+'</div><div class="ar-pr-sl">Students</div></div>'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv g">'+avgPct+'%</div><div class="ar-pr-sl">Avg Attendance</div></div>'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv r">'+below50+'</div><div class="ar-pr-sl">Below 50%</div></div>'+
+  '</div>';
+
+  var clsToShow=singleCls?[singleCls]:classes;
+  clsToShow.forEach(function(cls){
+    var cstats=stats.filter(function(a){return a.cls===cls;});
+    if(!cstats.length)return;
+    var syls=Array.from(new Set(cstats.map(function(a){return a.syllabus;}))).sort(function(a,b){if(a==='STATE')return -1;if(b==='STATE')return 1;return (a||'').localeCompare(b||'');});
+    syls.forEach(function(syl){
+      var srows=cstats.filter(function(a){return a.syllabus===syl;}).sort(function(a,b){return a.name.localeCompare(b.name);});
+      html+='<div class="ar-pr-cls-head"><div class="ar-pr-cls-num">'+esc(cls)+'</div><div><div class="ar-pr-cls-name">Class '+esc(cls)+' · '+esc(sylLabel(syl))+'</div><div class="ar-pr-cls-meta">'+srows.length+' students · '+monthLbl+'</div></div></div>';
+      html+='<table class="ar-pr-table"><thead><tr><th>#</th><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      srows.forEach(function(a,i){
+        html+='<tr'+(a.pct<50?' style="background:rgba(220,38,38,.07)"':'')+'>'+
+          '<td class="n">'+(i+1)+'</td>'+
+          '<td class="nm">'+esc(a.name)+'</td>'+
+          '<td>'+a.sessions+'</td>'+
+          '<td>'+a.present+'</td>'+
+          '<td><span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pctBg(a.pct)+';color:'+pctColor(a.pct)+'">'+a.pct+'%</span></td>'+
+        '</tr>';
+      });
+      html+='</tbody></table>';
+    });
+  });
+  html+='<div class="ar-pr-footer"><div>SEHR Academy · Attendance History Report · '+monthLbl+'</div><div>sehracademy.com</div></div>';
+  html+='</div>';
+  g('printDoc').innerHTML=html;
+}
+function arDoPrintHistoryAll(){
+  var stats=arComputeHistoryStats(AR_HIST_CLS,AR_HIST_BOARD,AR_HIST_MONTH);
+  var classes=AR_HIST_CLS==='ALL'?AR_ALL_CLASSES.filter(function(c){return stats.some(function(a){return a.cls===c;});}):[AR_HIST_CLS];
+  arBuildHistoryPrintDoc(stats,classes,null);
+  setTimeout(function(){window.print();},80);
+}
+function arDoPrintHistoryClass(cls){
+  var stats=arComputeHistoryStats(cls,AR_HIST_BOARD,AR_HIST_MONTH);
+  arBuildHistoryPrintDoc(stats,[cls],cls);
+  setTimeout(function(){window.print();},80);
+}
+
+/* ── HISTORY: COPY LOW-ATTENDANCE MESSAGE ── */
+function arBuildLowAttendanceText(stats, scopeLabel){
+  var monthLbl=AR_HIST_MONTH==='ALL'?'All Time (Entire History)':arMonthLabel(AR_HIST_MONTH);
+  var low=stats.filter(function(a){return a.pct<50;}).sort(function(a,b){return a.pct-b.pct;});
+  var lines=[];
+  lines.push('*SEHR Academy — Low Attendance Alert*');
+  lines.push('📅 '+monthLbl);
+  lines.push('🏫 '+scopeLabel);
+  lines.push('');
+  lines.push('*Students below 50% attendance*');
+  if(!low.length){
+    lines.push('✅ None — all students at or above 50%');
+  } else {
+    low.forEach(function(a,i){ lines.push((i+1)+'. '+a.name+' — '+a.pct+'% ('+a.present+'/'+a.sessions+')'); });
+  }
+  lines.push('');
+  lines.push('_SEHR Academy Attendance System_');
+  return lines.join('\n');
+}
+function arCopyLowAttendance(cls,btn){
+  var stats=arComputeHistoryStats(cls,AR_HIST_BOARD,AR_HIST_MONTH);
+  if(!stats.length){alert('No data for Class '+cls);return;}
+  arCopyText(arBuildLowAttendanceText(stats,'Class '+cls),btn,'Copy <50%');
+}
+function arCopyLowAttendanceAll(btn){
+  var stats=arComputeHistoryStats(AR_HIST_CLS,AR_HIST_BOARD,AR_HIST_MONTH);
+  if(!stats.length){alert('No data for this selection');return;}
+  var scopeLabel=AR_HIST_CLS==='ALL'?'All Classes':('Class '+AR_HIST_CLS);
+  arCopyText(arBuildLowAttendanceText(stats,scopeLabel),btn,'Copy Summary');
 }
 
 init();

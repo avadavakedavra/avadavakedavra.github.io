@@ -53,8 +53,18 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 .btn-copy-all.copied{background:rgba(139,197,63,.12)!important;border-color:rgba(139,197,63,.3)!important;color:var(--l3)!important}
 .btn-icon svg{width:13px;height:13px;flex-shrink:0}
 
+/* ── VIEW TABS ── */
+.view-tabs-bar{background:var(--wh);border-bottom:1.5px solid var(--c3);padding:12px 28px}
+.view-tabs{display:flex;gap:8px}
+.view-tab{padding:8px 18px;border-radius:20px;border:1.5px solid var(--ru);background:var(--cr);font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .15s var(--e1)}
+.view-tab:hover{border-color:var(--lm);color:var(--l3)}
+.view-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
 /* ── CONTROLS ── */
 .controls{background:var(--wh);border-bottom:1.5px solid var(--c3);padding:14px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:72px;z-index:200}
+.hist-month-sel{padding:8px 14px;border:1.5px solid var(--ru);border-radius:7px;background:var(--cr);font-family:var(--f);font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;min-width:190px;outline:none;transition:border-color .18s}
+.hist-month-sel:hover{border-color:var(--lm)}
+.hist-month-sel:focus{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
 
 /* Date dropdown calendar */
 .date-picker-wrap{position:relative}
@@ -67,6 +77,11 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 .date-display.open .date-display-arrow{transform:rotate(180deg)}
 .date-dropdown{position:absolute;top:calc(100% + 6px);left:0;background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.14);z-index:500;min-width:220px;overflow:hidden;display:none;animation:fIn .18s var(--e1)}
 .date-dropdown.open{display:block}
+/* Dims the summary/class content behind the open calendar so it doesn't
+   look like the stat cards vanished — sits below .controls (z-index 200)
+   and the dropdown itself (z-index 500), above unpositioned page content. */
+.cal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,15,13,.28);backdrop-filter:blur(1.5px);z-index:150}
+.cal-backdrop.on{display:block}
 .dd-head{background:var(--ink);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
 .dd-month-nav{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f);font-size:13px;transition:color .15s}
 .dd-month-nav:hover{color:#fff}
@@ -163,6 +178,15 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 .sc-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
 .sc-badge.a{background:var(--rb);color:var(--re);border:1px solid rgba(220,38,38,.2)}
 
+/* history table */
+.hist-table{width:100%;border-collapse:collapse}
+.hist-table th{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);padding:8px 10px;background:var(--cr);border-bottom:1px solid var(--c3);text-align:left}
+.hist-table td{padding:8px 10px;border-bottom:1px solid var(--c2);font-size:12px;color:var(--ink2);vertical-align:middle}
+.hist-table tr:last-child td{border-bottom:none}
+.hist-table tr.low td{background:var(--rb)}
+.hist-table tr.low td:first-child{color:var(--re)}
+.hist-pct-badge{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;display:inline-block}
+
 /* skeleton */
 .skel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .skel{height:62px;border-radius:8px;background:linear-gradient(90deg,var(--c2) 0%,var(--c3) 50%,var(--c2) 100%);background-size:600px 100%;animation:shimmer 1.5s linear infinite}
@@ -248,48 +272,93 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
   </div>
 </div>
 
-<!-- CONTROLS -->
-<div class="controls">
-  <!-- Date calendar dropdown -->
-  <div class="date-picker-wrap" id="datePickerWrap">
-    <div class="date-display" id="dateDisplay" onclick="toggleCalendar()">
-      <svg class="date-display-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span class="date-display-txt" id="dateDisplayTxt">Select date</span>
-      <span class="date-display-arrow">▾</span>
-    </div>
-    <div class="date-dropdown" id="dateDropdown">
-      <div class="dd-head">
-        <button class="dd-month-nav" onclick="calPrev()">‹</button>
-        <span class="dd-month-label" id="calMonthLabel"></span>
-        <button class="dd-month-nav" onclick="calNext()">›</button>
-      </div>
-      <div class="dd-cal" id="calGrid"></div>
-    </div>
-  </div>
+<!-- CALENDAR BACKDROP -->
+<div class="cal-backdrop" id="calBackdrop" onclick="closeCalendar()"></div>
 
-  <div class="ctrl-sep"></div>
-  <span class="ctrl-label">Class</span>
-  <div class="cls-tabs" id="clsTabs">
-    <button class="cls-tab active" data-cls="ALL" onclick="setCls('ALL',this)">All</button>
-  </div>
-
-  <div class="ctrl-sep"></div>
-  <span class="ctrl-label">Board</span>
-  <div class="board-tabs">
-    <button class="board-tab active-all" id="bt-all"   onclick="setBoard('ALL')">All</button>
-    <button class="board-tab"            id="bt-state" onclick="setBoard('STATE')">STATE</button>
-    <button class="board-tab"            id="bt-cbse"  onclick="setBoard('CBSE')">CBSE</button>
+<!-- VIEW TABS -->
+<div class="view-tabs-bar">
+  <div class="view-tabs">
+    <button class="view-tab active" id="vtDaily" onclick="setView('daily')">Daily Attendance</button>
+    <button class="view-tab" id="vtHistory" onclick="setView('history')">Attendance History</button>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main" id="main">
-  <div class="loading" id="loadingEl">
-    <div class="loading-spin"></div>
-    Loading attendance data…
+<!-- DAILY VIEW -->
+<div id="dailyView">
+  <!-- CONTROLS -->
+  <div class="controls">
+    <!-- Date calendar dropdown -->
+    <div class="date-picker-wrap" id="datePickerWrap">
+      <div class="date-display" id="dateDisplay" onclick="toggleCalendar()">
+        <svg class="date-display-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="date-display-txt" id="dateDisplayTxt">Select date</span>
+        <span class="date-display-arrow">▾</span>
+      </div>
+      <div class="date-dropdown" id="dateDropdown">
+        <div class="dd-head">
+          <button class="dd-month-nav" onclick="calPrev()">‹</button>
+          <span class="dd-month-label" id="calMonthLabel"></span>
+          <button class="dd-month-nav" onclick="calNext()">›</button>
+        </div>
+        <div class="dd-cal" id="calGrid"></div>
+      </div>
+    </div>
+
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Class</span>
+    <div class="cls-tabs" id="clsTabs">
+      <button class="cls-tab active" data-cls="ALL" onclick="setCls('ALL',this)">All</button>
+    </div>
+
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Board</span>
+    <div class="board-tabs">
+      <button class="board-tab active-all" id="bt-all"   onclick="setBoard('ALL')">All</button>
+      <button class="board-tab"            id="bt-state" onclick="setBoard('STATE')">STATE</button>
+      <button class="board-tab"            id="bt-cbse"  onclick="setBoard('CBSE')">CBSE</button>
+    </div>
   </div>
-  <div class="summary-bar hidden" id="summaryBar"></div>
-  <div id="classBlocks"></div>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <div class="loading" id="loadingEl">
+      <div class="loading-spin"></div>
+      Loading attendance data…
+    </div>
+    <div class="summary-bar hidden" id="summaryBar"></div>
+    <div id="classBlocks"></div>
+  </div>
+</div>
+
+<!-- HISTORY VIEW -->
+<div id="historyView" style="display:none">
+  <!-- CONTROLS -->
+  <div class="controls">
+    <span class="ctrl-label">Month</span>
+    <select class="hist-month-sel" id="histMonthSel" onchange="onHistMonthChange()">
+      <option value="ALL">All Time (Entire History)</option>
+    </select>
+
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Class</span>
+    <div class="cls-tabs" id="histClsTabs">
+      <button class="cls-tab active" onclick="setHistCls('ALL',this)">All</button>
+    </div>
+
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Board</span>
+    <div class="board-tabs">
+      <button class="board-tab active-all" id="hbt-all"   onclick="setHistBoard('ALL')">All</button>
+      <button class="board-tab"            id="hbt-state" onclick="setHistBoard('STATE')">STATE</button>
+      <button class="board-tab"            id="hbt-cbse"  onclick="setHistBoard('CBSE')">CBSE</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="historyMain">
+    <div class="summary-bar hidden" id="histSummaryBar"></div>
+    <div id="historyBlocks"></div>
+  </div>
 </div>
 
 <!-- PRINT -->
@@ -313,6 +382,13 @@ var _NOW           = new Date();
 var CAL_YEAR       = _NOW.getFullYear();
 var CAL_MONTH      = _NOW.getMonth();
 var ALL_CLASSES    = [];
+
+/* history tab state */
+var CUR_VIEW       = 'daily';
+var HIST_CLS       = 'ALL';
+var HIST_BOARD     = 'ALL';
+var HIST_MONTH     = 'ALL';  // 'ALL' = entire history, else 'YYYY-MM'
+var AVAIL_MONTHS   = [];
 
 /* ── UTILS ── */
 function g(id){ return document.getElementById(id); }
@@ -408,6 +484,8 @@ function init(){
 
     // Build class tabs
     buildClsTabs();
+    buildHistClsTabs();
+    buildMonthOptions();
 
     // Auto-select today if data exists, else most recent date
     var todayYMD = (function(){
@@ -461,12 +539,191 @@ function setBoard(board){
   render();
 }
 
+/* ── VIEW SWITCH (Daily / History) ── */
+function setView(view){
+  CUR_VIEW=view;
+  g('vtDaily').classList.toggle('active', view==='daily');
+  g('vtHistory').classList.toggle('active', view==='history');
+  g('dailyView').style.display   = view==='daily'   ? '' : 'none';
+  g('historyView').style.display = view==='history' ? '' : 'none';
+  if(view==='history'){
+    renderHistory();
+    g('tbDateBig').innerHTML='<em>Attendance</em> · History';
+    g('tbDate').textContent='Cumulative attendance percentage by student';
+  } else {
+    updateDateDisplay();
+  }
+}
+
+/* ── HISTORY: MONTH FILTER ── */
+function monthLabel(m){
+  var p=m.split('-');
+  return MONTHS[+p[1]-1]+' '+p[0];
+}
+
+function buildMonthOptions(){
+  var set={};
+  ALL_RECORDS.forEach(function(r){ set[r.date.slice(0,7)]=true; });
+  AVAIL_MONTHS = Object.keys(set).sort().reverse();
+  var sel=g('histMonthSel');
+  var opts='<option value="ALL">All Time (Entire History)</option>';
+  AVAIL_MONTHS.forEach(function(m){ opts+='<option value="'+m+'">'+monthLabel(m)+'</option>'; });
+  sel.innerHTML=opts;
+  var curYM=_NOW.getFullYear()+'-'+String(_NOW.getMonth()+1).padStart(2,'0');
+  HIST_MONTH = AVAIL_MONTHS.indexOf(curYM)>-1 ? curYM : 'ALL';
+  sel.value=HIST_MONTH;
+}
+
+function onHistMonthChange(){
+  HIST_MONTH=g('histMonthSel').value;
+  renderHistory();
+}
+
+/* ── HISTORY: CLASS / BOARD FILTERS ── */
+function buildHistClsTabs(){
+  var tabs=g('histClsTabs');
+  tabs.innerHTML='<button class="cls-tab'+(HIST_CLS==='ALL'?' active':'')+'" onclick="setHistCls(\'ALL\',this)">All</button>';
+  ALL_CLASSES.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='cls-tab'+(c===HIST_CLS?' active':'');
+    btn.textContent='Class '+c;
+    btn.onclick=function(){ setHistCls(c,btn); };
+    tabs.appendChild(btn);
+  });
+}
+
+function setHistCls(cls,btn){
+  HIST_CLS=cls;
+  g('histClsTabs').querySelectorAll('.cls-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderHistory();
+}
+
+function setHistBoard(board){
+  HIST_BOARD=board;
+  g('hbt-all').className  ='board-tab'+(board==='ALL'  ? ' active-all'  :'');
+  g('hbt-state').className='board-tab'+(board==='STATE'? ' active-state':'');
+  g('hbt-cbse').className ='board-tab'+(board==='CBSE' ? ' active-cbse' :'');
+  renderHistory();
+}
+
+/* ── HISTORY: STATS ── */
+function computeHistoryStats(cls, board, month){
+  var recs = ALL_RECORDS.filter(function(r){
+    if(cls!=='ALL' && r.class!==cls) return false;
+    if(board!=='ALL' && r.syllabus!==board) return false;
+    if(month!=='ALL' && r.date.slice(0,7)!==month) return false;
+    return true;
+  });
+  var map={};
+  recs.forEach(function(r){
+    if(!map[r.student_id]) map[r.student_id]={id:r.student_id,name:r.full_name,cls:r.class,syllabus:r.syllabus,sessions:0,present:0};
+    map[r.student_id].sessions++;
+    if(r.status==='Present') map[r.student_id].present++;
+  });
+  return Object.keys(map).map(function(k){
+    var a=map[k];
+    a.pct = a.sessions ? Math.round(a.present/a.sessions*100) : 0;
+    return a;
+  });
+}
+
+function histPctBadge(pct){
+  var col,bg;
+  if(pct>=75){col='#16a34a';bg='rgba(34,197,94,.1)';}
+  else if(pct>=50){col='#d97706';bg='rgba(217,119,6,.1)';}
+  else{col='#dc2626';bg='rgba(220,38,38,.09)';}
+  return '<span class="hist-pct-badge" style="background:'+bg+';color:'+col+'">'+pct+'%</span>';
+}
+
+/* ── HISTORY: RENDER ── */
+function renderHistory(){
+  var stats = computeHistoryStats(HIST_CLS, HIST_BOARD, HIST_MONTH);
+  var monthLbl = HIST_MONTH==='ALL' ? 'All Time (Entire History)' : monthLabel(HIST_MONTH);
+
+  if(!stats.length){
+    g('histSummaryBar').classList.add('hidden');
+    g('historyBlocks').innerHTML='<div class="empty"><div class="empty-ico">📈</div><div class="empty-txt">No attendance data</div><div class="empty-sub">No records found for this selection.</div></div>';
+    return;
+  }
+
+  var avgPct = Math.round(stats.reduce(function(s,a){return s+a.pct;},0)/stats.length);
+  var below50 = stats.filter(function(a){return a.pct<50;}).length;
+
+  g('histSummaryBar').classList.remove('hidden');
+  g('histSummaryBar').innerHTML =
+    sum(stats.length,'👥','lim','Students','rgba(139,197,63,.1)')+
+    sum(avgPct+'%','📊','blu','Avg. Attendance','rgba(37,99,235,.07)')+
+    sum(below50,'⚠️','red','Below 50%','rgba(220,38,38,.08)')+
+    sum(monthLbl,'📅','grn','Period','rgba(34,197,94,.08)');
+
+  var classes = HIST_CLS==='ALL'
+    ? ALL_CLASSES.filter(function(c){ return stats.some(function(a){return a.cls===c;}); })
+    : [HIST_CLS];
+
+  var html='';
+  classes.forEach(function(cls){
+    var cstats=stats.filter(function(a){return a.cls===cls;});
+    if(!cstats.length) return;
+    var cAvg=Math.round(cstats.reduce(function(s,a){return s+a.pct;},0)/cstats.length);
+    var cLow=cstats.filter(function(a){return a.pct<50;}).length;
+    var syls=[...new Set(cstats.map(function(a){return a.syllabus;}))].sort(function(a,b){
+        if(a==='STATE') return -1; if(b==='STATE') return 1; return a.localeCompare(b);
+      });
+
+    html+='<div class="cls-block">';
+    html+='<div class="cls-hd">';
+    html+='<div class="cls-num">'+cls+'</div>';
+    html+='<div class="cls-info"><div class="cls-name">Class '+cls+'</div><div class="cls-meta-sub">'+monthLbl+' · '+cstats.length+' student'+(cstats.length>1?'s':'')+'</div></div>';
+    html+='<div class="cls-pills">'
+      +'<span class="stat-pill stat-pct">'+cAvg+'% avg</span>'
+      +(cLow?'<span class="stat-pill stat-a">'+cLow+' below 50%</span>':'')
+      +'</div>';
+    html+='<div class="cls-btns">'
+      +'<button class="btn-cls-pdf" onclick="doPrintHistoryClass(\''+cls+'\')">'
+      +'<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>PDF</button>'
+      +'<button class="btn-cls-copy" onclick="copyLowAttendance(\''+cls+'\',this)">'
+      +'<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span class="btn-lbl">Copy &lt;50%</span></button>'
+      +'</div>';
+    html+='</div>';
+
+    html+='<div class="cls-body">';
+    syls.forEach(function(syl){
+      var srows=cstats.filter(function(a){return a.syllabus===syl;}).sort(function(a,b){return a.name.localeCompare(b.name);});
+      html+='<div class="board-section">';
+      html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+        +'<div class="board-tag '+(syl==='STATE'?'st':'cb')+'"><div class="board-tag-dot"></div>'+syl+'</div>'
+        +'</div>';
+      html+='<table class="hist-table"><thead><tr><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      srows.forEach(function(a){
+        html+='<tr'+(a.pct<50?' class="low"':'')+'>'
+          +'<td style="font-weight:600">'+a.name+'</td>'
+          +'<td>'+a.sessions+'</td>'
+          +'<td>'+a.present+'</td>'
+          +'<td>'+histPctBadge(a.pct)+'</td>'
+          +'</tr>';
+      });
+      html+='</tbody></table></div>';
+    });
+    html+='</div></div>';
+  });
+
+  g('historyBlocks').innerHTML=html;
+}
+
 /* ── CALENDAR ── */
 function toggleCalendar(){
-  var dd=g('dateDropdown'), disp=g('dateDisplay');
+  var dd=g('dateDropdown'), disp=g('dateDisplay'), bd=g('calBackdrop');
   var open=dd.classList.toggle('open');
   disp.classList.toggle('open',open);
+  bd.classList.toggle('on',open);
   if(open) renderCalendar();
+}
+
+function closeCalendar(){
+  g('dateDropdown').classList.remove('open');
+  g('dateDisplay').classList.remove('open');
+  g('calBackdrop').classList.remove('on');
 }
 
 function calPrev(){ CAL_MONTH--; if(CAL_MONTH<0){CAL_MONTH=11;CAL_YEAR--;} renderCalendar(); }
@@ -510,8 +767,7 @@ function selectDate(d){
   CUR_DATE = d;
   updateDateDisplay();
   renderCalendar();
-  g('dateDropdown').classList.remove('open');
-  g('dateDisplay').classList.remove('open');
+  closeCalendar();
   render();
 }
 
@@ -532,9 +788,8 @@ function updateDateDisplay(){
 
 // Close calendar when clicking outside
 document.addEventListener('click', function(e){
-  if(!g('datePickerWrap').contains(e.target)){
-    g('dateDropdown').classList.remove('open');
-    g('dateDisplay').classList.remove('open');
+  if(!g('datePickerWrap').contains(e.target) && e.target!==g('calBackdrop')){
+    closeCalendar();
   }
 });
 
@@ -720,6 +975,7 @@ function buildPrintDoc(rows, classes, singleCls){
 }
 
 function doPrintAll(){
+  if(CUR_VIEW==='history'){ doPrintHistoryAll(); return; }
   var rows=ALL_RECORDS.filter(function(r){
     if(r.date!==CUR_DATE) return false;
     if(CUR_BOARD!=='ALL' && r.syllabus!==CUR_BOARD) return false;
@@ -735,6 +991,69 @@ function doPrintClass(cls){
     return r.date===CUR_DATE && r.class===cls && (CUR_BOARD==='ALL'||r.syllabus===CUR_BOARD);
   });
   buildPrintDoc(rows,[cls],cls);
+  window.print();
+}
+
+/* ── HISTORY: PRINT (PDF) ── */
+function buildHistoryPrintDoc(stats, classes, singleCls){
+  var monthLbl = HIST_MONTH==='ALL' ? 'All Time (Entire History)' : monthLabel(HIST_MONTH);
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var avgPct = stats.length ? Math.round(stats.reduce(function(s,a){return s+a.pct;},0)/stats.length) : 0;
+  var below50 = stats.filter(function(a){return a.pct<50;}).length;
+  var html='';
+
+  html+='<div class="pr-lh"><div><div class="pr-brand"><span>SEHR</span> ACADEMY</div><div class="pr-brand-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'
+    +'<div><div class="pr-r-title">Attendance History Report</div><div class="pr-r-sub">'+(singleCls?'Class '+singleCls+' · ':'')+monthLbl+'</div><div class="pr-r-sub">Generated: '+issued+'</div></div></div>';
+  html+='<div class="pr-stripe"></div>';
+  html+='<div style="margin-bottom:16px">'
+    +'<div style="font-size:26px;font-weight:900;color:var(--ink);letter-spacing:-.8px;line-height:1">'+monthLbl+'</div>'
+    +'<div style="font-size:11px;color:var(--mu);margin-top:4px">Attendance History'+(singleCls?' · Class '+singleCls:' · All Classes')+(HIST_BOARD!=='ALL'?' · '+HIST_BOARD:'')+'</div>'
+    +'</div>';
+  html+='<div class="pr-summary"><div class="pr-sc"><div class="pr-sv lim">'+stats.length+'</div><div class="pr-sl">Students</div></div><div class="pr-sc"><div class="pr-sv">'+avgPct+'%</div><div class="pr-sl">Avg Attendance</div></div><div class="pr-sc"><div class="pr-sv red">'+below50+'</div><div class="pr-sl">Below 50%</div></div></div>';
+
+  var clsToShow = singleCls ? [singleCls] : classes;
+  clsToShow.forEach(function(cls){
+    var cstats=stats.filter(function(a){return a.cls===cls;});
+    if(!cstats.length) return;
+    var syls=[...new Set(cstats.map(function(a){return a.syllabus;}))].sort(function(a,b){
+        if(a==='STATE') return -1; if(b==='STATE') return 1; return a.localeCompare(b);
+      });
+    syls.forEach(function(syl){
+      var srows=cstats.filter(function(a){return a.syllabus===syl;}).sort(function(a,b){return a.name.localeCompare(b.name);});
+      html+='<div class="pr-board-block"><div class="pr-cls-head"><div class="pr-cls-num">'+cls+'</div>'
+        +'<div><div class="pr-cls-name">Class '+cls+' · '+syl+'</div>'
+        +'<div style="font-size:9px;color:var(--mu)">'+srows.length+' students · '+monthLbl+'</div></div>'
+        +'<span class="pr-syl '+(syl==='STATE'?'st':'cb')+'">'+syl+'</span></div>';
+      html+='<table class="pr-table"><thead><tr><th style="width:24px">#</th><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      srows.forEach(function(a,i){
+        var low=a.pct<50;
+        var pcol=a.pct>=75?'#16a34a':a.pct>=50?'#d97706':'#dc2626';
+        var pbg =a.pct>=75?'rgba(34,197,94,.08)':a.pct>=50?'rgba(217,119,6,.08)':'rgba(220,38,38,.07)';
+        html+='<tr'+(low?' style="background:var(--rb)"':'')+'>'
+          +'<td style="color:var(--pa);font-size:10px">'+(i+1)+'</td>'
+          +'<td style="font-weight:600;'+(low?'color:var(--re)':'')+'">'+a.name+'</td>'
+          +'<td>'+a.sessions+'</td>'
+          +'<td>'+a.present+'</td>'
+          +'<td><span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pbg+';color:'+pcol+'">'+a.pct+'%</span></td>'
+          +'</tr>';
+      });
+      html+='</tbody></table></div>';
+    });
+  });
+  html+='<div class="pr-footer"><div>SEHR Academy · Attendance History Report · '+monthLbl+'</div><div>sehracademy.com · +91 95394 09586</div></div>';
+  g('printDoc').innerHTML=html;
+}
+
+function doPrintHistoryAll(){
+  var stats=computeHistoryStats(HIST_CLS, HIST_BOARD, HIST_MONTH);
+  var classes = HIST_CLS==='ALL' ? ALL_CLASSES.filter(function(c){return stats.some(function(a){return a.cls===c;});}) : [HIST_CLS];
+  buildHistoryPrintDoc(stats, classes, null);
+  window.print();
+}
+
+function doPrintHistoryClass(cls){
+  var stats=computeHistoryStats(cls, HIST_BOARD, HIST_MONTH);
+  buildHistoryPrintDoc(stats, [cls], cls);
   window.print();
 }
 
@@ -826,7 +1145,65 @@ function buildAttSummaryText(){
   return lines.join('\n');
 }
 
+/* ── HISTORY: COPY LOW-ATTENDANCE MESSAGE ── */
+function copyTextGeneric(text, btn, resetLabel){
+  var lbl=btn.querySelector('.btn-lbl');
+  function done(){
+    btn.classList.add('copied');
+    if(lbl) lbl.textContent='Copied!';
+    setTimeout(function(){ btn.classList.remove('copied'); if(lbl) lbl.textContent=resetLabel; },2000);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      var ta=document.createElement('textarea');
+      ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); done();
+    });
+  } else {
+    var ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }
+}
+
+function buildLowAttendanceText(stats, scopeLabel){
+  var monthLbl = HIST_MONTH==='ALL' ? 'All Time (Entire History)' : monthLabel(HIST_MONTH);
+  var low = stats.filter(function(a){return a.pct<50;}).sort(function(a,b){return a.pct-b.pct;});
+  var lines=[];
+  lines.push('*SEHR Academy — Low Attendance Alert*');
+  lines.push('📅 '+monthLbl);
+  lines.push('🏫 '+scopeLabel);
+  lines.push('');
+  lines.push('*Students below 50% attendance*');
+  if(!low.length){
+    lines.push('✅ None — all students at or above 50%');
+  } else {
+    low.forEach(function(a,i){ lines.push((i+1)+'. '+a.name+' — '+a.pct+'% ('+a.present+'/'+a.sessions+')'); });
+  }
+  lines.push('');
+  lines.push('_SEHR Academy Attendance System_');
+  return lines.join('\n');
+}
+
+function copyLowAttendance(cls, btn){
+  var stats=computeHistoryStats(cls, HIST_BOARD, HIST_MONTH);
+  if(!stats.length){alert('No data for Class '+cls);return;}
+  var text=buildLowAttendanceText(stats, 'Class '+cls);
+  copyTextGeneric(text, btn, 'Copy <50%');
+}
+
+function copyLowAttendanceAll(btn){
+  var stats=computeHistoryStats(HIST_CLS, HIST_BOARD, HIST_MONTH);
+  if(!stats.length){alert('No data for this selection');return;}
+  var scopeLabel = HIST_CLS==='ALL' ? 'All Classes' : ('Class '+HIST_CLS);
+  var text=buildLowAttendanceText(stats, scopeLabel);
+  copyTextGeneric(text, btn, 'Copy Summary');
+}
+
 function copyAttSummary(btn){
+  if(CUR_VIEW==='history'){ copyLowAttendanceAll(btn); return; }
   if(!CUR_DATE){alert('Select a date first');return;}
   var text=buildAttSummaryText();
   if(!text){alert('No data for this date');return;}
