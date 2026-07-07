@@ -1009,7 +1009,7 @@ function buildHistoryPrintDoc(stats, classes, singleCls){
     +'<div style="font-size:26px;font-weight:900;color:var(--ink);letter-spacing:-.8px;line-height:1">'+monthLbl+'</div>'
     +'<div style="font-size:11px;color:var(--mu);margin-top:4px">Attendance History'+(singleCls?' · Class '+singleCls:' · All Classes')+(HIST_BOARD!=='ALL'?' · '+HIST_BOARD:'')+'</div>'
     +'</div>';
-  html+='<div class="pr-summary"><div class="pr-sc"><div class="pr-sv lim">'+stats.length+'</div><div class="pr-sl">Students</div></div><div class="pr-sc"><div class="pr-sv">'+avgPct+'%</div><div class="pr-sl">Avg Attendance</div></div><div class="pr-sc"><div class="pr-sv red">'+below50+'</div><div class="pr-sl">Below 50%</div></div></div>';
+  html+='<div class="pr-summary"><div class="pr-sc"><div class="pr-sv lim">'+stats.length+'</div><div class="pr-sl">Students</div></div><div class="pr-sc"><div class="pr-sv">'+avgPct+'%</div><div class="pr-sl">Avg Attendance</div></div><div class="pr-sc"><div class="pr-sv red">'+below50+'</div><div class="pr-sl">Below 50%</div></div><div class="pr-sc"><div class="pr-sv" style="font-size:12px">'+monthLbl+'</div><div class="pr-sl">Period</div></div></div>';
 
   var clsToShow = singleCls ? [singleCls] : classes;
   clsToShow.forEach(function(cls){
@@ -1024,17 +1024,29 @@ function buildHistoryPrintDoc(stats, classes, singleCls){
         +'<div><div class="pr-cls-name">Class '+cls+' · '+syl+'</div>'
         +'<div style="font-size:9px;color:var(--mu)">'+srows.length+' students · '+monthLbl+'</div></div>'
         +'<span class="pr-syl '+(syl==='STATE'?'st':'cb')+'">'+syl+'</span></div>';
-      html+='<table class="pr-table"><thead><tr><th style="width:24px">#</th><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      html+='<table class="pr-table"><thead><tr>'
+        +'<th style="width:36px"></th>'
+        +'<th style="width:22px">#</th>'
+        +'<th>Name</th>'
+        +'<th style="width:64px;text-align:center">Sessions</th>'
+        +'<th style="width:64px;text-align:center">Present</th>'
+        +'<th style="width:80px;text-align:center">Attendance</th>'
+        +'</tr></thead><tbody>';
       srows.forEach(function(a,i){
         var low=a.pct<50;
         var pcol=a.pct>=75?'#16a34a':a.pct>=50?'#d97706':'#dc2626';
         var pbg =a.pct>=75?'rgba(34,197,94,.08)':a.pct>=50?'rgba(217,119,6,.08)':'rgba(220,38,38,.07)';
+        var photo=PHOTO_MAP[a.id]||'';
+        var av=photo
+          ?'<img class="pr-photo" src="'+photo+'" alt="">'
+          :'<div class="pr-mono">'+mn(a.name)+'</div>';
         html+='<tr'+(low?' style="background:var(--rb)"':'')+'>'
+          +'<td>'+av+'</td>'
           +'<td style="color:var(--pa);font-size:10px">'+(i+1)+'</td>'
           +'<td style="font-weight:600;'+(low?'color:var(--re)':'')+'">'+a.name+'</td>'
-          +'<td>'+a.sessions+'</td>'
-          +'<td>'+a.present+'</td>'
-          +'<td><span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pbg+';color:'+pcol+'">'+a.pct+'%</span></td>'
+          +'<td style="text-align:center">'+a.sessions+'</td>'
+          +'<td style="text-align:center">'+a.present+'</td>'
+          +'<td style="text-align:center"><span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pbg+';color:'+pcol+'">'+a.pct+'%</span></td>'
           +'</tr>';
       });
       html+='</tbody></table></div>';
