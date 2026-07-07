@@ -480,6 +480,17 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
 }
 .err-box.on{display:flex}
 
+/* Already-completed box */
+.done-box{
+  background:var(--li-dim);border:1px solid rgba(139,197,63,.3);
+  border-radius:10px;padding:14px 16px;margin-bottom:18px;
+  display:none;align-items:flex-start;gap:11px;
+}
+.done-box.on{display:flex}
+.done-icon{width:26px;height:26px;border-radius:50%;background:var(--li);color:#0f0f0d;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.done-title{font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:3px}
+.done-sub{font-size:12px;color:var(--text3);line-height:1.55}
+
 /* Big button */
 .btn-big{
   width:100%;padding:15px;border:none;border-radius:10px;
@@ -745,39 +756,48 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:15px;
       </div>
       <div class="student-hint" id="studentIdHint" style="display:none">Student ID: <span id="studentIdShow"></span></div>
     </div>
-    <div class="field">
-      <div class="field-lbl">Date of Birth</div>
-      <div class="dob-row">
-        <div class="dob-unit">
-          <select class="dob-sel" id="dobDay" onchange="onDobChange()"><option value="">--</option></select>
-          <div class="dob-lbl">Day</div>
-        </div>
-        <div class="dob-unit">
-          <select class="dob-sel" id="dobMonth" onchange="onDobChange()">
-            <option value="">Month</option>
-            <option value="1">January</option><option value="2">February</option>
-            <option value="3">March</option><option value="4">April</option>
-            <option value="5">May</option><option value="6">June</option>
-            <option value="7">July</option><option value="8">August</option>
-            <option value="9">September</option><option value="10">October</option>
-            <option value="11">November</option><option value="12">December</option>
-          </select>
-          <div class="dob-lbl">Month</div>
-        </div>
-        <div class="dob-unit">
-          <select class="dob-sel" id="dobYear" onchange="onDobChange()"><option value="">----</option></select>
-          <div class="dob-lbl">Year</div>
-        </div>
+    <div class="done-box" id="doneBox">
+      <div class="done-icon">✓</div>
+      <div>
+        <div class="done-title">Test already completed</div>
+        <div class="done-sub" id="doneSub">You've already submitted this test. Each test can only be taken once.</div>
       </div>
     </div>
-    <div class="monitor-note">
-      <div class="mn-icon"></div>
-      <div class="monitor-note-txt"><b>This test is monitored.</b> Tab switching, copy-paste, and screen sharing are detected and flagged as violations.</div>
+    <div id="loginFormRest">
+      <div class="field">
+        <div class="field-lbl">Date of Birth</div>
+        <div class="dob-row">
+          <div class="dob-unit">
+            <select class="dob-sel" id="dobDay" onchange="onDobChange()"><option value="">--</option></select>
+            <div class="dob-lbl">Day</div>
+          </div>
+          <div class="dob-unit">
+            <select class="dob-sel" id="dobMonth" onchange="onDobChange()">
+              <option value="">Month</option>
+              <option value="1">January</option><option value="2">February</option>
+              <option value="3">March</option><option value="4">April</option>
+              <option value="5">May</option><option value="6">June</option>
+              <option value="7">July</option><option value="8">August</option>
+              <option value="9">September</option><option value="10">October</option>
+              <option value="11">November</option><option value="12">December</option>
+            </select>
+            <div class="dob-lbl">Month</div>
+          </div>
+          <div class="dob-unit">
+            <select class="dob-sel" id="dobYear" onchange="onDobChange()"><option value="">----</option></select>
+            <div class="dob-lbl">Year</div>
+          </div>
+        </div>
+      </div>
+      <div class="monitor-note">
+        <div class="mn-icon"></div>
+        <div class="monitor-note-txt"><b>This test is monitored.</b> Tab switching, copy-paste, and screen sharing are detected and flagged as violations.</div>
+      </div>
+      <button class="btn-big" id="loginBtn" onclick="doLogin()">
+        <span class="btn-big-spin" id="loginSpin"></span>
+        <span id="loginLbl">Start Test</span>
+      </button>
     </div>
-    <button class="btn-big" id="loginBtn" onclick="doLogin()">
-      <span class="btn-big-spin" id="loginSpin"></span>
-      <span id="loginLbl">Start Test</span>
-    </button>
   </div>
 </div>
 
@@ -1016,6 +1036,7 @@ function selectTest(testId){
   // Reset student dropdown
   g('inStudentSel').innerHTML='<option value="">Loading students…</option>';
   g('studentIdHint').style.display='none';
+  showAlreadyDone(false);
   // Init day/year dropdowns
   initDobDropdowns();
   // Show sheet
@@ -1044,13 +1065,41 @@ function loadClassStudents(cls, syllabus){
 
 function onStudentSelect(){
   var id=g('inStudentSel').value;
+  clearErr();
+  showAlreadyDone(false);
   if(id){
     g('studentIdHint').style.display='block';
     g('studentIdShow').textContent=id;
+    checkAlreadyAttempted(id);
   } else {
     g('studentIdHint').style.display='none';
   }
-  clearErr();
+}
+
+/* Check attempt status as soon as a name is picked (no DOB needed —
+   checkAttempt is keyed on test_id+student_id) so a student who's
+   already completed the test finds out immediately instead of after
+   filling in their date of birth. */
+var ATTEMPT_CHECK_SEQ=0;
+function checkAlreadyAttempted(studentId){
+  if(!CUR_TEST)return;
+  var seq=++ATTEMPT_CHECK_SEQ;
+  apiTest({action:'checkAttempt',test_id:CUR_TEST.test_id,student_id:studentId},function(d2){
+    if(seq!==ATTEMPT_CHECK_SEQ)return; // superseded by a newer name selection
+    if(d2&&d2.attempted){
+      var sub='You\'ve already submitted this test. Each test can only be taken once.';
+      if(d2.submitted_at){
+        sub='Submitted on '+d2.submitted_at+'.'+(d2.score!=null&&d2.score!==''?' Score: '+d2.score+'.':'')+' Each test can only be taken once.';
+      }
+      showAlreadyDone(true,sub);
+    }
+  });
+}
+
+function showAlreadyDone(on,sub){
+  g('doneBox').classList.toggle('on',!!on);
+  g('loginFormRest').style.display=on?'none':'';
+  if(on&&sub)g('doneSub').textContent=sub;
 }
 
 function initDobDropdowns(){
