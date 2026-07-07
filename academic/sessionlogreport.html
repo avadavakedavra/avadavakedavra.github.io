@@ -1604,7 +1604,9 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .ar-hist-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);vertical-align:middle}
 .ar-hist-table tr:last-child td{border-bottom:none}
 .ar-hist-table tr.low td{background:var(--red-dim)}
-.ar-hist-table tr.low td:first-child{color:var(--red)}
+.ar-hist-table tr.low td:nth-child(2){color:var(--red)}
+.ar-hist-photo{width:28px;height:28px;border-radius:6px;object-fit:cover;border:1px solid var(--border);vertical-align:middle}
+.ar-hist-mono{width:28px;height:28px;border-radius:6px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--li);vertical-align:middle}
 
 .ar-kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 @media(max-width:900px){.ar-kpi-strip{grid-template-columns:repeat(2,1fr)}}
@@ -5904,7 +5906,7 @@ function arBuildAttSummaryText(){
   return lines.join('\n');
 }
 function arCopyAttSummary(btn){
-  if(AR_VIEW==='history'){ arCopyLowAttendanceAll(btn); return; }
+  if(AR_VIEW==='history'){ arCopyAttendanceListAll(btn); return; }
   if(!AR_CUR_DATE){alert('Select a date first');return;}
   var text=arBuildAttSummaryText();
   if(!text){alert('No data for this date');return;}
@@ -6041,7 +6043,7 @@ function arRenderHistory(){
     html+='<span class="badge badge-b">'+cAvg+'% avg</span>';
     if(cLow) html+='<span class="badge badge-r">'+cLow+' below 50%</span>';
     html+='<button class="ar-icon-btn" onclick="arDoPrintHistoryClass(\''+cls+'\')" title="Print Class '+esc(cls)+'">'+AR_ICONS.print+'PDF</button>';
-    html+='<button class="ar-icon-btn" onclick="arCopyLowAttendance(\''+cls+'\',this)" title="Copy low-attendance list">'+AR_ICONS.copy+'<span class="ar-btn-lbl">Copy &lt;50%</span></button>';
+    html+='<button class="ar-icon-btn" onclick="arCopyAttendanceList(\''+cls+'\',this)" title="Copy attendance list">'+AR_ICONS.copy+'<span class="ar-btn-lbl">Copy Attendance</span></button>';
     html+='</div>';
 
     html+='<div class="ar-cls-body">';
@@ -6049,9 +6051,15 @@ function arRenderHistory(){
       var srows=cstats.filter(function(a){return a.syllabus===syl;}).sort(function(a,b){return a.name.localeCompare(b.name);});
       html+='<div class="ar-board-section">';
       html+='<div class="ar-board-tag '+(syl==='STATE'?'st':'cb')+'"><span class="ar-board-dot"></span>'+esc(sylLabel(syl))+'</div>';
-      html+='<table class="ar-hist-table"><thead><tr><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      html+='<table class="ar-hist-table"><thead><tr><th style="width:32px"></th><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
       srows.forEach(function(a){
+        var photo=PHOTO_MAP[a.id]||'';
+        var av=photo
+          ?'<img class="ar-hist-photo" src="'+photo+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'inline-flex\'">'
+            +'<div class="ar-hist-mono" style="display:none">'+mn(a.name)+'</div>'
+          :'<div class="ar-hist-mono">'+mn(a.name)+'</div>';
         html+='<tr'+(a.pct<50?' class="low"':'')+'>'
+          +'<td>'+av+'</td>'
           +'<td style="font-weight:600">'+esc(a.name)+'</td>'
           +'<td>'+a.sessions+'</td>'
           +'<td>'+a.present+'</td>'
@@ -6132,35 +6140,35 @@ function arDoPrintHistoryClass(cls){
   setTimeout(function(){window.print();},80);
 }
 
-/* ── HISTORY: COPY LOW-ATTENDANCE MESSAGE ── */
-function arBuildLowAttendanceText(stats, scopeLabel){
+/* ── HISTORY: COPY ATTENDANCE LIST ── */
+function arBuildAttendanceListText(stats, scopeLabel){
   var monthLbl=AR_HIST_MONTH==='ALL'?'All Time (Entire History)':arMonthLabel(AR_HIST_MONTH);
-  var low=stats.filter(function(a){return a.pct<50;}).sort(function(a,b){return a.pct-b.pct;});
+  var below50=stats.filter(function(a){return a.pct<50;}).length;
+  var sorted=stats.slice().sort(function(a,b){return a.pct-b.pct;});
   var lines=[];
-  lines.push('*SEHR Academy — Low Attendance Alert*');
+  lines.push('*SEHR Academy — Attendance Report*');
   lines.push('📅 '+monthLbl);
   lines.push('🏫 '+scopeLabel);
   lines.push('');
-  lines.push('*Students below 50% attendance*');
-  if(!low.length){
-    lines.push('✅ None — all students at or above 50%');
-  } else {
-    low.forEach(function(a,i){ lines.push((i+1)+'. '+a.name+' — '+a.pct+'% ('+a.present+'/'+a.sessions+')'); });
-  }
+  lines.push('*Attendance ('+stats.length+' student'+(stats.length>1?'s':'')+(below50?' · '+below50+' below 50%':'')+')*');
+  sorted.forEach(function(a,i){
+    var flag=a.pct<50?'⚠️ ':'';
+    lines.push((i+1)+'. '+flag+a.name+' — '+a.pct+'% ('+a.present+'/'+a.sessions+')');
+  });
   lines.push('');
   lines.push('_SEHR Academy Attendance System_');
   return lines.join('\n');
 }
-function arCopyLowAttendance(cls,btn){
+function arCopyAttendanceList(cls,btn){
   var stats=arComputeHistoryStats(cls,AR_HIST_BOARD,AR_HIST_MONTH);
   if(!stats.length){alert('No data for Class '+cls);return;}
-  arCopyText(arBuildLowAttendanceText(stats,'Class '+cls),btn,'Copy <50%');
+  arCopyText(arBuildAttendanceListText(stats,'Class '+cls),btn,'Copy Attendance');
 }
-function arCopyLowAttendanceAll(btn){
+function arCopyAttendanceListAll(btn){
   var stats=arComputeHistoryStats(AR_HIST_CLS,AR_HIST_BOARD,AR_HIST_MONTH);
   if(!stats.length){alert('No data for this selection');return;}
   var scopeLabel=AR_HIST_CLS==='ALL'?'All Classes':('Class '+AR_HIST_CLS);
-  arCopyText(arBuildLowAttendanceText(stats,scopeLabel),btn,'Copy Summary');
+  arCopyText(arBuildAttendanceListText(stats,scopeLabel),btn,'Copy Summary');
 }
 
 init();
