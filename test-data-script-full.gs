@@ -180,11 +180,6 @@ function studentLogin(p) {
         return {success:false, message:'Incorrect date of birth.'};
       }
 
-      var status = String(r[idx['admission_status']]||'').trim().toLowerCase();
-      if (status !== 'active') {
-        return {success:false, message:'Your account is not active. Contact admin.'};
-      }
-
       return {
         success: true,
         student: {
