@@ -1543,6 +1543,113 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .brief-no-sched-title{font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px}
 .brief-no-sched-sub{font-size:12px}
 @media print{.brief-connect,.brief-actions,.brief-card-copy,.brief-reload-btn,.brief-copy-all-btn{display:none!important}}
+
+/* ══ ATTENDANCE REPORT TAB ══ */
+.ar-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.ar-hd-title{font-family:var(--fs);font-size:24px;color:var(--text);line-height:1}
+.ar-hd-sub{font-size:12px;color:var(--text3);margin-top:6px;font-weight:600}
+.ar-hd-actions{display:flex;gap:8px;flex-shrink:0}
+.ar-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg2);font-family:var(--f);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s}
+.ar-btn:hover{border-color:var(--li);color:var(--li3)}
+.ar-btn.copied{background:var(--li-dim);border-color:var(--li);color:var(--li3)}
+.ar-btn-primary{background:var(--li);border-color:var(--li);color:#1a1a18}
+.ar-btn-primary:hover{background:var(--li2);color:#1a1a18}
+
+.ar-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;padding:12px 16px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2)}
+.ar-ctrl-sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
+.ar-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.ar-tab{padding:6px 14px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-family:var(--f);font-size:11.5px;font-weight:700;color:var(--text3);cursor:pointer;transition:all .15s}
+.ar-tab:hover{border-color:var(--li)}
+.ar-tab.on{background:var(--li);border-color:var(--li);color:#1a1a18}
+
+.ar-date-wrap{position:relative}
+.ar-date-display{display:flex;align-items:center;gap:8px;padding:7px 13px;border:1.5px solid var(--border);border-radius:7px;background:var(--bg);cursor:pointer;font-family:var(--f);font-size:12.5px;font-weight:700;color:var(--text);transition:all .15s;min-width:140px}
+.ar-date-display:hover{border-color:var(--li)}
+.ar-date-display.open{border-color:var(--li);box-shadow:0 0 0 3px var(--li-dim)}
+.ar-date-arrow{margin-left:auto;color:var(--text3);font-size:9px;transition:transform .2s}
+.ar-date-display.open .ar-date-arrow{transform:rotate(180deg)}
+.ar-date-dropdown{position:absolute;top:calc(100% + 6px);left:0;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.16);z-index:500;min-width:220px;overflow:hidden;display:none}
+.ar-date-dropdown.open{display:block}
+.ar-dd-head{background:var(--bg4);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.ar-dd-nav{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f);font-size:13px}
+.ar-dd-nav:hover{color:var(--text)}
+.ar-dd-cal{padding:10px}
+.ar-dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.ar-dow{text-align:center;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:3px 0}
+.ar-dd-week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.ar-dd-day{text-align:center;padding:6px 2px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text3);position:relative}
+.ar-dd-day:hover:not(.empty){background:var(--li-dim);color:var(--li3)}
+.ar-dd-day.has-data{color:var(--text);font-weight:800}
+.ar-dd-day.has-data::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--li)}
+.ar-dd-day.selected{background:var(--li)!important;color:#1a1a18!important;font-weight:800}
+.ar-dd-day.selected::after{background:#1a1a18!important}
+.ar-dd-day.empty{color:transparent;cursor:default;pointer-events:none}
+.ar-dd-day.today{box-shadow:0 0 0 1.5px var(--li) inset}
+
+.ar-kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:900px){.ar-kpi-strip{grid-template-columns:repeat(2,1fr)}}
+
+.ar-cls-body{padding:14px 16px}
+.ar-icon-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg);font-family:var(--f);font-size:10.5px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .14s;margin-left:6px}
+.ar-icon-btn:hover{border-color:var(--li);color:var(--li3)}
+.ar-icon-btn.copied{background:var(--li-dim);border-color:var(--li);color:var(--li3)}
+
+.ar-board-section{margin-bottom:14px}
+.ar-board-section:last-child{margin-bottom:0}
+.ar-board-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-right:8px}
+.ar-board-tag.st{background:var(--li-dim);color:var(--li3)}
+.ar-board-tag.cb{background:var(--blue-dim);color:var(--blue)}
+.ar-board-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.ar-board-meta{font-size:11px;color:var(--text3)}
+.ar-stu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:8px}
+.ar-sc{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);position:relative;overflow:hidden}
+.ar-sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--li)}
+.ar-sc.ab{border-color:rgba(220,38,38,.3);background:var(--red-dim)}
+.ar-sc.ab::before{background:var(--red)}
+.ar-sc-photo{width:36px;height:36px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1.5px solid var(--border)}
+.ar-sc-mono{width:36px;height:36px;border-radius:7px;background:#1a1a18;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--li);flex-shrink:0}
+.ar-sc.ab .ar-sc-mono{background:var(--red);color:#fff}
+.ar-sc-info{flex:1;min-width:0}
+.ar-sc-name{font-size:12.5px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-sc.ab .ar-sc-name{color:var(--red)}
+.ar-sc-badge{flex-shrink:0;font-size:8.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:9px}
+.ar-sc-badge.p{background:var(--li-dim);color:var(--li3)}
+.ar-sc-badge.a{background:var(--red-dim);color:var(--red)}
+
+/* Print output for this tab only — namespaced ar-pr- so it doesn't clash with
+   the dashboard's own .pr-* print system used by the other views' print buttons.
+   Reuses the shared #printDoc container/media-print rule already in place. */
+.ar-pr-doc{font-family:'Open Sans',Arial,sans-serif;color:#1a1a18;font-size:11px;line-height:1.5}
+.ar-pr-lh{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:10px;border-bottom:2.5px solid #1a1a18;margin-bottom:5px}
+.ar-pr-brand{font-size:16px;font-weight:900;letter-spacing:-.3px;color:#1a1a18}
+.ar-pr-brand span{color:#8BC53F}
+.ar-pr-brand-sub{font-size:9px;color:#7a7970;margin-top:3px}
+.ar-pr-r-title{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a1a18;text-align:right}
+.ar-pr-r-sub{font-size:9px;color:#7a7970;margin-top:2px;text-align:right}
+.ar-pr-stripe{height:3px;background:linear-gradient(90deg,#5e8a24,#8BC53F,#c8e48e,#8BC53F,#5e8a24);margin-bottom:16px}
+.ar-pr-summary{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #e4dfd4;border-radius:5px;overflow:hidden;margin-bottom:16px}
+.ar-pr-sc{padding:10px 8px;text-align:center;border-right:1px solid #e4dfd4}
+.ar-pr-sc:last-child{border-right:none}
+.ar-pr-sv{font-size:20px;font-weight:900;color:#1a1a18;line-height:1}
+.ar-pr-sv.g{color:#16a34a}
+.ar-pr-sv.r{color:#dc2626}
+.ar-pr-sl{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b0ada4;margin-top:3px}
+.ar-pr-cls-head{display:flex;align-items:center;gap:8px;margin:14px 0 8px;padding-bottom:6px;border-bottom:1.5px solid #1a1a18;break-after:avoid}
+.ar-pr-cls-num{font-size:18px;font-weight:900;color:#1a1a18}
+.ar-pr-cls-name{font-size:12px;font-weight:700;color:#1a1a18}
+.ar-pr-cls-meta{font-size:9px;color:#7a7970}
+.ar-pr-table{width:100%;border-collapse:collapse;margin-bottom:8px;break-inside:avoid}
+.ar-pr-table th{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7a7970;padding:7px 10px;background:#f5f2eb;border-bottom:1px solid #e4dfd4;text-align:left}
+.ar-pr-table td{padding:7px 10px;border-bottom:1px solid #ede9e0;font-size:11px;color:#2e2e2b;vertical-align:middle}
+.ar-pr-table td.n{color:#b0ada4;font-size:10px}
+.ar-pr-table td.nm{font-weight:600}
+.ar-pr-table tr.a td.nm{color:#dc2626}
+.ar-pr-table tr.a{background:#fef2f2}
+.ar-pr-table tr:last-child td{border-bottom:none}
+.ar-pr-badge{display:inline-flex;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
+.ar-pr-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
+.ar-pr-badge.a{background:#fef2f2;color:#dc2626;border:1px solid rgba(220,38,38,.18)}
+.ar-pr-footer{border-top:1px solid #e4dfd4;padding-top:9px;display:flex;justify-content:space-between;font-size:8px;color:#b0ada4;margin-top:16px}
 </style>
 </head>
 <body>
@@ -1650,6 +1757,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="sb-item" id="nav-briefing" onclick="setView('briefing',this)">
         <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
         <div class="sb-item-label">Daily Brief</div>
+      </div>
+      <div class="sb-item" id="nav-attendance" onclick="setView('attendance',this)">
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></div>
+        <div class="sb-item-label">Attendance Report</div>
       </div>
     </div>
     <div class="sb-divider"></div>
@@ -1770,6 +1881,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
     <div id="vHomework" class="page-pad hidden"></div>
     <div id="vSubject" class="page-pad hidden"></div>
     <div id="vBriefing" class="page-pad hidden"></div>
+    <div id="vAttendance" class="page-pad hidden"></div>
   </main>
 </div>
 
@@ -2008,8 +2120,8 @@ function setView(v,btn){
   CUR_VIEW=v;
   document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
-  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject','vBriefing'].forEach(function(id){g(id).classList.add('hidden');});
-  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity',briefing:'Daily Briefing'};
+  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject','vBriefing','vAttendance'].forEach(function(id){g(id).classList.add('hidden');});
+  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity',briefing:'Daily Briefing',attendance:'Attendance Report'};
   // Show/hide progress print button
   var pgPrintBtn=g('pgPrintBtn');
   if(pgPrintBtn) pgPrintBtn.style.display=(v==='progress'?'inline-flex':'none');
@@ -2050,6 +2162,7 @@ function renderAll(){
   else if(CUR_VIEW==='homework')   renderHomework();
   else if(CUR_VIEW==='subject')    renderSubjectView();
   else if(CUR_VIEW==='briefing')   renderBriefing();
+  else if(CUR_VIEW==='attendance') renderAttendanceReport();
   buildPrintDoc(data,'ALL','','ALL');
 }
 
@@ -5438,6 +5551,399 @@ function briefToast(msg){
   if(!t){t=document.createElement('div');t.id='briefToastEl';t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;z-index:9999;pointer-events:none;transition:opacity .3s';document.body.appendChild(t);}
   t.textContent=msg;t.style.opacity='1';
   clearTimeout(t._tid);t._tid=setTimeout(function(){t.style.opacity='0';},2000);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ATTENDANCE REPORT TAB
+   Replaces the need for the separate /student/attendancereport page —
+   same date-calendar + class/board filtering + per-class photo grid +
+   PDF/copy exports, reusing the dashboard's already-loaded ATTENDANCE,
+   PHOTO_MAP and ATT_PCT (no second API call) and its shared helpers
+   (resolveName, pctPill, attDateToYMD, sylLabel, kpiCard, emptyState).
+   ══════════════════════════════════════════════════════════════════ */
+var AR_INITED    = false;
+var AR_CUR_DATE  = '';
+var AR_CUR_CLS   = 'ALL';
+var AR_CUR_BOARD = 'ALL';
+var AR_CAL_YEAR, AR_CAL_MONTH;
+var AR_AVAIL_DATES = [];
+var AR_ALL_CLASSES = [];
+
+var AR_ICONS = {
+  print:'<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
+  copy:'<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+  calendar:'<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  people:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  check:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+  cross:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+  percent:'<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>'
+};
+
+function arMount(){
+  if(AR_INITED) return;
+  AR_INITED = true;
+  g('vAttendance').innerHTML =
+    '<div class="ar-hd">'+
+      '<div><div class="ar-hd-title">Attendance <em style="font-style:italic;color:var(--li)">Report</em></div>'+
+      '<div class="ar-hd-sub" id="arHdSub">Loading…</div></div>'+
+      '<div class="ar-hd-actions">'+
+        '<button class="ar-btn ar-btn-primary" onclick="arDoPrintAll()">'+AR_ICONS.print+'Print Report</button>'+
+        '<button class="ar-btn" id="arCopyAllBtn" onclick="arCopyAttSummary(this)">'+AR_ICONS.copy+'<span class="ar-btn-lbl">Copy Summary</span></button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="ar-controls">'+
+      '<div class="ar-date-wrap" id="arDateWrap">'+
+        '<div class="ar-date-display" id="arDateDisplay" onclick="arToggleCalendar()">'+
+          AR_ICONS.calendar+'<span id="arDateDisplayTxt">Select date</span><span class="ar-date-arrow">▾</span>'+
+        '</div>'+
+        '<div class="ar-date-dropdown" id="arDateDropdown">'+
+          '<div class="ar-dd-head"><button class="ar-dd-nav" onclick="arCalPrev()">‹</button><span id="arCalLabel"></span><button class="ar-dd-nav" onclick="arCalNext()">›</button></div>'+
+          '<div class="ar-dd-cal" id="arCalGrid"></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ar-ctrl-sep"></div>'+
+      '<div class="ar-tabs" id="arClsTabs"></div>'+
+      '<div class="ar-ctrl-sep"></div>'+
+      '<div class="ar-tabs">'+
+        '<button class="ar-tab on" id="arBtAll" onclick="arSetBoard(\'ALL\')">All Boards</button>'+
+        '<button class="ar-tab" id="arBtState" onclick="arSetBoard(\'STATE\')">Kerala State</button>'+
+        '<button class="ar-tab" id="arBtCbse" onclick="arSetBoard(\'CBSE\')">CBSE</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="ar-kpi-strip" id="arKpiStrip"></div>'+
+    '<div id="arClassBlocks"></div>';
+
+  document.addEventListener('click', function(e){
+    var wrap=g('arDateWrap');
+    if(wrap && AR_INITED && !wrap.contains(e.target)){
+      g('arDateDropdown').classList.remove('open');
+      g('arDateDisplay').classList.remove('open');
+    }
+  });
+}
+
+function renderAttendanceReport(){
+  arMount();
+
+  var dset={}, cset={};
+  ATTENDANCE.forEach(function(r){
+    var d=attDateToYMD(r.date);
+    if(d) dset[d]=true;
+    if(r.class) cset[r.class]=true;
+  });
+  AR_AVAIL_DATES = Object.keys(dset).sort();
+  AR_ALL_CLASSES = Object.keys(cset).sort(function(a,b){return (+a)-(+b)||a.localeCompare(b);});
+
+  if(!AR_CUR_DATE){
+    AR_CUR_DATE = AR_AVAIL_DATES.indexOf(todayYMD())>-1 ? todayYMD() : (AR_AVAIL_DATES[AR_AVAIL_DATES.length-1]||'');
+  }
+  if(AR_CUR_DATE){
+    var p=AR_CUR_DATE.split('-'); AR_CAL_YEAR=+p[0]; AR_CAL_MONTH=+p[1]-1;
+  } else if(AR_CAL_YEAR===undefined){
+    AR_CAL_YEAR=NOW.getFullYear(); AR_CAL_MONTH=NOW.getMonth();
+  }
+
+  arBuildClsTabs();
+  arUpdateDateDisplay();
+  arRenderCalendar();
+  arRenderBody();
+}
+
+function arBuildClsTabs(){
+  var html='<button class="ar-tab'+(AR_CUR_CLS==='ALL'?' on':'')+'" onclick="arSetCls(\'ALL\',this)">All Classes</button>';
+  AR_ALL_CLASSES.forEach(function(c){
+    html+='<button class="ar-tab'+(c===AR_CUR_CLS?' on':'')+'" onclick="arSetCls(\''+c+'\',this)">Class '+esc(c)+'</button>';
+  });
+  g('arClsTabs').innerHTML=html;
+}
+function arSetCls(cls,btn){
+  AR_CUR_CLS=cls;
+  document.querySelectorAll('#arClsTabs .ar-tab').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  arRenderBody();
+}
+function arSetBoard(board){
+  AR_CUR_BOARD=board;
+  g('arBtAll').classList.toggle('on',board==='ALL');
+  g('arBtState').classList.toggle('on',board==='STATE');
+  g('arBtCbse').classList.toggle('on',board==='CBSE');
+  arRenderBody();
+}
+
+function arToggleCalendar(){
+  var dd=g('arDateDropdown'), disp=g('arDateDisplay');
+  var open=dd.classList.toggle('open');
+  disp.classList.toggle('open',open);
+  if(open) arRenderCalendar();
+}
+function arCalPrev(){AR_CAL_MONTH--;if(AR_CAL_MONTH<0){AR_CAL_MONTH=11;AR_CAL_YEAR--;}arRenderCalendar();}
+function arCalNext(){AR_CAL_MONTH++;if(AR_CAL_MONTH>11){AR_CAL_MONTH=0;AR_CAL_YEAR++;}arRenderCalendar();}
+function arRenderCalendar(){
+  g('arCalLabel').textContent=MONTHS[AR_CAL_MONTH]+' '+AR_CAL_YEAR;
+  var firstDOW=new Date(AR_CAL_YEAR,AR_CAL_MONTH,1).getDay();
+  var daysInMonth=new Date(AR_CAL_YEAR,AR_CAL_MONTH+1,0).getDate();
+  var todayStr=todayYMD();
+  var html='<div class="ar-dow-row">'+DAYS_S.map(function(d){return '<div class="ar-dow">'+d+'</div>';}).join('')+'</div>';
+  var cells=[];
+  for(var i=0;i<firstDOW;i++)cells.push({empty:true});
+  for(var d=1;d<=daysInMonth;d++){
+    var dStr=AR_CAL_YEAR+'-'+pad(AR_CAL_MONTH+1)+'-'+pad(d);
+    cells.push({d:d,str:dStr,hasData:AR_AVAIL_DATES.indexOf(dStr)>-1,isToday:dStr===todayStr,isSel:dStr===AR_CUR_DATE});
+  }
+  while(cells.length%7!==0)cells.push({empty:true});
+  for(var w=0;w<cells.length;w+=7){
+    html+='<div class="ar-dd-week">';
+    for(var wd=0;wd<7;wd++){
+      var cell=cells[w+wd];
+      if(cell.empty){html+='<div class="ar-dd-day empty"></div>';continue;}
+      var cls='ar-dd-day';
+      if(cell.hasData)cls+=' has-data';
+      if(cell.isToday)cls+=' today';
+      if(cell.isSel)cls+=' selected';
+      html+='<div class="'+cls+'" onclick="arSelectDate(\''+cell.str+'\')">'+cell.d+'</div>';
+    }
+    html+='</div>';
+  }
+  g('arCalGrid').innerHTML=html;
+}
+function arSelectDate(d){
+  AR_CUR_DATE=d;
+  arUpdateDateDisplay();
+  arRenderCalendar();
+  g('arDateDropdown').classList.remove('open');
+  g('arDateDisplay').classList.remove('open');
+  arRenderBody();
+}
+function arUpdateDateDisplay(){
+  g('arDateDisplayTxt').textContent=AR_CUR_DATE?fmtShort(AR_CUR_DATE):'Select date';
+  g('arHdSub').textContent=AR_CUR_DATE?fmtLong(AR_CUR_DATE):'No attendance data recorded yet';
+}
+
+function arRenderBody(){
+  if(!AR_CUR_DATE){
+    g('arKpiStrip').innerHTML='';
+    g('arClassBlocks').innerHTML=emptyState('📅','No attendance data','No attendance has been recorded yet.','');
+    return;
+  }
+  var rows=ATTENDANCE.filter(function(r){
+    if(attDateToYMD(r.date)!==AR_CUR_DATE)return false;
+    if(AR_CUR_CLS!=='ALL'&&r.class!==AR_CUR_CLS)return false;
+    if(AR_CUR_BOARD!=='ALL'&&r.syllabus!==AR_CUR_BOARD)return false;
+    return true;
+  });
+
+  var total=rows.length, present=rows.filter(function(r){return r.status==='Present';}).length;
+  var absent=total-present, pct=total?Math.round(present/total*100):0;
+
+  g('arKpiStrip').innerHTML=
+    kpiCard(AR_ICONS.people,total,'Total Marked','var(--li)','var(--li-dim)','')+
+    kpiCard(AR_ICONS.check,present,'Present','var(--li)','var(--li-dim)','')+
+    kpiCard(AR_ICONS.cross,absent,'Absent','var(--red)','var(--red-dim)','')+
+    kpiCard(AR_ICONS.percent,pct+'%','Attendance Rate','var(--blue)','var(--blue-dim)','');
+
+  var clsList = AR_CUR_CLS==='ALL'
+    ? AR_ALL_CLASSES.filter(function(c){return rows.some(function(r){return r.class===c;});})
+    : (rows.length?[AR_CUR_CLS]:[]);
+
+  if(!clsList.length){
+    g('arClassBlocks').innerHTML=emptyState('📋','No attendance data','No records found for this date/filter combination.','');
+    return;
+  }
+
+  var html='';
+  clsList.forEach(function(cls){
+    var cr=rows.filter(function(r){return r.class===cls;});
+    if(!cr.length)return;
+    var cp=cr.filter(function(r){return r.status==='Present';}).length;
+    var ca=cr.length-cp;
+    var cpct=cr.length?Math.round(cp/cr.length*100):0;
+    var syls=Array.from(new Set(cr.map(function(r){return r.syllabus;}))).sort(function(a,b){
+      if(a==='STATE')return -1;if(b==='STATE')return 1;return (a||'').localeCompare(b||'');
+    });
+    var markedBy=Array.from(new Set(cr.map(function(r){return r.marked_by;}).filter(Boolean))).join(', ');
+
+    html+='<div class="att-block">';
+    html+='<div class="att-hd">';
+    html+='<div class="att-title">Class '+esc(cls)+(markedBy?' <span style="font-weight:400;color:var(--text3);font-size:11px">· Marked by '+esc(markedBy)+'</span>':'')+'</div>';
+    html+='<span class="badge badge-g">'+cp+' Present</span>';
+    html+='<span class="badge badge-r">'+ca+' Absent</span>';
+    html+='<span class="badge badge-b">'+cpct+'%</span>';
+    html+='<button class="ar-icon-btn" onclick="arDoPrintClass(\''+cls+'\')" title="Print Class '+esc(cls)+'">'+AR_ICONS.print+'PDF</button>';
+    html+='<button class="ar-icon-btn" onclick="arCopyClassSummary(\''+cls+'\',this)" title="Copy Summary">'+AR_ICONS.copy+'<span class="ar-btn-lbl">Copy</span></button>';
+    html+='</div>';
+
+    html+='<div class="ar-cls-body">';
+    syls.forEach(function(syl){
+      var sr=cr.filter(function(r){return r.syllabus===syl;}).sort(function(a,b){return resolveName(a).localeCompare(resolveName(b));});
+      var sp=sr.filter(function(r){return r.status==='Present';}).length;
+      html+='<div class="ar-board-section">';
+      html+='<div class="ar-board-tag '+(syl==='STATE'?'st':'cb')+'"><span class="ar-board-dot"></span>'+esc(sylLabel(syl))+'</div>';
+      html+='<span class="ar-board-meta">'+sp+'/'+sr.length+' present</span>';
+      html+='<div class="ar-stu-grid">';
+      sr.forEach(function(r,idx){
+        var ab=r.status==='Absent';
+        var nm=resolveName(r);
+        var photo=PHOTO_MAP[r.student_id]||r.photo||'';
+        var av=photo
+          ?'<img class="ar-sc-photo" src="'+photo+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="ar-sc-mono" style="display:none">'+mn(nm)+'</div>'
+          :'<div class="ar-sc-mono">'+mn(nm)+'</div>';
+        html+='<div class="ar-sc'+(ab?' ab':'')+'" style="animation-delay:'+(idx*0.02)+'s">'+av+
+          '<div class="ar-sc-info"><div class="ar-sc-name">'+esc(nm)+'</div></div>'+
+          pctPill(r.student_id)+
+          '<span class="ar-sc-badge '+(ab?'a':'p')+'">'+(ab?'Absent':'Present')+'</span>'+
+        '</div>';
+      });
+      html+='</div></div>';
+    });
+    html+='</div></div>';
+  });
+  g('arClassBlocks').innerHTML=html;
+}
+
+/* ── PRINT (reuses the shared #printDoc container/media-print rule) ── */
+function arBuildPrintDoc(rows, classes, singleCls){
+  var total=rows.length, present=rows.filter(function(r){return r.status==='Present';}).length;
+  var absent=total-present, pct=total?Math.round(present/total*100):0;
+  var issued=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var html='<div class="ar-pr-doc">';
+  html+='<div class="ar-pr-lh"><div><div class="ar-pr-brand">SEHR <span>ACADEMY</span></div><div class="ar-pr-brand-sub">Vadanappally, Thrissur, Kerala · sehracademy.com</div></div>'+
+    '<div><div class="ar-pr-r-title">Attendance Report</div><div class="ar-pr-r-sub">'+(singleCls?'Class '+esc(singleCls)+' · ':'')+fmtLong(AR_CUR_DATE)+'</div><div class="ar-pr-r-sub">Generated: '+issued+'</div></div></div>';
+  html+='<div class="ar-pr-stripe"></div>';
+  html+='<div class="ar-pr-summary">'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv">'+total+'</div><div class="ar-pr-sl">Total</div></div>'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv g">'+present+'</div><div class="ar-pr-sl">Present</div></div>'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv r">'+absent+'</div><div class="ar-pr-sl">Absent</div></div>'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv">'+pct+'%</div><div class="ar-pr-sl">Rate</div></div>'+
+  '</div>';
+
+  var clsToShow=singleCls?[singleCls]:classes;
+  clsToShow.forEach(function(cls){
+    var cr=rows.filter(function(r){return r.class===cls;});
+    if(!cr.length)return;
+    var syls=Array.from(new Set(cr.map(function(r){return r.syllabus;}))).sort(function(a,b){if(a==='STATE')return -1;if(b==='STATE')return 1;return (a||'').localeCompare(b||'');});
+    syls.forEach(function(syl){
+      var sr=cr.filter(function(r){return r.syllabus===syl;}).sort(function(a,b){return resolveName(a).localeCompare(resolveName(b));});
+      var sp=sr.filter(function(r){return r.status==='Present';}).length;
+      html+='<div class="ar-pr-cls-head"><div class="ar-pr-cls-num">'+esc(cls)+'</div><div><div class="ar-pr-cls-name">Class '+esc(cls)+' · '+esc(sylLabel(syl))+'</div><div class="ar-pr-cls-meta">'+sp+'/'+sr.length+' present</div></div></div>';
+      html+='<table class="ar-pr-table"><thead><tr><th style="width:30px"></th><th>#</th><th>Name</th><th>Status</th></tr></thead><tbody>';
+      sr.forEach(function(r,i){
+        var ab=r.status==='Absent';
+        html+='<tr'+(ab?' class="a"':'')+'>'+
+          '<td>'+mn(resolveName(r))+'</td>'+
+          '<td class="n">'+(i+1)+'</td>'+
+          '<td class="nm">'+esc(resolveName(r))+'</td>'+
+          '<td><span class="ar-pr-badge '+(ab?'a':'p')+'">'+r.status+'</span></td>'+
+        '</tr>';
+      });
+      html+='</tbody></table>';
+    });
+  });
+  html+='<div class="ar-pr-footer"><div>SEHR Academy · Attendance Report · '+fmtLong(AR_CUR_DATE)+'</div><div>sehracademy.com</div></div>';
+  html+='</div>';
+  g('printDoc').innerHTML=html;
+}
+function arDoPrintAll(){
+  var rows=ATTENDANCE.filter(function(r){
+    if(attDateToYMD(r.date)!==AR_CUR_DATE)return false;
+    if(AR_CUR_BOARD!=='ALL'&&r.syllabus!==AR_CUR_BOARD)return false;
+    return true;
+  });
+  var cls=AR_ALL_CLASSES.filter(function(c){return rows.some(function(r){return r.class===c;});});
+  arBuildPrintDoc(rows,cls,null);
+  setTimeout(function(){window.print();},80);
+}
+function arDoPrintClass(cls){
+  var rows=ATTENDANCE.filter(function(r){
+    return attDateToYMD(r.date)===AR_CUR_DATE && r.class===cls && (AR_CUR_BOARD==='ALL'||r.syllabus===AR_CUR_BOARD);
+  });
+  arBuildPrintDoc(rows,[cls],cls);
+  setTimeout(function(){window.print();},80);
+}
+
+/* ── COPY TO CLIPBOARD ── */
+function arBuildClassSummaryText(rows,cls){
+  var present=rows.filter(function(r){return r.status==='Present';});
+  var absent=rows.filter(function(r){return r.status==='Absent';});
+  var pct=rows.length?Math.round(present.length/rows.length*100):0;
+  var lines=[];
+  lines.push('*SEHR Academy — Attendance Report*');
+  lines.push('📅 '+fmtLong(AR_CUR_DATE));
+  lines.push('🏫 Class '+cls);
+  lines.push('');
+  lines.push('*Summary*');
+  lines.push('✅ Present: '+present.length);
+  lines.push('❌ Absent:  '+absent.length);
+  lines.push('📊 Rate:    '+pct+'%');
+  if(absent.length){
+    lines.push('');
+    lines.push('*Absent:*');
+    absent.forEach(function(r,i){lines.push((i+1)+'. '+resolveName(r));});
+  }
+  lines.push('');
+  lines.push('_SEHR Academy Attendance System_');
+  return lines.join('\n');
+}
+function arCopyClassSummary(cls,btn){
+  var rows=ATTENDANCE.filter(function(r){
+    return attDateToYMD(r.date)===AR_CUR_DATE && r.class===cls && (AR_CUR_BOARD==='ALL'||r.syllabus===AR_CUR_BOARD);
+  });
+  if(!rows.length){alert('No data for Class '+cls);return;}
+  arCopyText(arBuildClassSummaryText(rows,cls),btn,'Copy');
+}
+function arBuildAttSummaryText(){
+  var rows=ATTENDANCE.filter(function(r){
+    if(attDateToYMD(r.date)!==AR_CUR_DATE)return false;
+    if(AR_CUR_BOARD!=='ALL'&&r.syllabus!==AR_CUR_BOARD)return false;
+    return true;
+  });
+  if(!rows.length)return null;
+  var total=rows.length,present=rows.filter(function(r){return r.status==='Present';}).length;
+  var absent=total-present,pct=total?Math.round(present/total*100):0;
+  var lines=[];
+  lines.push('*SEHR Academy — Attendance Update*');
+  lines.push('📅 '+fmtLong(AR_CUR_DATE));
+  lines.push('');
+  lines.push('👥 Total: '+total);
+  lines.push('✅ Present: '+present);
+  lines.push('❌ Absent: '+absent+' | 📊 '+pct+'%');
+  var clsList=AR_ALL_CLASSES.filter(function(c){return rows.some(function(r){return r.class===c;});});
+  clsList.forEach(function(cls){
+    var cr=rows.filter(function(r){return r.class===cls;});
+    var cp=cr.filter(function(r){return r.status==='Present';}).length;
+    var abList=cr.filter(function(r){return r.status==='Absent';});
+    lines.push('');
+    lines.push('*Class '+cls+'* — '+cp+'/'+cr.length);
+    if(abList.length)abList.forEach(function(r){lines.push('  ❌ '+resolveName(r));});
+    else lines.push('  ✅ All present');
+  });
+  lines.push('');
+  lines.push('_SEHR Academy_');
+  return lines.join('\n');
+}
+function arCopyAttSummary(btn){
+  if(!AR_CUR_DATE){alert('Select a date first');return;}
+  var text=arBuildAttSummaryText();
+  if(!text){alert('No data for this date');return;}
+  arCopyText(text,btn,'Copy Summary');
+}
+function arCopyText(text,btn,defaultLbl){
+  var lbl=btn.querySelector('.ar-btn-lbl')||btn;
+  function done(){
+    btn.classList.add('copied');
+    lbl.textContent='Copied!';
+    setTimeout(function(){btn.classList.remove('copied');lbl.textContent=defaultLbl;},2000);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){arCopyFallback(text,done);});
+  } else {arCopyFallback(text,done);}
+}
+function arCopyFallback(text,cb){
+  var ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+  if(cb)cb();
 }
 
 init();
