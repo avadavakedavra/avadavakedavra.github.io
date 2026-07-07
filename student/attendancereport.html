@@ -77,6 +77,11 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
 .date-display.open .date-display-arrow{transform:rotate(180deg)}
 .date-dropdown{position:absolute;top:calc(100% + 6px);left:0;background:var(--wh);border:1.5px solid var(--c3);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.14);z-index:500;min-width:220px;overflow:hidden;display:none;animation:fIn .18s var(--e1)}
 .date-dropdown.open{display:block}
+/* Dims the summary/class content behind the open calendar so it doesn't
+   look like the stat cards vanished — sits below .controls (z-index 200)
+   and the dropdown itself (z-index 500), above unpositioned page content. */
+.cal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,15,13,.28);backdrop-filter:blur(1.5px);z-index:150}
+.cal-backdrop.on{display:block}
 .dd-head{background:var(--ink);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
 .dd-month-nav{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f);font-size:13px;transition:color .15s}
 .dd-month-nav:hover{color:#fff}
@@ -266,6 +271,9 @@ body{font-family:var(--f);background:var(--cr);color:var(--ink);font-size:14px;l
     </div>
   </div>
 </div>
+
+<!-- CALENDAR BACKDROP -->
+<div class="cal-backdrop" id="calBackdrop" onclick="closeCalendar()"></div>
 
 <!-- VIEW TABS -->
 <div class="view-tabs-bar">
@@ -705,10 +713,17 @@ function renderHistory(){
 
 /* ── CALENDAR ── */
 function toggleCalendar(){
-  var dd=g('dateDropdown'), disp=g('dateDisplay');
+  var dd=g('dateDropdown'), disp=g('dateDisplay'), bd=g('calBackdrop');
   var open=dd.classList.toggle('open');
   disp.classList.toggle('open',open);
+  bd.classList.toggle('on',open);
   if(open) renderCalendar();
+}
+
+function closeCalendar(){
+  g('dateDropdown').classList.remove('open');
+  g('dateDisplay').classList.remove('open');
+  g('calBackdrop').classList.remove('on');
 }
 
 function calPrev(){ CAL_MONTH--; if(CAL_MONTH<0){CAL_MONTH=11;CAL_YEAR--;} renderCalendar(); }
@@ -752,8 +767,7 @@ function selectDate(d){
   CUR_DATE = d;
   updateDateDisplay();
   renderCalendar();
-  g('dateDropdown').classList.remove('open');
-  g('dateDisplay').classList.remove('open');
+  closeCalendar();
   render();
 }
 
@@ -774,9 +788,8 @@ function updateDateDisplay(){
 
 // Close calendar when clicking outside
 document.addEventListener('click', function(e){
-  if(!g('datePickerWrap').contains(e.target)){
-    g('dateDropdown').classList.remove('open');
-    g('dateDisplay').classList.remove('open');
+  if(!g('datePickerWrap').contains(e.target) && e.target!==g('calBackdrop')){
+    closeCalendar();
   }
 });
 
