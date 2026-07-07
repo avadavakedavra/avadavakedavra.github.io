@@ -1046,7 +1046,7 @@ function selectTest(testId){
 }
 
 function loadClassStudents(cls, syllabus){
-  apiTest({action:'getStudentNames',class:cls,appkey:ADMIN_PASS},function(data,err){
+  apiTest({action:'getStudentNames',class:cls,syllabus:syllabus,appkey:ADMIN_PASS},function(data,err){
     CLASS_STUDENTS = (!err && data && data.success) ? (data.students||[]) : [];
     var sel = g('inStudentSel');
     if(!CLASS_STUDENTS.length){

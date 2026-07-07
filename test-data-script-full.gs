@@ -751,7 +751,6 @@ function getStudentNames(p) {
     if (!r[idx['id']]) continue;
     if (String(r[idx['class']]||'').trim() !== cls) continue;
     if (syl && String(r[idx['syllabus']]||'').trim() !== syl) continue;
-    if (String(r[idx['admission_status']]||'').trim().toLowerCase() !== 'active') continue;
     students.push({
       id:        String(r[idx['id']]       ||'').trim(),
       full_name: String(r[idx['full_name']] ||'').trim()
