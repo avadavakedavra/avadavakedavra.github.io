@@ -1502,20 +1502,20 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .hw-ov-table tr:hover td{background:var(--bg3)}
 .hw-ov-rank-worst{background:rgba(220,38,38,.04)}
 /* ══ DAILY BRIEFING ══ */
-.brief-connect{max-width:420px;margin:48px auto;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:32px}
-.brief-connect-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:6px}
-.brief-connect-sub{font-size:12px;color:var(--text3);margin-bottom:24px}
-.brief-connect-inp{width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:var(--f);font-size:13px;outline:none}
-.brief-connect-inp:focus{border-color:var(--li)}
-.brief-connect-btn{margin-top:10px;width:100%;padding:10px;background:var(--li);color:#fff;border:none;border-radius:8px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer}
-.brief-connect-err{margin-top:8px;font-size:11px;color:var(--red);min-height:16px}
-.brief-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.brief-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
 .brief-hdr-title{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;color:var(--text);letter-spacing:-.3px;line-height:1.1}
 .brief-hdr-meta{font-size:11px;color:var(--text3);margin-top:5px;font-weight:600}
-.brief-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.brief-reload-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f)}
-.brief-reload-btn:hover{border-color:var(--li);color:var(--li)}
-.brief-copy-all-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--li);border-radius:8px;background:rgba(139,197,63,.1);color:var(--li);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.brief-filters{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px 18px;margin-bottom:22px}
+.brief-filt-fld{display:flex;flex-direction:column;gap:6px}
+.brief-filt-fld label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.brief-filt-fld select{min-width:180px}
+.brief-filt-fld select:disabled{opacity:.5;cursor:not-allowed}
+.brief-load-btn{padding:9px 22px;background:var(--li);color:#1a1a18;border:none;border-radius:8px;font-family:var(--f);font-size:13px;font-weight:800;cursor:pointer;transition:background .15s}
+.brief-load-btn:hover:not(:disabled){background:var(--li2)}
+.brief-load-btn:disabled{opacity:.4;cursor:not-allowed}
+.brief-empty{text-align:center;padding:56px 24px;color:var(--text3)}
+.brief-empty-title{font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px}
+.brief-empty-sub{font-size:12px}
 .brief-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden}
 .brief-card-hdr{padding:16px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .brief-card-teacher{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px}
@@ -1541,10 +1541,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .brief-students-count{font-size:32px;font-weight:900;color:var(--li);line-height:1}
 .brief-students-label{font-size:11px;color:var(--text3);font-weight:600}
 .brief-students-detail{font-size:10px;color:var(--text3);margin-top:2px}
-.brief-no-sched{text-align:center;padding:56px 24px;color:var(--text3)}
-.brief-no-sched-title{font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px}
-.brief-no-sched-sub{font-size:12px}
-@media print{.brief-connect,.brief-actions,.brief-card-copy,.brief-reload-btn,.brief-copy-all-btn{display:none!important}}
+@media print{.brief-filters,.brief-card-copy{display:none!important}}
 
 /* ══ ATTENDANCE REPORT TAB ══ */
 .ar-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
@@ -1910,13 +1907,12 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 /* ══ CONFIG ══ */
 var SESSION_API = 'https://script.google.com/macros/s/AKfycbx-qC_S-wZnjvBW9LZGTU4Y36ZHMTVlgS__DIAl1ZZ404beOfAyJwwtGsv352UbiyOR/exec';
 var ATT_API     = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
-var PAY_API     = 'https://script.google.com/macros/s/AKfycbyRQ4RUhG6AudtPkKQYoC05nvwSyEN2b85Ben6G5RY24AzF5BLMddFuyCaagF1EtRiqLg/exec';
 var SESS_PASS   = 'sehr2026';
 var WA_NUM      = '919539409586';
-var PAY_SCHED   = [];
-var PAY_TEACHERS= [];
-var PAY_LOADED  = false;
 var HW_SEL      = ''; // '' = overview, 'cls|board' = detail
+var BRIEF_CLS   = '';
+var BRIEF_BOARD = '';
+var BRIEF_SUBJ  = '';
 
 /* ══ STATE ══ */
 var SESSIONS        = [];
@@ -5223,291 +5219,210 @@ function selectDate(d){CUR_DATE=d;updateDPDisp();renderDP();g('dpDrop').classLis
 function updateDPDisp(){g('dpTxt').textContent=CUR_DATE?fmtShort(CUR_DATE):'Today';}
 document.addEventListener('click',function(e){if(!g('dpWrap').contains(e.target)){g('dpDrop').classList.remove('open');g('dpDisp').style.borderColor='';}});
 
-/* ══ DAILY BRIEFING ══ */
-function parseSylFromNotes(notes){
-  if(!notes) return '';
-  var n=notes.toUpperCase().trim();
-  if(n==='CBSE') return 'CBSE';
-  if(n==='STATE') return 'STATE';
-  // fallback for legacy free-text notes
-  if(n.indexOf('CBSE')>-1) return 'CBSE';
-  if(n.indexOf('STATE')>-1||n.indexOf('KERALA')>-1) return 'STATE';
-  return '';
-}
-function sylToBoard(syl){
-  // map schedule syllabus code → academic session board label
-  if(syl==='CBSE') return 'CBSE';
-  if(syl==='STATE') return 'Kerala State';
-  return '';
-}
-
-function loadPaySchedule(pass, onDone, onErr){
-  fetch(PAY_API+'?action=getData&password='+encodeURIComponent(pass))
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(!d||!d.sessions){onErr('Invalid password or no data.');return;}
-      PAY_SCHED=Array.isArray(d.sessions)?d.sessions:[];
-      PAY_TEACHERS=Array.isArray(d.teachers)?d.teachers:[];
-      PAY_LOADED=true;
-      try{sessionStorage.setItem('brief_pass',pass);}catch(e){}
-      onDone();
-    })
-    .catch(function(){onErr('Network error. Check your connection.');});
-}
-
-function briefTodayDDMMYYYY(){
-  var n=new Date();
-  return pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+n.getFullYear();
-}
-
+/* ══ DAILY BRIEFING ══
+   Manually driven by Class → Syllabus → Subject dropdowns instead of
+   pulling from the separate payroll/schedule system — that system
+   required its own password and didn't reliably reflect which class
+   actually needs a brief today. Everything here comes from the
+   session/attendance data the dashboard already has loaded. */
 function renderBriefing(){
   var el=g('vBriefing');
   if(!el) return;
 
-  if(!PAY_LOADED){
-    var savedPass='';
-    try{savedPass=sessionStorage.getItem('brief_pass')||'';}catch(e){}
-    el.innerHTML='<div class="brief-connect">'+
-      '<div class="brief-connect-title">Daily <em>Briefing</em></div>'+
-      '<div class="brief-connect-sub">Connect to the schedule system to load today\'s planned classes, session history and pending homework for each teacher.</div>'+
-      '<label style="font-size:11px;font-weight:700;color:var(--text3);display:block;margin-bottom:6px">Schedule Password</label>'+
-      '<input class="brief-connect-inp" id="briefPassInp" type="password" placeholder="Enter schedule password" value="'+esc(savedPass)+'">'+
-      '<button class="brief-connect-btn" onclick="briefConnect()">Load Today\'s Schedule</button>'+
-      '<div class="brief-connect-err" id="briefConnErr"></div>'+
-    '</div>';
-    return;
-  }
-
-  var todayStr=briefTodayDDMMYYYY();
-  var scheduled=PAY_SCHED.filter(function(r){
-    return r.date_ddmmyyyy===todayStr && String(r.status||'').toLowerCase()==='scheduled';
-  }).sort(function(a,b){
-    return String(a.start_time||'').localeCompare(String(b.start_time||''));
-  });
-
-  var todayYMD=CUR_DATE; // already in YYYY-MM-DD
-
-  var html='<div class="brief-hdr">'+
-    '<div>'+
-      '<div class="brief-hdr-title">Daily <em>Briefing</em></div>'+
-      '<div class="brief-hdr-meta">'+fmtLong(todayYMD)+' · '+scheduled.length+' class'+(scheduled.length!==1?'es':'')+' scheduled</div>'+
-    '</div>'+
-    '<div class="brief-actions">'+
-      '<button class="brief-reload-btn" onclick="briefReload()">'+
-        '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg> Refresh'+
-      '</button>'+
-      (scheduled.length?'<button class="brief-copy-all-btn" onclick="copyAllBriefs()">Copy All Briefs</button>':'')+''+
-    '</div>'+
-  '</div>';
-
-  if(!scheduled.length){
-    html+='<div class="brief-no-sched">'+
-      '<div class="brief-no-sched-title">No classes scheduled for today</div>'+
-      '<div class="brief-no-sched-sub">Add sessions in the schedule system or check another date.</div>'+
-    '</div>';
-    el.innerHTML=html;
-    return;
-  }
-
-  scheduled.forEach(function(sch,idx){
-    var teacherRec=PAY_TEACHERS.filter(function(t){return t.teacher_id===sch.teacher_id;})[0];
-    var teacherName=teacherRec?(teacherRec.full_name||teacherRec.name||''):(sch.teacher_name||'');
-    if(!teacherName) teacherName=sch.teacher_id||'Unknown Teacher';
-    var teacherContact=teacherRec?(teacherRec.contact_whatsapp||teacherRec.contact||''):'';
-    var cls=String(sch.class||'');
-    var subj=String(sch.subject||'');
-    var syl=parseSylFromNotes(sch.notes);
-    var mode=String(sch.mode||'');
-    var time=String(sch.start_time||'');
-    var dur=sch.duration?sch.duration+'hr':'';
-    var notes=String(sch.notes||'');
-
-    var board=sylToBoard(syl);
-
-    // Last 3 sessions of same class+subject+board from academic log
-    var history=SESSIONS.filter(function(r){
-      return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<=todayYMD;
-    }).sort(function(a,b){
-      return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
-    }).slice(0,3);
-
-    // Pending homework for this class+board (all subjects)
-    var hwSessions=SESSIONS.filter(function(r){
-      return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
-    }).sort(function(a,b){
-      return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
-    }).slice(0,6);
-
-    // Expected students: avg attendance filtered by class+board (syllabus)
-    var attHistory=ATTENDANCE.filter(function(r){
-      return r.class===cls && (!board||(r.syllabus&&r.syllabus===boardToSyl(board))) && attDateToYMD(r.date)<todayYMD;
-    });
-    var attDates=Array.from(new Set(attHistory.map(function(r){return attDateToYMD(r.date);}))).sort().slice(-10);
-    var totalAtt=attHistory.filter(function(r){return attDates.indexOf(attDateToYMD(r.date))>-1&&r.status==='Present';}).length;
-    var totalStu=attHistory.filter(function(r){return attDates.indexOf(attDateToYMD(r.date))>-1;}).length;
-    var avgPct=totalStu>0?Math.round(totalAtt/totalStu*100):0;
-    var totalEnrolled=Array.from(new Set(ATTENDANCE.filter(function(r){return r.class===cls&&(!board||(r.syllabus&&r.syllabus===boardToSyl(board)));}).map(function(r){return r.student_id;}))).length;
-
-    html+='<div class="brief-card" id="brief-card-'+idx+'">';
-
-    // Header
-    html+='<div class="brief-card-hdr">'+
-      '<div style="flex:1">'+
-        '<div class="brief-card-teacher">'+esc(teacherName)+'</div>'+
-        '<div class="brief-card-meta">Class '+esc(cls)+(syl?' · '+esc(syl==='STATE'?'Kerala State':'CBSE'):'')+' · '+esc(subj)+(time?' · '+esc(time):'')+(dur?' ('+esc(dur)+')':'')+(mode?' · '+esc(mode):'')+'</div>'+
-        '<div class="brief-card-badges">'+
-          (syl?'<span class="badge badge-b">'+(syl==='STATE'?'Kerala State':'CBSE')+'</span>':'')+
-          '<span class="badge badge-n">Class '+esc(cls)+'</span>'+
-          (mode?'<span class="badge badge-a">'+esc(mode)+'</span>':'')+
-        '</div>'+
+  el.innerHTML='<div class="brief-hdr">'+
+      '<div>'+
+        '<div class="brief-hdr-title">Daily <em>Briefing</em></div>'+
+        '<div class="brief-hdr-meta">Select a class, syllabus and subject to generate today\'s brief.</div>'+
       '</div>'+
-      '<button class="brief-card-copy" onclick="copyTeacherBrief('+idx+')">'+
-        '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'+
-        'Copy Brief'+
-      '</button>'+
-    '</div>';
+    '</div>'+
+    '<div class="brief-filters">'+
+      '<div class="brief-filt-fld"><label>Class</label><select class="sv-sel" id="briefClsSel" onchange="onBriefClsBoardChange()">'+
+        '<option value="">Select class…</option>'+
+        ALL_CLS.map(function(c){return '<option value="'+esc(c)+'"'+(c===BRIEF_CLS?' selected':'')+'>Class '+esc(c)+'</option>';}).join('')+
+      '</select></div>'+
+      '<div class="brief-filt-fld"><label>Syllabus</label><select class="sv-sel" id="briefBoardSel" onchange="onBriefClsBoardChange()">'+
+        '<option value="">Select syllabus…</option>'+
+        '<option value="Kerala State"'+(BRIEF_BOARD==='Kerala State'?' selected':'')+'>Kerala State</option>'+
+        '<option value="CBSE"'+(BRIEF_BOARD==='CBSE'?' selected':'')+'>CBSE</option>'+
+      '</select></div>'+
+      '<div class="brief-filt-fld"><label>Subject</label><select class="sv-sel" id="briefSubjSel" onchange="onBriefSubjChange()" disabled>'+
+        '<option value="">Select class &amp; syllabus first</option>'+
+      '</select></div>'+
+      '<button class="brief-load-btn" id="briefLoadBtn" onclick="loadDailyBrief()" disabled>Load Brief</button>'+
+    '</div>'+
+    '<div id="briefResult"><div class="brief-empty"><div class="brief-empty-title">No brief loaded yet</div><div class="brief-empty-sub">Choose a class, syllabus and subject above, then click Load Brief.</div></div></div>';
 
-    // Expected students
-    if(totalEnrolled>0){
-      html+='<div class="brief-section">'+
-        '<div class="brief-section-label">Expected Students</div>'+
-        '<div class="brief-students-wrap">'+
-          '<div class="brief-students-count">'+totalEnrolled+'</div>'+
-          '<div>'+
-            '<div class="brief-students-label">enrolled in Class '+esc(cls)+'</div>'+
-            (avgPct>0?'<div class="brief-students-detail">Avg attendance last '+attDates.length+' sessions: '+avgPct+'%</div>':'')+
-          '</div>'+
-        '</div>'+
-      '</div>';
-    }
-
-    // Session history
-    html+='<div class="brief-section">'+
-      '<div class="brief-section-label">Last '+(history.length?history.length:0)+' Session'+(history.length!==1?'s':'')+' — '+esc(subj)+' Class '+esc(cls)+'</div>';
-    if(history.length){
-      history.forEach(function(r){
-        var chaps=(r.chapters||'').split(' | ').filter(Boolean);
-        html+='<div class="brief-hist-row">'+
-          '<div class="brief-hist-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
-          '<div class="brief-hist-body">'+
-            '<div class="brief-hist-teacher">'+esc(r.teacher_name||'')+'</div>'+
-            (r.topics?'<div class="brief-hist-topics">'+esc(r.topics)+'</div>':'')+
-            (chaps.length?'<div class="brief-hist-chapters">'+chaps.join(', ')+'</div>':'')+
-          '</div>'+
-        '</div>';
-      });
-    } else {
-      html+='<div style="font-size:12px;color:var(--text3);font-style:italic">No prior sessions recorded for this subject and class.</div>';
-    }
-    html+='</div>';
-
-    // Pending homework
-    if(hwSessions.length){
-      html+='<div class="brief-section">'+
-        '<div class="brief-section-label">Pending Homework to Follow Up</div>';
-      hwSessions.forEach(function(r){
-        var chaps=(r.chapters||'').split(' | ').filter(Boolean);
-        html+='<div class="brief-hw-item">'+
-          '<div class="brief-hw-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
-          '<div class="brief-hw-text">'+
-            esc(r.homework)+
-            '<div style="margin-top:4px;font-size:10px;color:var(--text3)">'+
-              (r.teacher_name?'👤 '+esc(r.teacher_name):'')+(chaps.length?' &nbsp;·&nbsp; 📖 '+esc(chaps.join(', ')):'')+'</div>'+
-          '</div>'+
-        '</div>';
-      });
-      html+='</div>';
-    }
-
-    html+='</div>'; // end brief-card
-  });
-
-  el.innerHTML=html;
-  window._briefScheduled=scheduled;
-}
-
-function briefConnect(){
-  var inp=g('briefPassInp');
-  var errEl=g('briefConnErr');
-  if(!inp) return;
-  var pass=(inp.value||'').trim();
-  if(!pass){errEl.textContent='Enter the schedule password.';return;}
-  errEl.textContent='Loading…';
-  loadPaySchedule(pass, function(){
-    errEl.textContent='';
-    renderBriefing();
-  }, function(msg){
-    errEl.textContent=msg;
-  });
-}
-
-function briefReload(){
-  PAY_LOADED=false;
-  PAY_SCHED=[];
-  PAY_TEACHERS=[];
-  var savedPass='';
-  try{savedPass=sessionStorage.getItem('brief_pass')||'';}catch(e){}
-  if(savedPass){
-    var el=g('vBriefing');
-    if(el) el.innerHTML='<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px">Refreshing schedule…</div>';
-    loadPaySchedule(savedPass, function(){renderBriefing();}, function(msg){renderBriefing();});
-  } else {
-    renderBriefing();
+  if(BRIEF_CLS&&BRIEF_BOARD){
+    populateBriefSubjects(BRIEF_CLS,BRIEF_BOARD,BRIEF_SUBJ);
+  }
+  if(BRIEF_CLS&&BRIEF_BOARD&&BRIEF_SUBJ){
+    renderBriefResult(BRIEF_CLS,BRIEF_BOARD,BRIEF_SUBJ);
   }
 }
 
-function buildTeacherBriefText(idx){
-  var scheduled=window._briefScheduled||[];
-  var sch=scheduled[idx];
-  if(!sch) return '';
-  var teacherRec=PAY_TEACHERS.filter(function(t){return t.teacher_id===sch.teacher_id;})[0];
-  var teacherName=teacherRec?(teacherRec.full_name||teacherRec.name||''):(sch.teacher_name||'');
-  if(!teacherName) teacherName=sch.teacher_id||'Teacher';
-  var cls=String(sch.class||'');
-  var subj=String(sch.subject||'');
-  var syl=parseSylFromNotes(sch.notes);
-  var time=String(sch.start_time||'');
-  var dur=sch.duration?sch.duration+'hr':'';
-  var mode=String(sch.mode||'');
-  var todayYMD=CUR_DATE;
+function populateBriefSubjects(cls,board,selected){
+  var subjSel=g('briefSubjSel');
+  var subjSet={};
+  SESSIONS.forEach(function(r){if(r.class===cls&&r.board===board&&r.subject)subjSet[r.subject]=true;});
+  var subjs=Object.keys(subjSet).sort();
+  if(subjs.length){
+    subjSel.innerHTML='<option value="">Select subject…</option>'+
+      subjs.map(function(s){return '<option value="'+esc(s)+'"'+(s===selected?' selected':'')+'>'+esc(s)+'</option>';}).join('');
+    subjSel.disabled=false;
+  } else {
+    subjSel.innerHTML='<option value="">No subjects found</option>';
+    subjSel.disabled=true;
+  }
+  updateBriefLoadBtn();
+}
 
-  var board=sylToBoard(syl);
-  var history=SESSIONS.filter(function(r){
-    return r.class===cls && r.subject===subj && (!board||r.board===board) && sessDateToYMD(r.date)<=todayYMD;
-  }).sort(function(a,b){
-    return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
-  }).slice(0,3);
+function onBriefClsBoardChange(){
+  BRIEF_CLS=g('briefClsSel').value;
+  BRIEF_BOARD=g('briefBoardSel').value;
+  BRIEF_SUBJ='';
+  if(BRIEF_CLS&&BRIEF_BOARD){
+    populateBriefSubjects(BRIEF_CLS,BRIEF_BOARD,'');
+  } else {
+    var subjSel=g('briefSubjSel');
+    subjSel.innerHTML='<option value="">Select class &amp; syllabus first</option>';
+    subjSel.disabled=true;
+    updateBriefLoadBtn();
+  }
+}
+function onBriefSubjChange(){
+  updateBriefLoadBtn();
+}
+function updateBriefLoadBtn(){
+  BRIEF_SUBJ=g('briefSubjSel').value;
+  g('briefLoadBtn').disabled=!(BRIEF_CLS&&BRIEF_BOARD&&BRIEF_SUBJ);
+}
+
+function loadDailyBrief(){
+  if(!(BRIEF_CLS&&BRIEF_BOARD&&BRIEF_SUBJ))return;
+  renderBriefResult(BRIEF_CLS,BRIEF_BOARD,BRIEF_SUBJ);
+}
+
+function renderBriefResult(cls,board,subj){
+  var todayYMD=CUR_DATE;
+  var syl=boardToSyl(board);
+
+  var subjSessions=SESSIONS.filter(function(r){return r.class===cls&&r.board===board&&r.subject===subj;})
+    .sort(function(a,b){return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));});
+  var lastTeacher=subjSessions.length?(subjSessions[0].teacher_name||''):'';
+
+  var history=subjSessions.filter(function(r){return sessDateToYMD(r.date)<=todayYMD;}).slice(0,3);
 
   var hwSessions=SESSIONS.filter(function(r){
-    return r.class===cls && (!board||r.board===board) && (r.homework||'').trim()!=='';
+    return r.class===cls && r.board===board && (r.homework||'').trim()!=='';
   }).sort(function(a,b){
     return sessDateToYMD(b.date).localeCompare(sessDateToYMD(a.date));
-  }).slice(0,4);
+  }).slice(0,6);
 
+  var attHistory=ATTENDANCE.filter(function(r){
+    return r.class===cls && r.syllabus===syl && attDateToYMD(r.date)<todayYMD;
+  });
+  var attDates=Array.from(new Set(attHistory.map(function(r){return attDateToYMD(r.date);}))).sort().slice(-10);
+  var totalAtt=attHistory.filter(function(r){return attDates.indexOf(attDateToYMD(r.date))>-1&&r.status==='Present';}).length;
+  var totalStu=attHistory.filter(function(r){return attDates.indexOf(attDateToYMD(r.date))>-1;}).length;
+  var avgPct=totalStu>0?Math.round(totalAtt/totalStu*100):0;
+  var totalEnrolled=Array.from(new Set(ATTENDANCE.filter(function(r){return r.class===cls&&r.syllabus===syl;}).map(function(r){return r.student_id;}))).length;
+
+  var html='<div class="brief-card" id="brief-card-0">';
+
+  html+='<div class="brief-card-hdr">'+
+    '<div style="flex:1">'+
+      '<div class="brief-card-teacher">'+esc(subj)+(lastTeacher?' <span style="font-weight:500;color:var(--text3);font-size:12px">· last taught by '+esc(lastTeacher)+'</span>':'')+'</div>'+
+      '<div class="brief-card-meta">Class '+esc(cls)+' · '+esc(board)+'</div>'+
+      '<div class="brief-card-badges">'+
+        '<span class="badge badge-b">'+esc(board)+'</span>'+
+        '<span class="badge badge-n">Class '+esc(cls)+'</span>'+
+      '</div>'+
+    '</div>'+
+    '<button class="brief-card-copy" onclick="copyDailyBrief()">'+
+      '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'+
+      'Copy Brief'+
+    '</button>'+
+  '</div>';
+
+  if(totalEnrolled>0){
+    html+='<div class="brief-section">'+
+      '<div class="brief-section-label">Expected Students</div>'+
+      '<div class="brief-students-wrap">'+
+        '<div class="brief-students-count">'+totalEnrolled+'</div>'+
+        '<div>'+
+          '<div class="brief-students-label">enrolled in Class '+esc(cls)+'</div>'+
+          (avgPct>0?'<div class="brief-students-detail">Avg attendance last '+attDates.length+' sessions: '+avgPct+'%</div>':'')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  html+='<div class="brief-section">'+
+    '<div class="brief-section-label">Last '+(history.length?history.length:0)+' Session'+(history.length!==1?'s':'')+' — '+esc(subj)+' Class '+esc(cls)+'</div>';
+  if(history.length){
+    history.forEach(function(r){
+      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
+      html+='<div class="brief-hist-row">'+
+        '<div class="brief-hist-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
+        '<div class="brief-hist-body">'+
+          '<div class="brief-hist-teacher">'+esc(r.teacher_name||'')+'</div>'+
+          (r.topics?'<div class="brief-hist-topics">'+esc(r.topics)+'</div>':'')+
+          (chaps.length?'<div class="brief-hist-chapters">'+chaps.join(', ')+'</div>':'')+
+        '</div>'+
+      '</div>';
+    });
+  } else {
+    html+='<div style="font-size:12px;color:var(--text3);font-style:italic">No prior sessions recorded for this subject and class.</div>';
+  }
+  html+='</div>';
+
+  if(hwSessions.length){
+    html+='<div class="brief-section">'+
+      '<div class="brief-section-label">Pending Homework to Follow Up</div>';
+    hwSessions.forEach(function(r){
+      var chaps=(r.chapters||'').split(' | ').filter(Boolean);
+      html+='<div class="brief-hw-item">'+
+        '<div class="brief-hw-date">'+esc(fmtShort(sessDateToYMD(r.date)))+'</div>'+
+        '<div class="brief-hw-text">'+
+          esc(r.homework)+
+          '<div style="margin-top:4px;font-size:10px;color:var(--text3)">'+
+            (r.teacher_name?'👤 '+esc(r.teacher_name):'')+(chaps.length?' &nbsp;·&nbsp; 📖 '+esc(chaps.join(', ')):'')+'</div>'+
+        '</div>'+
+      '</div>';
+    });
+    html+='</div>';
+  }
+
+  html+='</div>'; // end brief-card
+  g('briefResult').innerHTML=html;
+  window._briefLast={cls:cls,board:board,subj:subj,lastTeacher:lastTeacher,history:history,hwSessions:hwSessions};
+}
+
+function buildDailyBriefText(){
+  var d=window._briefLast;
+  if(!d) return '';
   var sep='─────────────────';
   var lines=[];
   lines.push('📋 *SEHR Academy — Daily Briefing*');
-  lines.push('_'+fmtLong(todayYMD)+'_');
+  lines.push('_'+fmtLong(CUR_DATE)+'_');
   lines.push(sep);
   lines.push('');
-  lines.push('👤 *Teacher:* '+teacherName);
-  var boardLabel=syl==='STATE'?'Kerala State':syl==='CBSE'?'CBSE':'';
-  lines.push('📚 *Class '+cls+(boardLabel?' · '+boardLabel:'')+' · '+subj+'*');
-  if(time) lines.push('🕐 *Time:* '+time+(dur?' ('+dur+')':'')+(mode?' · '+mode:''));
+  if(d.lastTeacher) lines.push('👤 *Teacher:* '+d.lastTeacher);
+  lines.push('📚 *Class '+d.cls+' · '+d.board+' · '+d.subj+'*');
   lines.push('');
 
-  if(history.length){
-    lines.push('📖 *Recent Sessions — '+subj+', Class '+cls+':*');
-    history.forEach(function(r){
+  if(d.history.length){
+    lines.push('📖 *Recent Sessions — '+d.subj+', Class '+d.cls+':*');
+    d.history.forEach(function(r){
       lines.push('• '+fmtShort(sessDateToYMD(r.date))+' — '+(r.teacher_name||'')+(r.topics?' | '+r.topics:''));
       if(r.chapters&&r.chapters.trim()) lines.push('  _Chapters: '+r.chapters.replace(/ \| /g,', ')+'_');
     });
     lines.push('');
   }
 
-  if(hwSessions.length){
+  if(d.hwSessions.length){
     lines.push('✏️ *Pending Homework to Follow Up:*');
-    hwSessions.forEach(function(r){
+    d.hwSessions.forEach(function(r){
       var chaps=(r.chapters||'').split(' | ').filter(Boolean);
       lines.push('• '+fmtShort(sessDateToYMD(r.date))+' — '+r.homework);
       var meta=[];
@@ -5523,21 +5438,12 @@ function buildTeacherBriefText(idx){
   return lines.join('\n');
 }
 
-function copyTeacherBrief(idx){
-  var text=buildTeacherBriefText(idx);
+function copyDailyBrief(){
+  var text=buildDailyBriefText();
   if(!text) return;
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(function(){briefToast('Brief copied!');}).catch(function(){_copyFallback(text);});
   } else {_copyFallback(text);}
-}
-
-function copyAllBriefs(){
-  var scheduled=window._briefScheduled||[];
-  if(!scheduled.length) return;
-  var all=scheduled.map(function(_,i){return buildTeacherBriefText(i);}).join('\n\n---\n\n');
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(all).then(function(){briefToast('All briefs copied!');}).catch(function(){_copyFallback(all);});
-  } else {_copyFallback(all);}
 }
 
 function _copyFallback(text){
