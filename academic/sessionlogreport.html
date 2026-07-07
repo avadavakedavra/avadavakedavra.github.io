@@ -1665,6 +1665,8 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .ar-pr-table td.nm{font-weight:600}
 .ar-pr-table tr.a td.nm{color:#dc2626}
 .ar-pr-table tr.a{background:#fef2f2}
+.ar-pr-photo{width:26px;height:26px;border-radius:5px;object-fit:cover;border:1px solid #e4dfd4}
+.ar-pr-mono{width:26px;height:26px;border-radius:5px;background:#1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#8BC53F}
 .ar-pr-table tr:last-child td{border-bottom:none}
 .ar-pr-badge{display:inline-flex;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .ar-pr-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
@@ -6078,6 +6080,7 @@ function arBuildHistoryPrintDoc(stats, classes, singleCls){
     '<div class="ar-pr-sc"><div class="ar-pr-sv">'+stats.length+'</div><div class="ar-pr-sl">Students</div></div>'+
     '<div class="ar-pr-sc"><div class="ar-pr-sv g">'+avgPct+'%</div><div class="ar-pr-sl">Avg Attendance</div></div>'+
     '<div class="ar-pr-sc"><div class="ar-pr-sv r">'+below50+'</div><div class="ar-pr-sl">Below 50%</div></div>'+
+    '<div class="ar-pr-sc"><div class="ar-pr-sv" style="font-size:12px">'+monthLbl+'</div><div class="ar-pr-sl">Period</div></div>'+
   '</div>';
 
   var clsToShow=singleCls?[singleCls]:classes;
@@ -6088,14 +6091,26 @@ function arBuildHistoryPrintDoc(stats, classes, singleCls){
     syls.forEach(function(syl){
       var srows=cstats.filter(function(a){return a.syllabus===syl;}).sort(function(a,b){return a.name.localeCompare(b.name);});
       html+='<div class="ar-pr-cls-head"><div class="ar-pr-cls-num">'+esc(cls)+'</div><div><div class="ar-pr-cls-name">Class '+esc(cls)+' · '+esc(sylLabel(syl))+'</div><div class="ar-pr-cls-meta">'+srows.length+' students · '+monthLbl+'</div></div></div>';
-      html+='<table class="ar-pr-table"><thead><tr><th>#</th><th>Name</th><th>Sessions</th><th>Present</th><th>Attendance</th></tr></thead><tbody>';
+      html+='<table class="ar-pr-table"><thead><tr>'+
+        '<th style="width:32px"></th>'+
+        '<th style="width:20px">#</th>'+
+        '<th>Name</th>'+
+        '<th style="width:60px;text-align:center">Sessions</th>'+
+        '<th style="width:60px;text-align:center">Present</th>'+
+        '<th style="width:76px;text-align:center">Attendance</th>'+
+        '</tr></thead><tbody>';
       srows.forEach(function(a,i){
+        var photo=PHOTO_MAP[a.id]||'';
+        var av=photo
+          ?'<img class="ar-pr-photo" src="'+photo+'" alt="">'
+          :'<div class="ar-pr-mono">'+mn(a.name)+'</div>';
         html+='<tr'+(a.pct<50?' style="background:rgba(220,38,38,.07)"':'')+'>'+
+          '<td>'+av+'</td>'+
           '<td class="n">'+(i+1)+'</td>'+
           '<td class="nm">'+esc(a.name)+'</td>'+
-          '<td>'+a.sessions+'</td>'+
-          '<td>'+a.present+'</td>'+
-          '<td><span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pctBg(a.pct)+';color:'+pctColor(a.pct)+'">'+a.pct+'%</span></td>'+
+          '<td style="text-align:center">'+a.sessions+'</td>'+
+          '<td style="text-align:center">'+a.present+'</td>'+
+          '<td style="text-align:center"><span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:'+pctBg(a.pct)+';color:'+pctColor(a.pct)+'">'+a.pct+'%</span></td>'+
         '</tr>';
       });
       html+='</tbody></table>';
