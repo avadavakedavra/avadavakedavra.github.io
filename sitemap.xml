@@ -40,10 +40,24 @@
   </url>
 
   <url>
+    <loc>https://sehracademy.com/class10sslc</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://sehracademy.com/class11</loc>
     <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://sehracademy.com/class11commerce</loc>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -54,6 +68,13 @@
   </url>
 
   <!-- ── PROGRAMMES ── -->
+  <url>
+    <loc>https://sehracademy.com/individual</loc>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <url>
     <loc>https://sehracademy.com/onetooneclasses</loc>
     <lastmod>2026-03-11</lastmod>
@@ -81,6 +102,14 @@
     <lastmod>2026-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <!-- ── CONTACT ── -->
+  <url>
+    <loc>https://sehracademy.com/contact</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- ── RESOURCES ── -->
