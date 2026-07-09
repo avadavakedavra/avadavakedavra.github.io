@@ -210,9 +210,10 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .overdue-cls{font-size:10px;color:var(--muted)}
 .overdue-amt{font-size:12px;font-weight:700;color:var(--red);font-variant-numeric:tabular-nums}
 .overdue-days{font-size:10px;color:var(--muted);margin-top:1px;text-align:right}
-.overdue-wa{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 9px;border-radius:4px;background:#25D366;color:#fff;font-size:10px;font-weight:700;text-decoration:none;cursor:pointer;transition:background .14s}
-.overdue-wa:hover{background:#1ebe5c}
-.overdue-wa svg{width:11px;height:11px;flex-shrink:0}
+.overdue-copy{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 9px;border-radius:4px;background:var(--cream-2);color:var(--ink-3);font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:var(--f);transition:background .14s}
+.overdue-copy:hover{background:var(--cream-3)}
+.overdue-copy.copied{background:#dcfce7;color:#15803d}
+.overdue-copy svg{width:11px;height:11px;flex-shrink:0}
 .overdue-empty{padding:28px;text-align:center;color:var(--lime-2);font-size:13px;font-weight:600}
 
 .due-panel{background:var(--white);border:1.5px solid var(--amber-mid);border-left:4px solid var(--amber);border-radius:8px;box-shadow:var(--sh);overflow:hidden}
@@ -621,6 +622,7 @@ var S=[],VIEW='table',SCOL='name',SASC=true,FTAB='ALL',FSEARCH='';
 var F_CLASS=new Set(),F_FEE=new Set(),F_SYL=new Set(),F_GENDER=new Set();
 
 function g(id){return document.getElementById(id);}
+function copyMsg(btn,msg){navigator.clipboard.writeText(msg).then(function(){btn.classList.add('copied');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Copied!';setTimeout(function(){btn.classList.remove('copied');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Reminder';},2000);});}
 function qa(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
 function loaderOn(){g('loader').classList.add('on');}
 function loaderOff(){g('loader').classList.remove('on');}
