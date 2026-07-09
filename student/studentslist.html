@@ -210,9 +210,10 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .overdue-cls{font-size:10px;color:var(--muted)}
 .overdue-amt{font-size:12px;font-weight:700;color:var(--red);font-variant-numeric:tabular-nums}
 .overdue-days{font-size:10px;color:var(--muted);margin-top:1px;text-align:right}
-.overdue-wa{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 9px;border-radius:4px;background:#25D366;color:#fff;font-size:10px;font-weight:700;text-decoration:none;cursor:pointer;transition:background .14s}
-.overdue-wa:hover{background:#1ebe5c}
-.overdue-wa svg{width:11px;height:11px;flex-shrink:0}
+.overdue-copy{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 9px;border-radius:4px;background:var(--cream-2);color:var(--ink-3);font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:var(--f);transition:background .14s}
+.overdue-copy:hover{background:var(--cream-3)}
+.overdue-copy.copied{background:#dcfce7;color:#15803d}
+.overdue-copy svg{width:11px;height:11px;flex-shrink:0}
 .overdue-empty{padding:28px;text-align:center;color:var(--lime-2);font-size:13px;font-weight:600}
 
 .due-panel{background:var(--white);border:1.5px solid var(--amber-mid);border-left:4px solid var(--amber);border-radius:8px;box-shadow:var(--sh);overflow:hidden}
@@ -621,6 +622,7 @@ var S=[],VIEW='table',SCOL='name',SASC=true,FTAB='ALL',FSEARCH='';
 var F_CLASS=new Set(),F_FEE=new Set(),F_SYL=new Set(),F_GENDER=new Set();
 
 function g(id){return document.getElementById(id);}
+function copyMsg(btn,msg){navigator.clipboard.writeText(msg).then(function(){btn.classList.add('copied');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Copied!';setTimeout(function(){btn.classList.remove('copied');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Reminder';},2000);});}
 function qa(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
 function loaderOn(){g('loader').classList.add('on');}
 function loaderOff(){g('loader').classList.remove('on');}
@@ -885,13 +887,12 @@ function buildOverduePanel(overdue){
   g('overdueList').innerHTML=sorted.map(function(s){
     var amt=s.balance;
     var daysTag=s.days_overdue>0?s.days_overdue+'d overdue':'due';
-    var waMsg='Dear '+s.full_name+', your SEHR Academy fee of ₹'+fmtN(amt)+' is overdue ('+daysTag+'). Please make the payment at your earliest.\nUPI: sehracademy@sib\nBank: A/c 0317073000042446 | IFSC SIBL0000317 | South Indian Bank Vadanappally';
-    var waHref='https://wa.me/?text='+encodeURIComponent(waMsg);
+    var waMsg='Dear '+s.full_name+', your SEHR Academy pending fee of ₹'+fmtN(amt)+' is '+daysTag+'. Please make the payment at your earliest.\nUPI: sehracademy@sib\nBank: A/c 0317073000042446 | IFSC SIBL0000317 | South Indian Bank Vadanappally';
     return '<div class="overdue-item">'
       +'<div style="display:flex;align-items:center;gap:9px">'
       +'<div class="overdue-init">'+inits(s.full_name)+'</div>'
       +'<div><div class="overdue-name">'+esc(s.full_name)+'</div><div class="overdue-cls">'+esc(s.class)+' · '+esc(s.school_name||'—')+'</div>'
-      +'<a class="overdue-wa" href="'+waHref+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.556 4.117 1.514 5.85L.057 23.6l5.885-1.539A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.845 9.845 0 01-5.012-1.368l-.36-.213-3.49.913.931-3.4-.234-.35A9.869 9.869 0 012.1 12c0-5.459 4.441-9.9 9.9-9.9 5.46 0 9.9 4.441 9.9 9.9 0 5.46-4.44 9.9-9.9 9.9z"/></svg>WhatsApp</a>'
+      +'<button class="overdue-copy" onclick="copyMsg(this,\''+waMsg.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy Reminder</button>'
       +'</div></div>'
       +'<div style="text-align:right"><div class="overdue-amt">₹'+fmtN(amt)+'</div>'
       +'<div class="overdue-days">'+daysTag+'</div></div>'
