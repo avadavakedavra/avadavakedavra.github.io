@@ -1674,6 +1674,29 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .ar-pr-badge.p{background:rgba(34,197,94,.1);color:#16a34a}
 .ar-pr-badge.a{background:#fef2f2;color:#dc2626;border:1px solid rgba(220,38,38,.18)}
 .ar-pr-footer{border-top:1px solid #e4dfd4;padding-top:9px;display:flex;justify-content:space-between;font-size:8px;color:#b0ada4;margin-top:16px}
+
+/* ── Class Summary ── */
+.cs-stat-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:1200px){.cs-stat-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.cs-stat-strip{grid-template-columns:repeat(2,1fr)}}
+.cs-stat-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.cs-stat-val{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.3px;line-height:1.1}
+.cs-stat-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.cs-callout-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+@media(max-width:900px){.cs-callout-row{grid-template-columns:1fr}}
+.cs-callout{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.cs-callout-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cs-callout-title{font-size:10.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.cs-callout-val{font-size:14px;font-weight:800;color:var(--text);margin-top:3px}
+.cs-callout-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.cs-bar-track{width:56px;height:6px;border-radius:3px;background:var(--bg4);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px}
+.cs-bar-fill{height:100%;border-radius:3px}
+.cs-sched-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.cs-sched-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:20px;font-size:11.5px;font-weight:700}
+.cs-cls-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:12px}
+.cs-cls-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.cs-cls-card-title{font-size:13px;font-weight:800;color:var(--text)}
+.cs-cls-card-meta{font-size:11px;color:var(--text3)}
 </style>
 </head>
 <body>
@@ -1753,6 +1776,10 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       <div class="sb-item on" id="nav-overview" onclick="setView('overview',this)">
         <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
         <div class="sb-item-label">Overview</div>
+      </div>
+      <div class="sb-item" id="nav-classSummary" onclick="setView('classSummary',this)">
+        <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12.5" y="8" width="3" height="10"/><rect x="18" y="5" width="3" height="13"/></svg></div>
+        <div class="sb-item-label">Class Summary</div>
       </div>
       <div class="sb-item" id="nav-day" onclick="setView('day',this)">
         <div class="sb-item-icon"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
@@ -1898,6 +1925,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
       </div>
       <div id="alertDashboard"></div>
     </div>
+    <div id="vClassSummary" class="page-pad hidden"></div>
     <div id="vDay" class="page-pad hidden"></div>
     <div id="vProgress" class="page-pad hidden"></div>
     <div id="vChapters" class="page-pad hidden"></div>
@@ -2143,8 +2171,8 @@ function setView(v,btn){
   CUR_VIEW=v;
   document.querySelectorAll('.sb-item[id^="nav-"]').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
-  ['vOverview','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject','vBriefing','vAttendance'].forEach(function(id){g(id).classList.add('hidden');});
-  var titles={overview:'Overview',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity',briefing:'Daily Briefing',attendance:'Attendance Report'};
+  ['vOverview','vClassSummary','vDay','vProgress','vChapters','vTeachers','vHomework','vSubject','vBriefing','vAttendance'].forEach(function(id){g(id).classList.add('hidden');});
+  var titles={overview:'Overview',classSummary:'Class Summary',day:'Day View',progress:'Syllabus Progress',chapters:'Chapter Coverage',teachers:'Teachers',homework:'Homework Tracker',subject:'Subject Continuity',briefing:'Daily Briefing',attendance:'Attendance Report'};
   // Show/hide progress print button
   var pgPrintBtn=g('pgPrintBtn');
   if(pgPrintBtn) pgPrintBtn.style.display=(v==='progress'?'inline-flex':'none');
@@ -2178,6 +2206,7 @@ function getAtt(cls){return ATTENDANCE.filter(function(r){return attDateToYMD(r.
 function renderAll(){
   var data=getSessions();
   if(CUR_VIEW==='overview')  renderOverview(data);
+  else if(CUR_VIEW==='classSummary') renderClassSummary(data);
   else if(CUR_VIEW==='day')  renderDay(data);
   else if(CUR_VIEW==='progress')  renderProgress(data);
   else if(CUR_VIEW==='chapters')  renderChapters(data);
@@ -2845,14 +2874,7 @@ function renderOverview(data){
   var el=g('alertDashboard');
   el.innerHTML='<div class="ov-loading"><div class="loading-ring"></div>Analysing data…</div>';
 
-  if(OV_HW_TRACK===null){
-    apiSess({action:'getHomeworkTracking',appkey:SESS_PASS},function(hwData,err){
-      OV_HW_TRACK=(!err&&hwData&&hwData.success)?(hwData.records||[]):[];
-      buildAlertDashboard(el);
-    });
-  } else {
-    buildAlertDashboard(el);
-  }
+  loadHWTracking(function(){buildAlertDashboard(el);});
 }
 
 function buildAlertDashboard(el){
@@ -3180,6 +3202,275 @@ function kpiCard(ic,v,l,accent,bg,sparkField){
     (vals.length?'<div class="kpi-trend-row">'+sparkHtml(vals,accent)+'</div>':'')+
     '</div>';
 } // simple trend indicator
+
+/* ══ SHARED: homework tracking loader (fetch-once cache, also used by Overview) ══ */
+function loadHWTracking(cb){
+  if(OV_HW_TRACK!==null){cb(OV_HW_TRACK);return;}
+  apiSess({action:'getHomeworkTracking',appkey:SESS_PASS},function(hwData,err){
+    OV_HW_TRACK=(!err&&hwData&&hwData.success)?(hwData.records||[]):[];
+    cb(OV_HW_TRACK);
+  });
+}
+
+/* ══ SHARED: period-aware attendance filter (mirrors getSessions() for ATTENDANCE) ══ */
+function getAttendanceFiltered(){
+  var fc=parseCurCls();
+  return ATTENDANCE.filter(function(r){
+    if(fc.cls && r.class!==fc.cls) return false;
+    if(fc.board){
+      var b=r.syllabus==='STATE'?'Kerala State':r.syllabus;
+      if(b!==fc.board) return false;
+    }
+    var d=attDateToYMD(r.date);
+    if(CUR_PERIOD==='day')  return d===CUR_DATE;
+    if(CUR_PERIOD==='week') {var cd=new Date(CUR_DATE),from=new Date(cd);from.setDate(cd.getDate()-6);var rd=new Date(d);return rd>=from&&rd<=cd;}
+    if(CUR_PERIOD==='month'){var p=CUR_DATE.split('-');return d.startsWith(p[0]+'-'+p[1]);}
+    return true;
+  });
+}
+
+/* ══ CLASS SUMMARY ══ */
+function csSylCode(board){return board==='Kerala State'?'STATE':board;}
+
+// Aggregates one class(+board)'s session rows into per-subject stats: hours, homework,
+// exams, chapter coverage (vs MASTER_CHAPTERS) and homework submission completion (vs OV_HW_TRACK).
+function buildSubjectStats(sessRows,cls,board){
+  var subjMap={};
+  sessRows.forEach(function(r){
+    var s=r.subject||'Unknown';
+    if(!subjMap[s])subjMap[s]={subject:s,sessions:0,mins:0,hw:0,exams:0,chapterSet:{},lastDate:'',boardCounts:{}};
+    var sd=subjMap[s];
+    sd.sessions++;sd.mins+=(+r.duration_mins||0);
+    if(r.homework&&r.homework.trim())sd.hw++;
+    if(r.session_type==='Exam Discussion')sd.exams++;
+    (r.chapters||'').split(' | ').filter(Boolean).forEach(function(c){sd.chapterSet[c]=true;});
+    var d=sessDateToYMD(r.date);if(d&&d>sd.lastDate)sd.lastDate=d;
+    var b=r.board||'';sd.boardCounts[b]=(sd.boardCounts[b]||0)+1;
+  });
+  Object.keys(subjMap).forEach(function(s){
+    var sd=subjMap[s];
+    var bestBoard=board||Object.keys(sd.boardCounts).sort(function(a,b){return sd.boardCounts[b]-sd.boardCounts[a];})[0]||'';
+    sd.board=bestBoard;
+    var master=MASTER_CHAPTERS[cls+'|'+bestBoard+'|'+s]||[];
+    sd.totalChapters=master.length;
+    sd.coveredChapters=Object.keys(sd.chapterSet).length;
+    sd.completionPct=master.length?Math.min(100,Math.round(sd.coveredChapters/master.length*100)):null;
+
+    // Homework completion: (assignments given in this window) × (enrolled students) vs not-submitted tracking records
+    var assignDates={};
+    sessRows.forEach(function(r){if(r.subject===s&&r.homework&&r.homework.trim())assignDates[sessDateToYMD(r.date)]=true;});
+    var totalAssign=Object.keys(assignDates).length;
+    var syl=csSylCode(bestBoard);
+    var enrolled={};
+    ATTENDANCE.forEach(function(r){if(r.class===cls&&(!bestBoard||r.syllabus===syl))enrolled[r.student_id]=true;});
+    var enrolledCount=Object.keys(enrolled).length;
+    var notSub=0;
+    (OV_HW_TRACK||[]).forEach(function(r){
+      var b2=r.syllabus==='STATE'?'Kerala State':r.syllabus;
+      if(r.class===cls&&(!bestBoard||b2===bestBoard)&&r.subject===s&&assignDates[r.hw_date])notSub++;
+    });
+    sd.hwCompletionPct=(totalAssign&&enrolledCount)?Math.max(0,Math.round((1-notSub/(totalAssign*enrolledCount))*100)):null;
+  });
+  return subjMap;
+}
+
+function csStat(val,lbl){
+  return '<div class="cs-stat-card"><div class="cs-stat-val">'+esc(String(val))+'</div><div class="cs-stat-lbl">'+lbl+'</div></div>';
+}
+function csCallout(bg,icon,title,val,sub){
+  return '<div class="cs-callout">'+
+    '<div class="cs-callout-ic" style="background:'+bg+'">'+icon+'</div>'+
+    '<div><div class="cs-callout-title">'+title+'</div><div class="cs-callout-val">'+val+'</div><div class="cs-callout-sub">'+sub+'</div></div>'+
+  '</div>';
+}
+function csMini(lbl,val){
+  return '<div style="text-align:right"><div style="font-size:13px;font-weight:800;color:var(--text)">'+esc(String(val))+'</div>'+
+    '<div style="font-size:9.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">'+lbl+'</div></div>';
+}
+
+function renderClassSummary(data){
+  var el=g('vClassSummary');
+  el.innerHTML='<div class="loading-overlay"><div class="loading-ring"></div><div class="loading-txt">Building class summary…</div></div>';
+  loadMasterChapters(function(){
+    loadHWTracking(function(){
+      var fc=parseCurCls();
+      if(fc.cls) buildClassSummarySingle(data,fc,el);
+      else buildClassSummaryAll(data,el);
+    });
+  });
+}
+
+function buildClassSummarySingle(data,fc,el){
+  if(!data.length){el.innerHTML=noDataMsg();return;}
+
+  var totalMins=data.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+  var totalHW=data.filter(function(r){return r.homework&&r.homework.trim();}).length;
+  var totalExams=data.filter(function(r){return r.session_type==='Exam Discussion';}).length;
+
+  var subjMap=buildSubjectStats(data,fc.cls,fc.board);
+  var subjects=Object.values(subjMap).sort(function(a,b){return b.mins-a.mins;});
+
+  var attRows=getAttendanceFiltered();
+  var attP=attRows.filter(function(r){return r.status==='Present';}).length;
+  var attPct=attRows.length?Math.round(attP/attRows.length*100):null;
+
+  var covPcts=subjects.filter(function(s){return s.completionPct!==null;}).map(function(s){return s.completionPct;});
+  var avgCov=covPcts.length?Math.round(covPcts.reduce(function(a,b){return a+b;},0)/covPcts.length):null;
+
+  // Subjects that exist in the master syllabus but have never been taught (any time), for this class
+  var masterSubjSet={};
+  Object.keys(MASTER_CHAPTERS).forEach(function(k){
+    var p=k.split('|');
+    if(p[0]===fc.cls&&(!fc.board||p[1]===fc.board)&&MASTER_CHAPTERS[k].length)masterSubjSet[p[2]]=true;
+  });
+  var allTimeSess=SESSIONS.filter(function(r){
+    if(fc.cls&&r.class!==fc.cls)return false;
+    if(fc.board&&r.board!==fc.board)return false;
+    return true;
+  });
+  var everTaughtSet={};
+  allTimeSess.forEach(function(r){everTaughtSet[r.subject]=true;});
+  var neverTaught=Object.keys(masterSubjSet).filter(function(s){return !everTaughtSet[s];}).sort();
+
+  var gaps=computeSubjectGaps(); // all-time, already scoped to fc.cls/fc.board
+
+  var maxHrsSubj=subjects.length?subjects[0]:null;
+  var coveredSubjects=subjects.filter(function(s){return s.completionPct!==null;});
+  var leastCovSubj=coveredSubjects.length?coveredSubjects.slice().sort(function(a,b){return a.completionPct-b.completionPct;})[0]:null;
+
+  var periodLabels={day:'today',week:'this week',month:'this month',all:'all time'};
+  var pLbl=periodLabels[CUR_PERIOD]||CUR_PERIOD;
+
+  var SVG_TREND='<svg width="16" height="16" fill="none" stroke="var(--li3)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>';
+  var SVG_LOW='<svg width="16" height="16" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>';
+  var SVG_CHECK='<svg fill="none" stroke="var(--li3)" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  var html='';
+
+  html+='<div class="cs-stat-strip">'+
+    csStat(hrsFmt(totalMins),'Hours Taught')+
+    csStat(String(data.length),'Sessions')+
+    csStat(String(totalHW),'Homework Given')+
+    csStat(String(totalExams),'Exams / Tests')+
+    csStat(attPct!==null?attPct+'%':'—','Attendance')+
+    csStat(avgCov!==null?avgCov+'%':'—','Avg Syllabus Coverage')+
+  '</div>';
+
+  html+='<div class="cs-callout-row">';
+  html+=csCallout('rgba(139,197,63,.12)',SVG_TREND,'Most-Taught Subject',
+    maxHrsSubj?esc(maxHrsSubj.subject):'—',
+    maxHrsSubj?(hrsFmt(maxHrsSubj.mins)+' across '+maxHrsSubj.sessions+' session'+(maxHrsSubj.sessions!==1?'s':'')):'No sessions logged '+pLbl);
+  html+=csCallout('rgba(245,158,11,.12)',SVG_LOW,'Least Coverage Subject',
+    leastCovSubj?(esc(leastCovSubj.subject)+' · '+leastCovSubj.completionPct+'%'):(neverTaught.length?esc(neverTaught[0]):'—'),
+    leastCovSubj?(leastCovSubj.coveredChapters+' of '+leastCovSubj.totalChapters+' chapters covered'):(neverTaught.length?'Not started yet':'No syllabus data available for comparison'));
+  html+='</div>';
+
+  html+='<div class="sec-hdr"><div class="sec-title">Subjects To Schedule Next</div>'+
+    '<span style="font-size:11px;color:var(--text3)">Based on full session history, not just '+pLbl+'</span></div>';
+  if(!neverTaught.length&&!gaps.length){
+    html+='<div class="alert-all-clear" style="margin-bottom:20px">'+
+      '<div style="width:36px;height:36px;border-radius:9px;background:rgba(139,197,63,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">'+SVG_CHECK+'</div>'+
+      '<div><div style="font-size:13px;font-weight:800;color:var(--text)">All subjects on track</div>'+
+      '<div style="font-size:11px;color:var(--text3);margin-top:2px">Every subject in the syllabus has been taught within the last week.</div></div>'+
+    '</div>';
+  } else {
+    html+='<div class="cs-sched-wrap" style="margin-bottom:20px">';
+    neverTaught.forEach(function(s){
+      html+='<span class="cs-sched-chip" style="background:rgba(220,38,38,.12);color:var(--red)">'+esc(s)+' · never taught</span>';
+    });
+    gaps.forEach(function(gp){
+      var crit=gp.days>=14;
+      var style=crit?'background:rgba(220,38,38,.12);color:var(--red)':'background:rgba(245,158,11,.12);color:var(--amber)';
+      html+='<span class="cs-sched-chip" style="'+style+'">'+esc(gp.subj)+' · '+gp.days+'d gap</span>';
+    });
+    html+='</div>';
+  }
+
+  html+='<div class="sec-hdr"><div class="sec-title">Subject Breakdown'+(fc.board?' · '+esc(fc.board):'')+'</div>'+
+    '<span style="font-size:11px;color:var(--text3)">'+subjects.length+' subject'+(subjects.length!==1?'s':'')+' · '+pLbl+'</span></div>';
+
+  if(!subjects.length){
+    html+=noDataMsg();
+  } else {
+    html+='<div style="overflow-x:auto"><table class="data-table cs-subj-table"><thead><tr>'+
+      '<th>Subject</th><th>Sessions</th><th>Hours</th><th>Homework</th><th>HW Completion</th><th>Chapters</th><th>Syllabus Coverage</th><th>Exams</th><th>Last Taught</th>'+
+      '</tr></thead><tbody>';
+    subjects.forEach(function(s){
+      var covColor=s.completionPct===null?'var(--text3)':s.completionPct>=75?'var(--li)':s.completionPct>=40?'var(--amber)':'var(--red)';
+      var hwColor=s.hwCompletionPct===null?'var(--text3)':s.hwCompletionPct<50?'var(--red)':s.hwCompletionPct<75?'var(--amber)':'var(--li)';
+      html+='<tr>'+
+        '<td style="font-weight:700">'+esc(s.subject)+'</td>'+
+        '<td>'+s.sessions+'</td>'+
+        '<td>'+hrsFmt(s.mins)+'</td>'+
+        '<td>'+s.hw+'</td>'+
+        '<td>'+(s.hwCompletionPct!==null?('<span style="font-weight:800;color:'+hwColor+'">'+s.hwCompletionPct+'%</span>'):'<span style="color:var(--text3)">—</span>')+'</td>'+
+        '<td>'+s.coveredChapters+'/'+(s.totalChapters||'—')+'</td>'+
+        '<td>'+(s.completionPct!==null?('<span class="cs-bar-track"><span class="cs-bar-fill" style="width:'+s.completionPct+'%;background:'+covColor+'"></span></span><span style="font-weight:800;color:'+covColor+'">'+s.completionPct+'%</span>'):'<span style="color:var(--text3)">—</span>')+'</td>'+
+        '<td>'+s.exams+'</td>'+
+        '<td style="color:var(--text3);font-size:11px">'+(s.lastDate?fmtShort(s.lastDate):'—')+'</td>'+
+      '</tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+
+  el.innerHTML=html;
+}
+
+function buildClassSummaryAll(data,el){
+  if(!data.length){el.innerHTML=noDataMsg();return;}
+
+  var attAll=getAttendanceFiltered();
+  var clsMap={};
+  data.forEach(function(r){
+    var key=r.class+'|'+(r.board||'');
+    if(!clsMap[key])clsMap[key]={cls:r.class,board:r.board||'',rows:[]};
+    clsMap[key].rows.push(r);
+  });
+  var keys=Object.keys(clsMap).sort(function(a,b){
+    var ca=clsMap[a],cb=clsMap[b];
+    return ca.cls.localeCompare(cb.cls,undefined,{numeric:true})||ca.board.localeCompare(cb.board);
+  });
+
+  var periodLabels={day:'today',week:'this week',month:'this month',all:'all time'};
+  var pLbl=periodLabels[CUR_PERIOD]||CUR_PERIOD;
+
+  var html='<div class="sec-hdr"><div class="sec-title">All Classes · Summary</div>'+
+    '<span style="font-size:11px;color:var(--text3)">'+keys.length+' class'+(keys.length!==1?'es':'')+' · '+pLbl+'</span></div>'+
+    '<div style="font-size:11.5px;color:var(--text3);margin:-8px 0 16px">Select a specific class from the sidebar for the full subject-by-subject breakdown, scheduling suggestions and homework completion detail.</div>';
+
+  keys.forEach(function(k){
+    var c=clsMap[k];
+    var totalMins=c.rows.reduce(function(a,r){return a+(+r.duration_mins||0);},0);
+    var totalHW=c.rows.filter(function(r){return r.homework&&r.homework.trim();}).length;
+    var totalExams=c.rows.filter(function(r){return r.session_type==='Exam Discussion';}).length;
+    var subjMap=buildSubjectStats(c.rows,c.cls,c.board);
+    var subjects=Object.values(subjMap).sort(function(a,b){return b.mins-a.mins;});
+    var topSubj=subjects.length?subjects[0]:null;
+    var covPcts=subjects.filter(function(s){return s.completionPct!==null;}).map(function(s){return s.completionPct;});
+    var avgCov=covPcts.length?Math.round(covPcts.reduce(function(a,b){return a+b;},0)/covPcts.length):null;
+    var attRows=attAll.filter(function(r){
+      if(r.class!==c.cls)return false;
+      if(c.board){var b=r.syllabus==='STATE'?'Kerala State':r.syllabus;if(b!==c.board)return false;}
+      return true;
+    });
+    var attP=attRows.filter(function(r){return r.status==='Present';}).length;
+    var attPct=attRows.length?Math.round(attP/attRows.length*100):null;
+
+    html+='<div class="cs-cls-card"><div class="cs-cls-card-hd">'+
+      '<div><div class="cs-cls-card-title">Class '+esc(c.cls)+(c.board?' · '+esc(c.board):'')+'</div>'+
+      '<div class="cs-cls-card-meta">'+c.rows.length+' sessions · '+hrsFmt(totalMins)+'</div></div>'+
+      '<div style="display:flex;gap:16px;flex-wrap:wrap">'+
+        csMini('Top Subject',topSubj?topSubj.subject:'—')+
+        csMini('HW Given',totalHW)+
+        csMini('Exams',totalExams)+
+        csMini('Coverage',avgCov!==null?avgCov+'%':'—')+
+        csMini('Attendance',attPct!==null?attPct+'%':'—')+
+      '</div>'+
+    '</div></div>';
+  });
+
+  el.innerHTML=html;
+}
 
 /* ══ DAY VIEW ══ */
 function renderDay(data){
