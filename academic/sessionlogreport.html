@@ -1676,26 +1676,48 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .ar-pr-footer{border-top:1px solid #e4dfd4;padding-top:9px;display:flex;justify-content:space-between;font-size:8px;color:#b0ada4;margin-top:16px}
 
 /* ── Class Summary ── */
-.cs-stat-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
-@media(max-width:1200px){.cs-stat-strip{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:560px){.cs-stat-strip{grid-template-columns:repeat(2,1fr)}}
-.cs-stat-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.cs-stat-val{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.3px;line-height:1.1}
-.cs-stat-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.cs-callout-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
-@media(max-width:900px){.cs-callout-row{grid-template-columns:1fr}}
-.cs-callout{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.cs-priority-bar{display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:var(--r2);margin-bottom:18px;font-size:12.5px}
+.cs-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1.5px solid var(--border);border-radius:var(--r2);padding:22px 24px;margin-bottom:20px}
+.cs-hero-blob{position:absolute;right:-50px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--li-glow),transparent 70%);pointer-events:none}
+.cs-hero-blob2{position:absolute;right:80px;bottom:-80px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--blue-dim),transparent 70%);pointer-events:none}
+.cs-hero-title{position:relative;font-family:var(--fs);font-size:24px;color:var(--text);font-weight:400;letter-spacing:-.3px}
+.cs-hero-title em{font-style:normal;color:var(--li3)}
+.cs-hero-sub{position:relative;font-size:12.5px;color:var(--text3);margin-top:6px;font-weight:600}
+.cs-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.cs-callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.cs-callout{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .cs-callout-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .cs-callout-title{font-size:10.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
 .cs-callout-val{font-size:14px;font-weight:800;color:var(--text);margin-top:3px}
 .cs-callout-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.cs-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;align-items:stretch}
+@media(max-width:900px){.cs-grid-2{grid-template-columns:1fr}}
+.cs-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.cs-card-hd{margin-bottom:10px}
+.cs-card-title{font-size:13px;font-weight:800;color:var(--text)}
+.cs-card-sub{font-size:10.5px;color:var(--text3);font-weight:600;margin-top:2px}
 .cs-bar-track{width:56px;height:6px;border-radius:3px;background:var(--bg4);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px}
 .cs-bar-fill{height:100%;border-radius:3px}
 .cs-sched-wrap{display:flex;flex-wrap:wrap;gap:8px}
 .cs-sched-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:20px;font-size:11.5px;font-weight:700}
-.cs-cls-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:12px}
+.cs-day-chart{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;height:150px;padding:8px 2px 0}
+.cs-day-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.cs-day-count{font-size:10.5px;font-weight:800;color:var(--text3);margin-bottom:4px}
+.cs-day-bar-track{width:100%;max-width:30px;display:flex;align-items:flex-end;flex:1}
+.cs-day-bar{width:100%;border-radius:6px 6px 3px 3px;transition:height .2s}
+.cs-day-lbl{font-size:10px;font-weight:700;color:var(--text3);margin-top:8px}
+.cs-day-lbl.on{color:var(--li3);font-weight:800}
+.cs-seg-big{font-size:26px;font-weight:900;color:var(--text);font-family:var(--fs);line-height:1;margin-bottom:8px}
+.cs-seg-track{display:flex;width:100%;height:14px;border-radius:8px;overflow:hidden;background:var(--bg4);margin-bottom:12px}
+.cs-seg{height:100%}
+.cs-seg-legend-row{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text2);padding:4px 0}
+.cs-seg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.cs-seg-legend-val{margin-left:auto;font-weight:800;color:var(--text);font-size:11.5px}
+.cs-subj-cell{display:flex;align-items:center;gap:8px}
+.cs-subj-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.cs-cls-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .cs-cls-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
-.cs-cls-card-title{font-size:13px;font-weight:800;color:var(--text)}
+.cs-cls-card-title{font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
 .cs-cls-card-meta{font-size:11px;color:var(--text3)}
 </style>
 </head>
@@ -3274,8 +3296,28 @@ function buildSubjectStats(sessRows,cls,board){
   return subjMap;
 }
 
-function csStat(val,lbl){
-  return '<div class="cs-stat-card"><div class="cs-stat-val">'+esc(String(val))+'</div><div class="cs-stat-lbl">'+lbl+'</div></div>';
+/* Icon paths keyed by name; color/size supplied at call site so each use can be tinted independently */
+function csIcon(name,color,size){
+  var paths={
+    students:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    attendance:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>',
+    hours:'<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>',
+    sessions:'<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+    homework:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+    exams:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+    coverage:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    teacher:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    trend:'<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+    book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    check:'<polyline points="20 6 9 17 4 12"/>',
+    pin:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>'
+  };
+  var sz=size||16;
+  return '<svg width="'+sz+'" height="'+sz+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24">'+(paths[name]||'')+'</svg>';
+}
+function csStatCard(icon,val,lbl,bg){
+  return '<div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:'+bg+'">'+icon+'</div></div>'+
+    '<div class="kpi-val">'+esc(String(val))+'</div><div class="kpi-lbl">'+lbl+'</div></div>';
 }
 function csCallout(bg,icon,title,val,sub){
   return '<div class="cs-callout">'+
@@ -3286,6 +3328,86 @@ function csCallout(bg,icon,title,val,sub){
 function csMini(lbl,val){
   return '<div style="text-align:right"><div style="font-size:13px;font-weight:800;color:var(--text)">'+esc(String(val))+'</div>'+
     '<div style="font-size:9.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">'+lbl+'</div></div>';
+}
+function csCard(title,subtitle,bodyHtml){
+  return '<div class="cs-card"><div class="cs-card-hd"><div class="cs-card-title">'+title+'</div>'+
+    (subtitle?'<div class="cs-card-sub">'+subtitle+'</div>':'')+'</div>'+bodyHtml+'</div>';
+}
+
+/* -- data helpers -- */
+function csTotalStudents(cls,board){
+  var syl=board?csSylCode(board):null;
+  var set={};
+  ATTENDANCE.forEach(function(r){
+    if(r.class!==cls)return;
+    if(syl&&r.syllabus!==syl)return;
+    if(r.student_id)set[r.student_id]=true;
+  });
+  return Object.keys(set).length;
+}
+function csLowestAttendance(cls,board,limit){
+  var syl=board?csSylCode(board):null;
+  var stuMap={};
+  ATTENDANCE.forEach(function(r){
+    if(r.class!==cls)return;
+    if(syl&&r.syllabus!==syl)return;
+    if(!stuMap[r.student_id])stuMap[r.student_id]={id:r.student_id,name:r.full_name||'Unknown',total:0,present:0};
+    stuMap[r.student_id].total++;
+    if(r.status==='Present')stuMap[r.student_id].present++;
+  });
+  var list=Object.keys(stuMap).map(function(id){return stuMap[id];}).filter(function(s){return s.total>=3;});
+  list.forEach(function(s){s.pct=Math.round(s.present/s.total*100);});
+  list.sort(function(a,b){return a.pct-b.pct||a.total-b.total;});
+  return list.slice(0,limit||3);
+}
+function csTeacherFrequency(sessRows){
+  var tMap={};
+  sessRows.forEach(function(r){
+    var t=r.teacher_name||'Unknown';
+    if(!tMap[t])tMap[t]={name:t,sessions:0,mins:0};
+    tMap[t].sessions++;tMap[t].mins+=(+r.duration_mins||0);
+  });
+  var list=Object.keys(tMap).map(function(k){return tMap[k];}).sort(function(a,b){return b.sessions-a.sessions;});
+  return {most:list[0]||null,least:list.length>1?list[list.length-1]:null,count:list.length};
+}
+function csDayOfWeekFreq(sessRows){
+  var names=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var counts=[0,0,0,0,0,0,0];
+  sessRows.forEach(function(r){
+    var d=sessDateToYMD(r.date);if(!d)return;
+    var dt=new Date(d+'T00:00:00');
+    if(!isNaN(dt.getTime()))counts[dt.getDay()]++;
+  });
+  var order=[1,2,3,4,5,6,0];
+  return order.map(function(i){return {day:names[i],count:counts[i]};});
+}
+function csDayChart(days){
+  var max=Math.max.apply(null,days.map(function(d){return d.count;}))||1;
+  var bars=days.map(function(d){
+    var h=d.count?Math.max(8,Math.round((d.count/max)*84)):4;
+    var isMax=max>0&&d.count===max;
+    return '<div class="cs-day-col">'+
+      '<div class="cs-day-count">'+(d.count||'')+'</div>'+
+      '<div class="cs-day-bar-track"><div class="cs-day-bar" style="height:'+h+'px;background:'+(isMax?'var(--li)':'var(--bg4)')+'"></div></div>'+
+      '<div class="cs-day-lbl'+(isMax?' on':'')+'">'+d.day+'</div>'+
+    '</div>';
+  }).join('');
+  return '<div class="cs-day-chart">'+bars+'</div>';
+}
+function csSegBar(buckets){
+  var total=buckets.reduce(function(a,b){return a+b.count;},0);
+  var bar=buckets.map(function(b){
+    if(!b.count||!total)return '';
+    return '<span class="cs-seg" style="width:'+(b.count/total*100)+'%;background:'+b.color+'"></span>';
+  }).join('');
+  var legend=buckets.map(function(b){
+    var pct=total?Math.round(b.count/total*100):0;
+    return '<div class="cs-seg-legend-row"><span class="cs-seg-dot" style="background:'+b.color+'"></span>'+b.label+
+      '<span class="cs-seg-legend-val">'+pct+'% · '+b.count+'</span></div>';
+  }).join('');
+  return '<div class="cs-seg-big">'+total+'</div>'+
+    '<div class="cs-seg-track">'+(total?bar:'')+'</div>'+
+    '<div>'+legend+'</div>';
 }
 
 function renderClassSummary(data){
@@ -3314,8 +3436,14 @@ function buildClassSummarySingle(data,fc,el){
   var attP=attRows.filter(function(r){return r.status==='Present';}).length;
   var attPct=attRows.length?Math.round(attP/attRows.length*100):null;
 
+  var totalStudents=csTotalStudents(fc.cls,fc.board);
+  var lowestAtt=csLowestAttendance(fc.cls,fc.board,3);
+  var teacherFreq=csTeacherFrequency(data);
+  var dayFreq=csDayOfWeekFreq(data);
+
   var covPcts=subjects.filter(function(s){return s.completionPct!==null;}).map(function(s){return s.completionPct;});
   var avgCov=covPcts.length?Math.round(covPcts.reduce(function(a,b){return a+b;},0)/covPcts.length):null;
+  var noSyllabusCount=subjects.filter(function(s){return s.completionPct===null;}).length;
 
   // Subjects that exist in the master syllabus but have never been taught (any time), for this class
   var masterSubjSet={};
@@ -3341,50 +3469,112 @@ function buildClassSummarySingle(data,fc,el){
   var periodLabels={day:'today',week:'this week',month:'this month',all:'all time'};
   var pLbl=periodLabels[CUR_PERIOD]||CUR_PERIOD;
 
-  var SVG_TREND='<svg width="16" height="16" fill="none" stroke="var(--li3)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>';
-  var SVG_LOW='<svg width="16" height="16" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>';
-  var SVG_CHECK='<svg fill="none" stroke="var(--li3)" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>';
+  // Portions-covered buckets — every subject with a defined master syllabus, classified once
+  var completed=0,inProgress=0,notStarted=0;
+  Object.keys(masterSubjSet).forEach(function(name){
+    if(neverTaught.indexOf(name)>-1){notStarted++;return;}
+    var sd=subjMap[name];
+    var pct=sd&&sd.completionPct!==null?sd.completionPct:0;
+    if(pct>=100)completed++;
+    else if(pct>0)inProgress++;
+    else notStarted++;
+  });
+
+  // Single top scheduling priority for the banner (fuller list appears in its own card below)
+  var topPriority=neverTaught.length?{subj:neverTaught[0],reason:'never taught'}:
+    (gaps.length?{subj:gaps[0].subj,reason:gaps[0].days+'d since last class'}:null);
 
   var html='';
 
-  html+='<div class="cs-stat-strip">'+
-    csStat(hrsFmt(totalMins),'Hours Taught')+
-    csStat(String(data.length),'Sessions')+
-    csStat(String(totalHW),'Homework Given')+
-    csStat(String(totalExams),'Exams / Tests')+
-    csStat(attPct!==null?attPct+'%':'—','Attendance')+
-    csStat(avgCov!==null?avgCov+'%':'—','Avg Syllabus Coverage')+
+  if(topPriority){
+    html+='<div class="cs-priority-bar" style="background:rgba(220,38,38,.1);color:var(--red);border:1px solid rgba(220,38,38,.2)">'+
+      csIcon('pin','var(--red)',14)+
+      '<span><strong>Schedule next:</strong> '+esc(topPriority.subj)+' — '+esc(topPriority.reason)+'</span>'+
+    '</div>';
+  }
+
+  html+='<div class="cs-hero"><div class="cs-hero-blob"></div><div class="cs-hero-blob2"></div>'+
+    '<div class="cs-hero-title">Class '+esc(fc.cls)+(fc.board?' <em>· '+esc(fc.board)+'</em>':'')+'</div>'+
+    '<div class="cs-hero-sub">Complete summary for '+pLbl+' — '+totalStudents+' student'+(totalStudents!==1?'s':'')+' · '+subjects.length+' subject'+(subjects.length!==1?'s':'')+' active</div>'+
   '</div>';
 
-  html+='<div class="cs-callout-row">';
-  html+=csCallout('rgba(139,197,63,.12)',SVG_TREND,'Most-Taught Subject',
+  html+='<div class="cs-kpi-grid">'+
+    csStatCard(csIcon('students','var(--purple)',18),totalStudents,'Students','rgba(124,58,237,.1)')+
+    csStatCard(csIcon('attendance','var(--li3)',18),attPct!==null?attPct+'%':'—','Attendance','var(--li-dim)')+
+    csStatCard(csIcon('hours','var(--blue)',18),hrsFmt(totalMins),'Class Hours','var(--blue-dim)')+
+    csStatCard(csIcon('sessions','var(--teal)',18),data.length,'Sessions','var(--teal-dim)')+
+    csStatCard(csIcon('homework','var(--amber)',18),totalHW,'Homework Given','var(--amber-dim)')+
+    csStatCard(csIcon('exams','var(--red)',18),totalExams,'Exams / Tests','var(--red-dim)')+
+    csStatCard(csIcon('coverage','#db2777',18),avgCov!==null?avgCov+'%':'—','Syllabus Coverage','rgba(219,39,119,.1)')+
+  '</div>';
+
+  html+='<div class="cs-callout-grid">';
+  html+=csCallout('rgba(139,197,63,.12)',csIcon('trend','var(--li3)',16),'Most-Taught Subject',
     maxHrsSubj?esc(maxHrsSubj.subject):'—',
     maxHrsSubj?(hrsFmt(maxHrsSubj.mins)+' across '+maxHrsSubj.sessions+' session'+(maxHrsSubj.sessions!==1?'s':'')):'No sessions logged '+pLbl);
-  html+=csCallout('rgba(245,158,11,.12)',SVG_LOW,'Least Coverage Subject',
+  html+=csCallout('rgba(245,158,11,.12)',csIcon('book','var(--amber)',16),'Least Coverage Subject',
     leastCovSubj?(esc(leastCovSubj.subject)+' · '+leastCovSubj.completionPct+'%'):(neverTaught.length?esc(neverTaught[0]):'—'),
-    leastCovSubj?(leastCovSubj.coveredChapters+' of '+leastCovSubj.totalChapters+' chapters covered'):(neverTaught.length?'Not started yet':'No syllabus data available for comparison'));
+    leastCovSubj?(leastCovSubj.coveredChapters+' of '+leastCovSubj.totalChapters+' chapters covered'):(neverTaught.length?'Not started yet':'No syllabus data available'));
+  html+=csCallout('rgba(37,99,235,.1)',csIcon('teacher','var(--blue)',16),'Most Frequent Teacher',
+    teacherFreq.most?esc(teacherFreq.most.name):'—',
+    teacherFreq.most?(teacherFreq.most.sessions+' session'+(teacherFreq.most.sessions!==1?'s':'')+' · '+hrsFmt(teacherFreq.most.mins)):'No sessions logged '+pLbl);
+  html+=csCallout('rgba(220,38,38,.1)',csIcon('teacher','var(--red)',16),'Least Frequent Teacher',
+    teacherFreq.least?esc(teacherFreq.least.name):(teacherFreq.count===1&&teacherFreq.most?esc(teacherFreq.most.name):'—'),
+    teacherFreq.least?(teacherFreq.least.sessions+' session'+(teacherFreq.least.sessions!==1?'s':'')):(teacherFreq.count===1?'Only teacher on this class':'No sessions logged '+pLbl));
   html+='</div>';
 
-  html+='<div class="sec-hdr"><div class="sec-title">Subjects To Schedule Next</div>'+
-    '<span style="font-size:11px;color:var(--text3)">Based on full session history, not just '+pLbl+'</span></div>';
+  html+='<div class="cs-grid-2">';
+  html+=csCard('Weekly Session Pattern','Sessions by day of week · '+pLbl,csDayChart(dayFreq));
+  var segHtml=csSegBar([
+    {label:'Completed',count:completed,color:'var(--li)'},
+    {label:'In Progress',count:inProgress,color:'var(--amber)'},
+    {label:'Not Started',count:notStarted,color:'var(--red)'}
+  ]);
+  html+=csCard('Portions Coverage','Subjects tracked against master syllabus'+(noSyllabusCount?' · '+noSyllabusCount+' untracked':''),segHtml);
+  html+='</div>';
+
+  html+='<div class="cs-grid-2">';
+  var watchBody;
+  if(!lowestAtt.length){
+    watchBody='<div style="padding:10px 2px;font-size:12px;color:var(--text3);font-style:italic">Not enough attendance data yet (need 3+ records per student).</div>';
+  } else {
+    watchBody='<table class="data-table"><tbody>';
+    lowestAtt.forEach(function(s,i){
+      var panelId='cswp-'+i+'-'+String(s.id).replace(/\W/g,'_');
+      var color=s.pct<50?'var(--red)':s.pct<70?'var(--amber)':'var(--text2)';
+      watchBody+='<tr class="student-row-clickable" onclick="toggleStudentPanel(\''+panelId+'\',\''+esc(s.id)+'\',\''+esc(s.name)+'\',\''+esc(fc.cls)+'\')">'+
+        '<td style="width:24px;color:var(--text3);font-weight:800;font-size:11px">'+(i+1)+'</td>'+
+        '<td style="font-weight:700">'+esc(s.name)+'</td>'+
+        '<td style="color:var(--text3);font-size:11px;white-space:nowrap">'+s.total+' records</td>'+
+        '<td style="text-align:right;font-weight:800;color:'+color+'">'+s.pct+'%</td>'+
+      '</tr>'+
+      '<tr class="student-panel-row"><td colspan="4"><div class="student-panel" id="'+panelId+'"></div></td></tr>';
+    });
+    watchBody+='</tbody></table>';
+  }
+  html+=csCard('Attendance Watchlist','Lowest attendance · full history',watchBody);
+
+  var schedBody;
   if(!neverTaught.length&&!gaps.length){
-    html+='<div class="alert-all-clear" style="margin-bottom:20px">'+
-      '<div style="width:36px;height:36px;border-radius:9px;background:rgba(139,197,63,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">'+SVG_CHECK+'</div>'+
-      '<div><div style="font-size:13px;font-weight:800;color:var(--text)">All subjects on track</div>'+
-      '<div style="font-size:11px;color:var(--text3);margin-top:2px">Every subject in the syllabus has been taught within the last week.</div></div>'+
+    schedBody='<div class="alert-all-clear" style="margin:0">'+
+      '<div style="width:32px;height:32px;border-radius:9px;background:rgba(139,197,63,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">'+csIcon('check','var(--li3)',16)+'</div>'+
+      '<div><div style="font-size:12.5px;font-weight:800;color:var(--text)">All subjects on track</div>'+
+      '<div style="font-size:11px;color:var(--text3);margin-top:2px">Nothing taught over 7 days ago.</div></div>'+
     '</div>';
   } else {
-    html+='<div class="cs-sched-wrap" style="margin-bottom:20px">';
+    schedBody='<div class="cs-sched-wrap">';
     neverTaught.forEach(function(s){
-      html+='<span class="cs-sched-chip" style="background:rgba(220,38,38,.12);color:var(--red)">'+esc(s)+' · never taught</span>';
+      schedBody+='<span class="cs-sched-chip" style="background:rgba(220,38,38,.12);color:var(--red)">'+esc(s)+' · never taught</span>';
     });
     gaps.forEach(function(gp){
       var crit=gp.days>=14;
       var style=crit?'background:rgba(220,38,38,.12);color:var(--red)':'background:rgba(245,158,11,.12);color:var(--amber)';
-      html+='<span class="cs-sched-chip" style="'+style+'">'+esc(gp.subj)+' · '+gp.days+'d gap</span>';
+      schedBody+='<span class="cs-sched-chip" style="'+style+'">'+esc(gp.subj)+' · '+gp.days+'d gap</span>';
     });
-    html+='</div>';
+    schedBody+='</div>';
   }
+  html+=csCard('Subjects To Schedule Next','Based on full session history',schedBody);
+  html+='</div>';
 
   html+='<div class="sec-hdr"><div class="sec-title">Subject Breakdown'+(fc.board?' · '+esc(fc.board):'')+'</div>'+
     '<span style="font-size:11px;color:var(--text3)">'+subjects.length+' subject'+(subjects.length!==1?'s':'')+' · '+pLbl+'</span></div>';
@@ -3398,8 +3588,9 @@ function buildClassSummarySingle(data,fc,el){
     subjects.forEach(function(s){
       var covColor=s.completionPct===null?'var(--text3)':s.completionPct>=75?'var(--li)':s.completionPct>=40?'var(--amber)':'var(--red)';
       var hwColor=s.hwCompletionPct===null?'var(--text3)':s.hwCompletionPct<50?'var(--red)':s.hwCompletionPct<75?'var(--amber)':'var(--li)';
+      var pal=subjPalette(s.subject);
       html+='<tr>'+
-        '<td style="font-weight:700">'+esc(s.subject)+'</td>'+
+        '<td style="font-weight:700"><span class="cs-subj-cell"><span class="cs-subj-ic" style="background:'+pal.dim+'">'+pal.ic+'</span>'+esc(s.subject)+'</span></td>'+
         '<td>'+s.sessions+'</td>'+
         '<td>'+hrsFmt(s.mins)+'</td>'+
         '<td>'+s.hw+'</td>'+
@@ -3455,10 +3646,14 @@ function buildClassSummaryAll(data,el){
     });
     var attP=attRows.filter(function(r){return r.status==='Present';}).length;
     var attPct=attRows.length?Math.round(attP/attRows.length*100):null;
+    var totalStudents=csTotalStudents(c.cls,c.board);
+    var pal=topSubj?subjPalette(topSubj.subject):null;
 
     html+='<div class="cs-cls-card"><div class="cs-cls-card-hd">'+
-      '<div><div class="cs-cls-card-title">Class '+esc(c.cls)+(c.board?' · '+esc(c.board):'')+'</div>'+
-      '<div class="cs-cls-card-meta">'+c.rows.length+' sessions · '+hrsFmt(totalMins)+'</div></div>'+
+      '<div><div class="cs-cls-card-title">'+
+        (pal?'<span class="cs-subj-ic" style="background:'+pal.dim+'">'+pal.ic+'</span>':'')+
+        'Class '+esc(c.cls)+(c.board?' · '+esc(c.board):'')+'</div>'+
+      '<div class="cs-cls-card-meta">'+totalStudents+' student'+(totalStudents!==1?'s':'')+' · '+c.rows.length+' sessions · '+hrsFmt(totalMins)+'</div></div>'+
       '<div style="display:flex;gap:16px;flex-wrap:wrap">'+
         csMini('Top Subject',topSubj?topSubj.subject:'—')+
         csMini('HW Given',totalHW)+
