@@ -1680,7 +1680,8 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .cs-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1.5px solid var(--border);border-radius:var(--r2);padding:22px 24px;margin-bottom:20px}
 .cs-hero-blob{position:absolute;right:-50px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--li-glow),transparent 70%);pointer-events:none}
 .cs-hero-blob2{position:absolute;right:80px;bottom:-80px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--blue-dim),transparent 70%);pointer-events:none}
-.cs-hero-title{position:relative;font-family:var(--fs);font-size:24px;color:var(--text);font-weight:400;letter-spacing:-.3px}
+.cs-hero-top{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.cs-hero-title{font-family:var(--fs);font-size:24px;color:var(--text);font-weight:400;letter-spacing:-.3px}
 .cs-hero-title em{font-style:normal;color:var(--li3)}
 .cs-hero-sub{position:relative;font-size:12.5px;color:var(--text3);margin-top:6px;font-weight:600}
 .cs-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
@@ -1719,9 +1720,40 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
 .cs-cls-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
 .cs-cls-card-title{font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
 .cs-cls-card-meta{font-size:11px;color:var(--text3)}
+
+/* ── Login Gate ── */
+.auth-gate{position:fixed;inset:0;z-index:99999;background:#0f0f0d;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-gate::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(139,197,63,.14),transparent 55%),radial-gradient(circle at 85% 80%,rgba(37,99,235,.1),transparent 50%)}
+.auth-card{position:relative;width:100%;max-width:360px;background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:34px 30px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.auth-logo{font-family:'Open Sans',sans-serif;font-size:22px;font-weight:900;color:var(--text);letter-spacing:-1px;margin-bottom:2px}
+.auth-logo span{color:var(--li)}
+.auth-sub{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:26px}
+.auth-fld{position:relative;margin-bottom:14px}
+.auth-input{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;font-weight:600;text-align:center;letter-spacing:2px;outline:none;transition:border-color .15s}
+.auth-input:focus{border-color:var(--li)}
+.auth-input.err{border-color:var(--red);animation:authShake .35s}
+@keyframes authShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.auth-btn{width:100%;padding:13px;border-radius:10px;border:none;background:var(--li);color:#12210a;font-family:var(--f);font-size:13.5px;font-weight:800;cursor:pointer;transition:filter .15s}
+.auth-btn:hover{filter:brightness(1.08)}
+.auth-err-msg{font-size:11.5px;font-weight:700;color:var(--red);height:16px;margin-top:10px}
+.auth-hint{font-size:10.5px;color:var(--text3);margin-top:18px}
 </style>
 </head>
 <body>
+
+<!-- LOGIN GATE -->
+<div class="auth-gate" id="authGate">
+  <div class="auth-card">
+    <div class="auth-logo">SEHR<span>.</span></div>
+    <div class="auth-sub">Academic Dashboard</div>
+    <div class="auth-fld">
+      <input type="password" class="auth-input" id="authInput" placeholder="Password" autocomplete="off" onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+    <button class="auth-btn" onclick="submitAuth()">Unlock Dashboard</button>
+    <div class="auth-err-msg" id="authErr"></div>
+    <div class="auth-hint">SEHR Academy staff only</div>
+  </div>
+</div>
 
 <!-- TOP BAR -->
 <div class="topbar">
@@ -1946,6 +1978,20 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);font-size:14px;
         <div class="hub-section-label">Alerts &amp; Action Items</div>
       </div>
       <div id="alertDashboard"></div>
+      <div id="substituteWrap" style="margin-top:14px"></div>
+      <div id="pendHWWrap" style="margin-top:14px"></div>
+      <div class="hub-section-hdr" style="margin-top:20px">
+        <div class="hub-section-label">Activity</div>
+      </div>
+      <div id="heatmapWrap"></div>
+      <div class="hub-section-hdr" style="margin-top:20px">
+        <div class="hub-section-label">Teacher Load</div>
+      </div>
+      <div id="teacherLoadWrap"></div>
+      <div class="hub-section-hdr" style="margin-top:20px">
+        <div class="hub-section-label">WhatsApp Reports</div>
+      </div>
+      <div id="waBatchWrap"></div>
     </div>
     <div id="vClassSummary" class="page-pad hidden"></div>
     <div id="vDay" class="page-pad hidden"></div>
@@ -2499,7 +2545,7 @@ function renderSubjectCards(data){
 
   wrap.innerHTML=
     '<div class="subj-cards-hdr">'+
-      '<div class="sec-title">Subject Breakdown · '+keys.length+' subjects</div>'+
+      '<div class="sec-title">Weekly Targets &amp; Absence Detail · '+keys.length+' subjects</div>'+
       '<span style="font-size:10px;color:var(--text3);font-weight:600">sorted by gap</span>'+
     '</div>'+
     '<div class="subj-cards-grid">'+cards+'</div>';
@@ -2897,6 +2943,20 @@ function renderOverview(data){
   el.innerHTML='<div class="ov-loading"><div class="loading-ring"></div>Analysing data…</div>';
 
   loadHWTracking(function(){buildAlertDashboard(el);});
+
+  // All-time, class-scoped dataset for the sections below — a 45-day substitute
+  // lookback or a 16-week heatmap would be meaningless if limited to the Day/Week/Month toggle.
+  var fc=parseCurCls();
+  var clsAllTime=SESSIONS.filter(function(r){
+    if(fc.cls&&r.class!==fc.cls)return false;
+    if(fc.board&&r.board!==fc.board)return false;
+    return true;
+  });
+  renderSubstituteAlerts(clsAllTime);
+  renderPendingHW();
+  renderHeatmap(clsAllTime);
+  renderTeacherLoad(clsAllTime);
+  renderWABatchPanel();
 }
 
 function buildAlertDashboard(el){
@@ -3494,8 +3554,14 @@ function buildClassSummarySingle(data,fc,el){
   }
 
   html+='<div class="cs-hero"><div class="cs-hero-blob"></div><div class="cs-hero-blob2"></div>'+
-    '<div class="cs-hero-title">Class '+esc(fc.cls)+(fc.board?' <em>· '+esc(fc.board)+'</em>':'')+'</div>'+
-    '<div class="cs-hero-sub">Complete summary for '+pLbl+' — '+totalStudents+' student'+(totalStudents!==1?'s':'')+' · '+subjects.length+' subject'+(subjects.length!==1?'s':'')+' active</div>'+
+    '<div class="cs-hero-top">'+
+      '<div><div class="cs-hero-title">Class '+esc(fc.cls)+(fc.board?' <em>· '+esc(fc.board)+'</em>':'')+'</div>'+
+      '<div class="cs-hero-sub">Complete summary for '+pLbl+' — '+totalStudents+' student'+(totalStudents!==1?'s':'')+' · '+subjects.length+' subject'+(subjects.length!==1?'s':'')+' active</div></div>'+
+      '<button class="alert-copy-btn" style="position:relative;padding:8px 14px;font-size:11px" onclick="copyTextToClipboard(window._csSummaryText,this)">'+
+        '<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'+
+        '<span class="btn-lbl">Copy Summary</span>'+
+      '</button>'+
+    '</div>'+
   '</div>';
 
   html+='<div class="cs-kpi-grid">'+
@@ -3604,7 +3670,25 @@ function buildClassSummarySingle(data,fc,el){
     html+='</tbody></table></div>';
   }
 
+  html+='<div style="margin-top:8px" id="subjCardsWrap"></div>';
+
+  // Shareable text summary — parity with the copy/export buttons on every other tab
+  var waLines=['📊 *SEHR Academy — Class Summary*',
+    '*Class '+fc.cls+(fc.board?' · '+fc.board:'')+' | '+pLbl+'*',''];
+  waLines.push('👥 Students: *'+totalStudents+'*');
+  waLines.push('🗓 Sessions: *'+data.length+'* ('+hrsFmt(totalMins)+')');
+  waLines.push('📝 Homework given: *'+totalHW+'*');
+  waLines.push('📋 Exams / tests: *'+totalExams+'*');
+  if(attPct!==null)waLines.push('✅ Attendance: *'+attPct+'%*');
+  if(avgCov!==null)waLines.push('📖 Syllabus coverage (avg): *'+avgCov+'%*');
+  waLines.push('');
+  if(maxHrsSubj)waLines.push('🏆 Most-taught subject: '+maxHrsSubj.subject+' ('+hrsFmt(maxHrsSubj.mins)+')');
+  if(topPriority)waLines.push('📌 Schedule next: '+topPriority.subj+' — '+topPriority.reason);
+  waLines.push('','— SEHR Academy');
+  window._csSummaryText=waLines.join('\n');
+
   el.innerHTML=html;
+  renderSubjectCards(data);
 }
 
 function buildClassSummaryAll(data,el){
@@ -6657,8 +6741,35 @@ function arCopyAttendanceListAll(btn){
   arCopyText(arBuildAttendanceListText(stats,scopeLabel),btn,'Copy Summary');
 }
 
-init();
-
+/* ══ AUTH GATE ══ */
+var SITE_PASS='admin';
+function submitAuth(){
+  var inp=g('authInput');
+  var val=(inp.value||'').trim();
+  if(val.toLowerCase()===SITE_PASS){
+    try{sessionStorage.setItem('sehr_authed','1');}catch(e){}
+    g('authGate').style.display='none';
+    init();
+  } else {
+    g('authErr').textContent='Incorrect password. Try again.';
+    inp.classList.add('err');
+    inp.value='';
+    inp.focus();
+    setTimeout(function(){inp.classList.remove('err');},400);
+  }
+}
+function checkAuth(){
+  var authed=false;
+  try{authed=sessionStorage.getItem('sehr_authed')==='1';}catch(e){}
+  if(authed){
+    g('authGate').style.display='none';
+    init();
+  } else {
+    g('authGate').style.display='flex';
+    setTimeout(function(){var inp=g('authInput');if(inp)inp.focus();},50);
+  }
+}
+checkAuth();
 
 
 
