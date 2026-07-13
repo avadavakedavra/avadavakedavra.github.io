@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uniform Fee Tracker — SEHR Academy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a18;--ink2:#2e2e2b;--ink3:#4a4a46;
+  --cream:#f5f2eb;--c2:#ede9e0;--c3:#e4dfd4;
+  --wh:#fdfcfa;--mu:#7a7970;--pa:#b0ada4;--ru:#d8d4cb;
+  --li:#8BC53F;--l2:#72a530;--l3:#5e8a24;--lb:#f0f7e3;--lm:#c8e48e;
+  --re:#dc2626;--rb:#fef2f2;--rm:#fca5a5;
+  --am:#d97706;--amb:#fffbeb;--amm:#fde68a;
+  --bl:#2563eb;--blb:#eff6ff;--blm:#bfdbfe;
+  --f-head:'Montserrat',sans-serif;
+  --f:'Open Sans',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 2px 10px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.09);
+  --sh-lg:0 12px 40px rgba(0,0,0,.16);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh}
+
+@keyframes fUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--cream);z-index:900;display:none;align-items:center;justify-content:center}
+#loader.on{display:flex}
+.ld-ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--c3);border-top-color:var(--li);animation:spin .8s linear infinite}
+
+/* ── LOGIN ── */
+#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400}
+#loginWrap.gone{display:none}
+#loginWrap::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--ru)1px,transparent 1px),linear-gradient(90deg,var(--ru)1px,transparent 1px);background-size:48px 48px;opacity:.3}
+.lbox{position:relative;z-index:1;background:var(--wh);border:1.5px solid var(--c3);border-left:4px solid var(--li);border-radius:4px;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden}
+.lbox-head{background:var(--ink);padding:24px 28px 20px;position:relative;overflow:hidden}
+.lbox-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--li),var(--l2))}
+.lbox-brand{font-family:var(--f-head);font-size:20px;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1;margin-bottom:6px}
+.lbox-brand span{color:var(--li)}
+.lbox-sub{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.04em}
+.lbox-body{padding:24px 28px 28px}
+.lbox-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
+.lbox-input{width:100%;padding:11px 14px;border:1.5px solid var(--c3);border-radius:4px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s}
+.lbox-input:focus{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.12)}
+.lbox-btn{width:100%;margin-top:14px;padding:12px;border:none;border-radius:4px;background:var(--li);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;box-shadow:0 4px 14px rgba(139,197,63,.3)}
+.lbox-btn:hover{background:var(--l2)}
+.lbox-btn:disabled{opacity:.6;cursor:not-allowed}
+.lbox-err{display:none;margin-top:10px;padding:9px 12px;background:var(--rb);border:1px solid var(--rm);border-radius:4px;font-size:12px;font-weight:600;color:var(--re)}
+.lbox-err.on{display:block}
+
+/* ── APP ── */
+#app{display:none;max-width:1180px;margin:0 auto;padding:0 24px 80px}
+#app.on{display:block}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--ink);margin:0 -24px;padding:0 24px;border-bottom:3px solid var(--li);position:relative;overflow:hidden}
+.topbar::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);background-size:48px 48px}
+.tb-inner{padding:28px 0 24px;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tb-kicker{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.tb-kicker-rule{width:22px;height:2px;background:var(--li)}
+.tb-kicker-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--li)}
+.tb-title{font-family:var(--f-head);font-size:clamp(22px,3vw,34px);font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:.95}
+.tb-title i{font-style:italic;font-weight:700;color:var(--li)}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:8px}
+.tb-logout{background:none;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.55);font-family:var(--f);font-size:11px;font-weight:700;padding:8px 14px;border-radius:5px;cursor:pointer;transition:all .15s;margin-bottom:4px}
+.tb-logout:hover{border-color:rgba(255,255,255,.4);color:#fff}
+
+/* ── KPI ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:22px 0}
+.kpi{background:var(--wh);border:1.5px solid var(--c3);border-radius:8px;padding:16px 18px;box-shadow:var(--sh)}
+.kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:8px}
+.kpi-val{font-family:var(--f-head);font-size:24px;font-weight:900;letter-spacing:-1px;color:var(--ink)}
+.kpi-val.grn{color:var(--l3)}
+.kpi-val.red{color:var(--re)}
+.kpi-val.amb{color:var(--am)}
+.kpi-sub{font-size:10px;color:var(--pa);margin-top:4px}
+
+/* ── SECTION ── */
+.sec-head{display:flex;align-items:center;gap:12px;margin:32px 0 16px}
+.sec-rule{flex:1;height:1px;background:var(--ru)}
+.sec-dot{width:4px;height:4px;border-radius:50%;background:var(--li);flex-shrink:0}
+.sec-txt{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pa);white-space:nowrap}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.search-wrap{position:relative;flex:1;min-width:180px}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--pa)}
+.search-inp{width:100%;padding:10px 12px 10px 34px;border:1.5px solid var(--c3);border-radius:6px;background:var(--wh);font-family:var(--f);font-size:13px;color:var(--ink);outline:none;transition:border-color .18s}
+.search-inp:focus{border-color:var(--li)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{padding:8px 14px;border-radius:5px;border:1.5px solid var(--ru);background:var(--wh);font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;color:var(--mu);transition:all .15s;white-space:nowrap}
+.tab:hover:not(.on){border-color:var(--lm)}
+.tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn-new{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border:none;border-radius:6px;background:var(--li);color:var(--ink);font-family:var(--f);font-size:12px;font-weight:800;cursor:pointer;transition:all .18s;box-shadow:0 4px 14px rgba(139,197,63,.3);white-space:nowrap}
+.btn-new:hover{background:var(--l2)}
+.btn-new svg{width:13px;height:13px}
+
+/* ── TABLE ── */
+.tbl-wrap{background:var(--wh);border:1.5px solid var(--c3);border-radius:8px;box-shadow:var(--sh);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);padding:11px 14px;background:var(--cream);border-bottom:1.5px solid var(--c3);text-align:left;white-space:nowrap}
+tbody td{padding:12px 14px;border-bottom:1px solid var(--c2);font-size:12px;color:var(--ink2);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--cream)}
+.stu-name{font-weight:700;color:var(--ink);font-size:12.5px}
+.stu-cls{font-size:10.5px;color:var(--mu);margin-top:1px}
+.amt{font-variant-numeric:tabular-nums;font-weight:700}
+.bal{font-variant-numeric:tabular-nums;font-weight:700;color:var(--re)}
+.bal.zero{color:var(--l3)}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:9.5px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.badge-pending{background:var(--rb);color:var(--re)}
+.badge-partial{background:var(--amb);color:var(--am)}
+.badge-paid{background:var(--lb);color:var(--l3)}
+.badge-delivered{background:var(--blb);color:var(--bl)}
+
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.act-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:4px;background:var(--cream);color:var(--ink3);font-size:10px;font-weight:700;border:1px solid var(--c3);cursor:pointer;font-family:var(--f);transition:all .14s;white-space:nowrap}
+.act-btn:hover{border-color:var(--lm);color:var(--l3)}
+.act-btn.copy{background:var(--lb);border-color:var(--lm);color:var(--l3)}
+.act-btn.copy:hover{background:var(--li);color:var(--ink)}
+.act-btn.copy.copied{background:#dcfce7;border-color:#86efac;color:#15803d}
+.act-btn.danger:hover{border-color:var(--rm);color:var(--re)}
+.act-btn svg{width:11px;height:11px;flex-shrink:0}
+.settled-tag{font-size:10px;font-weight:700;color:var(--l3);display:inline-flex;align-items:center;gap:4px}
+.settled-tag svg{width:12px;height:12px}
+
+.tbl-empty{padding:48px 24px;text-align:center}
+.tbl-empty-h{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.tbl-empty-p{font-size:12px;color:var(--mu)}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-bg.on{display:flex}
+.modal{background:var(--wh);border-radius:10px;width:100%;max-width:520px;box-shadow:var(--sh-lg);overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+.modal-head{background:var(--ink);padding:18px 22px;border-bottom:2px solid var(--li);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:13px;font-weight:700;color:#fff}
+.modal-title span{color:var(--li)}
+.modal-close{width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.modal-close:hover{background:rgba(255,255,255,.15)}
+.modal-close svg{width:13px;height:13px;color:rgba(255,255,255,.6)}
+.modal-body{padding:20px 22px;overflow-y:auto}
+.modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--ru);background:var(--cream);flex-shrink:0}
+
+.form-row{display:grid;gap:14px;margin-bottom:14px}
+.form-row.cols-2{grid-template-columns:1fr 1fr}
+.form-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:6px;display:block}
+.form-inp{width:100%;padding:10px 12px;border:1.5px solid var(--c3);border-radius:5px;background:var(--cream);font-family:var(--f);font-size:13px;font-weight:600;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s}
+.form-inp:focus{border-color:var(--li);box-shadow:0 0 0 3px rgba(139,197,63,.1);background:var(--wh)}
+.form-hint{font-size:10.5px;color:var(--pa);margin-top:5px;line-height:1.5}
+.form-msg{display:none;margin-bottom:14px;padding:9px 12px;background:var(--lb);border:1px solid var(--lm);border-radius:5px;font-size:12px;font-weight:600;color:var(--l3)}
+.form-msg.on{display:block}
+.form-err{display:none;margin-bottom:14px;padding:9px 12px;background:var(--rb);border:1px solid var(--rm);border-radius:5px;font-size:12px;font-weight:600;color:var(--re)}
+.form-err.on{display:block}
+.chk-row{display:flex;align-items:center;gap:9px;padding:10px 0}
+.chk-row input{width:16px;height:16px;accent-color:var(--li);cursor:pointer}
+.chk-row label{font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.quick-fill{font-size:10px;font-weight:700;color:var(--l3);background:var(--lb);border:1px solid var(--lm);border-radius:4px;padding:5px 9px;cursor:pointer;margin-top:6px;display:inline-block}
+.quick-fill:hover{background:var(--lm)}
+.readout{display:flex;justify-content:space-between;padding:8px 0;font-size:12.5px;border-bottom:1px solid var(--c2)}
+.readout:last-child{border-bottom:none}
+.readout-l{color:var(--mu)}
+.readout-v{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+
+.btn-cancel{padding:10px 16px;border-radius:5px;border:1.5px solid var(--c3);background:var(--wh);font-family:var(--f);font-size:12px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .15s}
+.btn-cancel:hover{border-color:var(--pa)}
+.btn-submit{padding:10px 18px;border-radius:5px;border:none;background:var(--li);color:var(--ink);font-family:var(--f);font-size:12px;font-weight:800;cursor:pointer;transition:all .18s}
+.btn-submit:hover{background:var(--l2)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:8px;font-size:12px;font-weight:600;box-shadow:var(--sh-lg);z-index:600;transform:translateY(80px);opacity:0;transition:all .3s var(--ease);border-left:3px solid var(--li);max-width:320px}
+.toast.on{transform:translateY(0);opacity:1}
+.toast.err{border-left-color:var(--re)}
+
+/* ── FOOTER ── */
+.foot{margin-top:52px;padding-top:24px;border-top:1px solid var(--ru);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-brand{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--ink2)}
+.foot-brand span{color:var(--li)}
+.foot-links{display:flex;gap:18px;font-size:11px}
+.foot-links a{color:var(--mu);text-decoration:none;transition:color .18s}
+.foot-links a:hover{color:var(--l3)}
+
+@media(max-width:1000px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.tbl-wrap{overflow-x:auto}table{min-width:820px}}
+@media(max-width:640px){#app{padding:0 14px 60px}.topbar{margin:0 -14px;padding:0 14px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.form-row.cols-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="ld-ring"></div></div>
+
+<div id="loginWrap">
+  <div class="lbox">
+    <div class="lbox-head">
+      <div class="lbox-brand">Sehr<span>.</span></div>
+      <div class="lbox-sub">Uniform Fee Tracker &nbsp;·&nbsp; Staff Access</div>
+    </div>
+    <div class="lbox-body">
+      <form id="loginForm">
+        <div class="lbox-label">Password</div>
+        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" id="loginBtn" class="lbox-btn">Access Tracker</button>
+        <div class="lbox-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ADD ORDER MODAL -->
+<div class="modal-bg" id="modalOrder">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title">New <span>Uniform Order</span></span><button class="modal-close" onclick="closeModal('modalOrder')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-msg" id="msgOrder"></div>
+      <div class="form-err" id="errOrder"></div>
+      <div class="form-row cols-2">
+        <div><label class="form-lbl">Student Name *</label><input class="form-inp" id="o_student"></div>
+        <div><label class="form-lbl">Class</label><input class="form-inp" id="o_class" placeholder="10-A"></div>
+      </div>
+      <div class="form-row cols-2">
+        <div><label class="form-lbl">Parent Name</label><input class="form-inp" id="o_parent"></div>
+        <div><label class="form-lbl">Contact (WhatsApp) *</label><input class="form-inp" id="o_contact" type="tel" placeholder="9876543210"></div>
+      </div>
+      <div class="form-row cols-2">
+        <div><label class="form-lbl">Items Ordered</label><input class="form-inp" id="o_items" placeholder="2 Shirts, 1 Pant, 1 Tie"></div>
+        <div><label class="form-lbl">Quantity</label><input class="form-inp" id="o_qty" type="number" min="0" placeholder="4"></div>
+      </div>
+      <div class="form-row cols-2">
+        <div><label class="form-lbl">Total Amount (₹) *</label><input class="form-inp" id="o_amount" type="number" min="0"></div>
+        <div><label class="form-lbl">Amount Paid Now (₹)</label><input class="form-inp" id="o_paid" type="number" min="0" value="0"></div>
+      </div>
+      <div class="chk-row"><input type="checkbox" id="o_delivered"><label for="o_delivered">Already delivered / handed over</label></div>
+      <div class="form-row"><label class="form-lbl">Notes</label><input class="form-inp" id="o_notes" placeholder="Optional"></div>
+      <div class="form-hint">Leave "Amount Paid Now" at 0 if collecting payment later. Tick "Already delivered" if handing over the uniform before payment is settled.</div>
+    </div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('modalOrder')">Cancel</button><button class="btn-submit" id="submitOrder" onclick="submitOrder()">Save Order</button></div>
+  </div>
+</div>
+
+<!-- RECORD PAYMENT MODAL -->
+<div class="modal-bg" id="modalPay">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title">Record Payment — <span id="payName">Student</span></span><button class="modal-close" onclick="closeModal('modalPay')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-msg" id="msgPay"></div>
+      <div class="form-err" id="errPay"></div>
+      <input type="hidden" id="pay_id">
+      <div class="readout"><span class="readout-l">Total Amount</span><span class="readout-v" id="pay_total">₹0</span></div>
+      <div class="readout"><span class="readout-l">Already Paid</span><span class="readout-v" id="pay_sofar">₹0</span></div>
+      <div class="readout"><span class="readout-l">Balance Due</span><span class="readout-v" id="pay_balance">₹0</span></div>
+      <div class="form-row" style="margin-top:16px">
+        <label class="form-lbl">Payment Received Now (₹)</label>
+        <input class="form-inp" id="pay_amount" type="number" min="0">
+        <span class="quick-fill" id="payFillBtn" onclick="fillFullBalance()">Use full balance</span>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('modalPay')">Cancel</button><button class="btn-submit" id="submitPay" onclick="submitPayment()">Record Payment</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="app">
+  <div class="topbar">
+    <div class="tb-inner">
+      <div>
+        <div class="tb-kicker"><div class="tb-kicker-rule"></div><div class="tb-kicker-txt">Financial Tools</div></div>
+        <div class="tb-title">Uniform Fee <i>Tracker</i></div>
+        <div class="tb-sub" id="pageSub">Loading orders…</div>
+      </div>
+      <button class="tb-logout" id="btnLogout">Log Out</button>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-lbl">Total Orders</div><div class="kpi-val" id="kOrders">0</div></div>
+    <div class="kpi"><div class="kpi-lbl">Collected</div><div class="kpi-val grn" id="kCollected">₹0</div></div>
+    <div class="kpi"><div class="kpi-lbl">Outstanding</div><div class="kpi-val red" id="kOutstanding">₹0</div></div>
+    <div class="kpi"><div class="kpi-lbl">Payment Pending</div><div class="kpi-val amb" id="kPayPending">0</div><div class="kpi-sub">orders</div></div>
+    <div class="kpi"><div class="kpi-lbl">Delivery Pending</div><div class="kpi-val amb" id="kDelPending">0</div><div class="kpi-sub">orders</div></div>
+  </div>
+
+  <div class="sec-head"><div class="sec-dot"></div><div class="sec-txt">Orders</div><div class="sec-rule"></div></div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-inp" id="searchInp" placeholder="Search by student, class, or contact…">
+    </div>
+    <div class="tabs" id="filterTabs">
+      <button class="tab on" data-f="ALL">All</button>
+      <button class="tab" data-f="PAY_PENDING">Payment Pending</button>
+      <button class="tab" data-f="DEL_PENDING">Delivery Pending</button>
+      <button class="tab" data-f="SETTLED">Fully Settled</button>
+    </div>
+    <button class="btn-new" onclick="openAddOrder()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Order</button>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th><th>Items</th><th>Amount</th><th>Paid</th><th>Balance</th>
+          <th>Payment</th><th>Delivery</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+    <div class="tbl-empty" id="tblEmpty" style="display:none">
+      <div class="tbl-empty-h">No orders found</div>
+      <div class="tbl-empty-p">Try a different filter or add a new uniform order.</div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span class="foot-brand">SEHR <span>ACADEMY</span></span>
+    <div class="foot-links">
+      <span style="color:var(--pa)">Vatanappally, Thrissur</span>
+      <a href="https://wa.me/919539409586">+91 95394 09586</a>
+      <a href="/">sehracademy.com</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ═══ CONFIG ═══ */
+var API='PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+var PASSWORD='';
+var ORDERS=[];
+var FILTER='ALL';
+var SEARCH='';
+
+function g(id){return document.getElementById(id);}
+function qa(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtN(n){return Number(n||0).toLocaleString('en-IN');}
+function loaderOn(){g('loader').classList.add('on');}
+function loaderOff(){g('loader').classList.remove('on');}
+function showToast(msg,err){var t=g('toast');t.textContent=msg;t.className='toast on'+(err?' err':'');setTimeout(function(){t.className='toast';},3200);}
+function openModal(id){g(id).classList.add('on');}
+function closeModal(id){g(id).classList.remove('on');}
+
+qa('.modal-bg').forEach(function(bg){bg.addEventListener('click',function(ev){if(ev.target===this)closeModal(this.id);});});
+
+/* ═══ NORMALIZE ═══ */
+function norm(o){
+  var amount=Number(o.amount||0),paid=Number(o.amount_paid||0);
+  var payStatus=String(o.payment_status||'').toUpperCase().trim()||(paid<=0?'PENDING':paid>=amount?'PAID':'PARTIAL');
+  var delStatus=String(o.delivery_status||'').toUpperCase().trim()==='DELIVERED'?'DELIVERED':'PENDING';
+  return {
+    id:String(o.id||''),student_name:String(o.student_name||''),class:String(o.class||''),
+    parent_name:String(o.parent_name||''),contact:String(o.contact||''),items:String(o.items||''),
+    quantity:String(o.quantity||''),amount:amount,amount_paid:paid,balance:Math.max(0,amount-paid),
+    payment_status:payStatus,payment_date:String(o.payment_date||''),
+    delivery_status:delStatus,delivery_date:String(o.delivery_date||''),notes:String(o.notes||'')
+  };
+}
+
+/* ═══ LOGIN ═══ */
+g('loginForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var pass=g('passInput').value.trim();if(!pass)return;
+  var btn=g('loginBtn');btn.disabled=true;btn.textContent='Checking…';
+  g('loginErr').className='lbox-err';loaderOn();
+  fetch(API+'?action=list&password='+encodeURIComponent(pass))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(data&&data.error){loaderOff();btn.disabled=false;btn.textContent='Access Tracker';
+        g('loginErr').textContent='Incorrect password.';g('loginErr').className='lbox-err on';return;}
+      PASSWORD=pass;
+      ORDERS=(Array.isArray(data)?data:[]).map(norm);
+      sessionStorage.setItem('sehr_uniform_pass',pass);
+      g('loginWrap').classList.add('gone');g('app').classList.add('on');loaderOff();
+      init();
+    })
+    .catch(function(){loaderOff();btn.disabled=false;btn.textContent='Access Tracker';
+      g('loginErr').textContent='Connection error.';g('loginErr').className='lbox-err on';});
+});
+
+g('btnLogout').addEventListener('click',function(){
+  sessionStorage.removeItem('sehr_uniform_pass');PASSWORD='';
+  g('app').classList.remove('on');g('loginWrap').classList.remove('gone');g('passInput').value='';
+});
+
+window.addEventListener('load',function(){
+  var saved=sessionStorage.getItem('sehr_uniform_pass');
+  if(saved){g('passInput').value=saved;g('loginForm').dispatchEvent(new Event('submit'));}
+});
+
+/* ═══ INIT / RENDER ═══ */
+var inited=false;
+function init(){
+  g('pageSub').textContent=ORDERS.length+' orders on file · Updated '+new Date().toLocaleTimeString('en-IN');
+  if(!inited){inited=true;wireListeners();}
+  renderKPIs();render();
+}
+
+function wireListeners(){
+  g('searchInp').addEventListener('input',function(){SEARCH=this.value.trim().toLowerCase();render();});
+  qa('.tab').forEach(function(t){t.addEventListener('click',function(){
+    qa('.tab').forEach(function(x){x.classList.remove('on');});
+    this.classList.add('on');FILTER=this.dataset.f;render();
+  });});
+}
+
+function renderKPIs(){
+  var collected=ORDERS.reduce(function(a,o){return a+o.amount_paid;},0);
+  var outstanding=ORDERS.reduce(function(a,o){return a+o.balance;},0);
+  var payPending=ORDERS.filter(function(o){return o.payment_status!=='PAID';}).length;
+  var delPending=ORDERS.filter(function(o){return o.delivery_status==='PENDING';}).length;
+  g('kOrders').textContent=ORDERS.length;
+  g('kCollected').textContent='₹'+fmtN(collected);
+  g('kOutstanding').textContent='₹'+fmtN(outstanding);
+  g('kPayPending').textContent=payPending;
+  g('kDelPending').textContent=delPending;
+}
+
+function filtered(){
+  return ORDERS.filter(function(o){
+    if(FILTER==='PAY_PENDING'&&o.payment_status==='PAID')return false;
+    if(FILTER==='DEL_PENDING'&&o.delivery_status!=='PENDING')return false;
+    if(FILTER==='SETTLED'&&!(o.payment_status==='PAID'&&o.delivery_status==='DELIVERED'))return false;
+    if(SEARCH){
+      var hay=(o.student_name+' '+o.class+' '+o.contact+' '+o.parent_name).toLowerCase();
+      if(hay.indexOf(SEARCH)===-1)return false;
+    }
+    return true;
+  });
+}
+
+function badgeForPayment(status){
+  if(status==='PAID')return '<span class="badge badge-paid">Paid</span>';
+  if(status==='PARTIAL')return '<span class="badge badge-partial">Partial</span>';
+  return '<span class="badge badge-pending">Pending</span>';
+}
+function badgeForDelivery(status){
+  if(status==='DELIVERED')return '<span class="badge badge-delivered">Delivered</span>';
+  return '<span class="badge badge-pending">Pending</span>';
+}
+
+function render(){
+  var rows=filtered();
+  var sorted=rows.slice().sort(function(a,b){
+    if(a.balance!==b.balance)return b.balance-a.balance;
+    return a.student_name.localeCompare(b.student_name);
+  });
+  g('tblEmpty').style.display=sorted.length?'none':'block';
+  g('tblBody').innerHTML=sorted.map(rowHtml).join('');
+}
+
+function rowHtml(o){
+  var actions='<div class="row-actions">';
+  if(o.payment_status!=='PAID'){
+    actions+='<button class="act-btn" onclick="openPay(\''+o.id+'\')">Record Payment</button>';
+  }
+  if(o.delivery_status==='PENDING'){
+    actions+='<button class="act-btn" onclick="markDelivered(\''+o.id+'\')">Mark Delivered</button>';
+  }
+  var reminder=buildReminder(o);
+  if(reminder){
+    actions+='<button class="act-btn copy" onclick="copyReminder(this,\''+o.id+'\')">'+reminder.label+'</button>';
+  }else{
+    actions+='<span class="settled-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Settled</span>';
+  }
+  actions+='<button class="act-btn danger" onclick="removeOrder(\''+o.id+'\')" title="Delete order"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>';
+  actions+='</div>';
+
+  return '<tr>'
+    +'<td><div class="stu-name">'+esc(o.student_name)+'</div><div class="stu-cls">'+esc(o.class||'—')+(o.contact?' · '+esc(o.contact):'')+'</div></td>'
+    +'<td>'+esc(o.items||'—')+(o.quantity?' <span style="color:var(--pa)">×'+esc(o.quantity)+'</span>':'')+'</td>'
+    +'<td class="amt">₹'+fmtN(o.amount)+'</td>'
+    +'<td class="amt">₹'+fmtN(o.amount_paid)+'</td>'
+    +'<td class="bal'+(o.balance<=0?' zero':'')+'">₹'+fmtN(o.balance)+'</td>'
+    +'<td>'+badgeForPayment(o.payment_status)+'</td>'
+    +'<td>'+badgeForDelivery(o.delivery_status)+'</td>'
+    +'<td>'+actions+'</td>'
+    +'</tr>';
+}
+
+/* ═══ WHATSAPP REMINDER MESSAGES ═══ */
+function buildReminder(o){
+  var parent=o.parent_name||'there';
+  var items=o.items||'uniform order';
+  var balance=fmtN(o.balance);
+  var sign='\n\n— SEHR Academy\n+91 95394 09586';
+  if(o.payment_status!=='PAID'&&o.delivery_status==='PENDING'){
+    return {label:'Copy Payment Reminder',
+      msg:'Hi '+parent+', greetings from SEHR Academy! '+o.student_name+'\'s uniform order ('+items+') is ready. Kindly clear the balance of ₹'+balance+' so we can arrange delivery. Thank you!'+sign};
+  }
+  if(o.payment_status!=='PAID'&&o.delivery_status==='DELIVERED'){
+    return {label:'Copy Payment Reminder',
+      msg:'Hi '+parent+', this is a gentle reminder from SEHR Academy — '+o.student_name+'\'s uniform ('+items+') has been delivered, and a balance of ₹'+balance+' is still pending. Kindly complete the payment at your earliest convenience. Thank you!'+sign};
+  }
+  if(o.payment_status==='PAID'&&o.delivery_status==='PENDING'){
+    return {label:'Copy Pickup Reminder',
+      msg:'Hi '+parent+', good news from SEHR Academy! '+o.student_name+'\'s uniform order ('+items+') is fully paid and ready. Please let us know a convenient time for delivery/pickup. Thank you!'+sign};
+  }
+  return null;
+}
+
+function copyReminder(btn,id){
+  var o=ORDERS.find(function(x){return x.id===id;});if(!o)return;
+  var r=buildReminder(o);if(!r)return;
+  var orig=btn.textContent;
+  navigator.clipboard.writeText(r.msg).then(function(){
+    btn.classList.add('copied');btn.textContent='Copied!';
+    setTimeout(function(){btn.classList.remove('copied');btn.textContent=orig;},2000);
+  }).catch(function(){showToast('Could not copy — try again.',true);});
+}
+
+/* ═══ ADD ORDER ═══ */
+function openAddOrder(){
+  ['o_student','o_class','o_parent','o_contact','o_items','o_qty','o_amount','o_notes'].forEach(function(id){g(id).value='';});
+  g('o_paid').value='0';g('o_delivered').checked=false;
+  g('msgOrder').className='form-msg';g('errOrder').className='form-err';
+  openModal('modalOrder');
+}
+
+function submitOrder(){
+  var name=g('o_student').value.trim(),contact=g('o_contact').value.trim(),amount=g('o_amount').value;
+  var errEl=g('errOrder');
+  if(!name){errEl.textContent='Student name is required.';errEl.className='form-err on';return;}
+  if(!contact){errEl.textContent='Contact number is required for reminders.';errEl.className='form-err on';return;}
+  if(!amount||Number(amount)<=0){errEl.textContent='Total amount must be greater than 0.';errEl.className='form-err on';return;}
+  errEl.className='form-err';
+
+  var params='action=addOrder&password='+encodeURIComponent(PASSWORD)
+    +'&student_name='+encodeURIComponent(name)
+    +'&class='+encodeURIComponent(g('o_class').value.trim())
+    +'&parent_name='+encodeURIComponent(g('o_parent').value.trim())
+    +'&contact='+encodeURIComponent(contact)
+    +'&items='+encodeURIComponent(g('o_items').value.trim())
+    +'&quantity='+encodeURIComponent(g('o_qty').value||'')
+    +'&amount='+encodeURIComponent(amount)
+    +'&amount_paid='+encodeURIComponent(g('o_paid').value||0)
+    +'&delivery_status='+encodeURIComponent(g('o_delivered').checked?'DELIVERED':'PENDING')
+    +'&notes='+encodeURIComponent(g('o_notes').value.trim());
+
+  apiCall(params,'submitOrder','Save Order',function(){
+    reload(function(){closeModal('modalOrder');showToast('Order added.');});
+  },'errOrder');
+}
+
+/* ═══ RECORD PAYMENT ═══ */
+function openPay(id){
+  var o=ORDERS.find(function(x){return x.id===id;});if(!o)return;
+  g('pay_id').value=o.id;g('payName').textContent=o.student_name;
+  g('pay_total').textContent='₹'+fmtN(o.amount);
+  g('pay_sofar').textContent='₹'+fmtN(o.amount_paid);
+  g('pay_balance').textContent='₹'+fmtN(o.balance);
+  g('pay_amount').value='';
+  g('msgPay').className='form-msg';g('errPay').className='form-err';
+  openModal('modalPay');
+}
+function fillFullBalance(){
+  var o=ORDERS.find(function(x){return x.id===g('pay_id').value;});if(!o)return;
+  g('pay_amount').value=o.balance;
+}
+function submitPayment(){
+  var id=g('pay_id').value;var o=ORDERS.find(function(x){return x.id===id;});if(!o)return;
+  var inc=Number(g('pay_amount').value||0);
+  var errEl=g('errPay');
+  if(inc<=0){errEl.textContent='Enter an amount greater than 0.';errEl.className='form-err on';return;}
+  errEl.className='form-err';
+  var newTotal=o.amount_paid+inc;
+  var params='action=updatePayment&password='+encodeURIComponent(PASSWORD)
+    +'&id='+encodeURIComponent(id)+'&amount_paid='+encodeURIComponent(newTotal);
+  apiCall(params,'submitPay','Record Payment',function(){
+    reload(function(){closeModal('modalPay');showToast('Payment recorded.');});
+  },'errPay');
+}
+
+/* ═══ MARK DELIVERED ═══ */
+function markDelivered(id){
+  var params='action=updateDelivery&password='+encodeURIComponent(PASSWORD)
+    +'&id='+encodeURIComponent(id)+'&delivery_status=DELIVERED';
+  loaderOn();
+  fetch(API+'?'+params).then(function(r){return r.json();}).then(function(data){
+    loaderOff();
+    if(data.success){reload(function(){showToast('Marked as delivered.');});}
+    else{showToast(data.error||'Failed to update.',true);}
+  }).catch(function(){loaderOff();showToast('Connection error.',true);});
+}
+
+/* ═══ DELETE ═══ */
+function removeOrder(id){
+  var o=ORDERS.find(function(x){return x.id===id;});if(!o)return;
+  if(!confirm('Delete uniform order for '+o.student_name+'? This cannot be undone.'))return;
+  var params='action=deleteOrder&password='+encodeURIComponent(PASSWORD)+'&id='+encodeURIComponent(id);
+  loaderOn();
+  fetch(API+'?'+params).then(function(r){return r.json();}).then(function(data){
+    loaderOff();
+    if(data.success){reload(function(){showToast('Order deleted.');});}
+    else{showToast(data.error||'Failed to delete.',true);}
+  }).catch(function(){loaderOff();showToast('Connection error.',true);});
+}
+
+/* ═══ HELPERS ═══ */
+function apiCall(params,btnId,btnDefault,onSuccess,errId){
+  var btn=g(btnId);btn.disabled=true;btn.textContent='Saving…';
+  fetch(API+'?'+params).then(function(r){return r.json();})
+    .then(function(data){
+      btn.disabled=false;btn.textContent=btnDefault;
+      if(data.success){onSuccess(data);}
+      else{var e=g(errId);e.textContent=data.error||'Failed.';e.className='form-err on';}
+    })
+    .catch(function(){btn.disabled=false;btn.textContent=btnDefault;
+      var e=g(errId);e.textContent='Connection error.';e.className='form-err on';});
+}
+
+function reload(cb){
+  fetch(API+'?action=list&password='+encodeURIComponent(PASSWORD))
+    .then(function(r){return r.json();})
+    .then(function(data){
+      ORDERS=(Array.isArray(data)?data:[]).map(norm);
+      renderKPIs();render();
+      g('pageSub').textContent=ORDERS.length+' orders on file · Updated '+new Date().toLocaleTimeString('en-IN');
+      if(cb)cb();
+    });
+}
+</script>
+</body>
+</html>
