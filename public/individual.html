@@ -301,6 +301,13 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .pay-month{font-size:10px;font-weight:600;color:var(--ink)}
 .pay-amt{font-size:12px;font-weight:700;color:var(--lime-2);font-variant-numeric:tabular-nums;flex-shrink:0}
 .pay-mode{font-size:9px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:2px 6px;border-radius:3px;flex-shrink:0}
+.pay-del-btn{width:20px;height:20px;border-radius:50%;border:1px solid var(--red-mid);background:var(--red-bg);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;color:var(--red);flex-shrink:0;margin-left:8px}
+.pay-del-btn:hover{background:var(--red);color:#fff}
+.pay-del-btn:disabled{opacity:.5;cursor:default}
+.pay-del-btn svg{width:10px;height:10px}
+.sc-pay-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:9px;background:var(--lime-bg);border:1.5px solid var(--lime-mid);font-family:var(--f);font-size:10px;font-weight:700;color:var(--lime-2);cursor:pointer;transition:all .15s;flex-shrink:0}
+.sc-pay-btn:hover{background:var(--lime);color:var(--ink)}
+.sc-pay-btn svg{width:11px;height:11px}
 .subj-breakdown{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
 .subj-card{background:var(--cream);border-radius:10px;padding:10px 12px;border-left:3px solid var(--lime)}
 .subj-card-name{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
@@ -481,7 +488,8 @@ select.form-inp{cursor:pointer}
 <div class="modal-bg" id="modalPayment">
   <div class="modal"><div class="modal-head"><span class="modal-title">Record Student Payment</span><button class="modal-close" onclick="closeModal('modalPayment')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <div class="modal-body"><div class="form-msg" id="msgPayment"></div><div class="form-err" id="errPayment"></div>
-  <div class="form-row"><label class="form-lbl">Student *</label><select class="form-inp" id="pay_student"><option value="">Select student</option></select></div>
+  <div class="form-row"><label class="form-lbl">Student *</label><select class="form-inp" id="pay_student" onchange="updateStudentPaySummary()"><option value="">Select student</option></select></div>
+  <div id="studentPaySummary"></div>
   <div class="form-row half"><div><label class="form-lbl">Amount (Rs) *</label><input class="form-inp" id="pay_amount" type="number" placeholder="4800"></div><div><label class="form-lbl">Date *</label><input class="form-inp" id="pay_date" type="date"></div></div>
   <div class="form-row half"><div><label class="form-lbl">Mode</label><select class="form-inp" id="pay_mode"><option>GPay</option><option>Cash</option><option>Bank Transfer</option><option>Cheque</option><option>Other</option></select></div><div><label class="form-lbl">Month Covered</label><input class="form-inp" id="pay_month" placeholder="June 2026"></div></div>
   <div class="form-row"><label class="form-lbl">Notes</label><input class="form-inp" id="pay_notes" placeholder="Remarks..."></div>
@@ -566,7 +574,7 @@ select.form-inp{cursor:pointer}
     <div class="tb-actions">
       <button class="abt green" onclick="openAddStudent()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Add Student</button>
       <button class="abt" onclick="openAddSession(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Add Session</button>
-      <button class="abt" onclick="openModal('modalPayment')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Student Payment</button>
+      <button class="abt" onclick="openPayment(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Student Payment</button>
       <button class="abt teal" onclick="openAddTeacher()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Add Teacher</button>
       <button class="abt teal" onclick="openTeacherPayment(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pay Teacher</button>
       <button class="abt" onclick="openBulkModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>Bulk Schedule</button>
@@ -1109,7 +1117,7 @@ function renderTeacherCards(){
         +'<div class="ss-'+st+'">'+esc(r.status||'')+'</div></div></div>';
     }).join(''):'<div class="no-sessions">No sessions found for this teacher</div>';
     var payHTML=t.tpayments.length?t.tpayments.slice().sort(function(a,b){return(parseDate(b.date_ddmmyyyy||b.date)||0)-(parseDate(a.date_ddmmyyyy||a.date)||0);}).slice(0,6).map(function(p){
-      return '<div class="pay-row"><span class="pay-date">'+esc(p.date_ddmmyyyy||p.date||'--')+'</span><div class="pay-info"><div class="pay-month">'+esc(p.month_covered||'')+'</div></div><span class="pay-mode">'+esc(p.mode||'')+'</span><span class="pay-amt" style="color:var(--teal)">Rs.'+fmtN(Number(p.amount_rs||0))+'</span></div>';
+      return '<div class="pay-row"><span class="pay-date">'+esc(p.date_ddmmyyyy||p.date||'--')+'</span><div class="pay-info"><div class="pay-month">'+esc(p.month_covered||'')+'</div></div><span class="pay-mode">'+esc(p.mode||'')+'</span><span class="pay-amt" style="color:var(--teal)">Rs.'+fmtN(Number(p.amount_rs||0))+'</span><button class="pay-del-btn" onclick="deleteTeacherPayment(event,\''+esc(p.tp_id||'')+'\')" title="Delete payment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
     }).join(''):'<div class="no-payments">No payments recorded</div>';
 
     return '<div class="tc'+(t.status==='Inactive'?' inactive':'')+'" id="tc-'+esc(t.tid)+'">'
@@ -1192,7 +1200,7 @@ function renderCards(list){
         +'</div></div>'
         +'<div class="sess-right"><div class="sess-hrs">'+Number(r.duration_hrs||0).toFixed(1)+'h</div><div class="ss-'+st+'">'+esc(r.status||'')+'</div>'+acts+'</div></div>';
     }).join(''):'<div class="no-sessions">No sessions logged yet</div>';
-    var payHTML=s.payments.length?s.payments.slice().sort(function(a,b){return(parseDate(b.date_ddmmyyyy)||0)-(parseDate(a.date_ddmmyyyy)||0);}).slice(0,6).map(function(p){return '<div class="pay-row"><span class="pay-date">'+esc(p.date_ddmmyyyy||'--')+'</span><div class="pay-info"><div class="pay-month">'+esc(p.month_covered||'')+'</div></div><span class="pay-mode">'+esc(p.mode||'')+'</span><span class="pay-amt">Rs.'+fmtN(Number(p.amount_received_rs||0))+'</span></div>';}).join(''):'<div class="no-payments">No payments recorded</div>';
+    var payHTML=s.payments.length?s.payments.slice().sort(function(a,b){return(parseDate(b.date_ddmmyyyy)||0)-(parseDate(a.date_ddmmyyyy)||0);}).slice(0,6).map(function(p){return '<div class="pay-row"><span class="pay-date">'+esc(p.date_ddmmyyyy||'--')+'</span><div class="pay-info"><div class="pay-month">'+esc(p.month_covered||'')+'</div></div><span class="pay-mode">'+esc(p.mode||'')+'</span><span class="pay-amt">Rs.'+fmtN(Number(p.amount_received_rs||0))+'</span><button class="pay-del-btn" onclick="deletePayment(event,\''+esc(p.payment_id||'')+'\')" title="Delete payment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';}).join(''):'<div class="no-payments">No payments recorded</div>';
     var subjKeys=Object.keys(s.subjBreakdown);
     var subjHTML=subjKeys.length?'<div class="subj-breakdown">'+subjKeys.map(function(subj,i){var bd=s.subjBreakdown[subj],col=subjColor(subj,i);return '<div class="subj-card" style="border-left-color:'+col.fg+'"><div class="subj-card-name">'+esc(subj)+'</div><div class="subj-card-hrs">'+bd.done.toFixed(1)+'h <span style="font-size:10px;color:var(--muted)">done</span></div><div class="subj-card-meta">'+bd.count+' sessions · '+bd.sched.toFixed(1)+'h upcoming</div></div>';}).join('')+'</div>':'<div class="no-sessions">Add sessions to see subject breakdown</div>';
     return '<div class="sc'+(s.status==='Inactive'?' inactive':'')+'" id="sc-'+esc(s.sid)+'">'
@@ -1215,6 +1223,7 @@ function renderCards(list){
       +'<div class="sc-pay-wrap"><div class="sc-pay-head"><span class="sc-pay-lbl">Payment Progress</span><span class="sc-pay-num">Rs.'+fmtN(s.paid)+' / Rs.'+fmtN(s.owed)+'</span></div><div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+s.creditPct+'%;background:'+barColor+'"></div></div></div>'
       +'<div class="sc-foot"><a class="sc-wa" href="'+waLink(s)+'" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>'
       +'<button class="sc-bill-btn" onclick="openBilling(\''+esc(s.sid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Bill</button>'
+      +'<button class="sc-pay-btn" onclick="openPayment(\''+esc(s.sid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pay</button>'
       +markTodayBtn(s)
       +'<button class="sc-pdf-btn" onclick="printStudentPDF(\''+esc(s.sid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>PDF</button>'
       +'<button class="sc-expand" onclick="toggleCard(\''+esc(s.sid)+'\')"><span>Details</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button></div>'
@@ -1297,6 +1306,38 @@ function openEditTeacher(ev,tid){
   ev.stopPropagation();var t=TEACHERS.filter(function(x){return String(x.teacher_id||'')===tid;})[0];if(!t)return;
   g('modalTeacherTitle').textContent='Edit Teacher';g('t_id').value=tid;g('submitTeacher').textContent='Save Changes';
   g('t_name').value=t.full_name||'';g('t_rate').value=t.hourly_rate_rs||'';g('t_subjects').value=t.subjects||'';g('t_contact').value=t.contact_whatsapp||'';g('t_join').value=isoDate(t.joining_date||'');g('t_status').value=t.status||'Active';g('t_notes').value=t.notes||'';openModal('modalTeacher');
+}
+function openPayment(sid){
+  clearForm('modalPayment');g('pay_date').value=today();g('pay_month').value=currentMonth();
+  populateDropdowns();if(sid){setTimeout(function(){g('pay_student').value=sid;updateStudentPaySummary();},50);}
+  openModal('modalPayment');
+}
+function updateStudentPaySummary(){
+  var sel=g('pay_student'),sid=sel?sel.value:'',wrap=g('studentPaySummary');if(!wrap)return;
+  if(!sid){wrap.innerHTML='';return;}
+  var sRec=STUDENTS.filter(function(s){return String(s.student_id||'')===sid;})[0];if(!sRec){wrap.innerHTML='';return;}
+  var sc=computeStudent(sRec);
+  var outLbl=sc.outstanding>0?'<span style="color:var(--red);font-weight:700">Rs.'+fmtN(sc.outstanding)+' due</span>':sc.outstanding<0?'<span style="color:var(--blue);font-weight:700">Rs.'+fmtN(Math.abs(sc.outstanding))+' credit</span>':'<span style="color:var(--lime-2);font-weight:700">Fully paid</span>';
+  wrap.innerHTML='<div class="bill-summary" style="margin-top:0;margin-bottom:14px"><div class="bill-row"><span class="bill-row-k">Hours Done</span><span class="bill-row-v">'+sc.hrsDone.toFixed(1)+' hrs</span></div><div class="bill-row"><span class="bill-row-k">Rate</span><span class="bill-row-v">Rs.'+fmtN(sc.rate)+'/hr</span></div><div class="bill-row"><span class="bill-row-k">Total Owed</span><span class="bill-row-v">Rs.'+fmtN(sc.owed)+'</span></div><div class="bill-row"><span class="bill-row-k">Already Paid</span><span class="bill-row-v" style="color:var(--lime-2)">Rs.'+fmtN(sc.paid)+'</span></div><div class="bill-row bill-total"><span class="bill-row-k">Balance</span><span class="bill-row-v">'+outLbl+'</span></div></div>';
+  if(sc.outstanding>0&&!g('pay_amount').value)g('pay_amount').value=sc.outstanding;
+}
+function deletePayment(ev,paymentId){
+  ev.stopPropagation();if(!paymentId||!confirm('Delete this payment record? This cannot be undone.'))return;
+  var btn=ev.target.closest('button');if(btn)btn.disabled=true;
+  fetch(API+'?action=deletePayment&password='+encodeURIComponent(PASS)+'&id='+encodeURIComponent(paymentId))
+    .then(function(r){return r.json();}).then(function(data){
+      if(data.success){PAYMENTS=PAYMENTS.filter(function(p){return String(p.payment_id||'')!==String(paymentId);});showToast('Payment deleted');render();}
+      else{showToast(data.error||'Failed',true);if(btn)btn.disabled=false;}
+    }).catch(function(){showToast('Connection error',true);if(btn)btn.disabled=false;});
+}
+function deleteTeacherPayment(ev,tpId){
+  ev.stopPropagation();if(!tpId||!confirm('Delete this payment record? This cannot be undone.'))return;
+  var btn=ev.target.closest('button');if(btn)btn.disabled=true;
+  fetch(API+'?action=deleteTeacherPayment&password='+encodeURIComponent(PASS)+'&id='+encodeURIComponent(tpId))
+    .then(function(r){return r.json();}).then(function(data){
+      if(data.success){TEACHER_PAYMENTS=TEACHER_PAYMENTS.filter(function(p){return String(p.tp_id||'')!==String(tpId);});showToast('Payment deleted');render();}
+      else{showToast(data.error||'Failed',true);if(btn)btn.disabled=false;}
+    }).catch(function(){showToast('Connection error',true);if(btn)btn.disabled=false;});
 }
 function openTeacherPayment(tid){
   clearForm('modalTeacherPayment');g('tp_date').value=today();g('tp_month').value=currentMonth();
