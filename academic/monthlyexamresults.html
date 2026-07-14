@@ -408,11 +408,16 @@ function onStreamChange(){
   if(g('fStream').value)enableSyllabus();
 }
 function enableSyllabus(){
+  var cls=g('fClass').value;
   var sel=g('fSyllabus');
   sel.disabled=false;
-  sel.innerHTML='<option value="">— Syllabus —</option>'
-    +'<option value="CBSE">CBSE</option>'
+  var opts='<option value="">— Syllabus —</option>';
+  if(cls==='11'||cls==='12'){
+    opts+='<option value="ALL">All</option>';
+  }
+  opts+='<option value="CBSE">CBSE</option>'
     +'<option value="STATE">Kerala State</option>';
+  sel.innerHTML=opts;
 }
 function resetSyllabus(){
   var sel=g('fSyllabus');
@@ -424,7 +429,7 @@ function resetSubject(){
   sel.disabled=true;
   sel.innerHTML='<option value="ALL">All Subjects</option>';
 }
-function boardToSyllabusKey(board){return board==='STATE'?'Kerala State':'CBSE';}
+function boardToSyllabusKey(board){return board==='STATE'?'Kerala State':'CBSE';} // 'ALL' also maps to CBSE — the CBSE/Kerala State subject lists are identical for 11/12
 
 function onSyllabusChange(){
   var cls=g('fClass').value, stream=g('fStream').value, board=g('fSyllabus').value;
@@ -512,12 +517,14 @@ function applyRosterForKey(cls,board,key){
   var map={};
   ATTENDANCE.forEach(function(r){
     if(String(r.class||'').trim()!==String(cls))return;
-    if(String(r.syllabus||'').trim()!==String(board))return;
+    var rSyl=String(r.syllabus||'').trim();
+    if(board!=='ALL' && rSyl!==String(board))return;
     var id=r.student_id||r.full_name;
     if(!id)return;
-    if(!map[id])map[id]={id:id,full_name:'',photo:''};
+    if(!map[id])map[id]={id:id,full_name:'',photo:'',board:rSyl};
     if(r.full_name)map[id].full_name=r.full_name;
     if(r.photo&&String(r.photo).indexOf('http')===0)map[id].photo=r.photo;
+    if(rSyl)map[id].board=rSyl;
   });
   ROSTER=Object.keys(map).map(function(id){return map[id];})
     .filter(function(s){return s.full_name;})
@@ -532,6 +539,7 @@ function applyRosterForKey(cls,board,key){
 }
 function populateSpotSelects(){
   var picked=[1,2,3].map(function(i){return g('fSpot'+i).value;});
+  var board=g('fSyllabus').value;
   [1,2,3].forEach(function(i){
     var sel=g('fSpot'+i);
     var cur=picked[i-1];
@@ -540,7 +548,9 @@ function populateSpotSelects(){
     ROSTER.forEach(function(s){
       if(picked.indexOf(s.id)!==-1 && s.id!==cur)return; // already used in another spot
       var o=document.createElement('option');
-      o.value=s.id;o.textContent=s.full_name;
+      o.value=s.id;
+      // Disambiguate same-name students across boards when "All" is selected
+      o.textContent=s.full_name+(board==='ALL'&&s.board?' ('+(s.board==='STATE'?'Kerala State':s.board)+')':'');
       if(s.id===cur)o.selected=true;
       sel.appendChild(o);
     });
@@ -562,7 +572,7 @@ function currentMeta(){
   var board=g('fSyllabus').value;
   var subj=g('fSubject').value;
   var examName=g('fExamName').value.trim()||'Monthly Examination';
-  var boardTxt=board==='STATE'?'Kerala State':board==='CBSE'?'CBSE':'';
+  var boardTxt=board==='STATE'?'Kerala State':board==='CBSE'?'CBSE':board==='ALL'?'All Boards':'';
   var metaParts=[];
   if(cls)metaParts.push('Class '+cls+(stream?' · '+stream:''));
   if(boardTxt)metaParts.push(boardTxt);
