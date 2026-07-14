@@ -449,9 +449,34 @@ function onSyllabusChange(){
   loadRoster(cls,board);
 }
 
-/* ══ STUDENT ROSTER — pulled via the same getStudents action sessionlogreport.html/markattendance.html use ══ */
+/* ══ STUDENT ROSTER — derived from getAttendance, the same source & pattern
+   academic/sessionlogreport.html uses to build its per-class student lists
+   (it never calls getStudents; that action's "students" sheet tab is not
+   reliably kept in sync, especially for classes 11/12). We pull the full
+   attendance dataset once, unfiltered — exactly like sessionlogreport.html's
+   apiAtt({action:'getAttendance'}) — then derive a unique student list per
+   class+syllabus from it client-side. ══ */
+var ATTENDANCE=[];
+var ATT_READY=false, ATT_ERROR=false;
+var PENDING_ROSTER=null; // {cls,board,key} — set if a roster was requested before ATTENDANCE finished loading
+
+function initAttendance(){
+  apiAtt({action:'getAttendance'},function(data,err){
+    ATT_READY=true;
+    if(err||!data||!data.success||!data.records){
+      ATT_ERROR=true;
+    } else {
+      ATTENDANCE=data.records||[];
+    }
+    if(PENDING_ROSTER){
+      var p=PENDING_ROSTER;PENDING_ROSTER=null;
+      applyRosterForKey(p.cls,p.board,p.key);
+    }
+  });
+}
+
 function clearRoster(){
-  ROSTER=[];ROSTER_KEY='';
+  ROSTER=[];ROSTER_KEY='';PENDING_ROSTER=null;
   [1,2,3].forEach(function(i){
     var sel=g('fSpot'+i);
     sel.disabled=true;
@@ -468,31 +493,42 @@ function loadRoster(cls,board){
   g('rosterNote').style.display='flex';
   g('rosterNoteTxt').textContent='Loading students…';
 
-  apiAtt({action:'getStudents',class:cls,syllabus:board},function(data,err){
-    if(ROSTER_KEY!==key)return; // stale response, class/syllabus changed again
-    if(err||!data||!data.success||!data.students){
-      g('rosterNoteTxt').textContent='Could not load students.';
-      ROSTER=[];
-      populateSpotSelects();
-      return;
-    }
-    ROSTER=data.students.filter(function(s){
-      // Match on class & syllabus only — some sheets store the stream inside the
-      // class cell (e.g. "11 Science"), so compare just the leading class number.
-      var sCls=String(s.class||'').trim().split(/\s+/)[0];
-      var sSyl=String(s.syllabus||'').trim().toUpperCase();
-      var wantState=String(board).toUpperCase()==='STATE';
-      var syllOk=wantState ? sSyl.indexOf('STATE')!==-1 : sSyl==='CBSE';
-      return sCls===String(cls) && syllOk;
-    }).sort(function(a,b){return (a.full_name||'').localeCompare(b.full_name||'');});
+  if(!ATT_READY){
+    PENDING_ROSTER={cls:cls,board:board,key:key};
+    return;
+  }
+  applyRosterForKey(cls,board,key);
+}
+function applyRosterForKey(cls,board,key){
+  if(ROSTER_KEY!==key)return; // stale — class/syllabus changed again while we were waiting
 
-    if(!ROSTER.length){
-      g('rosterNoteTxt').textContent='No students found for this class & syllabus.';
-    } else {
-      g('rosterNote').style.display='none';
-    }
+  if(ATT_ERROR){
+    g('rosterNoteTxt').textContent='Could not load the student directory.';
+    ROSTER=[];
     populateSpotSelects();
+    return;
+  }
+
+  var map={};
+  ATTENDANCE.forEach(function(r){
+    if(String(r.class||'').trim()!==String(cls))return;
+    if(String(r.syllabus||'').trim()!==String(board))return;
+    var id=r.student_id||r.full_name;
+    if(!id)return;
+    if(!map[id])map[id]={id:id,full_name:'',photo:''};
+    if(r.full_name)map[id].full_name=r.full_name;
+    if(r.photo&&String(r.photo).indexOf('http')===0)map[id].photo=r.photo;
   });
+  ROSTER=Object.keys(map).map(function(id){return map[id];})
+    .filter(function(s){return s.full_name;})
+    .sort(function(a,b){return a.full_name.localeCompare(b.full_name);});
+
+  if(!ROSTER.length){
+    g('rosterNoteTxt').textContent='No attendance records found for this class & syllabus yet.';
+  } else {
+    g('rosterNote').style.display='none';
+  }
+  populateSpotSelects();
 }
 function populateSpotSelects(){
   var picked=[1,2,3].map(function(i){return g('fSpot'+i).value;});
@@ -706,6 +742,7 @@ function downloadCard(){
 
 /* ══ INIT ══ */
 render();
+initAttendance();
 </script>
 </body>
 </html>
