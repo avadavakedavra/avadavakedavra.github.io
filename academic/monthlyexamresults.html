@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monthly Exam Results Generator — SEHR Academy</title>
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --bg:#0f0f0d;--bg2:#1a1a18;--bg3:#232320;--bg4:#2e2e2a;
+  --card:#1e1e1b;--border:#2e2e2a;--border2:#3a3a36;
+  --text:#fff;--text2:#e0ddd6;--text3:#9a9790;--text4:#5a5a56;
+  --li:#8BC53F;--l2:#72a530;--li-dim:rgba(139,197,63,.1);
+  --gold:#f59e0b;--silver:#94a3b8;--bronze:#cd7c54;
+  --re:#ef4444;
+  --f:'Open Sans',sans-serif;--e1:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--f);background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03)1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03)1px,transparent 1px);
+  background-size:48px 48px;
+}
+body::before{content:'';position:fixed;top:-100px;right:-80px;width:600px;height:600px;
+  border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.07),transparent 65%);
+  pointer-events:none;z-index:0}
+
+@keyframes fUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop {0%{transform:scale(0);opacity:0}65%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOPBAR */
+.topbar{height:56px;background:#1a1a18;border-bottom:2px solid #8BC53F;
+  display:flex;align-items:center;padding:0 20px;gap:14px;position:sticky;top:0;z-index:200}
+.tb-logo{font-size:22px;font-weight:900;letter-spacing:-1px}
+.tb-logo span{color:#8BC53F}
+.tb-div{width:1px;height:16px;background:#3a3a36}
+.tb-sub{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5a5a56}
+.tb-spacer{flex:1}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;
+  border:1px solid #3a3a36;background:#232320;color:#9a9790;
+  font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:all .13s}
+.tb-btn:hover{border-color:#8BC53F;color:#8BC53F}
+.tb-btn.li{background:#8BC53F;border-color:#8BC53F;color:#0f0f0d}
+.tb-btn.li:hover{background:#72a530}
+.tb-btn:disabled{opacity:.45;cursor:not-allowed}
+.tb-btn svg{width:13px;height:13px;flex-shrink:0}
+
+/* PAGE */
+.page{max-width:1180px;margin:0 auto;padding:24px 16px 80px;position:relative;z-index:1}
+.layout{display:grid;grid-template-columns:360px 1fr;gap:22px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+
+/* FORM PANEL */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;animation:fUp .4s var(--e1)}
+.panel-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--li);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.panel-title::before{content:'';width:3px;height:14px;background:var(--li);border-radius:2px;flex-shrink:0}
+.fld{margin-bottom:14px}
+.fld:last-child{margin-bottom:0}
+.flbl{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.flbl small{font-weight:600;color:var(--text4);text-transform:none;letter-spacing:0}
+.finp,.fsel{width:100%;appearance:none;-webkit-appearance:none;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:10px;color:var(--text2);font-family:var(--f);font-size:13px;font-weight:600;
+  padding:10px 34px 10px 13px;cursor:pointer;outline:none;transition:border .14s}
+.finp{cursor:text;padding:10px 13px}
+.finp:focus,.fsel:focus{border-color:var(--li)}
+.finp:disabled,.fsel:disabled{opacity:.45;cursor:not-allowed}
+.fsel-wrap{position:relative}
+.farr{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text4);font-size:11px;pointer-events:none}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fhint{font-size:11px;color:var(--text4);margin-top:6px;line-height:1.4}
+.fdivider{height:1px;background:var(--border);margin:16px 0}
+
+/* SPOT ROWS */
+.spot-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.spot-row:last-child{margin-bottom:0}
+.spot-medal{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:#0f0f0d}
+.spot-medal.g{background:var(--gold)}.spot-medal.s{background:var(--silver)}.spot-medal.b{background:var(--bronze)}
+.spot-sel-wrap{flex:1;position:relative}
+
+/* PREVIEW SIDE */
+.prev-side{position:sticky;top:76px}
+.prev-actions{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.load-note{font-size:11px;color:var(--text4);display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.ring{width:12px;height:12px;border-radius:50%;border:2px solid var(--border2);border-top-color:var(--li);animation:spin .7s linear infinite;flex-shrink:0}
+
+/* CARD */
+.wcard{
+  width:100%;max-width:540px;background:#0f0f0d;border-radius:16px;overflow:hidden;
+  font-family:'Open Sans',sans-serif;color:#fff;
+  box-shadow:0 24px 64px rgba(0,0,0,.6);animation:fUp .4s .05s var(--e1) both;
+}
+.wc-top{background:#1a1a18;border-bottom:2px solid #8BC53F;
+  padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.wc-logo{font-size:20px;font-weight:900;letter-spacing:-1px;color:#fff}
+.wc-logo span{color:#8BC53F}
+.wc-divider{width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 12px}
+.wc-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.wc-date{display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;
+  background:rgba(139,197,63,.1);border:1px solid rgba(139,197,63,.2);
+  font-size:10px;font-weight:700;color:#8BC53F}
+.wc-date::before{content:'';width:5px;height:5px;border-radius:50%;background:#8BC53F;flex-shrink:0}
+
+.wc-hero{background:linear-gradient(135deg,#1a1a18,#1e1e1b);padding:22px 22px 18px;position:relative;overflow:hidden;border-bottom:1px solid #2e2e2a}
+.wc-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;
+  border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.07),transparent 70%);pointer-events:none}
+.wc-eyebrow{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:#8BC53F;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.wc-eyebrow::before{content:'';width:3px;height:12px;background:#8BC53F;border-radius:2px;flex-shrink:0}
+.wc-name{font-size:28px;font-weight:900;color:#fff;letter-spacing:-.8px;line-height:1.1}
+.wc-meta{font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;font-weight:600}
+.wc-meta b{color:#8BC53F}
+
+.wc-podium{padding:8px 0 4px}
+.wc-prow{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.04)}
+.wc-prow:last-child{border-bottom:none}
+.wc-prow.p1{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.01))}
+.wc-pmedal{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1}
+.wc-pmedal.g{background:rgba(245,158,11,.12);border:2px solid var(--gold);color:var(--gold)}
+.wc-pmedal.s{background:rgba(148,163,184,.1);border:2px solid var(--silver);color:var(--silver)}
+.wc-pmedal.b{background:rgba(205,124,84,.1);border:2px solid var(--bronze);color:var(--bronze)}
+.wc-pmedal-n{font-size:17px}
+.wc-pmedal-r{font-size:8px;letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.wc-pav{width:56px;height:56px;border-radius:12px;flex-shrink:0;overflow:hidden;
+  background:#2e2e2a;border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#8BC53F;position:relative}
+.wc-pav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.wc-pinfo{flex:1;min-width:0}
+.wc-pname{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wc-prow.p1 .wc-pname{font-size:19px}
+.wc-prank-lbl{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px;font-weight:600}
+
+.wc-footer{background:#1a1a18;border-top:1px solid #2e2e2a;padding:12px 22px;
+  display:flex;align-items:center;justify-content:space-between}
+.wc-foot-brand{font-size:13px;font-weight:900;color:#fff;letter-spacing:-.3px}
+.wc-foot-brand span{color:#8BC53F}
+.wc-foot-url{font-size:10px;color:rgba(255,255,255,.25);font-weight:600}
+
+.empty{text-align:center;padding:60px 20px}
+.empty-icon{font-size:36px;opacity:.2;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:800;color:var(--text3)}
+.empty-sub{font-size:13px;color:var(--text4);margin-top:6px;max-width:320px;margin-left:auto;margin-right:auto}
+
+/* PDF PRINT OVERLAY */
+#pdfOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);
+  z-index:998;align-items:flex-start;justify-content:center;
+  padding:20px;overflow-y:auto;backdrop-filter:blur(8px)}
+#pdfOverlay.on{display:flex}
+.pdf-wrap{width:100%;max-width:600px}
+.pdf-controls{display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:14px;gap:8px;position:sticky;top:0;z-index:10}
+.pdf-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border:none;
+  border-radius:9px;background:#ef4444;color:#fff;font-family:var(--f);
+  font-size:13px;font-weight:800;cursor:pointer;transition:background .13s}
+.pdf-btn:hover{background:#dc2626}
+.exp-close{background:#2e2e2a;border:1px solid #3a3a36;color:#fff;padding:9px 16px;
+  border-radius:9px;font-family:var(--f);font-size:12px;font-weight:700;cursor:pointer;transition:all .13s}
+.exp-close:hover{border-color:#8BC53F;color:#8BC53F}
+
+/* PDF CARD — light print style */
+.pcard{background:#fff;border-radius:12px;overflow:hidden;font-family:'Open Sans',sans-serif;color:#111;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.pc-top{background:#0f0f0d;border-bottom:3px solid #8BC53F;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.pc-logo{font-size:20px;font-weight:900;letter-spacing:-1px;color:#fff}
+.pc-logo span{color:#8BC53F}
+.pc-divider{width:1px;height:16px;background:rgba(255,255,255,.2);margin:0 12px}
+.pc-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.pc-date-pill{padding:4px 12px;border-radius:20px;background:rgba(139,197,63,.15);border:1px solid rgba(139,197,63,.3);font-size:10px;font-weight:700;color:#8BC53F}
+.pc-hero{background:#f8f8f6;border-bottom:1px solid #e8e8e4;padding:20px 22px 16px}
+.pc-eyebrow{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#8BC53F;margin-bottom:6px}
+.pc-name{font-size:26px;font-weight:900;color:#111;letter-spacing:-.7px;line-height:1.15}
+.pc-meta{font-size:13px;color:#6b7280;margin-top:5px;font-weight:600}
+.pc-meta b{color:#111}
+.pc-podium{padding:8px 0 4px}
+.pc-prow{display:flex;align-items:center;gap:14px;padding:13px 22px;border-bottom:1px solid #f3f4f6}
+.pc-prow:last-child{border-bottom:none}
+.pc-pmedal{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1}
+.pc-pmedal.g{background:#fef3c7;border:2px solid #d97706;color:#d97706}
+.pc-pmedal.s{background:#f1f5f9;border:2px solid #6b7280;color:#6b7280}
+.pc-pmedal.b{background:#fdf0e6;border:2px solid #9a5a2a;color:#9a5a2a}
+.pc-pmedal-n{font-size:15px}
+.pc-pmedal-r{font-size:7px;letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.pc-pav{width:48px;height:48px;border-radius:10px;flex-shrink:0;overflow:hidden;background:#f3f4f6;border:1px solid #e5e7eb;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#6b7280;position:relative}
+.pc-pav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.pc-pname{font-size:15px;font-weight:800;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-prank-lbl{font-size:10px;color:#9ca3af;margin-top:2px;font-weight:600}
+.pc-footer{background:#f8f8f6;border-top:1px solid #e8e8e4;padding:12px 22px;display:flex;align-items:center;justify-content:space-between}
+.pc-foot-brand{font-size:13px;font-weight:900;color:#111}
+.pc-foot-brand span{color:#8BC53F}
+.pc-foot-url{font-size:10px;color:#9ca3af}
+
+@media print{
+  body *{visibility:hidden!important}
+  #pdfOverlay,#pdfOverlay *{visibility:visible!important}
+  #pdfOverlay{position:absolute;top:0;left:0;background:#fff!important;padding:0!important;overflow:visible!important}
+  .pdf-controls{display:none!important}
+  .pcard{box-shadow:none!important;border-radius:0!important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">SEHR<span>.</span></div>
+  <div class="tb-div"></div>
+  <div class="tb-sub">Monthly Exam Results Generator</div>
+  <div class="tb-spacer"></div>
+  <button class="tb-btn" id="btnPDF" onclick="showPDF()">
+    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Export PDF
+  </button>
+  <button class="tb-btn li" id="btnPNG" onclick="downloadCard()">
+    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="13" height="13"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 12 15 15 12"/><line x1="12" y1="8" x2="12" y2="15"/></svg>
+    Download PNG
+  </button>
+</div>
+
+<div class="page">
+  <div class="layout">
+
+    <!-- FORM PANEL -->
+    <div class="panel">
+      <div class="panel-title">Exam Details</div>
+
+      <div class="fld">
+        <div class="flbl">Exam Name</div>
+        <input class="finp" id="fExamName" type="text" placeholder="e.g. Monthly Examination - July">
+      </div>
+
+      <div class="frow2">
+        <div class="fld">
+          <div class="flbl">Class</div>
+          <div class="fsel-wrap">
+            <select class="fsel" id="fClass" onchange="onClassChange()">
+              <option value="">— Class —</option>
+              <option value="9">Class 9</option>
+              <option value="10">Class 10</option>
+              <option value="11">Class 11</option>
+              <option value="12">Class 12</option>
+            </select><span class="farr">▾</span>
+          </div>
+        </div>
+        <div class="fld" id="streamFld" style="display:none">
+          <div class="flbl">Stream</div>
+          <div class="fsel-wrap">
+            <select class="fsel" id="fStream" onchange="onStreamChange()">
+              <option value="">— Stream —</option>
+              <option value="Science">Science</option>
+              <option value="Commerce">Commerce</option>
+            </select><span class="farr">▾</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fld">
+        <div class="flbl">Syllabus</div>
+        <div class="fsel-wrap">
+          <select class="fsel" id="fSyllabus" onchange="onSyllabusChange()" disabled>
+            <option value="">— Select class first —</option>
+          </select><span class="farr">▾</span>
+        </div>
+      </div>
+
+      <div class="fld">
+        <div class="flbl">Subject <small>optional</small></div>
+        <div class="fsel-wrap">
+          <select class="fsel" id="fSubject" onchange="render()" disabled>
+            <option value="ALL">All Subjects</option>
+          </select><span class="farr">▾</span>
+        </div>
+      </div>
+
+      <div class="fdivider"></div>
+      <div class="panel-title">Toppers</div>
+      <div class="load-note" id="rosterNote" style="display:none">
+        <span class="ring"></span><span id="rosterNoteTxt">Loading students…</span>
+      </div>
+
+      <div class="spot-row">
+        <div class="spot-medal g">1</div>
+        <div class="spot-sel-wrap">
+          <div class="fsel-wrap">
+            <select class="fsel" id="fSpot1" onchange="onSpotChange()" disabled>
+              <option value="">— Select class &amp; syllabus —</option>
+            </select><span class="farr">▾</span>
+          </div>
+        </div>
+      </div>
+      <div class="spot-row">
+        <div class="spot-medal s">2</div>
+        <div class="spot-sel-wrap">
+          <div class="fsel-wrap">
+            <select class="fsel" id="fSpot2" onchange="onSpotChange()" disabled>
+              <option value="">— Select class &amp; syllabus —</option>
+            </select><span class="farr">▾</span>
+          </div>
+        </div>
+      </div>
+      <div class="spot-row">
+        <div class="spot-medal b">3</div>
+        <div class="spot-sel-wrap">
+          <div class="fsel-wrap">
+            <select class="fsel" id="fSpot3" onchange="onSpotChange()" disabled>
+              <option value="">— Select class &amp; syllabus —</option>
+            </select><span class="farr">▾</span>
+          </div>
+        </div>
+      </div>
+      <div class="fhint">Pick a class and syllabus to load its student list, then choose the 1st, 2nd and 3rd rank students. A spot can be left blank if there's no result for it.</div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="prev-side">
+      <div id="mainOut"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="pdfOverlay" onclick="if(event.target===this)closePDF()">
+  <div class="pdf-wrap">
+    <div class="pdf-controls">
+      <button class="pdf-btn" onclick="window.print()">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save PDF
+      </button>
+      <button class="exp-close" onclick="closePDF()">✕ Close</button>
+    </div>
+    <div class="pcard" id="pcard"></div>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG — same attendance/students API used by sessionlogreport.html & markattendance.html ══ */
+var ATT_API = 'https://script.google.com/macros/s/AKfycbxpxedvIrF7AiWQ1cIx-jWfxGkv0r1-Yl2rJtkaSdTdQtfEll9M0Sf6qQrqvB9x0I1_/exec';
+
+/* ══ SUBJECT MASTER — same master used by academic/sessionlog.html ══ */
+var SUBJECTS = {
+  '9':  { 'CBSE': ['Mathematics','Physics','Chemistry','Biology','Social Science','English','Hindi','Malayalam','IT'],
+          'Kerala State': ['Mathematics','Physics','Chemistry','Biology','Social Science','English','Hindi','Malayalam','IT'] },
+  '10': { 'CBSE': ['Mathematics','Physics','Chemistry','Biology','Social Science','English','Hindi','Malayalam','IT'],
+          'Kerala State': ['Mathematics','Physics','Chemistry','Biology','Social Science','English','Hindi','Malayalam','IT'] },
+  '11': { 'Science':  { 'CBSE': ['Physics','Chemistry','Mathematics','Biology','Computer Science'],
+                        'Kerala State': ['Physics','Chemistry','Mathematics','Biology','Computer Science'] },
+          'Commerce': { 'CBSE': ['Accountancy','Business Studies','Economics','Mathematics','Informatics Practices'],
+                        'Kerala State': ['Accountancy','Business Studies','Economics','Mathematics','Informatics Practices'] } },
+  '12': { 'Science':  { 'CBSE': ['Physics','Chemistry','Mathematics','Biology','Computer Science'],
+                        'Kerala State': ['Physics','Chemistry','Mathematics','Biology','Computer Science'] },
+          'Commerce': { 'CBSE': ['Accountancy','Business Studies','Economics','Mathematics','Informatics Practices'],
+                        'Kerala State': ['Accountancy','Business Studies','Economics','Mathematics','Informatics Practices'] } }
+};
+
+/* ══ STATE ══ */
+var ROSTER = [];           // students loaded for current class + syllabus
+var ROSTER_KEY = '';       // 'class|board' the ROSTER was loaded for
+var TODAY_DSP = '';
+
+/* ══ UTILS ══ */
+function g(id){return document.getElementById(id);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mn(n){return(n||'??').trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);}
+
+function apiAtt(payload,cb){
+  var url=ATT_API+'?data='+encodeURIComponent(JSON.stringify(payload));
+  fetch(url).then(function(r){return r.text();})
+    .then(function(t){try{cb(JSON.parse(t),null);}catch(e){cb(null,'parse error');}})
+    .catch(function(e){cb(null,e.message);});
+}
+
+/* ══ DEFAULT EXAM NAME ══ */
+!function(){
+  var d=new Date();
+  var month=d.toLocaleDateString('en-IN',{month:'long'});
+  g('fExamName').value='Monthly Examination - '+month;
+  TODAY_DSP=d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+}();
+
+/* ══ CLASS → STREAM → SYLLABUS → SUBJECT CASCADE (mirrors academic/sessionlog.html) ══ */
+function onClassChange(){
+  var cls=g('fClass').value;
+  var streamFld=g('streamFld');
+  g('fStream').value='';
+  resetSyllabus();
+  resetSubject();
+  clearRoster();
+
+  if(!cls){streamFld.style.display='none';return;}
+
+  if(cls==='11'||cls==='12'){
+    streamFld.style.display='block';
+  } else {
+    streamFld.style.display='none';
+    enableSyllabus();
+  }
+}
+function onStreamChange(){
+  resetSyllabus();
+  resetSubject();
+  clearRoster();
+  if(g('fStream').value)enableSyllabus();
+}
+function enableSyllabus(){
+  var sel=g('fSyllabus');
+  sel.disabled=false;
+  sel.innerHTML='<option value="">— Syllabus —</option>'
+    +'<option value="CBSE">CBSE</option>'
+    +'<option value="STATE">Kerala State</option>';
+}
+function resetSyllabus(){
+  var sel=g('fSyllabus');
+  sel.disabled=true;
+  sel.innerHTML='<option value="">— Select class first —</option>';
+}
+function resetSubject(){
+  var sel=g('fSubject');
+  sel.disabled=true;
+  sel.innerHTML='<option value="ALL">All Subjects</option>';
+}
+function boardToSyllabusKey(board){return board==='STATE'?'Kerala State':'CBSE';}
+
+function onSyllabusChange(){
+  var cls=g('fClass').value, stream=g('fStream').value, board=g('fSyllabus').value;
+  resetSubject();
+  if(!board){clearRoster();return;}
+
+  var sylKey=boardToSyllabusKey(board);
+  var list;
+  if(cls==='11'||cls==='12'){
+    list = stream && SUBJECTS[cls][stream] ? (SUBJECTS[cls][stream][sylKey]||[]) : [];
+  } else {
+    list = SUBJECTS[cls] ? (SUBJECTS[cls][sylKey]||[]) : [];
+  }
+  if(list.length){
+    var sel=g('fSubject');
+    sel.disabled=false;
+    list.forEach(function(s){
+      var o=document.createElement('option');o.value=s;o.textContent=s;
+      sel.appendChild(o);
+    });
+  }
+  loadRoster(cls,board);
+}
+
+/* ══ STUDENT ROSTER — pulled via the same getStudents action sessionlogreport.html/markattendance.html use ══ */
+function clearRoster(){
+  ROSTER=[];ROSTER_KEY='';
+  [1,2,3].forEach(function(i){
+    var sel=g('fSpot'+i);
+    sel.disabled=true;
+    sel.innerHTML='<option value="">— Select class &amp; syllabus —</option>';
+  });
+  g('rosterNote').style.display='none';
+  render();
+}
+function loadRoster(cls,board){
+  if(!cls||!board){clearRoster();return;}
+  var key=cls+'|'+board;
+  ROSTER_KEY=key;
+  [1,2,3].forEach(function(i){g('fSpot'+i).disabled=true;});
+  g('rosterNote').style.display='flex';
+  g('rosterNoteTxt').textContent='Loading students…';
+
+  apiAtt({action:'getStudents',class:cls,syllabus:board},function(data,err){
+    if(ROSTER_KEY!==key)return; // stale response, class/syllabus changed again
+    if(err||!data||!data.success||!data.students){
+      g('rosterNoteTxt').textContent='Could not load students.';
+      ROSTER=[];
+      populateSpotSelects();
+      return;
+    }
+    ROSTER=data.students.filter(function(s){
+      return String(s.class)===String(cls) && String(s.syllabus)===String(board);
+    }).sort(function(a,b){return (a.full_name||'').localeCompare(b.full_name||'');});
+
+    if(!ROSTER.length){
+      g('rosterNoteTxt').textContent='No students found for this class & syllabus.';
+    } else {
+      g('rosterNote').style.display='none';
+    }
+    populateSpotSelects();
+  });
+}
+function populateSpotSelects(){
+  var picked=[1,2,3].map(function(i){return g('fSpot'+i).value;});
+  [1,2,3].forEach(function(i){
+    var sel=g('fSpot'+i);
+    var cur=picked[i-1];
+    sel.disabled=!ROSTER.length;
+    sel.innerHTML='<option value="">— '+(i===1?'1st':i===2?'2nd':'3rd')+' place —</option>';
+    ROSTER.forEach(function(s){
+      if(picked.indexOf(s.id)!==-1 && s.id!==cur)return; // already used in another spot
+      var o=document.createElement('option');
+      o.value=s.id;o.textContent=s.full_name;
+      if(s.id===cur)o.selected=true;
+      sel.appendChild(o);
+    });
+  });
+  render();
+}
+function onSpotChange(){populateSpotSelects();}
+
+function getSpotStudent(i){
+  var id=g('fSpot'+i).value;
+  if(!id)return null;
+  return ROSTER.filter(function(s){return s.id===id;})[0]||null;
+}
+
+/* ══ CARD RENDER ══ */
+function currentMeta(){
+  var cls=g('fClass').value;
+  var stream=g('fStream').value;
+  var board=g('fSyllabus').value;
+  var subj=g('fSubject').value;
+  var examName=g('fExamName').value.trim()||'Monthly Examination';
+  var boardTxt=board==='STATE'?'Kerala State':board==='CBSE'?'CBSE':'';
+  var metaParts=[];
+  if(cls)metaParts.push('Class '+cls+(stream?' · '+stream:''));
+  if(boardTxt)metaParts.push(boardTxt);
+  if(subj&&subj!=='ALL')metaParts.push(subj);
+  return {cls:cls,board:board,boardTxt:boardTxt,subj:subj,examName:examName,metaLine:metaParts.join(' · ')};
+}
+function podiumRows(){
+  return [1,2,3].map(function(i){return {rank:i,student:getSpotStudent(i)};})
+    .filter(function(r){return r.student;});
+}
+function medalCls(rank){return rank===1?'g':rank===2?'s':'b';}
+function medalLbl(rank){return rank===1?'1st':rank===2?'2nd':'3rd';}
+
+function render(){
+  var meta=currentMeta();
+  var rows=podiumRows();
+  if(!meta.cls||!meta.board||!rows.length){
+    g('mainOut').innerHTML='<div class="wcard"><div class="empty">'
+      +'<div class="empty-icon">🏆</div>'
+      +'<div class="empty-title">No results yet</div>'
+      +'<div class="empty-sub">Choose a class, syllabus, and at least one topper to preview the results card.</div>'
+      +'</div></div>';
+    return;
+  }
+  g('mainOut').innerHTML=buildCard(meta,rows);
+}
+
+function buildCard(meta,rows){
+  var html='<div class="wcard" id="wcard">'
+    +'<div class="wc-top">'
+    +'<div style="display:flex;align-items:center">'
+    +'<div class="wc-logo">SEHR<span>.</span></div>'
+    +'<div class="wc-divider"></div>'
+    +'<div class="wc-tag">Exam Results</div>'
+    +'</div>'
+    +'<div class="wc-date">'+esc(TODAY_DSP)+'</div>'
+    +'</div>'
+
+    +'<div class="wc-hero">'
+    +'<div class="wc-eyebrow">Monthly Examination Results</div>'
+    +'<div class="wc-name">'+esc(meta.examName)+'</div>'
+    +'<div class="wc-meta">'+esc(meta.metaLine)+'</div>'
+    +'</div>'
+
+    +'<div class="wc-podium">';
+
+  rows.forEach(function(r){
+    var s=r.student;
+    var mc=medalCls(r.rank);
+    var ph=s.photo&&String(s.photo).indexOf('http')===0?s.photo:null;
+    html+='<div class="wc-prow '+(r.rank===1?'p1':'')+'">'
+      +'<div class="wc-pmedal '+mc+'"><span class="wc-pmedal-n">'+r.rank+'</span><span class="wc-pmedal-r">'+medalLbl(r.rank)+'</span></div>'
+      +'<div class="wc-pav">'+(ph?'<img src="'+esc(ph)+'" alt="">':mn(s.full_name))+'</div>'
+      +'<div class="wc-pinfo">'
+      +'<div class="wc-pname">'+esc(s.full_name)+'</div>'
+      +'<div class="wc-prank-lbl">'+medalLbl(r.rank)+' Place</div>'
+      +'</div></div>';
+  });
+
+  html+='</div>'
+    +'<div class="wc-footer">'
+    +'<div class="wc-foot-brand">SEHR<span>.</span> ACADEMY</div>'
+    +'<div class="wc-foot-url">Vadanappally, Thrissur · sehracademy.com</div>'
+    +'</div></div>';
+  return html;
+}
+
+function buildPDF(meta,rows){
+  var html='<div class="pc-top">'
+    +'<div style="display:flex;align-items:center">'
+    +'<div class="pc-logo">SEHR<span>.</span></div>'
+    +'<div class="pc-divider"></div>'
+    +'<div class="pc-tag">Exam Results</div>'
+    +'</div>'
+    +'<div class="pc-date-pill">'+esc(TODAY_DSP)+'</div>'
+    +'</div>'
+
+    +'<div class="pc-hero">'
+    +'<div class="pc-eyebrow">Monthly Examination Results</div>'
+    +'<div class="pc-name">'+esc(meta.examName)+'</div>'
+    +'<div class="pc-meta">'+esc(meta.metaLine)+'</div>'
+    +'</div>'
+
+    +'<div class="pc-podium">';
+
+  rows.forEach(function(r){
+    var s=r.student;
+    var mc=medalCls(r.rank);
+    var ph=s.photo&&String(s.photo).indexOf('http')===0?s.photo:null;
+    html+='<div class="pc-prow">'
+      +'<div class="pc-pmedal '+mc+'"><span class="pc-pmedal-n">'+r.rank+'</span><span class="pc-pmedal-r">'+medalLbl(r.rank)+'</span></div>'
+      +'<div class="pc-pav">'+(ph?'<img src="'+esc(ph)+'" alt="">':mn(s.full_name))+'</div>'
+      +'<div><div class="pc-pname">'+esc(s.full_name)+'</div>'
+      +'<div class="pc-prank-lbl">'+medalLbl(r.rank)+' Place</div></div>'
+      +'</div>';
+  });
+
+  html+='</div>'
+    +'<div class="pc-footer">'
+    +'<div class="pc-foot-brand">SEHR<span>.</span> ACADEMY</div>'
+    +'<div class="pc-foot-url">Vadanappally, Thrissur · sehracademy.com</div>'
+    +'</div>';
+  return html;
+}
+
+g('fExamName').addEventListener('input',render);
+
+/* ══ EXPORT — PDF (print) ══ */
+function showPDF(){
+  var meta=currentMeta();
+  var rows=podiumRows();
+  if(!meta.cls||!meta.board||!rows.length){alert('Choose a class, syllabus, and at least one topper first.');return;}
+  g('pcard').innerHTML=buildPDF(meta,rows);
+  g('pdfOverlay').classList.add('on');
+}
+function closePDF(){g('pdfOverlay').classList.remove('on');}
+
+/* ══ EXPORT — PNG (html2canvas), pre-renders avatar photos to canvas first ══ */
+function downloadCard(){
+  var meta=currentMeta();
+  var rows=podiumRows();
+  if(!meta.cls||!meta.board||!rows.length){alert('Choose a class, syllabus, and at least one topper first.');return;}
+
+  var btn=g('btnPNG');
+  btn.disabled=true;
+  var origLbl=btn.innerHTML;
+  btn.textContent='Generating…';
+
+  var card=g('wcard');
+  var filename='SEHR_'+meta.examName.replace(/[^a-z0-9]+/gi,'_')+'_Class'+meta.cls+'_'+meta.board+'.png';
+
+  var avEls=card.querySelectorAll('.wc-pav img');
+  var total=avEls.length,done=0;
+
+  function restore(){
+    btn.disabled=false;btn.innerHTML=origLbl;
+    card.querySelectorAll('canvas.tmp-av').forEach(function(c){c.remove();});
+    card.querySelectorAll('.wc-pav img').forEach(function(i){i.style.display='';});
+  }
+  function doCapture(){
+    html2canvas(card,{backgroundColor:'#0f0f0d',scale:2,useCORS:true,allowTaint:true,logging:false,imageTimeout:0})
+      .then(function(canvas){
+        var a=document.createElement('a');
+        a.download=filename;a.href=canvas.toDataURL('image/png');a.click();
+        restore();
+      }).catch(function(err){
+        btn.disabled=false;btn.textContent='⚠ Try Again';
+        card.querySelectorAll('canvas.tmp-av').forEach(function(c){c.remove();});
+        card.querySelectorAll('.wc-pav img').forEach(function(i){i.style.display='';});
+        console.error(err);
+      });
+  }
+  if(!total){doCapture();return;}
+
+  avEls.forEach(function(img){
+    var par=img.parentElement;
+    var w=par.offsetWidth||56,h=par.offsetHeight||56;
+    function draw(){
+      var c=document.createElement('canvas');
+      c.width=w*2;c.height=h*2;c.className='tmp-av';
+      c.style.cssText='position:absolute;inset:0;width:'+w+'px;height:'+h+'px;border-radius:inherit;z-index:2';
+      var ctx=c.getContext('2d');
+      var iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
+      if(iw&&ih){
+        var scale=Math.max((w*2)/iw,(h*2)/ih);
+        var sw=iw*scale,sh=ih*scale;
+        ctx.drawImage(img,(w*2-sw)/2,0,sw,sh);
+      }
+      img.style.display='none';
+      par.appendChild(c);
+      done++;if(done>=total)doCapture();
+    }
+    if(img.complete&&img.naturalWidth>0){draw();}
+    else{img.onload=draw;img.onerror=function(){done++;if(done>=total)doCapture();};}
+  });
+}
+
+/* ══ INIT ══ */
+render();
+</script>
+</body>
+</html>
