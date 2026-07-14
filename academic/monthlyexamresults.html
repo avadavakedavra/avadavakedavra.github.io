@@ -477,7 +477,13 @@ function loadRoster(cls,board){
       return;
     }
     ROSTER=data.students.filter(function(s){
-      return String(s.class)===String(cls) && String(s.syllabus)===String(board);
+      // Match on class & syllabus only — some sheets store the stream inside the
+      // class cell (e.g. "11 Science"), so compare just the leading class number.
+      var sCls=String(s.class||'').trim().split(/\s+/)[0];
+      var sSyl=String(s.syllabus||'').trim().toUpperCase();
+      var wantState=String(board).toUpperCase()==='STATE';
+      var syllOk=wantState ? sSyl.indexOf('STATE')!==-1 : sSyl==='CBSE';
+      return sCls===String(cls) && syllOk;
     }).sort(function(a,b){return (a.full_name||'').localeCompare(b.full_name||'');});
 
     if(!ROSTER.length){
