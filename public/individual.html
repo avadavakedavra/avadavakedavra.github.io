@@ -43,30 +43,26 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .ld-bar{width:120px;height:1px;background:rgba(255,255,255,.07);overflow:hidden}
 .ld-fill{height:100%;background:linear-gradient(90deg,var(--lime-3),var(--lime));animation:lfill 1.4s cubic-bezier(.4,0,.2,1) infinite}
 @keyframes lfill{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
-#loginWrap{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;padding:20px;z-index:400;transition:opacity .4s var(--ease)}
-#loginWrap.gone{opacity:0;pointer-events:none}
-#loginWrap::before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--rule)1px,transparent 1px),linear-gradient(90deg,var(--rule)1px,transparent 1px);background-size:48px 48px;opacity:.25}
-.lbox{position:relative;z-index:1;background:var(--white);border:1px solid var(--cream-3);border-radius:10px;width:100%;max-width:360px;box-shadow:var(--sh-lg);overflow:hidden}
-.lbox-head{background:var(--ink);padding:28px 28px 24px;position:relative;overflow:hidden}
-.lbox-head::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
-.lbox-head::after{content:"";position:absolute;top:-80px;right:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 65%)}
-.lbox-logo{font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;display:flex;align-items:center;gap:7px;position:relative;z-index:1}
-.lbox-logodot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
-.lbox-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1;position:relative;z-index:1}
-.lbox-title i{font-style:italic;font-weight:300;color:var(--lime)}
-.lbox-sub{font-size:11px;color:rgba(255,255,255,.28);margin-top:5px;position:relative;z-index:1}
-.lbox-body{padding:24px 28px 28px}
-.lbox-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.lbox-label svg{width:11px;height:11px;color:var(--lime)}
-.lbox-input{width:100%;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:8px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:all .18s}
-.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.1);background:var(--white)}
-.lbox-input::placeholder{color:var(--pale);font-weight:400}
-.lbox-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:8px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s}
-.lbox-btn:hover:not(:disabled){background:var(--lime-2)}
-.lbox-btn:disabled{opacity:.55;cursor:default}
-.lbox-btn svg{width:13px;height:13px}
-.lbox-err{display:none;margin-top:12px;padding:10px 12px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:8px;font-size:12px;font-weight:600;color:var(--red)}
-.lbox-err.on{display:block}
+.auth-gate{position:fixed;inset:0;z-index:400;background:#0f0f0d;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .4s var(--ease)}
+.auth-gate.gone{opacity:0;pointer-events:none}
+.auth-gate::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(139,197,63,.14),transparent 55%),radial-gradient(circle at 85% 80%,rgba(37,99,235,.1),transparent 50%)}
+.auth-card{position:relative;z-index:1;width:100%;max-width:360px;background:var(--white);border:1.5px solid var(--cream-3);border-radius:16px;padding:34px 30px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.auth-logo{font-family:var(--f);font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-1px;margin-bottom:2px}
+.auth-logo span{color:var(--lime)}
+.auth-sub{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:26px}
+.auth-fld{position:relative;margin-bottom:14px;text-align:left}
+.auth-fld-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.auth-input{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid var(--cream-3);background:var(--cream);color:var(--ink);font-family:var(--f);font-size:14px;font-weight:600;outline:none;transition:border-color .15s}
+.auth-input:focus{border-color:var(--lime)}
+.auth-input.err{border-color:var(--red);animation:authShake .35s}
+@keyframes authShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.auth-btn{width:100%;margin-top:8px;padding:13px;border:none;border-radius:10px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:filter .15s}
+.auth-btn:hover:not(:disabled){filter:brightness(1.06)}
+.auth-btn:disabled{opacity:.55;cursor:default}
+.auth-btn svg{width:13px;height:13px}
+.auth-err-msg{display:none;font-size:11.5px;font-weight:700;color:var(--red);margin-top:12px}
+.auth-err-msg.on{display:block}
+.auth-hint{font-size:10.5px;color:var(--pale);margin-top:18px}
 #app{display:none;animation:fadeUp .5s var(--ease)}
 #app.on{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -366,21 +362,23 @@ select.form-inp{cursor:pointer}
 <body>
 <div id="loader"><div class="ld"><div class="ld-brand"><span>SEHR</span><div class="ld-dot"></div><span>ACADEMY</span></div><div class="ld-ring"><div class="ldr-track"></div><div class="ldr-spin"></div><div class="ldr-inner"></div><div class="ldr-dot"></div></div><div class="ld-txt">Loading individual classes</div><div class="ld-bar"><div class="ld-fill"></div></div></div></div>
 
-<div id="loginWrap">
-  <div class="lbox">
-    <div class="lbox-head">
-      <div class="lbox-logo"><div class="lbox-logodot"></div>SEHR Academy</div>
-      <div class="lbox-title">Individual <i>Classes</i></div>
-      <div class="lbox-sub">Admin access required</div>
-    </div>
-    <div class="lbox-body">
-      <form id="loginForm">
-        <div class="lbox-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Password</div>
-        <input type="password" id="passInput" class="lbox-input" placeholder="Enter password" autocomplete="current-password">
-        <button type="submit" id="loginBtn" class="lbox-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Access</button>
-        <div class="lbox-err" id="loginErr"></div>
-      </form>
-    </div>
+<div class="auth-gate" id="loginWrap">
+  <div class="auth-card">
+    <div class="auth-logo">SEHR<span>.</span></div>
+    <div class="auth-sub">Individual Classes · Admin</div>
+    <form id="loginForm">
+      <div class="auth-fld">
+        <label class="auth-fld-lbl" for="staffNameInput">Name / Staff ID</label>
+        <input type="text" id="staffNameInput" class="auth-input" placeholder="e.g. Shan" autocomplete="username">
+      </div>
+      <div class="auth-fld">
+        <label class="auth-fld-lbl" for="passInput">Password</label>
+        <input type="password" id="passInput" class="auth-input" placeholder="Enter password" autocomplete="current-password">
+      </div>
+      <button type="submit" id="loginBtn" class="auth-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Unlock Dashboard</button>
+      <div class="auth-err-msg" id="loginErr"></div>
+    </form>
+    <div class="auth-hint">SEHR Academy staff only</div>
   </div>
 </div>
 
@@ -550,7 +548,7 @@ select.form-inp{cursor:pointer}
 <script>
 var API='https://script.google.com/macros/s/AKfycby4yfY-aN_dMlW2LIVKoQToU8aJLNgnxeQemEPOhrCVBQv6x4qqEuK5whp02wtMI3eR/exec';
 var STUDENTS=[],SCHEDULE=[],PAYMENTS=[],TEACHERS=[],TEACHER_PAYMENTS=[];
-var PASS='',FILTER='ACTIVE',FILTER_T='ACTIVE',SEARCH='',SEARCH_T='',VIEW='cards',SORT='name',KPI_OFFSET=0,BILL_SID='',PAGE_TAB='students',REPORT_OFFSET=0,BULK_DAYS=[];
+var PASS='',STAFF_NAME='',FILTER='ACTIVE',FILTER_T='ACTIVE',SEARCH='',SEARCH_T='',VIEW='cards',SORT='name',KPI_OFFSET=0,BILL_SID='',PAGE_TAB='students',REPORT_OFFSET=0,BULK_DAYS=[];
 var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var SUBJ_BG=['#f0f7e3','#eff6ff','#fffbeb','#f5f3ff','#fef2f2','#f0fdf4','#ecfeff','#fff7ed'];
 var SUBJ_FG=['#72a530','#1d4ed8','#b45309','#6d28d9','#b91c1c','#15803d','#0e7490','#9a3412'];
@@ -605,20 +603,36 @@ function cleanTime(s){
   return str;
 }
 
-/* ── LOGIN ── */
-window.addEventListener('load',function(){loaderOff();var saved=sessionStorage.getItem('sehr_indv_pass');if(saved)tryLogin(saved,true);});
-g('loginForm').addEventListener('submit',function(ev){ev.preventDefault();var p=g('passInput').value.trim();if(p)tryLogin(p,false);});
+/* ── LOGIN ──
+   Access is still gated purely by the shared password below — the
+   Name/Staff ID field is a display-only convenience (who's signed in),
+   it is never sent to the API and never affects authentication. */
+window.addEventListener('load',function(){
+  loaderOff();
+  var savedName=sessionStorage.getItem('sehr_indv_staff');
+  if(savedName){STAFF_NAME=savedName;g('staffNameInput').value=savedName;}
+  var saved=sessionStorage.getItem('sehr_indv_pass');
+  if(saved)tryLogin(saved,true);
+});
+g('loginForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var nm=g('staffNameInput').value.trim();
+  STAFF_NAME=nm;
+  if(nm)sessionStorage.setItem('sehr_indv_staff',nm);else sessionStorage.removeItem('sehr_indv_staff');
+  var p=g('passInput').value.trim();
+  if(p)tryLogin(p,false);
+});
 
 function tryLogin(pass,silent){
   var btn=g('loginBtn');
   if(!silent){btn.disabled=true;btn.textContent='Authenticating...';}
-  g('loginErr').className='lbox-err';loaderOn();
+  g('loginErr').className='auth-err-msg';loaderOn();
   fetch(API+'?action=getData&password='+encodeURIComponent(pass))
     .then(function(r){return r.json();})
     .then(function(data){
       loaderOff();
       if(data.error){
-        if(!silent){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Access';g('loginErr').textContent='Incorrect password.';g('loginErr').className='lbox-err on';}
+        if(!silent){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Unlock Dashboard';g('loginErr').textContent='Incorrect password.';g('loginErr').className='auth-err-msg on';}
         else sessionStorage.removeItem('sehr_indv_pass');return;
       }
       PASS=pass;loadData(data);sessionStorage.setItem('sehr_indv_pass',pass);
@@ -626,7 +640,7 @@ function tryLogin(pass,silent){
     })
     .catch(function(){
       loaderOff();
-      if(!silent){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Access';g('loginErr').textContent='Connection error.';g('loginErr').className='lbox-err on';}
+      if(!silent){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Unlock Dashboard';g('loginErr').textContent='Connection error.';g('loginErr').className='auth-err-msg on';}
     });
 }
 
@@ -725,7 +739,7 @@ function init(){
   SUBJ_MAP={};
   var all=STUDENTS.map(computeStudent);
   var active=all.filter(function(s){return s.status==='Active';});
-  g('pageSub').textContent=active.length+' active students · Updated '+new Date().toLocaleTimeString('en-IN');
+  g('pageSub').textContent=active.length+' active students · Updated '+new Date().toLocaleTimeString('en-IN')+(STAFF_NAME?' · Signed in as '+STAFF_NAME:'');
   g('ptabStudentsCount').textContent=active.length;
   g('ptabTeachersCount').textContent=TEACHERS.filter(function(t){return String(t.status||'Active').toLowerCase()==='active';}).length;
   populateDropdowns(all);
