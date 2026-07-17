@@ -1,24 +1,25 @@
 User-agent: *
 Allow: /
 
-# Disallow private/internal pages
-Disallow: /student.html
-Disallow: /studentslist.html
-Disallow: /attendancelist.html
-Disallow: /attendancereport.html
-Disallow: /confirmadmission.html
-Disallow: /dashboard.html
-Disallow: /markattendance.html
-Disallow: /registrationcertificates.html
-Disallow: /studentcalendar.html
-Disallow: /studentsfees.html
-Disallow: /teacherbilling.html
-Disallow: /bankdetails.html
-Disallow: /upi.html
-Disallow: /class12ratings.html
+# Disallow private/internal pages (post folder reorg — mirrors admin/, teacher/,
+# academic/, financial/ and info/ folders plus the private pages inside student/)
+Disallow: /admin/
+Disallow: /teacher/
+Disallow: /academic/
 Disallow: /financial/
+Disallow: /info/
+Disallow: /student/attendancereport
+Disallow: /student/examresult
+Disallow: /student/loghomework
+Disallow: /student/markattendance
+Disallow: /student/myportal
+Disallow: /student/student
+Disallow: /student/studentcalendar
+Disallow: /student/studentsfees
+Disallow: /student/studentslist
 Disallow: /students/
 Disallow: /data/
+Disallow: /classes/class12ratings
 
 # Sitemap location
 Sitemap: https://sehracademy.com/sitemap.xml

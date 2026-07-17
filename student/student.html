@@ -585,10 +585,54 @@ tbody tr:hover td{background:var(--lime-bg)}
   pointer-events:none;
 }
 
+/* REPORT CARD */
+.report-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.report-toolbar-txt{font-size:12px;color:var(--muted)}
+.report-toolbar-btns{display:flex;gap:8px}
+.report-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:5px;border:1.5px solid var(--rule);background:var(--white);font-family:var(--f);font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;transition:all .18s}
+.report-btn:hover{border-color:var(--lime);color:var(--lime-3);background:var(--lime-bg)}
+.report-btn.primary{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.report-btn.primary:hover{background:var(--lime-2)}
+.report-sheet{background:var(--white);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--sh);overflow:hidden}
+.report-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:24px 28px;border-bottom:2px solid var(--ink);background:var(--cream)}
+.report-head-brand{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-3)}
+.report-head-title{font-size:22px;font-weight:800;letter-spacing:-.6px;color:var(--ink);margin-top:4px}
+.report-head-meta{font-size:11px;color:var(--muted);margin-top:4px}
+.report-student{display:flex;align-items:center;gap:14px}
+.report-student-id{width:52px;height:52px;border-radius:8px;background:var(--lime);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0}
+.report-student-name{font-size:16px;font-weight:800;color:var(--ink)}
+.report-student-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.report-body{padding:24px 28px}
+.report-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+.report-kpi{text-align:center;padding:14px 8px;border-radius:6px;background:var(--cream);border:1px solid var(--rule)}
+.report-kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.report-kpi-val{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.report-sec{margin-bottom:26px}
+.report-sec:last-child{margin-bottom:0}
+.report-sec-title{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;margin-bottom:14px;border-bottom:1.5px solid var(--rule)}
+.report-note{font-size:12px;color:var(--muted);line-height:1.7;padding:12px 16px;background:var(--cream);border-radius:6px;border-left:3px solid var(--lime)}
+.report-foot{padding:18px 28px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--cream)}
+.report-foot-txt{font-size:10px;color:var(--pale);font-weight:600}
+.report-sign{display:flex;gap:36px}
+.report-sign-item{text-align:center}
+.report-sign-line{width:120px;border-top:1px solid var(--rule);margin-bottom:5px}
+.report-sign-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pale)}
+@media(max-width:800px){
+  .report-kpis{grid-template-columns:repeat(3,1fr)}
+  .report-head,.report-body,.report-foot{padding-left:18px;padding-right:18px}
+}
+@media(max-width:480px){
+  .report-kpis{grid-template-columns:repeat(2,1fr)}
+  .report-sign{gap:18px}
+}
+
 /* Print friendly */
 @media print{
-  .navbar,.stats-bar,.tab-bar,.btn-logout,.hero-actions{display:none}
+  .navbar,.stats-bar,.tab-bar,.btn-logout,.hero-actions,.dash-hero{display:none}
   .main{padding:0}
+  .report-toolbar{display:none}
+  .report-sheet{border:none;box-shadow:none}
+  .report-sec{break-inside:avoid}
 }
 </style>
 </head>
@@ -643,6 +687,9 @@ const I = {
   up: `<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>`,
   down: `<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>`,
   clipboard: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`,
+  report: `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>`,
+  print: `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>`,
+  download: `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
 };
 
 /* ── UTILS ── */
@@ -957,11 +1004,13 @@ function renderDashboard() {
           ${s.class ? `<span class="hero-tag">${s.class}</span>` : ''}
           <span class="hero-tag ${s.admission_status === 'Active' ? 'lime' : 'red'}">${s.admission_status || 'Active'}</span>
           ${s.birthday ? `<span class="hero-tag">🎂 ${s.birthday}</span>` : ''}
+          ${s.join_date ? `<span class="hero-tag">📅 Joined ${s.join_date}</span>` : ''}
         </div>
       </div>
       <div class="hero-actions">
         <div id="live-clock" class="live-clock"></div>
         <button class="btn-logout" onclick="logout()">${I.logout} Logout</button>
+        <button class="btn-logout" onclick="currentTab='report';renderDashboard()" style="border-color:rgba(139,197,63,.35);color:var(--lime)">${I.report} Report Card</button>
       </div>
     </div>`;
   app.appendChild(hero);
@@ -1008,6 +1057,7 @@ function renderDashboard() {
     { id: 'assignments', label: 'Assignments', icon: I.book },
     { id: 'remarks', label: 'Remarks', icon: I.msg },
     { id: 'achievements', label: 'Achievements', icon: I.star },
+    { id: 'report', label: 'Report Card', icon: I.report },
   ];
   const tabBar = el('div', { className: 'tab-bar' });
   const tabIn = el('div', { className: 'tab-bar-in' });
@@ -1034,6 +1084,7 @@ function renderDashboard() {
     assignments: renderAssignments,
     remarks: renderRemarks,
     achievements: renderAchievements,
+    report: renderReport,
   };
   (renderers[currentTab] || renderOverview)(main);
 
@@ -1636,6 +1687,150 @@ function renderAchievements(container) {
     grid.appendChild(card);
   });
   container.appendChild(grid);
+}
+
+/* ═══════════════════════
+   REPORT CARD TAB
+   Consolidated, printable summary
+   pulling every data source into one
+   parent-friendly report.
+═══════════════════════ */
+function renderReport(container) {
+  const s = DATA.student || {};
+  const o = DATA.overview || {};
+  const a = DATA.attendance || {};
+  const f = DATA.fees || {};
+  const sy = DATA.syllabus || {};
+  const ec = DATA.exam_categories || {};
+  const results = (DATA.results || []).slice(0, 10);
+  const remarks = DATA.remarks || [];
+  const achievements = DATA.achievements || [];
+  const generatedOn = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  const toolbar = el('div', { className: 'report-toolbar reveal' });
+  toolbar.innerHTML = `
+    <div class="report-toolbar-txt">One consolidated view of academics, attendance, and fees — ready to print or save as PDF.</div>
+    <div class="report-toolbar-btns">
+      <button class="report-btn primary" onclick="window.print()">${I.print} Print / Save PDF</button>
+      <button class="report-btn" onclick="window.open('https://wa.me/919539409586?text=' + encodeURIComponent('Sharing my SEHR Academy report — ' + document.querySelector('.report-student-name').textContent), '_blank')">${I.download} Share on WhatsApp</button>
+    </div>`;
+  container.appendChild(toolbar);
+
+  const sheet = el('div', { className: 'report-sheet reveal' });
+
+  const attNote = a.percentage >= 75 ? 'Meets minimum attendance requirement.' : a.percentage != null ? 'Below the 75% minimum — please ensure regular attendance.' : '';
+  const feeNote = f.status === 'CLEARED' ? 'All dues cleared.' : f.balance > 0 ? `Balance of ₹${(f.balance || 0).toLocaleString()} pending.` : '';
+
+  sheet.innerHTML = `
+    <div class="report-head">
+      <div>
+        <div class="report-head-brand">SEHR Academy · Student Portal</div>
+        <div class="report-head-title">Academic Report Card</div>
+        <div class="report-head-meta">Generated on ${generatedOn}</div>
+      </div>
+      <div class="report-student">
+        <div class="report-student-id">${initials(s.name)}</div>
+        <div>
+          <div class="report-student-name">${s.name || '—'}</div>
+          <div class="report-student-sub">ID: ${s.id || '—'}${s.class ? ' · ' + s.class : ''}${s.admission_status ? ' · ' + s.admission_status : ''}</div>
+        </div>
+      </div>
+    </div>
+    <div class="report-body">
+
+      <div class="report-kpis">
+        <div class="report-kpi"><div class="report-kpi-lbl">Class Rank</div><div class="report-kpi-val">${o.rank ? '#' + o.rank : '—'}</div></div>
+        <div class="report-kpi"><div class="report-kpi-lbl">Overall Average</div><div class="report-kpi-val">${o.final_average != null ? o.final_average + '%' : '—'}</div></div>
+        <div class="report-kpi"><div class="report-kpi-lbl">Attendance</div><div class="report-kpi-val">${a.percentage != null ? a.percentage + '%' : '—'}</div></div>
+        <div class="report-kpi"><div class="report-kpi-lbl">Syllabus Done</div><div class="report-kpi-val">${sy.percentage != null ? sy.percentage + '%' : '—'}</div></div>
+        <div class="report-kpi"><div class="report-kpi-lbl">Fee Status</div><div class="report-kpi-val" style="color:${f.status === 'CLEARED' ? 'var(--grn)' : 'var(--red)'}">${f.status === 'CLEARED' ? 'Cleared' : f.status || '—'}</div></div>
+      </div>
+
+      <div class="report-sec">
+        <div class="report-sec-title">Performance by Subject</div>
+        ${Object.keys(ec).length ? Object.entries(ec).map(([subj, pct]) => `
+          <div class="subject-bar-wrap">
+            <div class="sbar-top"><span class="sbar-label">${subj}</span>${pctChip(pct)}</div>
+            <div class="sbar-track"><div class="sbar-fill ${pctColor(pct)}" style="width:${pct || 0}%"></div></div>
+          </div>`).join('') : `<div class="report-note">No subject-wise performance data recorded yet.</div>`}
+      </div>
+
+      <div class="report-sec">
+        <div class="report-sec-title">Recent Exam Results</div>
+        ${results.length ? `
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Exam</th><th>Subject</th><th>Score</th><th>Grade</th><th>Type</th></tr></thead>
+            <tbody>
+              ${results.map(r => `
+                <tr>
+                  <td style="font-weight:600">${r.exam_name || '—'}</td>
+                  <td>${r.subject || '—'}</td>
+                  <td>${pctChip(r.percentage)}</td>
+                  <td>${gradeChip(r.grade)}</td>
+                  <td><span class="chip chip-muted">${r.exam_type || '—'}</span></td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>` : `<div class="report-note">No exam results recorded yet.</div>`}
+      </div>
+
+      <div class="report-sec">
+        <div class="report-sec-title">Attendance Summary</div>
+        <div class="report-kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px">
+          <div class="report-kpi"><div class="report-kpi-lbl">Attended</div><div class="report-kpi-val">${a.attended ?? '—'}</div></div>
+          <div class="report-kpi"><div class="report-kpi-lbl">Absent</div><div class="report-kpi-val">${a.absent ?? '—'}</div></div>
+          <div class="report-kpi"><div class="report-kpi-lbl">Total Classes</div><div class="report-kpi-val">${a.total_classes ?? '—'}</div></div>
+        </div>
+        ${attNote ? `<div class="report-note">${attNote}</div>` : ''}
+      </div>
+
+      <div class="report-sec">
+        <div class="report-sec-title">Fee Summary</div>
+        <div class="report-kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px">
+          <div class="report-kpi"><div class="report-kpi-lbl">Total Fee</div><div class="report-kpi-val">₹${(f.total_fee || 0).toLocaleString()}</div></div>
+          <div class="report-kpi"><div class="report-kpi-lbl">Amount Paid</div><div class="report-kpi-val">₹${(f.total_paid || 0).toLocaleString()}</div></div>
+          <div class="report-kpi"><div class="report-kpi-lbl">Balance Due</div><div class="report-kpi-val" style="color:${(f.balance || 0) > 0 ? 'var(--red)' : 'var(--grn)'}">₹${(f.balance || 0).toLocaleString()}</div></div>
+        </div>
+        ${feeNote ? `<div class="report-note">${feeNote}</div>` : ''}
+      </div>
+
+      <div class="report-sec">
+        <div class="report-sec-title">Teacher Remarks</div>
+        ${remarks.length ? remarks.map(rm => `
+          <div class="remark-card" style="box-shadow:none;border:1px solid var(--rule)">
+            <div class="remark-stripe"></div>
+            <div class="remark-body">
+              <div class="remark-text">${rm.remark || rm}</div>
+              ${(rm.teacher || rm.date) ? `<div class="remark-meta">${rm.teacher || ''}${rm.teacher && rm.date ? ' · ' : ''}${rm.date || ''}</div>` : ''}
+            </div>
+          </div>`).join('') : `<div class="report-note">No remarks recorded yet.</div>`}
+      </div>
+
+      <div class="report-sec">
+        <div class="report-sec-title">Achievements &amp; Honours</div>
+        ${achievements.length ? `
+        <div class="achievement-grid">
+          ${achievements.map(ac => `
+            <div class="achievement-card" style="box-shadow:none;border:1px solid var(--rule)">
+              <div class="ach-icon"><span style="color:var(--ink)">${I.star}</span></div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--ink)">${ac.title || ac}</div>
+                ${ac.description ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${ac.description}</div>` : ''}
+              </div>
+            </div>`).join('')}
+        </div>` : `<div class="report-note">No achievements recorded yet.</div>`}
+      </div>
+
+    </div>
+    <div class="report-foot">
+      <div class="report-foot-txt">SEHR Academy · Vatanappally, Thrissur, Kerala · This is a system-generated summary, not an official transcript.</div>
+      <div class="report-sign">
+        <div class="report-sign-item"><div class="report-sign-line"></div><div class="report-sign-lbl">Class Teacher</div></div>
+        <div class="report-sign-item"><div class="report-sign-line"></div><div class="report-sign-lbl">Parent / Guardian</div></div>
+      </div>
+    </div>`;
+  container.appendChild(sheet);
 }
 
 /* ─── EMPTY STATE ─── */
