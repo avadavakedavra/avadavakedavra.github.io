@@ -107,47 +107,8 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .ptab svg{width:13px;height:13px}
 .ptab-count{font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px;background:rgba(0,0,0,.1)}
 .ptab.on .ptab-count{background:rgba(0,0,0,.15)}
-.kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);margin-bottom:10px}
-.kpi-val{font-size:clamp(17px,2vw,24px);font-weight:700;letter-spacing:-1px;line-height:1;margin-bottom:5px;font-variant-numeric:tabular-nums;color:var(--ink)}
-.kpi-sub{font-size:10px;color:var(--muted)}
-.kpi-bar{display:none}
-.kpi-bar-fill{height:100%;border-radius:2px;transition:width 1s var(--ease)}
-.v-grn{color:var(--lime-2)}.v-red{color:var(--red)}.v-amb{color:var(--amber)}.v-blu{color:var(--blue)}.v-pur{color:var(--purple)}.v-teal{color:var(--teal)}
-.kpi-gauge{position:relative;margin-top:8px}
-.kpi-gauge svg{display:block;width:100%;height:auto}
-.kpi-gauge-range{display:flex;justify-content:space-between;font-size:9px;color:var(--pale);font-weight:700;padding:0 2px;margin-top:-4px}
-.teacher-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:4px}
-.teacher-kpi-card{background:var(--white);padding:18px 20px;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s;border-radius:18px;box-shadow:var(--sh)}
-.teacher-kpi-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-.teacher-kpi-accent{display:none}
-.upcoming-panel{background:var(--white);border:1px solid var(--cream-3);border-radius:16px;box-shadow:var(--sh);overflow:hidden}
-.upcoming-head{padding:14px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background .15s}
-.upcoming-head:hover{background:var(--cream)}
-.upcoming-head-l{display:flex;align-items:center;gap:10px}
-.upcoming-ico{width:32px;height:32px;border-radius:8px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center}
-.upcoming-ico svg{width:15px;height:15px;color:var(--blue)}
-.upcoming-title{font-size:13px;font-weight:700;color:var(--ink)}
-.upcoming-sub{font-size:10px;color:var(--muted);margin-top:1px}
-.upcoming-chevron{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;transition:all .3s var(--ease)}
-.upcoming-chevron svg{width:12px;height:12px;color:var(--muted);transition:transform .3s var(--ease)}
-.upcoming-panel.open .upcoming-chevron{border-color:var(--lime-mid);background:var(--lime-bg)}
-.upcoming-panel.open .upcoming-chevron svg{transform:rotate(180deg);color:var(--lime-2)}
-.upcoming-body{display:none;padding:16px 20px}
-.upcoming-panel.open .upcoming-body{display:block;animation:fadeIn .2s var(--ease)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-.upcoming-days{display:flex;flex-direction:column;gap:12px}
-.upcoming-day{border-left:3px solid var(--lime-mid);padding-left:14px}
-.upcoming-day-lbl{font-size:10px;font-weight:700;color:var(--lime-2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.upcoming-session{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;background:var(--cream);margin-bottom:4px;cursor:pointer;transition:background .12s}
-.upcoming-session:hover{background:var(--cream-2)}
-.upsess-time{font-size:11px;font-weight:700;color:var(--muted);min-width:68px;font-variant-numeric:tabular-nums}
-.upsess-bar{width:3px;height:28px;border-radius:2px;flex-shrink:0}
-.upsess-info{flex:1;min-width:0}
-.upsess-name{font-size:12px;font-weight:700;color:var(--ink)}
-.upsess-meta{font-size:10px;color:var(--muted);margin-top:1px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.upsess-dur{font-size:11px;font-weight:700;color:var(--blue);flex-shrink:0}
 .sess-teacher-chip{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--teal);background:var(--teal-bg);padding:1px 6px;border-radius:3px;border:1px solid var(--teal-mid)}
-.no-upcoming{padding:20px;text-align:center;color:var(--pale);font-size:12px}
 .filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .filter-tabs{display:flex;gap:2px;background:var(--white);border:1.5px solid var(--cream-3);border-radius:10px;padding:3px}
 .ftab{padding:7px 12px;border:none;border-radius:8px;background:none;font-family:var(--f);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
@@ -214,7 +175,10 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .sc-pay-num{font-size:11px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 .sc-pay-track{height:6px;display:flex;border-radius:3px;overflow:hidden}
 .sc-pay-fill{height:100%;background:var(--lime);transition:width .8s var(--ease)}
-.sc-pay-remain{height:100%;background:var(--red-mid);transition:width .8s var(--ease)}
+.sc-pay-remain{height:100%;background:var(--blue-mid);transition:width .8s var(--ease)}
+.sc-pay-legend{display:flex;gap:14px;margin-top:7px;flex-wrap:wrap}
+.sc-pay-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--ink-2)}
+.sc-pay-legend-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 .sc-foot{padding:10px 18px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .sc-wa{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:9px;background:#25D366;border:none;font-family:var(--f);font-size:10px;font-weight:700;color:#fff;cursor:pointer;transition:background .15s;text-decoration:none;flex-shrink:0}
 .sc-wa:hover{background:#1ebe5d}
@@ -264,7 +228,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .sess-edit-btn:hover{background:var(--blue);color:#fff}
 .sess-cancel-btn{background:var(--red-bg);color:var(--red);border:1px solid var(--red-mid)}
 .sess-cancel-btn:hover{background:var(--red);color:#fff}
-.no-sessions,.no-payments,.no-upcoming{padding:18px;text-align:center;color:var(--pale);font-size:11px}
+.no-sessions,.no-payments{padding:18px;text-align:center;color:var(--pale);font-size:11px}
 .pay-row{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;border-radius:9px;margin-bottom:2px}
 .pay-row:nth-child(odd){background:var(--cream)}
 .pay-date{font-size:10px;color:var(--muted);flex-shrink:0}
@@ -395,7 +359,6 @@ select.form-inp{cursor:pointer}
 .foot-links{display:flex;gap:18px;font-size:11px}
 .foot-links a{color:var(--muted);text-decoration:none;transition:color .18s}
 .foot-links a:hover{color:var(--lime-2)}
-@media(max-width:1200px){.teacher-kpi-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.wrap{padding:0 18px 64px}.topbar{margin:0 -18px;padding:0 18px}.tb-bg{display:none}.cards-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.wrap{padding:0 14px 56px}.topbar{margin:0 -14px;padding:0 14px}.form-row.half,.form-row.third{grid-template-columns:1fr}}
 </style>
@@ -547,20 +510,6 @@ select.form-inp{cursor:pointer}
       <button class="abt lime" id="btnLogout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button>
     </div>
   </div>
-</div>
-
-<div class="sec" style="margin-top:28px;margin-bottom:12px"><div class="sec-rule"></div><div class="sec-dot teal"></div><div class="sec-txt">Teacher Payroll Overview</div><div class="sec-dot teal"></div><div class="sec-rule"></div></div>
-<div class="teacher-kpi-grid" id="teacherKpiStrip"></div>
-
-<div class="sec"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Upcoming &middot; Next 7 Days</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
-<div class="upcoming-panel" id="upcomingPanel">
-  <div class="upcoming-head" onclick="toggleUpcoming()">
-    <div class="upcoming-head-l"><div class="upcoming-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></div>
-      <div><div class="upcoming-title">This Week's Schedule</div><div class="upcoming-sub" id="upcomingSub">—</div></div>
-    </div>
-    <div class="upcoming-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-  </div>
-  <div class="upcoming-body"><div class="upcoming-days" id="upcomingDays"></div></div>
 </div>
 
 <div class="page-tabs">
@@ -779,7 +728,7 @@ function init(){
   g('pageSub').textContent=active.length+' active students · Updated '+new Date().toLocaleTimeString('en-IN');
   g('ptabStudentsCount').textContent=active.length;
   g('ptabTeachersCount').textContent=TEACHERS.filter(function(t){return String(t.status||'Active').toLowerCase()==='active';}).length;
-  renderTeacherKPI();renderUpcoming(all);populateDropdowns(all);
+  populateDropdowns(all);
   g('ses_date').value=today();g('pay_date').value=today();g('s_join').value=today();
   g('pay_month').value=currentMonth();g('tp_date').value=today();g('tp_month').value=currentMonth();g('t_join').value=today();
   wireListeners();render(all);
@@ -794,83 +743,6 @@ function switchPageTab(tab){
   g('ptabStudents').classList.toggle('on',tab==='students');
   g('ptabTeachers').classList.toggle('on',tab==='teachers');
   if(tab==='teachers')renderTeacherCards();
-}
-
-/* ── GAUGE SVG ── */
-function gaugeSVG(pct,color){
-  pct=Math.max(0,Math.min(100,Number(pct)||0));
-  var cx=50,cy=50,r=40,rNeedle=33;
-  var ang=Math.PI*(1-pct/100);
-  var nx=(cx+rNeedle*Math.cos(ang)).toFixed(1),ny=(cy-rNeedle*Math.sin(ang)).toFixed(1);
-  var arcLen=(Math.PI*r).toFixed(1);
-  var dash=(Math.PI*r*(pct/100)).toFixed(1);
-  return '<div class="kpi-gauge"><svg viewBox="0 0 100 63">'
-    +'<path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="var(--cream-2)" stroke-width="8" stroke-linecap="round"/>'
-    +'<path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="'+color+'" stroke-width="8" stroke-linecap="round" stroke-dasharray="'+dash+' '+arcLen+'"/>'
-    +'<line x1="50" y1="50" x2="'+nx+'" y2="'+ny+'" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>'
-    +'<circle cx="50" cy="50" r="3.5" fill="var(--ink)"/>'
-    +'<text x="50" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="'+color+'">'+Math.round(pct)+'%</text>'
-    +'</svg><div class="kpi-gauge-range"><span>0</span><span>100</span></div></div>';
-}
-
-/* ── TEACHER KPI ── */
-function renderTeacherKPI(){
-  var allT=TEACHERS.map(computeTeacher);
-  if(!allT.length){g('teacherKpiStrip').innerHTML='<div class="teacher-kpi-card" style="grid-column:1/-1;text-align:center;color:var(--pale);font-size:11px;padding:20px"><div class="teacher-kpi-accent"></div>No teachers added yet. Click "Add Teacher" to get started.</div>';return;}
-  var active=allT.filter(function(t){return t.status==='Active';});
-  var totalHrs=active.reduce(function(a,t){return a+t.hrsDone;},0);
-  var totalOwed=active.reduce(function(a,t){return a+Math.max(t.outstanding,0);},0);
-  var totalPaid=active.reduce(function(a,t){return a+t.paid;},0);
-  var owesCount=active.filter(function(t){return t.outstanding>0;}).length;
-  var payRatio=(totalPaid+totalOwed)?Math.round(totalPaid/(totalPaid+totalOwed)*100):100;
-  g('teacherKpiStrip').innerHTML=[
-    {lbl:'Active Teachers',val:active.length,sub:allT.length+' total',c:'var(--teal)',cls:'v-teal',bar:allT.length?Math.round(active.length/allT.length*100):0},
-    {lbl:'Total Hours Taught',val:totalHrs.toFixed(1)+'h',sub:'completed sessions',c:'var(--teal)',cls:'v-teal',bar:Math.min(totalHrs*2,100)},
-    {lbl:'Total Paid Out',val:'Rs.'+fmtN(totalPaid),sub:'to teachers overall',c:'var(--lime)',cls:'v-grn',bar:payRatio},
-    {lbl:'We Owe Teachers',val:'Rs.'+fmtN(totalOwed),sub:owesCount+' teacher'+(owesCount!==1?'s':'')+' pending',c:'var(--amber)',cls:'v-amb',bar:100-payRatio},
-  ].map(function(k){return '<div class="teacher-kpi-card"><div class="kpi-lbl">'+k.lbl+'</div><div class="kpi-val '+k.cls+'">'+k.val+'</div><div class="kpi-sub">'+k.sub+'</div>'+gaugeSVG(k.bar,k.c)+'</div>';}).join('');
-}
-
-/* ── UPCOMING ── */
-function toggleUpcoming(){g('upcomingPanel').classList.toggle('open');}
-function renderUpcoming(all){
-  var now=new Date();now.setHours(0,0,0,0);
-  var cutoff=new Date(now.getTime()+7*24*60*60*1000);
-  var slots=[];
-  all.forEach(function(s){s.scheduled.forEach(function(r){var d=parseDate(r.date_ddmmyyyy);if(d&&d>=now&&d<=cutoff)slots.push({s:s,r:r,d:d});});});
-  slots.sort(function(a,b){return a.d-b.d||(a.r.start_time||'').localeCompare(b.r.start_time||'');});
-  g('upcomingSub').textContent=slots.length+' session'+(slots.length!==1?'s':'')+' in the next 7 days';
-  if(!slots.length){g('upcomingDays').innerHTML='<div class="no-upcoming">No sessions scheduled in the next 7 days</div>';return;}
-  var groups={};
-  slots.forEach(function(slot){var key=slot.d.toISOString().slice(0,10);if(!groups[key])groups[key]={d:slot.d,slots:[]};groups[key].slots.push(slot);});
-  var html='',dnames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  Object.keys(groups).sort().forEach(function(key){
-    var grp=groups[key];var isToday=grp.d.toDateString()===new Date().toDateString();
-    var lbl=(isToday?'Today, ':'')+dnames[grp.d.getDay()]+' '+grp.d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
-    html+='<div class="upcoming-day"><div class="upcoming-day-lbl">'+esc(lbl)+'</div>';
-    grp.slots.forEach(function(slot){
-      var ci=slot.s.subjects.indexOf(String(slot.r.subject||'').trim());
-      var col=ci>=0?SUBJ_FG[ci%SUBJ_FG.length]:'var(--lime-2)';
-      var teacher=String(slot.r.teacher||slot.r.notes||'').trim();
-      html+='<div class="upcoming-session" onclick="scrollToCard(\''+esc(slot.s.sid)+'\')">'
-        +'<div class="upsess-time">'+esc(cleanTime(slot.r.start_time)||'--')+'</div>'
-        +'<div class="upsess-bar" style="background:'+col+'"></div>'
-        +'<div class="upsess-info"><div class="upsess-name">'+esc(slot.s.name)+'</div>'
-        +'<div class="upsess-meta">'+esc(slot.r.subject||'')+(slot.r.topic_covered?' · '+esc(slot.r.topic_covered):'')+(teacher?'<span class="sess-teacher-chip">'+esc(teacher)+'</span>':'')+'</div></div>'
-        +'<div class="upsess-dur">'+Number(slot.r.duration_hrs||1).toFixed(1)+'h</div></div>';
-    });
-    html+='</div>';
-  });
-  g('upcomingDays').innerHTML=html;
-}
-
-function scrollToCard(sid){
-  switchPageTab('students');
-  setTimeout(function(){
-    var el=g('sc-'+sid);
-    if(el){el.scrollIntoView({behavior:'smooth',block:'center'});
-      setTimeout(function(){el.style.transition='box-shadow .4s';el.style.boxShadow='0 0 0 3px var(--lime-mid)';setTimeout(function(){el.style.boxShadow='';},1400);},300);}
-  },100);
 }
 
 /* ── DROPDOWNS ── */
@@ -1009,8 +881,7 @@ function renderTeacherCards(){
       +'<div class="sc-row"><span class="sc-row-k">Total Paid Out</span><span class="sc-row-v teal">Rs.'+fmtN(t.paid)+'</span></div>'
       +'<div class="sc-row"><span class="sc-row-k">Balance</span><span class="'+outCls+'">'+esc(outLbl)+'</span></div>'
       +'</div></div>'
-      +'<div class="tc-pay-wrap"><div class="sc-pay-head"><span class="sc-pay-lbl">Payment Progress</span><span class="sc-pay-num">Rs.'+fmtN(t.paid)+' / Rs.'+fmtN(t.owed)+'</span></div>'
-      +'<div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+t.payPct+'%"></div><div class="sc-pay-remain" style="width:'+(100-t.payPct)+'%'+(t.owed>0?'':';background:var(--cream-3)')+'"></div></div></div>'
+      +'<div class="tc-pay-wrap">'+payCoverageHtml(t.paid,t.owed)+'</div>'
       +'<div class="sc-foot">'
       +(t.contact?'<a class="sc-wa" href="https://wa.me/91'+t.contact+'" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>':'')
       +'<button class="sc-pay-teacher-btn" onclick="openTeacherPayment(\''+esc(t.tid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pay Teacher</button>'
@@ -1029,6 +900,24 @@ function renderTeacherCards(){
 
 function toggleTeacherCard(tid){var el=g('tc-'+tid);if(el)el.classList.toggle('open');}
 function switchTeacherTab(tid,n,btn){var el=g('tc-'+tid);if(!el)return;el.querySelectorAll('.etab').forEach(function(b){b.classList.remove('on');});el.querySelectorAll('.expand-pane').forEach(function(p){p.classList.remove('on');});btn.classList.add('on');var pane=g('tep'+n+'-'+tid);if(pane)pane.classList.add('on');}
+
+/* ── PAYMENT COVERAGE BAR ──
+   How much of the money already paid has been "used up" by classes
+   already delivered (covered), vs how much is still sitting as
+   unused prepaid credit for future classes (remaining to cover). */
+function payCoverageHtml(paid,owed){
+  var made=Number(paid)||0,used=Math.min(made,Number(owed)||0),remain=made-used;
+  if(made<=0){
+    return '<div class="sc-pay-head"><span class="sc-pay-lbl">Payment Coverage</span><span class="sc-pay-num">No payments yet</span></div>'
+      +'<div class="sc-pay-track"><div class="sc-pay-remain" style="width:100%;background:var(--cream-3)"></div></div>';
+  }
+  var usedPct=Math.round(used/made*100),remainPct=100-usedPct;
+  var legend='<span class="sc-pay-legend-item"><span class="sc-pay-legend-dot" style="background:var(--lime)"></span>Rs.'+fmtN(used)+' covered</span>';
+  if(remain>0)legend+='<span class="sc-pay-legend-item"><span class="sc-pay-legend-dot" style="background:var(--blue-mid)"></span>Rs.'+fmtN(remain)+' remaining to cover</span>';
+  return '<div class="sc-pay-head"><span class="sc-pay-lbl">Payment Coverage</span><span class="sc-pay-num">Rs.'+fmtN(made)+' paid</span></div>'
+    +'<div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+usedPct+'%"></div>'+(remainPct>0?'<div class="sc-pay-remain" style="width:'+remainPct+'%"></div>':'')+'</div>'
+    +'<div class="sc-pay-legend">'+legend+'</div>';
+}
 
 /* ── STUDENT CARDS ── */
 function outBadge(s){if(s.outstanding>0)return '<span class="badge badge-overdue">Owes Rs.'+fmtN(s.outstanding)+'</span>';if(s.outstanding<0)return '<span class="badge badge-credit">Credit Rs.'+fmtN(Math.abs(s.outstanding))+'</span>';return '<span class="badge badge-clear">Cleared</span>';}
@@ -1087,7 +976,7 @@ function renderCards(list){
       +'<div class="sc-row"><span class="sc-row-k">Next Session</span><span class="sc-row-v">'+esc(nextTxt)+'</span></div>'
       +'<div class="sc-row"><span class="sc-row-k">Last Class</span><span class="sc-row-v">'+esc(lastTxt)+'</span></div>'
       +'</div></div>'
-      +'<div class="sc-pay-wrap"><div class="sc-pay-head"><span class="sc-pay-lbl">Payment Progress</span><span class="sc-pay-num">Rs.'+fmtN(s.paid)+' / Rs.'+fmtN(s.owed)+'</span></div><div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+s.creditPct+'%"></div><div class="sc-pay-remain" style="width:'+(100-s.creditPct)+'%'+(s.owed>0?'':';background:var(--cream-3)')+'"></div></div></div>'
+      +'<div class="sc-pay-wrap">'+payCoverageHtml(s.paid,s.owed)+'</div>'
       +'<div class="sc-foot"><a class="sc-wa" href="'+waLink(s)+'" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>'
       +'<button class="sc-bill-btn" onclick="openBilling(\''+esc(s.sid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Bill</button>'
       +markTodayBtn(s)
