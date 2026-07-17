@@ -8,19 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cream:#f4f6fb;--cream-2:#eef1f8;--cream-3:#e4e9f4;
-  --white:#ffffff;--ink:#1b2140;--ink-2:#2c3358;
-  --muted:#8991ac;--pale:#b9c0d6;--rule:#e6eaf5;
-  --lime:#FF8A3D;--lime-2:#FB7218;--lime-3:#DE5E0B;
-  --lime-bg:#fff2e6;--lime-mid:#ffcda1;
-  --red:#e0395a;--red-bg:#fdedf1;--red-mid:#f6b0c1;
+  --cream:#fafaf8;--cream-2:#f2f1ec;--cream-3:#e7e5dd;
+  --white:#ffffff;--ink:#1a1a18;--ink-2:#2e2e2b;
+  --muted:#7a7970;--pale:#a8a49a;--rule:#e2e0d8;
+  --lime:#8BC53F;--lime-2:#72a530;--lime-3:#5e8a24;
+  --lime-bg:#f0f7e3;--lime-mid:#c8e48e;
+  --red:#dc2626;--red-bg:#fef2f2;--red-mid:#fca5a5;
   --amber:#d97706;--amber-bg:#fffbeb;--amber-mid:#fde68a;
-  --blue:#5b6bf5;--blue-bg:#eef0ff;--blue-mid:#c3c9fc;
-  --purple:#8b6cf2;--purple-bg:#f3efff;--purple-mid:#d7c9fb;
-  --teal:#12a594;--teal-bg:#e8fbf7;--teal-mid:#9de9dc;
+  --blue:#2563eb;--blue-bg:#eff6ff;--blue-mid:#bfdbfe;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;--purple-mid:#ddd6fe;
+  --teal:#0d9488;--teal-bg:#f0fdfa;--teal-mid:#99f6e4;
   --f:"Open Sans",sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
-  --sh:0 2px 14px rgba(30,41,88,.06);--sh-md:0 10px 30px rgba(30,41,88,.09);--sh-lg:0 20px 48px rgba(30,41,88,.16);
+  --sh:0 2px 10px rgba(26,26,24,.05);--sh-md:0 10px 28px rgba(26,26,24,.08);--sh-lg:0 22px 50px rgba(26,26,24,.14);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
@@ -31,11 +31,11 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .ld{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
 .ld-brand{font-size:12px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:40px;display:flex;align-items:center;gap:12px}
 .ld-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:ldot 2s ease-in-out infinite}
-@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(255,138,61,.5)}50%{box-shadow:0 0 0 10px rgba(255,138,61,0)}}
+@keyframes ldot{0%,100%{box-shadow:0 0 0 0 rgba(139,197,63,.5)}50%{box-shadow:0 0 0 10px rgba(139,197,63,0)}}
 .ld-ring{position:relative;width:56px;height:56px;margin-bottom:28px}
 .ldr-track{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
-.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(255,138,61,.25);animation:rspin .8s linear infinite}
-.ldr-inner{position:absolute;inset:10px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(255,138,61,.35);animation:rspin .8s linear infinite reverse}
+.ldr-spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--lime);border-right-color:rgba(139,197,63,.25);animation:rspin .8s linear infinite}
+.ldr-inner{position:absolute;inset:10px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(139,197,63,.35);animation:rspin .8s linear infinite reverse}
 .ldr-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:7px;height:7px;border-radius:50%;background:var(--lime)}
 @keyframes rspin{to{transform:rotate(360deg)}}
 .ld-txt{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:24px;animation:ltxt 2s ease-in-out infinite}
@@ -49,7 +49,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .lbox{position:relative;z-index:1;background:var(--white);border:1px solid var(--cream-3);border-radius:10px;width:100%;max-width:360px;box-shadow:var(--sh-lg);overflow:hidden}
 .lbox-head{background:var(--ink);padding:28px 28px 24px;position:relative;overflow:hidden}
 .lbox-head::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-2))}
-.lbox-head::after{content:"";position:absolute;top:-80px;right:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,138,61,.1),transparent 65%)}
+.lbox-head::after{content:"";position:absolute;top:-80px;right:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(139,197,63,.1),transparent 65%)}
 .lbox-logo{font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;display:flex;align-items:center;gap:7px;position:relative;z-index:1}
 .lbox-logodot{width:4px;height:4px;border-radius:50%;background:var(--lime)}
 .lbox-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1;position:relative;z-index:1}
@@ -59,7 +59,7 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .lbox-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
 .lbox-label svg{width:11px;height:11px;color:var(--lime)}
 .lbox-input{width:100%;padding:12px 14px;border:1.5px solid var(--cream-3);border-radius:8px;background:var(--cream);font-family:var(--f);font-size:14px;font-weight:600;color:var(--ink);outline:none;transition:all .18s}
-.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(255,138,61,.1);background:var(--white)}
+.lbox-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(139,197,63,.1);background:var(--white)}
 .lbox-input::placeholder{color:var(--pale);font-weight:400}
 .lbox-btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:8px;background:var(--lime);color:var(--ink);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s}
 .lbox-btn:hover:not(:disabled){background:var(--lime-2)}
@@ -107,17 +107,6 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .ptab svg{width:13px;height:13px}
 .ptab-count{font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px;background:rgba(0,0,0,.1)}
 .ptab.on .ptab-count{background:rgba(0,0,0,.15)}
-.kpi-header{display:flex;align-items:center;justify-content:space-between;margin-top:24px;margin-bottom:8px;flex-wrap:wrap;gap:10px}
-.kpi-month-nav{display:flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--cream-3);border-radius:10px;padding:4px 6px;box-shadow:var(--sh)}
-.kpi-month-btn{width:26px;height:26px;border-radius:8px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .14s}
-.kpi-month-btn:hover{background:var(--cream-2);color:var(--ink)}
-.kpi-month-btn svg{width:13px;height:13px}
-.kpi-month-lbl{font-size:11px;font-weight:700;color:var(--ink);min-width:90px;text-align:center}
-.kpi-month-today{font-size:9px;font-weight:700;color:var(--lime-2);background:var(--lime-bg);padding:2px 7px;border-radius:3px;border:none;cursor:pointer}
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.kpi-card{background:var(--white);padding:20px 22px 16px;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s;border-radius:18px;box-shadow:var(--sh)}
-.kpi-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-.kpi-accent{display:none}
 .kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pale);margin-bottom:10px}
 .kpi-val{font-size:clamp(17px,2vw,24px);font-weight:700;letter-spacing:-1px;line-height:1;margin-bottom:5px;font-variant-numeric:tabular-nums;color:var(--ink)}
 .kpi-sub{font-size:10px;color:var(--muted)}
@@ -131,25 +120,6 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .teacher-kpi-card{background:var(--white);padding:18px 20px;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s;border-radius:18px;box-shadow:var(--sh)}
 .teacher-kpi-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
 .teacher-kpi-accent{display:none}
-.overview-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-top:16px}
-.chart-card{background:var(--white);border-radius:18px;box-shadow:var(--sh);padding:20px 22px}
-.chart-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px}
-.chart-card-title{font-size:13px;font-weight:700;color:var(--ink)}
-.chart-card-sub{font-size:10px;color:var(--muted);margin-top:2px}
-.chart-legend-mini{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap}
-.chart-legend-mini-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.trend-svg-wrap{position:relative}
-.trend-svg-wrap svg{display:block;width:100%;height:auto;overflow:visible}
-.trend-axis{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--pale);font-weight:700}
-.donut-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.donut-svg{flex-shrink:0}
-.donut-legend{flex:1;min-width:140px;display:flex;flex-direction:column;gap:11px}
-.donut-legend-row{display:flex;align-items:center;gap:8px;font-size:11px}
-.donut-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
-.donut-legend-lbl{flex:1;color:var(--ink-2);font-weight:600}
-.donut-legend-val{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;font-size:12px}
-.donut-empty{color:var(--pale);font-size:11px;text-align:center;padding:20px 0}
-@media(max-width:1100px){.overview-grid{grid-template-columns:1fr}}
 .upcoming-panel{background:var(--white);border:1px solid var(--cream-3);border-radius:16px;box-shadow:var(--sh);overflow:hidden}
 .upcoming-head{padding:14px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background .15s}
 .upcoming-head:hover{background:var(--cream)}
@@ -212,12 +182,12 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .sc-notes{font-size:10px;color:var(--pale);margin-top:3px;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sc-head-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:8px;font-size:9px;font-weight:700;white-space:nowrap}
-.badge-active{background:rgba(255,138,61,.12);color:var(--lime-2)}
+.badge-active{background:rgba(139,197,63,.12);color:var(--lime-2)}
 .badge-inactive{background:var(--cream-2);color:var(--pale)}
 .badge-online{background:var(--blue-bg);color:var(--blue)}
 .badge-offline{background:var(--purple-bg);color:var(--purple)}
 .badge-overdue{background:rgba(224,57,90,.1);color:var(--red)}
-.badge-clear{background:rgba(255,138,61,.1);color:var(--lime-2)}
+.badge-clear{background:rgba(139,197,63,.1);color:var(--lime-2)}
 .badge-credit{background:var(--blue-bg);color:var(--blue)}
 .sc-edit-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--rule);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;color:var(--pale)}
 .sc-edit-btn:hover{border-color:var(--lime-mid);background:var(--lime-bg);color:var(--lime-2)}
@@ -242,8 +212,9 @@ body{font-family:var(--f);background:var(--cream);color:var(--ink);font-size:14p
 .sc-pay-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
 .sc-pay-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .sc-pay-num{font-size:11px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
-.sc-pay-track{height:6px;background:var(--rule);border-radius:3px;overflow:hidden}
-.sc-pay-fill{height:100%;border-radius:3px;transition:width .8s var(--ease)}
+.sc-pay-track{height:6px;display:flex;border-radius:3px;overflow:hidden}
+.sc-pay-fill{height:100%;background:var(--lime);transition:width .8s var(--ease)}
+.sc-pay-remain{height:100%;background:var(--red-mid);transition:width .8s var(--ease)}
 .sc-foot{padding:10px 18px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .sc-wa{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:9px;background:#25D366;border:none;font-family:var(--f);font-size:10px;font-weight:700;color:#fff;cursor:pointer;transition:background .15s;text-decoration:none;flex-shrink:0}
 .sc-wa:hover{background:#1ebe5d}
@@ -327,10 +298,10 @@ tbody tr{transition:background .12s}
 tbody tr:hover{background:var(--cream)}
 .pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:8px;font-size:9px;font-weight:700}
 .pill .dot{width:4px;height:4px;border-radius:50%;background:currentColor}
-.p-active{background:rgba(255,138,61,.12);color:var(--lime-2)}
+.p-active{background:rgba(139,197,63,.12);color:var(--lime-2)}
 .p-inactive{background:var(--cream-2);color:var(--pale)}
 .p-overdue{background:rgba(224,57,90,.1);color:var(--red)}
-.p-clear{background:rgba(255,138,61,.1);color:var(--lime-2)}
+.p-clear{background:rgba(139,197,63,.1);color:var(--lime-2)}
 .p-credit{background:var(--blue-bg);color:var(--blue)}
 .tbl-foot{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--cream);border-top:1px solid var(--rule);font-size:11px;color:var(--pale)}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
@@ -352,7 +323,7 @@ tbody tr:hover{background:var(--cream)}
 .form-row.third{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .form-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px}
 .form-inp{width:100%;padding:9px 12px;border:1.5px solid var(--cream-3);border-radius:9px;background:var(--cream);font-family:var(--f);font-size:13px;color:var(--ink);outline:none;transition:all .18s}
-.form-inp:focus{border-color:var(--lime);background:var(--white);box-shadow:0 0 0 3px rgba(255,138,61,.1)}
+.form-inp:focus{border-color:var(--lime);background:var(--white);box-shadow:0 0 0 3px rgba(139,197,63,.1)}
 .form-inp.teal-focus:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
 .form-inp::placeholder{color:var(--pale)}
 select.form-inp{cursor:pointer}
@@ -424,9 +395,9 @@ select.form-inp{cursor:pointer}
 .foot-links{display:flex;gap:18px;font-size:11px}
 .foot-links a{color:var(--muted);text-decoration:none;transition:color .18s}
 .foot-links a:hover{color:var(--lime-2)}
-@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.teacher-kpi-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.wrap{padding:0 18px 64px}.topbar{margin:0 -18px;padding:0 18px}.tb-bg{display:none}.kpi-grid{grid-template-columns:repeat(2,1fr)}.cards-grid{grid-template-columns:1fr}}
-@media(max-width:640px){.wrap{padding:0 14px 56px}.topbar{margin:0 -14px;padding:0 14px}.kpi-grid{grid-template-columns:1fr 1fr}.form-row.half,.form-row.third{grid-template-columns:1fr}}
+@media(max-width:1200px){.teacher-kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.wrap{padding:0 18px 64px}.topbar{margin:0 -18px;padding:0 18px}.tb-bg{display:none}.cards-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.wrap{padding:0 14px 56px}.topbar{margin:0 -14px;padding:0 14px}.form-row.half,.form-row.third{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -578,36 +549,8 @@ select.form-inp{cursor:pointer}
   </div>
 </div>
 
-<div class="kpi-header">
-  <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pale)">Student Performance Overview</span>
-  <div class="kpi-month-nav">
-    <button class="kpi-month-btn" id="kpiPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <span class="kpi-month-lbl" id="kpiMonthLbl"></span>
-    <button class="kpi-month-btn" id="kpiNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
-    <button class="kpi-month-today" id="kpiToday" style="display:none">Today</button>
-  </div>
-</div>
-<div class="kpi-grid" id="kpiStrip"></div>
-
 <div class="sec" style="margin-top:28px;margin-bottom:12px"><div class="sec-rule"></div><div class="sec-dot teal"></div><div class="sec-txt">Teacher Payroll Overview</div><div class="sec-dot teal"></div><div class="sec-rule"></div></div>
 <div class="teacher-kpi-grid" id="teacherKpiStrip"></div>
-
-<div class="sec" style="margin-top:28px;margin-bottom:12px"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Revenue &amp; Session Mix</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
-<div class="overview-grid">
-  <div class="chart-card">
-    <div class="chart-card-head">
-      <div><div class="chart-card-title">Revenue Collected</div><div class="chart-card-sub" id="trendSub">Last 6 months</div></div>
-      <div class="chart-legend-mini"><span class="chart-legend-mini-dot" style="background:var(--lime)"></span>Rs. collected</div>
-    </div>
-    <div class="trend-svg-wrap" id="trendWrap"></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-card-head">
-      <div><div class="chart-card-title">Sessions by Mode</div><div class="chart-card-sub">Active students, online vs offline</div></div>
-    </div>
-    <div class="donut-wrap" id="donutWrap"></div>
-  </div>
-</div>
 
 <div class="sec"><div class="sec-rule"></div><div class="sec-dot"></div><div class="sec-txt">Upcoming &middot; Next 7 Days</div><div class="sec-dot"></div><div class="sec-rule"></div></div>
 <div class="upcoming-panel" id="upcomingPanel">
@@ -836,7 +779,7 @@ function init(){
   g('pageSub').textContent=active.length+' active students · Updated '+new Date().toLocaleTimeString('en-IN');
   g('ptabStudentsCount').textContent=active.length;
   g('ptabTeachersCount').textContent=TEACHERS.filter(function(t){return String(t.status||'Active').toLowerCase()==='active';}).length;
-  renderKPI(all);renderTeacherKPI();renderOverview(all);renderUpcoming(all);populateDropdowns(all);
+  renderTeacherKPI();renderUpcoming(all);populateDropdowns(all);
   g('ses_date').value=today();g('pay_date').value=today();g('s_join').value=today();
   g('pay_month').value=currentMonth();g('tp_date').value=today();g('tp_month').value=currentMonth();g('t_join').value=today();
   wireListeners();render(all);
@@ -870,30 +813,6 @@ function gaugeSVG(pct,color){
     +'</svg><div class="kpi-gauge-range"><span>0</span><span>100</span></div></div>';
 }
 
-/* ── STUDENT KPI ── */
-function renderKPI(all){
-  var km=kpiDate(),lbl=MONTHS[km.getMonth()]+' '+km.getFullYear();
-  g('kpiMonthLbl').textContent=lbl;
-  g('kpiToday').style.display=KPI_OFFSET===0?'none':'inline-block';
-  var active=all.filter(function(s){return s.status==='Active';});
-  var kpiHrs=active.reduce(function(a,s){return a+s.kpiHrs;},0);
-  var kpiPaid=active.reduce(function(a,s){return a+s.kpiPaid;},0);
-  var totalOwed=active.reduce(function(a,s){return a+s.owed;},0);
-  var totalOut=active.reduce(function(a,s){return a+Math.max(s.outstanding,0);},0);
-  var owesCount=active.filter(function(s){return s.outstanding>0;}).length;
-  var creditLowCount=active.filter(function(s){return s.outstanding<=0&&s.creditPct>=75&&s.paid>0;}).length;
-  var now=new Date();now.setHours(0,0,0,0);
-  var cutoff=new Date(now.getTime()+7*24*60*60*1000);
-  var week7=all.reduce(function(a,s){return a+s.scheduled.filter(function(r){var d=parseDate(r.date_ddmmyyyy);return d&&d>=now&&d<=cutoff;}).length;},0);
-  g('kpiStrip').innerHTML=[
-    {lbl:'Active Students',val:active.length,sub:all.length+' total enrolled',c:'var(--lime)',cls:'v-grn',bar:all.length?Math.round(active.length/all.length*100):0},
-    {lbl:'Hours in '+MONTHS[km.getMonth()],val:kpiHrs.toFixed(1)+'h',sub:'completed this month',c:'var(--blue)',cls:'v-blu',bar:Math.min(kpiHrs*5,100)},
-    {lbl:'Collected in '+MONTHS[km.getMonth()],val:'Rs.'+fmtN(kpiPaid),sub:'payments received',c:'var(--lime)',cls:'v-grn',bar:totalOwed?Math.round(kpiPaid/Math.max(totalOwed,1)*100):0},
-    {lbl:'Outstanding',val:'Rs.'+fmtN(totalOut),sub:owesCount+' owe you · '+creditLowCount+' credit low',c:'var(--red)',cls:'v-red',bar:totalOwed?Math.round(totalOut/totalOwed*100):0},
-    {lbl:'This Week',val:week7+' sessions',sub:'next 7 days scheduled',c:'var(--amber)',cls:'v-amb',bar:Math.min(week7*10,100)},
-  ].map(function(k){return '<div class="kpi-card"><div class="kpi-lbl">'+k.lbl+'</div><div class="kpi-val '+k.cls+'">'+k.val+'</div><div class="kpi-sub">'+k.sub+'</div>'+gaugeSVG(k.bar,k.c)+'</div>';}).join('');
-}
-
 /* ── TEACHER KPI ── */
 function renderTeacherKPI(){
   var allT=TEACHERS.map(computeTeacher);
@@ -910,50 +829,6 @@ function renderTeacherKPI(){
     {lbl:'Total Paid Out',val:'Rs.'+fmtN(totalPaid),sub:'to teachers overall',c:'var(--lime)',cls:'v-grn',bar:payRatio},
     {lbl:'We Owe Teachers',val:'Rs.'+fmtN(totalOwed),sub:owesCount+' teacher'+(owesCount!==1?'s':'')+' pending',c:'var(--amber)',cls:'v-amb',bar:100-payRatio},
   ].map(function(k){return '<div class="teacher-kpi-card"><div class="kpi-lbl">'+k.lbl+'</div><div class="kpi-val '+k.cls+'">'+k.val+'</div><div class="kpi-sub">'+k.sub+'</div>'+gaugeSVG(k.bar,k.c)+'</div>';}).join('');
-}
-
-/* ── OVERVIEW: REVENUE TREND + SESSION MIX DONUT ── */
-function renderOverview(all){
-  var base=new Date();base.setDate(1);base.setHours(0,0,0,0);
-  var months=[];
-  for(var i=5;i>=0;i--){months.push(new Date(base.getFullYear(),base.getMonth()-i,1));}
-  var totals=months.map(function(m){
-    return PAYMENTS.filter(function(p){var d=parseDate(p.date_ddmmyyyy);return d&&d.getMonth()===m.getMonth()&&d.getFullYear()===m.getFullYear();}).reduce(function(a,p){return a+Number(p.amount_received_rs||0);},0);
-  });
-  var maxV=Math.max.apply(null,totals.concat([1]));
-  var W=560,H=170,pad=8;
-  var stepX=(W-2*pad)/(totals.length-1||1);
-  var pts=totals.map(function(v,i){return[pad+stepX*i,H-pad-(v/maxV)*(H-2*pad-24)];});
-  var line=pts.map(function(p,i){return(i===0?'M':'L')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
-  var area=line+' L'+pts[pts.length-1][0].toFixed(1)+' '+(H-pad)+' L'+pts[0][0].toFixed(1)+' '+(H-pad)+' Z';
-  var dots=pts.map(function(p){return '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.5" fill="var(--lime)" stroke="#fff" stroke-width="1.5"/>';}).join('');
-  var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'
-    +'<defs><linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--lime)" stop-opacity="0.35"/><stop offset="100%" stop-color="var(--lime)" stop-opacity="0"/></linearGradient></defs>'
-    +'<path d="'+area+'" fill="url(#revGrad)"/>'
-    +'<path d="'+line+'" fill="none" stroke="var(--lime)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
-    +dots+'</svg>';
-  var axis='<div class="trend-axis">'+months.map(function(m){return '<span>'+MONTHS[m.getMonth()].slice(0,3)+'</span>';}).join('')+'</div>';
-  g('trendWrap').innerHTML=svg+axis;
-  g('trendSub').textContent='Rs.'+fmtN(totals[totals.length-1])+' this month · last 6 months';
-
-  var active=all.filter(function(s){return s.status==='Active';});
-  var total=active.length;
-  if(!total){g('donutWrap').innerHTML='<div class="donut-empty">No active students yet</div>';return;}
-  var onlineC=active.filter(function(s){return s.mode==='Online';}).length;
-  var onlinePct=Math.round(onlineC/total*100);
-  var C=2*Math.PI*34;
-  var onlineDash=(C*onlinePct/100).toFixed(1);
-  var svgD='<svg class="donut-svg" width="120" height="120" viewBox="0 0 80 80">'
-    +'<circle cx="40" cy="40" r="34" fill="none" stroke="var(--purple)" stroke-width="12"/>'
-    +'<circle cx="40" cy="40" r="34" fill="none" stroke="var(--lime)" stroke-width="12" stroke-dasharray="'+onlineDash+' '+C.toFixed(1)+'" stroke-linecap="round" transform="rotate(-90 40 40)"/>'
-    +'<text x="40" y="37" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">'+total+'</text>'
-    +'<text x="40" y="50" text-anchor="middle" font-size="7" font-weight="700" fill="var(--pale)">STUDENTS</text>'
-    +'</svg>';
-  var legend='<div class="donut-legend">'
-    +'<div class="donut-legend-row"><span class="donut-dot" style="background:var(--lime)"></span><span class="donut-legend-lbl">Online</span><span class="donut-legend-val">'+onlinePct+'%</span></div>'
-    +'<div class="donut-legend-row"><span class="donut-dot" style="background:var(--purple)"></span><span class="donut-legend-lbl">Offline</span><span class="donut-legend-val">'+(100-onlinePct)+'%</span></div>'
-    +'</div>';
-  g('donutWrap').innerHTML=svgD+legend;
 }
 
 /* ── UPCOMING ── */
@@ -1033,9 +908,6 @@ function wireListeners(){
   qa('#filterTabsT .ftab').forEach(function(btn){btn.addEventListener('click',function(){FILTER_T=this.dataset.v;qa('#filterTabsT .ftab').forEach(function(b){b.classList.remove('on');});this.classList.add('on');renderTeacherCards();});});
   g('vCards').addEventListener('click',function(){setView('cards');});
   g('vTable').addEventListener('click',function(){setView('table');});
-  g('kpiPrev').addEventListener('click',function(){KPI_OFFSET--;renderKPI(STUDENTS.map(computeStudent));});
-  g('kpiNext').addEventListener('click',function(){KPI_OFFSET++;renderKPI(STUDENTS.map(computeStudent));});
-  g('kpiToday').addEventListener('click',function(){KPI_OFFSET=0;renderKPI(STUDENTS.map(computeStudent));});
   g('btnRefresh').addEventListener('click',function(){loaderOn();fetch(API+'?action=getData&password='+encodeURIComponent(PASS)).then(function(r){return r.json();}).then(function(d){loadData(d);loaderOff();init();showToast('Data refreshed');}).catch(function(){loaderOff();showToast('Refresh failed',true);});});
   g('btnLogout').addEventListener('click',function(){sessionStorage.removeItem('sehr_indv_pass');PASS='';g('app').classList.remove('on');g('loginWrap').classList.remove('gone');g('passInput').value='';});
   ['q_sessions','q_dur','q_subject'].forEach(function(id){var el=g(id);if(el)el.addEventListener('input',recalcQuote);});
@@ -1096,6 +968,9 @@ function renderTeacherCards(){
     var outLbl=t.outstanding>0?'Rs.'+fmtN(t.outstanding)+' to pay':t.outstanding<0?'Rs.'+fmtN(Math.abs(t.outstanding))+' overpaid':'Fully paid';
     var outCls=t.outstanding>0?'sc-row-v red':t.outstanding<0?'sc-row-v blu':'sc-row-v teal';
     var barClr=t.outstanding>0?'var(--amber)':t.outstanding<0?'var(--blue)':'var(--teal)';
+    var tSessTotal=t.completedCount+t.scheduledCount;
+    var tSessPct=tSessTotal>0?Math.round(t.completedCount/tSessTotal*100):0;
+    var tSessBarColor=tSessPct===100?'var(--lime)':tSessPct>=50?'var(--blue)':'var(--amber)';
     var recentSess=t.sessions.slice().sort(function(a,b){return(parseDate(b.date_ddmmyyyy)||0)-(parseDate(a.date_ddmmyyyy)||0);});
     var sessHTML=recentSess.length?recentSess.slice(0,6).map(function(r){
       var st=String(r.status||'').toLowerCase();
@@ -1124,7 +999,7 @@ function renderTeacherCards(){
       +'<button class="sc-edit-btn" onclick="openEditTeacher(event,\''+esc(t.tid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
       +'</div></div>'
       +'<div class="sc-progress-bar-wrap"><div class="sc-prog-row"><span class="sc-sess-count">'+t.completedCount+' sessions · '+t.hrsDone.toFixed(1)+'h done</span><span class="sc-sess-pct">'+t.studentCount+' student'+(t.studentCount!==1?'s':'')+'</span></div>'
-      +'<div class="sc-prog-track"><div class="sc-prog-fill" style="width:'+t.payPct+'%;background:'+barClr+'"></div></div></div>'
+      +'<div class="sc-prog-track"><div class="sc-prog-fill" style="width:'+tSessPct+'%;background:'+tSessBarColor+'"></div></div></div>'
       +(t.subjects.length?'<div class="sc-subjects">'+t.subjects.map(function(subj,i){var c=subjColor(subj,i);return '<span class="subj-tag" style="background:'+c.bg+';color:'+c.fg+'">'+esc(subj)+'</span>';}).join('')+'</div>':'')
       +'<div class="sc-body"><div class="sc-rows">'
       +'<div class="sc-row"><span class="sc-row-k">Hourly Rate</span><span class="sc-row-v">Rs.'+fmtN(t.rate)+'/hr</span></div>'
@@ -1135,7 +1010,7 @@ function renderTeacherCards(){
       +'<div class="sc-row"><span class="sc-row-k">Balance</span><span class="'+outCls+'">'+esc(outLbl)+'</span></div>'
       +'</div></div>'
       +'<div class="tc-pay-wrap"><div class="sc-pay-head"><span class="sc-pay-lbl">Payment Progress</span><span class="sc-pay-num">Rs.'+fmtN(t.paid)+' / Rs.'+fmtN(t.owed)+'</span></div>'
-      +'<div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+t.payPct+'%;background:'+barClr+'"></div></div></div>'
+      +'<div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+t.payPct+'%"></div><div class="sc-pay-remain" style="width:'+(100-t.payPct)+'%'+(t.owed>0?'':';background:var(--cream-3)')+'"></div></div></div>'
       +'<div class="sc-foot">'
       +(t.contact?'<a class="sc-wa" href="https://wa.me/91'+t.contact+'" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>':'')
       +'<button class="sc-pay-teacher-btn" onclick="openTeacherPayment(\''+esc(t.tid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pay Teacher</button>'
@@ -1212,7 +1087,7 @@ function renderCards(list){
       +'<div class="sc-row"><span class="sc-row-k">Next Session</span><span class="sc-row-v">'+esc(nextTxt)+'</span></div>'
       +'<div class="sc-row"><span class="sc-row-k">Last Class</span><span class="sc-row-v">'+esc(lastTxt)+'</span></div>'
       +'</div></div>'
-      +'<div class="sc-pay-wrap"><div class="sc-pay-head"><span class="sc-pay-lbl">Payment Progress</span><span class="sc-pay-num">Rs.'+fmtN(s.paid)+' / Rs.'+fmtN(s.owed)+'</span></div><div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+s.creditPct+'%;background:'+barColor+'"></div></div></div>'
+      +'<div class="sc-pay-wrap"><div class="sc-pay-head"><span class="sc-pay-lbl">Payment Progress</span><span class="sc-pay-num">Rs.'+fmtN(s.paid)+' / Rs.'+fmtN(s.owed)+'</span></div><div class="sc-pay-track"><div class="sc-pay-fill" style="width:'+s.creditPct+'%"></div><div class="sc-pay-remain" style="width:'+(100-s.creditPct)+'%'+(s.owed>0?'':';background:var(--cream-3)')+'"></div></div></div>'
       +'<div class="sc-foot"><a class="sc-wa" href="'+waLink(s)+'" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>'
       +'<button class="sc-bill-btn" onclick="openBilling(\''+esc(s.sid)+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Bill</button>'
       +markTodayBtn(s)
